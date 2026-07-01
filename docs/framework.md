@@ -1,0 +1,645 @@
+# Blora Design · UI 框架文档
+
+> 本文档面向工程师。涵盖安装、令牌、所有组件 API 与用法、JS 行为。
+> 设计规范见 [`standards.md`](./standards.md)。
+
+---
+
+## 安装
+
+Blora 是 **零依赖** 的纯 CSS + ~6KB JS 框架。
+
+```bash
+# 1) 直接拷贝（推荐用于静态站）
+cp blora.css  your-project/
+cp blora.js   your-project/
+
+# 2) 或 CDN（即将上线）
+# <link rel="stylesheet" href="https://cdn.blora.design/1.0/blora.css">
+# <script src="https://cdn.blora.design/1.0/blora.js"></script>
+```
+
+```html
+<link rel="stylesheet" href="blora.css">
+<!-- 建议同时引入三套字体 -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="blora.js"></script>
+```
+
+**框架结构**
+
+```
+blora-design-2/
+├── blora.css      # 框架本体 · 700+ 行 · 全部样式与令牌
+├── blora.js       # 交互层 · ~6KB · 无依赖
+├── index.html     # 组件全集展示
+└── docs/
+    ├── standards.md   # 设计规范
+    └── framework.md   # 本文档
+```
+
+**JS 初始化**
+
+```html
+<script>
+  // 自动在 DOMContentLoaded 后初始化；
+  // 若动态插入组件，手动调用：
+  Blora.init(document.getElementById('my-mount'));
+</script>
+```
+
+**全局 API**
+
+```js
+Blora.toast({ type: 'success', message: '钤印已成', duration: 3000 });
+Blora.openModal('modal-id');
+Blora.closeModal('modal-id');
+Blora.openDrawer('drawer-id');
+Blora.closeDrawer('drawer-id');
+Blora.init(root);     // 重新扫描并绑定
+Blora.version;        // "1.0.0"
+```
+
+---
+
+## 设计令牌速查
+
+所有令牌定义于 `:root`，可直接 `var(--blora-*)` 使用。
+
+```css
+:root {
+  /* 纸 */ --blora-paper, --blora-surface-1..3, --blora-paper-deep
+  /* 墨 */ --blora-ink, --blora-ink-deep, --blora-ink-mid, --blora-ink-light, --blora-ink-mist, --blora-ink-faint, --blora-ink-ghost
+  /* 彩 */ --blora-seal, --blora-cinnabar, --blora-tea, --blora-indigo, --blora-moss, --blora-bamboo, --blora-gold, --blora-ochre
+  /* 字 */ --blora-font-serif, --blora-font-sans, --blora-font-mono, --blora-font-brush
+  /*     */ --blora-text-xs .. --blora-text-5xl
+  /* 间 */ --blora-space-0 .. --blora-space-12
+  /* 角 */ --blora-radius-xs .. --blora-radius-full
+  /* 影 */ --blora-shadow-1..4, --blora-shadow-inset, --blora-shadow-seal
+  /* 动 */ --blora-ease, --blora-ease-soft, --blora-ease-overshoot, --blora-dur-fast/base/slow/ink
+  /* 层 */ --blora-z-sticky/dropdown/drawer/modal/toast
+}
+```
+
+**暗色模式**：`<html class="blora-dark">` 即可，所有 token 自动重映射，无需改组件。
+
+---
+
+## 组件 API
+
+### 1. 排版
+
+| 类 | 说明 |
+|----|------|
+| `.blora-h1` .. `.blora-h4` | 衬线标题 |
+| `.blora-text-lead` | 引导段 |
+| `.blora-text-muted` / `.blora-text-faint` / `.blora-text-seal` | 文字色调 |
+| `.blora-text-caps` | 大写小字标签 |
+| `.blora-text-mono` / `.blora-text-brush` | 等宽 / 楷书 |
+| `.blora-quote` | 引文，可含 `<cite>` |
+| `.blora-code` / `.blora-pre` | 行内代码 / 代码块 |
+| `.blora-seal` | 印章。修饰符：`--round` `--ghost` |
+| `.blora-brush` | 飞白分隔线 |
+
+### 2. 布局
+
+```html
+<div class="blora-container">              <!-- 居中 1200 -->
+<div class="blora-container blora-container--prose">  <!-- 760 -->
+<div class="blora-container blora-container--wide">   <!-- 1440 -->
+
+<div class="blora-stack">…</div>           <!-- 垂直堆叠 16px -->
+<div class="blora-stack--sm">…</div>       <!-- 8px -->
+<div class="blora-stack--lg">…</div>       <!-- 32px -->
+
+<div class="blora-row">…</div>             <!-- 横排，自动换行 -->
+<div class="blora-row blora-row--tight">…</div>
+<div class="blora-row blora-row--between">…</div>
+<div class="blora-row blora-row--center">…</div>
+
+<div class="blora-grid blora-grid--2">…</div>   <!-- 2/3/4 列响应式 -->
+
+<div class="blora-card">…</div>            <!-- 默认卡面 -->
+<div class="blora-card blora-card--hover">…</div>
+<div class="blora-card blora-card--inset">…</div>
+<div class="blora-card blora-card--flat">…</div>
+<!-- 子结构：.blora-card__title __body __foot；--relative 配 __seal -->
+
+<div class="blora-panel">…</div>           <!-- 大面板 -->
+
+<hr class="blora-divider">                 <!-- 分隔线 -->
+<hr class="blora-divider blora-divider--dashed">
+<div class="blora-divider blora-divider--text">题款</div>
+<hr class="blora-brush">                   <!-- 飞白分隔 -->
+```
+
+### 3. 按钮
+
+```html
+<button class="blora-btn blora-btn--primary">钤印</button>
+<!-- 变体：--primary --secondary --outline --ghost --text -->
+<!-- 尺寸：--xs --sm (默认) --lg --xl -->
+<!-- 图标：--icon（正方形）-->
+<!-- 加载：添加 .is-loading；或 data-blora-loading="2000" 自动触发 -->
+<!-- 组：.blora-btn-group 包裹多个 -->
+
+<a class="blora-btn blora-btn--primary" href="#">链接按钮</a>
+```
+
+**FAB 浮动按钮**：JS 自动注入 `#blora-fab`，滚动 400px 后浮现。
+
+### 4. 表单
+
+```html
+<div class="blora-field">
+  <label class="blora-label blora-label--req" for="x">标签</label>
+  <input class="blora-input" id="x" type="text" placeholder="…">
+  <span class="blora-hint">提示</span>
+  <span class="blora-error">错误</span>
+</div>
+
+<textarea class="blora-textarea"></textarea>
+<select class="blora-select">…</select>
+
+<!-- 前后缀 -->
+<div class="blora-input-group">
+  <span class="blora-addon">¥</span>
+  <input class="blora-input">
+  <span class="blora-addon">.00</span>
+</div>
+
+<!-- 搜索 -->
+<div class="blora-search">
+  <span class="blora-search__icon"><svg…></svg></span>
+  <input class="blora-input" type="search">
+</div>
+
+<!-- 数字步进 -->
+<div class="blora-number">
+  <input class="blora-input" type="number" value="5" min="0" max="99">
+  <div class="blora-number__ctrl">
+    <button class="blora-number__btn" data-step="up">▾</button>
+    <button class="blora-number__btn" data-step="down">▴</button>
+  </div>
+</div>
+
+<!-- 复选 / 单选 / 开关 -->
+<label class="blora-checkbox"><input type="checkbox" checked><span class="blora-checkbox__box"></span>落墨</label>
+<label class="blora-radio"><input type="radio" name="x"><span class="blora-radio__dot"></span>焦墨</label>
+<label class="blora-switch"><input type="checkbox" checked><span class="blora-switch__track"></span>开关</label>
+<!-- 开关尺寸：--sm / 默认 / --lg -->
+<!-- 半选：.blora-checkbox--indeterminate；全选联动：data-blora-checkall -->
+
+<!-- 滑块 -->
+<div class="blora-slider">
+  <input class="blora-slider__input" type="range" min="0" max="100" value="42">
+  <span class="blora-slider__value">42</span>
+</div>
+
+<!-- 双滑块范围 -->
+<div class="blora-range">
+  <div class="blora-range__track"><div class="blora-range__fill" style="left:20%;right:25%;"></div></div>
+  <div class="blora-range__thumb" style="left:20%;"></div>
+  <div class="blora-range__thumb" style="left:75%;"></div>
+</div>
+
+<!-- 评分 -->
+<div class="blora-rate" data-value="4">
+  <span class="blora-rate__star is-on">★</span> ×5
+</div>
+<!-- 只读：data-readonly -->
+
+<!-- 分段 -->
+<div class="blora-segmented">
+  <span class="blora-segmented__item is-active">日</span>
+  <span class="blora-segmented__item">周</span>
+</div>
+
+<!-- 标签输入（自动 JS） -->
+<div class="blora-tags-input">
+  <span class="blora-tag blora-tag--seal blora-tag--removable">水墨<span class="blora-tag__close">×</span></span>
+  <input type="text" placeholder="回车添加">
+</div>
+
+<!-- OTP -->
+<div class="blora-otp">
+  <input class="blora-otp__input" maxlength="1"> ×6
+</div>
+
+<!-- 颜色 -->
+<input class="blora-color-input" type="color" value="#A0392E">
+
+<!-- 上传 -->
+<div class="blora-dropzone">
+  <div class="blora-dropzone__icon"><svg…></svg></div>
+  <div><strong>拖拽文件至此</strong> 或 <span class="blora-text-seal">点击选择</span></div>
+  <div class="blora-hint blora-dropzone__files">支持 PNG/JPG ≤ 8MB</div>
+</div>
+```
+
+**校验态**：在 input 上加 `.is-error`；字段下用 `.blora-error`。
+
+### 5. 选择器
+
+```html
+<!-- 日期 -->
+<div class="blora-datepicker">
+  <span class="blora-datepicker__icon"><svg…></svg></span>
+  <input class="blora-input" type="date">
+</div>
+
+<!-- 级联 -->
+<div class="blora-cascader">
+  <div class="blora-cascader__col">
+    <div class="blora-cascader__opt is-selected">山水<span>›</span></div>
+  </div>
+  <!-- 多列 -->
+</div>
+
+<!-- 穿梭框 -->
+<div class="blora-transfer">
+  <div class="blora-transfer__panel">
+    <div class="blora-transfer__head">候选</div>
+    <div class="blora-transfer__list">
+      <label class="blora-transfer__row"><input type="checkbox"><span>项</span></label>
+    </div>
+  </div>
+  <div class="blora-transfer__actions">
+    <button class="blora-btn blora-btn--outline blora-btn--icon">›</button>
+    <button class="blora-btn blora-btn--outline blora-btn--icon">‹</button>
+  </div>
+  <div class="blora-transfer__panel">…</div>
+</div>
+```
+
+### 6. 标签与徽章
+
+```html
+<span class="blora-tag">默认</span>
+<!-- 色：--seal --tea --indigo --moss --gold --solid -->
+<!-- 可移除：--removable + .blora-tag__close -->
+
+<span class="blora-badge">9</span>
+<span class="blora-badge blora-badge--dot"></span>
+<!-- 色：--tea --moss --indigo -->
+
+<span class="blora-dot"></span>
+<!-- 色：--seal --moss --gold；动效：--pulse -->
+
+<span class="blora-avatar blora-avatar--seal">墨</span>
+<!-- 尺寸：--xs --sm (默认) --lg --xl -->
+<!-- 色：--seal --tea --indigo --moss --ink -->
+<!-- 形：--square -->
+<!-- 组：.blora-avatar-group -->
+<!-- 带徽章：.blora-avatar-wrap 内嵌 .blora-badge -->
+```
+
+### 7. 进度与加载
+
+```html
+<div class="blora-progress">
+  <div class="blora-progress__label"><span>研墨</span><span>62%</span></div>
+  <div class="blora-progress__bar"><div class="blora-progress__fill" style="width:62%;"></div></div>
+</div>
+<!-- fill 色：--tea --moss --indigo；条纹：--striped -->
+
+<!-- 环形 -->
+<div class="blora-progress--circular">
+  <svg width="72" height="72" viewBox="0 0 72 72">
+    <circle class="track" cx="36" cy="36" r="30"></circle>
+    <circle class="fill" cx="36" cy="36" r="30"
+            stroke-dasharray="188.5" stroke-dashoffset="56.5"></circle>
+  </svg>
+  <span style="position:absolute;">70%</span>
+</div>
+
+<span class="blora-spinner"></span>           <!-- 尺寸：--sm --lg -->
+<span class="blora-ink-loading"><span></span><span></span><span></span><span></span></span>
+
+<span class="blora-skeleton blora-skeleton--text"></span>
+<!-- 变体：--title --circle --block -->
+```
+
+### 8. 导航
+
+```html
+<nav class="blora-navbar">
+  <div class="blora-navbar__brand">…</div>
+  <div class="blora-navbar__menu">
+    <a class="blora-navbar__link is-active" href="#">链接</a>
+  </div>
+</nav>
+
+<!-- Tabs（需 data-blora-tabs）-->
+<div class="blora-tabs" data-blora-tabs>
+  <div class="blora-tabs__nav">
+    <span class="blora-tabs__tab is-active">山</span>
+    <span class="blora-tabs__tab">水</span>
+  </div>
+  <div class="blora-tabs__panel">…</div>
+  <div class="blora-tabs__panel blora-hide">…</div>
+</div>
+<!-- 变体：--pills --vert -->
+
+<nav class="blora-breadcrumb">
+  <a href="#">首页</a><span class="blora-breadcrumb__sep">/</span>
+  <span class="blora-breadcrumb__current">当前</span>
+</nav>
+
+<div class="blora-pagination">
+  <span class="blora-pagination__item is-disabled">‹</span>
+  <span class="blora-pagination__item is-active">1</span>
+  <span class="blora-pagination__item">2</span>
+  <span class="blora-pagination__ellipsis">…</span>
+  <span class="blora-pagination__item">›</span>
+</div>
+
+<div class="blora-steps">
+  <div class="blora-step is-done">
+    <div class="blora-step__head"><div class="blora-step__icon">✓</div><div class="blora-step__line"></div></div>
+    <div class="blora-step__title">选纸</div>
+    <div class="blora-step__desc">取宣纸一张</div>
+  </div>
+  <!-- 状态：is-done is-active -->
+</div>
+
+<nav class="blora-menu">
+  <div class="blora-menu__group-label">分组</div>
+  <div class="blora-menu__item is-active"><span class="blora-menu__icon">◈</span><span>项</span></div>
+</nav>
+
+<!-- 下拉菜单（需 JS）-->
+<div class="blora-dropdown">
+  <button class="blora-btn" data-blora-dropdown-trigger>菜单 ▾</button>
+  <div class="blora-dropdown-menu">
+    <div class="blora-dropdown-menu__item">项</div>
+    <div class="blora-dropdown-menu__sep"></div>
+  </div>
+</div>
+```
+
+### 9. 数据展示
+
+```html
+<div class="blora-table-wrap">
+  <table class="blora-table blora-table--striped">
+    <thead><tr><th>列</th></tr></thead>
+    <tbody><tr><td>值</td></tr></tbody>
+  </table>
+</div>
+
+<div class="blora-list blora-list--hover">
+  <div class="blora-list__item">
+    <span class="blora-avatar">墨</span>
+    <div class="blora-list__meta">
+      <div class="blora-list__title">题</div>
+      <div class="blora-list__desc">述</div>
+    </div>
+  </div>
+</div>
+
+<div class="blora-collapse" data-blora-accordion>      <!-- accordion 单展开 -->
+  <div class="blora-collapse__item is-open">
+    <div class="blora-collapse__head">题 <span class="blora-collapse__icon">›</span></div>
+    <div class="blora-collapse__body"><div class="blora-collapse__content">内容</div></div>
+  </div>
+</div>
+
+<div class="blora-timeline">
+  <div class="blora-timeline__item">
+    <div class="blora-timeline__dot blora-timeline__dot--seal"></div>
+    <div class="blora-timeline__time">10:24</div>
+    <div class="blora-timeline__title">事件</div>
+    <div class="blora-timeline__desc">描述</div>
+  </div>
+</div>
+
+<div class="blora-tree">
+  <div class="blora-tree__node is-open is-selected">
+    <span class="blora-tree__toggle">›</span><span>分组</span>
+  </div>
+  <div class="blora-tree__children">…</div>
+</div>
+
+<div class="blora-stat">
+  <span class="blora-stat__label">画作总数</span>
+  <span class="blora-stat__value">1,248</span>
+  <span class="blora-stat__trend blora-stat__trend--up">↑ 12.4%</span>
+  <!-- 趋势：--up（山青）--down（印泥）-->
+  <!-- 后缀：.blora-stat__suffix -->
+</div>
+
+<table class="blora-descriptions">
+  <tbody><tr><th>键</th><td>值</td></tr></tbody>
+</table>
+
+<!-- 轮播（需 JS，可 data-autoplay）-->
+<div class="blora-carousel" data-autoplay>
+  <div class="blora-carousel__track">
+    <div class="blora-carousel__slide">…</div>
+  </div>
+  <button class="blora-carousel__arrow blora-carousel__arrow--prev">‹</button>
+  <button class="blora-carousel__arrow blora-carousel__arrow--next">›</button>
+  <div class="blora-carousel__dots">
+    <span class="blora-carousel__dot is-active"></span>
+  </div>
+</div>
+
+<span class="blora-image blora-image--hover">
+  <img src="…" class="blora-inkify">
+  <span class="blora-image__cap">题图</span>
+</span>
+<!-- 变体：--frame（相框）--hover（放大）-->
+
+<div class="blora-empty">
+  <div class="blora-empty__icon"><svg…></svg></div>
+  <div class="blora-empty__title">此地无墨</div>
+  <div class="blora-empty__desc">画案空空</div>
+</div>
+
+<div class="blora-result blora-result--success">
+  <div class="blora-result__icon">✓</div>
+  <div class="blora-result__title">已成</div>
+  <div class="blora-result__desc">描述</div>
+</div>
+<!-- 变体：--success --warning --error --info -->
+
+<div class="blora-calendar">
+  <div class="blora-calendar__head">
+    <div class="blora-calendar__title">丙午年 · 六月</div>
+  </div>
+  <div class="blora-calendar__grid">
+    <div class="blora-calendar__dow">日</div> ×7
+    <div class="blora-calendar__cell is-today is-selected">30</div>
+    <!-- 状态：is-other is-today is-selected；带点：内嵌 .blora-dot -->
+  </div>
+</div>
+```
+
+### 10. 反馈
+
+```html
+<div class="blora-alert blora-alert--info">
+  <span class="blora-alert__icon">i</span>
+  <div class="blora-alert__body">
+    <div class="blora-alert__title">题</div>
+    <div class="blora-alert__desc">述</div>
+  </div>
+  <span class="blora-alert__close">×</span>
+</div>
+<!-- 变体：--info --success --warning --danger --ghost -->
+
+<div class="blora-banner">
+  <div class="blora-banner__body">
+    <div class="blora-banner__title">题</div>
+    <div class="blora-banner__desc">述</div>
+  </div>
+  <div class="blora-banner__actions">…</div>
+</div>
+
+<span class="blora-message blora-message--success">
+  <span class="blora-message__icon">✓</span>消息
+</span>
+
+<div class="blora-notification blora-notification--success">
+  <span class="blora-notification__icon">✓</span>
+  <div><div class="blora-notification__title">题</div><div class="blora-notification__desc">述</div></div>
+  <span class="blora-notification__close">×</span>
+</div>
+
+<span class="blora-tooltip">
+  <button class="blora-btn">悬停我</button>
+  <span class="blora-tooltip__bubble">提示文字</span>
+</span>
+
+<div class="blora-popover">
+  <button data-blora-popover>触发</button>
+  <div class="blora-popover__panel">
+    <div class="blora-popover__title">题</div>
+    <div class="blora-popover__body">内容</div>
+  </div>
+</div>
+
+<!-- Popconfirm：同 popover 结构，内嵌 .blora-popconfirm__title + 按钮 -->
+```
+
+### 11. 模态与抽屉
+
+```html
+<button data-blora-modal-open="my-modal">打开</button>
+
+<div class="blora-modal" id="my-modal" role="dialog" aria-modal="true">
+  <div class="blora-modal__mask" data-blora-close></div>
+  <div class="blora-modal__dialog">
+    <div class="blora-modal__head">
+      <h3 class="blora-modal__title">题款</h3>
+      <button class="blora-modal__close" data-blora-close>×</button>
+    </div>
+    <div class="blora-modal__body">…</div>
+    <div class="blora-modal__foot">
+      <button class="blora-btn blora-btn--text" data-blora-close>取消</button>
+      <button class="blora-btn blora-btn--primary">确定</button>
+    </div>
+  </div>
+</div>
+<!-- 尺寸：默认 520 / --sm 400 / --lg 800 -->
+
+<!-- 抽屉：方向 --right --left --top --bottom -->
+<div class="blora-drawer blora-drawer--right" id="d1">
+  <div class="blora-drawer__mask" data-blora-close></div>
+  <div class="blora-drawer__panel">
+    <div class="blora-drawer__head">…</div>
+    <div class="blora-drawer__body">…</div>
+    <div class="blora-drawer__foot">…</div>
+  </div>
+</div>
+```
+
+### 12. 命令面板
+
+```html
+<div class="blora-modal" id="blora-cmdk" role="dialog" aria-modal="true">
+  <div class="blora-modal__mask" data-blora-close></div>
+  <div class="blora-modal__dialog" style="max-width:560px;">
+    <div class="blora-modal__head">
+      <div class="blora-search">… <input class="blora-input" type="search"></div>
+      <button class="blora-modal__close" data-blora-close>×</button>
+    </div>
+    <div class="blora-modal__body">
+      <div class="blora-cmdk-results">
+        <div class="blora-cmdk-item is-active"><span>✎</span><span>新建</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+**快捷键**：`Ctrl/⌘ + K` 唤起，`Esc` 关闭（由 blora.js 自动绑定）。
+
+### 13. Toast
+
+```js
+Blora.toast('一条消息');
+Blora.toast({ type: 'success', message: '钤印已成', duration: 3000 });
+// type: info | success | warning | danger
+```
+
+容器 `.blora-toast-container` 由 JS 自动注入。
+
+---
+
+## 主题切换
+
+```html
+<button data-blora-theme>夜</button>
+```
+
+点击切换 `<html class="blora-dark">`。按钮文字在 "日"/"夜" 间切换。
+
+---
+
+## 图表集成
+
+Blora 不内置图表库。提供语义色供 ECharts / Chart.js 取用：
+
+```js
+const palette = [
+  getComputedStyle(document.documentElement).getPropertyValue('--blora-seal').trim(),
+  '--blora-tea', '--blora-indigo', '--blora-moss', '--blora-gold',
+].map(v => v.startsWith('--') ? getComputedStyle(document.documentElement).getPropertyValue(v).trim() : v);
+```
+
+容器建议包裹 `.blora-card`，高度 ≥ 200px。
+
+---
+
+## 浏览器支持
+
+- Chrome / Edge / Firefox / Safari 最新两版
+- iOS 14+ / Android Chrome 90+
+- 使用 `backdrop-filter`、CSS 变量、`gap` for flex — 现代浏览器必需
+
+---
+
+## 自定义
+
+覆写令牌即可全局换肤：
+
+```css
+:root {
+  --blora-seal: #2E5C8A;   /* 改主强调为青蓝 */
+  --blora-paper: #FAF7F0;  /* 更亮的纸 */
+}
+```
+
+**不建议**修改组件内部样式；优先通过令牌定制。
+
+---
+
+## 版本
+
+- **1.0.0** — 丙午六月 · 初版。28 类组件、12 级间距、5 级墨色、暗色模式、命令面板。
+
+---
+
+> 框架如砚，组件如笔，落墨由人。

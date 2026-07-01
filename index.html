@@ -1,0 +1,1772 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blora Design · 水墨 UI 设计系统</title>
+<meta name="description" content="Blora Design — 融合 Claude 之温润与东方水墨之留白，一套完整的 Web UI 设计规范与组件库。">
+<link rel="stylesheet" href="blora.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* —— 仅用于本展示页的样式，不属于框架本体 —— */
+  .blora-showcase { display: grid; grid-template-columns: 240px 1fr; gap: var(--blora-space-8); max-width: 1440px; margin: 0 auto; padding: var(--blora-space-6) var(--blora-space-6) var(--blora-space-12); }
+  @media (max-width: 1024px) { .blora-showcase { grid-template-columns: 1fr; } .blora-showside { display: none; } }
+  .blora-showside { position: sticky; top: 88px; align-self: start; max-height: calc(100vh - 110px); overflow-y: auto; padding-right: var(--blora-space-3); }
+  .blora-shownav { font-size: var(--blora-text-sm); }
+  .blora-shownav a { display: block; padding: 0.5em 0.8em; color: var(--blora-ink-light); border-radius: var(--blora-radius-sm); transition: all var(--blora-dur-fast) var(--blora-ease); }
+  .blora-shownav a:hover { color: var(--blora-ink); background: var(--blora-surface-2); }
+  .blora-shownav a.is-active { color: var(--blora-seal); font-weight: 500; background: rgba(160,57,46,0.08); }
+  .blora-shownav__group { font-size: var(--blora-text-xs); text-transform: uppercase; letter-spacing: var(--blora-tracking-caps); color: var(--blora-ink-faint); padding: var(--blora-space-4) 0.7em var(--blora-space-1); }
+
+  .blora-hero { padding: var(--blora-space-9) var(--blora-space-6) var(--blora-space-7); text-align: center; max-width: 920px; margin: 0 auto; }
+  .blora-hero__kicker { display: inline-flex; align-items: center; gap: var(--blora-space-2); font-size: var(--blora-text-xs); letter-spacing: var(--blora-tracking-caps); text-transform: uppercase; color: var(--blora-seal); margin-bottom: var(--blora-space-4); }
+  .blora-hero__title { font-family: var(--blora-font-serif); font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 700; line-height: 1.05; letter-spacing: -0.02em; color: var(--blora-ink); margin-bottom: var(--blora-space-4); }
+  .blora-hero__sub { font-size: var(--blora-text-lg); color: var(--blora-ink-light); line-height: var(--blora-leading-loose); max-width: 640px; margin: 0 auto var(--blora-space-6); }
+  .blora-hero__seal { display: inline-flex; gap: var(--blora-space-3); margin-bottom: var(--blora-space-5); }
+
+  .blora-sec { margin-bottom: var(--blora-space-9); scroll-margin-top: 90px; }
+  .blora-sec__head { margin-bottom: var(--blora-space-5); }
+  .blora-sec__num { font-family: var(--blora-font-mono); font-size: var(--blora-text-xs); color: var(--blora-seal); letter-spacing: var(--blora-tracking-caps); }
+  .blora-sec__title { font-family: var(--blora-font-serif); font-size: var(--blora-text-3xl); color: var(--blora-ink); margin: var(--blora-space-1) 0 var(--blora-space-2); }
+  .blora-sec__desc { color: var(--blora-ink-light); max-width: 60ch; }
+
+  .blora-demo { padding: var(--blora-space-5); border: 1px dashed var(--blora-ink-ghost); border-radius: var(--blora-radius-md); margin-bottom: var(--blora-space-4); background: transparent; }
+  .blora-demo__label { font-family: var(--blora-font-mono); font-size: var(--blora-text-xs); color: var(--blora-ink-mist); margin-bottom: var(--blora-space-3); text-transform: uppercase; letter-spacing: var(--blora-tracking-caps); }
+
+  .blora-swatch { display: flex; flex-direction: column; gap: var(--blora-space-2); }
+  .blora-swatch__chip { height: 80px; border-radius: var(--blora-radius-md); border: 1px solid rgba(28,26,23,0.06); box-shadow: var(--blora-shadow-1); display: flex; align-items: flex-end; padding: var(--blora-space-2); color: rgba(255,255,255,0.9); font-family: var(--blora-font-mono); font-size: var(--blora-text-xs); }
+  .blora-swatch__name { font-size: var(--blora-text-sm); font-weight: 500; color: var(--blora-ink-deep); }
+  .blora-swatch__hex { font-family: var(--blora-font-mono); font-size: var(--blora-text-xs); color: var(--blora-ink-mist); }
+  .blora-swatch__chip--light { color: var(--blora-ink-mid); }
+
+  .blora-typetable td { padding: var(--blora-space-3) var(--blora-space-4); border-bottom: 1px solid var(--blora-ink-ghost); }
+  .blora-typetable td:first-child { white-space: nowrap; }
+
+  .blora-spacedemo { display: flex; align-items: flex-end; gap: var(--blora-space-2); }
+  .blora-spacedemo__bar { width: 32px; background: var(--blora-seal); border-radius: var(--blora-radius-xs) var(--blora-radius-xs) 0 0; opacity: 0.85; }
+  .blora-spacedemo__label { font-family: var(--blora-font-mono); font-size: var(--blora-text-xs); color: var(--blora-ink-mist); text-align: center; margin-top: var(--blora-space-2); }
+
+  .blora-shadow-demo { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: var(--blora-space-5); }
+  .blora-shadow-demo__item { background: var(--blora-surface-1); border-radius: var(--blora-radius-md); padding: var(--blora-space-5); text-align: center; font-size: var(--blora-text-sm); color: var(--blora-ink-mid); }
+
+  .blora-control-row { display: flex; align-items: center; gap: var(--blora-space-4); flex-wrap: wrap; margin-bottom: var(--blora-space-3); }
+  .blora-control-row:last-child { margin-bottom: 0; }
+  .blora-control-row > span { font-size: var(--blora-text-xs); color: var(--blora-ink-mist); min-width: 5em; font-family: var(--blora-font-mono); }
+
+  .blora-iconset { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: var(--blora-space-2); }
+  .blora-iconset__item { display: flex; flex-direction: column; align-items: center; gap: var(--blora-space-2); padding: var(--blora-space-3); border-radius: var(--blora-radius-md); color: var(--blora-ink-mid); transition: all var(--blora-dur-fast) var(--blora-ease); }
+  .blora-iconset__item:hover { background: var(--blora-surface-2); color: var(--blora-seal); }
+  .blora-iconset__item svg { width: 28px; height: 28px; }
+  .blora-iconset__bloret { width: 28px; height: 28px; }
+  .blora-iconset__name { font-size: 10px; color: var(--blora-ink-mist); }
+
+  .blora-foot { text-align: center; padding: var(--blora-space-9) var(--blora-space-6); color: var(--blora-ink-mist); border-top: var(--blora-brush); }
+  .blora-foot__seal { margin-bottom: var(--blora-space-3); }
+
+  .blora-dropdown-menu { position: absolute; top: calc(100% + 6px); left: 0; min-width: 180px; background: var(--blora-surface-1); border: var(--blora-border); border-radius: var(--blora-radius-md); box-shadow: var(--blora-shadow-3); padding: var(--blora-space-2); opacity: 0; pointer-events: none; transform: translateY(-4px); transition: all var(--blora-dur-fast) var(--blora-ease); z-index: var(--blora-z-dropdown); }
+  .blora-dropdown-menu.is-open { opacity: 1; pointer-events: auto; transform: translateY(0); }
+  .blora-dropdown-menu__item { display: flex; align-items: center; gap: var(--blora-space-2); padding: 0.5em 0.8em; font-size: var(--blora-text-sm); color: var(--blora-ink-mid); border-radius: var(--blora-radius-sm); cursor: pointer; }
+  .blora-dropdown-menu__item:hover { background: var(--blora-surface-2); color: var(--blora-ink); }
+  .blora-dropdown-menu__sep { height: 1px; background: var(--blora-ink-ghost); margin: var(--blora-space-1) 0; }
+  .blora-dropdown { position: relative; display: inline-block; }
+
+  .blora-cmdk-results { max-height: 320px; overflow-y: auto; margin-top: var(--blora-space-3); }
+  .blora-cmdk-item { display: flex; align-items: center; gap: var(--blora-space-3); padding: 0.6em 0.8em; border-radius: var(--blora-radius-sm); cursor: pointer; font-size: var(--blora-text-sm); color: var(--blora-ink-mid); }
+  .blora-cmdk-item:hover, .blora-cmdk-item.is-active { background: var(--blora-surface-2); color: var(--blora-ink); }
+  .blora-cmdk-item__kbd { margin-left: auto; font-family: var(--blora-font-mono); font-size: var(--blora-text-xs); color: var(--blora-ink-mist); }
+
+  .blora-context-menu { position: relative; }
+  .blora-mock-img { background: var(--blora-surface-3); display: grid; place-items: center; color: var(--blora-ink-mist); font-family: var(--blora-font-brush); font-size: 2em; }
+
+  .blora-chart-mock { height: 180px; background: var(--blora-surface-2); border-radius: var(--blora-radius-md); padding: var(--blora-space-4); display: flex; align-items: flex-end; gap: var(--blora-space-2); }
+  .blora-chart-mock__bar { flex: 1; background: var(--blora-seal-soft); border-radius: var(--blora-radius-xs) var(--blora-radius-xs) 0 0; }
+</style>
+</head>
+<body>
+
+<!-- =========================================================================
+     顶栏 · Navbar
+     ========================================================================= -->
+<nav class="blora-navbar">
+  <div class="blora-navbar__brand">
+    <span class="blora-seal blora-seal--round" style="font-size:0.9em; display:inline-grid; place-items:center; width:1.8em; height:1.8em; min-width:0; padding:0; overflow:hidden;"><svg width="20" height="20" viewBox="0 0 26 26" fill="none" style="display:block;"><g fill="currentColor" fill-rule="evenodd"><path d="M5.438,10.33L8.182,8.759L7.436,7.457L4.692,9.028Q3.812,9.532,3.812,10.547L3.812,19.409Q3.812,20.424,4.692,20.928L12.447,25.367Q13.316,25.864,14.185,25.367L21.94,20.928Q22.82,20.424,22.82,19.409L22.82,10.547Q22.82,9.532,21.94,9.028L14.196,4.596Q13.308,4.087,12.429,4.613L11.567,5.128L12.337,6.415L13.199,5.9Q13.324,5.825,13.451,5.898L21.194,10.33Q21.32,10.402,21.32,10.547L21.32,19.409Q21.32,19.554,21.194,19.626L13.44,24.065Q13.316,24.136,13.192,24.065L5.438,19.626Q5.312,19.554,5.312,19.409L5.312,10.547Q5.312,10.402,5.438,10.33Z"/><path d="M12.774,9.201L12.774,2.475Q12.774,1.741,12.134,1.384L10.516,0.481Q9.91,0.142,9.302,0.478L7.665,1.382Q7.019,1.739,7.019,2.477L7.019,18.012Q7.019,18.746,7.66,19.104L12.771,21.957Q13.387,22.301,14,21.95L18.983,19.101Q19.613,18.741,19.613,18.016L19.613,12.334Q19.613,11.596,18.967,11.239L14.598,8.829Q13.965,8.479,13.346,8.854L12.774,9.201ZM11.274,2.622L9.906,1.858L8.519,2.624L8.519,17.866L13.378,20.578L18.113,17.871L18.113,12.481L14,10.212L13.173,10.714Q12.548,11.093,11.911,10.735Q11.274,10.376,11.274,9.646L11.274,2.622Z"/><path d="M10.658,4.222L12.262,3.378L11.563,2.051L9.908,2.922L8.252,2.051L7.554,3.378L9.158,4.222L9.158,12.843Q9.158,13.569,9.788,13.929L12.665,15.571L12.665,21.44L14.165,21.44L14.165,15.568L19.238,12.632L18.487,11.334L13.413,14.27L10.658,12.698L10.658,4.222Z"/></g></svg></span>
+    <span>Blora&nbsp;Design</span>
+  </div>
+  <div class="blora-navbar__menu" style="display:none;">
+    <a class="blora-navbar__link is-active" href="#philosophy">设计哲学</a>
+    <a class="blora-navbar__link" href="#tokens">设计令牌</a>
+    <a class="blora-navbar__link" href="#buttons">组件</a>
+    <a class="blora-navbar__link" href="#feedback">反馈</a>
+  </div>
+  <div class="blora-row blora-row--tight">
+    <button class="blora-btn blora-btn--ghost blora-btn--icon blora-btn--sm" data-blora-theme aria-label="切换主题">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <a class="blora-btn blora-btn--outline blora-btn--sm" href="docs/standards.md">规范文档</a>
+    <a class="blora-btn blora-btn--primary blora-btn--sm" href="#buttons">开始使用</a>
+  </div>
+</nav>
+
+<!-- =========================================================================
+     序 · Hero
+     ========================================================================= -->
+<header class="blora-hero">
+  <div class="blora-hero__kicker">
+    <span class="blora-dot blora-dot--seal blora-dot--pulse"></span>
+    一套水墨为意的 Web UI 系统 · v1.0
+  </div>
+  <h1 class="blora-hero__title">留白为意，<br>墨分五色。</h1>
+  <p class="blora-hero__sub">
+    Blora Design 融 Claude 之温润纸感于东方水墨之气韵，
+    以宣纸为底、以印泥为章、以飞白为界，筑一套可读、可塑、可传承的网页设计规范。
+  </p>
+  <div class="blora-hero__seal">
+    <span class="blora-seal">留白</span>
+    <span class="blora-seal blora-seal--ghost">气韵</span>
+    <span class="blora-seal" style="background:#2D2A24; box-shadow:none;">温润</span>
+  </div>
+  <div class="blora-row blora-row--center">
+    <a class="blora-btn blora-btn--primary blora-btn--lg" href="#buttons">浏览全部组件</a>
+    <a class="blora-btn blora-btn--outline blora-btn--lg" href="#philosophy">阅读设计哲学</a>
+  </div>
+  <hr class="blora-brush" style="margin-top: var(--blora-space-8); max-width: 360px; margin-inline:auto;">
+</header>
+
+<!-- =========================================================================
+     主体 · Showcase
+     ========================================================================= -->
+<div class="blora-showcase">
+
+  <!-- 侧栏导航 -->
+  <aside class="blora-showside">
+    <nav class="blora-shownav" data-blora-spy>
+      <div class="blora-shownav__group">理念</div>
+      <a href="#philosophy">设计哲学</a>
+      <a href="#color">色彩 · 墨与彩</a>
+      <a href="#typography">字体</a>
+      <a href="#spacing">间距 · 留白</a>
+      <a href="#shadow">阴影与纹理</a>
+      <a href="#icons">图标</a>
+      <a href="#seals">印章</a>
+
+      <div class="blora-shownav__group">基础</div>
+      <a href="#buttons">按钮</a>
+      <a href="#forms">表单输入</a>
+      <a href="#pickers">选择器</a>
+      <a href="#tags">标签徽章</a>
+      <a href="#avatars">头像</a>
+      <a href="#progress">进度与加载</a>
+
+      <div class="blora-shownav__group">导航</div>
+      <a href="#nav">导航组件</a>
+      <a href="#data">数据展示</a>
+
+      <div class="blora-shownav__group">反馈</div>
+      <a href="#feedback">反馈与提示</a>
+      <a href="#overlays">模态与抽屉</a>
+      <a href="#command">命令面板</a>
+
+      <div class="blora-shownav__group">布局</div>
+      <a href="#layout">布局</a>
+    </nav>
+  </aside>
+
+  <!-- 主内容 -->
+  <main>
+
+    <!-- ================================================================
+         1 · 设计哲学
+         ================================================================ -->
+    <section id="philosophy" class="blora-sec">
+      <header class="blora-sec__head">
+        <div class="blora-sec__num">01 — 序</div>
+        <h2 class="blora-sec__title">设计哲学</h2>
+        <p class="blora-sec__desc">三句话可蔽之：以纸为底、以墨为骨、以章为点睛。一切控件，皆是这三者的演绎。</p>
+      </header>
+
+      <div class="blora-grid blora-grid--3">
+        <article class="blora-card blora-card--relative blora-card--hover">
+          <span class="blora-seal blora-card__seal">纸</span>
+          <h3 class="blora-card__title">温润如纸</h3>
+          <p class="blora-card__body">背景取宣纸之暖白，纹理以肉眼几乎不可见之颗粒。不刺眼、不喧宾，让内容自然浮出。</p>
+        </article>
+        <article class="blora-card blora-card--relative blora-card--hover">
+          <span class="blora-seal blora-card__seal" style="background:#2D2A24; box-shadow:none;">墨</span>
+          <h3 class="blora-card__title">墨分五色</h3>
+          <p class="blora-card__body">焦、浓、重、淡、清——文字与边框以五级墨色分层，替代粗糙的纯黑与纯灰，呈现国画之气韵。</p>
+        </article>
+        <article class="blora-card blora-card--relative blora-card--hover">
+          <span class="blora-seal blora-card__seal">章</span>
+          <h3 class="blora-card__title">印泥点睛</h3>
+          <p class="blora-card__body">唯一的强调色取印泥之朱砂红，仅在主操作、激活态、关键标识上落"章"。一处用印，全篇皆活。</p>
+        </article>
+      </div>
+
+      <div class="blora-panel" style="margin-top: var(--blora-space-5);">
+        <div class="blora-panel__header">
+          <h3 class="blora-h4">六条原则</h3>
+          <span class="blora-tag blora-tag--seal">Principles</span>
+        </div>
+        <div class="blora-grid blora-grid--2" style="gap: var(--blora-space-5) var(--blora-space-6);">
+          <div><strong class="blora-text-seal">留白优先。</strong> 间距宁大勿挤，呼吸感是水墨的灵魂。组件内边距至少 16px，分组之间至少 32px。</div>
+          <div><strong class="blora-text-seal">节制用色。</strong> 90% 的画面应是纸色与墨色，印泥红不超过 5%，其余色彩用于状态语义。</div>
+          <div><strong class="blora-text-seal">圆角温润。</strong> 默认 8px 圆角，不锋利亦不过圆。容器可用 12–20px，按钮永远 8px。</div>
+          <div><strong class="blora-text-seal">动效含蓄。</strong> 缓动以 <code class="blora-code">cubic-bezier(.22,.61,.36,1)</code> 为主，时长 140–420ms，从不弹跳过度。</div>
+          <div><strong class="blora-text-seal">字体分明。</strong> 标题用衬线（宋体之源），正文用无衬线，代码用等宽。三者各司其职。</div>
+          <div><strong class="blora-text-seal">触手可及。</strong> 所有交互元素最小可点击区 40×40，对比度满足 WCAG AA，支持键盘与 reduced-motion。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         2 · 色彩
+         ================================================================ -->
+    <section id="color" class="blora-sec">
+      <header class="blora-sec__head">
+        <div class="blora-sec__num">02 — 色</div>
+        <h2 class="blora-sec__title">墨与彩</h2>
+        <p class="blora-sec__desc">色板分三层：纸（背景）、墨（文本与边框）、彩（强调与状态）。彩为宾，墨为主。</p>
+      </header>
+
+      <h4 class="blora-h4" style="margin-bottom: var(--blora-space-3);">纸 · Paper</h4>
+      <div class="blora-grid blora-grid--4 blora-mb-6">
+        <div class="blora-swatch"><div class="blora-swatch__chip blora-swatch__chip--light" style="background:#F5F1E8;">#F5F1E8</div><div class="blora-swatch__name">宣纸 paper</div><div class="blora-swatch__hex">--blora-paper</div></div>
+        <div class="blora-swatch"><div class="blora-swatch__chip blora-swatch__chip--light" style="background:#FBF8F0;">#FBF8F0</div><div class="blora-swatch__name">素笺 surface-1</div><div class="blora-swatch__hex">--blora-surface-1</div></div>
+        <div class="blora-swatch"><div class="blora-swatch__chip blora-swatch__chip--light" style="background:#E9E3D2;">#E9E3D2</div><div class="blora-swatch__name">熟纸 surface-3</div><div class="blora-swatch__hex">--blora-surface-3</div></div>
+        <div class="blora-swatch"><div class="blora-swatch__chip blora-swatch__chip--light" style="background:#E6DFCC;">#E6DFCC</div><div class="blora-swatch__name">深纸 paper-deep</div><div class="blora-swatch__hex">--blora-paper-deep</div></div>
+      </div>
+
+      <h4 class="blora-h4" style="margin-bottom: var(--blora-space-3);">墨 · Ink（五色 + 两灰）</h4>
+      <div class="blora-grid blora-grid--4 blora-mb-6">
+        <div class="blora-swatch"><div class="blora-swatch__chip" style="background:#1C1A17;">焦墨</div><div class="blora-swatch__name">ink（主文）</div><div class="blora-swatch__hex">--blora-ink</div></div>
+        <div class="blora-swatch"><div class="blora-swatch__chip" style="background:#2D2A24;">浓墨</div><div class="blora-swatch__name">ink-deep（标题）</div><div class="blora-swatch__hex">--blora-ink-deep</div></div>
+        <div class="blora-swatch"><div class="blora-swatch__chip" style="background:#4A453D;">重墨</div><div class="blora-swatch__name">ink-mid（强调）</div><div class="blora-swatch__hex">--blora-ink-mid</div></div>
+        <div class="blora-swatch"><div class="blora-swatch__chip" style="background:#6B6358;">淡墨</div><div class="blora-swatch__name">ink-light（正文）</div><div class="blora-swatch__hex">--blora-ink-light</div></div>
+        <div class="blora-swatch"><div class="blora-swatch__chip" style="background:#9B9489;">清墨</div><div class="blora-swatch__name">ink-mist（次要）</div><div class="blora-swatch__hex">--blora-ink-mist</div></div>
+        <div class="blora-swatch"><div class="blora-swatch__chip blora-swatch__chip--light" style="background:#B8B0A2;">远山</div><div class="blora-swatch__name">ink-faint（禁用）</div><div class="blora-swatch__hex">--blora-ink-faint</div></div>
+        <div class="blora-swatch"><div class="blora-swatch__chip blora-swatch__chip--light" style="background:#D8D2C4;">雾色</div><div class="blora-swatch__name">ink-ghost（边框）</div><div class="blora-swatch__hex">--blora-ink-ghost</div></div>
+        <div class="blora-swatch"><div class="blora-swatch__chip blora-swatch__chip--light" style="background:#F5F1E8; border:1px solid #D8D2C4;">底</div><div class="blora-swatch__name">paper（对比）</div><div class="blora-swatch__hex">--blora-paper</div></div>
+      </div>
+
+      <h4 class="blora-h4" style="margin-bottom: var(--blora-space-3);">彩 · Accents</h4>
+      <div class="blora-grid blora-grid--4">
+        <div class="blora-swatch"><div class="blora-swatch__chip" style="background:#A0392E;">印泥</div><div class="blora-swatch__name">seal（主强调）</div><div class="blora-swatch__hex">--blora-seal</div></div>
+        <div class="blora-swatch"><div class="blora-swatch__chip" style="background:#C44536;">朱砂</div><div class="blora-swatch__name">cinnabar</div><div class="blora-swatch__hex">--blora-cinnabar</div></div>
+        <div class="blora-swatch"><div class="blora-swatch__chip" style="background:#8B6F47;">茶色</div><div class="blora-swatch__name">tea</div><div class="blora-swatch__hex">--blora-tea</div></div>
+        <div class="blora-swatch"><div class="blora-swatch__chip" style="background:#3D4A5C;">黛青</div><div class="blora-swatch__name">indigo</div><div class="blora-swatch__hex">--blora-indigo</div></div>
+        <div class="blora-swatch"><div class="blora-swatch__chip" style="background:#5A7B6B;">山青</div><div class="blora-swatch__name">moss / success</div><div class="blora-swatch__hex">--blora-moss</div></div>
+        <div class="blora-swatch"><div class="blora-swatch__chip" style="background:#7B9B7E;">竹青</div><div class="blora-swatch__name">bamboo</div><div class="blora-swatch__hex">--blora-bamboo</div></div>
+        <div class="blora-swatch"><div class="blora-swatch__chip" style="background:#B89968;">赭石</div><div class="blora-swatch__name">gold / warning</div><div class="blora-swatch__hex">--blora-gold</div></div>
+        <div class="blora-swatch"><div class="blora-swatch__chip" style="background:#D4A574;">黄土</div><div class="blora-swatch__name">ochre</div><div class="blora-swatch__hex">--blora-ochre</div></div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         3 · 字体
+         ================================================================ -->
+    <section id="typography" class="blora-sec">
+      <header class="blora-sec__head">
+        <div class="blora-sec__num">03 — 字</div>
+        <h2 class="blora-sec__title">字体</h2>
+        <p class="blora-sec__desc">三套字体：衬线为题、无衬线为体、等宽为码。字阶以 1.25 倍率递进。</p>
+      </header>
+
+      <div class="blora-panel">
+        <table class="blora-typetable" style="width:100%;">
+          <tbody>
+            <tr><td><span class="blora-h1">墨分五色</span></td><td><span class="blora-text-muted">Noto Serif SC · 48 / 600 / -0.02em</span></td><td><code class="blora-code">.blora-h1</code></td></tr>
+            <tr><td><span class="blora-h2">墨分五色</span></td><td><span class="blora-text-muted">Noto Serif SC · 36 / 600</span></td><td><code class="blora-code">.blora-h2</code></td></tr>
+            <tr><td><span class="blora-h3">墨分五色</span></td><td><span class="blora-text-muted">Noto Serif SC · 28 / 600</span></td><td><code class="blora-code">.blora-h3</code></td></tr>
+            <tr><td><span class="blora-h4">墨分五色</span></td><td><span class="blora-text-muted">Noto Serif SC · 22 / 600</span></td><td><code class="blora-code">.blora-h4</code></td></tr>
+            <tr><td><span style="font-size:1.125rem;">墨分五色，气韵生动。</span></td><td><span class="blora-text-muted">Noto Sans SC · 18 / 400 — lead</span></td><td><code class="blora-code">.blora-text-lead</code></td></tr>
+            <tr><td>墨分五色，气韵生动。</td><td><span class="blora-text-muted">Noto Sans SC · 16 / 400 — base</span></td><td><code class="blora-code">body</code></td></tr>
+            <tr><td style="font-size:0.875rem; color:var(--blora-ink-light);">墨分五色，气韵生动。</td><td><span class="blora-text-muted">Noto Sans SC · 14 / 400 — sm</span></td><td><code class="blora-code">.blora-text-sm</code></td></tr>
+            <tr><td style="font-size:0.75rem; color:var(--blora-ink-mist);">墨分五色，气韵生动。</td><td><span class="blora-text-muted">Noto Sans SC · 12 / 400 — xs</span></td><td><code class="blora-code">.blora-text-xs</code></td></tr>
+            <tr><td><span class="blora-text-caps">UPPERCASE LETTERS</span></td><td><span class="blora-text-muted">Sans · 12 / 600 / +0.18em — caps</span></td><td><code class="blora-code">.blora-text-caps</code></td></tr>
+            <tr><td><span class="blora-text-brush" style="font-size:1.5rem;">水墨为意，飞白为界</span></td><td><span class="blora-text-muted">KaiTi · 楷书风，仅用于题字</span></td><td><code class="blora-code">.blora-text-brush</code></td></tr>
+            <tr><td><code class="blora-code">const ink = "五色";</code></td><td><span class="blora-text-muted">JetBrains Mono · inline code</span></td><td><code class="blora-code">.blora-code</code></td></tr>
+          </tbody>
+        </table>
+
+        <hr class="blora-brush">
+        <div class="blora-quote">
+          画之道，所谓宇宙在握者，眼前无非生机。
+          <cite>—— 董其昌 · 《画旨》</cite>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         4 · 间距
+         ================================================================ -->
+    <section id="spacing" class="blora-sec">
+      <header class="blora-sec__head">
+        <div class="blora-sec__num">04 — 间</div>
+        <h2 class="blora-sec__title">间距与留白</h2>
+        <p class="blora-sec__desc">12 级间距，4px 起步，1.5 倍率。留白不是空，是气的回旋。</p>
+      </header>
+      <div class="blora-panel">
+        <div class="blora-spacedemo" style="align-items:flex-end;">
+          <div style="text-align:center;"><div class="blora-spacedemo__bar" style="height:4px;"></div><div class="blora-spacedemo__label">4<br>1</div></div>
+          <div style="text-align:center;"><div class="blora-spacedemo__bar" style="height:8px;"></div><div class="blora-spacedemo__label">8<br>2</div></div>
+          <div style="text-align:center;"><div class="blora-spacedemo__bar" style="height:12px;"></div><div class="blora-spacedemo__label">12<br>3</div></div>
+          <div style="text-align:center;"><div class="blora-spacedemo__bar" style="height:16px;"></div><div class="blora-spacedemo__label">16<br>4</div></div>
+          <div style="text-align:center;"><div class="blora-spacedemo__bar" style="height:24px;"></div><div class="blora-spacedemo__label">24<br>5</div></div>
+          <div style="text-align:center;"><div class="blora-spacedemo__bar" style="height:32px;"></div><div class="blora-spacedemo__label">32<br>6</div></div>
+          <div style="text-align:center;"><div class="blora-spacedemo__bar" style="height:48px;"></div><div class="blora-spacedemo__label">48<br>8</div></div>
+          <div style="text-align:center;"><div class="blora-spacedemo__bar" style="height:64px;"></div><div class="blora-spacedemo__label">64<br>9</div></div>
+          <div style="text-align:center;"><div class="blora-spacedemo__bar" style="height:96px;"></div><div class="blora-spacedemo__label">96<br>11</div></div>
+          <div style="text-align:center;"><div class="blora-spacedemo__bar" style="height:128px;"></div><div class="blora-spacedemo__label">128<br>12</div></div>
+        </div>
+        <hr class="blora-divider">
+        <div class="blora-row blora-row--between">
+          <div><strong>圆角</strong> · xs 2 · sm 4 · md 8 · lg 12 · xl 20 · 2xl 32 · full</div>
+          <code class="blora-code">--blora-radius-*</code>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         5 · 阴影与纹理
+         ================================================================ -->
+    <section id="shadow" class="blora-sec">
+      <header class="blora-sec__head">
+        <div class="blora-sec__num">05 — 影</div>
+        <h2 class="blora-sec__title">阴影与纹理</h2>
+        <p class="blora-sec__desc">影从光来，光自纸生。四级阴影皆低不透明度，呈"纸上浮起"之感，而非"空中悬停"。</p>
+      </header>
+      <div class="blora-panel">
+        <div class="blora-shadow-demo">
+          <div class="blora-shadow-demo__item" style="box-shadow:var(--blora-shadow-1);">shadow-1<br><small>1px 浮起</small></div>
+          <div class="blora-shadow-demo__item" style="box-shadow:var(--blora-shadow-2);">shadow-2<br><small>2px 卡面</small></div>
+          <div class="blora-shadow-demo__item" style="box-shadow:var(--blora-shadow-3);">shadow-3<br><small>6px 浮层</small></div>
+          <div class="blora-shadow-demo__item" style="box-shadow:var(--blora-shadow-4);">shadow-4<br><small>12px 模态</small></div>
+          <div class="blora-shadow-demo__item" style="box-shadow:var(--blora-shadow-seal);">shadow-seal<br><small>印泥光晕</small></div>
+          <div class="blora-shadow-demo__item" style="box-shadow:var(--blora-shadow-inset);">inset<br><small>内凹</small></div>
+        </div>
+        <p class="blora-hint" style="margin-top:var(--blora-space-3);">纸张纹理由 <code class="blora-code">--blora-grain</code> 径向渐变叠加于 body，肉眼几乎不可见而心生温润。</p>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         6 · 图标
+         ================================================================ -->
+    <section id="icons" class="blora-sec">
+      <header class="blora-sec__head">
+        <div class="blora-sec__num">06 — 印</div>
+        <h2 class="blora-sec__title">图标</h2>
+        <p class="blora-sec__desc">线性、2px 描边、方端方角。与墨笔同骨，不作圆润之态。建议以 SVG 内联或图标字体引入。</p>
+      </header>
+      <div class="blora-panel">
+        <div class="blora-iconset">
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><span class="blora-iconset__name">search</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg><span class="blora-iconset__name">menu</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h10M4 18h7"/></svg><span class="blora-iconset__name">align</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg><span class="blora-iconset__name">chevron-down</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg><span class="blora-iconset__name">chevron-right</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg><span class="blora-iconset__name">arrow-left</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg><span class="blora-iconset__name">arrow-right</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg><span class="blora-iconset__name">arrow-up</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg><span class="blora-iconset__name">arrow-down</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span class="blora-iconset__name">calendar</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="blora-iconset__name">clock</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg><span class="blora-iconset__name">chat</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg><span class="blora-iconset__name">user</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8h-3l-2-3H8L6 8H3a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2z"/><circle cx="12" cy="14" r="4"/></svg><span class="blora-iconset__name">image</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg><span class="blora-iconset__name">plus</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/></svg><span class="blora-iconset__name">minus</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><span class="blora-iconset__name">check</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg><span class="blora-iconset__name">x-circle</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg><span class="blora-iconset__name">close</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span class="blora-iconset__name">info</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 9v4M12 17h.01"/></svg><span class="blora-iconset__name">alert</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg><span class="blora-iconset__name">star</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L4 7v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V7z"/></svg><span class="blora-iconset__name">shield</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v6M12 18v4M4 12H2M22 12h-2M5 5l3 3M16 16l3 3M5 19l3-3M16 8l3-3"/></svg><span class="blora-iconset__name">gear</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span class="blora-iconset__name">activity</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg><span class="blora-iconset__name">download</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21V9m0 0l-4 4m4-4l4 4M4 3h16"/></svg><span class="blora-iconset__name">upload</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12c0 5-4 9-9 9s-9-4-9-9 4-9 9-9c2 0 4 .6 5.5 1.7"/><path d="M21 4v4h-4"/></svg><span class="blora-iconset__name">reload</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 7h14M5 12h14M5 17h6"/><circle cx="17" cy="17" r="3"/></svg><span class="blora-iconset__name">filter</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l4-4h14v16H7l-4-4z M9 9l6 6m0-6l-6 6"/></svg><span class="blora-iconset__name">tag</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><span class="blora-iconset__name">moon</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg><span class="blora-iconset__name">sun</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/></svg><span class="blora-iconset__name">home</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg><span class="blora-iconset__name">bookmark</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg><span class="blora-iconset__name">chat-bubble</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="blora-iconset__name">bell</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 6H2l10 10 10-10z"/></svg><span class="blora-iconset__name">mail</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 13v8M8 13v8M12 15v8M20 16.58A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25"/></svg><span class="blora-iconset__name">cloud</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg><span class="blora-iconset__name">check-circle</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg><span class="blora-iconset__name">alert-circle</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20"/></svg><span class="blora-iconset__name">credit-card</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1v6m0 10v6M4.22 4.22l4.24 4.24m7.08 7.08l4.24 4.24M1 12h6m10 0h6"/></svg><span class="blora-iconset__name">sun-lines</span></div>
+          <div class="blora-iconset__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg><span class="blora-iconset__name">check-round</span></div>
+          <div class="blora-iconset__item"><svg class="blora-iconset__bloret" viewBox="0 0 26 26" fill="none"><g fill="currentColor" fill-rule="evenodd"><path d="M5.438,10.33L8.182,8.759L7.436,7.457L4.692,9.028Q3.812,9.532,3.812,10.547L3.812,19.409Q3.812,20.424,4.692,20.928L12.447,25.367Q13.316,25.864,14.185,25.367L21.94,20.928Q22.82,20.424,22.82,19.409L22.82,10.547Q22.82,9.532,21.94,9.028L14.196,4.596Q13.308,4.087,12.429,4.613L11.567,5.128L12.337,6.415L13.199,5.9Q13.324,5.825,13.451,5.898L21.194,10.33Q21.32,10.402,21.32,10.547L21.32,19.409Q21.32,19.554,21.194,19.626L13.44,24.065Q13.316,24.136,13.192,24.065L5.438,19.626Q5.312,19.554,5.312,19.409L5.312,10.547Q5.312,10.402,5.438,10.33Z"/><path d="M12.774,9.201L12.774,2.475Q12.774,1.741,12.134,1.384L10.516,0.481Q9.91,0.142,9.302,0.478L7.665,1.382Q7.019,1.739,7.019,2.477L7.019,18.012Q7.019,18.746,7.66,19.104L12.771,21.957Q13.387,22.301,14,21.95L18.983,19.101Q19.613,18.741,19.613,18.016L19.613,12.334Q19.613,11.596,18.967,11.239L14.598,8.829Q13.965,8.479,13.346,8.854L12.774,9.201ZM11.274,2.622L9.906,1.858L8.519,2.624L8.519,17.866L13.378,20.578L18.113,17.871L18.113,12.481L14,10.212L13.173,10.714Q12.548,11.093,11.911,10.735Q11.274,10.376,11.274,9.646L11.274,2.622Z"/><path d="M10.658,4.222L12.262,3.378L11.563,2.051L9.908,2.922L8.252,2.051L7.554,3.378L9.158,4.222L9.158,12.843Q9.158,13.569,9.788,13.929L12.665,15.571L12.665,21.44L14.165,21.44L14.165,15.568L19.238,12.632L18.487,11.334L13.413,14.27L10.658,12.698L10.658,4.222Z"/></g></svg><span class="blora-iconset__name">bloret</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         6.5 · 印章
+         ================================================================ -->
+    <section id="seals" class="blora-sec">
+      <header class="blora-sec__head">
+        <div class="blora-sec__num">06½ — 印</div>
+        <h2 class="blora-sec__title">印章</h2>
+        <p class="blora-sec__desc">Blora 的点睛之笔。红底白字、微旋 -2°、带印泥光晕。节制使用：单屏不超过两枚。</p>
+      </header>
+      <div class="blora-panel">
+        <div class="blora-demo">
+          <div class="blora-demo__label">变体 · Variants</div>
+          <div class="blora-row" style="align-items:center;">
+            <span class="blora-seal">留白</span>
+            <span class="blora-seal blora-seal--round">气韵</span>
+            <span class="blora-seal blora-seal--ghost">温润</span>
+            <span class="blora-seal" style="background:#2D2A24; box-shadow:none;">墨色</span>
+            <span class="blora-seal" style="background:var(--blora-moss); box-shadow:none;">山青</span>
+            <span class="blora-seal" style="background:var(--blora-tea); box-shadow:none;">茶</span>
+            <span class="blora-seal" style="background:var(--blora-indigo); box-shadow:none;">黛</span>
+          </div>
+        </div>
+        <div class="blora-demo">
+          <div class="blora-demo__label">尺寸 · Sizes（字号驱动）</div>
+          <div class="blora-row" style="align-items:center;">
+            <span class="blora-seal" style="font-size:0.7em;">小</span>
+            <span class="blora-seal" style="font-size:0.85em;">默</span>
+            <span class="blora-seal" style="font-size:1.1em;">大</span>
+            <span class="blora-seal" style="font-size:1.5em;">题</span>
+            <span class="blora-seal" style="font-size:2em;">钤</span>
+          </div>
+        </div>
+        <div class="blora-demo">
+          <div class="blora-demo__label">单字 · 双字 · 三字</div>
+          <div class="blora-row" style="align-items:center;">
+            <span class="blora-seal">墨</span>
+            <span class="blora-seal">留白</span>
+            <span class="blora-seal" style="font-size:0.7em; line-height:1.1;">气韵生</span>
+            <span class="blora-seal blora-seal--round">范</span>
+          </div>
+        </div>
+        <div class="blora-demo">
+          <div class="blora-demo__label">卡面钤记 · On Card</div>
+          <div class="blora-grid blora-grid--3">
+            <article class="blora-card blora-card--relative blora-card--hover">
+              <span class="blora-seal blora-card__seal">纸</span>
+              <h3 class="blora-card__title">温润如纸</h3>
+              <p class="blora-card__body">右上角钤一枚印，是 Blora 卡面的标志用法。</p>
+            </article>
+            <article class="blora-card blora-card--relative blora-card--hover">
+              <span class="blora-seal blora-card__seal" style="background:#2D2A24; box-shadow:none;">墨</span>
+              <h3 class="blora-card__title">墨分五色</h3>
+              <p class="blora-card__body">墨色印章用于次级强调，与印泥红形成层次。</p>
+            </article>
+            <article class="blora-card blora-card--relative blora-card--hover">
+              <span class="blora-seal blora-card__seal blora-seal--round">章</span>
+              <h3 class="blora-card__title">印泥点睛</h3>
+              <p class="blora-card__body">圆印用于品牌/作者标识，方印用于内容标记。</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         7 · 按钮
+         ================================================================ -->
+    <section id="buttons" class="blora-sec">
+      <header class="blora-sec__head">
+        <div class="blora-sec__num">07 — 控</div>
+        <h2 class="blora-sec__title">按钮</h2>
+        <p class="blora-sec__desc">五式：主（印泥钤盖）、次（墨色）、描边、幽灵、文字。辅以尺寸、图标、加载、分组。</p>
+      </header>
+
+      <div class="blora-panel">
+        <div class="blora-demo">
+          <div class="blora-demo__label">变体 · Variants</div>
+          <div class="blora-control-row">
+            <span>样式</span>
+            <button class="blora-btn blora-btn--primary">钤印 · Primary</button>
+            <button class="blora-btn blora-btn--secondary">墨色 · Secondary</button>
+            <button class="blora-btn blora-btn--outline">描边 · Outline</button>
+            <button class="blora-btn blora-btn--ghost">幽灵 · Ghost</button>
+            <button class="blora-btn blora-btn--text">文字 · Text</button>
+          </div>
+          <div class="blora-control-row">
+            <span>禁用</span>
+            <button class="blora-btn blora-btn--primary" disabled>Primary</button>
+            <button class="blora-btn blora-btn--secondary" disabled>Secondary</button>
+            <button class="blora-btn blora-btn--outline" disabled>Outline</button>
+            <button class="blora-btn blora-btn--ghost" disabled>Ghost</button>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">尺寸 · Sizes</div>
+          <div class="blora-control-row" style="align-items:center;">
+            <button class="blora-btn blora-btn--primary blora-btn--xs">极小 xs</button>
+            <button class="blora-btn blora-btn--primary blora-btn--sm">小 sm</button>
+            <button class="blora-btn blora-btn--primary">默认</button>
+            <button class="blora-btn blora-btn--primary blora-btn--lg">大 lg</button>
+            <button class="blora-btn blora-btn--primary blora-btn--xl">题 xl</button>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">图标 · With Icons</div>
+          <div class="blora-control-row">
+            <button class="blora-btn blora-btn--primary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>
+              下载
+            </button>
+            <button class="blora-btn blora-btn--outline">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+              搜索
+            </button>
+            <button class="blora-btn blora-btn--secondary">
+              继续
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+            <button class="blora-btn blora-btn--ghost blora-btn--icon" aria-label="设置">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4 12H2M22 12h-2M5 5l3 3M16 16l3 3M5 19l3-3M16 8l3-3"/></svg>
+            </button>
+            <button class="blora-btn blora-btn--primary blora-btn--icon" aria-label="添加">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">加载 · Loading</div>
+          <div class="blora-control-row">
+            <button class="blora-btn blora-btn--primary" data-blora-loading="2000">点击触发加载</button>
+            <button class="blora-btn blora-btn--secondary is-loading">墨色加载</button>
+            <button class="blora-btn blora-btn--outline is-loading">描边加载</button>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">按钮组 · Group</div>
+          <div class="blora-control-row">
+            <div class="blora-btn-group">
+              <button class="blora-btn blora-btn--outline">左</button>
+              <button class="blora-btn blora-btn--outline">中</button>
+              <button class="blora-btn blora-btn--outline">右</button>
+            </div>
+            <div class="blora-btn-group">
+              <button class="blora-btn blora-btn--ghost blora-btn--icon" aria-label="加粗"><b>B</b></button>
+              <button class="blora-btn blora-btn--ghost blora-btn--icon" aria-label="斜体"><i>I</i></button>
+              <button class="blora-btn blora-btn--ghost blora-btn--icon" aria-label="下划线"><u>U</u></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">浮动按钮 · FAB</div>
+          <p class="blora-hint">右下角悬浮一个钤印式按钮，滚动 400px 后浮现。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         8 · 表单
+         ================================================================ -->
+    <section id="forms" class="blora-sec">
+      <header class="blora-sec__head">
+        <div class="blora-sec__num">08 — 录</div>
+        <h2 class="blora-sec__title">表单输入</h2>
+        <p class="blora-sec__desc">文本、多行、选择、勾选、单选、开关、滑块、评分、分段、标签、数字、验证码、颜色、上传。</p>
+      </header>
+
+      <div class="blora-panel">
+        <div class="blora-grid blora-grid--2">
+          <div class="blora-field">
+            <label class="blora-label blora-label--req" for="f-text">文本输入</label>
+            <input class="blora-input" id="f-text" type="text" placeholder="请输入墨题">
+            <span class="blora-hint">一行字，一字春秋。</span>
+          </div>
+          <div class="blora-field">
+            <label class="blora-label" for="f-pwd">密码</label>
+            <input class="blora-input" id="f-pwd" type="password" value="水墨为意">
+          </div>
+          <div class="blora-field">
+            <label class="blora-label" for="f-err">错误态</label>
+            <input class="blora-input is-error" id="f-err" type="text" value="墨未干">
+            <span class="blora-error">此处用印过早，颜料已晕。</span>
+          </div>
+          <div class="blora-field">
+            <label class="blora-label" for="f-dis">禁用</label>
+            <input class="blora-input" id="f-dis" type="text" value="不可改动" disabled>
+          </div>
+          <div class="blora-field">
+            <label class="blora-label">前缀 / 后缀</label>
+            <div class="blora-input-group">
+              <span class="blora-addon">¥</span>
+              <input class="blora-input" type="number" placeholder="金额">
+              <span class="blora-addon">.00</span>
+            </div>
+          </div>
+          <div class="blora-field">
+            <label class="blora-label" for="f-search">搜索</label>
+            <div class="blora-search">
+              <span class="blora-search__icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+              </span>
+              <input class="blora-input" id="f-search" type="search" placeholder="搜索宣纸、墨锭、印泥…">
+            </div>
+          </div>
+        </div>
+
+        <div class="blora-field" style="margin-top:var(--blora-space-5);">
+          <label class="blora-label" for="f-ta">多行文本 · Textarea</label>
+          <textarea class="blora-textarea" id="f-ta" placeholder="气韵生动，落墨成章…"></textarea>
+        </div>
+
+        <hr class="blora-brush">
+
+        <div class="blora-grid blora-grid--2">
+          <div class="blora-field">
+            <label class="blora-label" for="f-select">下拉选择</label>
+            <div class="blora-select-wrap">
+              <select class="blora-select" id="f-select">
+                <option value="" disabled selected>请选择墨色</option>
+                <option>焦墨</option><option>浓墨</option><option>重墨</option><option>淡墨</option><option>清墨</option>
+              </select>
+              <div class="blora-select-trigger is-placeholder">请选择墨色</div>
+              <div class="blora-select-menu"></div>
+            </div>
+          </div>
+          <div class="blora-field">
+            <label class="blora-label">数字输入 · Number</label>
+            <div class="blora-number">
+              <input class="blora-input" type="number" value="5" min="0" max="99" step="1">
+              <div class="blora-number__ctrl">
+                <button class="blora-number__btn" data-step="up" aria-label="增加"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg></button>
+                <button class="blora-number__btn" data-step="down" aria-label="减少"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr class="blora-brush">
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">复选 · Checkbox</div>
+          <div class="blora-row">
+            <label class="blora-checkbox"><input type="checkbox" checked><span class="blora-checkbox__box"></span>落墨</label>
+            <label class="blora-checkbox"><input type="checkbox"><span class="blora-checkbox__box"></span>留白</label>
+            <label class="blora-checkbox"><input type="checkbox" disabled><span class="blora-checkbox__box"></span>禁用</label>
+            <label class="blora-checkbox blora-checkbox--indeterminate"><input type="checkbox" data-blora-checkall><span class="blora-checkbox__box"></span>全选</label>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">单选 · Radio</div>
+          <div class="blora-row">
+            <label class="blora-radio"><input type="radio" name="ink" checked><span class="blora-radio__dot"></span>焦墨</label>
+            <label class="blora-radio"><input type="radio" name="ink"><span class="blora-radio__dot"></span>浓墨</label>
+            <label class="blora-radio"><input type="radio" name="ink"><span class="blora-radio__dot"></span>淡墨</label>
+            <label class="blora-radio"><input type="radio" name="ink" disabled><span class="blora-radio__dot"></span>禁用</label>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">开关 · Switch</div>
+          <div class="blora-row">
+            <label class="blora-switch blora-switch--sm"><input type="checkbox"><span class="blora-switch__track"></span><span class="blora-text-sm">小</span></label>
+            <label class="blora-switch"><input type="checkbox" checked><span class="blora-switch__track"></span><span class="blora-text-sm">默认</span></label>
+            <label class="blora-switch blora-switch--lg"><input type="checkbox" checked><span class="blora-switch__track"></span><span class="blora-text-sm">大</span></label>
+            <label class="blora-switch"><input type="checkbox" disabled><span class="blora-switch__track"></span><span class="blora-text-sm">禁用</span></label>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">滑块 · Slider</div>
+          <div class="blora-slider">
+            <input class="blora-slider__input" type="range" min="0" max="100" value="42">
+            <span class="blora-slider__value">42</span>
+          </div>
+          <div style="margin-top:var(--blora-space-4); padding-bottom:1.5em;">
+            <div class="blora-range" data-min="0" data-max="100">
+              <div class="blora-range__track"><div class="blora-range__fill"></div></div>
+              <div class="blora-range__thumb" data-val="20"></div>
+              <div class="blora-range__thumb" data-val="75"></div>
+              <span class="blora-range__value" style="position:absolute; bottom:-1.5em; left:50%; transform:translateX(-50%); font-family:var(--blora-font-mono); font-size:var(--blora-text-xs); color:var(--blora-ink-mist);">20 – 75</span>
+            </div>
+            <p class="blora-hint" style="margin-top:var(--blora-space-2);">范围滑块 · Range Slider（双滑块）</p>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">评分 · Rate</div>
+          <div class="blora-rate" data-value="4">
+            <span class="blora-rate__star is-on">★</span><span class="blora-rate__star is-on">★</span><span class="blora-rate__star is-on">★</span><span class="blora-rate__star is-on">★</span><span class="blora-rate__star">★</span>
+          </div>
+          <div class="blora-rate" data-value="3" data-readonly style="margin-top:var(--blora-space-2);">
+            <span class="blora-rate__star is-on">★</span><span class="blora-rate__star is-on">★</span><span class="blora-rate__star is-on">★</span><span class="blora-rate__star">★</span><span class="blora-rate__star">★</span>
+            <span class="blora-hint" style="margin-left:var(--blora-space-2);">只读</span>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">分段控件 · Segmented</div>
+          <div class="blora-segmented">
+            <span class="blora-segmented__item is-active">日</span>
+            <span class="blora-segmented__item">周</span>
+            <span class="blora-segmented__item">月</span>
+            <span class="blora-segmented__item">年</span>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">标签输入 · Tags Input</div>
+          <div class="blora-tags-input">
+            <span class="blora-tag blora-tag--seal blora-tag--removable">水墨<span class="blora-tag__close" aria-label="移除"></span></span>
+            <span class="blora-tag blora-tag--seal blora-tag--removable">留白<span class="blora-tag__close" aria-label="移除"></span></span>
+            <span class="blora-tag blora-tag--seal blora-tag--removable">气韵<span class="blora-tag__close" aria-label="移除"></span></span>
+            <input type="text" placeholder="回车添加…">
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">验证码 · OTP（自动跳框 · 可调长度 · 限制字符）</div>
+          <div class="blora-otp" data-mode="numeric" data-otp-ctrl="otp-ctrl" data-mode-ctrl="otp-mode" data-upper-ctrl="otp-upper">
+            <input class="blora-otp__input" maxlength="1" type="text">
+            <input class="blora-otp__input" maxlength="1" type="text">
+            <input class="blora-otp__input" maxlength="1" type="text">
+            <input class="blora-otp__input" maxlength="1" type="text">
+            <input class="blora-otp__input" maxlength="1" type="text">
+            <input class="blora-otp__input" maxlength="1" type="text">
+          </div>
+          <div class="blora-row blora-row--tight" style="margin-top: var(--blora-space-4); align-items:center;">
+            <span class="blora-label" style="white-space:nowrap; margin:0;">位数</span>
+            <div class="blora-number" id="otp-ctrl" style="width:7em;">
+              <input class="blora-input" type="number" value="6" min="4" max="8" style="text-align:center;">
+              <div class="blora-number__ctrl">
+                <button class="blora-number__btn" data-step="up" aria-label="增加"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg></button>
+                <button class="blora-number__btn" data-step="down" aria-label="减少"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
+              </div>
+            </div>
+            <span class="blora-divider--vert" style="height:1.6em; align-self:center;"></span>
+            <span class="blora-label" style="white-space:nowrap; margin:0;">字符</span>
+            <div class="blora-segmented" id="otp-mode">
+              <span class="blora-segmented__item is-active" data-mode="numeric">数字</span>
+              <span class="blora-segmented__item" data-mode="alphanumeric">数字+字母</span>
+              <span class="blora-segmented__item" data-mode="any">任意</span>
+            </div>
+            <span class="blora-divider--vert" style="height:1.6em; align-self:center;"></span>
+            <label class="blora-checkbox" style="margin:0;"><input type="checkbox" id="otp-upper"><span class="blora-checkbox__box"></span><span style="white-space:nowrap;">自动大写</span></label>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">颜色选择 · Color</div>
+          <div class="blora-row">
+            <input class="blora-color-input" type="color" value="#A0392E">
+            <input class="blora-color-input" type="color" value="#1C1A17">
+            <input class="blora-color-input" type="color" value="#5A7B6B">
+            <input class="blora-color-input" type="color" value="#B89968">
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">文件上传 · Upload & Dropzone</div>
+          <div class="blora-dropzone">
+            <div class="blora-dropzone__icon">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21V9m0 0l-4 4m4-4l4 4M4 3h16"/></svg>
+            </div>
+            <div><strong>拖拽文件至此</strong> 或 <span class="blora-text-seal">点击选择</span></div>
+            <div class="blora-hint blora-dropzone__files">支持 SVG / PNG / JPG · 单文件 ≤ 8MB</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         9 · 选择器
+         ================================================================ -->
+    <section id="pickers" class="blora-sec">
+      <header class="blora-sec__head">
+        <div class="blora-sec__num">09 — 择</div>
+        <h2 class="blora-sec__title">选择器与穿梭</h2>
+        <p class="blora-sec__desc">日期、级联、穿梭三类，皆以墨色面板呈现。日期见日历章节。</p>
+      </header>
+
+      <div class="blora-panel">
+        <div class="blora-grid blora-grid--2">
+          <div class="blora-field">
+            <label class="blora-label" for="p-date">日期选择 · Date Picker</label>
+            <div class="blora-datepicker" data-blora-datepicker>
+              <input class="blora-input" id="p-date" type="date" min="1900-01-01" max="2099-12-31" placeholder="YYYY-MM-DD">
+              <button class="blora-datepicker__btn" type="button" aria-label="选择日期" tabindex="-1">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="blora-field">
+            <label class="blora-label" for="p-time">时间选择 · Time Picker</label>
+            <div class="blora-datepicker" data-blora-timepicker>
+              <input class="blora-input" id="p-time" type="time" value="14:30" placeholder="HH:MM">
+              <button class="blora-datepicker__btn" type="button" aria-label="选择时间" tabindex="-1">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="blora-field" style="margin-top:var(--blora-space-5);">
+          <label class="blora-label">级联选择 · Cascader</label>
+          <div class="blora-cascader" data-blora-cascader='[
+            {"label":"山水","children":[
+              {"label":"北宋","children":[{"label":"范宽"},{"label":"郭熙"},{"label":"李成"}]},
+              {"label":"南宋","children":[{"label":"马远"},{"label":"夏圭"}]},
+              {"label":"元","children":[{"label":"黄公望"},{"label":"倪瓒"}]}
+            ]},
+            {"label":"花鸟","children":[
+              {"label":"北宋","children":[{"label":"崔白"},{"label":"赵佶"}]},
+              {"label":"明","children":[{"label":"徐渭"},{"label":"陈淳"}]}
+            ]},
+            {"label":"人物","children":[
+              {"label":"唐","children":[{"label":"阎立本"},{"label":"吴道子"}]},
+              {"label":"五代","children":[{"label":"顾闳中"}]}
+            ]}
+          ]'></div>
+          <span class="blora-hint blora-cascader__result">已选：山水 / 北宋 / 范宽</span>
+        </div>
+
+        <div class="blora-field" style="margin-top:var(--blora-space-5);">
+          <label class="blora-label">穿梭框 · Transfer</label>
+          <div class="blora-transfer">
+            <div class="blora-transfer__panel">
+              <div class="blora-transfer__head">候选 · 5</div>
+              <div class="blora-transfer__list">
+                <label class="blora-transfer__row"><input type="checkbox"><span class="blora-transfer__check"></span><span>范宽</span></label>
+                <label class="blora-transfer__row"><input type="checkbox" checked><span class="blora-transfer__check"></span><span>郭熙</span></label>
+                <label class="blora-transfer__row"><input type="checkbox"><span class="blora-transfer__check"></span><span>李成</span></label>
+                <label class="blora-transfer__row"><input type="checkbox"><span class="blora-transfer__check"></span><span>许道宁</span></label>
+                <label class="blora-transfer__row"><input type="checkbox"><span class="blora-transfer__check"></span><span>燕文贵</span></label>
+              </div>
+            </div>
+            <div class="blora-transfer__actions">
+              <button class="blora-btn blora-btn--outline blora-btn--icon" data-blora-transfer="right" aria-label="右移">›</button>
+              <button class="blora-btn blora-btn--outline blora-btn--icon" data-blora-transfer="left" aria-label="左移">‹</button>
+            </div>
+            <div class="blora-transfer__panel">
+              <div class="blora-transfer__head">已选 · 1</div>
+              <div class="blora-transfer__list">
+                <label class="blora-transfer__row"><input type="checkbox" checked><span class="blora-transfer__check"></span><span>郭熙</span></label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         10 · 标签徽章
+         ================================================================ -->
+    <section id="tags" class="blora-sec">
+      <header class="blora-sec__head">
+        <div class="blora-sec__num">10 — 签</div>
+        <h2 class="blora-sec__title">标签与徽章</h2>
+        <p class="blora-sec__desc">标签用于分类，徽章用于计数。皆可着墨色或彩。</p>
+      </header>
+
+      <div class="blora-panel">
+        <div class="blora-demo">
+          <div class="blora-demo__label">标签 · Tags</div>
+          <div class="blora-row">
+            <span class="blora-tag">默认</span>
+            <span class="blora-tag blora-tag--seal">印泥</span>
+            <span class="blora-tag blora-tag--tea">茶</span>
+            <span class="blora-tag blora-tag--indigo">黛</span>
+            <span class="blora-tag blora-tag--moss">山青</span>
+            <span class="blora-tag blora-tag--gold">赭石</span>
+            <span class="blora-tag blora-tag--solid">墨实</span>
+            <span class="blora-tag blora-tag--seal blora-tag--removable">可移除<span class="blora-tag__close" aria-label="移除"></span></span>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">徽章 · Badge</div>
+          <div class="blora-row">
+            <span class="blora-badge">9</span>
+            <span class="blora-badge">99+</span>
+            <span class="blora-badge blora-badge--dot"></span>
+            <span class="blora-badge blora-badge--tea">3</span>
+            <span class="blora-badge blora-badge--moss">新</span>
+            <span class="blora-badge blora-badge--indigo">β</span>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">头像徽章 · On Avatar</div>
+          <div class="blora-row">
+            <span class="blora-avatar-wrap"><span class="blora-avatar blora-avatar--seal">墨</span><span class="blora-badge blora-badge--dot"></span></span>
+            <span class="blora-avatar-wrap"><span class="blora-avatar blora-avatar--tea">客</span><span class="blora-badge">5</span></span>
+            <span class="blora-avatar-wrap"><span class="blora-avatar blora-avatar--moss">竹</span><span class="blora-badge blora-badge--dot" style="background:var(--blora-moss);"></span></span>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">状态点 · Status Dot</div>
+          <div class="blora-row">
+            <span class="blora-row blora-row--tight"><span class="blora-dot"></span>离线</span>
+            <span class="blora-row blora-row--tight"><span class="blora-dot blora-dot--moss blora-dot--pulse"></span>在线</span>
+            <span class="blora-row blora-row--tight"><span class="blora-dot blora-dot--seal"></span>忙碌</span>
+            <span class="blora-row blora-row--tight"><span class="blora-dot blora-dot--gold"></span>离开</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         11 · 头像
+         ================================================================ -->
+    <section id="avatars" class="blora-sec">
+      <header class="blora-sec__head">
+        <div class="blora-sec__num">11 — 像</div>
+        <h2 class="blora-sec__title">头像</h2>
+        <p class="blora-sec__desc">圆形为默认，方形为辅助。无图时以衬线单字代之，颇有题款之意。</p>
+      </header>
+      <div class="blora-panel">
+        <div class="blora-demo">
+          <div class="blora-demo__label">尺寸</div>
+          <div class="blora-row" style="align-items:flex-end;">
+            <span class="blora-avatar blora-avatar--xs blora-avatar--seal">墨</span>
+            <span class="blora-avatar blora-avatar--sm blora-avatar--seal">墨</span>
+            <span class="blora-avatar blora-avatar--seal">墨</span>
+            <span class="blora-avatar blora-avatar--lg blora-avatar--seal">墨</span>
+            <span class="blora-avatar blora-avatar--xl blora-avatar--seal">墨</span>
+          </div>
+        </div>
+        <div class="blora-demo">
+          <div class="blora-demo__label">配色 · 无图</div>
+          <div class="blora-row">
+            <span class="blora-avatar blora-avatar--seal">范</span>
+            <span class="blora-avatar blora-avatar--tea">郭</span>
+            <span class="blora-avatar blora-avatar--indigo">李</span>
+            <span class="blora-avatar blora-avatar--moss">许</span>
+            <span class="blora-avatar blora-avatar--ink">燕</span>
+            <span class="blora-avatar blora-avatar--square blora-avatar--seal">方</span>
+          </div>
+        </div>
+        <div class="blora-demo">
+          <div class="blora-demo__label">图片头像 · 组</div>
+          <div class="blora-row">
+            <span class="blora-avatar blora-image--frame"><img src="https://picsum.photos/seed/blora-a/120/120" alt="头像"></span>
+            <div class="blora-avatar-group">
+              <span class="blora-avatar"><img src="https://picsum.photos/seed/blora-b/80/80" alt=""></span>
+              <span class="blora-avatar"><img src="https://picsum.photos/seed/blora-c/80/80" alt=""></span>
+              <span class="blora-avatar"><img src="https://picsum.photos/seed/blora-d/80/80" alt=""></span>
+              <span class="blora-avatar blora-avatar--ink">+5</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         12 · 进度与加载
+         ================================================================ -->
+    <section id="progress" class="blora-sec">
+      <header class="blora-sec__head">
+        <div class="blora-sec__num">12 — 行</div>
+        <h2 class="blora-sec__title">进度与加载</h2>
+        <p class="blora-sec__desc">线形、环形、条纹、骨架，以及标志性的"墨滴"加载动效。</p>
+      </header>
+      <div class="blora-panel">
+        <div class="blora-demo">
+          <div class="blora-demo__label">线形进度 · Linear</div>
+          <div class="blora-stack">
+            <div class="blora-progress">
+              <div class="blora-progress__label"><span>研墨</span><span>62%</span></div>
+              <div class="blora-progress__bar"><div class="blora-progress__fill" style="width:62%;"></div></div>
+            </div>
+            <div class="blora-progress">
+              <div class="blora-progress__label"><span>着色</span><span>40%</span></div>
+              <div class="blora-progress__bar"><div class="blora-progress__fill blora-progress__fill--tea" style="width:40%;"></div></div>
+            </div>
+            <div class="blora-progress">
+              <div class="blora-progress__label"><span>钤印</span><span>85%</span></div>
+              <div class="blora-progress__bar"><div class="blora-progress__fill blora-progress__fill--striped" style="width:85%;"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">环形进度 · Circular</div>
+          <div class="blora-row">
+            <div class="blora-progress--circular">
+              <svg width="72" height="72" viewBox="0 0 72 72">
+                <circle class="track" cx="36" cy="36" r="30"></circle>
+                <circle class="fill" cx="36" cy="36" r="30" stroke-dasharray="188.5" stroke-dashoffset="56.5"></circle>
+              </svg>
+              <span style="position:absolute; font-family:var(--blora-font-serif); font-weight:600; color:var(--blora-ink);">70%</span>
+            </div>
+            <div class="blora-progress--circular">
+              <svg width="72" height="72" viewBox="0 0 72 72">
+                <circle class="track" cx="36" cy="36" r="30"></circle>
+                <circle class="fill" cx="36" cy="36" r="30" stroke-dasharray="188.5" stroke-dashoffset="113" style="stroke:var(--blora-moss);"></circle>
+              </svg>
+              <span style="position:absolute; font-family:var(--blora-font-serif); font-weight:600; color:var(--blora-moss);">40%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">加载器 · Spinners & Ink Loading</div>
+          <div class="blora-row">
+            <span class="blora-spinner blora-spinner--sm"></span>
+            <span class="blora-spinner"></span>
+            <span class="blora-spinner blora-spinner--lg"></span>
+            <span class="blora-ink-loading"><span></span><span></span><span></span><span></span></span>
+            <span class="blora-hint">墨滴加载 · blora-ink-loading</span>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">骨架屏 · Skeleton</div>
+          <div style="max-width:320px;">
+            <div class="blora-row" style="align-items:flex-start; gap:var(--blora-space-3);">
+              <span class="blora-skeleton blora-skeleton--circle"></span>
+              <div style="flex:1;">
+                <span class="blora-skeleton blora-skeleton--title"></span>
+                <span class="blora-skeleton blora-skeleton--text" style="width:80%;"></span>
+                <span class="blora-skeleton blora-skeleton--text" style="width:60%;"></span>
+              </div>
+            </div>
+            <span class="blora-skeleton blora-skeleton--block" style="margin-top:var(--blora-space-3);"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         13 · 导航
+         ================================================================ -->
+    <section id="nav" class="blora-sec">
+      <header class="blora-sec__head">
+        <div class="blora-sec__num">13 — 引</div>
+        <h2 class="blora-sec__title">导航</h2>
+        <p class="blora-sec__desc">标签页、面包屑、分页、步骤、侧栏菜单、下拉菜单。</p>
+      </header>
+
+      <div class="blora-panel">
+        <div class="blora-demo">
+          <div class="blora-demo__label">标签页 · Tabs（下划线）</div>
+          <div class="blora-tabs" data-blora-tabs>
+            <div class="blora-tabs__nav">
+              <span class="blora-tabs__tab is-active">山</span>
+              <span class="blora-tabs__tab">水</span>
+              <span class="blora-tabs__tab">花</span>
+              <span class="blora-tabs__tab is-disabled">鸟（禁用）</span>
+            </div>
+            <div class="blora-tabs__panel">高远 · 自山前而窥山后。</div>
+            <div class="blora-tabs__panel blora-hide">深远 · 自山前而望山背。</div>
+            <div class="blora-tabs__panel blora-hide">平远 · 自近山而望远山。</div>
+            <div class="blora-tabs__panel blora-hide">—</div>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">标签页 · Pills</div>
+          <div class="blora-tabs blora-tabs--pills" data-blora-tabs>
+            <div class="blora-tabs__nav">
+              <span class="blora-tabs__tab is-active">题</span>
+              <span class="blora-tabs__tab">画</span>
+              <span class="blora-tabs__tab">印</span>
+            </div>
+            <div class="blora-tabs__panel">题者，画之眉目也。</div>
+            <div class="blora-tabs__panel blora-hide">画者，文之极也。</div>
+            <div class="blora-tabs__panel blora-hide">印者，信也。</div>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">面包屑 · Breadcrumb</div>
+          <nav class="blora-breadcrumb">
+            <a href="#">首页</a>
+            <span class="blora-breadcrumb__sep">/</span>
+            <a href="#">画派</a>
+            <span class="blora-breadcrumb__sep">/</span>
+            <a href="#">北宋</a>
+            <span class="blora-breadcrumb__sep">/</span>
+            <span class="blora-breadcrumb__current">范宽</span>
+          </nav>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">分页 · Pagination</div>
+          <div class="blora-pagination">
+            <span class="blora-pagination__item is-disabled">‹</span>
+            <span class="blora-pagination__item is-active">1</span>
+            <span class="blora-pagination__item">2</span>
+            <span class="blora-pagination__item">3</span>
+            <span class="blora-pagination__item">4</span>
+            <span class="blora-pagination__ellipsis">…</span>
+            <span class="blora-pagination__item">12</span>
+            <span class="blora-pagination__item">›</span>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">步骤 · Steps</div>
+          <div class="blora-steps">
+            <div class="blora-step is-done">
+              <div class="blora-step__head"><div class="blora-step__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div><div class="blora-step__line"></div></div>
+              <div class="blora-step__title">选纸</div><div class="blora-step__desc">取宣纸一张</div>
+            </div>
+            <div class="blora-step is-done">
+              <div class="blora-step__head"><div class="blora-step__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div><div class="blora-step__line"></div></div>
+              <div class="blora-step__title">研墨</div><div class="blora-step__desc">墨分五色</div>
+            </div>
+            <div class="blora-step is-active">
+              <div class="blora-step__head"><div class="blora-step__icon">3</div><div class="blora-step__line"></div></div>
+              <div class="blora-step__title">落笔</div><div class="blora-step__desc">气韵生动</div>
+            </div>
+            <div class="blora-step">
+              <div class="blora-step__head"><div class="blora-step__icon">4</div></div>
+              <div class="blora-step__title">钤印</div><div class="blora-step__desc">点睛之笔</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">侧栏菜单 · Side Menu</div>
+          <div style="max-width:240px; background:var(--blora-surface-1); border:var(--blora-border); border-radius:var(--blora-radius-md);">
+            <nav class="blora-menu">
+              <div class="blora-menu__group-label">画派</div>
+              <div class="blora-menu__item is-active">
+                <span class="blora-menu__icon">◈</span><span>北宋</span>
+              </div>
+              <div class="blora-menu__item"><span class="blora-menu__icon">◇</span><span>南宋</span></div>
+              <div class="blora-menu__item"><span class="blora-menu__icon">◇</span><span>元四家</span></div>
+              <div class="blora-menu__group-label">工具</div>
+              <div class="blora-menu__item"><span class="blora-menu__icon">◇</span><span>设置</span></div>
+              <div class="blora-menu__item is-disabled"><span class="blora-menu__icon">◇</span><span>禁用项</span></div>
+            </nav>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">下拉菜单 · Dropdown</div>
+          <div class="blora-dropdown">
+            <button class="blora-btn blora-btn--outline" data-blora-dropdown-trigger>
+              更多操作 ▾
+            </button>
+            <div class="blora-dropdown-menu">
+              <div class="blora-dropdown-menu__item">编辑</div>
+              <div class="blora-dropdown-menu__item">复制链接</div>
+              <div class="blora-dropdown-menu__item">收藏</div>
+              <div class="blora-dropdown-menu__sep"></div>
+              <div class="blora-dropdown-menu__item" style="color:var(--blora-seal);">删除</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         14 · 数据展示
+         ================================================================ -->
+    <section id="data" class="blora-sec">
+      <header class="blora-sec__head">
+        <div class="blora-sec__num">14 — 陈</div>
+        <h2 class="blora-sec__title">数据展示</h2>
+        <p class="blora-sec__desc">表格、列表、折叠、时间轴、树、统计、描述、轮播、图片、空态、结果、日历。</p>
+      </header>
+
+      <div class="blora-panel">
+        <div class="blora-demo">
+          <div class="blora-demo__label">表格 · Table</div>
+          <div class="blora-table-wrap">
+            <table class="blora-table blora-table--striped">
+              <thead><tr><th>画家</th><th>朝代</th><th>代表作</th><th class="blora-table-sort">收藏 ↓</th><th>评分</th></tr></thead>
+              <tbody>
+                <tr><td>范宽</td><td>北宋</td><td>溪山行旅图</td><td>台北故宫</td><td><span class="blora-tag blora-tag--seal">★★★★★</span></td></tr>
+                <tr><td>郭熙</td><td>北宋</td><td>早春图</td><td>台北故宫</td><td><span class="blora-tag blora-tag--seal">★★★★★</span></td></tr>
+                <tr><td>李成</td><td>北宋</td><td>读碑窠石图</td><td>大阪市立美术馆</td><td><span class="blora-tag blora-tag--gold">★★★★☆</span></td></tr>
+                <tr><td>王希孟</td><td>北宋</td><td>千里江山图</td><td>北京故宫</td><td><span class="blora-tag blora-tag--seal">★★★★★</span></td></tr>
+                <tr><td>马远</td><td>南宋</td><td>踏歌图</td><td>北京故宫</td><td><span class="blora-tag blora-tag--gold">★★★★☆</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">列表 · List</div>
+          <div class="blora-list blora-list--hover">
+            <div class="blora-list__item"><span class="blora-avatar blora-avatar--sm blora-avatar--seal">范</span><div class="blora-list__meta"><div class="blora-list__title">溪山行旅图</div><div class="blora-list__desc">范宽 · 北宋 · 绢本水墨</div></div><span class="blora-tag blora-tag--seal">国宝</span></div>
+            <div class="blora-list__item"><span class="blora-avatar blora-avatar--sm blora-avatar--tea">郭</span><div class="blora-list__meta"><div class="blora-list__title">早春图</div><div class="blora-list__desc">郭熙 · 北宋 · 绢本水墨</div></div><span class="blora-tag blora-tag--gold">名品</span></div>
+            <div class="blora-list__item"><span class="blora-avatar blora-avatar--sm blora-avatar--moss">王</span><div class="blora-list__meta"><div class="blora-list__title">千里江山图</div><div class="blora-list__desc">王希孟 · 北宋 · 设色</div></div><span class="blora-tag blora-tag--seal">国宝</span></div>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">折叠面板 · Collapse / Accordion</div>
+          <div class="blora-collapse" data-blora-accordion>
+            <div class="blora-collapse__item is-open">
+              <div class="blora-collapse__head">何为"气韵生动"？<span class="blora-collapse__icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span></div>
+              <div class="blora-collapse__body"><div class="blora-collapse__content">谢赫六法之首，指画面之生气与韵律。非形似之工，乃神似之妙。</div></div>
+            </div>
+            <div class="blora-collapse__item">
+              <div class="blora-collapse__head">何为"留白"？<span class="blora-collapse__icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span></div>
+              <div class="blora-collapse__body"><div class="blora-collapse__content">以无胜有。空白处并非无物，乃气之流转、意之所在。</div></div>
+            </div>
+            <div class="blora-collapse__item">
+              <div class="blora-collapse__head">何为"飞白"？<span class="blora-collapse__icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span></div>
+              <div class="blora-collapse__body"><div class="blora-collapse__content">笔行迅速，墨丝露出白痕。东汉蔡邕见役人刷墙而得此法。</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">时间轴 · Timeline</div>
+          <div class="blora-timeline">
+            <div class="blora-timeline__item">
+              <div class="blora-timeline__dot blora-timeline__dot--moss"></div>
+              <div class="blora-timeline__time">10:24</div>
+              <div class="blora-timeline__title">选纸完成</div>
+              <div class="blora-timeline__desc">取夹江宣纸四尺三开。</div>
+            </div>
+            <div class="blora-timeline__item">
+              <div class="blora-timeline__dot blora-timeline__dot--moss"></div>
+              <div class="blora-timeline__time">11:08</div>
+              <div class="blora-timeline__title">研墨就绪</div>
+              <div class="blora-timeline__desc">松烟墨七钱，清水适量。</div>
+            </div>
+            <div class="blora-timeline__item">
+              <div class="blora-timeline__dot blora-timeline__dot--seal"></div>
+              <div class="blora-timeline__time">14:30</div>
+              <div class="blora-timeline__title">落笔进行中</div>
+              <div class="blora-timeline__desc">皴擦点染，气韵渐生。</div>
+            </div>
+            <div class="blora-timeline__item">
+              <div class="blora-timeline__dot"></div>
+              <div class="blora-timeline__time">待定</div>
+              <div class="blora-timeline__title">钤印</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">树形控件 · Tree</div>
+          <div class="blora-tree" style="max-width:300px;">
+            <div class="blora-tree__node is-open is-selected">
+              <span class="blora-tree__toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span><span>📁 北宋</span>
+            </div>
+            <div class="blora-tree__children">
+              <div class="blora-tree__node is-open">
+                <span class="blora-tree__toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span><span>山水</span>
+              </div>
+              <div class="blora-tree__children">
+                <div class="blora-tree__node"><span style="width:1em;"></span><span>🍃 范宽</span></div>
+                <div class="blora-tree__node"><span style="width:1em;"></span><span>🍃 郭熙</span></div>
+                <div class="blora-tree__node"><span style="width:1em;"></span><span>🍃 李成</span></div>
+              </div>
+              <div class="blora-tree__node"><span class="blora-tree__toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span><span>花鸟</span></div>
+              <div class="blora-tree__children">
+                <div class="blora-tree__node"><span style="width:1em;"></span><span>🍃 崔白</span></div>
+                <div class="blora-tree__node"><span style="width:1em;"></span><span>🍃 赵佶</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">统计 · Statistic</div>
+          <div class="blora-grid blora-grid--4">
+            <div class="blora-card blora-card--flat">
+              <div class="blora-stat">
+                <span class="blora-stat__label">画作总数</span>
+                <span class="blora-stat__value">1,248</span>
+                <span class="blora-stat__trend blora-stat__trend--up">↑ 12.4% 本月</span>
+              </div>
+            </div>
+            <div class="blora-card blora-card--flat">
+              <div class="blora-stat">
+                <span class="blora-stat__label">访问人次</span>
+                <span class="blora-stat__value">38.2<span class="blora-stat__suffix">万</span></span>
+                <span class="blora-stat__trend blora-stat__trend--up">↑ 5.1%</span>
+              </div>
+            </div>
+            <div class="blora-card blora-card--flat">
+              <div class="blora-stat">
+                <span class="blora-stat__label">收藏</span>
+                <span class="blora-stat__value">9,672</span>
+                <span class="blora-stat__trend blora-stat__trend--down">↓ 2.3%</span>
+              </div>
+            </div>
+            <div class="blora-card blora-card--flat">
+              <div class="blora-stat">
+                <span class="blora-stat__label">平均评分</span>
+                <span class="blora-stat__value">4.7<span class="blora-stat__suffix">/5</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">描述列表 · Descriptions</div>
+          <div class="blora-table-wrap">
+            <table class="blora-descriptions">
+              <tbody>
+                <tr><th>名称</th><td>溪山行旅图</td><th>朝代</th><td>北宋</td></tr>
+                <tr><th>作者</th><td>范宽</td><th>材质</th><td>绢本水墨</td></tr>
+                <tr><th>尺寸</th><td>206.3 × 103.3 cm</td><th>收藏</th><td>台北故宫博物院</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">轮播 · Carousel</div>
+          <div class="blora-carousel" data-autoplay>
+            <div class="blora-carousel__track">
+              <div class="blora-carousel__slide"><div style="height:240px;" class="blora-mock-img">溪山行旅图</div></div>
+              <div class="blora-carousel__slide"><div class="blora-center" style="height:240px; background:var(--blora-seal); color:#FBF8F0; font-family:var(--blora-font-brush); font-size:2rem;">早春图</div></div>
+              <div class="blora-carousel__slide"><div class="blora-center" style="height:240px; background:var(--blora-indigo); color:#FBF8F0; font-family:var(--blora-font-brush); font-size:2rem;">千里江山</div></div>
+            </div>
+            <button class="blora-carousel__arrow blora-carousel__arrow--prev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+            <button class="blora-carousel__arrow blora-carousel__arrow--next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+            <div class="blora-carousel__dots"><span class="blora-carousel__dot is-active"></span><span class="blora-carousel__dot"></span><span class="blora-carousel__dot"></span></div>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">图片 · Image（带题图与相框）</div>
+          <div class="blora-row" style="align-items:flex-start;">
+            <span class="blora-image blora-image--hover" style="width:200px;">
+              <img src="https://picsum.photos/seed/blora-mtn/400/280" alt="山水" class="blora-inkify">
+              <span class="blora-image__cap">远山如黛</span>
+            </span>
+            <span class="blora-image blora-image--frame" style="width:200px;">
+              <img src="https://picsum.photos/seed/blora-ink/400/280" alt="墨" class="blora-inkify-strong">
+            </span>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">空状态 · Empty</div>
+          <div class="blora-empty">
+            <div class="blora-empty__icon">
+              <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/></svg>
+            </div>
+            <div class="blora-empty__title">此地无墨</div>
+            <div class="blora-empty__desc">画案空空，何不研墨一幅？</div>
+            <button class="blora-btn blora-btn--primary blora-btn--sm">开始作画</button>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">结果 · Result</div>
+          <div class="blora-grid blora-grid--4">
+            <div class="blora-result blora-result--success">
+              <div class="blora-result__icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+              <div class="blora-result__title">钤印已成</div>
+              <div class="blora-result__desc">画作入库</div>
+            </div>
+            <div class="blora-result blora-result--warning">
+              <div class="blora-result__icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="10"/></svg></div>
+              <div class="blora-result__title">墨将干</div>
+              <div class="blora-result__desc">请尽快落款</div>
+            </div>
+            <div class="blora-result blora-result--error">
+              <div class="blora-result__icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></div>
+              <div class="blora-result__title">纸裂</div>
+              <div class="blora-result__desc">请重选宣纸</div>
+            </div>
+            <div class="blora-result blora-result--info">
+              <div class="blora-result__icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></div>
+              <div class="blora-result__title">提示</div>
+              <div class="blora-result__desc">保存中…</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">日历 · Calendar（标题可点击切换视图）</div>
+          <div class="blora-calendar blora-calendar--interactive" data-blora-calendar style="max-width:480px;"></div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">图表占位 · Chart Container</div>
+          <div class="blora-chart-mock">
+            <div class="blora-chart-mock__bar" style="height:40%;"></div>
+            <div class="blora-chart-mock__bar" style="height:65%;"></div>
+            <div class="blora-chart-mock__bar" style="height:50%;"></div>
+            <div class="blora-chart-mock__bar" style="height:85%;"></div>
+            <div class="blora-chart-mock__bar" style="height:70%;"></div>
+            <div class="blora-chart-mock__bar" style="height:95%;"></div>
+            <div class="blora-chart-mock__bar" style="height:60%;"></div>
+            <div class="blora-chart-mock__bar" style="height:75%;"></div>
+          </div>
+          <p class="blora-hint" style="margin-top:var(--blora-space-2);">Blora 不绑定图表库；提供色变量供 ECharts / Chart.js 取用：seal · tea · indigo · moss · gold。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         15 · 反馈
+         ================================================================ -->
+    <section id="feedback" class="blora-sec">
+      <header class="blora-sec__head">
+        <div class="blora-sec__num">15 — 应</div>
+        <h2 class="blora-sec__title">反馈与提示</h2>
+        <p class="blora-sec__desc">警告、横幅、消息、通知、提示、气泡、确认气泡。</p>
+      </header>
+
+      <div class="blora-panel">
+        <div class="blora-demo">
+          <div class="blora-demo__label">警告条 · Alert</div>
+          <div class="blora-stack">
+            <div class="blora-alert blora-alert--info"><span class="blora-alert__icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></span><div class="blora-alert__body"><div class="blora-alert__title">提示</div><div class="blora-alert__desc">墨锭需清水研之，方得浓淡相宜。</div></div><span class="blora-alert__close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></span></div>
+            <div class="blora-alert blora-alert--success"><span class="blora-alert__icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div class="blora-alert__body"><div class="blora-alert__title">已成</div><div class="blora-alert__desc">钤印干燥，可入卷轴。</div></div></div>
+            <div class="blora-alert blora-alert--warning"><span class="blora-alert__icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="10"/></svg></span><div class="blora-alert__body"><div class="blora-alert__title">注意</div><div class="blora-alert__desc">湿度过高，纸张易皱。</div></div></div>
+            <div class="blora-alert blora-alert--danger"><span class="blora-alert__icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg></span><div class="blora-alert__body"><div class="blora-alert__title">警告</div><div class="blora-alert__desc">印泥过湿，已晕出章外。</div></div></div>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">横幅 · Banner</div>
+          <div class="blora-banner">
+            <div class="blora-banner__body">
+              <div class="blora-banner__title">新展 · 千里江山</div>
+              <div class="blora-banner__desc">壬寅岁末，于云水之间，观少年王希孟之青绿。</div>
+            </div>
+            <div class="blora-banner__actions">
+              <button class="blora-btn blora-btn--primary">预约</button>
+              <button class="blora-btn blora-btn--outline" style="color:inherit; border-color:rgba(255,255,255,0.35);">详情</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">消息条 · Message</div>
+          <div class="blora-row">
+            <span class="blora-message blora-message--info"><span class="blora-message__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></span>提示信息</span>
+            <span class="blora-message blora-message--success"><span class="blora-message__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>操作成功</span>
+            <span class="blora-message blora-message--warning"><span class="blora-message__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="10"/></svg></span>请注意</span>
+            <span class="blora-message blora-message--danger"><span class="blora-message__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg></span>出错了</span>
+          </div>
+          <div style="margin-top:var(--blora-space-3);">
+            <button class="blora-btn blora-btn--primary" onclick="Blora.toast({type:'success', message:'钤印已完成'})">触发成功 Toast</button>
+            <button class="blora-btn blora-btn--outline" onclick="Blora.toast({type:'warning', message:'墨将干，请尽快'})">警告 Toast</button>
+            <button class="blora-btn blora-btn--outline" onclick="Blora.toast({type:'danger', message:'纸裂，请重选'})">错误 Toast</button>
+            <button class="blora-btn blora-btn--ghost" onclick="Blora.toast('一条普通的消息')">普通 Toast</button>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">通知 · Notification</div>
+          <div class="blora-row" style="align-items:flex-start;">
+            <div class="blora-notification blora-notification--success">
+              <span class="blora-notification__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+              <div style="flex:1;"><div class="blora-notification__title">收藏成功</div><div class="blora-notification__desc">《溪山行旅图》已加入"我的卷轴"。</div></div>
+              <span class="blora-notification__close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></span>
+            </div>
+            <div class="blora-notification blora-notification--danger">
+              <span class="blora-notification__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg></span>
+              <div style="flex:1;"><div class="blora-notification__title">删除失败</div><div class="blora-notification__desc">国宝级画作不可删除。</div></div>
+              <span class="blora-notification__close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">提示文字 · Tooltip</div>
+          <div class="blora-row">
+            <span class="blora-tooltip">
+              <button class="blora-btn blora-btn--outline">悬停我</button>
+              <span class="blora-tooltip__bubble">落墨在即，请慎重</span>
+            </span>
+            <span class="blora-tooltip">
+              <span class="blora-tag blora-tag--seal" tabindex="0">印泥</span>
+              <span class="blora-tooltip__bubble">朱砂与蓖麻油调制</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">气泡卡片 · Popover</div>
+          <div class="blora-popover">
+            <button class="blora-btn blora-btn--outline" data-blora-popover>查看详情</button>
+            <div class="blora-popover__panel">
+              <div class="blora-popover__title">范宽</div>
+              <div class="blora-popover__body">北宋画家，字中立。性温厚，有大度。故时人称为"宽"。善画山水，峰峦浑厚，势状雄强。</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">确认气泡 · Popconfirm</div>
+          <div class="blora-popover">
+            <button class="blora-btn blora-btn--danger" data-blora-popover>删除画作</button>
+            <div class="blora-popover__panel" style="max-width:240px;">
+              <div class="blora-popconfirm__title">确定要删除这幅画作吗？此操作不可撤销。</div>
+              <div class="blora-row" style="justify-content:flex-end;">
+                <button class="blora-btn blora-btn--sm blora-btn--text" data-blora-close>取消</button>
+                <button class="blora-btn blora-btn--sm blora-btn--primary">确定</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         16 · 模态与抽屉
+         ================================================================ -->
+    <section id="overlays" class="blora-sec">
+      <header class="blora-sec__head">
+        <div class="blora-sec__num">16 — 层</div>
+        <h2 class="blora-sec__title">模态与抽屉</h2>
+        <p class="blora-sec__desc">模态用于焦点对话，抽屉用于辅助面板。皆以纸面浮起、背景虚化呈现。</p>
+      </header>
+
+      <div class="blora-panel">
+        <div class="blora-demo">
+          <div class="blora-demo__label">模态框 · Modal</div>
+          <div class="blora-row">
+            <button class="blora-btn blora-btn--primary" data-blora-modal-open="modal-demo">打开模态</button>
+            <button class="blora-btn blora-btn--outline" data-blora-modal-open="modal-sm">小尺寸</button>
+            <button class="blora-btn blora-btn--outline" data-blora-modal-open="modal-lg">大尺寸</button>
+          </div>
+        </div>
+        <div class="blora-demo">
+          <div class="blora-demo__label">抽屉 · Drawer</div>
+          <div class="blora-row">
+            <button class="blora-btn blora-btn--outline" data-blora-drawer-open="drawer-right">右侧</button>
+            <button class="blora-btn blora-btn--outline" data-blora-drawer-open="drawer-left">左侧</button>
+            <button class="blora-btn blora-btn--outline" data-blora-drawer-open="drawer-top">顶部</button>
+            <button class="blora-btn blora-btn--outline" data-blora-drawer-open="drawer-bottom">底部</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         17 · 命令面板
+         ================================================================ -->
+    <section id="command" class="blora-sec">
+      <header class="blora-sec__head">
+        <div class="blora-sec__num">17 — 令</div>
+        <h2 class="blora-sec__title">命令面板</h2>
+        <p class="blora-sec__desc">按 <kbd class="blora-code">Ctrl/⌘ + K</kbd> 唤起，键盘优先的快捷操作。亦为 Blora 推荐的全局搜索范式。</p>
+      </header>
+      <div class="blora-panel">
+        <p class="blora-text-muted">试试现在就按下 <kbd class="blora-code">Ctrl + K</kbd>。</p>
+        <div class="blora-row" style="margin-top:var(--blora-space-3);">
+          <button class="blora-btn blora-btn--outline" data-blora-modal-open="blora-cmdk">打开命令面板</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         18 · 布局
+         ================================================================ -->
+    <section id="layout" class="blora-sec">
+      <header class="blora-sec__head">
+        <div class="blora-sec__num">18 — 局</div>
+        <h2 class="blora-sec__title">布局</h2>
+        <p class="blora-sec__desc">栅格、卡面、面板、分隔、堆叠、行。一切布局皆为留白之节度。</p>
+      </header>
+
+      <div class="blora-panel">
+        <div class="blora-demo">
+          <div class="blora-demo__label">栅格 · Grid</div>
+          <div class="blora-grid blora-grid--4">
+            <div class="blora-card blora-card--flat blora-text-center">1 / 4</div>
+            <div class="blora-card blora-card--flat blora-text-center">1 / 4</div>
+            <div class="blora-card blora-card--flat blora-text-center">1 / 4</div>
+            <div class="blora-card blora-card--flat blora-text-center">1 / 4</div>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">卡面 · Card 变体</div>
+          <div class="blora-grid blora-grid--3">
+            <div class="blora-card blora-card--hover">
+              <h3 class="blora-card__title">默认卡面</h3>
+              <p class="blora-card__body">悬停时浮起 2px，阴影转深。</p>
+            </div>
+            <div class="blora-card blora-card--inset">
+              <h3 class="blora-card__title">内凹卡面</h3>
+              <p class="blora-card__body">用于次级内容或嵌套分组。</p>
+            </div>
+            <div class="blora-card blora-card--flat">
+              <h3 class="blora-card__title">扁平卡面</h3>
+              <p class="blora-card__body">无阴影，仅留边框，最为安静。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">分隔 · Divider</div>
+          <hr class="blora-divider">
+          <hr class="blora-divider blora-divider--dashed">
+          <div class="blora-divider blora-divider--text">题款</div>
+          <hr class="blora-brush">
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">堆叠与行 · Stack & Row</div>
+          <div class="blora-stack">
+            <div class="blora-card blora-card--flat">第一行</div>
+            <div class="blora-card blora-card--flat">第二行</div>
+            <div class="blora-card blora-card--flat">第三行</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- =========================================================================
+     模态 · Modals
+     ========================================================================= -->
+<div class="blora-modal" id="modal-demo" role="dialog" aria-modal="true" aria-labelledby="modal-demo-title">
+  <div class="blora-modal__mask" data-blora-close></div>
+  <div class="blora-modal__dialog">
+    <div class="blora-modal__head">
+      <h3 class="blora-modal__title" id="modal-demo-title">题款</h3>
+      <button class="blora-modal__close" data-blora-close aria-label="关闭"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="blora-modal__body">
+      <p style="margin-bottom:var(--blora-space-4);">画作已成，请落款题字。题者，画之眉目也，宜用楷书或行书。</p>
+      <div class="blora-field">
+        <label class="blora-label" for="m-title">题名</label>
+        <input class="blora-input" id="m-title" placeholder="如：溪山行旅图">
+      </div>
+      <div class="blora-field">
+        <label class="blora-label" for="m-year">纪年</label>
+        <input class="blora-input" id="m-year" placeholder="如：2026年6月">
+      </div>
+    </div>
+    <div class="blora-modal__foot">
+      <button class="blora-btn blora-btn--text" data-blora-close>取消</button>
+      <button class="blora-btn blora-btn--primary" data-blora-close>落款并钤印</button>
+    </div>
+  </div>
+</div>
+
+<div class="blora-modal blora-modal--sm" id="modal-sm" role="dialog" aria-modal="true">
+  <div class="blora-modal__mask" data-blora-close></div>
+  <div class="blora-modal__dialog">
+    <div class="blora-modal__head"><h3 class="blora-modal__title">小确认</h3><button class="blora-modal__close" data-blora-close><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+    <div class="blora-modal__body">此操作将清空画案，是否继续？</div>
+    <div class="blora-modal__foot"><button class="blora-btn blora-btn--text" data-blora-close>取消</button><button class="blora-btn blora-btn--primary" data-blora-close>确定</button></div>
+  </div>
+</div>
+
+<div class="blora-modal blora-modal--lg" id="modal-lg" role="dialog" aria-modal="true">
+  <div class="blora-modal__mask" data-blora-close></div>
+  <div class="blora-modal__dialog">
+    <div class="blora-modal__head"><h3 class="blora-modal__title">大尺寸模态</h3><button class="blora-modal__close" data-blora-close><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+    <div class="blora-modal__body">
+      <p>大模态用于多步骤、表单或图文并茂的详情。最大宽度 800px。</p>
+      <div class="blora-grid blora-grid--3">
+        <div class="blora-card blora-card--flat">列一</div>
+        <div class="blora-card blora-card--flat">列二</div>
+        <div class="blora-card blora-card--flat">列三</div>
+      </div>
+    </div>
+    <div class="blora-modal__foot"><button class="blora-btn blora-btn--primary" data-blora-close>关闭</button></div>
+  </div>
+</div>
+
+<!-- =========================================================================
+     抽屉 · Drawers
+     ========================================================================= -->
+<div class="blora-drawer blora-drawer--right" id="drawer-right">
+  <div class="blora-drawer__mask" data-blora-close></div>
+  <div class="blora-drawer__panel">
+    <div class="blora-drawer__head"><h3 class="blora-drawer__title">画作详情</h3><button class="blora-modal__close" data-blora-close><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+    <div class="blora-drawer__body">
+      <p style="margin-bottom:var(--blora-space-4);">《溪山行旅图》，北宋范宽作。</p>
+      <div class="blora-stack--sm">
+        <div class="blora-stat"><span class="blora-stat__label">朝代</span><span class="blora-stat__value" style="font-size:1.5rem;">北宋</span></div>
+        <div class="blora-stat"><span class="blora-stat__label">尺寸</span><span class="blora-stat__value" style="font-size:1.5rem;">206×103</span></div>
+      </div>
+    </div>
+    <div class="blora-drawer__foot"><button class="blora-btn blora-btn--text" data-blora-close>关闭</button><button class="blora-btn blora-btn--primary" data-blora-close>收藏</button></div>
+  </div>
+</div>
+
+<div class="blora-drawer blora-drawer--left" id="drawer-left">
+  <div class="blora-drawer__mask" data-blora-close></div>
+  <div class="blora-drawer__panel">
+    <div class="blora-drawer__head"><h3 class="blora-drawer__title">侧栏筛选</h3><button class="blora-modal__close" data-blora-close><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+    <div class="blora-drawer__body">
+      <div class="blora-field"><label class="blora-label">朝代</label><div class="blora-select-wrap"><select class="blora-select"><option>全部</option><option>北宋</option><option>南宋</option></select><div class="blora-select-trigger">全部</div><div class="blora-select-menu"></div></div></div>
+      <div class="blora-field"><label class="blora-label">题材</label><div class="blora-select-wrap"><select class="blora-select"><option>山水</option><option>花鸟</option></select><div class="blora-select-trigger">山水</div><div class="blora-select-menu"></div></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="blora-drawer blora-drawer--top" id="drawer-top">
+  <div class="blora-drawer__mask" data-blora-close></div>
+  <div class="blora-drawer__panel">
+    <div class="blora-drawer__head"><h3 class="blora-drawer__title">顶部抽屉</h3><button class="blora-modal__close" data-blora-close><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+    <div class="blora-drawer__body">从顶部下滑，适合筛选或快捷操作条。</div>
+  </div>
+</div>
+
+<div class="blora-drawer blora-drawer--bottom" id="drawer-bottom">
+  <div class="blora-drawer__mask" data-blora-close></div>
+  <div class="blora-drawer__panel">
+    <div class="blora-drawer__head"><h3 class="blora-drawer__title">底部抽屉</h3><button class="blora-modal__close" data-blora-close><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+    <div class="blora-drawer__body">类似 Action Sheet，移动端友好。</div>
+  </div>
+</div>
+
+<!-- =========================================================================
+     命令面板 · Command Palette
+     ========================================================================= -->
+<div class="blora-modal" id="blora-cmdk" role="dialog" aria-modal="true" aria-label="命令面板">
+  <div class="blora-modal__mask" data-blora-close></div>
+  <div class="blora-modal__dialog" style="max-width:560px;">
+    <div class="blora-modal__head" style="padding-bottom:0; border-bottom:none;">
+      <div class="blora-search" style="flex:1;">
+        <span class="blora-search__icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        </span>
+        <input class="blora-input" type="search" placeholder="输入命令或搜索…">
+      </div>
+      <button class="blora-modal__close" data-blora-close><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="blora-modal__body" style="padding-top:var(--blora-space-2);">
+      <div class="blora-cmdk-results">
+        <div class="blora-text-caps blora-text-faint" style="padding:0.4em 0.6em;">操作</div>
+        <div class="blora-cmdk-item is-active"><span>✎</span><span>新建画作</span><span class="blora-cmdk-item__kbd">Ctrl N</span></div>
+        <div class="blora-cmdk-item"><span>⎘</span><span>复制链接</span></div>
+        <div class="blora-cmdk-item"><span>⇣</span><span>导出为图片</span><span class="blora-cmdk-item__kbd">Ctrl E</span></div>
+        <div class="blora-text-caps blora-text-faint" style="padding:0.8em 0.6em 0.4em;">页面</div>
+        <div class="blora-cmdk-item"><span>◈</span><span>跳转到按钮</span></div>
+        <div class="blora-cmdk-item"><span>◈</span><span>跳转到表单</span></div>
+        <div class="blora-cmdk-item"><span>◈</span><span>跳转到反馈</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================================
+     脚 · Footer
+     ========================================================================= -->
+<footer class="blora-foot">
+  <div class="blora-foot__seal">
+    <span class="blora-seal">Blora</span>
+    <span class="blora-seal blora-seal--ghost">墨</span>
+  </div>
+  <p class="blora-text-brush" style="font-size:1.25rem; color:var(--blora-ink-light); margin-bottom:var(--blora-space-2);">墨分五色，留白为意。</p>
+  <p class="blora-hint">Blora Design · v1.0.0 · 以纸为底，以墨为骨，以章为点睛。</p>
+  <p class="blora-hint" style="margin-top:var(--blora-space-1);">© 2026 · 专为热爱东方气韵的现代界面而生</p>
+</footer>
+
+<script src="blora.js"></script>
+</body>
+</html>

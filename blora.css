@@ -1,0 +1,1345 @@
+/* ========================================================================
+   Blora Design  ·  水墨 UI 框架
+   A web UI framework where Claude's warm-paper aesthetic meets the
+   restraint of Chinese ink painting — 留白为意，墨分五色，气韵生动。
+
+   Author: Blora Design Team
+   Version: 1.0.0
+   License: MIT
+   ======================================================================== */
+
+/* =========================================================================
+   1. 设计令牌 · Design Tokens
+   ========================================================================= */
+:root {
+  /* —— 纸 · Paper —— 宣纸的底色，泛着微微的暖 */
+  --blora-paper:          #F5F1E8;
+  --blora-paper-warm:     #EFE9D9;
+  --blora-paper-cool:     #F2F0E6;
+  --blora-paper-deep:     #E6DFCC;
+  --blora-surface-1:      #FBF8F0;
+  --blora-surface-2:      #F2EEE2;
+  --blora-surface-3:      #E9E3D2;
+
+  /* —— 墨 · Ink —— 墨分五色：焦、浓、重、淡、清 */
+  --blora-ink:            #1C1A17;   /* 焦墨 — primary text  */
+  --blora-ink-deep:       #2D2A24;   /* 浓墨 — headings      */
+  --blora-ink-mid:        #4A453D;   /* 重墨 — body strong   */
+  --blora-ink-light:      #6B6358;   /* 淡墨 — body          */
+  --blora-ink-mist:       #9B9489;   /* 清墨 — subtle        */
+  --blora-ink-faint:      #B8B0A2;   /* 远山 — disabled      */
+  --blora-ink-ghost:      #D8D2C4;   /* 雾色 — borders       */
+
+  /* —— 彩 · Accents —— 印泥、朱砂、茶、黛、山青、竹 */
+  --blora-seal:           #A0392E;   /* 印泥红 — signature accent */
+  --blora-seal-deep:      #7E2A22;
+  --blora-seal-soft:      #C25D52;
+  --blora-cinnabar:       #C44536;   /* 朱砂   */
+  --blora-tea:            #8B6F47;   /* 茶色   */
+  --blora-tea-light:      #B59B78;
+  --blora-indigo:         #3D4A5C;   /* 黛青   */
+  --blora-indigo-light:   #6B7889;
+  --blora-moss:           #5A7B6B;   /* 山青   */
+  --blora-moss-light:     #8AA89A;
+  --blora-bamboo:         #7B9B7E;   /* 竹青   */
+  --blora-gold:           #B89968;   /* 赭石   */
+  --blora-ochre:          #D4A574;   /* 黄土   */
+
+  /* —— 状态色 · Semantic —— */
+  --blora-success:        #5A7B6B;
+  --blora-warning:        #B89968;
+  --blora-danger:         #A0392E;
+  --blora-info:           #3D4A5C;
+
+  /* —— 字体 · Typography —— */
+  --blora-font-serif:     "Noto Serif SC", "Source Han Serif SC",
+                          "Songti SC", "SimSun", "Cormorant Garamond",
+                          Georgia, serif;
+  --blora-font-sans:      "Noto Sans SC", "Source Han Sans SC",
+                          -apple-system, "PingFang SC", "Microsoft YaHei",
+                          system-ui, sans-serif;
+  --blora-font-mono:      "JetBrains Mono", "Fira Code", "SF Mono",
+                          Consolas, monospace;
+  --blora-font-brush:     "STKaiti", "KaiTi", "Noto Serif SC", serif;
+
+  --blora-text-xs:    0.75rem;    /* 12px */
+  --blora-text-sm:    0.875rem;   /* 14px */
+  --blora-text-base:  1rem;       /* 16px */
+  --blora-text-lg:    1.125rem;   /* 18px */
+  --blora-text-xl:    1.375rem;   /* 22px */
+  --blora-text-2xl:   1.75rem;    /* 28px */
+  --blora-text-3xl:   2.25rem;    /* 36px */
+  --blora-text-4xl:   3rem;       /* 48px */
+  --blora-text-5xl:   4rem;       /* 64px */
+
+  --blora-leading-tight:   1.25;
+  --blora-leading-normal:  1.6;
+  --blora-leading-loose:   1.85;
+
+  --blora-tracking-tight:  -0.01em;
+  --blora-tracking-normal: 0;
+  --blora-tracking-wide:   0.04em;
+  --blora-tracking-caps:   0.18em;
+
+  /* —— 间距 · Spacing —— 以"分"为名，墨笔的呼吸 */
+  --blora-space-0:   0;
+  --blora-space-1:   0.25rem;   /*  4px */
+  --blora-space-2:   0.5rem;    /*  8px */
+  --blora-space-3:   0.75rem;   /* 12px */
+  --blora-space-4:   1rem;      /* 16px */
+  --blora-space-5:   1.5rem;    /* 24px */
+  --blora-space-6:   2rem;      /* 32px */
+  --blora-space-7:   2.5rem;    /* 40px */
+  --blora-space-8:   3rem;      /* 48px */
+  --blora-space-9:   4rem;      /* 64px */
+  --blora-space-10:  5rem;      /* 80px */
+  --blora-space-11:  6rem;      /* 96px */
+  --blora-space-12:  8rem;      /* 128px */
+
+  /* —— 圆角 · Radius —— 温润如砚，不锋利 */
+  --blora-radius-xs:  2px;
+  --blora-radius-sm:  4px;
+  --blora-radius-md:  8px;
+  --blora-radius-lg:  12px;
+  --blora-radius-xl:  20px;
+  --blora-radius-2xl: 32px;
+  --blora-radius-full: 9999px;
+
+  /* —— 阴影 · Shadow —— 纸上落墨，影从光来 */
+  --blora-shadow-1: 0 1px 2px rgba(28,26,23,0.04),
+                    0 1px 1px rgba(28,26,23,0.03);
+  --blora-shadow-2: 0 2px 8px rgba(28,26,23,0.06),
+                    0 1px 3px rgba(28,26,23,0.04);
+  --blora-shadow-3: 0 6px 24px rgba(28,26,23,0.08),
+                    0 2px 6px rgba(28,26,23,0.05);
+  --blora-shadow-4: 0 12px 40px rgba(28,26,23,0.12),
+                    0 4px 12px rgba(28,26,23,0.06);
+  --blora-shadow-inset: inset 0 1px 0 rgba(255,255,255,0.5),
+                       inset 0 -1px 0 rgba(28,26,23,0.04);
+  --blora-shadow-seal: 0 0 0 1px rgba(160,57,46,0.18),
+                       0 2px 6px rgba(160,57,46,0.15);
+
+  /* —— 边框 · Border —— */
+  --blora-border:        1px solid var(--blora-ink-ghost);
+  --blora-border-strong: 1px solid var(--blora-ink-mist);
+  --blora-border-ink:    1px solid var(--blora-ink-mid);
+  --blora-border-seal:   1px solid var(--blora-seal);
+
+  /* —— 动效 · Motion —— 笔走龙蛇，意在笔先 */
+  --blora-ease:          cubic-bezier(0.22, 0.61, 0.36, 1);
+  --blora-ease-soft:     cubic-bezier(0.4, 0, 0.2, 1);
+  --blora-ease-overshoot: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --blora-dur-fast:      140ms;
+  --blora-dur-base:      240ms;
+  --blora-dur-slow:      420ms;
+  --blora-dur-ink:       700ms;
+
+  /* —— 纹理 · Texture —— 宣纸的呼吸 */
+  --blora-grain:
+    radial-gradient(ellipse at 20% 30%, rgba(139,111,71,0.025) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(160,57,46,0.018) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 90%, rgba(61,74,92,0.02) 0%, transparent 60%);
+  --blora-paper-tint:
+    linear-gradient(180deg, rgba(255,253,247,0.5) 0%, transparent 40%);
+
+  /* —— 层级 · Z-index —— */
+  --blora-z-base:    1;
+  --blora-z-sticky:  100;
+  --blora-z-dropdown: 1000;
+  --blora-z-drawer:  1100;
+  --blora-z-modal:   1200;
+  --blora-z-toast:   1300;
+}
+
+/* =========================================================================
+   2. 重置 · Reset
+   ========================================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; tab-size: 4; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--blora-font-sans);
+  font-size: var(--blora-text-base);
+  line-height: var(--blora-leading-normal);
+  color: var(--blora-ink-deep);
+  background-color: var(--blora-paper);
+  background-image: var(--blora-grain), var(--blora-paper-tint);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern", "liga", "calt";
+}
+h1, h2, h3, h4, h5, h6 { margin: 0; font-weight: 600; color: var(--blora-ink); }
+p { margin: 0; }
+a { color: var(--blora-seal); text-decoration: none; transition: color var(--blora-dur-fast) var(--blora-ease); }
+a:hover { color: var(--blora-seal-deep); }
+button, input, textarea, select { font: inherit; color: inherit; }
+button { background: none; border: none; cursor: pointer; padding: 0; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+img, svg, video { display: block; max-width: 100%; }
+img { height: auto; }
+:focus-visible { outline: 2px solid var(--blora-seal); outline-offset: 2px; border-radius: var(--blora-radius-sm); }
+
+/* =========================================================================
+   3. 排版 · Typography
+   ========================================================================= */
+.blora-h1, .blora-h2, .blora-h3, .blora-h4 {
+  font-family: var(--blora-font-serif);
+  font-weight: 600;
+  letter-spacing: var(--blora-tracking-tight);
+  color: var(--blora-ink);
+  line-height: var(--blora-leading-tight);
+}
+.blora-h1 { font-size: var(--blora-text-4xl); letter-spacing: -0.02em; }
+.blora-h2 { font-size: var(--blora-text-3xl); }
+.blora-h3 { font-size: var(--blora-text-2xl); }
+.blora-h4 { font-size: var(--blora-text-xl); }
+.blora-text-lead { font-size: var(--blora-text-lg); color: var(--blora-ink-light); line-height: var(--blora-leading-loose); }
+.blora-text-muted { color: var(--blora-ink-light); }
+.blora-text-faint { color: var(--blora-ink-mist); }
+.blora-text-seal  { color: var(--blora-seal); }
+.blora-text-mono  { font-family: var(--blora-font-mono); font-size: 0.92em; }
+.blora-text-caps  { text-transform: uppercase; letter-spacing: var(--blora-tracking-caps); font-size: var(--blora-text-xs); font-weight: 600; }
+.blora-text-brush { font-family: var(--blora-font-brush); }
+
+.blora-prose { max-width: 68ch; }
+.blora-prose p { margin-bottom: var(--blora-space-4); color: var(--blora-ink-mid); }
+.blora-prose p:last-child { margin-bottom: 0; }
+
+/* —— 印章 · Seal Stamp —— 一个红色的方印，作为标题或强调的钤记 */
+.blora-seal {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 2.2em; height: 2.2em;
+  padding: 0 0.5em;
+  background: var(--blora-seal);
+  color: #FBF8F0;
+  font-family: var(--blora-font-brush);
+  font-size: 0.85em; font-weight: 700;
+  border-radius: var(--blora-radius-xs);
+  box-shadow: var(--blora-shadow-seal);
+  letter-spacing: 0;
+  white-space: nowrap;
+  transform: rotate(-2deg);
+  user-select: none;
+}
+.blora-seal--round { border-radius: 50%; }
+.blora-seal--ghost {
+  background: transparent;
+  color: var(--blora-seal);
+  border: 1.5px solid var(--blora-seal);
+  box-shadow: none;
+}
+
+/* —— 飞白分隔 · Brush Divider —— 飞白笔法的分隔线 */
+.blora-brush {
+  position: relative;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--blora-ink-ghost) 15%,
+    var(--blora-ink-mist) 50%,
+    var(--blora-ink-ghost) 85%,
+    transparent 100%);
+  border: none;
+  margin: var(--blora-space-6) 0;
+}
+.blora-brush::after {
+  content: ""; position: absolute;
+  left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--blora-seal);
+  box-shadow: 0 0 0 4px var(--blora-paper);
+}
+
+/* —— 引文 · Blockquote —— */
+.blora-quote {
+  margin: var(--blora-space-5) 0;
+  padding: var(--blora-space-4) var(--blora-space-6);
+  border-left: 3px solid var(--blora-seal);
+  background: var(--blora-surface-2);
+  border-radius: 0 var(--blora-radius-md) var(--blora-radius-md) 0;
+  font-family: var(--blora-font-serif);
+  font-size: var(--blora-text-lg);
+  color: var(--blora-ink-mid);
+  line-height: var(--blora-leading-loose);
+}
+.blora-quote cite { display: block; margin-top: var(--blora-space-3); font-size: var(--blora-text-sm); font-style: normal; color: var(--blora-ink-mist); font-family: var(--blora-font-sans); }
+
+/* —— 行内代码 · Inline Code —— */
+.blora-code {
+  font-family: var(--blora-font-mono);
+  font-size: 0.88em;
+  padding: 0.15em 0.45em;
+  background: var(--blora-surface-3);
+  color: var(--blora-seal-deep);
+  border-radius: var(--blora-radius-sm);
+  border: 1px solid var(--blora-ink-ghost);
+}
+
+/* —— 代码块 · Code Block —— */
+.blora-pre {
+  margin: var(--blora-space-4) 0;
+  padding: var(--blora-space-5);
+  background: var(--blora-ink);
+  color: var(--blora-paper-warm);
+  border-radius: var(--blora-radius-lg);
+  font-family: var(--blora-font-mono);
+  font-size: var(--blora-text-sm);
+  line-height: 1.7;
+  overflow-x: auto;
+  box-shadow: var(--blora-shadow-3);
+  position: relative;
+}
+.blora-pre::before {
+  content: ""; position: absolute; top: var(--blora-space-3); right: var(--blora-space-4);
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--blora-seal-soft);
+  box-shadow: -14px 0 0 var(--blora-tea-light), -28px 0 0 var(--blora-moss-light);
+  opacity: 0.5;
+}
+.blora-pre code { font-family: inherit; color: inherit; background: none; padding: 0; }
+
+/* =========================================================================
+   4. 容器与布局 · Layout
+   ========================================================================= */
+.blora-container { max-width: 1200px; margin-inline: auto; padding-inline: var(--blora-space-6); }
+.blora-container--prose { max-width: 760px; }
+.blora-container--wide  { max-width: 1440px; }
+
+.blora-stack > * + * { margin-top: var(--blora-space-4); }
+.blora-stack--sm > * + * { margin-top: var(--blora-space-2); }
+.blora-stack--lg > * + * { margin-top: var(--blora-space-6); }
+.blora-stack--xl > * + * { margin-top: var(--blora-space-8); }
+
+.blora-row { display: flex; align-items: center; gap: var(--blora-space-3); flex-wrap: wrap; }
+.blora-row--tight { gap: var(--blora-space-2); }
+.blora-row--between { justify-content: space-between; }
+.blora-row--center { justify-content: center; }
+
+.blora-grid { display: grid; gap: var(--blora-space-5); }
+.blora-grid--2 { grid-template-columns: repeat(2, 1fr); }
+.blora-grid--3 { grid-template-columns: repeat(3, 1fr); }
+.blora-grid--4 { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 880px) {
+  .blora-grid--2, .blora-grid--3, .blora-grid--4 { grid-template-columns: 1fr; }
+}
+
+/* —— 卡面 · Card —— 宣纸上托起的一方素笺 */
+.blora-card {
+  background: var(--blora-surface-1);
+  border: var(--blora-border);
+  border-radius: var(--blora-radius-lg);
+  padding: var(--blora-space-6);
+  box-shadow: var(--blora-shadow-1);
+  transition: box-shadow var(--blora-dur-base) var(--blora-ease),
+              transform var(--blora-dur-base) var(--blora-ease);
+}
+.blora-card--hover:hover { box-shadow: var(--blora-shadow-3); transform: translateY(-2px); }
+.blora-card--flat { box-shadow: none; }
+.blora-card--inset { background: var(--blora-surface-2); box-shadow: var(--blora-shadow-inset); }
+.blora-card__title { font-family: var(--blora-font-serif); font-size: var(--blora-text-lg); color: var(--blora-ink); margin-bottom: var(--blora-space-2); }
+.blora-card__body { color: var(--blora-ink-mid); }
+.blora-card__foot { margin-top: var(--blora-space-5); padding-top: var(--blora-space-4); border-top: var(--blora-border); }
+.blora-card__seal { position: absolute; top: var(--blora-space-4); right: var(--blora-space-4); }
+.blora-card--relative { position: relative; }
+
+/* —— 面板 · Panel —— 比卡面更宽松的容器 */
+.blora-panel {
+  background: var(--blora-surface-1);
+  border: var(--blora-border);
+  border-radius: var(--blora-radius-xl);
+  padding: var(--blora-space-7);
+  box-shadow: var(--blora-shadow-2);
+}
+.blora-panel__header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: var(--blora-space-5); padding-bottom: var(--blora-space-4); border-bottom: var(--blora-brush); }
+
+/* —— 留白 · Spacer —— */
+.blora-spacer { flex: 1; }
+
+/* —— 分隔 · Divider —— */
+.blora-divider { height: 1px; background: var(--blora-ink-ghost); border: none; margin: var(--blora-space-5) 0; }
+.blora-divider--vert { width: 1px; height: auto; align-self: stretch; margin: 0 var(--blora-space-3); background: var(--blora-ink-ghost); }
+.blora-divider--dashed { background: none; border-top: 1px dashed var(--blora-ink-mist); }
+.blora-divider--text { display: flex; align-items: center; gap: var(--blora-space-3); background: none; height: auto; color: var(--blora-ink-mist); font-size: var(--blora-text-sm); }
+.blora-divider--text::before, .blora-divider--text::after { content: ""; flex: 1; height: 1px; background: var(--blora-ink-ghost); }
+
+/* =========================================================================
+   5. 按钮 · Buttons
+   ========================================================================= */
+.blora-btn {
+  --btn-bg: var(--blora-surface-1);
+  --btn-fg: var(--blora-ink-deep);
+  --btn-bd: var(--blora-ink-ghost);
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--blora-space-2);
+  padding: 0.55em 1.1em;
+  font-family: var(--blora-font-sans);
+  font-size: var(--blora-text-sm);
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--btn-fg);
+  background: var(--btn-bg);
+  border: 1px solid var(--btn-bd);
+  border-radius: var(--blora-radius-md);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--blora-dur-base) var(--blora-ease);
+  position: relative;
+  user-select: none;
+}
+.blora-btn:hover { transform: translateY(-1px); box-shadow: var(--blora-shadow-2); }
+.blora-btn:active { transform: translateY(0); box-shadow: var(--blora-shadow-1); }
+.blora-btn:disabled, .blora-btn[aria-disabled="true"] {
+  opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none;
+}
+
+/* —— 主按钮：印泥红钤盖 —— */
+.blora-btn--primary {
+  --btn-bg: var(--blora-seal);
+  --btn-fg: #FBF8F0;
+  --btn-bd: var(--blora-seal);
+  font-weight: 600;
+  box-shadow: var(--blora-shadow-seal);
+}
+.blora-btn--primary:hover { --btn-bg: var(--blora-seal-deep); --btn-bd: var(--blora-seal-deep); }
+
+/* —— 次按钮：墨色 —— */
+.blora-btn--secondary {
+  --btn-bg: var(--blora-ink-deep);
+  --btn-fg: #FBF8F0;
+  --btn-bd: var(--blora-ink-deep);
+  font-weight: 600;
+}
+.blora-btn--secondary:hover { --btn-bg: var(--blora-ink); --btn-bd: var(--blora-ink); }
+
+/* —— 幽灵按钮 —— */
+.blora-btn--ghost { --btn-bg: transparent; --btn-bd: transparent; }
+.blora-btn--ghost:hover { --btn-bg: var(--blora-surface-2); box-shadow: none; transform: none; }
+
+/* —— 描边按钮 —— */
+.blora-btn--outline { --btn-bg: transparent; --btn-bd: var(--blora-ink-mist); }
+.blora-btn--outline:hover { --btn-bd: var(--blora-ink-mid); --btn-bg: var(--blora-surface-2); }
+
+/* —— 文字按钮 —— */
+.blora-btn--text { --btn-bg: transparent; --btn-bd: transparent; color: var(--blora-seal); padding-inline: 0.4em; }
+.blora-btn--text:hover { color: var(--blora-seal-deep); background: none; box-shadow: none; transform: none; text-decoration: underline; text-underline-offset: 4px; }
+
+/* —— 尺寸 —— */
+.blora-btn--xs { font-size: var(--blora-text-xs); padding: 0.3em 0.7em; }
+.blora-btn--sm { font-size: var(--blora-text-sm); padding: 0.4em 0.9em; }
+.blora-btn--lg { font-size: var(--blora-text-lg); padding: 0.7em 1.4em; }
+.blora-btn--xl { font-size: var(--blora-text-xl); padding: 0.8em 1.6em; font-family: var(--blora-font-serif); }
+
+/* —— 图标按钮 —— */
+.blora-btn--icon { padding: 0.55em; aspect-ratio: 1; }
+.blora-btn--icon.blora-btn--sm { padding: 0.4em; }
+.blora-btn--icon.blora-btn--lg { padding: 0.7em; }
+
+/* —— 圆形浮动按钮 FAB —— */
+.blora-fab {
+  position: fixed; right: var(--blora-space-7); bottom: var(--blora-space-7);
+  width: 56px; height: 56px; border-radius: 50%;
+  background: var(--blora-seal); color: #FBF8F0;
+  display: grid; place-items: center;
+  box-shadow: var(--blora-shadow-4), var(--blora-shadow-seal);
+  z-index: var(--blora-z-sticky);
+  transition: transform var(--blora-dur-base) var(--blora-ease-overshoot);
+}
+.blora-fab:hover { transform: scale(1.12); }
+
+/* —— 按钮组 —— */
+.blora-btn-group { display: inline-flex; }
+.blora-btn-group .blora-btn { border-radius: 0; margin-left: -1px; }
+.blora-btn-group .blora-btn:first-child { border-radius: var(--blora-radius-md) 0 0 var(--blora-radius-md); margin-left: 0; }
+.blora-btn-group .blora-btn:last-child  { border-radius: 0 var(--blora-radius-md) var(--blora-radius-md) 0; }
+.blora-btn-group .blora-btn:only-child  { border-radius: var(--blora-radius-md); }
+
+/* —— 加载态 —— */
+.blora-btn.is-loading { pointer-events: none; color: transparent !important; }
+.blora-btn.is-loading::after {
+  content: ""; position: absolute; top: 50%; left: 50%;
+  width: 1em; height: 1em; margin: -0.5em 0 0 -0.5em;
+  border: 2px solid currentColor; border-top-color: transparent;
+  border-radius: 50%; color: var(--btn-fg);
+  animation: blora-spin 0.7s linear infinite;
+}
+
+/* =========================================================================
+   6. 表单 · Forms
+   ========================================================================= */
+.blora-field { display: flex; flex-direction: column; gap: var(--blora-space-2); margin-bottom: var(--blora-space-5); }
+.blora-label { font-size: var(--blora-text-sm); font-weight: 500; color: var(--blora-ink-mid); }
+.blora-label--req::after { content: " *"; color: var(--blora-seal); }
+.blora-hint { font-size: var(--blora-text-xs); color: var(--blora-ink-mist); }
+.blora-error { font-size: var(--blora-text-xs); color: var(--blora-danger); }
+
+.blora-input, .blora-textarea, .blora-select {
+  width: 100%;
+  padding: 0.6em 0.85em;
+  font-size: var(--blora-text-sm);
+  color: var(--blora-ink-deep);
+  background: var(--blora-surface-1);
+  border: 1px solid var(--blora-ink-ghost);
+  border-radius: var(--blora-radius-md);
+  transition: border-color var(--blora-dur-fast) var(--blora-ease),
+              box-shadow var(--blora-dur-fast) var(--blora-ease),
+              background var(--blora-dur-fast) var(--blora-ease);
+  font-family: var(--blora-font-sans);
+}
+.blora-input::placeholder, .blora-textarea::placeholder { color: var(--blora-ink-faint); }
+/* —— 隐藏 number input 浏览器原生上下按钮（用自定义 .blora-number 替代）—— */
+.blora-input[type="number"]::-webkit-inner-spin-button,
+.blora-input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.blora-input[type="number"] { -moz-appearance: textfield; }
+.blora-input:hover, .blora-textarea:hover, .blora-select:hover { border-color: var(--blora-ink-mist); }
+.blora-input:focus, .blora-textarea:focus, .blora-select:focus {
+  outline: none; border-color: var(--blora-seal);
+  box-shadow: 0 0 0 3px rgba(160,57,46,0.12);
+  background: #FBF8F0;
+}
+.blora-input:disabled, .blora-textarea:disabled, .blora-select:disabled {
+  background: var(--blora-surface-3); color: var(--blora-ink-faint); cursor: not-allowed;
+}
+.blora-input.is-error, .blora-textarea.is-error { border-color: var(--blora-danger); }
+.blora-input.is-error:focus { box-shadow: 0 0 0 3px rgba(160,57,46,0.18); }
+
+.blora-textarea { min-height: 6em; resize: vertical; line-height: var(--blora-leading-normal); }
+
+/* —— 输入框组 / 前后缀 —— */
+.blora-input-group { display: flex; align-items: stretch; }
+.blora-input-group .blora-input { border-radius: 0; }
+.blora-input-group .blora-input:first-child { border-radius: var(--blora-radius-md) 0 0 var(--blora-radius-md); }
+.blora-input-group .blora-input:last-child  { border-radius: 0 var(--blora-radius-md) var(--blora-radius-md) 0; }
+.blora-input-group .blora-addon {
+  display: inline-flex; align-items: center; padding: 0 0.85em;
+  background: var(--blora-surface-3); color: var(--blora-ink-light);
+  border: 1px solid var(--blora-ink-ghost); font-size: var(--blora-text-sm);
+}
+.blora-input-group .blora-addon:first-child { border-radius: var(--blora-radius-md) 0 0 var(--blora-radius-md); border-right: none; }
+.blora-input-group .blora-addon:last-child  { border-radius: 0 var(--blora-radius-md) var(--blora-radius-md) 0; border-left: none; }
+
+/* —— 搜索框 —— */
+.blora-search { position: relative; }
+.blora-search .blora-input { padding-left: 2.4em; }
+.blora-search__icon { position: absolute; left: 0.85em; top: 50%; transform: translateY(-50%); color: var(--blora-ink-mist); pointer-events: none; }
+.blora-search__clear { position: absolute; right: 0.6em; top: 50%; transform: translateY(-50%); color: var(--blora-ink-mist); padding: 0.25em; border-radius: 50%; }
+.blora-search__clear:hover { color: var(--blora-ink); background: var(--blora-surface-3); }
+
+/* —— 选择框 —— */
+.blora-select {
+  appearance: none; -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B6358' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 0.85em center;
+  padding-right: 2.4em; cursor: pointer;
+}
+.blora-select[multiple] { background-image: none; padding-right: 0.85em; }
+
+/* —— 自定义下拉 · Custom Select —— */
+.blora-select-wrap { position: relative; }
+.blora-select-wrap .blora-select { display: none; }
+.blora-select-trigger {
+  width: 100%; padding: 0.6em 2.4em 0.6em 0.85em;
+  font-size: var(--blora-text-sm); color: var(--blora-ink-deep);
+  background: var(--blora-surface-1); border: 1px solid var(--blora-ink-ghost);
+  border-radius: var(--blora-radius-md); cursor: pointer; position: relative;
+  transition: all var(--blora-dur-fast) var(--blora-ease);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.blora-select-trigger:hover { border-color: var(--blora-ink-mist); }
+.blora-select-trigger.is-open { border-color: var(--blora-seal); box-shadow: 0 0 0 3px rgba(160,57,46,0.12); }
+.blora-select-trigger::after {
+  content: ""; position: absolute; right: 0.85em; top: 50%;
+  width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent;
+  border-top: 5px solid var(--blora-ink-mist); transform: translateY(-50%);
+  transition: transform var(--blora-dur-fast) var(--blora-ease);
+}
+.blora-select-trigger.is-open::after { transform: translateY(-50%) rotate(180deg); }
+.blora-select-trigger.is-placeholder { color: var(--blora-ink-faint); }
+.blora-select-menu {
+  position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+  max-height: 240px; overflow-y: auto;
+  background: var(--blora-surface-1); border: var(--blora-border);
+  border-radius: var(--blora-radius-md); box-shadow: var(--blora-shadow-3);
+  padding: var(--blora-space-1); z-index: var(--blora-z-dropdown);
+  opacity: 0; pointer-events: none; transform: translateY(-4px);
+  transition: all var(--blora-dur-fast) var(--blora-ease);
+}
+.blora-select-menu.is-open { opacity: 1; pointer-events: auto; transform: translateY(0); }
+.blora-select-option {
+  padding: 0.5em 0.8em; font-size: var(--blora-text-sm); color: var(--blora-ink-mid);
+  border-radius: var(--blora-radius-sm); cursor: pointer; white-space: nowrap;
+  transition: all var(--blora-dur-fast) var(--blora-ease);
+}
+.blora-select-option:hover { background: var(--blora-surface-2); color: var(--blora-ink); }
+.blora-select-option.is-selected { background: rgba(160,57,46,0.08); color: var(--blora-seal); font-weight: 500; }
+.blora-select-option.is-disabled { color: var(--blora-ink-faint); cursor: not-allowed; }
+.blora-select-option.is-disabled:hover { background: none; }
+
+/* —— 数字输入 —— */
+.blora-number { position: relative; display: inline-flex; align-items: stretch; width: 100%; }
+.blora-number .blora-input { padding-right: 0.85em; width: auto; flex: 1; min-width: 0; border-radius: var(--blora-radius-md) 0 0 var(--blora-radius-md); }
+.blora-number__ctrl { display: flex; flex-direction: column; width: 2em; flex: none; border: 1px solid var(--blora-ink-ghost); border-left: none; border-radius: 0 var(--blora-radius-md) var(--blora-radius-md) 0; overflow: hidden; }
+.blora-number__btn { flex: 1; display: grid; place-items: center; color: var(--blora-ink-light); background: var(--blora-surface-1); transition: all var(--blora-dur-fast) var(--blora-ease); }
+.blora-number__btn:first-child { border-bottom: 1px solid var(--blora-ink-ghost); }
+.blora-number__btn:hover { background: var(--blora-surface-2); color: var(--blora-ink); }
+
+/* —— 复选框 —— */
+.blora-checkbox { display: inline-flex; align-items: center; gap: var(--blora-space-2); cursor: pointer; user-select: none; font-size: var(--blora-text-sm); color: var(--blora-ink-mid); }
+.blora-checkbox > input { position: absolute; opacity: 0; pointer-events: none; }
+.blora-checkbox__box {
+  width: 1.15em; height: 1.15em; flex: none;
+  border: 1.5px solid var(--blora-ink-mist); border-radius: var(--blora-radius-xs);
+  background: var(--blora-surface-1);
+  display: grid; place-items: center;
+  transition: all var(--blora-dur-fast) var(--blora-ease);
+  position: relative;
+}
+.blora-checkbox__box::after {
+  content: ""; width: 0.72em; height: 0.72em;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FBF8F0' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E") center/contain no-repeat;
+  opacity: 0; transform: scale(0.4); transition: all var(--blora-dur-fast) var(--blora-ease-overshoot);
+}
+.blora-checkbox > input:checked + .blora-checkbox__box { background: var(--blora-seal); border-color: var(--blora-seal); }
+.blora-checkbox > input:checked + .blora-checkbox__box::after { opacity: 1; transform: scale(1); }
+.blora-checkbox > input:focus-visible + .blora-checkbox__box { box-shadow: 0 0 0 3px rgba(160,57,46,0.18); }
+.blora-checkbox > input:disabled + .blora-checkbox__box { opacity: 0.4; }
+.blora-checkbox--indeterminate .blora-checkbox__box { background: var(--blora-seal); border-color: var(--blora-seal); }
+.blora-checkbox--indeterminate .blora-checkbox__box::after {
+  width: 0.45em; height: 0.45em; background: #FBF8F0; opacity: 1; transform: scale(1); border-radius: 1px;
+}
+
+/* —— 单选框 —— */
+.blora-radio { display: inline-flex; align-items: center; gap: var(--blora-space-2); cursor: pointer; user-select: none; font-size: var(--blora-text-sm); color: var(--blora-ink-mid); }
+.blora-radio > input { position: absolute; opacity: 0; pointer-events: none; }
+.blora-radio__dot {
+  width: 1.15em; height: 1.15em; flex: none;
+  border: 1.5px solid var(--blora-ink-mist); border-radius: 50%;
+  background: var(--blora-surface-1);
+  position: relative;
+  transition: all var(--blora-dur-fast) var(--blora-ease);
+}
+.blora-radio__dot::after { content: ""; position: absolute; inset: 0; margin: auto; width: 0.4em; height: 0.4em; border-radius: 50%; background: var(--blora-seal); transform: scale(0); transition: transform var(--blora-dur-fast) var(--blora-ease-overshoot); }
+.blora-radio > input:checked + .blora-radio__dot { border-color: var(--blora-seal); }
+.blora-radio > input:checked + .blora-radio__dot::after { transform: scale(1); }
+.blora-radio > input:focus-visible + .blora-radio__dot { box-shadow: 0 0 0 3px rgba(160,57,46,0.18); }
+.blora-radio > input:disabled + .blora-radio__dot { opacity: 0.4; }
+
+/* —— 开关 Switch —— */
+.blora-switch { display: inline-flex; align-items: center; gap: var(--blora-space-3); cursor: pointer; user-select: none; }
+.blora-switch > input { position: absolute; opacity: 0; pointer-events: none; }
+.blora-switch__track {
+  width: 2.6em; height: 1.5em; flex: none;
+  background: var(--blora-surface-3); border: 1px solid var(--blora-ink-ghost);
+  border-radius: var(--blora-radius-full);
+  position: relative; transition: all var(--blora-dur-base) var(--blora-ease);
+}
+.blora-switch__track::after {
+  content: ""; position: absolute; top: 50%; left: 0.2em;
+  width: 1.05em; height: 1.05em; border-radius: 50%;
+  background: #FBF8F0; box-shadow: var(--blora-shadow-2);
+  transform: translateY(-50%);
+  transition: left var(--blora-dur-base) var(--blora-ease-overshoot),
+              background var(--blora-dur-base) var(--blora-ease);
+}
+.blora-switch > input:checked + .blora-switch__track { background: var(--blora-seal); border-color: var(--blora-seal); }
+.blora-switch > input:checked + .blora-switch__track::after { left: calc(100% - 1.25em); background: #FBF8F0; }
+.blora-switch--sm .blora-switch__track { width: 2.1em; height: 1.2em; }
+.blora-switch--lg .blora-switch__track { width: 3.2em; height: 1.8em; }
+.blora-switch > input:disabled + .blora-switch__track { opacity: 0.4; }
+
+/* —— 滑块 Slider —— */
+.blora-slider { display: flex; align-items: center; gap: var(--blora-space-3); }
+.blora-slider__input { -webkit-appearance: none; appearance: none; width: 100%; height: 4px; background: var(--blora-ink-ghost); border-radius: var(--blora-radius-full); outline: none; }
+.blora-slider__input::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--blora-seal); border: 2px solid #FBF8F0;
+  box-shadow: var(--blora-shadow-2); cursor: pointer;
+  transition: transform var(--blora-dur-fast) var(--blora-ease-overshoot);
+}
+.blora-slider__input::-webkit-slider-thumb:hover { transform: scale(1.2); }
+.blora-slider__input::-moz-range-thumb {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--blora-seal); border: 2px solid #FBF8F0;
+  box-shadow: var(--blora-shadow-2); cursor: pointer;
+}
+.blora-slider__value { font-family: var(--blora-font-mono); font-size: var(--blora-text-sm); color: var(--blora-ink-mid); min-width: 3ch; text-align: right; }
+
+/* —— 范围滑块 —— */
+.blora-range { position: relative; height: 24px; margin-bottom: 1.5em; }
+.blora-range__track { position: absolute; top: 50%; left: 0; right: 0; height: 4px; transform: translateY(-50%); background: var(--blora-ink-ghost); border-radius: var(--blora-radius-full); }
+.blora-range__fill  { position: absolute; top: 0; bottom: 0; background: var(--blora-seal); border-radius: var(--blora-radius-full); }
+.blora-range__thumb { position: absolute; top: 50%; width: 18px; height: 18px; transform: translate(-50%, -50%); border-radius: 50%; background: var(--blora-seal); border: 2px solid #FBF8F0; box-shadow: var(--blora-shadow-2); cursor: grab; }
+.blora-range__thumb:active { cursor: grabbing; transform: translate(-50%, -50%) scale(1.15); }
+
+/* —— 评分 Rate —— */
+.blora-rate { display: inline-flex; gap: 0.2em; cursor: pointer; }
+.blora-rate__star { color: var(--blora-ink-ghost); transition: color var(--blora-dur-fast) var(--blora-ease), transform var(--blora-dur-fast) var(--blora-ease); font-size: 1.25em; }
+.blora-rate__star.is-on { color: var(--blora-gold); }
+.blora-rate__star:hover { transform: scale(1.15); }
+
+/* —— 开关组 / 分段控件 Segmented —— */
+.blora-segmented { display: inline-flex; padding: 3px; background: var(--blora-surface-3); border-radius: var(--blora-radius-md); gap: 2px; }
+.blora-segmented__item { padding: 0.4em 0.9em; font-size: var(--blora-text-sm); color: var(--blora-ink-light); border-radius: var(--blora-radius-sm); cursor: pointer; transition: all var(--blora-dur-fast) var(--blora-ease); }
+.blora-segmented__item:hover { color: var(--blora-ink); }
+.blora-segmented__item.is-active { background: var(--blora-surface-1); color: var(--blora-ink-deep); box-shadow: var(--blora-shadow-1); }
+
+/* —— 标签输入 Tags Input —— */
+.blora-tags-input { display: flex; flex-wrap: wrap; gap: var(--blora-space-2); padding: 0.4em 0.6em; min-height: 2.6em; background: var(--blora-surface-1); border: 1px solid var(--blora-ink-ghost); border-radius: var(--blora-radius-md); transition: all var(--blora-dur-fast) var(--blora-ease); }
+.blora-tags-input:focus-within { border-color: var(--blora-seal); box-shadow: 0 0 0 3px rgba(160,57,46,0.12); }
+.blora-tags-input input { flex: 1; min-width: 8ch; border: none; outline: none; background: none; padding: 0.3em; font-size: var(--blora-text-sm); }
+
+/* —— 文件上传 —— */
+.blora-upload { display: block; }
+.blora-dropzone {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--blora-space-2);
+  padding: var(--blora-space-7); text-align: center;
+  background: var(--blora-surface-2); border: 1.5px dashed var(--blora-ink-mist); border-radius: var(--blora-radius-lg);
+  color: var(--blora-ink-light); cursor: pointer;
+  transition: all var(--blora-dur-base) var(--blora-ease);
+}
+.blora-dropzone:hover, .blora-dropzone.is-dragover { border-color: var(--blora-seal); color: var(--blora-seal); background: rgba(160,57,46,0.04); }
+.blora-dropzone__icon { font-size: 2em; color: var(--blora-ink-mist); }
+.blora-dropzone:hover .blora-dropzone__icon { color: var(--blora-seal); }
+
+/* —— OTP 验证码输入 —— */
+.blora-otp { display: inline-flex; gap: var(--blora-space-3); }
+.blora-otp__input { width: 2.5em; height: 3em; text-align: center; font-size: var(--blora-text-xl); font-family: var(--blora-font-mono); color: var(--blora-ink); background: var(--blora-surface-1); border: 1px solid var(--blora-ink-ghost); border-radius: var(--blora-radius-md); transition: all var(--blora-dur-fast) var(--blora-ease); }
+.blora-otp__input:focus { outline: none; border-color: var(--blora-seal); box-shadow: 0 0 0 3px rgba(160,57,46,0.12); }
+
+/* —— 颜色选择器 —— */
+.blora-color-input { width: 2.5em; height: 2.5em; padding: 0; border: 1px solid var(--blora-ink-ghost); border-radius: var(--blora-radius-md); background: none; cursor: pointer; overflow: hidden; }
+.blora-color-input::-webkit-color-swatch-wrapper { padding: 0; }
+.blora-color-input::-webkit-color-swatch { border: none; border-radius: calc(var(--blora-radius-md) - 1px); }
+
+/* —— 开关日历 Date Picker (visual) —— */
+.blora-datepicker { position: relative; }
+.blora-datepicker .blora-input { padding-right: 2.4em; cursor: text; }
+/* 隐藏 date/time 原生指示器 */
+.blora-datepicker .blora-input::-webkit-calendar-picker-indicator { display: none !important; -webkit-appearance: none; }
+.blora-datepicker .blora-input::-webkit-inner-spin-button { display: none; }
+.blora-datepicker__btn {
+  position: absolute; right: 0.5em; top: 50%; transform: translateY(-50%);
+  width: 1.8em; height: 1.8em; display: grid; place-items: center;
+  color: var(--blora-ink-mist); border: none; background: none; cursor: pointer;
+  border-radius: var(--blora-radius-sm); transition: all var(--blora-dur-fast) var(--blora-ease);
+}
+.blora-datepicker__btn:hover { color: var(--blora-seal); background: var(--blora-surface-2); }
+.blora-datepicker__btn svg { display: block; }
+
+/* —— 日期选择面板 · Date Picker Panel —— */
+.blora-datepicker__panel {
+  position: absolute; top: calc(100% + 6px); left: 0; z-index: var(--blora-z-dropdown);
+  background: var(--blora-surface-1); border: var(--blora-border); border-radius: var(--blora-radius-lg);
+  box-shadow: var(--blora-shadow-3); padding: var(--blora-space-3); width: 300px;
+  opacity: 0; pointer-events: none; transform: translateY(-4px);
+  transition: all var(--blora-dur-fast) var(--blora-ease);
+}
+.blora-datepicker__panel.is-open { opacity: 1; pointer-events: auto; transform: translateY(0); }
+.blora-datepicker__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--blora-space-2); }
+.blora-datepicker__title { font-family: var(--blora-font-serif); font-size: var(--blora-text-base); color: var(--blora-ink); font-weight: 600; cursor: pointer; padding: 0.2em 0.5em; border-radius: var(--blora-radius-sm); transition: all var(--blora-dur-fast) var(--blora-ease); user-select: none; }
+.blora-datepicker__title:hover { background: var(--blora-surface-2); color: var(--blora-seal); }
+.blora-datepicker__nav { display: inline-flex; align-items: center; justify-content: center; width: 1.8em; height: 1.8em; border-radius: var(--blora-radius-sm); color: var(--blora-ink-mist); cursor: pointer; transition: all var(--blora-dur-fast) var(--blora-ease); border: none; background: none; }
+.blora-datepicker__nav:hover { background: var(--blora-surface-2); color: var(--blora-ink); }
+.blora-datepicker__grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+.blora-datepicker__dow { text-align: center; font-size: var(--blora-text-xs); color: var(--blora-ink-mist); padding: var(--blora-space-1) 0; }
+.blora-datepicker__cell { aspect-ratio: 1; display: grid; place-items: center; font-size: var(--blora-text-sm); color: var(--blora-ink-mid); border-radius: var(--blora-radius-sm); cursor: pointer; transition: all var(--blora-dur-fast) var(--blora-ease); position: relative; }
+.blora-datepicker__cell:hover { background: var(--blora-surface-2); }
+.blora-datepicker__cell.is-other { color: var(--blora-ink-faint); }
+.blora-datepicker__cell.is-today { font-weight: 700; color: var(--blora-seal); }
+.blora-datepicker__cell.is-today::after { content: ""; position: absolute; bottom: 0.15em; left: 50%; transform: translateX(-50%); width: 0.3em; height: 0.3em; border-radius: 50%; background: var(--blora-seal); }
+.blora-datepicker__cell.is-selected { background: var(--blora-seal); color: #FBF8F0; }
+.blora-datepicker__cell.is-selected::after { background: #FBF8F0; }
+.blora-datepicker__cell.is-disabled { color: var(--blora-ink-faint); cursor: not-allowed; }
+.blora-datepicker__cell.is-disabled:hover { background: none; }
+.blora-datepicker__foot { display: flex; justify-content: flex-end; gap: var(--blora-space-2); margin-top: var(--blora-space-3); padding-top: var(--blora-space-2); border-top: 1px solid var(--blora-ink-ghost); }
+/* —— 月视图 / 年视图 —— */
+.blora-datepicker__grid--months { grid-template-columns: repeat(3, 1fr); }
+.blora-datepicker__grid--years  { grid-template-columns: repeat(4, 1fr); }
+.blora-datepicker__cell--month, .blora-datepicker__cell--year { aspect-ratio: unset; padding: 0.7em 0; font-size: var(--blora-text-sm); }
+
+/* —— 时间选择面板 · Time Picker Panel —— */
+.blora-timepicker__panel {
+  position: absolute; top: calc(100% + 6px); left: 0; z-index: var(--blora-z-dropdown);
+  background: var(--blora-surface-1); border: var(--blora-border); border-radius: var(--blora-radius-lg);
+  box-shadow: var(--blora-shadow-3); padding: var(--blora-space-4); width: 200px;
+  opacity: 0; pointer-events: none; transform: translateY(-4px);
+  transition: all var(--blora-dur-fast) var(--blora-ease);
+}
+.blora-timepicker__panel.is-open { opacity: 1; pointer-events: auto; transform: translateY(0); }
+.blora-timepicker__cols { display: flex; gap: var(--blora-space-3); align-items: center; justify-content: center; }
+.blora-timepicker__col { display: flex; flex-direction: column; align-items: center; gap: var(--blora-space-1); }
+.blora-timepicker__label { font-size: var(--blora-text-xs); color: var(--blora-ink-mist); text-transform: uppercase; letter-spacing: var(--blora-tracking-caps); }
+.blora-timepicker__scroll { height: 160px; width: 56px; overflow-y: auto; border: 1px solid var(--blora-ink-ghost); border-radius: var(--blora-radius-md); padding: var(--blora-space-1); }
+.blora-timepicker__scroll::-webkit-scrollbar { width: 4px; }
+.blora-timepicker__item { padding: 0.3em 0; text-align: center; font-family: var(--blora-font-mono); font-size: var(--blora-text-sm); color: var(--blora-ink-mid); border-radius: var(--blora-radius-sm); cursor: pointer; transition: all var(--blora-dur-fast) var(--blora-ease); }
+.blora-timepicker__item:hover { background: var(--blora-surface-2); }
+.blora-timepicker__item.is-selected { background: var(--blora-seal); color: #FBF8F0; font-weight: 600; }
+.blora-timepicker__sep { font-size: var(--blora-text-xl); color: var(--blora-ink-mist); font-family: var(--blora-font-mono); margin-top: 1.2em; }
+
+/* =========================================================================
+   7. 标签 · Tags & Badges
+   ========================================================================= */
+.blora-tag {
+  display: inline-flex; align-items: center; gap: 0.3em;
+  padding: 0.2em 0.7em;
+  font-size: var(--blora-text-xs); font-weight: 500;
+  background: var(--blora-surface-3); color: var(--blora-ink-mid);
+  border: 1px solid var(--blora-ink-ghost);
+  border-radius: var(--blora-radius-full);
+  line-height: 1.6;
+}
+.blora-tag--seal    { background: rgba(160,57,46,0.08); color: var(--blora-seal); border-color: rgba(160,57,46,0.25); }
+.blora-tag--tea     { background: rgba(139,111,71,0.08); color: var(--blora-tea); border-color: rgba(139,111,71,0.25); }
+.blora-tag--indigo  { background: rgba(61,74,92,0.08); color: var(--blora-indigo); border-color: rgba(61,74,92,0.25); }
+.blora-tag--moss    { background: rgba(90,123,107,0.08); color: var(--blora-moss); border-color: rgba(90,123,107,0.25); }
+.blora-tag--gold    { background: rgba(184,153,104,0.1); color: var(--blora-gold); border-color: rgba(184,153,104,0.3); }
+.blora-tag--solid   { background: var(--blora-ink-deep); color: #FBF8F0; border-color: var(--blora-ink-deep); }
+.blora-tag--removable { padding-right: 0.35em; }
+.blora-tag__close { position: relative; width: 0.85em; height: 0.85em; flex: none; border-radius: 50%; cursor: pointer; transition: background var(--blora-dur-fast) var(--blora-ease); }
+.blora-tag__close::before, .blora-tag__close::after {
+  content: ""; position: absolute; top: 50%; left: 50%;
+  width: 0.55em; height: 1.5px; background: currentColor; border-radius: 1px;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.blora-tag__close::after { transform: translate(-50%, -50%) rotate(-45deg); }
+.blora-tag__close:hover { background: rgba(28,26,23,0.15); }
+
+.blora-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 1.5em; height: 1.5em; padding: 0 0.4em;
+  font-size: var(--blora-text-xs); font-weight: 700;
+  background: var(--blora-seal); color: #FBF8F0;
+  border-radius: var(--blora-radius-full);
+  box-shadow: var(--blora-shadow-seal);
+}
+.blora-badge--dot { min-width: 0.5em; height: 0.5em; padding: 0; }
+.blora-badge--tea { background: var(--blora-tea); box-shadow: none; }
+.blora-badge--moss { background: var(--blora-moss); box-shadow: none; }
+.blora-badge--indigo { background: var(--blora-indigo); box-shadow: none; }
+
+/* —— 头像上的徽章 —— */
+.blora-avatar-wrap { position: relative; display: inline-block; }
+.blora-avatar-wrap .blora-badge { position: absolute; top: -0.2em; right: -0.2em; border: 2px solid var(--blora-paper); }
+
+/* —— 状态点 Status Dot —— */
+.blora-dot { display: inline-block; width: 0.6em; height: 0.6em; border-radius: 50%; background: var(--blora-ink-mist); }
+.blora-dot--seal { background: var(--blora-seal); }
+.blora-dot--moss { background: var(--blora-moss); }
+.blora-dot--gold { background: var(--blora-gold); }
+.blora-dot--pulse { animation: blora-pulse 2s ease-in-out infinite; }
+
+/* =========================================================================
+   8. 头像 · Avatar
+   ========================================================================= */
+.blora-avatar {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 2.5em; height: 2.5em; border-radius: 50%;
+  background: var(--blora-surface-3); color: var(--blora-ink-light);
+  font-family: var(--blora-font-serif); font-weight: 600;
+  font-size: 1em;
+  overflow: hidden; flex: none; user-select: none;
+  box-shadow: var(--blora-shadow-1);
+}
+.blora-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.blora-avatar--xs { width: 1.5em; height: 1.5em; font-size: 0.7em; }
+.blora-avatar--sm { width: 2em; height: 2em; font-size: 0.85em; }
+.blora-avatar--lg { width: 3.5em; height: 3.5em; font-size: 1.2em; }
+.blora-avatar--xl { width: 5em; height: 5em; font-size: 1.6em; }
+.blora-avatar--seal  { background: var(--blora-seal);  color: #FBF8F0; }
+.blora-avatar--tea   { background: var(--blora-tea);   color: #FBF8F0; }
+.blora-avatar--indigo{ background: var(--blora-indigo);color: #FBF8F0; }
+.blora-avatar--moss  { background: var(--blora-moss);  color: #FBF8F0; }
+.blora-avatar--ink   { background: var(--blora-ink-deep); color: #FBF8F0; }
+.blora-avatar--square{ border-radius: var(--blora-radius-md); }
+.blora-avatar-group { display: inline-flex; }
+.blora-avatar-group .blora-avatar { margin-left: -0.6em; border: 2px solid var(--blora-paper); }
+.blora-avatar-group .blora-avatar:first-child { margin-left: 0; }
+
+/* =========================================================================
+   9. 进度与加载 · Progress & Loading
+   ========================================================================= */
+.blora-progress { display: flex; flex-direction: column; gap: var(--blora-space-2); }
+.blora-progress__bar { height: 6px; background: var(--blora-surface-3); border-radius: var(--blora-radius-full); overflow: hidden; }
+.blora-progress__fill { height: 100%; background: var(--blora-seal); border-radius: var(--blora-radius-full); transition: width var(--blora-dur-slow) var(--blora-ease); }
+.blora-progress__fill--tea { background: var(--blora-tea); }
+.blora-progress__fill--moss { background: var(--blora-moss); }
+.blora-progress__fill--indigo { background: var(--blora-indigo); }
+.blora-progress__fill--striped { background-image: linear-gradient(45deg, rgba(255,255,255,0.18) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.18) 50%, rgba(255,255,255,0.18) 75%, transparent 75%); background-size: 16px 16px; animation: blora-stripe 1s linear infinite; }
+.blora-progress__label { display: flex; justify-content: space-between; font-size: var(--blora-text-xs); color: var(--blora-ink-light); }
+.blora-progress--circular { display: inline-grid; place-items: center; }
+.blora-progress--circular svg { transform: rotate(-90deg); }
+.blora-progress--circular circle { fill: none; stroke-width: 6; }
+.blora-progress--circular .track { stroke: var(--blora-surface-3); }
+.blora-progress--circular .fill  { stroke: var(--blora-seal); stroke-linecap: round; transition: stroke-dashoffset var(--blora-dur-slow) var(--blora-ease); }
+
+/* —— 加载 —— */
+.blora-spinner { display: inline-block; width: 1.2em; height: 1.2em; border: 2px solid var(--blora-ink-ghost); border-top-color: var(--blora-seal); border-radius: 50%; animation: blora-spin 0.8s linear infinite; }
+.blora-spinner--sm { width: 0.9em; height: 0.9em; border-width: 1.5px; }
+.blora-spinner--lg { width: 2em; height: 2em; border-width: 3px; }
+
+/* —— 墨滴加载 (signature) —— */
+.blora-ink-loading { display: inline-flex; gap: 0.4em; align-items: flex-end; height: 1.4em; }
+.blora-ink-loading span { width: 0.5em; height: 0.5em; background: var(--blora-ink); border-radius: 50%; animation: blora-ink-drop 1.4s ease-in-out infinite; }
+.blora-ink-loading span:nth-child(2) { animation-delay: 0.2s; background: var(--blora-ink-mid); }
+.blora-ink-loading span:nth-child(3) { animation-delay: 0.4s; background: var(--blora-ink-mist); }
+.blora-ink-loading span:nth-child(4) { animation-delay: 0.6s; background: var(--blora-seal); }
+
+/* —— 骨架屏 Skeleton —— */
+.blora-skeleton { display: block; background: linear-gradient(90deg, var(--blora-surface-3) 0%, var(--blora-surface-2) 50%, var(--blora-surface-3) 100%); background-size: 200% 100%; border-radius: var(--blora-radius-sm); animation: blora-shimmer 1.6s ease-in-out infinite; }
+.blora-skeleton--text { height: 0.9em; margin-bottom: 0.4em; }
+.blora-skeleton--title { height: 1.5em; width: 60%; margin-bottom: 0.6em; }
+.blora-skeleton--circle { width: 2.5em; height: 2.5em; border-radius: 50%; }
+.blora-skeleton--block { height: 6em; border-radius: var(--blora-radius-md); }
+
+/* =========================================================================
+   10. 导航 · Navigation
+   ========================================================================= */
+/* —— 顶栏 Navbar —— */
+.blora-navbar {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--blora-space-5);
+  padding: var(--blora-space-4) var(--blora-space-6);
+  background: rgba(245,241,232,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: var(--blora-border);
+  position: sticky; top: 0; z-index: var(--blora-z-sticky);
+}
+.blora-navbar__brand { display: flex; align-items: center; gap: var(--blora-space-3); font-family: var(--blora-font-serif); font-size: var(--blora-text-lg); font-weight: 600; color: var(--blora-ink); }
+.blora-navbar__menu { display: flex; gap: var(--blora-space-2); }
+.blora-navbar__link { padding: 0.4em 0.9em; font-size: var(--blora-text-sm); color: var(--blora-ink-mid); border-radius: var(--blora-radius-md); transition: all var(--blora-dur-fast) var(--blora-ease); }
+.blora-navbar__link:hover { color: var(--blora-ink); background: var(--blora-surface-2); }
+.blora-navbar__link.is-active { color: var(--blora-seal); font-weight: 500; }
+
+/* —— 标签页 Tabs —— */
+.blora-tabs { display: flex; flex-direction: column; }
+.blora-tabs__nav { display: flex; gap: var(--blora-space-1); border-bottom: 1px solid var(--blora-ink-ghost); position: relative; }
+.blora-tabs__tab { padding: 0.7em 1.1em; font-size: var(--blora-text-sm); color: var(--blora-ink-light); border-bottom: 2px solid transparent; margin-bottom: -1px; cursor: pointer; transition: all var(--blora-dur-fast) var(--blora-ease); }
+.blora-tabs__tab:hover { color: var(--blora-ink); }
+.blora-tabs__tab.is-active { color: var(--blora-seal); border-bottom-color: var(--blora-seal); font-weight: 500; }
+.blora-tabs__tab.is-disabled { color: var(--blora-ink-faint); cursor: not-allowed; }
+.blora-tabs__panel { padding-top: var(--blora-space-5); }
+.blora-tabs--pills .blora-tabs__nav { border-bottom: none; gap: var(--blora-space-2); }
+.blora-tabs--pills .blora-tabs__tab { border-bottom: none; border-radius: var(--blora-radius-full); padding: 0.4em 1em; }
+.blora-tabs--pills .blora-tabs__tab.is-active { background: var(--blora-seal); color: #FBF8F0; }
+.blora-tabs--vert { flex-direction: row; }
+.blora-tabs--vert .blora-tabs__nav { flex-direction: column; border-bottom: none; border-right: 1px solid var(--blora-ink-ghost); padding-right: var(--blora-space-1); }
+.blora-tabs--vert .blora-tabs__tab { border-bottom: none; border-right: 2px solid transparent; margin-bottom: 0; margin-right: -1px; }
+.blora-tabs--vert .blora-tabs__tab.is-active { border-right-color: var(--blora-seal); }
+.blora-tabs--vert .blora-tabs__panel { padding-top: 0; padding-left: var(--blora-space-6); flex: 1; }
+
+/* —— 面包屑 Breadcrumb —— */
+.blora-breadcrumb { display: flex; align-items: center; gap: var(--blora-space-2); font-size: var(--blora-text-sm); color: var(--blora-ink-mist); flex-wrap: wrap; }
+.blora-breadcrumb a { color: var(--blora-ink-light); }
+.blora-breadcrumb a:hover { color: var(--blora-seal); }
+.blora-breadcrumb__sep { color: var(--blora-ink-faint); }
+.blora-breadcrumb__current { color: var(--blora-ink-deep); font-weight: 500; }
+
+/* —— 分页 Pagination —— */
+.blora-pagination { display: flex; align-items: center; gap: var(--blora-space-1); }
+.blora-pagination__item { min-width: 2em; height: 2em; padding: 0 0.5em; display: inline-flex; align-items: center; justify-content: center; font-size: var(--blora-text-sm); color: var(--blora-ink-mid); border: 1px solid transparent; border-radius: var(--blora-radius-md); cursor: pointer; transition: all var(--blora-dur-fast) var(--blora-ease); }
+.blora-pagination__item:hover { background: var(--blora-surface-2); color: var(--blora-ink); }
+.blora-pagination__item.is-active { background: var(--blora-seal); color: #FBF8F0; font-weight: 600; box-shadow: var(--blora-shadow-seal); }
+.blora-pagination__item.is-disabled { color: var(--blora-ink-faint); cursor: not-allowed; pointer-events: none; }
+.blora-pagination__ellipsis { color: var(--blora-ink-mist); padding: 0 var(--blora-space-1); }
+
+/* —— 步骤 Steps —— */
+.blora-steps { display: flex; align-items: flex-start; gap: 0; }
+.blora-step { flex: 1; display: flex; flex-direction: column; gap: var(--blora-space-3); position: relative; padding-right: var(--blora-space-5); }
+.blora-step:last-child { flex: 0; padding-right: 0; }
+.blora-step__head { display: flex; align-items: center; gap: var(--blora-space-3); }
+.blora-step__icon { width: 2em; height: 2em; flex: none; display: grid; place-items: center; border-radius: 50%; background: var(--blora-surface-3); color: var(--blora-ink-mist); font-family: var(--blora-font-serif); font-weight: 600; font-size: var(--blora-text-sm); border: 1px solid var(--blora-ink-ghost); z-index: 1; }
+.blora-step__line { position: absolute; top: 1em; left: 2em; right: var(--blora-space-5); height: 1px; background: var(--blora-ink-ghost); }
+.blora-step:last-child .blora-step__line { display: none; }
+.blora-step.is-active .blora-step__icon { background: var(--blora-seal); color: #FBF8F0; border-color: var(--blora-seal); box-shadow: var(--blora-shadow-seal); }
+.blora-step.is-done .blora-step__icon { background: var(--blora-moss); color: #FBF8F0; border-color: var(--blora-moss); }
+.blora-step.is-done .blora-step__line { background: var(--blora-moss); }
+.blora-step.is-active .blora-step__line { background: linear-gradient(90deg, var(--blora-moss) 0%, var(--blora-ink-ghost) 60%); }
+.blora-step__title { font-size: var(--blora-text-sm); font-weight: 500; color: var(--blora-ink-deep); }
+.blora-step__desc { font-size: var(--blora-text-xs); color: var(--blora-ink-mist); }
+.blora-step.is-active .blora-step__title { color: var(--blora-seal); }
+
+/* —— 侧栏 Menu —— */
+.blora-menu { display: flex; flex-direction: column; gap: 2px; padding: var(--blora-space-3); }
+.blora-menu__item { display: flex; align-items: center; gap: var(--blora-space-3); padding: 0.6em 0.9em; font-size: var(--blora-text-sm); color: var(--blora-ink-mid); border-radius: var(--blora-radius-md); cursor: pointer; transition: all var(--blora-dur-fast) var(--blora-ease); }
+.blora-menu__item:hover { background: var(--blora-surface-2); color: var(--blora-ink); }
+.blora-menu__item.is-active { background: rgba(160,57,46,0.08); color: var(--blora-seal); font-weight: 500; }
+.blora-menu__item.is-disabled { color: var(--blora-ink-faint); cursor: not-allowed; }
+.blora-menu__icon { flex: none; width: 1.2em; }
+.blora-menu__sub { display: none; flex-direction: column; padding-left: var(--blora-space-6); margin-top: 2px; }
+.blora-menu__item.is-open + .blora-menu__sub { display: flex; }
+.blora-menu__group-label { font-size: var(--blora-text-xs); text-transform: uppercase; letter-spacing: var(--blora-tracking-caps); color: var(--blora-ink-faint); padding: var(--blora-space-3) 0.9em var(--blora-space-1); }
+
+/* =========================================================================
+   11. 数据展示 · Data Display
+   ========================================================================= */
+/* —— 表格 Table —— */
+.blora-table-wrap { overflow-x: auto; border: var(--blora-border); border-radius: var(--blora-radius-lg); background: var(--blora-surface-1); }
+.blora-table { width: 100%; border-collapse: collapse; font-size: var(--blora-text-sm); }
+.blora-table thead th { padding: 0.85em 1em; text-align: left; font-weight: 600; color: var(--blora-ink-deep); background: var(--blora-surface-2); border-bottom: 1px solid var(--blora-ink-ghost); white-space: nowrap; }
+.blora-table tbody td { padding: 0.85em 1em; color: var(--blora-ink-mid); border-bottom: 1px solid var(--blora-ink-ghost); }
+.blora-table tbody tr:last-child td { border-bottom: none; }
+.blora-table tbody tr { transition: background var(--blora-dur-fast) var(--blora-ease); }
+.blora-table tbody tr:hover { background: var(--blora-surface-2); }
+.blora-table--striped tbody tr:nth-child(odd) { background: var(--blora-surface-2); }
+.blora-table--striped tbody tr:nth-child(odd):hover { background: var(--blora-surface-3); }
+.blora-table__caption { padding: var(--blora-space-3) 1em; font-size: var(--blora-text-xs); color: var(--blora-ink-mist); }
+.blora-table-sort { cursor: pointer; user-select: none; }
+.blora-table-sort:hover { color: var(--blora-seal); }
+
+/* —— 列表 List —— */
+.blora-list { display: flex; flex-direction: column; }
+.blora-list__item { display: flex; align-items: center; gap: var(--blora-space-3); padding: var(--blora-space-3) var(--blora-space-4); border-bottom: 1px solid var(--blora-ink-ghost); transition: background var(--blora-dur-fast) var(--blora-ease); }
+.blora-list__item:last-child { border-bottom: none; }
+.blora-list__item:hover { background: var(--blora-surface-2); }
+.blora-list--hover .blora-list__item { cursor: pointer; }
+.blora-list__meta { flex: 1; min-width: 0; }
+.blora-list__title { font-size: var(--blora-text-sm); font-weight: 500; color: var(--blora-ink-deep); }
+.blora-list__desc { font-size: var(--blora-text-xs); color: var(--blora-ink-mist); margin-top: 0.15em; }
+
+/* —— 折叠面板 Collapse / Accordion —— */
+.blora-collapse { border: var(--blora-border); border-radius: var(--blora-radius-md); background: var(--blora-surface-1); overflow: hidden; }
+.blora-collapse__item { border-bottom: 1px solid var(--blora-ink-ghost); }
+.blora-collapse__item:last-child { border-bottom: none; }
+.blora-collapse__head { display: flex; align-items: center; justify-content: space-between; padding: 0.85em 1.1em; cursor: pointer; font-size: var(--blora-text-sm); font-weight: 500; color: var(--blora-ink-deep); transition: background var(--blora-dur-fast) var(--blora-ease); }
+.blora-collapse__head:hover { background: var(--blora-surface-2); }
+.blora-collapse__icon { transition: transform var(--blora-dur-base) var(--blora-ease); color: var(--blora-ink-mist); display: inline-flex; }
+.blora-collapse__item.is-open .blora-collapse__icon { transform: rotate(90deg); }
+.blora-collapse__body { overflow: hidden; max-height: 0; transition: max-height var(--blora-dur-base) var(--blora-ease); }
+.blora-collapse__item.is-open .blora-collapse__body { max-height: var(--blora-collapse-h, 400px); }
+.blora-collapse__content { padding: 0 var(--blora-space-6) var(--blora-space-5); color: var(--blora-ink-mid); font-size: var(--blora-text-sm); }
+
+/* —— 时间轴 Timeline —— */
+.blora-timeline { position: relative; padding-left: var(--blora-space-7); }
+.blora-timeline::before { content: ""; position: absolute; left: 0.6em; top: 0.4em; bottom: 0.4em; width: 1px; background: var(--blora-ink-ghost); }
+.blora-timeline__item { position: relative; padding-bottom: var(--blora-space-6); }
+.blora-timeline__item:last-child { padding-bottom: 0; }
+.blora-timeline__dot { position: absolute; left: calc(-1 * var(--blora-space-7) + 0.15em); top: 0.3em; width: 0.9em; height: 0.9em; border-radius: 50%; background: var(--blora-surface-1); border: 2px solid var(--blora-ink-mist); }
+.blora-timeline__dot--seal { border-color: var(--blora-seal); background: var(--blora-seal); }
+.blora-timeline__dot--moss { border-color: var(--blora-moss); background: var(--blora-moss); }
+.blora-timeline__time { font-size: var(--blora-text-xs); color: var(--blora-ink-mist); font-family: var(--blora-font-mono); }
+.blora-timeline__title { font-size: var(--blora-text-sm); font-weight: 500; color: var(--blora-ink-deep); margin-top: 0.2em; }
+.blora-timeline__desc { font-size: var(--blora-text-xs); color: var(--blora-ink-light); margin-top: 0.3em; }
+
+/* —— 树 Tree —— */
+.blora-tree { font-size: var(--blora-text-sm); }
+.blora-tree__node { display: flex; align-items: center; gap: var(--blora-space-2); padding: 0.35em 0.5em; border-radius: var(--blora-radius-sm); cursor: pointer; transition: background var(--blora-dur-fast) var(--blora-ease); }
+.blora-tree__node:hover { background: var(--blora-surface-2); }
+.blora-tree__node.is-selected { background: rgba(160,57,46,0.08); color: var(--blora-seal); }
+.blora-tree__toggle { width: 1em; color: var(--blora-ink-mist); transition: transform var(--blora-dur-fast) var(--blora-ease); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex: none; user-select: none; }
+.blora-tree__toggle:hover { color: var(--blora-ink); }
+.blora-tree__node.is-open > .blora-tree__toggle { transform: rotate(90deg); }
+.blora-tree__children { padding-left: var(--blora-space-5); display: none; }
+.blora-tree__node.is-open + .blora-tree__children { display: block; }
+
+/* —— 统计 Statistic —— */
+.blora-stat { display: flex; flex-direction: column; gap: var(--blora-space-1); }
+.blora-stat__label { font-size: var(--blora-text-xs); text-transform: uppercase; letter-spacing: var(--blora-tracking-caps); color: var(--blora-ink-mist); }
+.blora-stat__value { font-family: var(--blora-font-serif); font-size: var(--blora-text-3xl); font-weight: 600; color: var(--blora-ink); line-height: 1; }
+.blora-stat__trend { font-size: var(--blora-text-xs); display: inline-flex; align-items: center; gap: 0.3em; }
+.blora-stat__trend--up { color: var(--blora-moss); }
+.blora-stat__trend--down { color: var(--blora-seal); }
+.blora-stat__suffix { font-size: var(--blora-text-base); color: var(--blora-ink-light); margin-left: 0.2em; }
+
+/* —— 描述列表 Descriptions —— */
+.blora-descriptions { width: 100%; border-collapse: collapse; font-size: var(--blora-text-sm); }
+.blora-descriptions th, .blora-descriptions td { padding: 0.7em 1em; border: 1px solid var(--blora-ink-ghost); }
+.blora-descriptions th { background: var(--blora-surface-2); color: var(--blora-ink-mist); font-weight: 500; text-align: left; width: 12em; }
+.blora-descriptions td { color: var(--blora-ink-mid); }
+
+/* —— 轮播 Carousel —— */
+.blora-carousel { position: relative; overflow: hidden; border-radius: var(--blora-radius-lg); }
+.blora-carousel__track { display: flex; transition: transform var(--blora-dur-slow) var(--blora-ease); }
+.blora-carousel__slide { flex: 0 0 100%; }
+.blora-carousel__arrow { position: absolute; top: 50%; transform: translateY(-50%); width: 2.6em; height: 2.6em; border-radius: 50%; background: rgba(28,26,23,0.4); color: #FBF8F0; display: grid; place-items: center; cursor: pointer; transition: background var(--blora-dur-fast) var(--blora-ease); backdrop-filter: blur(4px); }
+.blora-carousel__arrow svg { width: 22px; height: 22px; display: block; }
+.blora-carousel__arrow:hover { background: rgba(28,26,23,0.7); }
+.blora-carousel__arrow--prev { left: var(--blora-space-3); }
+.blora-carousel__arrow--next { right: var(--blora-space-3); }
+.blora-carousel__dots { position: absolute; bottom: var(--blora-space-3); left: 50%; transform: translateX(-50%); display: flex; gap: var(--blora-space-2); }
+.blora-carousel__dot { width: 0.6em; height: 0.6em; border-radius: 50%; background: rgba(245,241,232,0.6); cursor: pointer; transition: all var(--blora-dur-fast) var(--blora-ease); }
+.blora-carousel__dot.is-active { background: #FBF8F0; width: 1.6em; border-radius: var(--blora-radius-full); }
+
+/* —— 图片占位 / Image —— */
+.blora-image { position: relative; display: inline-block; border-radius: var(--blora-radius-md); overflow: hidden; background: var(--blora-surface-3); }
+.blora-image img { display: block; width: 100%; transition: transform var(--blora-dur-slow) var(--blora-ease); }
+.blora-image--hover:hover img { transform: scale(1.04); }
+.blora-image__cap { position: absolute; left: 0; right: 0; bottom: 0; padding: var(--blora-space-4); background: linear-gradient(transparent, rgba(28,26,23,0.7)); color: #FBF8F0; font-size: var(--blora-text-sm); }
+.blora-image--frame { padding: var(--blora-space-2); background: var(--blora-surface-1); border: 1px solid var(--blora-ink-ghost); }
+.blora-image--frame img { border-radius: var(--blora-radius-sm); }
+
+/* —— 空状态 Empty —— */
+.blora-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--blora-space-3); padding: var(--blora-space-9) var(--blora-space-5); text-align: center; color: var(--blora-ink-mist); }
+.blora-empty__icon { font-size: 3em; color: var(--blora-ink-faint); opacity: 0.6; }
+.blora-empty__title { font-family: var(--blora-font-serif); font-size: var(--blora-text-lg); color: var(--blora-ink-light); }
+.blora-empty__desc { font-size: var(--blora-text-sm); }
+
+/* —— 结果 Result —— */
+.blora-result { display: flex; flex-direction: column; align-items: center; gap: var(--blora-space-3); padding: var(--blora-space-9) var(--blora-space-5); text-align: center; }
+.blora-result__icon { font-size: 3.5em; }
+.blora-result--success .blora-result__icon { color: var(--blora-moss); }
+.blora-result--warning .blora-result__icon { color: var(--blora-gold); }
+.blora-result--error .blora-result__icon   { color: var(--blora-seal); }
+.blora-result--info .blora-result__icon    { color: var(--blora-indigo); }
+.blora-result__title { font-family: var(--blora-font-serif); font-size: var(--blora-text-xl); color: var(--blora-ink); }
+.blora-result__desc { font-size: var(--blora-text-sm); color: var(--blora-ink-light); }
+
+/* —— 日历 Calendar —— */
+.blora-calendar { background: var(--blora-surface-1); border: var(--blora-border); border-radius: var(--blora-radius-lg); padding: var(--blora-space-4); }
+.blora-calendar__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--blora-space-4); }
+.blora-calendar__title { font-family: var(--blora-font-serif); font-size: var(--blora-text-lg); color: var(--blora-ink); font-weight: 600; cursor: pointer; padding: 0.2em 0.6em; border-radius: var(--blora-radius-sm); transition: all var(--blora-dur-fast) var(--blora-ease); user-select: none; }
+.blora-calendar__title:hover { background: var(--blora-surface-2); color: var(--blora-seal); }
+.blora-calendar__grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+.blora-calendar__grid--months { grid-template-columns: repeat(3, 1fr); }
+.blora-calendar__grid--years  { grid-template-columns: repeat(4, 1fr); }
+.blora-calendar__dow { text-align: center; font-size: var(--blora-text-xs); text-transform: uppercase; letter-spacing: var(--blora-tracking-caps); color: var(--blora-ink-mist); padding: var(--blora-space-2) 0; }
+.blora-calendar__cell { aspect-ratio: 1; display: grid; place-items: center; font-size: var(--blora-text-sm); color: var(--blora-ink-mid); border-radius: var(--blora-radius-sm); cursor: pointer; transition: all var(--blora-dur-fast) var(--blora-ease); position: relative; }
+.blora-calendar__cell--month, .blora-calendar__cell--year { aspect-ratio: unset; padding: 0.8em 0; }
+.blora-calendar__cell:hover { background: var(--blora-surface-2); }
+.blora-calendar__cell.is-other { color: var(--blora-ink-faint); }
+.blora-calendar__cell.is-today { font-weight: 700; color: var(--blora-seal); }
+.blora-calendar__cell.is-today::after { content: ""; position: absolute; bottom: 0.2em; left: 50%; transform: translateX(-50%); width: 0.3em; height: 0.3em; border-radius: 50%; background: var(--blora-seal); }
+.blora-calendar__cell.is-selected { background: var(--blora-seal); color: #FBF8F0; }
+.blora-calendar__cell.is-selected::after { background: #FBF8F0; }
+.blora-calendar__cell .blora-dot { position: absolute; top: 0.2em; right: 0.3em; width: 0.35em; height: 0.35em; }
+
+/* —— 穿梭框 Transfer —— */
+.blora-transfer { display: flex; gap: var(--blora-space-3); align-items: center; }
+.blora-transfer__panel { flex: 1; border: var(--blora-border); border-radius: var(--blora-radius-md); background: var(--blora-surface-1); display: flex; flex-direction: column; max-height: 240px; }
+.blora-transfer__head { padding: var(--blora-space-3) var(--blora-space-4); border-bottom: 1px solid var(--blora-ink-ghost); font-size: var(--blora-text-sm); font-weight: 500; }
+.blora-transfer__list { flex: 1; overflow-y: auto; padding: var(--blora-space-2); }
+.blora-transfer__row { display: flex; align-items: center; gap: var(--blora-space-2); padding: 0.4em 0.5em; font-size: var(--blora-text-sm); color: var(--blora-ink-mid); border-radius: var(--blora-radius-sm); cursor: pointer; user-select: none; }
+.blora-transfer__row:hover { background: var(--blora-surface-2); }
+.blora-transfer__row input[type="checkbox"] { position: absolute; opacity: 0; pointer-events: none; }
+.blora-transfer__check {
+  width: 1.15em; height: 1.15em; flex: none;
+  border: 1.5px solid var(--blora-ink-mist); border-radius: var(--blora-radius-xs);
+  background: var(--blora-surface-1);
+  display: grid; place-items: center;
+  transition: all var(--blora-dur-fast) var(--blora-ease);
+  position: relative;
+}
+.blora-transfer__check::after {
+  content: ""; width: 0.72em; height: 0.72em;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FBF8F0' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E") center/contain no-repeat;
+  opacity: 0; transform: scale(0.4); transition: all var(--blora-dur-fast) var(--blora-ease-overshoot);
+}
+.blora-transfer__row input:checked + .blora-transfer__check { background: var(--blora-seal); border-color: var(--blora-seal); }
+.blora-transfer__row input:checked + .blora-transfer__check::after { opacity: 1; transform: scale(1); }
+.blora-transfer__row input:focus-visible + .blora-transfer__check { box-shadow: 0 0 0 3px rgba(160,57,46,0.18); }
+.blora-transfer__row input:disabled + .blora-transfer__check { opacity: 0.4; }
+.blora-transfer__actions { display: flex; flex-direction: column; gap: var(--blora-space-2); }
+
+/* —— 级联选择 Cascader —— */
+.blora-cascader { display: flex; border: var(--blora-border); border-radius: var(--blora-radius-md); background: var(--blora-surface-1); overflow: hidden; }
+.blora-cascader__col { min-width: 140px; max-height: 240px; overflow-y: auto; border-right: 1px solid var(--blora-ink-ghost); padding: var(--blora-space-2); flex: none; }
+.blora-cascader__col:last-child { border-right: none; }
+.blora-cascader__opt { padding: 0.4em 0.6em; font-size: var(--blora-text-sm); color: var(--blora-ink-mid); border-radius: var(--blora-radius-sm); cursor: pointer; display: flex; align-items: center; }
+.blora-cascader__opt:hover { background: var(--blora-surface-2); }
+.blora-cascader__opt.is-selected { background: rgba(160,57,46,0.08); color: var(--blora-seal); font-weight: 500; }
+
+/* =========================================================================
+   12. 反馈 · Feedback
+   ========================================================================= */
+/* —— 警告条 Alert —— */
+.blora-alert { display: flex; align-items: flex-start; gap: var(--blora-space-3); padding: var(--blora-space-4) var(--blora-space-5); border-radius: var(--blora-radius-md); border: 1px solid; font-size: var(--blora-text-sm); }
+.blora-alert__icon { flex: none; font-size: 1.2em; }
+.blora-alert__body { flex: 1; }
+.blora-alert__title { font-weight: 600; margin-bottom: 0.2em; }
+.blora-alert__desc { color: inherit; opacity: 0.85; font-size: var(--blora-text-xs); }
+.blora-alert__close { color: currentColor; opacity: 0.5; cursor: pointer; flex: none; display: inline-flex; align-items: center; }
+.blora-alert__close:hover { opacity: 1; }
+.blora-alert__close svg { display: block; }
+.blora-alert--info    { background: rgba(61,74,92,0.06); color: var(--blora-indigo); border-color: rgba(61,74,92,0.2); }
+.blora-alert--success { background: rgba(90,123,107,0.06); color: var(--blora-moss); border-color: rgba(90,123,107,0.2); }
+.blora-alert--warning { background: rgba(184,153,104,0.08); color: var(--blora-gold); border-color: rgba(184,153,104,0.3); }
+.blora-alert--danger  { background: rgba(160,57,46,0.06); color: var(--blora-seal); border-color: rgba(160,57,46,0.2); }
+.blora-alert--ghost { background: transparent; }
+
+/* —— 横幅 Banner —— */
+.blora-banner { display: flex; align-items: center; gap: var(--blora-space-4); padding: var(--blora-space-5) var(--blora-space-6); border-radius: var(--blora-radius-lg); background: var(--blora-ink-deep); color: #FBF8F0; position: relative; overflow: hidden; }
+.blora-banner::before { content: ""; position: absolute; right: -20%; top: -50%; width: 60%; height: 200%; background: radial-gradient(ellipse, rgba(160,57,46,0.25) 0%, transparent 70%); }
+.blora-banner__body { flex: 1; z-index: 1; }
+.blora-banner__title { font-family: var(--blora-font-serif); font-size: var(--blora-text-xl); margin-bottom: var(--blora-space-1); }
+.blora-banner__desc { font-size: var(--blora-text-sm); opacity: 0.85; }
+.blora-banner__actions { z-index: 1; display: flex; gap: var(--blora-space-2); }
+
+/* —— 消息提示 Message (inline) —— */
+.blora-message { display: inline-flex; align-items: center; gap: var(--blora-space-3); padding: 0.7em 1.2em; background: var(--blora-surface-1); border: 1px solid var(--blora-ink-ghost); border-radius: var(--blora-radius-full); box-shadow: var(--blora-shadow-3); font-size: var(--blora-text-sm); }
+.blora-message__icon { font-size: 1.1em; }
+.blora-message--success .blora-message__icon { color: var(--blora-moss); }
+.blora-message--warning .blora-message__icon { color: var(--blora-gold); }
+.blora-message--danger .blora-message__icon  { color: var(--blora-seal); }
+.blora-message--info .blora-message__icon    { color: var(--blora-indigo); }
+
+/* —— 通知 Notification —— */
+.blora-notification { display: flex; gap: var(--blora-space-3); padding: var(--blora-space-4) var(--blora-space-5); background: var(--blora-surface-1); border: 1px solid var(--blora-ink-ghost); border-radius: var(--blora-radius-lg); box-shadow: var(--blora-shadow-3); max-width: 360px; }
+.blora-notification__icon { font-size: 1.3em; flex: none; }
+.blora-notification--success .blora-notification__icon { color: var(--blora-moss); }
+.blora-notification--warning .blora-notification__icon { color: var(--blora-gold); }
+.blora-notification--danger .blora-notification__icon  { color: var(--blora-seal); }
+.blora-notification__title { font-weight: 600; font-size: var(--blora-text-sm); color: var(--blora-ink-deep); }
+.blora-notification__desc { font-size: var(--blora-text-xs); color: var(--blora-ink-light); margin-top: 0.2em; }
+.blora-notification__close { color: var(--blora-ink-mist); cursor: pointer; flex: none; align-self: flex-start; display: inline-flex; align-items: center; }
+.blora-notification__close:hover { color: var(--blora-ink); }
+.blora-notification__close svg { display: block; }
+
+/* —— 提示文字 Tooltip —— */
+.blora-tooltip { position: relative; display: inline-flex; }
+.blora-tooltip__bubble { position: absolute; bottom: calc(100% + 0.5em); left: 50%; transform: translateX(-50%) translateY(4px); padding: 0.4em 0.8em; background: var(--blora-ink-deep); color: #FBF8F0; font-size: var(--blora-text-xs); border-radius: var(--blora-radius-sm); white-space: nowrap; opacity: 0; pointer-events: none; transition: all var(--blora-dur-fast) var(--blora-ease); z-index: var(--blora-z-dropdown); box-shadow: var(--blora-shadow-3); }
+.blora-tooltip__bubble::after { content: ""; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 5px solid transparent; border-top-color: var(--blora-ink-deep); }
+.blora-tooltip:hover .blora-tooltip__bubble, .blora-tooltip:focus-within .blora-tooltip__bubble { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* —— 气泡 Popover —— */
+.blora-popover { position: relative; display: inline-flex; }
+.blora-popover__panel { position: absolute; top: calc(100% + 0.5em); left: 50%; transform: translateX(-50%) translateY(4px); min-width: 200px; padding: var(--blora-space-4); background: var(--blora-surface-1); border: var(--blora-border); border-radius: var(--blora-radius-md); box-shadow: var(--blora-shadow-3); opacity: 0; pointer-events: none; transition: all var(--blora-dur-base) var(--blora-ease); z-index: var(--blora-z-dropdown); }
+.blora-popover.is-open .blora-popover__panel { opacity: 1; pointer-events: auto; transform: translateX(-50%) translateY(0); }
+.blora-popover__title { font-family: var(--blora-font-serif); font-size: var(--blora-text-sm); font-weight: 600; color: var(--blora-ink-deep); margin-bottom: var(--blora-space-2); }
+.blora-popover__body { font-size: var(--blora-text-xs); color: var(--blora-ink-mid); }
+
+/* —— 确认气泡 Popconfirm —— */
+.blora-popconfirm__title { font-size: var(--blora-text-sm); color: var(--blora-ink-deep); margin-bottom: var(--blora-space-3); }
+
+/* —— 模态框 Modal —— */
+.blora-modal { position: fixed; inset: 0; z-index: var(--blora-z-modal); display: none; align-items: center; justify-content: center; padding: var(--blora-space-5); }
+.blora-modal.is-open { display: flex; }
+.blora-modal__mask { position: absolute; inset: 0; background: rgba(28,26,23,0.5); backdrop-filter: blur(4px); animation: blora-fade-in var(--blora-dur-base) var(--blora-ease); }
+.blora-modal__dialog { position: relative; background: var(--blora-surface-1); border-radius: var(--blora-radius-xl); box-shadow: var(--blora-shadow-4); max-width: 520px; width: 100%; max-height: calc(100vh - 2 * var(--blora-space-8)); overflow-y: auto; animation: blora-pop-in var(--blora-dur-base) var(--blora-ease-overshoot); }
+.blora-modal__head { display: flex; align-items: center; justify-content: space-between; padding: var(--blora-space-5) var(--blora-space-6); border-bottom: var(--blora-border); }
+.blora-modal__title { font-family: var(--blora-font-serif); font-size: var(--blora-text-xl); color: var(--blora-ink); }
+.blora-modal__close { color: var(--blora-ink-mist); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; padding: 0.2em; border-radius: var(--blora-radius-sm); transition: all var(--blora-dur-fast) var(--blora-ease); }
+.blora-modal__close:hover { color: var(--blora-ink); background: var(--blora-surface-2); }
+.blora-modal__close svg { display: block; }
+.blora-modal__body { padding: var(--blora-space-6); color: var(--blora-ink-mid); font-size: var(--blora-text-sm); }
+.blora-modal__foot { padding: var(--blora-space-4) var(--blora-space-6); border-top: var(--blora-border); display: flex; justify-content: flex-end; gap: var(--blora-space-2); }
+.blora-modal--lg .blora-modal__dialog { max-width: 800px; }
+.blora-modal--sm .blora-modal__dialog { max-width: 400px; }
+
+/* —— 抽屉 Drawer —— */
+.blora-drawer { position: fixed; inset: 0; z-index: var(--blora-z-drawer); display: none; }
+.blora-drawer.is-open { display: block; }
+.blora-drawer__mask { position: absolute; inset: 0; background: rgba(28,26,23,0.45); backdrop-filter: blur(3px); animation: blora-fade-in var(--blora-dur-base) var(--blora-ease); }
+.blora-drawer__panel { position: absolute; top: 0; bottom: 0; background: var(--blora-surface-1); box-shadow: var(--blora-shadow-4); display: flex; flex-direction: column; }
+.blora-drawer--right .blora-drawer__panel { right: 0; width: 420px; max-width: 90vw; animation: blora-slide-right var(--blora-dur-slow) var(--blora-ease); }
+.blora-drawer--left  .blora-drawer__panel { left: 0; width: 420px; max-width: 90vw; animation: blora-slide-left var(--blora-dur-slow) var(--blora-ease); }
+.blora-drawer--top   .blora-drawer__panel { left: 0; right: 0; top: 0; bottom: auto; height: auto; max-height: 70vh; animation: blora-slide-down var(--blora-dur-slow) var(--blora-ease); }
+.blora-drawer--bottom .blora-drawer__panel { left: 0; right: 0; bottom: 0; top: auto; height: auto; max-height: 70vh; animation: blora-slide-up var(--blora-dur-slow) var(--blora-ease); }
+.blora-drawer__head { padding: var(--blora-space-5) var(--blora-space-6); border-bottom: var(--blora-border); display: flex; align-items: center; justify-content: space-between; }
+.blora-drawer__title { font-family: var(--blora-font-serif); font-size: var(--blora-text-lg); color: var(--blora-ink); }
+.blora-drawer__body { flex: 1; padding: var(--blora-space-6); overflow-y: auto; color: var(--blora-ink-mid); }
+.blora-drawer__foot { padding: var(--blora-space-4) var(--blora-space-6); border-top: var(--blora-border); display: flex; gap: var(--blora-space-2); justify-content: flex-end; }
+
+/* —— Toast 容器 —— */
+.blora-toast-container { position: fixed; top: var(--blora-space-6); left: 50%; transform: translateX(-50%); z-index: var(--blora-z-toast); display: flex; flex-direction: column; gap: var(--blora-space-2); pointer-events: none; }
+.blora-toast { pointer-events: auto; animation: blora-toast-in var(--blora-dur-base) var(--blora-ease-overshoot); }
+.blora-toast.is-leaving { animation: blora-toast-out var(--blora-dur-base) var(--blora-ease) forwards; }
+
+/* =========================================================================
+   13. 工具与杂项 · Utilities
+   ========================================================================= */
+.blora-center { display: grid; place-items: center; }
+.blora-text-center { text-align: center; }
+.blora-text-right  { text-align: right; }
+.blora-hide { display: none !important; }
+.blora-mt-0 { margin-top: 0; } .blora-mt-2 { margin-top: var(--blora-space-2); } .blora-mt-4 { margin-top: var(--blora-space-4); } .blora-mt-6 { margin-top: var(--blora-space-6); }
+.blora-mb-0 { margin-bottom: 0; } .blora-mb-2 { margin-bottom: var(--blora-space-2); } .blora-mb-4 { margin-bottom: var(--blora-space-4); } .blora-mb-6 { margin-bottom: var(--blora-space-6); }
+.blora-w-full { width: 100%; } .blora-w-auto { width: auto; }
+.blora-flex { display: flex; } .blora-flex-col { flex-direction: column; } .blora-flex-1 { flex: 1; }
+.blora-gap-2 { gap: var(--blora-space-2); } .blora-gap-3 { gap: var(--blora-space-3); } .blora-gap-4 { gap: var(--blora-space-4); }
+.blora-items-center { align-items: center; } .blora-justify-between { justify-content: space-between; }
+
+/* —— 灰度纸张滤镜（图片水墨化） —— */
+.blora-inkify { filter: grayscale(0.4) sepia(0.18) contrast(0.96) brightness(1.02); }
+.blora-inkify-strong { filter: grayscale(0.85) sepia(0.3) contrast(1.05); }
+
+/* —— 滚动条 · Scrollbar —— 细若游丝，不夺目 */
+* { scrollbar-width: thin; scrollbar-color: var(--blora-ink-ghost) transparent; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--blora-ink-ghost);
+  border-radius: var(--blora-radius-full);
+  border: 3px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--blora-ink-mist); background-clip: padding-box; border: 3px solid transparent; }
+::-webkit-scrollbar-corner { background: transparent; }
+
+/* =========================================================================
+   14. 暗色模式 · Dark Mode (夜墨)
+   ========================================================================= */
+.blora-dark, .blora-dark body {
+  --blora-paper:          #1B1916;
+  --blora-paper-warm:     #232017;
+  --blora-paper-cool:     #1E1C19;
+  --blora-paper-deep:     #0E0D0B;
+  --blora-surface-1:      #25221D;
+  --blora-surface-2:      #2C2823;
+  --blora-surface-3:      #36322B;
+  --blora-ink:            #F0EBDE;
+  --blora-ink-deep:       #FAF6EC;
+  --blora-ink-mid:        #D5CCB8;
+  --blora-ink-light:      #A89F8C;
+  --blora-ink-mist:       #7D7565;
+  --blora-ink-faint:      #5C5547;
+  --blora-ink-ghost:      #3F3A32;
+  --blora-shadow-1: 0 1px 2px rgba(0,0,0,0.3);
+  --blora-shadow-2: 0 2px 8px rgba(0,0,0,0.35);
+  --blora-shadow-3: 0 6px 24px rgba(0,0,0,0.45);
+  --blora-shadow-4: 0 12px 40px rgba(0,0,0,0.55);
+  /* 纸纹在暗色下改用极淡白点，纸面顶光取消，避免浅色晕染显形 */
+  --blora-grain:
+    radial-gradient(ellipse at 20% 30%, rgba(255,255,255,0.012) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(255,255,255,0.008) 0%, transparent 55%);
+  --blora-paper-tint: none;
+  --blora-shadow-inset: inset 0 1px 0 rgba(255,255,255,0.04),
+                       inset 0 -1px 0 rgba(0,0,0,0.3);
+  color-scheme: dark;
+}
+
+/* —— 暗色组件修正 —— 避免墨色反转成刺眼亮块 —— */
+/* 顶栏与遮罩：浅色 translucent 在暗色下会变成亮条，改用暗色 translucent */
+.blora-dark .blora-navbar { background: rgba(30,27,24,0.85); }
+.blora-dark .blora-modal__mask { background: rgba(0,0,0,0.62); }
+.blora-dark .blora-drawer__mask { background: rgba(0,0,0,0.58); }
+
+/* "墨色"反转的元素：在暗色下保持暗调底，不变成亮块 */
+.blora-dark .blora-btn--secondary { --btn-bg: var(--blora-surface-3); --btn-bd: var(--blora-surface-3); font-weight: 500; }
+.blora-dark .blora-btn--secondary:hover { --btn-bg: var(--blora-ink-ghost); --btn-bd: var(--blora-ink-ghost); }
+.blora-dark .blora-tag--solid { background: var(--blora-surface-3); border-color: var(--blora-surface-3); }
+.blora-dark .blora-avatar--ink { background: var(--blora-surface-3); }
+.blora-dark .blora-pre { background: #14110D; color: #E8DFC8; }
+.blora-dark .blora-pre::before { opacity: 0.45; }
+.blora-dark .blora-banner { background: #2A2520; }
+.blora-dark .blora-banner::before { background: radial-gradient(ellipse, rgba(160,57,46,0.32) 0%, transparent 70%); }
+.blora-dark .blora-tooltip__bubble { background: #14110D; border: 1px solid var(--blora-ink-ghost); }
+.blora-dark .blora-tooltip__bubble::after { border-top-color: #14110D; }
+
+/* 轮播箭头底色提亮，避免暗色下不可见 */
+.blora-dark .blora-carousel__arrow { background: rgba(255,255,255,0.1); }
+.blora-dark .blora-carousel__arrow:hover { background: rgba(255,255,255,0.2); }
+
+
+/* =========================================================================
+   15. 关键帧 · Keyframes
+   ========================================================================= */
+@keyframes blora-spin { to { transform: rotate(360deg); } }
+@keyframes blora-pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.25); } }
+@keyframes blora-shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+@keyframes blora-stripe { from { background-position: 0 0; } to { background-position: 16px 0; } }
+@keyframes blora-ink-drop {
+  0%, 100% { transform: scaleY(0.6); opacity: 0.4; }
+  50% { transform: scaleY(1.3); opacity: 1; }
+}
+@keyframes blora-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes blora-pop-in { from { opacity: 0; transform: scale(0.94) translateY(8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+@keyframes blora-slide-right { from { transform: translateX(100%); } to { transform: translateX(0); } }
+@keyframes blora-slide-left  { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+@keyframes blora-slide-down  { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+@keyframes blora-slide-up    { from { transform: translateY(100%); } to { transform: translateY(0); } }
+@keyframes blora-toast-in    { from { opacity: 0; transform: translateY(-12px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes blora-toast-out   { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-12px); } }
+
+/* —— 减少动效偏好 —— */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
