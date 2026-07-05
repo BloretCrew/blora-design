@@ -292,8 +292,24 @@
 
   /* —— Tree —— 点击整行展开/折叠 —— */
   function initTree(root) {
+    const setH = (box, h) => box.style.setProperty("--blora-tree-h", h + "px");
+    /* 从最内层往外量，保证外层 scrollHeight 里包含的是内层真实高度 */
+    const open = $$(".blora-tree__node.is-open + .blora-tree__children", root);
+    for (let i = open.length - 1; i >= 0; i--) setH(open[i], open[i].scrollHeight);
     $$(".blora-tree__node", root).forEach((node) => {
       on(node, "click", () => {
+        const next = node.nextElementSibling;
+        const children = next && next.classList.contains("blora-tree__children") ? next : null;
+        if (children) {
+          const delta = node.classList.contains("is-open")
+            ? -children.offsetHeight
+            : children.scrollHeight - children.offsetHeight;
+          setH(children, children.scrollHeight);
+          /* 祖先容器同步增减，嵌套展开不被裁剪、折叠不空等 */
+          for (let p = children.parentElement; p && !p.classList.contains("blora-tree"); p = p.parentElement) {
+            if (p.classList.contains("blora-tree__children")) setH(p, p.scrollHeight + delta);
+          }
+        }
         node.classList.toggle("is-open");
         $$(".blora-tree__node.is-selected", node.closest(".blora-tree")).forEach((n) => n !== node && n.classList.remove("is-selected"));
         node.classList.toggle("is-selected");

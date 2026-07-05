@@ -1057,11 +1057,11 @@ img { height: auto; }
 .blora-tree__node { display: flex; align-items: center; gap: var(--blora-space-2); padding: 0.35em 0.5em; border-radius: var(--blora-radius-sm); cursor: pointer; transition: background var(--blora-dur-fast) var(--blora-ease); }
 .blora-tree__node:hover { background: var(--blora-surface-2); }
 .blora-tree__node.is-selected { background: rgba(160,57,46,0.08); color: var(--blora-seal); }
-.blora-tree__toggle { width: 1em; color: var(--blora-ink-mist); transition: transform var(--blora-dur-fast) var(--blora-ease); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex: none; user-select: none; }
+.blora-tree__toggle { width: 1em; color: var(--blora-ink-mist); transition: transform var(--blora-dur-base) var(--blora-ease); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex: none; user-select: none; }
 .blora-tree__toggle:hover { color: var(--blora-ink); }
 .blora-tree__node.is-open > .blora-tree__toggle { transform: rotate(90deg); }
 .blora-tree__children { padding-left: var(--blora-space-5); max-height: 0; overflow: hidden; transition: max-height var(--blora-dur-base) var(--blora-ease); }
-.blora-tree__node.is-open + .blora-tree__children { max-height: 500px; }
+.blora-tree__node.is-open + .blora-tree__children { max-height: var(--blora-tree-h, 500px); }
 
 /* —— 统计 Statistic —— */
 .blora-stat { display: flex; flex-direction: column; gap: var(--blora-space-1); }
