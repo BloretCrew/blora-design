@@ -175,8 +175,10 @@ body {
   text-rendering: optimizeLegibility;
   font-feature-settings: "kern", "liga", "calt";
 }
-::selection { background: var(--blora-tea-light); color: var(--blora-on-accent); }
-::-moz-selection { background: var(--blora-tea-light); color: var(--blora-on-accent); }
+/* 选区必须半透明：高亮按行盒逐行绘制，不透明底色会盖住上一行字形的降部（g/y 的尾巴），
+   半透明则相邻行选区融合、被压住的字形透出；文字保持原色以保证任意底上的可读性 */
+::selection { background: color-mix(in srgb, var(--blora-tea-light) 40%, transparent); }
+::-moz-selection { background: color-mix(in srgb, var(--blora-tea-light) 40%, transparent); }
 h1, h2, h3, h4, h5, h6 { margin: 0; font-weight: 600; color: var(--blora-ink); }
 p { margin: 0; }
 a { color: var(--blora-seal); text-decoration: none; transition: color var(--blora-dur-fast) var(--blora-ease); }
