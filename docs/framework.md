@@ -10,11 +10,14 @@
 Blora 是 **零依赖** 框架：纯 CSS（约 1400 行）+ 原生 JS（未压缩约 40KB），不绑构建工具。
 
 ```bash
-# 1) 直接拷贝（推荐用于静态站）
+# 1) npm / pnpm（推荐用于团队 Web 应用）
+npm install @bloret/blora-design
+
+# 2) 直接拷贝（适合静态站）
 cp blora.css  your-project/
 cp blora.js   your-project/
 
-# 2) 或 CDN（即将上线）
+# 3) 或 CDN（发布后）
 # <link rel="stylesheet" href="https://cdn.blora.design/1.0/blora.css">
 # <script src="https://cdn.blora.design/1.0/blora.js"></script>
 ```
@@ -25,6 +28,12 @@ cp blora.js   your-project/
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="blora.js"></script>
 ```
+
+**作用域约定**
+
+- 完整页面：给 `<body>` 添加 `class="blora-page blora-scope"`，启用页面底色、字体、基础元素 reset 与组件样式。
+- 嵌入已有应用：只给 Blora 局部容器添加 `.blora-scope`，避免影响宿主应用的全局标题、链接、按钮和背景。
+- 单独使用组件类时，组件读取 `:root` 中的设计令牌；换肤优先覆写 `--blora-*`。
 
 **框架结构**
 
@@ -199,9 +208,9 @@ Blora.version;        // "1.0.0"
 
 <!-- 双滑块范围 -->
 <div class="blora-range">
-  <div class="blora-range__track"><div class="blora-range__fill" style="left:20%;right:25%;"></div></div>
-  <div class="blora-range__thumb" style="left:20%;"></div>
-  <div class="blora-range__thumb" style="left:75%;"></div>
+  <div class="blora-range__track"><div class="blora-range__fill"></div></div>
+  <div class="blora-range__thumb" data-val="20"></div>
+  <div class="blora-range__thumb" data-val="75"></div>
 </div>
 
 <!-- 评分 -->
@@ -229,7 +238,7 @@ Blora.version;        // "1.0.0"
 
 <!-- 颜色（预设色板 + 手动 Hex） -->
 <div class="blora-color-picker">
-  <div class="blora-color-swatch" data-color="#A0392E" style="background:#A0392E;"></div>
+  <div class="blora-color-swatch" data-color="#A0392E"></div>
   <div class="blora-color-panel">
     <div class="blora-color-grid"></div>
     <div class="blora-color-custom">
@@ -307,9 +316,9 @@ Blora.version;        // "1.0.0"
 ### 7. 进度与加载
 
 ```html
-<div class="blora-progress">
+<div class="blora-progress" data-value="62">
   <div class="blora-progress__label"><span>处理中</span><span>62%</span></div>
-  <div class="blora-progress__bar"><div class="blora-progress__fill" style="width:62%;"></div></div>
+  <div class="blora-progress__bar"><div class="blora-progress__fill"></div></div>
 </div>
 <!-- fill 色：--tea --moss --indigo；条纹：--striped -->
 
@@ -320,7 +329,7 @@ Blora.version;        // "1.0.0"
     <circle class="fill" cx="36" cy="36" r="30"
             stroke-dasharray="188.5" stroke-dashoffset="56.5"></circle>
   </svg>
-  <span style="position:absolute;">70%</span>
+  <span class="blora-progress__value">70%</span>
 </div>
 
 <span class="blora-spinner"></span>           <!-- 尺寸：--sm --lg -->
@@ -568,9 +577,9 @@ Blora.version;        // "1.0.0"
 ### 12. 命令面板
 
 ```html
-<div class="blora-modal" id="blora-cmdk" role="dialog" aria-modal="true">
+<div class="blora-modal blora-modal--cmdk" id="blora-cmdk" role="dialog" aria-modal="true">
   <div class="blora-modal__mask" data-blora-close></div>
-  <div class="blora-modal__dialog" style="max-width:560px;">
+  <div class="blora-modal__dialog">
     <div class="blora-modal__head">
       <div class="blora-search">… <input class="blora-input" type="search"></div>
       <button class="blora-modal__close" data-blora-close>×</button>

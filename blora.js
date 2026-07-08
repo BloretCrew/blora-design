@@ -24,6 +24,29 @@
     const d = el ? parseFloat(getComputedStyle(el).animationDuration) : 0;
     return (d ? d * 1000 : fallback) + 20;
   };
+  const escapeHTML = (value) => String(value ?? "").replace(/[&<>"']/g, (ch) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+  }[ch]));
+  const token = (name, fallback) => {
+    const value = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    return value || fallback || "";
+  };
+  const makeChevron = () => {
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("width", "10");
+    svg.setAttribute("height", "10");
+    svg.setAttribute("viewBox", "0 0 24 24");
+    svg.setAttribute("fill", "none");
+    svg.setAttribute("stroke", "currentColor");
+    svg.setAttribute("stroke-width", "2.5");
+    svg.setAttribute("stroke-linecap", "round");
+    svg.setAttribute("stroke-linejoin", "round");
+    svg.classList.add("blora-cascader__arrow");
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", "M9 18l6-6-6-6");
+    svg.appendChild(path);
+    return svg;
+  };
 
   /* —— Tabs —— 方向键 / Home / End 可达，role 与 aria-* 自动注入 —— */
   function initTabs(root) {
@@ -124,11 +147,15 @@
     m.classList.remove("is-closing");
     m.classList.add("is-open");
     document.body.style.overflow = "hidden";
-    $$("[data-blora-close]", m).forEach((b) => on(b, "click", () => closeModal(m), { once: true }));
-    on($(".blora-modal__mask", m), "click", () => closeModal(m), { once: true });
-    on(document, "keydown", function esc(e) {
-      if (e.key === "Escape") { closeModal(m); document.removeEventListener("keydown", esc); }
-    });
+    if (!m._bloraLayerClose) {
+      m._bloraLayerClose = (e) => {
+        if (e.target.closest("[data-blora-close]") || e.target.classList.contains("blora-modal__mask")) closeModal(m);
+      };
+      on(m, "click", m._bloraLayerClose);
+    }
+    if (m._bloraEsc) document.removeEventListener("keydown", m._bloraEsc);
+    m._bloraEsc = (e) => { if (e.key === "Escape") closeModal(m); };
+    document.addEventListener("keydown", m._bloraEsc);
     bindTrap(m);
     const dlg = $(".blora-modal__dialog", m);
     if (dlg) { dlg.tabIndex = -1; dlg.focus(); }
@@ -138,6 +165,10 @@
     if (!m || !m.classList.contains("is-open") || m.classList.contains("is-closing")) return;
     m.classList.add("is-closing");
     m.classList.remove("is-open");
+    if (m._bloraEsc) {
+      document.removeEventListener("keydown", m._bloraEsc);
+      m._bloraEsc = null;
+    }
     setTimeout(() => {
       m.classList.remove("is-closing");
       unlockScroll();
@@ -159,11 +190,15 @@
     d.classList.remove("is-closing");
     d.classList.add("is-open");
     document.body.style.overflow = "hidden";
-    $$("[data-blora-close]", d).forEach((b) => on(b, "click", () => closeDrawer(d), { once: true }));
-    on($(".blora-drawer__mask", d), "click", () => closeDrawer(d), { once: true });
-    on(document, "keydown", function esc(e) {
-      if (e.key === "Escape") { closeDrawer(d); document.removeEventListener("keydown", esc); }
-    });
+    if (!d._bloraLayerClose) {
+      d._bloraLayerClose = (e) => {
+        if (e.target.closest("[data-blora-close]") || e.target.classList.contains("blora-drawer__mask")) closeDrawer(d);
+      };
+      on(d, "click", d._bloraLayerClose);
+    }
+    if (d._bloraEsc) document.removeEventListener("keydown", d._bloraEsc);
+    d._bloraEsc = (e) => { if (e.key === "Escape") closeDrawer(d); };
+    document.addEventListener("keydown", d._bloraEsc);
     bindTrap(d);
     const panel = $(".blora-drawer__panel", d);
     if (panel) { panel.tabIndex = -1; panel.focus(); }
@@ -173,6 +208,10 @@
     if (!d || !d.classList.contains("is-open") || d.classList.contains("is-closing")) return;
     d.classList.add("is-closing");
     d.classList.remove("is-open");
+    if (d._bloraEsc) {
+      document.removeEventListener("keydown", d._bloraEsc);
+      d._bloraEsc = null;
+    }
     setTimeout(() => {
       d.classList.remove("is-closing");
       unlockScroll();
@@ -327,6 +366,19 @@
       on(input, "mouseup", () => tip.classList.remove("is-show"));
       on(input, "blur", () => tip.classList.remove("is-show"));
       on(window, "resize", sync);
+    });
+  }
+
+  function initProgress(root) {
+    $$(".blora-progress[data-value]", root).forEach((progress) => {
+      const fill = $(".blora-progress__fill", progress);
+      if (!fill) return;
+      const value = Math.max(0, Math.min(100, Number(progress.dataset.value) || 0));
+      fill.style.width = value + "%";
+      progress.setAttribute("role", "progressbar");
+      progress.setAttribute("aria-valuemin", "0");
+      progress.setAttribute("aria-valuemax", "100");
+      progress.setAttribute("aria-valuenow", String(value));
     });
   }
 
@@ -666,30 +718,82 @@
       if (!trigger || !menu) return;
       const opts = $$("option", sel);
       const placeholder = trigger.dataset.placeholder || "请选择";
+      const listId = menu.id || ("blora-select-" + Math.random().toString(36).slice(2));
+      menu.id = listId;
+      trigger.tabIndex = trigger.tabIndex >= 0 ? trigger.tabIndex : 0;
+      trigger.setAttribute("role", "combobox");
+      trigger.setAttribute("aria-haspopup", "listbox");
+      trigger.setAttribute("aria-controls", listId);
+      trigger.setAttribute("aria-expanded", "false");
+      menu.setAttribute("role", "listbox");
+      let activeIndex = Math.max(0, opts.findIndex((o) => o.selected && !o.disabled));
       const update = () => {
         const chosen = opts.find((o) => o.selected && !o.disabled);
         trigger.textContent = chosen ? chosen.textContent : (opts[0] && opts[0].disabled ? opts[0].textContent : placeholder);
         trigger.classList.toggle("is-placeholder", !chosen);
-        $$(".blora-select-option", menu).forEach((el) => el.classList.toggle("is-selected", el.dataset.val === (chosen ? chosen.value : "")));
+        $$(".blora-select-option", menu).forEach((el, i) => {
+          const selected = el.dataset.val === (chosen ? chosen.value : "");
+          el.classList.toggle("is-selected", selected);
+          el.classList.toggle("is-active", i === activeIndex);
+          el.setAttribute("aria-selected", String(selected));
+        });
+      };
+      const optionEls = () => $$(".blora-select-option", menu);
+      const setActive = (index) => {
+        const items = optionEls();
+        if (!items.length) return;
+        activeIndex = (index + items.length) % items.length;
+        let guard = 0;
+        while (items[activeIndex].classList.contains("is-disabled") && guard < items.length) {
+          activeIndex = (activeIndex + 1) % items.length;
+          guard++;
+        }
+        items.forEach((el, i) => el.classList.toggle("is-active", i === activeIndex));
+        items[activeIndex].scrollIntoView({ block: "nearest" });
+      };
+      const choose = (index) => {
+        const option = opts[index];
+        if (!option || option.disabled) return;
+        opts.forEach((oo) => oo.selected = oo === option);
+        sel.value = option.value;
+        activeIndex = index;
+        update();
+        close();
+        sel.dispatchEvent(new Event("change", { bubbles: true }));
       };
       opts.forEach((o) => {
         const el = document.createElement("div");
         el.className = "blora-select-option" + (o.disabled ? " is-disabled" : "") + (o.selected && !o.disabled ? " is-selected" : "");
+        el.setAttribute("role", "option");
+        if (o.disabled) el.setAttribute("aria-disabled", "true");
         el.textContent = o.textContent; el.dataset.val = o.value;
         on(el, "click", (e) => {
           e.stopPropagation();
           if (o.disabled) return;
-          opts.forEach((oo) => oo.selected = oo === o);
-          sel.value = o.value;
-          update();
-          close();
-          sel.dispatchEvent(new Event("change", { bubbles: true }));
+          choose(opts.indexOf(o));
         });
         menu.appendChild(el);
       });
-      const open = () => { trigger.classList.add("is-open"); menu.classList.add("is-open"); };
-      const close = () => { trigger.classList.remove("is-open"); menu.classList.remove("is-open"); };
+      const open = () => { trigger.classList.add("is-open"); menu.classList.add("is-open"); trigger.setAttribute("aria-expanded", "true"); setActive(activeIndex); };
+      const close = () => { trigger.classList.remove("is-open"); menu.classList.remove("is-open"); trigger.setAttribute("aria-expanded", "false"); };
       on(trigger, "click", (e) => { e.stopPropagation(); trigger.classList.contains("is-open") ? close() : open(); });
+      on(trigger, "keydown", (e) => {
+        if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+          e.preventDefault();
+          if (!trigger.classList.contains("is-open")) open();
+          setActive(activeIndex + (e.key === "ArrowDown" ? 1 : -1));
+        } else if (e.key === "Home") {
+          e.preventDefault(); open(); setActive(0);
+        } else if (e.key === "End") {
+          e.preventDefault(); open(); setActive(opts.length - 1);
+        } else if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          if (!trigger.classList.contains("is-open")) open();
+          else choose(activeIndex);
+        } else if (e.key === "Escape") {
+          close();
+        }
+      });
       on(document, "click", () => close());
       update();
     });
@@ -787,7 +891,6 @@
       const result = el.parentElement.querySelector(".blora-cascader__result");
       /* 结果前缀可由 data-prefix 配置，默认"已选：" */
       const prefix = result && result.dataset.prefix !== undefined ? result.dataset.prefix : "已选：";
-      const arrow = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.5;margin-left:auto;padding-left:0.3em;"><path d="M9 18l6-6-6-6"/></svg>';
       const render = () => {
         el.innerHTML = "";
         let level = 0;
@@ -800,7 +903,10 @@
             const opt = document.createElement("div");
             opt.className = "blora-cascader__opt" + (path[ci] && path[ci].label === item.label ? " is-selected" : "");
             const hasChild = item.children && item.children.length;
-            opt.innerHTML = "<span>" + item.label + "</span>" + (hasChild ? arrow : "");
+            const label = document.createElement("span");
+            label.textContent = item.label;
+            opt.appendChild(label);
+            if (hasChild) opt.appendChild(makeChevron());
             on(opt, "click", () => {
               path.splice(ci);
               path[ci] = item;
@@ -842,7 +948,7 @@
       let selected = null, viewYear, viewMonth, viewMode = "days";
       const today = new Date();
       const panel = document.createElement("div"); panel.className = "blora-datepicker__panel"; wrap.appendChild(panel);
-      const mask = document.createElement("div"); mask.style.cssText = "position:fixed;inset:0;z-index:calc(var(--blora-z-dropdown, 1000) - 1);display:none;"; document.body.appendChild(mask);
+      const mask = document.createElement("div"); mask.className = "blora-floating-mask"; document.body.appendChild(mask);
       const fmt = (d) => d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
       const inRange = (d) => { if (min && fmt(d) < min) return false; if (max && fmt(d) > max) return false; return true; };
       const inRangeYM = (y, m) => { const d = new Date(y, m, 1); const last = new Date(y, m + 1, 0); if (max && fmt(d) > max) return false; if (min && fmt(last) < min) return false; return true; };
@@ -853,13 +959,13 @@
       const render = () => {
         let html = '<div class="blora-datepicker__head">';
         html += '<button class="blora-datepicker__nav" data-nav="prev">' + CAL_ICON_PREV + '</button>';
-        if (viewMode === "days") html += '<span class="blora-datepicker__title" data-zoom="months">' + viewYear + LOCALE.year + " " + LOCALE.months[viewMonth] + '</span>';
-        else if (viewMode === "months") html += '<span class="blora-datepicker__title" data-zoom="years">' + viewYear + LOCALE.year + '</span>';
-        else { const decStart = Math.floor(viewYear / 10) * 10; html += '<span class="blora-datepicker__title" data-zoom="years">' + decStart + "–" + (decStart + 9) + LOCALE.year + '</span>'; }
+        if (viewMode === "days") html += '<span class="blora-datepicker__title" data-zoom="months">' + viewYear + escapeHTML(LOCALE.year) + " " + escapeHTML(LOCALE.months[viewMonth]) + '</span>';
+        else if (viewMode === "months") html += '<span class="blora-datepicker__title" data-zoom="years">' + viewYear + escapeHTML(LOCALE.year) + '</span>';
+        else { const decStart = Math.floor(viewYear / 10) * 10; html += '<span class="blora-datepicker__title" data-zoom="years">' + decStart + "–" + (decStart + 9) + escapeHTML(LOCALE.year) + '</span>'; }
         html += '<button class="blora-datepicker__nav" data-nav="next">' + CAL_ICON_NEXT + '</button></div>';
         if (viewMode === "days") {
           html += '<div class="blora-datepicker__grid">';
-          LOCALE.dow.forEach((d) => { html += '<div class="blora-datepicker__dow">' + d + '</div>'; });
+          LOCALE.dow.forEach((d) => { html += '<div class="blora-datepicker__dow">' + escapeHTML(d) + '</div>'; });
           const first = new Date(viewYear, viewMonth, 1), startDay = first.getDay(), daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate(), daysInPrev = new Date(viewYear, viewMonth, 0).getDate();
           for (let i = startDay - 1; i >= 0; i--) html += '<div class="blora-datepicker__cell is-other">' + (daysInPrev - i) + '</div>';
           for (let day = 1; day <= daysInMonth; day++) {
@@ -880,7 +986,7 @@
             if (selected && viewYear === selected.getFullYear() && m === selected.getMonth()) cls += " is-selected";
             if (viewYear === today.getFullYear() && m === today.getMonth()) cls += " is-today";
             if (!inRangeYM(viewYear, m)) cls += " is-disabled";
-            html += '<div class="' + cls + '" data-month="' + m + '">' + name + '</div>';
+            html += '<div class="' + cls + '" data-month="' + m + '">' + escapeHTML(name) + '</div>';
           });
           html += '</div>';
         } else {
@@ -896,11 +1002,11 @@
           }
           html += '</div>';
         }
-        html += '<div class="blora-datepicker__foot"><button class="blora-btn blora-btn--text blora-btn--sm" data-clear>' + LOCALE.clear + '</button><button class="blora-btn blora-btn--text blora-btn--sm" data-today>' + LOCALE.today + '</button></div>';
+        html += '<div class="blora-datepicker__foot"><button class="blora-btn blora-btn--text blora-btn--sm" data-clear>' + escapeHTML(LOCALE.clear) + '</button><button class="blora-btn blora-btn--text blora-btn--sm" data-today>' + escapeHTML(LOCALE.today) + '</button></div>';
         panel.innerHTML = html;
       };
-      const open = () => { syncFromInput(); viewMode = "days"; panel.classList.add("is-open"); mask.style.display = "block"; render(); };
-      const close = () => { panel.classList.remove("is-open"); mask.style.display = "none"; };
+      const open = () => { syncFromInput(); viewMode = "days"; panel.classList.add("is-open"); mask.classList.add("is-open"); render(); };
+      const close = () => { panel.classList.remove("is-open"); mask.classList.remove("is-open"); };
       on(btn, "click", (e) => { e.preventDefault(); e.stopPropagation(); panel.classList.contains("is-open") ? close() : open(); });
       on(mask, "click", () => close());
       on(panel, "click", (e) => {
@@ -932,26 +1038,26 @@
       if (!input) return;
       let curH = 14, curM = 30;
       const panel = document.createElement("div"); panel.className = "blora-timepicker__panel"; wrap.appendChild(panel);
-      const mask = document.createElement("div"); mask.style.cssText = "position:fixed;inset:0;z-index:calc(var(--blora-z-dropdown, 1000) - 1);display:none;"; document.body.appendChild(mask);
+      const mask = document.createElement("div"); mask.className = "blora-floating-mask"; document.body.appendChild(mask);
       const pad = (n) => String(n).padStart(2, "0"); const fmt = () => pad(curH) + ":" + pad(curM);
       const syncFromInput = () => { if (input.value) { const parts = input.value.split(":"); if (parts.length === 2) { curH = Number(parts[0]) || 0; curM = Number(parts[1]) || 0; } } };
       const render = () => {
         let html = '<div class="blora-timepicker__cols">';
-        html += '<div class="blora-timepicker__col"><span class="blora-timepicker__label">' + LOCALE.hour + '</span><div class="blora-timepicker__scroll" data-scroll="h">';
+        html += '<div class="blora-timepicker__col"><span class="blora-timepicker__label">' + escapeHTML(LOCALE.hour) + '</span><div class="blora-timepicker__scroll" data-scroll="h">';
         for (let h = 0; h < 24; h++) html += '<div class="blora-timepicker__item' + (h === curH ? " is-selected" : "") + '" data-h="' + h + '">' + pad(h) + '</div>';
         html += '</div></div><span class="blora-timepicker__sep">:</span>';
-        html += '<div class="blora-timepicker__col"><span class="blora-timepicker__label">' + LOCALE.minute + '</span><div class="blora-timepicker__scroll" data-scroll="m">';
+        html += '<div class="blora-timepicker__col"><span class="blora-timepicker__label">' + escapeHTML(LOCALE.minute) + '</span><div class="blora-timepicker__scroll" data-scroll="m">';
         for (let m = 0; m < 60; m++) html += '<div class="blora-timepicker__item' + (m === curM ? " is-selected" : "") + '" data-m="' + m + '">' + pad(m) + '</div>';
         html += '</div></div></div>';
-        html += '<div class="blora-datepicker__foot"><button class="blora-btn blora-btn--text blora-btn--sm" data-now>' + LOCALE.now + '</button><button class="blora-btn blora-btn--text blora-btn--sm" data-confirm>' + LOCALE.confirm + '</button></div>';
+        html += '<div class="blora-datepicker__foot"><button class="blora-btn blora-btn--text blora-btn--sm" data-now>' + escapeHTML(LOCALE.now) + '</button><button class="blora-btn blora-btn--text blora-btn--sm" data-confirm>' + escapeHTML(LOCALE.confirm) + '</button></div>';
         panel.innerHTML = html;
         const hScroll = panel.querySelector('[data-scroll="h"]'), mScroll = panel.querySelector('[data-scroll="m"]');
         const hSel = hScroll && hScroll.querySelector(".is-selected"), mSel = mScroll && mScroll.querySelector(".is-selected");
         if (hSel && hScroll) hScroll.scrollTop = hSel.offsetTop - hScroll.clientHeight / 2 + hSel.clientHeight / 2;
         if (mSel && mScroll) mScroll.scrollTop = mSel.offsetTop - mScroll.clientHeight / 2 + mSel.clientHeight / 2;
       };
-      const open = () => { syncFromInput(); panel.classList.add("is-open"); mask.style.display = "block"; render(); };
-      const close = () => { panel.classList.remove("is-open"); mask.style.display = "none"; };
+      const open = () => { syncFromInput(); panel.classList.add("is-open"); mask.classList.add("is-open"); render(); };
+      const close = () => { panel.classList.remove("is-open"); mask.classList.remove("is-open"); };
       const update = () => { input.value = fmt(); input.dispatchEvent(new Event("change", { bubbles: true })); };
       on(btn, "click", (e) => { e.preventDefault(); e.stopPropagation(); panel.classList.contains("is-open") ? close() : open(); });
       on(mask, "click", () => close());
@@ -974,13 +1080,13 @@
       const render = () => {
         let html = '<div class="blora-calendar__head">';
         html += '<div class="blora-row blora-row--tight"><button class="blora-btn blora-btn--ghost blora-btn--icon blora-btn--sm" data-nav="prev">' + CAL_ICON_PREV + '</button><button class="blora-btn blora-btn--ghost blora-btn--icon blora-btn--sm" data-nav="next">' + CAL_ICON_NEXT + '</button></div>';
-        if (viewMode === "days") html += '<div class="blora-calendar__title" data-zoom="months">' + viewYear + LOCALE.year + " " + LOCALE.months[viewMonth] + '</div>';
-        else if (viewMode === "months") html += '<div class="blora-calendar__title" data-zoom="years">' + viewYear + LOCALE.year + '</div>';
-        else { const decStart = Math.floor(viewYear / 10) * 10; html += '<div class="blora-calendar__title" data-zoom="years">' + decStart + "–" + (decStart + 9) + LOCALE.year + '</div>'; }
-        html += '<button class="blora-btn blora-btn--outline blora-btn--sm" data-today>' + LOCALE.today + '</button></div>';
+        if (viewMode === "days") html += '<div class="blora-calendar__title" data-zoom="months">' + viewYear + escapeHTML(LOCALE.year) + " " + escapeHTML(LOCALE.months[viewMonth]) + '</div>';
+        else if (viewMode === "months") html += '<div class="blora-calendar__title" data-zoom="years">' + viewYear + escapeHTML(LOCALE.year) + '</div>';
+        else { const decStart = Math.floor(viewYear / 10) * 10; html += '<div class="blora-calendar__title" data-zoom="years">' + decStart + "–" + (decStart + 9) + escapeHTML(LOCALE.year) + '</div>'; }
+        html += '<button class="blora-btn blora-btn--outline blora-btn--sm" data-today>' + escapeHTML(LOCALE.today) + '</button></div>';
         if (viewMode === "days") {
           html += '<div class="blora-calendar__grid">';
-          LOCALE.dow.forEach((d) => { html += '<div class="blora-calendar__dow">' + d + '</div>'; });
+          LOCALE.dow.forEach((d) => { html += '<div class="blora-calendar__dow">' + escapeHTML(d) + '</div>'; });
           const first = new Date(viewYear, viewMonth, 1), startDay = first.getDay(), daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate(), daysInPrev = new Date(viewYear, viewMonth, 0).getDate();
           for (let i = startDay - 1; i >= 0; i--) html += '<div class="blora-calendar__cell is-other">' + (daysInPrev - i) + '</div>';
           for (let day = 1; day <= daysInMonth; day++) {
@@ -995,7 +1101,7 @@
           html += '</div>';
         } else if (viewMode === "months") {
           html += '<div class="blora-calendar__grid blora-calendar__grid--months">';
-          LOCALE.months.forEach((name, m) => { let cls = "blora-calendar__cell blora-calendar__cell--month"; if (selected && viewYear === selected.getFullYear() && m === selected.getMonth()) cls += " is-selected"; if (viewYear === today.getFullYear() && m === today.getMonth()) cls += " is-today"; html += '<div class="' + cls + '" data-month="' + m + '">' + name + '</div>'; });
+          LOCALE.months.forEach((name, m) => { let cls = "blora-calendar__cell blora-calendar__cell--month"; if (selected && viewYear === selected.getFullYear() && m === selected.getMonth()) cls += " is-selected"; if (viewYear === today.getFullYear() && m === today.getMonth()) cls += " is-today"; html += '<div class="' + cls + '" data-month="' + m + '">' + escapeHTML(name) + '</div>'; });
           html += '</div>';
         } else {
           const decStart = Math.floor(viewYear / 10) * 10;
@@ -1019,7 +1125,14 @@
   }
 
   /* —— Color Picker —— */
-  const BLORA_PALETTE = ["#A0392E","#C44536","#7E2A22","#C25D52","#8B6F47","#B59B78","#D4A574","#B89968","#3D4A5C","#6B7889","#5A7B6B","#8AA89A","#7B9B7E","#1C1A17","#4A453D","#9B9489","#D8D2C4","#F8F4EC","#FBF8F0","#E9E3D2","#F2ECDE","#E6DFCC","#F5F1E8","#B8B0A2"];
+  const palette = () => [
+    "--blora-seal", "--blora-cinnabar", "--blora-seal-deep", "--blora-seal-soft",
+    "--blora-tea", "--blora-tea-light", "--blora-ochre", "--blora-gold",
+    "--blora-indigo", "--blora-indigo-light", "--blora-moss", "--blora-moss-light",
+    "--blora-bamboo", "--blora-ink", "--blora-ink-mid", "--blora-ink-mist",
+    "--blora-ink-ghost", "--blora-paper", "--blora-surface-1", "--blora-surface-3",
+    "--blora-paper-warm", "--blora-paper-deep", "--blora-paper-cool", "--blora-ink-faint",
+  ].map((name) => token(name)).filter(Boolean);
   function initColorPicker(root) {
     $$(".blora-color-picker", root).forEach((wrap) => {
       if (bound(wrap, "Colorpicker")) return;
@@ -1028,8 +1141,8 @@
       if (!swatch || !panel) return;
       const hexInput = $(".blora-color-hex", panel);
       const preview = $(".blora-color-preview", panel);
-      let current = swatch.dataset.color || "#A0392E";
-      const mask = document.createElement("div"); mask.style.cssText = "position:fixed;inset:0;z-index:calc(var(--blora-z-dropdown, 1000) - 1);display:none;"; document.body.appendChild(mask);
+      let current = swatch.dataset.color || token("--blora-seal", "#A0392E");
+      const mask = document.createElement("div"); mask.className = "blora-floating-mask"; document.body.appendChild(mask);
       const update = (color) => {
         current = color; swatch.style.background = color;
         if (preview) preview.style.background = color;
@@ -1038,10 +1151,10 @@
         swatch.dataset.color = color;
       };
       const grid = $(".blora-color-grid", panel);
-      if (grid) { BLORA_PALETTE.forEach((color) => { const cell = document.createElement("div"); cell.className = "blora-color-cell"; cell.style.background = color; cell.dataset.color = color; on(cell, "click", () => { update(color); }); grid.appendChild(cell); }); }
+      if (grid) { palette().forEach((color) => { const cell = document.createElement("div"); cell.className = "blora-color-cell"; cell.style.background = color; cell.dataset.color = color; on(cell, "click", () => { update(color); }); grid.appendChild(cell); }); }
       if (hexInput) { on(hexInput, "input", () => { let v = hexInput.value.trim(); if (v && !v.startsWith("#")) v = "#" + v; if (/^#[0-9a-fA-F]{6}$/.test(v)) update(v); }); }
-      const open = () => { panel.classList.add("is-open"); mask.style.display = "block"; update(current); };
-      const close = () => { panel.classList.remove("is-open"); mask.style.display = "none"; };
+      const open = () => { panel.classList.add("is-open"); mask.classList.add("is-open"); update(current); };
+      const close = () => { panel.classList.remove("is-open"); mask.classList.remove("is-open"); };
       on(swatch, "click", (e) => { e.stopPropagation(); panel.classList.contains("is-open") ? close() : open(); });
       on(mask, "click", () => close());
       update(current);
@@ -1098,6 +1211,7 @@
     initBtnLoading(root);
     initRate(root);
     initSlider(root);
+    initProgress(root);
     initTagsInput(root);
     initNumber(root);
     initCheckbox(root);

@@ -65,8 +65,8 @@ blora-design-2/
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
   <title>我的页面</title>
 </head>
-<body>
-  <div class="blora-container blora-stack" style="padding-top: 80px;">
+<body class="blora-page blora-scope">
+  <div class="blora-container blora-stack">
     <h1 class="blora-h1">页面标题</h1>
     <p class="blora-text-lead">页面的引导说明文字。</p>
     <div class="blora-row">

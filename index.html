@@ -12,7 +12,12 @@
 <style>
   /* —— 仅用于本展示页的样式，不属于框架本体 —— */
   .blora-showcase { display: grid; grid-template-columns: 240px 1fr; gap: var(--blora-space-8); max-width: 1440px; margin: 0 auto; padding: var(--blora-space-6) var(--blora-space-6) var(--blora-space-12); }
-  @media (max-width: 1024px) { .blora-showcase { grid-template-columns: 1fr; } .blora-showside { display: none; } }
+  .blora-showcase > main { min-width: 0; }
+  @media (max-width: 1024px) { .blora-showcase { grid-template-columns: minmax(0, 1fr); } .blora-showside { display: none; } }
+  @media (max-width: 560px) {
+    .blora-showcase { padding-inline: var(--blora-space-4); }
+    .blora-sec, .blora-panel, .blora-card, .blora-demo { min-width: 0; overflow-wrap: anywhere; word-break: break-word; }
+  }
   .blora-showside { position: sticky; top: 88px; align-self: start; max-height: calc(100vh - 110px); overflow-y: auto; padding: 0 var(--blora-space-3); }
   .blora-shownav { font-size: var(--blora-text-sm); }
   .blora-shownav a { display: block; padding: 0.5em 0.8em; color: var(--blora-ink-light); border-radius: var(--blora-radius-sm); transition: all var(--blora-dur-fast) var(--blora-ease); }
@@ -25,12 +30,20 @@
   .blora-hero__title { font-family: var(--blora-font-serif); font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 700; line-height: 1.2; letter-spacing: -0.02em; color: var(--blora-ink); margin-bottom: var(--blora-space-4); }
   .blora-hero__sub { font-size: var(--blora-text-lg); color: var(--blora-ink-light); line-height: var(--blora-leading-loose); max-width: 640px; margin: 0 auto var(--blora-space-6); }
   .blora-hero__seal { display: inline-flex; gap: var(--blora-space-3); margin-bottom: var(--blora-space-5); }
+  @media (max-width: 560px) {
+    .blora-hero { padding-inline: var(--blora-space-4); overflow: hidden; }
+    .blora-hero__title { font-size: clamp(2rem, 10vw, 2.5rem); }
+    .blora-hero__sub { max-width: 16rem; overflow-wrap: anywhere; }
+    .blora-hero .blora-row--center { flex-direction: column; align-items: stretch; max-width: 16rem; margin-inline: auto; }
+    .blora-hero .blora-btn { justify-content: center; }
+  }
 
-  .blora-sec { margin-bottom: var(--blora-space-9); scroll-margin-top: 90px; }
+  .blora-sec { margin-bottom: var(--blora-space-9); scroll-margin-top: 90px; min-width: 0; }
   .blora-sec__head { margin-bottom: var(--blora-space-5); }
   .blora-sec__num { font-family: var(--blora-font-mono); font-size: var(--blora-text-xs); color: var(--blora-seal); letter-spacing: var(--blora-tracking-caps); }
   .blora-sec__title { font-family: var(--blora-font-serif); font-size: var(--blora-text-3xl); color: var(--blora-ink); margin: var(--blora-space-1) 0 var(--blora-space-2); }
-  .blora-sec__desc { color: var(--blora-ink-light); max-width: 60ch; }
+  .blora-sec__desc { color: var(--blora-ink-light); max-width: min(60ch, 100%); overflow-wrap: anywhere; word-break: break-word; }
+  @media (max-width: 560px) { .blora-sec__desc { max-width: 18rem; } }
 
   .blora-demo { padding: var(--blora-space-5); border: 1px dashed var(--blora-ink-ghost); border-radius: var(--blora-radius-md); margin-bottom: var(--blora-space-4); background: transparent; }
   .blora-demo__label { font-family: var(--blora-font-mono); font-size: var(--blora-text-xs); color: var(--blora-ink-mist); margin-bottom: var(--blora-space-3); text-transform: uppercase; letter-spacing: var(--blora-tracking-caps); }
@@ -64,6 +77,8 @@
 
   .blora-foot { text-align: center; padding: var(--blora-space-9) var(--blora-space-6); color: var(--blora-ink-mist); border-top: var(--blora-border); }
   .blora-foot__seal { margin-bottom: var(--blora-space-3); }
+  .blora-foot__title { font-size: 1.25rem; color: var(--blora-ink-light); margin-bottom: var(--blora-space-2); }
+  .blora-foot__copy { margin-top: var(--blora-space-1); }
 
   .blora-context-menu { position: relative; }
   .blora-mock-img { background: var(--blora-surface-3); display: grid; place-items: center; color: var(--blora-ink-mist); font-family: var(--blora-font-brush); font-size: 2em; }
@@ -72,7 +87,7 @@
   .blora-chart-mock__bar { flex: 1; background: var(--blora-seal-soft); border-radius: var(--blora-radius-xs) var(--blora-radius-xs) 0 0; }
 </style>
 </head>
-<body>
+<body class="blora-page blora-scope">
 
 <!-- =========================================================================
      顶栏 · Navbar
@@ -1479,10 +1494,10 @@
             <span class="blora-message blora-message--danger"><span class="blora-message__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg></span>系统遇到了问题</span>
           </div>
           <div style="margin-top:var(--blora-space-3);">
-            <button class="blora-btn blora-btn--primary" onclick="Blora.toast({type:'success', message:'操作已完成'})">触发成功 Toast</button>
-            <button class="blora-btn blora-btn--outline" onclick="Blora.toast({type:'warning', message:'请注意未保存的更改'})">警告 Toast</button>
-            <button class="blora-btn blora-btn--outline" onclick="Blora.toast({type:'danger', message:'加载失败，请重试'})">错误 Toast</button>
-            <button class="blora-btn blora-btn--ghost" onclick="Blora.toast('这是一条普通的消息')">普通 Toast</button>
+            <button class="blora-btn blora-btn--primary" data-demo-toast="success">触发成功 Toast</button>
+            <button class="blora-btn blora-btn--outline" data-demo-toast="warning">警告 Toast</button>
+            <button class="blora-btn blora-btn--outline" data-demo-toast="danger">错误 Toast</button>
+            <button class="blora-btn blora-btn--ghost" data-demo-toast="info">普通 Toast</button>
           </div>
         </div>
 
@@ -1786,11 +1801,25 @@
   <div class="blora-foot__seal">
     <span class="blora-seal">Blora</span>
   </div>
-  <p style="font-size:1.25rem; color:var(--blora-ink-light); margin-bottom:var(--blora-space-2);">Blora Design UI Framework</p>
+  <p class="blora-foot__title">Blora Design UI Framework</p>
   <p class="blora-hint">Blora Design · v1.0.0 · Web UI 设计规范与组件库</p>
-  <p class="blora-hint" style="margin-top:var(--blora-space-1);">© 2026 · 专为现代界面而生</p>
+  <p class="blora-hint blora-foot__copy">© 2026 · 专为现代界面而生</p>
 </footer>
 
 <script src="blora.js"></script>
+<script>
+  document.querySelectorAll("[data-demo-toast]").forEach((button) => {
+    const messages = {
+      success: "操作已完成",
+      warning: "请注意未保存的更改",
+      danger: "加载失败，请重试",
+      info: "这是一条普通的消息",
+    };
+    button.addEventListener("click", () => {
+      const type = button.dataset.demoToast;
+      Blora.toast({ type, message: messages[type] || messages.info });
+    });
+  });
+</script>
 </body>
 </html>

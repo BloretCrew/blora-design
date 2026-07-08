@@ -129,6 +129,12 @@
   --blora-seal-tint:     color-mix(in srgb, var(--blora-seal) 8%, transparent);   /* 选中/激活底 */
   --blora-focus-ring:        0 0 0 3px color-mix(in srgb, var(--blora-seal) 12%, transparent);
   --blora-focus-ring-strong: 0 0 0 3px color-mix(in srgb, var(--blora-seal) 18%, transparent);
+  --blora-overlay-modal:  rgba(28,26,23,0.5);
+  --blora-overlay-drawer: rgba(28,26,23,0.45);
+  --blora-code-bg:       color-mix(in srgb, var(--blora-ink) 92%, var(--blora-paper));
+  --blora-code-fg:       var(--blora-on-accent);
+  --blora-banner-bg:     var(--blora-ink-deep);
+  --blora-tooltip-bg:    var(--blora-ink-deep);
 
   /* —— 动效 · Motion —— 含蓄过渡 */
   --blora-ease:          cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -161,8 +167,20 @@
    ========================================================================= */
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; tab-size: 4; }
-html, body { margin: 0; padding: 0; }
-body {
+.blora-scope {
+  font-family: var(--blora-font-sans);
+  font-size: var(--blora-text-base);
+  line-height: var(--blora-leading-normal);
+  color: var(--blora-ink-deep);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern", "liga", "calt";
+}
+body.blora-page {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
   font-family: var(--blora-font-sans);
   font-size: var(--blora-text-base);
   line-height: var(--blora-leading-normal);
@@ -179,16 +197,29 @@ body {
    半透明则相邻行选区融合、被压住的字形透出；文字保持原色以保证任意底上的可读性 */
 ::selection { background: color-mix(in srgb, var(--blora-tea-light) 40%, transparent); }
 ::-moz-selection { background: color-mix(in srgb, var(--blora-tea-light) 40%, transparent); }
-h1, h2, h3, h4, h5, h6 { margin: 0; font-weight: 600; color: var(--blora-ink); }
-p { margin: 0; }
-a { color: var(--blora-seal); text-decoration: none; transition: color var(--blora-dur-fast) var(--blora-ease); }
-a:hover { color: var(--blora-seal-deep); }
-button, input, textarea, select { font: inherit; color: inherit; }
-button { background: none; border: none; cursor: pointer; padding: 0; }
-ul, ol { margin: 0; padding: 0; list-style: none; }
-img, svg, video { display: block; max-width: 100%; }
-img { height: auto; }
-:focus-visible { outline: 2px solid var(--blora-seal); outline-offset: 2px; border-radius: var(--blora-radius-sm); }
+:where(body.blora-page, .blora-scope) h1,
+:where(body.blora-page, .blora-scope) h2,
+:where(body.blora-page, .blora-scope) h3,
+:where(body.blora-page, .blora-scope) h4,
+:where(body.blora-page, .blora-scope) h5,
+:where(body.blora-page, .blora-scope) h6 { margin: 0; font-weight: 600; color: var(--blora-ink); }
+:where(body.blora-page, .blora-scope) p { margin: 0; }
+:where(body.blora-page, .blora-scope) a { color: var(--blora-seal); text-decoration: none; transition: color var(--blora-dur-fast) var(--blora-ease); }
+:where(body.blora-page, .blora-scope) a:hover { color: var(--blora-seal-deep); }
+:where(body.blora-page, .blora-scope) button,
+:where(body.blora-page, .blora-scope) input,
+:where(body.blora-page, .blora-scope) textarea,
+:where(body.blora-page, .blora-scope) select { font: inherit; color: inherit; }
+:where(body.blora-page, .blora-scope) button { background: none; border: none; cursor: pointer; padding: 0; }
+:where(body.blora-page, .blora-scope) ul,
+:where(body.blora-page, .blora-scope) ol { margin: 0; padding: 0; list-style: none; }
+:where(body.blora-page, .blora-scope) img,
+:where(body.blora-page, .blora-scope) svg,
+:where(body.blora-page, .blora-scope) video { display: block; max-width: 100%; }
+:where(body.blora-page, .blora-scope) img { height: auto; }
+:where(body.blora-page, .blora-scope) :focus-visible,
+[class^="blora-"]:focus-visible,
+[class*=" blora-"]:focus-visible { outline: 2px solid var(--blora-seal); outline-offset: 2px; border-radius: var(--blora-radius-sm); }
 
 /* =========================================================================
    3. 排版 · Typography
@@ -551,8 +582,12 @@ img { height: auto; }
 /* —— 选择框 —— */
 .blora-select {
   appearance: none; -webkit-appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B6358' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat: no-repeat; background-position: right 0.85em center;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--blora-ink-light) 50%),
+    linear-gradient(135deg, var(--blora-ink-light) 50%, transparent 50%);
+  background-repeat: no-repeat;
+  background-position: calc(100% - 1.05em) 50%, calc(100% - 0.72em) 50%;
+  background-size: 0.36em 0.36em, 0.36em 0.36em;
   padding-right: 2.4em; cursor: pointer;
 }
 .blora-select[multiple] { background-image: none; padding-right: 0.85em; }
@@ -593,7 +628,7 @@ img { height: auto; }
   border-radius: var(--blora-radius-sm); cursor: pointer; white-space: nowrap;
   transition: all var(--blora-dur-fast) var(--blora-ease);
 }
-.blora-select-option:hover { background: var(--blora-surface-2); color: var(--blora-ink); }
+.blora-select-option:hover, .blora-select-option.is-active { background: var(--blora-surface-2); color: var(--blora-ink); }
 .blora-select-option.is-selected { background: var(--blora-seal-tint); color: var(--blora-seal); font-weight: 500; }
 .blora-select-option.is-disabled { color: var(--blora-ink-faint); cursor: not-allowed; }
 .blora-select-option.is-disabled:hover { background: none; }
@@ -618,12 +653,13 @@ img { height: auto; }
   position: relative;
 }
 .blora-checkbox__box::after {
-  content: ""; width: 0.72em; height: 0.72em;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FBF8F0' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E") center/contain no-repeat;
-  opacity: 0; transform: scale(0.4); transition: all var(--blora-dur-fast) var(--blora-ease-overshoot);
+  content: ""; width: 0.58em; height: 0.34em;
+  border: solid var(--blora-on-accent);
+  border-width: 0 0 2px 2px;
+  opacity: 0; transform: rotate(-45deg) scale(0.4); transition: all var(--blora-dur-fast) var(--blora-ease-overshoot);
 }
 .blora-checkbox > input:checked + .blora-checkbox__box { background: var(--blora-seal); border-color: var(--blora-seal); }
-.blora-checkbox > input:checked + .blora-checkbox__box::after { opacity: 1; transform: scale(1); }
+.blora-checkbox > input:checked + .blora-checkbox__box::after { opacity: 1; transform: rotate(-45deg) scale(1); }
 .blora-checkbox > input:focus-visible + .blora-checkbox__box { box-shadow: var(--blora-focus-ring-strong); }
 .blora-checkbox > input:disabled + .blora-checkbox__box { opacity: 0.4; }
 .blora-checkbox--indeterminate .blora-checkbox__box { background: var(--blora-seal); border-color: var(--blora-seal); }
@@ -765,6 +801,14 @@ img { height: auto; }
 .blora-color-custom { display: flex; align-items: center; gap: var(--blora-space-2); }
 .blora-color-custom input[type="text"] { flex: 1; }
 .blora-color-preview { width: 1.8em; height: 1.8em; border-radius: var(--blora-radius-sm); border: 1px solid var(--blora-ink-ghost); }
+
+.blora-floating-mask {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--blora-z-dropdown) - 1);
+  display: none;
+}
+.blora-floating-mask.is-open { display: block; }
 
 /* —— 开关日历 Date Picker (visual) —— */
 .blora-datepicker { position: relative; }
@@ -921,11 +965,12 @@ img { height: auto; }
 .blora-progress__fill--indigo { background: var(--blora-indigo); }
 .blora-progress__fill--striped { background-image: linear-gradient(45deg, rgba(255,255,255,0.18) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.18) 50%, rgba(255,255,255,0.18) 75%, transparent 75%); background-size: 16px 16px; animation: blora-stripe 1s linear infinite; }
 .blora-progress__label { display: flex; justify-content: space-between; font-size: var(--blora-text-xs); color: var(--blora-ink-light); }
-.blora-progress--circular { display: inline-grid; place-items: center; }
+.blora-progress--circular { display: inline-grid; place-items: center; position: relative; }
 .blora-progress--circular svg { transform: rotate(-90deg); }
 .blora-progress--circular circle { fill: none; stroke-width: 6; }
 .blora-progress--circular .track { stroke: var(--blora-surface-3); }
 .blora-progress--circular .fill  { stroke: var(--blora-seal); stroke-linecap: round; transition: stroke-dashoffset var(--blora-dur-slow) var(--blora-ease); }
+.blora-progress--circular .blora-progress__value { position: absolute; font-family: var(--blora-font-serif); font-weight: 600; color: var(--blora-ink); }
 
 /* —— 加载 —— */
 .blora-spinner { display: inline-block; width: 1.2em; height: 1.2em; border: 2px solid var(--blora-ink-ghost); border-top-color: var(--blora-seal); border-radius: 50%; animation: blora-spin 0.8s linear infinite; }
@@ -1181,12 +1226,13 @@ img { height: auto; }
   position: relative;
 }
 .blora-transfer__check::after {
-  content: ""; width: 0.72em; height: 0.72em;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FBF8F0' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E") center/contain no-repeat;
-  opacity: 0; transform: scale(0.4); transition: all var(--blora-dur-fast) var(--blora-ease-overshoot);
+  content: ""; width: 0.58em; height: 0.34em;
+  border: solid var(--blora-on-accent);
+  border-width: 0 0 2px 2px;
+  opacity: 0; transform: rotate(-45deg) scale(0.4); transition: all var(--blora-dur-fast) var(--blora-ease-overshoot);
 }
 .blora-transfer__row input:checked + .blora-transfer__check { background: var(--blora-seal); border-color: var(--blora-seal); }
-.blora-transfer__row input:checked + .blora-transfer__check::after { opacity: 1; transform: scale(1); }
+.blora-transfer__row input:checked + .blora-transfer__check::after { opacity: 1; transform: rotate(-45deg) scale(1); }
 .blora-transfer__row input:focus-visible + .blora-transfer__check { box-shadow: var(--blora-focus-ring-strong); }
 .blora-transfer__row input:disabled + .blora-transfer__check { opacity: 0.4; }
 .blora-transfer__actions { display: flex; flex-direction: column; gap: var(--blora-space-2); }
@@ -1198,6 +1244,7 @@ img { height: auto; }
 .blora-cascader__opt { padding: 0.4em 0.6em; font-size: var(--blora-text-sm); color: var(--blora-ink-mid); border-radius: var(--blora-radius-sm); cursor: pointer; display: flex; align-items: center; }
 .blora-cascader__opt:hover { background: var(--blora-surface-2); }
 .blora-cascader__opt.is-selected { background: var(--blora-seal-tint); color: var(--blora-seal); font-weight: 500; }
+.blora-cascader__arrow { opacity: 0.5; margin-left: auto; padding-left: 0.3em; flex: none; }
 
 /* =========================================================================
    12. 反馈 · Feedback
@@ -1218,7 +1265,7 @@ img { height: auto; }
 .blora-alert--ghost { background: transparent; }
 
 /* —— 横幅 Banner —— */
-.blora-banner { display: flex; align-items: center; gap: var(--blora-space-4); padding: var(--blora-space-5) var(--blora-space-6); border-radius: var(--blora-radius-lg); background: var(--blora-ink-deep); color: var(--blora-on-accent); position: relative; overflow: hidden; }
+.blora-banner { display: flex; align-items: center; gap: var(--blora-space-4); padding: var(--blora-space-5) var(--blora-space-6); border-radius: var(--blora-radius-lg); background: var(--blora-banner-bg); color: var(--blora-on-accent); position: relative; overflow: hidden; }
 .blora-banner::before { content: ""; position: absolute; right: -20%; top: -50%; width: 60%; height: 200%; background: radial-gradient(ellipse, color-mix(in srgb, var(--blora-seal) 25%, transparent) 0%, transparent 70%); }
 .blora-banner__body { flex: 1; z-index: 1; }
 .blora-banner__title { font-family: var(--blora-font-serif); font-size: var(--blora-text-xl); margin-bottom: var(--blora-space-1); }
@@ -1247,8 +1294,8 @@ img { height: auto; }
 
 /* —— 提示文字 Tooltip —— */
 .blora-tooltip { position: relative; display: inline-flex; }
-.blora-tooltip__bubble { position: absolute; bottom: calc(100% + 0.5em); left: 50%; transform: translateX(-50%) translateY(4px); padding: 0.4em 0.8em; background: var(--blora-ink-deep); color: var(--blora-on-accent); font-size: var(--blora-text-xs); border-radius: var(--blora-radius-sm); white-space: nowrap; opacity: 0; pointer-events: none; transition: all var(--blora-dur-fast) var(--blora-ease); z-index: var(--blora-z-dropdown); box-shadow: var(--blora-shadow-3); }
-.blora-tooltip__bubble::after { content: ""; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 5px solid transparent; border-top-color: var(--blora-ink-deep); }
+.blora-tooltip__bubble { position: absolute; bottom: calc(100% + 0.5em); left: 50%; transform: translateX(-50%) translateY(4px); padding: 0.4em 0.8em; background: var(--blora-tooltip-bg); color: var(--blora-on-accent); font-size: var(--blora-text-xs); border-radius: var(--blora-radius-sm); white-space: nowrap; opacity: 0; pointer-events: none; transition: all var(--blora-dur-fast) var(--blora-ease); z-index: var(--blora-z-dropdown); box-shadow: var(--blora-shadow-3); }
+.blora-tooltip__bubble::after { content: ""; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 5px solid transparent; border-top-color: var(--blora-tooltip-bg); }
 .blora-tooltip:hover .blora-tooltip__bubble, .blora-tooltip:focus-within .blora-tooltip__bubble { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 /* —— 气泡 Popover —— */
@@ -1267,7 +1314,7 @@ img { height: auto; }
 .blora-modal.is-closing { display: flex; }
 .blora-modal.is-closing .blora-modal__mask { animation: blora-fade-out var(--blora-dur-base) var(--blora-ease) forwards; }
 .blora-modal.is-closing .blora-modal__dialog { animation: blora-pop-out var(--blora-dur-base) var(--blora-ease) forwards; }
-.blora-modal__mask { position: absolute; inset: 0; background: rgba(28,26,23,0.5); backdrop-filter: blur(4px); animation: blora-fade-in var(--blora-dur-base) var(--blora-ease); }
+.blora-modal__mask { position: absolute; inset: 0; background: var(--blora-overlay-modal); backdrop-filter: blur(4px); animation: blora-fade-in var(--blora-dur-base) var(--blora-ease); }
 .blora-modal__dialog { position: relative; background: var(--blora-surface-1); border-radius: var(--blora-radius-xl); box-shadow: var(--blora-shadow-4); max-width: 520px; width: 100%; max-height: calc(100vh - 2 * var(--blora-space-8)); overflow-y: auto; animation: blora-pop-in var(--blora-dur-base) var(--blora-ease-overshoot); }
 .blora-modal__head { display: flex; align-items: center; justify-content: space-between; padding: var(--blora-space-5) var(--blora-space-6); border-bottom: var(--blora-border); }
 .blora-modal__title { font-family: var(--blora-font-serif); font-size: var(--blora-text-xl); color: var(--blora-ink); }
@@ -1278,6 +1325,7 @@ img { height: auto; }
 .blora-modal__foot { padding: var(--blora-space-4) var(--blora-space-6); border-top: var(--blora-border); display: flex; justify-content: flex-end; gap: var(--blora-space-2); }
 .blora-modal--lg .blora-modal__dialog { max-width: 800px; }
 .blora-modal--sm .blora-modal__dialog { max-width: 400px; }
+.blora-modal--cmdk .blora-modal__dialog { max-width: 560px; }
 
 /* —— 命令面板列表 · Command Palette —— */
 .blora-cmdk-results { max-height: 320px; overflow-y: auto; margin-top: var(--blora-space-3); }
@@ -1294,7 +1342,7 @@ img { height: auto; }
 .blora-drawer.is-closing.blora-drawer--left  .blora-drawer__panel { animation: blora-slide-left-out var(--blora-dur-slow) var(--blora-ease) forwards; }
 .blora-drawer.is-closing.blora-drawer--top   .blora-drawer__panel { animation: blora-slide-down-out var(--blora-dur-slow) var(--blora-ease) forwards; }
 .blora-drawer.is-closing.blora-drawer--bottom .blora-drawer__panel { animation: blora-slide-up-out var(--blora-dur-slow) var(--blora-ease) forwards; }
-.blora-drawer__mask { position: absolute; inset: 0; background: rgba(28,26,23,0.45); backdrop-filter: blur(3px); animation: blora-fade-in var(--blora-dur-base) var(--blora-ease); }
+.blora-drawer__mask { position: absolute; inset: 0; background: var(--blora-overlay-drawer); backdrop-filter: blur(3px); animation: blora-fade-in var(--blora-dur-base) var(--blora-ease); }
 .blora-drawer__panel { position: absolute; top: 0; bottom: 0; background: var(--blora-surface-1); box-shadow: var(--blora-shadow-4); display: flex; flex-direction: column; }
 .blora-drawer--right .blora-drawer__panel { right: 0; width: 420px; max-width: 90vw; animation: blora-slide-right var(--blora-dur-slow) var(--blora-ease); }
 .blora-drawer--left  .blora-drawer__panel { left: 0; width: 420px; max-width: 90vw; animation: blora-slide-left var(--blora-dur-slow) var(--blora-ease); }
@@ -1363,6 +1411,12 @@ img { height: auto; }
   --blora-ink-mist:       #7D7565;
   --blora-ink-faint:      #5C5547;
   --blora-ink-ghost:      #3F3A32;
+  --blora-overlay-modal:  rgba(0,0,0,0.62);
+  --blora-overlay-drawer: rgba(0,0,0,0.58);
+  --blora-code-bg:       #14110D;
+  --blora-code-fg:       #E8DFC8;
+  --blora-banner-bg:     #2A2520;
+  --blora-tooltip-bg:    #14110D;
   --blora-shadow-1: 0 1px 2px rgba(0,0,0,0.3);
   --blora-shadow-2: 0 2px 8px rgba(0,0,0,0.35);
   --blora-shadow-3: 0 6px 24px rgba(0,0,0,0.45);
@@ -1378,26 +1432,15 @@ img { height: auto; }
 }
 
 /* —— 暗色组件修正 —— 避免墨色反转成刺眼亮块 —— */
-/* 遮罩始终取暗色调（遮罩为"压暗"语义，不随墨色令牌翻转） */
-.blora-dark .blora-modal__mask { background: rgba(0,0,0,0.62); }
-.blora-dark .blora-drawer__mask { background: rgba(0,0,0,0.58); }
-
 /* "墨色"反转的元素：在暗色下保持暗调底，不变成亮块 */
 .blora-dark .blora-btn--secondary { --btn-bg: var(--blora-surface-3); --btn-bd: var(--blora-surface-3); font-weight: 500; }
 .blora-dark .blora-btn--secondary:hover { --btn-bg: var(--blora-ink-ghost); --btn-bd: var(--blora-ink-ghost); }
 .blora-dark .blora-tag--solid { background: var(--blora-surface-3); border-color: var(--blora-surface-3); }
 .blora-dark .blora-avatar--ink { background: var(--blora-surface-3); }
-.blora-dark .blora-pre { background: #14110D; color: #E8DFC8; }
+.blora-dark .blora-pre { background: var(--blora-code-bg); color: var(--blora-code-fg); }
 .blora-dark .blora-pre::before { opacity: 0.45; }
-.blora-dark .blora-banner { background: #2A2520; }
 .blora-dark .blora-banner::before { background: radial-gradient(ellipse, color-mix(in srgb, var(--blora-seal) 32%, transparent) 0%, transparent 70%); }
-.blora-dark .blora-tooltip__bubble { background: #14110D; border: 1px solid var(--blora-ink-ghost); }
-.blora-dark .blora-tooltip__bubble::after { border-top-color: #14110D; }
-
-/* 下拉箭头 data-URI 无法引用变量，暗色下换用亮描边版本 */
-.blora-dark .blora-select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23A89F8C' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-}
+.blora-dark .blora-tooltip__bubble { border: 1px solid var(--blora-ink-ghost); }
 
 /* 轮播箭头底色提亮，避免暗色下不可见 */
 .blora-dark .blora-carousel__arrow { background: rgba(255,255,255,0.1); }
