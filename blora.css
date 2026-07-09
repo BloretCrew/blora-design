@@ -219,7 +219,7 @@ body.blora-page {
 :where(body.blora-page, .blora-scope) img { height: auto; }
 :where(body.blora-page, .blora-scope) :focus-visible,
 [class^="blora-"]:focus-visible,
-[class*=" blora-"]:focus-visible { outline: 2px solid var(--blora-seal); outline-offset: 2px; border-radius: var(--blora-radius-sm); }
+[class*=" blora-"]:focus-visible { outline: 2px solid var(--blora-seal); outline-offset: 2px; }
 
 /* =========================================================================
    3. 排版 · Typography
