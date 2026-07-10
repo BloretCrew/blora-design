@@ -53,8 +53,18 @@ blora-design-2/
 <script>
   // 自动在 DOMContentLoaded 后初始化；
   // 若动态插入组件，手动调用：
-  Blora.init(document.getElementById('my-mount'));
+Blora.init(document.getElementById('my-mount'));
 </script>
+```
+
+嵌入已有应用时，可把动态浮层挂到指定容器，并为不同应用设置独立主题存储键：
+
+```js
+Blora.configure({
+  portalRoot: '#app-overlays',
+  storageKey: 'my-app-theme'
+});
+Blora.init(document.getElementById('my-mount'));
 ```
 
 **全局 API**
@@ -66,6 +76,7 @@ Blora.closeModal('modal-id');
 Blora.openDrawer('drawer-id');
 Blora.closeDrawer('drawer-id');
 Blora.init(root);     // 重新扫描并绑定（幂等：已绑定的元素自动跳过，可放心对动态子树重复调用）
+Blora.configure({ portalRoot, storageKey, autoInit }); // 配置浮层宿主、主题键与自动初始化
 Blora.locale;         // 日历/选择器文案（months / dow / today / clear…），可整体覆写做本地化
 Blora.version;        // "1.0.0"
 ```
@@ -171,6 +182,17 @@ Blora.version;        // "1.0.0"
 <textarea class="blora-textarea"></textarea>
 <select class="blora-select">…</select>
 
+<!-- 字数限制：不使用 maxlength 硬截断；超限字符会标注，计数器自动显示 -->
+<div class="blora-field" data-blora-limit-group>
+  <label class="blora-label" for="name">项目名称</label>
+  <input class="blora-input" id="name" data-blora-limit="20" aria-describedby="name-hint">
+  <span class="blora-hint" id="name-hint">最长 20 个字符。</span>
+  <button class="blora-btn blora-btn--primary" type="button" data-blora-limit-action>下一步</button>
+</div>
+
+<!-- 密码框自动进入安全模式：超限部分以圆点标注，不渲染明文镜像 -->
+<input class="blora-input" type="password" data-blora-limit="12">
+
 <!-- 前后缀 -->
 <div class="blora-input-group">
   <span class="blora-addon">¥</span>
@@ -236,11 +258,10 @@ Blora.version;        // "1.0.0"
   <input class="blora-otp__input" maxlength="1"> ×6
 </div>
 
-<!-- 颜色（预设色板 + 手动 Hex） -->
+<!-- 颜色（连续全色域 + 手动 Hex） -->
 <div class="blora-color-picker">
   <div class="blora-color-swatch" data-color="#A0392E"></div>
   <div class="blora-color-panel">
-    <div class="blora-color-grid"></div>
     <div class="blora-color-custom">
       <span class="blora-color-preview"></span>
       <input class="blora-input blora-color-hex" type="text" value="#A0392E">
@@ -255,6 +276,8 @@ Blora.version;        // "1.0.0"
   <div class="blora-hint blora-dropzone__files">支持 PNG/JPG ≤ 8MB</div>
 </div>
 ```
+
+面板中的连续色域与色相滑条由 JS 自动注入；支持鼠标、触控、方向键和 HEX 双向同步。颜色变化时，根元素会派发 `blora:change`，颜色值位于 `event.detail.value`。
 
 **校验态**：在 input 上加 `.is-error`；字段下用 `.blora-error`。
 

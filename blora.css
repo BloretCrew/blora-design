@@ -124,6 +124,13 @@
   --blora-border-ink:    1px solid var(--blora-ink-mid);
   --blora-border-seal:   1px solid var(--blora-seal);
 
+  /* —— 组件尺寸 · Component Metrics —— 宿主应用可按主题统一覆写 */
+  --blora-control-height: 2.75em;
+  --blora-control-pad-x: 1em;
+  --blora-control-radius: var(--blora-radius-md);
+  --blora-range-track-size: 4px;
+  --blora-range-thumb-size: 18px;
+
   /* —— 衍生色 · Derived —— 由基础令牌实时调和；覆写基础令牌（如 --blora-seal）即全局跟随 */
   --blora-on-accent:     #FBF8F0;   /* 彩底/墨底上的前景色，暗色模式下不翻转 */
   --blora-seal-tint:     color-mix(in srgb, var(--blora-seal) 8%, transparent);   /* 选中/激活底 */
@@ -165,9 +172,11 @@
 /* =========================================================================
    2. 重置 · Reset
    ========================================================================= */
-*, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; tab-size: 4; }
-.blora-scope {
+:where(body.blora-page, .blora-scope, .blora-portal),
+:where(body.blora-page, .blora-scope, .blora-portal) *,
+:where(body.blora-page, .blora-scope, .blora-portal) *::before,
+:where(body.blora-page, .blora-scope, .blora-portal) *::after { box-sizing: border-box; }
+.blora-scope, .blora-portal {
   font-family: var(--blora-font-sans);
   font-size: var(--blora-text-base);
   line-height: var(--blora-leading-normal);
@@ -195,8 +204,10 @@ body.blora-page {
 }
 /* 选区必须半透明：高亮按行盒逐行绘制，不透明底色会盖住上一行字形的降部（g/y 的尾巴），
    半透明则相邻行选区融合、被压住的字形透出；文字保持原色以保证任意底上的可读性 */
-::selection { background: color-mix(in srgb, var(--blora-tea-light) 40%, transparent); }
-::-moz-selection { background: color-mix(in srgb, var(--blora-tea-light) 40%, transparent); }
+:where(body.blora-page, .blora-scope, .blora-portal)::selection,
+:where(body.blora-page, .blora-scope, .blora-portal) *::selection { background: color-mix(in srgb, var(--blora-tea-light) 40%, transparent); }
+:where(body.blora-page, .blora-scope, .blora-portal)::-moz-selection,
+:where(body.blora-page, .blora-scope, .blora-portal) *::-moz-selection { background: color-mix(in srgb, var(--blora-tea-light) 40%, transparent); }
 :where(body.blora-page, .blora-scope) h1,
 :where(body.blora-page, .blora-scope) h2,
 :where(body.blora-page, .blora-scope) h3,
@@ -460,8 +471,8 @@ body.blora-page {
   font-weight: 600;
 }
 .blora-btn--danger:hover {
-  --btn-bg: color-mix(in srgb, var(--blora-danger) 85%, #000);
-  --btn-bd: color-mix(in srgb, var(--blora-danger) 85%, #000);
+  --btn-bg: color-mix(in srgb, var(--blora-danger) 85%, var(--blora-ink));
+  --btn-bd: color-mix(in srgb, var(--blora-danger) 85%, var(--blora-ink));
 }
 
 /* —— 幽灵按钮 —— */
@@ -558,6 +569,89 @@ body.blora-page {
 .blora-input.is-error:focus { box-shadow: 0 0 0 3px color-mix(in srgb, var(--blora-danger) 18%, transparent); }
 
 .blora-textarea { min-height: 6em; resize: vertical; line-height: var(--blora-leading-normal); }
+
+.blora-limit {
+  position: relative;
+  width: 100%;
+}
+.blora-limit > .blora-input,
+.blora-limit > .blora-textarea {
+  padding-right: max(4.25rem, 0.85em);
+}
+.blora-limit__mirror {
+  position: absolute;
+  inset: 0 4.25rem 0 0;
+  z-index: 2;
+  display: none;
+  padding: 0.6em 0 0.6em 0.85em;
+  color: var(--blora-ink-deep);
+  font-family: var(--blora-font-sans);
+  font-size: var(--blora-text-sm);
+  line-height: var(--blora-leading-normal);
+  white-space: pre;
+  overflow: hidden;
+  pointer-events: none;
+}
+.blora-limit__mirror-inner {
+  display: inline-block;
+  min-width: 100%;
+}
+.blora-limit__overflow {
+  color: var(--blora-danger);
+  background: color-mix(in srgb, var(--blora-danger) 10%, transparent);
+  border-radius: var(--blora-radius-xs);
+}
+.blora-limit__count {
+  position: absolute;
+  top: 50%;
+  right: 0.85em;
+  z-index: 4;
+  transform: translateY(-50%);
+  color: var(--blora-ink-mist);
+  background: var(--blora-surface-1);
+  font-family: var(--blora-font-mono);
+  font-size: var(--blora-text-xs);
+  line-height: 1;
+  padding-left: var(--blora-space-2);
+  pointer-events: none;
+  transition: color var(--blora-dur-fast) var(--blora-ease);
+}
+.blora-limit.is-over-limit > .blora-input,
+.blora-limit.is-over-limit > .blora-textarea {
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  caret-color: var(--blora-ink-deep);
+}
+.blora-limit.is-over-limit > .blora-input::placeholder,
+.blora-limit.is-over-limit > .blora-textarea::placeholder {
+  -webkit-text-fill-color: var(--blora-ink-faint);
+}
+.blora-limit.is-over-limit .blora-limit__mirror {
+  display: block;
+}
+.blora-limit.is-over-limit .blora-limit__count {
+  color: var(--blora-danger);
+}
+.blora-limit.is-over-limit > .blora-input,
+.blora-limit.is-over-limit > .blora-textarea {
+  border-color: var(--blora-danger);
+}
+.blora-limit.is-over-limit > .blora-input:focus,
+.blora-limit.is-over-limit > .blora-textarea:focus {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--blora-danger) 18%, transparent);
+}
+.blora-limit--textarea .blora-limit__count {
+  top: 0.85em;
+  transform: none;
+}
+.blora-limit--textarea .blora-limit__mirror {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.blora-limit-action {
+  align-self: flex-start;
+  margin-top: var(--blora-space-1);
+}
 
 /* —— 输入框组 / 前后缀 —— */
 .blora-input-group { display: flex; align-items: stretch; }
@@ -662,9 +756,17 @@ body.blora-page {
 .blora-checkbox > input:checked + .blora-checkbox__box::after { opacity: 1; transform: rotate(-45deg) scale(1); }
 .blora-checkbox > input:focus-visible + .blora-checkbox__box { box-shadow: var(--blora-focus-ring-strong); }
 .blora-checkbox > input:disabled + .blora-checkbox__box { opacity: 0.4; }
-.blora-checkbox--indeterminate .blora-checkbox__box { background: var(--blora-seal); border-color: var(--blora-seal); }
-.blora-checkbox--indeterminate .blora-checkbox__box::after {
-  width: 0.45em; height: 0.45em; background: var(--blora-on-accent); opacity: 1; transform: scale(1); border-radius: 1px;
+.blora-checkbox.blora-checkbox--indeterminate > input + .blora-checkbox__box { background: var(--blora-seal); border-color: var(--blora-seal); }
+.blora-checkbox.blora-checkbox--indeterminate > input + .blora-checkbox__box::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0.44em; height: 0.44em;
+  border: 0;
+  background: var(--blora-on-accent);
+  opacity: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 1px;
 }
 
 /* —— 单选框 —— */
@@ -687,14 +789,18 @@ body.blora-page {
 .blora-switch { display: inline-flex; align-items: center; gap: var(--blora-space-3); cursor: pointer; user-select: none; }
 .blora-switch > input { position: absolute; opacity: 0; pointer-events: none; }
 .blora-switch__track {
-  width: 2.6em; height: 1.5em; flex: none;
+  --switch-w: 2.6em;
+  --switch-h: 1.5em;
+  --switch-pad: 0.2em;
+  --switch-knob: calc(var(--switch-h) - var(--switch-pad) * 2);
+  width: var(--switch-w); height: var(--switch-h); flex: none;
   background: var(--blora-surface-3); border: 1px solid var(--blora-ink-ghost);
   border-radius: var(--blora-radius-full);
   position: relative; transition: all var(--blora-dur-base) var(--blora-ease);
 }
 .blora-switch__track::after {
-  content: ""; position: absolute; top: 50%; left: 0.2em;
-  width: 1.05em; height: 1.05em; border-radius: 50%;
+  content: ""; position: absolute; top: 50%; left: var(--switch-pad);
+  width: var(--switch-knob); height: var(--switch-knob); border-radius: 50%;
   background: var(--blora-on-accent); box-shadow: var(--blora-shadow-2);
   transform: translateY(-50%);
   transition: left var(--blora-dur-base) var(--blora-ease-overshoot),
@@ -702,9 +808,9 @@ body.blora-page {
 }
 .blora-switch > input:checked + .blora-switch__track { background: var(--blora-seal); border-color: var(--blora-seal); }
 .blora-switch > input:focus-visible + .blora-switch__track { box-shadow: var(--blora-focus-ring-strong); }
-.blora-switch > input:checked + .blora-switch__track::after { left: calc(100% - 1.25em); background: var(--blora-on-accent); }
-.blora-switch--sm .blora-switch__track { width: 2.1em; height: 1.2em; }
-.blora-switch--lg .blora-switch__track { width: 3.2em; height: 1.8em; }
+.blora-switch > input:checked + .blora-switch__track::after { left: calc(100% - var(--switch-pad) - var(--switch-knob)); background: var(--blora-on-accent); }
+.blora-switch--sm .blora-switch__track { --switch-w: 2.1em; --switch-h: 1.2em; --switch-pad: 0.16em; }
+.blora-switch--lg .blora-switch__track { --switch-w: 3.2em; --switch-h: 1.8em; --switch-pad: 0.24em; }
 .blora-switch > input:disabled + .blora-switch__track { opacity: 0.4; }
 
 /* —— 滑块 Slider —— */
@@ -740,9 +846,9 @@ body.blora-page {
 
 /* —— 范围滑块 —— */
 .blora-range { position: relative; height: 24px; margin-bottom: 1.5em; }
-.blora-range__track { position: absolute; top: 50%; left: 0; right: 0; height: 4px; transform: translateY(-50%); background: var(--blora-ink-ghost); border-radius: var(--blora-radius-full); }
+.blora-range__track { position: absolute; top: 50%; left: 0; right: 0; height: var(--blora-range-track-size); transform: translateY(-50%); background: var(--blora-ink-ghost); border-radius: var(--blora-radius-full); }
 .blora-range__fill  { position: absolute; top: 0; bottom: 0; background: var(--blora-seal); border-radius: var(--blora-radius-full); }
-.blora-range__thumb { position: absolute; top: 50%; width: 18px; height: 18px; transform: translate(-50%, -50%); border-radius: 50%; background: var(--blora-seal); border: 2px solid var(--blora-on-accent); box-shadow: var(--blora-shadow-2); cursor: grab; }
+.blora-range__thumb { position: absolute; top: 50%; width: var(--blora-range-thumb-size); height: var(--blora-range-thumb-size); transform: translate(-50%, -50%); border-radius: 50%; background: var(--blora-seal); border: 2px solid var(--blora-on-accent); box-shadow: var(--blora-shadow-2); cursor: grab; touch-action: none; }
 .blora-range__thumb:active { cursor: grabbing; transform: translate(-50%, -50%) scale(1.15); }
 
 /* —— 评分 Rate —— */
@@ -784,23 +890,43 @@ body.blora-page {
 /* —— 颜色选择器 —— */
 /* —— 颜色选择器 · Custom Color Picker —— */
 .blora-color-picker { position: relative; display: inline-block; }
-.blora-color-swatch { width: 2.5em; height: 2.5em; border: 1px solid var(--blora-ink-ghost); border-radius: var(--blora-radius-md); cursor: pointer; transition: all var(--blora-dur-fast) var(--blora-ease); }
+.blora-color-swatch { width: 2.5em; height: 2.5em; border: 1px solid var(--blora-ink-ghost); border-radius: var(--blora-radius-md); cursor: pointer; transition: border-color var(--blora-dur-fast) var(--blora-ease), transform var(--blora-dur-fast) var(--blora-ease); }
 .blora-color-swatch:hover { border-color: var(--blora-ink-mist); transform: scale(1.05); }
 .blora-color-panel {
   position: absolute; top: calc(100% + 6px); left: 0; z-index: var(--blora-z-dropdown);
   background: var(--blora-surface-1); border: var(--blora-border); border-radius: var(--blora-radius-lg);
-  box-shadow: var(--blora-shadow-3); padding: var(--blora-space-3); width: 200px;
+  box-shadow: var(--blora-shadow-3); padding: var(--blora-space-3); width: min(17.5rem, calc(100vw - 1rem));
+  max-width: calc(100vw - 1rem); overflow: hidden;
   opacity: 0; pointer-events: none; transform: translateY(-4px);
-  transition: all var(--blora-dur-fast) var(--blora-ease);
+  transition: opacity var(--blora-dur-fast) var(--blora-ease), transform var(--blora-dur-fast) var(--blora-ease);
 }
+.blora-color-panel.is-align-end { left: auto; right: 0; }
 .blora-color-panel.is-open { opacity: 1; pointer-events: auto; transform: translateY(0); }
-.blora-color-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; margin-bottom: var(--blora-space-3); }
-.blora-color-cell { width: 1.4em; height: 1.4em; border-radius: var(--blora-radius-sm); cursor: pointer; border: 1px solid rgba(28,26,23,0.1); transition: transform var(--blora-dur-fast) var(--blora-ease); }
-.blora-color-cell:hover { transform: scale(1.2); }
-.blora-color-cell.is-selected { box-shadow: 0 0 0 2px var(--blora-paper), 0 0 0 4px var(--blora-seal); }
+.blora-color-grid { display: none; }
+.blora-color-spectrum {
+  --blora-color-hue: 0;
+  position: relative; width: 100%; aspect-ratio: 5 / 3; margin-bottom: var(--blora-space-3);
+  border-radius: var(--blora-radius-md); overflow: hidden; cursor: crosshair; touch-action: none;
+  background: linear-gradient(to top, #000, transparent), linear-gradient(to right, #fff, transparent), hsl(var(--blora-color-hue) 100% 50%);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--blora-ink) 16%, transparent);
+}
+.blora-color-spectrum:focus-visible { outline: 2px solid var(--blora-seal); outline-offset: 2px; }
+.blora-color-spectrum__cursor {
+  position: absolute; width: 0.875rem; height: 0.875rem; border: 2px solid #fff; border-radius: 50%;
+  transform: translate(-50%, -50%); box-shadow: 0 0 0 1px rgba(0,0,0,0.72), var(--blora-shadow-1); pointer-events: none;
+}
+.blora-color-hue {
+  display: block; width: 100%; height: 1.25rem; margin: 0 0 var(--blora-space-3); padding: 0;
+  border-radius: var(--blora-radius-full); background: linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
+  appearance: none; -webkit-appearance: none; cursor: ew-resize;
+}
+.blora-color-hue::-webkit-slider-runnable-track { height: 0.75rem; background: transparent; border-radius: var(--blora-radius-full); }
+.blora-color-hue::-moz-range-track { height: 0.75rem; background: transparent; border-radius: var(--blora-radius-full); }
+.blora-color-hue::-webkit-slider-thumb { width: 1.125rem; height: 1.125rem; margin-top: -0.1875rem; border: 2px solid #fff; border-radius: 50%; background: hsl(var(--blora-color-hue) 100% 50%); box-shadow: 0 0 0 1px rgba(0,0,0,0.55), var(--blora-shadow-1); appearance: none; -webkit-appearance: none; }
+.blora-color-hue::-moz-range-thumb { width: 1.125rem; height: 1.125rem; border: 2px solid #fff; border-radius: 50%; background: hsl(var(--blora-color-hue) 100% 50%); box-shadow: 0 0 0 1px rgba(0,0,0,0.55), var(--blora-shadow-1); }
 .blora-color-custom { display: flex; align-items: center; gap: var(--blora-space-2); }
-.blora-color-custom input[type="text"] { flex: 1; }
-.blora-color-preview { width: 1.8em; height: 1.8em; border-radius: var(--blora-radius-sm); border: 1px solid var(--blora-ink-ghost); }
+.blora-color-custom input[type="text"] { flex: 1; min-width: 0; }
+.blora-color-preview { width: 2.25em; height: 2.25em; flex: none; border-radius: var(--blora-radius-sm); border: 1px solid var(--blora-ink-ghost); }
 
 .blora-floating-mask {
   position: fixed;
@@ -1381,17 +1507,23 @@ body.blora-page {
 .blora-seal-wash { background: radial-gradient(ellipse at 50% 40%, color-mix(in srgb, var(--blora-seal) 12%, transparent) 0%, transparent 70%); }
 
 /* —— 滚动条 · Scrollbar —— 细若游丝，不夺目 */
-* { scrollbar-width: thin; scrollbar-color: var(--blora-ink-ghost) transparent; }
-::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb {
+:where(body.blora-page, .blora-scope, .blora-portal),
+:where(body.blora-page, .blora-scope, .blora-portal) * { scrollbar-width: thin; scrollbar-color: var(--blora-ink-ghost) transparent; }
+:where(body.blora-page, .blora-scope, .blora-portal)::-webkit-scrollbar,
+:where(body.blora-page, .blora-scope, .blora-portal) *::-webkit-scrollbar { width: 10px; height: 10px; }
+:where(body.blora-page, .blora-scope, .blora-portal)::-webkit-scrollbar-track,
+:where(body.blora-page, .blora-scope, .blora-portal) *::-webkit-scrollbar-track { background: transparent; }
+:where(body.blora-page, .blora-scope, .blora-portal)::-webkit-scrollbar-thumb,
+:where(body.blora-page, .blora-scope, .blora-portal) *::-webkit-scrollbar-thumb {
   background: var(--blora-ink-ghost);
   border-radius: var(--blora-radius-full);
   border: 3px solid transparent;
   background-clip: padding-box;
 }
-::-webkit-scrollbar-thumb:hover { background: var(--blora-ink-mist); background-clip: padding-box; border: 3px solid transparent; }
-::-webkit-scrollbar-corner { background: transparent; }
+:where(body.blora-page, .blora-scope, .blora-portal)::-webkit-scrollbar-thumb:hover,
+:where(body.blora-page, .blora-scope, .blora-portal) *::-webkit-scrollbar-thumb:hover { background: var(--blora-ink-mist); background-clip: padding-box; border: 3px solid transparent; }
+:where(body.blora-page, .blora-scope, .blora-portal)::-webkit-scrollbar-corner,
+:where(body.blora-page, .blora-scope, .blora-portal) *::-webkit-scrollbar-corner { background: transparent; }
 
 /* =========================================================================
    14. 暗色模式 · Dark Mode (夜墨)
@@ -1475,5 +1607,8 @@ body.blora-page {
 
 /* —— 减少动效偏好 —— */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  :where(body.blora-page, .blora-scope, .blora-portal),
+  :where(body.blora-page, .blora-scope, .blora-portal) *,
+  :where(body.blora-page, .blora-scope, .blora-portal) *::before,
+  :where(body.blora-page, .blora-scope, .blora-portal) *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
 }

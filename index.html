@@ -521,14 +521,17 @@
 
       <div class="blora-panel">
         <div class="blora-grid blora-grid--2">
-          <div class="blora-field">
+          <div class="blora-field" data-blora-limit-group>
             <label class="blora-label blora-label--req" for="f-text">文本输入</label>
-            <input class="blora-input" id="f-text" type="text" placeholder="请输入用户名">
-            <span class="blora-hint">最长 20 个字符。</span>
+            <input class="blora-input" id="f-text" type="text" placeholder="请输入用户名" data-blora-limit="20" aria-describedby="f-text-hint">
+            <span class="blora-hint" id="f-text-hint">最长 20 个字符，超出后仅标注，不会截断输入。</span>
+            <button class="blora-btn blora-btn--primary blora-btn--sm blora-limit-action" type="button" data-blora-limit-action>下一步</button>
           </div>
-          <div class="blora-field">
+          <div class="blora-field" data-blora-limit-group>
             <label class="blora-label" for="f-pwd">密码</label>
-            <input class="blora-input" id="f-pwd" type="password" value="password123">
+            <input class="blora-input" id="f-pwd" type="password" value="password123" data-blora-limit="12" aria-describedby="f-pwd-hint">
+            <span class="blora-hint" id="f-pwd-hint">最长 12 个字符，超限时以圆点标注超出部分。</span>
+            <button class="blora-btn blora-btn--primary blora-btn--sm blora-limit-action" type="button" data-blora-limit-action>下一步</button>
           </div>
           <div class="blora-field">
             <label class="blora-label" for="f-err">错误态</label>
@@ -701,12 +704,11 @@
         </div>
 
         <div class="blora-demo">
-          <div class="blora-demo__label">颜色选择 · Color Picker（预设色板 + 手动 Hex）</div>
+          <div class="blora-demo__label">颜色选择 · Color Picker（全色域 + 手动 Hex）</div>
           <div class="blora-row">
             <div class="blora-color-picker">
               <div class="blora-color-swatch" data-color="#A0392E" style="background:#A0392E;"></div>
               <div class="blora-color-panel">
-                <div class="blora-color-grid"></div>
                 <div class="blora-color-custom">
                   <span class="blora-color-preview" style="background:#A0392E;"></span>
                   <input class="blora-input blora-color-hex" type="text" placeholder="#A0392E" value="#A0392E">
@@ -716,7 +718,6 @@
             <div class="blora-color-picker">
               <div class="blora-color-swatch" data-color="#1C1A17" style="background:#1C1A17;"></div>
               <div class="blora-color-panel">
-                <div class="blora-color-grid"></div>
                 <div class="blora-color-custom">
                   <span class="blora-color-preview" style="background:#1C1A17;"></span>
                   <input class="blora-input blora-color-hex" type="text" placeholder="#1C1A17" value="#1C1A17">
@@ -726,7 +727,6 @@
             <div class="blora-color-picker">
               <div class="blora-color-swatch" data-color="#5A7B6B" style="background:#5A7B6B;"></div>
               <div class="blora-color-panel">
-                <div class="blora-color-grid"></div>
                 <div class="blora-color-custom">
                   <span class="blora-color-preview" style="background:#5A7B6B;"></span>
                   <input class="blora-input blora-color-hex" type="text" placeholder="#5A7B6B" value="#5A7B6B">
@@ -736,7 +736,6 @@
             <div class="blora-color-picker">
               <div class="blora-color-swatch" data-color="#B89968" style="background:#B89968;"></div>
               <div class="blora-color-panel">
-                <div class="blora-color-grid"></div>
                 <div class="blora-color-custom">
                   <span class="blora-color-preview" style="background:#B89968;"></span>
                   <input class="blora-input blora-color-hex" type="text" placeholder="#B89968" value="#B89968">

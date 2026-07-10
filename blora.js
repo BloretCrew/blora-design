@@ -3,12 +3,37 @@
    轻量的交互层 — 让静态的"水墨"活起来。
    无依赖。只做该做的事：开关、显隐、步进、拖拽。
    ======================================================================== */
-(function () {
+(function (global, factory) {
+  const Blora = factory(global);
+  if (typeof module === "object" && module.exports) module.exports = Blora;
+  if (global) global.Blora = Blora;
+}(typeof globalThis !== "undefined" ? globalThis : this, function (global) {
   "use strict";
 
-  const $  = (sel, ctx = document) => ctx.querySelector(sel);
-  const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
+  const CONFIG = {
+    autoInit: true,
+    portalRoot: null,
+    storageKey: "blora-theme",
+  };
+  const doc = () => global && global.document;
+  const $  = (sel, ctx = doc()) => (ctx ? ctx.querySelector(sel) : null);
+  const $$ = (sel, ctx = doc()) => (ctx ? Array.from(ctx.querySelectorAll(sel)) : []);
   const on = (el, evt, fn, opts) => el && el.addEventListener(evt, fn, opts);
+  const ownerDoc = (el) => (el && el.ownerDocument) || doc();
+  const ownerWin = (el) => {
+    const d = ownerDoc(el);
+    return (d && d.defaultView) || global;
+  };
+  const resolveElement = (target, fallbackDoc = doc()) => {
+    if (!target) return null;
+    if (typeof target === "string") return fallbackDoc ? fallbackDoc.querySelector(target) : null;
+    return target;
+  };
+  const getPortalRoot = (base) => {
+    const d = ownerDoc(base);
+    const root = resolveElement(CONFIG.portalRoot, d);
+    return root || (d && d.body);
+  };
 
   const FLAGS = {};
   /* 幂等标记：init 可重复调用（如 Blora.init(动态子树)），已绑定的元素自动跳过 */
@@ -18,17 +43,29 @@
     el.dataset[key] = "1";
     return false;
   };
-  const prefersReduced = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const configure = (options = {}) => {
+    if (!options || typeof options !== "object") return { ...CONFIG };
+    if ("autoInit" in options) CONFIG.autoInit = options.autoInit !== false;
+    if ("portalRoot" in options) CONFIG.portalRoot = options.portalRoot || null;
+    if ("storageKey" in options && options.storageKey) CONFIG.storageKey = String(options.storageKey);
+    return { ...CONFIG };
+  };
+  const prefersReduced = (base) => {
+    const win = ownerWin(base);
+    return !!(win && win.matchMedia && win.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  };
   /* 读取元素当前动画时长（随动效令牌变化），加 20ms 余量；读不到时用回退值 */
   const animMs = (el, fallback) => {
-    const d = el ? parseFloat(getComputedStyle(el).animationDuration) : 0;
+    const win = ownerWin(el);
+    const d = el && win ? parseFloat(win.getComputedStyle(el).animationDuration) : 0;
     return (d ? d * 1000 : fallback) + 20;
   };
   const escapeHTML = (value) => String(value ?? "").replace(/[&<>"']/g, (ch) => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
   }[ch]));
   const token = (name, fallback) => {
-    const value = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    const d = doc();
+    const value = d ? getComputedStyle(d.documentElement).getPropertyValue(name).trim() : "";
     return value || fallback || "";
   };
   const makeChevron = () => {
@@ -127,51 +164,57 @@
       const f = $$(FOCUSABLE, layer).filter((el) => el.offsetParent !== null);
       if (!f.length) return;
       const first = f[0], last = f[f.length - 1];
-      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      const active = ownerDoc(layer).activeElement;
+      if (e.shiftKey && active === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && active === last) { e.preventDefault(); first.focus(); }
     });
   }
   const restoreFocus = (layer) => {
     if (layer._bloraPrev && typeof layer._bloraPrev.focus === "function") layer._bloraPrev.focus();
     layer._bloraPrev = null;
   };
-  const unlockScroll = () => {
-    if (!$(".blora-modal.is-open") && !$(".blora-drawer.is-open")) document.body.style.overflow = "";
+  const unlockScroll = (base) => {
+    const d = ownerDoc(base);
+    if (d && !$(".blora-modal.is-open", d) && !$(".blora-drawer.is-open", d) && d.body) d.body.style.overflow = "";
   };
 
   /* —— Modal —— */
   function openModal(id) {
-    const m = typeof id === "string" ? document.getElementById(id) : id;
+    const d = doc();
+    const m = typeof id === "string" ? d && d.getElementById(id) : id;
     if (!m || m.classList.contains("is-open")) return;
-    m._bloraPrev = document.activeElement;
+    const mDoc = ownerDoc(m);
+    m._bloraPrev = mDoc.activeElement;
     m.classList.remove("is-closing");
     m.classList.add("is-open");
-    document.body.style.overflow = "hidden";
+    if (mDoc.body) mDoc.body.style.overflow = "hidden";
     if (!m._bloraLayerClose) {
       m._bloraLayerClose = (e) => {
         if (e.target.closest("[data-blora-close]") || e.target.classList.contains("blora-modal__mask")) closeModal(m);
       };
       on(m, "click", m._bloraLayerClose);
     }
-    if (m._bloraEsc) document.removeEventListener("keydown", m._bloraEsc);
+    if (m._bloraEsc) mDoc.removeEventListener("keydown", m._bloraEsc);
     m._bloraEsc = (e) => { if (e.key === "Escape") closeModal(m); };
-    document.addEventListener("keydown", m._bloraEsc);
+    mDoc.addEventListener("keydown", m._bloraEsc);
     bindTrap(m);
     const dlg = $(".blora-modal__dialog", m);
     if (dlg) { dlg.tabIndex = -1; dlg.focus(); }
   }
   function closeModal(m) {
-    m = typeof m === "string" ? document.getElementById(m) : m;
+    const d = doc();
+    m = typeof m === "string" ? d && d.getElementById(m) : m;
     if (!m || !m.classList.contains("is-open") || m.classList.contains("is-closing")) return;
+    const mDoc = ownerDoc(m);
     m.classList.add("is-closing");
     m.classList.remove("is-open");
     if (m._bloraEsc) {
-      document.removeEventListener("keydown", m._bloraEsc);
+      mDoc.removeEventListener("keydown", m._bloraEsc);
       m._bloraEsc = null;
     }
     setTimeout(() => {
       m.classList.remove("is-closing");
-      unlockScroll();
+      unlockScroll(m);
       restoreFocus(m);
     }, animMs($(".blora-modal__dialog", m), 240));
   }
@@ -184,37 +227,41 @@
 
   /* —— Drawer —— */
   function openDrawer(id) {
-    const d = typeof id === "string" ? document.getElementById(id) : id;
-    if (!d || d.classList.contains("is-open")) return;
-    d._bloraPrev = document.activeElement;
-    d.classList.remove("is-closing");
-    d.classList.add("is-open");
-    document.body.style.overflow = "hidden";
-    if (!d._bloraLayerClose) {
-      d._bloraLayerClose = (e) => {
-        if (e.target.closest("[data-blora-close]") || e.target.classList.contains("blora-drawer__mask")) closeDrawer(d);
+    const baseDoc = doc();
+    const drawer = typeof id === "string" ? baseDoc && baseDoc.getElementById(id) : id;
+    if (!drawer || drawer.classList.contains("is-open")) return;
+    const dDoc = ownerDoc(drawer);
+    drawer._bloraPrev = dDoc.activeElement;
+    drawer.classList.remove("is-closing");
+    drawer.classList.add("is-open");
+    if (dDoc.body) dDoc.body.style.overflow = "hidden";
+    if (!drawer._bloraLayerClose) {
+      drawer._bloraLayerClose = (e) => {
+        if (e.target.closest("[data-blora-close]") || e.target.classList.contains("blora-drawer__mask")) closeDrawer(drawer);
       };
-      on(d, "click", d._bloraLayerClose);
+      on(drawer, "click", drawer._bloraLayerClose);
     }
-    if (d._bloraEsc) document.removeEventListener("keydown", d._bloraEsc);
-    d._bloraEsc = (e) => { if (e.key === "Escape") closeDrawer(d); };
-    document.addEventListener("keydown", d._bloraEsc);
-    bindTrap(d);
-    const panel = $(".blora-drawer__panel", d);
+    if (drawer._bloraEsc) dDoc.removeEventListener("keydown", drawer._bloraEsc);
+    drawer._bloraEsc = (e) => { if (e.key === "Escape") closeDrawer(drawer); };
+    dDoc.addEventListener("keydown", drawer._bloraEsc);
+    bindTrap(drawer);
+    const panel = $(".blora-drawer__panel", drawer);
     if (panel) { panel.tabIndex = -1; panel.focus(); }
   }
   function closeDrawer(d) {
-    d = typeof d === "string" ? document.getElementById(d) : d;
+    const baseDoc = doc();
+    d = typeof d === "string" ? baseDoc && baseDoc.getElementById(d) : d;
     if (!d || !d.classList.contains("is-open") || d.classList.contains("is-closing")) return;
+    const dDoc = ownerDoc(d);
     d.classList.add("is-closing");
     d.classList.remove("is-open");
     if (d._bloraEsc) {
-      document.removeEventListener("keydown", d._bloraEsc);
+      dDoc.removeEventListener("keydown", d._bloraEsc);
       d._bloraEsc = null;
     }
     setTimeout(() => {
       d.classList.remove("is-closing");
-      unlockScroll();
+      unlockScroll(d);
       restoreFocus(d);
     }, animMs($(".blora-drawer__panel", d), 420));
   }
@@ -249,8 +296,11 @@
   /* —— Toast —— */
   function toast(opts) {
     opts = typeof opts === "string" ? { message: opts } : (opts || {});
-    let c = $(".blora-toast-container");
-    if (!c) { c = document.createElement("div"); c.className = "blora-toast-container"; document.body.appendChild(c); }
+    const root = getPortalRoot();
+    if (!root) return;
+    const d = ownerDoc(root);
+    let c = $(".blora-toast-container", root);
+    if (!c) { c = d.createElement("div"); c.className = "blora-toast-container blora-portal"; root.appendChild(c); }
     const type = opts.type || "info";
     const icons = {
       success: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
@@ -258,12 +308,12 @@
       danger:  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>',
       info:    '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>',
     };
-    const el = document.createElement("div");
+    const el = d.createElement("div");
     el.className = "blora-toast";
-    const box = document.createElement("div");
+    const box = d.createElement("div");
     box.className = "blora-message blora-message--" + (icons[type] ? type : "info");
     box.innerHTML = '<span class="blora-message__icon">' + (icons[type] || icons.info) + '</span>';
-    const text = document.createElement("span");
+    const text = d.createElement("span");
     text.textContent = opts.message || "";   /* 外部内容一律按文本插入，防注入 */
     box.appendChild(text);
     el.appendChild(box);
@@ -276,32 +326,65 @@
   function initSegmented(root) {
     $$(".blora-segmented", root).forEach((seg) => {
       if (bound(seg, "Segmented")) return;
-      const indicator = document.createElement("span");
+      const d = ownerDoc(seg);
+      const win = ownerWin(seg);
+      const indicator = d.createElement("span");
       indicator.className = "blora-segmented__indicator";
+      indicator.setAttribute("aria-hidden", "true");
       seg.insertBefore(indicator, seg.firstChild);
       const items = $$(".blora-segmented__item", seg);
+      seg.setAttribute("role", "radiogroup");
       const moveIndicator = (item) => {
         const segRect = seg.getBoundingClientRect();
         const itemRect = item.getBoundingClientRect();
         indicator.style.left = (itemRect.left - segRect.left) + "px";
         indicator.style.width = itemRect.width + "px";
       };
-      items.forEach((item) => {
-        on(item, "click", () => {
-          items.forEach((i) => i.classList.remove("is-active"));
-          item.classList.add("is-active");
-          moveIndicator(item);
+      const enabled = () => items.filter((item) => !item.classList.contains("is-disabled") && item.getAttribute("aria-disabled") !== "true");
+      const activate = (item, focus = false, emit = true) => {
+        if (!item || !enabled().includes(item)) return;
+        items.forEach((candidate) => {
+          const active = candidate === item;
+          candidate.classList.toggle("is-active", active);
+          candidate.setAttribute("aria-checked", String(active));
+          if (candidate.getAttribute("aria-disabled") !== "true") candidate.tabIndex = active ? 0 : -1;
         });
+        seg.dataset.value = item.dataset.value || item.textContent.trim();
+        moveIndicator(item);
+        if (focus) item.focus();
+        if (emit) seg.dispatchEvent(new win.CustomEvent("blora:change", { bubbles: true, detail: { value: seg.dataset.value, item } }));
+      };
+      items.forEach((item) => {
+        item.setAttribute("role", "radio");
+        const disabled = item.classList.contains("is-disabled") || item.getAttribute("aria-disabled") === "true";
+        item.setAttribute("aria-checked", String(item.classList.contains("is-active")));
+        item.tabIndex = disabled ? -1 : (item.classList.contains("is-active") ? 0 : -1);
+        if (disabled) item.setAttribute("aria-disabled", "true");
+        on(item, "click", () => activate(item));
+      });
+      on(seg, "keydown", (e) => {
+        const candidates = enabled();
+        if (!candidates.length) return;
+        const current = candidates.indexOf(d.activeElement);
+        let next = current < 0 ? 0 : current;
+        if (e.key === "ArrowRight" || e.key === "ArrowDown") next = (next + 1) % candidates.length;
+        else if (e.key === "ArrowLeft" || e.key === "ArrowUp") next = (next - 1 + candidates.length) % candidates.length;
+        else if (e.key === "Home") next = 0;
+        else if (e.key === "End") next = candidates.length - 1;
+        else if (e.key === "Enter" || e.key === " ") { e.preventDefault(); activate(d.activeElement); return; }
+        else return;
+        e.preventDefault();
+        activate(candidates[next], true);
       });
       const remeasure = () => {
         const cur = items.find((i) => i.classList.contains("is-active"));
         if (cur) moveIndicator(cur);
       };
-      const active = items.find((i) => i.classList.contains("is-active")) || items[0];
-      if (active) requestAnimationFrame(() => moveIndicator(active));
-      on(window, "resize", remeasure);
+      const active = items.find((i) => i.classList.contains("is-active")) || enabled()[0];
+      if (active) { activate(active, false, false); win.requestAnimationFrame(() => moveIndicator(active)); }
+      on(win, "resize", remeasure);
       /* webfont 载入后字宽会变，指示器需重算 */
-      if (document.fonts && document.fonts.ready) document.fonts.ready.then(remeasure);
+      if (d.fonts && d.fonts.ready) d.fonts.ready.then(remeasure);
     });
   }
 
@@ -323,12 +406,26 @@
       if (bound(rate, "Rate")) return;
       const stars = $$(".blora-rate__star", rate);
       const readOnly = rate.hasAttribute("data-readonly");
-      stars.forEach((star, i) => {
-        on(star, "click", () => {
-          if (readOnly) return;
-          stars.forEach((s, j) => s.classList.toggle("is-on", j <= i));
-          rate.dataset.value = String(i + 1);
+      const win = ownerWin(rate);
+      rate.setAttribute("role", "radiogroup");
+      if (readOnly) rate.setAttribute("aria-readonly", "true");
+      const setValue = (value, focus = false, emit = true) => {
+        const next = Math.max(1, Math.min(stars.length, value));
+        rate.dataset.value = String(next);
+        stars.forEach((star, index) => {
+          const selected = index + 1 === next;
+          star.classList.toggle("is-on", index < next);
+          star.setAttribute("aria-checked", String(selected));
+          if (!readOnly) star.tabIndex = selected ? 0 : -1;
         });
+        if (focus) stars[next - 1].focus();
+        if (emit) rate.dispatchEvent(new win.CustomEvent("blora:change", { bubbles: true, detail: { value: next } }));
+      };
+      stars.forEach((star, i) => {
+        star.setAttribute("role", "radio");
+        star.setAttribute("aria-label", star.getAttribute("aria-label") || `${i + 1} / ${stars.length}`);
+        star.tabIndex = -1;
+        on(star, "click", () => { if (!readOnly) setValue(i + 1); });
         if (!readOnly) {
           on(star, "mouseenter", () => stars.forEach((s, j) => s.classList.toggle("is-on", j <= i)));
           on(star, "mouseleave", () => {
@@ -337,6 +434,17 @@
           });
         }
       });
+      if (!readOnly) on(rate, "keydown", (e) => {
+        let value = Number(rate.dataset.value || 1);
+        if (e.key === "ArrowRight" || e.key === "ArrowUp") value += 1;
+        else if (e.key === "ArrowLeft" || e.key === "ArrowDown") value -= 1;
+        else if (e.key === "Home") value = 1;
+        else if (e.key === "End") value = stars.length;
+        else if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setValue(value); return; }
+        else return;
+        e.preventDefault(); setValue(value, true);
+      });
+      if (stars.length) setValue(Number(rate.dataset.value || 1), false, false);
     });
   }
 
@@ -379,6 +487,83 @@
       progress.setAttribute("aria-valuemin", "0");
       progress.setAttribute("aria-valuemax", "100");
       progress.setAttribute("aria-valuenow", String(value));
+    });
+  }
+
+  /* —— 字数限制 —— 不拦截输入，仅标注超限字符并同步计数。 */
+  function initTextLimit(root) {
+    const splitValue = (value, limit) => {
+      const chars = Array.from(value || "");
+      return {
+        count: chars.length,
+        normal: chars.slice(0, limit).join(""),
+        overflow: chars.slice(limit).join(""),
+      };
+    };
+    const syncActionState = (field) => {
+      const group = field.closest("[data-blora-limit-group]");
+      if (!group) return;
+      const invalid = $$("[data-blora-limit]", group).some((el) => el.dataset.bloraLimitInvalid === "true");
+      $$("[data-blora-limit-action]", group).forEach((action) => {
+        action.disabled = invalid;
+        action.setAttribute("aria-disabled", String(invalid));
+      });
+    };
+    $$("input[data-blora-limit], textarea[data-blora-limit]", root).forEach((field) => {
+      if (bound(field, "TextLimit")) return;
+      const limit = Number(field.dataset.bloraLimit);
+      if (!Number.isFinite(limit) || limit < 1) return;
+      const secure = (field.type || "").toLowerCase() === "password";
+      field.removeAttribute("maxlength");
+      const wrapper = field.closest(".blora-limit") || document.createElement("div");
+      if (!wrapper.classList.contains("blora-limit")) {
+        field.parentNode.insertBefore(wrapper, field);
+        wrapper.appendChild(field);
+        wrapper.className = "blora-limit";
+      }
+      wrapper.classList.toggle("blora-limit--textarea", field.tagName === "TEXTAREA");
+      wrapper.classList.toggle("blora-limit--secure", secure);
+      const mirror = document.createElement("div");
+      mirror.className = "blora-limit__mirror";
+      mirror.setAttribute("aria-hidden", "true");
+      const mirrorInner = document.createElement("span");
+      mirrorInner.className = "blora-limit__mirror-inner";
+      const normal = document.createElement("span");
+      const overflow = document.createElement("span");
+      overflow.className = "blora-limit__overflow";
+      mirrorInner.append(normal, overflow);
+      mirror.appendChild(mirrorInner);
+      const counter = document.createElement("span");
+      counter.className = "blora-limit__count";
+      FLAGS.textLimitId = (FLAGS.textLimitId || 0) + 1;
+      counter.id = field.id ? field.id + "-count" : "blora-limit-count-" + FLAGS.textLimitId;
+      counter.setAttribute("aria-live", "polite");
+      wrapper.append(mirror, counter);
+      const describedBy = (field.getAttribute("aria-describedby") || "").split(/\s+/).filter(Boolean);
+      if (!describedBy.includes(counter.id)) field.setAttribute("aria-describedby", describedBy.concat(counter.id).join(" "));
+      const syncScroll = () => {
+        mirrorInner.style.transform = "translateX(" + (-field.scrollLeft) + "px)";
+        mirror.scrollTop = field.scrollTop;
+      };
+      const update = () => {
+        const state = splitValue(field.value, limit);
+        const over = state.count > limit;
+        normal.textContent = secure ? "\u2022".repeat(Math.min(state.count, limit)) : state.normal || "";
+        overflow.textContent = secure ? "\u2022".repeat(Math.max(state.count - limit, 0)) : state.overflow || "";
+        counter.textContent = state.count + "/" + limit;
+        wrapper.classList.toggle("is-over-limit", over);
+        field.classList.toggle("is-over-limit", over);
+        field.dataset.bloraLimitInvalid = String(over);
+        if (over) field.setAttribute("aria-invalid", "true");
+        else if (!field.classList.contains("is-error")) field.removeAttribute("aria-invalid");
+        syncActionState(field);
+        syncScroll();
+      };
+      on(field, "input", update);
+      on(field, "scroll", syncScroll);
+      on(field, "keyup", syncScroll);
+      update();
+      syncScroll();
     });
   }
 
@@ -439,7 +624,7 @@
         const some = checked.length > 0 && !all;
         master.checked = all;
         master.indeterminate = some;
-        if (label) label.classList.toggle("blora-checkbox--indeterminate", all || some);
+        if (label) label.classList.toggle("blora-checkbox--indeterminate", some);
       };
       on(master, "click", () => {
         const all = items.every((i) => i.checked);
@@ -525,19 +710,23 @@
   /* —— Back to top —— */
   function initBackTop() {
     if (FLAGS.backTop) return;
+    const d = doc();
+    const root = getPortalRoot(d && d.documentElement);
+    if (!d || !root) return;
+    const win = ownerWin(root);
     FLAGS.backTop = true;
-    let fab = $("#blora-fab");
+    let fab = $("#blora-fab", d);
     if (!fab) {
-      fab = document.createElement("button");
+      fab = d.createElement("button");
       fab.id = "blora-fab";
-      fab.className = "blora-fab is-hidden";
+      fab.className = "blora-fab blora-portal is-hidden";
       fab.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>';
       fab.setAttribute("aria-label", "回到顶部");
-      document.body.appendChild(fab);
+      root.appendChild(fab);
     }
-    const sync = () => fab.classList.toggle("is-hidden", window.scrollY <= 400);
-    on(fab, "click", () => window.scrollTo({ top: 0, behavior: prefersReduced() ? "auto" : "smooth" }));
-    on(window, "scroll", sync);
+    const sync = () => fab.classList.toggle("is-hidden", win.scrollY <= 400);
+    on(fab, "click", () => win.scrollTo({ top: 0, behavior: prefersReduced(fab) ? "auto" : "smooth" }));
+    on(win, "scroll", sync);
     sync();
   }
 
@@ -577,26 +766,29 @@
   const ICON_MOON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>';
   const ICON_SUN = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>';
   function initThemeToggle(root) {
+    const d = ownerDoc(root);
+    const win = ownerWin(root);
+    if (!d || !win) return;
     /* 首次载入：读取持久化选择，未设置时跟随系统 prefers-color-scheme */
     if (!FLAGS.themeBoot) {
       FLAGS.themeBoot = true;
       let saved = null;
-      try { saved = localStorage.getItem("blora-theme"); } catch (e) {}
-      if (saved ? saved === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches) {
-        document.documentElement.classList.add("blora-dark");
+      try { saved = win.localStorage.getItem(CONFIG.storageKey); } catch (e) {}
+      if (saved ? saved === "dark" : win.matchMedia("(prefers-color-scheme: dark)").matches) {
+        d.documentElement.classList.add("blora-dark");
       }
     }
     $$("[data-blora-theme]", root).forEach((btn) => {
       if (bound(btn, "Theme")) return;
       const sync = () => {
-        const dark = document.documentElement.classList.contains("blora-dark");
+        const dark = d.documentElement.classList.contains("blora-dark");
         btn.innerHTML = dark ? ICON_SUN : ICON_MOON;
         btn.setAttribute("aria-label", dark ? "切换至浅色" : "切换至暗色");
       };
       sync();
       on(btn, "click", () => {
-        const dark = document.documentElement.classList.toggle("blora-dark");
-        try { localStorage.setItem("blora-theme", dark ? "dark" : "light"); } catch (e) {}
+        const dark = d.documentElement.classList.toggle("blora-dark");
+        try { win.localStorage.setItem(CONFIG.storageKey, dark ? "dark" : "light"); } catch (e) {}
         sync();
       });
     });
@@ -809,6 +1001,9 @@
       if (!track || thumbs.length < 2) return;
       const min = Number(range.dataset.min || 0);
       const max = Number(range.dataset.max || 100);
+      const step = Math.max(Number(range.dataset.step || 1), Number.EPSILON);
+      const d = ownerDoc(range);
+      const win = ownerWin(range);
       let v1 = Number(thumbs[0].dataset.val || 20);
       let v2 = Number(thumbs[1].dataset.val || 75);
       const tips = thumbs.map(() => { const t = document.createElement("span"); t.className = "blora-range__tip"; range.appendChild(t); return t; });
@@ -824,24 +1019,51 @@
         if (out) out.textContent = v1 + " – " + v2;
         if (tips[0]) { tips[0].textContent = v1; tips[0].style.left = p1 + "%"; }
         if (tips[1]) { tips[1].textContent = v2; tips[1].style.left = p2 + "%"; }
+        thumbs.forEach((thumb, index) => {
+          const value = index === 0 ? v1 : v2;
+          thumb.dataset.val = String(value);
+          thumb.setAttribute("aria-valuenow", String(value));
+          thumb.setAttribute("aria-valuetext", String(value));
+        });
       };
+      const emitChange = () => range.dispatchEvent(new win.CustomEvent("blora:change", { bubbles: true, detail: { min: v1, max: v2 } }));
       const toVal = (clientX) => {
         const rect = track.getBoundingClientRect();
         const pct = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
         return Math.round(min + pct * (max - min));
       };
       thumbs.forEach((thumb, i) => {
+        thumb.setAttribute("role", "slider");
+        thumb.setAttribute("aria-valuemin", String(min));
+        thumb.setAttribute("aria-valuemax", String(max));
+        thumb.setAttribute("aria-label", thumb.getAttribute("aria-label") || (i === 0 ? "Minimum" : "Maximum"));
+        thumb.tabIndex = 0;
         on(thumb, "mousedown", (e) => {
           e.preventDefault(); tips[i].classList.add("is-show");
-          const move = (ev) => { if (i === 0) v1 = toVal(ev.clientX); else v2 = toVal(ev.clientX); render(); };
-          const up = () => { document.removeEventListener("mousemove", move); document.removeEventListener("mouseup", up); tips[i].classList.remove("is-show"); };
-          document.addEventListener("mousemove", move); document.addEventListener("mouseup", up);
+          const move = (ev) => { if (i === 0) v1 = toVal(ev.clientX); else v2 = toVal(ev.clientX); render(); emitChange(); };
+          const up = () => { d.removeEventListener("mousemove", move); d.removeEventListener("mouseup", up); tips[i].classList.remove("is-show"); };
+          d.addEventListener("mousemove", move); d.addEventListener("mouseup", up);
         });
         on(thumb, "touchstart", (e) => {
           e.preventDefault(); tips[i].classList.add("is-show");
-          const move = (ev) => { if (i === 0) v1 = toVal(ev.touches[0].clientX); else v2 = toVal(ev.touches[0].clientX); render(); };
-          const up = () => { document.removeEventListener("touchmove", move); document.removeEventListener("touchend", up); tips[i].classList.remove("is-show"); };
-          document.addEventListener("touchmove", move); document.addEventListener("touchend", up);
+          const move = (ev) => { if (i === 0) v1 = toVal(ev.touches[0].clientX); else v2 = toVal(ev.touches[0].clientX); render(); emitChange(); };
+          const up = () => { d.removeEventListener("touchmove", move); d.removeEventListener("touchend", up); tips[i].classList.remove("is-show"); };
+          d.addEventListener("touchmove", move, { passive: false }); d.addEventListener("touchend", up);
+        });
+        on(thumb, "focus", () => tips[i].classList.add("is-show"));
+        on(thumb, "blur", () => tips[i].classList.remove("is-show"));
+        on(thumb, "keydown", (e) => {
+          let next = i === 0 ? v1 : v2;
+          if (e.key === "ArrowRight" || e.key === "ArrowUp") next += step;
+          else if (e.key === "ArrowLeft" || e.key === "ArrowDown") next -= step;
+          else if (e.key === "PageUp") next += step * 10;
+          else if (e.key === "PageDown") next -= step * 10;
+          else if (e.key === "Home") next = min;
+          else if (e.key === "End") next = max;
+          else return;
+          e.preventDefault();
+          if (i === 0) v1 = next; else v2 = next;
+          render(); emitChange();
         });
       });
       render();
@@ -947,8 +1169,9 @@
       const min = input.min, max = input.max;
       let selected = null, viewYear, viewMonth, viewMode = "days";
       const today = new Date();
-      const panel = document.createElement("div"); panel.className = "blora-datepicker__panel"; wrap.appendChild(panel);
-      const mask = document.createElement("div"); mask.className = "blora-floating-mask"; document.body.appendChild(mask);
+      const d = ownerDoc(wrap);
+      const panel = d.createElement("div"); panel.className = "blora-datepicker__panel"; wrap.appendChild(panel);
+      const mask = d.createElement("div"); mask.className = "blora-floating-mask blora-portal"; getPortalRoot(wrap).appendChild(mask);
       const fmt = (d) => d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
       const inRange = (d) => { if (min && fmt(d) < min) return false; if (max && fmt(d) > max) return false; return true; };
       const inRangeYM = (y, m) => { const d = new Date(y, m, 1); const last = new Date(y, m + 1, 0); if (max && fmt(d) > max) return false; if (min && fmt(last) < min) return false; return true; };
@@ -1037,8 +1260,9 @@
       const btn = $(".blora-datepicker__btn", wrap);
       if (!input) return;
       let curH = 14, curM = 30;
-      const panel = document.createElement("div"); panel.className = "blora-timepicker__panel"; wrap.appendChild(panel);
-      const mask = document.createElement("div"); mask.className = "blora-floating-mask"; document.body.appendChild(mask);
+      const d = ownerDoc(wrap);
+      const panel = d.createElement("div"); panel.className = "blora-timepicker__panel"; wrap.appendChild(panel);
+      const mask = d.createElement("div"); mask.className = "blora-floating-mask blora-portal"; getPortalRoot(wrap).appendChild(mask);
       const pad = (n) => String(n).padStart(2, "0"); const fmt = () => pad(curH) + ":" + pad(curM);
       const syncFromInput = () => { if (input.value) { const parts = input.value.split(":"); if (parts.length === 2) { curH = Number(parts[0]) || 0; curM = Number(parts[1]) || 0; } } };
       const render = () => {
@@ -1124,40 +1348,143 @@
     });
   }
 
-  /* —— Color Picker —— */
-  const palette = () => [
-    "--blora-seal", "--blora-cinnabar", "--blora-seal-deep", "--blora-seal-soft",
-    "--blora-tea", "--blora-tea-light", "--blora-ochre", "--blora-gold",
-    "--blora-indigo", "--blora-indigo-light", "--blora-moss", "--blora-moss-light",
-    "--blora-bamboo", "--blora-ink", "--blora-ink-mid", "--blora-ink-mist",
-    "--blora-ink-ghost", "--blora-paper", "--blora-surface-1", "--blora-surface-3",
-    "--blora-paper-warm", "--blora-paper-deep", "--blora-paper-cool", "--blora-ink-faint",
-  ].map((name) => token(name)).filter(Boolean);
+  /* —— Color Picker —— 连续 HSV 色域 + HEX 双向同步 —— */
+  const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+  const normalizeHex = (value) => {
+    let hex = String(value || "").trim();
+    if (hex && !hex.startsWith("#")) hex = "#" + hex;
+    if (/^#[0-9a-f]{3}$/i.test(hex)) hex = "#" + hex.slice(1).split("").map((char) => char + char).join("");
+    return /^#[0-9a-f]{6}$/i.test(hex) ? hex.toUpperCase() : null;
+  };
+  const hexToHsv = (hex) => {
+    const value = normalizeHex(hex) || "#000000";
+    const r = parseInt(value.slice(1, 3), 16) / 255;
+    const g = parseInt(value.slice(3, 5), 16) / 255;
+    const b = parseInt(value.slice(5, 7), 16) / 255;
+    const max = Math.max(r, g, b), min = Math.min(r, g, b), delta = max - min;
+    let h = 0;
+    if (delta) {
+      if (max === r) h = 60 * (((g - b) / delta) % 6);
+      else if (max === g) h = 60 * ((b - r) / delta + 2);
+      else h = 60 * ((r - g) / delta + 4);
+    }
+    if (h < 0) h += 360;
+    return { h, s: max ? delta / max : 0, v: max };
+  };
+  const hsvToHex = ({ h, s, v }) => {
+    const chroma = v * s;
+    const x = chroma * (1 - Math.abs(((h / 60) % 2) - 1));
+    const m = v - chroma;
+    let rgb = h < 60 ? [chroma, x, 0] : h < 120 ? [x, chroma, 0] : h < 180 ? [0, chroma, x] : h < 240 ? [0, x, chroma] : h < 300 ? [x, 0, chroma] : [chroma, 0, x];
+    return "#" + rgb.map((channel) => Math.round((channel + m) * 255).toString(16).padStart(2, "0")).join("").toUpperCase();
+  };
   function initColorPicker(root) {
     $$(".blora-color-picker", root).forEach((wrap) => {
       if (bound(wrap, "Colorpicker")) return;
       const swatch = $(".blora-color-swatch", wrap);
       const panel = $(".blora-color-panel", wrap);
       if (!swatch || !panel) return;
+      const d = ownerDoc(wrap);
+      const win = ownerWin(wrap);
+      let spectrum = $(".blora-color-spectrum", panel);
+      if (!spectrum) {
+        spectrum = d.createElement("div");
+        spectrum.className = "blora-color-spectrum";
+        spectrum.tabIndex = 0;
+        spectrum.setAttribute("role", "slider");
+        spectrum.setAttribute("aria-label", "颜色饱和度与明度");
+        spectrum.innerHTML = '<span class="blora-color-spectrum__cursor" aria-hidden="true"></span>';
+        panel.insertBefore(spectrum, panel.firstChild);
+      }
+      let hueInput = $(".blora-color-hue", panel);
+      if (!hueInput) {
+        hueInput = d.createElement("input");
+        hueInput.className = "blora-color-hue";
+        hueInput.type = "range";
+        hueInput.min = "0";
+        hueInput.max = "359";
+        hueInput.step = "1";
+        hueInput.setAttribute("aria-label", "色相");
+        spectrum.insertAdjacentElement("afterend", hueInput);
+      }
+      const cursor = $(".blora-color-spectrum__cursor", spectrum);
       const hexInput = $(".blora-color-hex", panel);
       const preview = $(".blora-color-preview", panel);
-      let current = swatch.dataset.color || token("--blora-seal", "#A0392E");
-      const mask = document.createElement("div"); mask.className = "blora-floating-mask"; document.body.appendChild(mask);
-      const update = (color) => {
-        current = color; swatch.style.background = color;
-        if (preview) preview.style.background = color;
-        if (hexInput) hexInput.value = color.toUpperCase();
-        $$(".blora-color-cell", panel).forEach((c) => c.classList.toggle("is-selected", c.dataset.color.toUpperCase() === color.toUpperCase()));
-        swatch.dataset.color = color;
+      let current = normalizeHex(swatch.dataset.color || token("--blora-seal", "#A0392E")) || "#A0392E";
+      let hsv = hexToHsv(current);
+      const mask = d.createElement("div"); mask.className = "blora-floating-mask blora-portal"; getPortalRoot(wrap).appendChild(mask);
+      swatch.setAttribute("role", "button");
+      swatch.setAttribute("tabindex", "0");
+      swatch.setAttribute("aria-haspopup", "dialog");
+      swatch.setAttribute("aria-expanded", "false");
+      panel.setAttribute("role", "dialog");
+      panel.setAttribute("aria-label", "选择颜色");
+      const render = (emit = false) => {
+        current = hsvToHex(hsv);
+        swatch.style.background = current;
+        swatch.dataset.color = current;
+        swatch.setAttribute("aria-label", `选择颜色，当前 ${current}`);
+        spectrum.style.setProperty("--blora-color-hue", String(Math.round(hsv.h)));
+        hueInput.style.setProperty("--blora-color-hue", String(Math.round(hsv.h)));
+        hueInput.value = String(Math.round(hsv.h));
+        cursor.style.left = (hsv.s * 100) + "%";
+        cursor.style.top = ((1 - hsv.v) * 100) + "%";
+        spectrum.setAttribute("aria-valuemin", "0");
+        spectrum.setAttribute("aria-valuemax", "100");
+        spectrum.setAttribute("aria-valuenow", String(Math.round(hsv.s * 100)));
+        spectrum.setAttribute("aria-valuetext", `饱和度 ${Math.round(hsv.s * 100)}%，明度 ${Math.round(hsv.v * 100)}%`);
+        if (preview) preview.style.background = current;
+        if (hexInput && d.activeElement !== hexInput) hexInput.value = current;
+        if (emit) wrap.dispatchEvent(new win.CustomEvent("blora:change", { bubbles: true, detail: { value: current, hsv: { ...hsv } } }));
       };
-      const grid = $(".blora-color-grid", panel);
-      if (grid) { palette().forEach((color) => { const cell = document.createElement("div"); cell.className = "blora-color-cell"; cell.style.background = color; cell.dataset.color = color; on(cell, "click", () => { update(color); }); grid.appendChild(cell); }); }
-      if (hexInput) { on(hexInput, "input", () => { let v = hexInput.value.trim(); if (v && !v.startsWith("#")) v = "#" + v; if (/^#[0-9a-fA-F]{6}$/.test(v)) update(v); }); }
-      const open = () => { panel.classList.add("is-open"); mask.classList.add("is-open"); update(current); };
-      const close = () => { panel.classList.remove("is-open"); mask.classList.remove("is-open"); };
+      const setFromPoint = (clientX, clientY, emit = true) => {
+        const rect = spectrum.getBoundingClientRect();
+        hsv.s = clamp((clientX - rect.left) / rect.width, 0, 1);
+        hsv.v = 1 - clamp((clientY - rect.top) / rect.height, 0, 1);
+        render(emit);
+      };
+      on(spectrum, "pointerdown", (e) => {
+        e.preventDefault();
+        spectrum.focus();
+        spectrum.setPointerCapture(e.pointerId);
+        setFromPoint(e.clientX, e.clientY);
+      });
+      on(spectrum, "pointermove", (e) => { if (spectrum.hasPointerCapture(e.pointerId)) setFromPoint(e.clientX, e.clientY); });
+      on(spectrum, "keydown", (e) => {
+        const amount = e.shiftKey ? 0.1 : 0.01;
+        if (e.key === "ArrowRight") hsv.s += amount;
+        else if (e.key === "ArrowLeft") hsv.s -= amount;
+        else if (e.key === "ArrowUp") hsv.v += amount;
+        else if (e.key === "ArrowDown") hsv.v -= amount;
+        else return;
+        e.preventDefault();
+        hsv.s = clamp(hsv.s, 0, 1); hsv.v = clamp(hsv.v, 0, 1); render(true);
+      });
+      on(hueInput, "input", () => { hsv.h = Number(hueInput.value); render(true); });
+      if (hexInput) {
+        hexInput.setAttribute("aria-label", "十六进制颜色");
+        on(hexInput, "input", () => {
+          const value = normalizeHex(hexInput.value);
+          hexInput.setAttribute("aria-invalid", String(!value));
+          if (value) { hsv = hexToHsv(value); render(true); }
+        });
+        on(hexInput, "blur", () => { hexInput.value = current; hexInput.setAttribute("aria-invalid", "false"); });
+      }
+      const open = () => {
+        panel.classList.remove("is-align-end");
+        panel.classList.add("is-open"); mask.classList.add("is-open"); swatch.setAttribute("aria-expanded", "true");
+        if (panel.getBoundingClientRect().right > win.innerWidth - 8) panel.classList.add("is-align-end");
+        render();
+      };
+      const close = (restore = false) => {
+        panel.classList.remove("is-open"); mask.classList.remove("is-open"); swatch.setAttribute("aria-expanded", "false");
+        if (restore) swatch.focus();
+      };
       on(swatch, "click", (e) => { e.stopPropagation(); panel.classList.contains("is-open") ? close() : open(); });
+      on(swatch, "keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); panel.classList.contains("is-open") ? close() : open(); } });
+      on(panel, "keydown", (e) => { if (e.key === "Escape") { e.preventDefault(); close(true); } });
       on(mask, "click", () => close());
-      update(current);
+      render();
     });
   }
 
@@ -1200,7 +1527,9 @@
   }
 
   /* —— Init all —— */
-  function init(root = document) {
+  function init(root = doc(), options) {
+    if (options) configure(options);
+    if (!root) return;
     initTabs(root);
     initCollapse(root);
     initModal(root);
@@ -1212,6 +1541,7 @@
     initRate(root);
     initSlider(root);
     initProgress(root);
+    initTextLimit(root);
     initTagsInput(root);
     initNumber(root);
     initCheckbox(root);
@@ -1236,8 +1566,23 @@
   }
 
   /* —— Public API —— */
-  const Blora = { init, toast, openModal, closeModal, openDrawer, closeDrawer, locale: LOCALE, version: "1.0.0" };
-  window.Blora = Blora;
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", () => init());
-  else init();
-})();
+  const Blora = {
+    init,
+    configure,
+    setOptions: configure,
+    toast,
+    openModal,
+    closeModal,
+    openDrawer,
+    closeDrawer,
+    locale: LOCALE,
+    version: "1.0.0",
+  };
+  if (global && global.BloraConfig) configure(global.BloraConfig);
+  const d = doc();
+  if (CONFIG.autoInit && d) {
+    if (d.readyState === "loading") d.addEventListener("DOMContentLoaded", () => { if (CONFIG.autoInit) init(d); }, { once: true });
+    else init(d);
+  }
+  return Blora;
+}));
