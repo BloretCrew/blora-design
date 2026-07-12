@@ -62,7 +62,8 @@ Blora.init(document.getElementById('my-mount'));
 ```js
 Blora.configure({
   portalRoot: '#app-overlays',
-  storageKey: 'my-app-theme'
+  storageKey: 'my-app-theme',
+  paletteStorageKey: 'my-app-palette'
 });
 Blora.init(document.getElementById('my-mount'));
 ```
@@ -76,7 +77,10 @@ Blora.closeModal('modal-id');
 Blora.openDrawer('drawer-id');
 Blora.closeDrawer('drawer-id');
 Blora.init(root);     // 重新扫描并绑定（幂等：已绑定的元素自动跳过，可放心对动态子树重复调用）
-Blora.configure({ portalRoot, storageKey, autoInit }); // 配置浮层宿主、主题键与自动初始化
+Blora.configure({ portalRoot, storageKey, paletteStorageKey, autoInit });
+Blora.applyTheme('modern'); // cinnabar | jade | indigo | lotus | ocean | modern
+Blora.getTheme();         // 当前配色主题名称
+Blora.themes;             // 预设主题元数据，可用于构建自定义选择器
 Blora.locale;         // 日历/选择器文案（months / dow / today / clear…），可整体覆写做本地化
 Blora.version;        // "1.0.0"
 ```
@@ -102,7 +106,11 @@ Blora.version;        // "1.0.0"
 }
 ```
 
-**暗色模式**：`<html class="blora-dark">` 即可，所有 token 自动重映射，无需改组件。
+**主题配色**：`Blora.applyTheme('jade')` 会在根节点写入 `data-blora-palette="jade"`。预设主题只重映射基础令牌，组件无需改动；业务也可直接覆写任意 `--blora-*` 令牌建立自己的主题。
+
+**暗色模式**：`<html class="blora-dark">` 即可，所有 token 自动重映射，无需改组件。暗色模式可与普通配色主题组合。
+
+`modern` 面向现代 SaaS、控制台和业务应用：使用冷中性背景、白色卡面、低饱和钢蓝主交互，以及灰绿成功色和克制的陶土暖色；亮暗模式均有独立令牌映射。
 
 ---
 
@@ -633,10 +641,17 @@ Blora.toast({ type: 'success', message: '操作已完成', duration: 3000 });
 ## 主题切换
 
 ```html
+<div class="blora-theme-picker" data-blora-theme-picker>
+  <button class="blora-btn blora-theme-picker__trigger" data-blora-theme-trigger>
+    <span class="blora-theme-picker__label">丹砂</span>
+  </button>
+  <div class="blora-theme-picker__menu"></div>
+</div>
+
 <button data-blora-theme>夜</button>
 ```
 
-点击切换 `<html class="blora-dark">`。按钮文字在 "日"/"夜" 间切换。
+主题卡片由 JS 根据 `Blora.themes` 自动生成，并持久化到 `paletteStorageKey`。`data-blora-theme` 独立切换 `<html class="blora-dark">`。
 
 ---
 

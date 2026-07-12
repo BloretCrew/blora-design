@@ -1,4 +1,4 @@
-﻿/* ========================================================================
+/* ========================================================================
    Blora Design · 令牌驱动的 Web UI 框架
    Token-driven, dark-mode ready, dependency-free CSS framework.
 
@@ -167,6 +167,52 @@
   --blora-z-drawer:  1100;
   --blora-z-modal:   1200;
   --blora-z-toast:   1300;
+}
+
+/* =========================================================================
+   主题预设 · Palette Presets
+   仅重映射基础令牌，所有组件继续消费同一套语义变量。
+   ========================================================================= */
+:root[data-blora-palette="jade"] {
+  --blora-paper: #F3F7F2; --blora-paper-warm: #EAF1E8; --blora-paper-cool: #EFF5F2; --blora-paper-deep: #D8E4DC;
+  --blora-surface-1: #F9FBF8; --blora-surface-2: #EAF1EB; --blora-surface-3: #DDE8E0;
+  --blora-ink: #17201D; --blora-ink-deep: #24302B; --blora-ink-mid: #3F5049; --blora-ink-light: #62736B; --blora-ink-mist: #8D9B94; --blora-ink-faint: #ABB7B0; --blora-ink-ghost: #CED9D2;
+  --blora-seal: #2F6B57; --blora-seal-deep: #245242; --blora-seal-soft: #5B927E; --blora-cinnabar: #B34E45;
+  --blora-tea: #6F785A; --blora-tea-light: #A4AD8D; --blora-indigo: #355B68; --blora-indigo-light: #718C95; --blora-moss: #4E765F; --blora-moss-light: #82A48E; --blora-bamboo: #6C916C; --blora-gold: #A98A54; --blora-ochre: #C49D69;
+}
+:root[data-blora-palette="indigo"] {
+  --blora-paper: #F4F5F8; --blora-paper-warm: #EEEFF4; --blora-paper-cool: #EFF2F7; --blora-paper-deep: #DCE1EB;
+  --blora-surface-1: #FAFAFC; --blora-surface-2: #ECEFF5; --blora-surface-3: #E0E4ED;
+  --blora-ink: #191D26; --blora-ink-deep: #282D38; --blora-ink-mid: #454C5B; --blora-ink-light: #687080; --blora-ink-mist: #9299A7; --blora-ink-faint: #ADB3BE; --blora-ink-ghost: #D2D6DF;
+  --blora-seal: #405D87; --blora-seal-deep: #30486D; --blora-seal-soft: #6D87AC; --blora-cinnabar: #A74B52;
+  --blora-tea: #756B5B; --blora-tea-light: #A99D89; --blora-indigo: #405D87; --blora-indigo-light: #7D91AF; --blora-moss: #55756F; --blora-moss-light: #87A19C; --blora-bamboo: #718F78; --blora-gold: #AF8A55; --blora-ochre: #C7A173;
+}
+:root[data-blora-palette="lotus"] {
+  --blora-paper: #F8F4F6; --blora-paper-warm: #F3E9ED; --blora-paper-cool: #F6F1F4; --blora-paper-deep: #E7D8DE;
+  --blora-surface-1: #FCF9FA; --blora-surface-2: #F2E8EC; --blora-surface-3: #E8DBE1;
+  --blora-ink: #24191E; --blora-ink-deep: #35272D; --blora-ink-mid: #55434B; --blora-ink-light: #77636C; --blora-ink-mist: #9E8E95; --blora-ink-faint: #B9AAB0; --blora-ink-ghost: #DCCFD4;
+  --blora-seal: #9A466A; --blora-seal-deep: #78344F; --blora-seal-soft: #C06F91; --blora-cinnabar: #B95656;
+  --blora-tea: #806B59; --blora-tea-light: #B29E8C; --blora-indigo: #526078; --blora-indigo-light: #8792A7; --blora-moss: #55786B; --blora-moss-light: #89A69B; --blora-bamboo: #789477; --blora-gold: #B28A59; --blora-ochre: #CBA071;
+}
+:root[data-blora-palette="ocean"] {
+  --blora-paper: #F1F7F6; --blora-paper-warm: #E8F1EF; --blora-paper-cool: #EDF5F5; --blora-paper-deep: #D5E4E2;
+  --blora-surface-1: #F8FBFA; --blora-surface-2: #E6F0EF; --blora-surface-3: #D9E8E6;
+  --blora-ink: #142124; --blora-ink-deep: #223236; --blora-ink-mid: #3C5358; --blora-ink-light: #60767A; --blora-ink-mist: #8A9C9F; --blora-ink-faint: #A8B7B8; --blora-ink-ghost: #CAD8D8;
+  --blora-seal: #176B78; --blora-seal-deep: #11535F; --blora-seal-soft: #4B939D; --blora-cinnabar: #B14F47;
+  --blora-tea: #6E755D; --blora-tea-light: #A3AA8F; --blora-indigo: #365D78; --blora-indigo-light: #728DA0; --blora-moss: #39745F; --blora-moss-light: #78A18F; --blora-bamboo: #6D946F; --blora-gold: #B08A55; --blora-ochre: #C49C6D;
+}
+:root[data-blora-palette="modern"] {
+  --blora-paper: #F7F8FA; --blora-paper-warm: #F2F4F7; --blora-paper-cool: #F5F7FA; --blora-paper-deep: #E4E7EC;
+  --blora-surface-1: #FFFFFF; --blora-surface-2: #F2F4F7; --blora-surface-3: #E4E7EC;
+  --blora-ink: #101828; --blora-ink-deep: #1D2939; --blora-ink-mid: #344054; --blora-ink-light: #667085; --blora-ink-mist: #98A2B3; --blora-ink-faint: #B0B8C4; --blora-ink-ghost: #D0D5DD;
+  --blora-seal: #41658A; --blora-seal-deep: #34516F; --blora-seal-soft: #7893AD; --blora-cinnabar: #B04B4B;
+  --blora-tea: #955E3C; --blora-tea-light: #BC9274; --blora-indigo: #5F628A; --blora-indigo-light: #8588AB; --blora-moss: #417565; --blora-moss-light: #76A093; --blora-bamboo: #4D7B82; --blora-gold: #886438; --blora-ochre: #9C7044;
+  --blora-success: #417565; --blora-warning: #886438; --blora-danger: #B04B4B; --blora-info: #41658A;
+  --blora-on-accent: #FFFFFF; --blora-focus-color: #41658A; --blora-selection-bg: color-mix(in srgb, #41658A 18%, transparent);
+  --blora-overlay-modal: rgba(16,24,40,0.5); --blora-overlay-drawer: rgba(16,24,40,0.44);
+  --blora-code-bg: #101828; --blora-code-fg: #F8FAFC; --blora-banner-bg: #101828; --blora-tooltip-bg: #101828;
+  --blora-shadow-1: 0 1px 2px rgba(16,24,40,0.06); --blora-shadow-2: 0 2px 8px rgba(16,24,40,0.09); --blora-shadow-3: 0 8px 24px rgba(16,24,40,0.12); --blora-shadow-4: 0 16px 40px rgba(16,24,40,0.16);
+  --blora-grain: none; --blora-paper-tint: none;
 }
 
 /* =========================================================================
@@ -1136,6 +1182,42 @@ body.blora-page {
 .blora-navbar__link:hover { color: var(--blora-ink); background: var(--blora-surface-2); }
 .blora-navbar__link.is-active { color: var(--blora-seal); font-weight: 500; }
 
+/* —— 主题选择器 —— */
+.blora-theme-picker { position: relative; }
+.blora-theme-picker__trigger { white-space: nowrap; }
+.blora-theme-picker__trigger svg { flex: none; }
+.blora-theme-picker__menu {
+  position: absolute; top: calc(100% + var(--blora-space-2)); right: 0; z-index: var(--blora-z-dropdown);
+  width: min(22rem, calc(100vw - var(--blora-space-4) * 2)); max-height: min(34rem, calc(100vh - 5rem));
+  padding: var(--blora-space-3); overflow-y: auto; overscroll-behavior: contain;
+  background: var(--blora-surface-1); border: var(--blora-border); border-radius: var(--blora-radius-lg); box-shadow: var(--blora-shadow-3);
+  opacity: 0; visibility: hidden; pointer-events: none; transform: translateY(-4px);
+  transition: opacity var(--blora-dur-fast) var(--blora-ease), transform var(--blora-dur-fast) var(--blora-ease), visibility 0s linear var(--blora-dur-fast);
+}
+.blora-theme-picker.is-open .blora-theme-picker__menu { opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(0); transition-delay: 0s; }
+.blora-theme-picker__head { padding: var(--blora-space-1) var(--blora-space-1) var(--blora-space-3); }
+.blora-theme-picker__title { display: block; color: var(--blora-ink); font-size: var(--blora-text-sm); font-weight: 600; }
+.blora-theme-picker__hint { display: block; margin-top: 0.15rem; color: var(--blora-ink-mist); font-size: var(--blora-text-xs); }
+.blora-theme-picker__list { display: grid; gap: var(--blora-space-2); }
+.blora-theme-card {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: var(--blora-space-3);
+  width: 100%; min-height: 3.75rem; padding: var(--blora-space-3); text-align: left;
+  color: var(--blora-ink-mid); background: transparent; border: 1px solid transparent; border-radius: var(--blora-radius-md);
+  transition: background var(--blora-dur-fast) var(--blora-ease), border-color var(--blora-dur-fast) var(--blora-ease);
+}
+.blora-theme-card:hover { background: var(--blora-surface-2); border-color: var(--blora-ink-ghost); }
+.blora-theme-card[aria-selected="true"] { background: var(--blora-seal-tint); border-color: color-mix(in srgb, var(--blora-seal) 38%, transparent); }
+.blora-theme-card__copy { min-width: 0; }
+.blora-theme-card__name { display: block; color: var(--blora-ink); font-size: var(--blora-text-sm); font-weight: 600; }
+.blora-theme-card__desc { display: block; margin-top: 0.1rem; overflow: hidden; color: var(--blora-ink-mist); font-size: var(--blora-text-xs); text-overflow: ellipsis; white-space: nowrap; }
+.blora-theme-card__colors { display: flex; flex: none; }
+.blora-theme-card__color { width: 1.25rem; height: 2rem; margin-left: -0.2rem; border: 2px solid var(--blora-surface-1); border-radius: var(--blora-radius-sm); box-shadow: var(--blora-shadow-1); }
+.blora-theme-card:hover .blora-theme-card__color { border-color: var(--blora-surface-2); }
+@media (max-width: 560px) {
+  .blora-theme-picker__label { display: none; }
+  .blora-theme-picker__menu { position: fixed; top: 4.25rem; right: var(--blora-space-3); left: var(--blora-space-3); width: auto; }
+}
+
 /* —— 标签页 Tabs —— */
 .blora-tabs { display: flex; flex-direction: column; }
 .blora-tabs__nav { display: flex; gap: var(--blora-space-1); border-bottom: 1px solid var(--blora-ink-ghost); position: relative; }
@@ -1528,7 +1610,7 @@ body.blora-page {
 /* =========================================================================
    14. 暗色模式 · Dark Mode (夜墨)
    ========================================================================= */
-.blora-dark, .blora-dark body {
+:root.blora-dark, :root.blora-dark body {
   --blora-paper:          #1B1916;
   --blora-paper-warm:     #232017;
   --blora-paper-cool:     #1E1C19;
@@ -1561,6 +1643,18 @@ body.blora-page {
   --blora-shadow-inset: inset 0 1px 0 rgba(255,255,255,0.04),
                        inset 0 -1px 0 rgba(0,0,0,0.3);
   color-scheme: dark;
+}
+
+:root.blora-dark[data-blora-palette="modern"],
+:root.blora-dark[data-blora-palette="modern"] body {
+  --blora-paper: #0B0F19; --blora-paper-warm: #111827; --blora-paper-cool: #101828; --blora-paper-deep: #070A12;
+  --blora-surface-1: #151B28; --blora-surface-2: #1F2937; --blora-surface-3: #344054;
+  --blora-ink: #F8FAFC; --blora-ink-deep: #F1F5F9; --blora-ink-mid: #CBD5E1; --blora-ink-light: #94A3B8; --blora-ink-mist: #64748B; --blora-ink-faint: #475569; --blora-ink-ghost: #334155;
+  --blora-on-accent: #FFFFFF; --blora-focus-color: #7893AD; --blora-selection-bg: color-mix(in srgb, #7893AD 20%, transparent);
+  --blora-overlay-modal: rgba(7,10,18,0.72); --blora-overlay-drawer: rgba(7,10,18,0.66);
+  --blora-code-bg: #070A12; --blora-code-fg: #F8FAFC; --blora-banner-bg: #111827; --blora-tooltip-bg: #070A12;
+  --blora-shadow-1: 0 1px 2px rgba(0,0,0,0.3); --blora-shadow-2: 0 2px 8px rgba(0,0,0,0.36); --blora-shadow-3: 0 8px 24px rgba(0,0,0,0.46); --blora-shadow-4: 0 16px 40px rgba(0,0,0,0.58);
+  --blora-grain: none; --blora-paper-tint: none;
 }
 
 /* —— 暗色组件修正 —— 避免墨色反转成刺眼亮块 —— */

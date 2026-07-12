@@ -14,6 +14,7 @@
     autoInit: true,
     portalRoot: null,
     storageKey: "blora-theme",
+    paletteStorageKey: "blora-palette",
   };
   const doc = () => global && global.document;
   const $  = (sel, ctx = doc()) => (ctx ? ctx.querySelector(sel) : null);
@@ -48,6 +49,7 @@
     if ("autoInit" in options) CONFIG.autoInit = options.autoInit !== false;
     if ("portalRoot" in options) CONFIG.portalRoot = options.portalRoot || null;
     if ("storageKey" in options && options.storageKey) CONFIG.storageKey = String(options.storageKey);
+    if ("paletteStorageKey" in options && options.paletteStorageKey) CONFIG.paletteStorageKey = String(options.paletteStorageKey);
     return { ...CONFIG };
   };
   const prefersReduced = (base) => {
@@ -763,6 +765,105 @@
   }
 
   /* —— Theme toggle —— */
+  const THEME_PRESETS = Object.freeze({
+    cinnabar: Object.freeze({ name: "丹砂", description: "宣纸暖白与朱砂红", colors: ["#F8F4EC", "#A0392E", "#3D4A5C", "#5A7B6B", "#B89968"] }),
+    jade: Object.freeze({ name: "青篁", description: "竹青、山岚与温润米白", colors: ["#F3F7F2", "#2F6B57", "#355B68", "#6F785A", "#A98A54"] }),
+    indigo: Object.freeze({ name: "靛青", description: "冷纸灰与沉静蓝调", colors: ["#F4F5F8", "#405D87", "#55756F", "#A74B52", "#AF8A55"] }),
+    lotus: Object.freeze({ name: "藕荷", description: "柔和藕粉与草木青", colors: ["#F8F4F6", "#9A466A", "#55786B", "#526078", "#B28A59"] }),
+    ocean: Object.freeze({ name: "海盐", description: "清透青蓝与海岸绿", colors: ["#F1F7F6", "#176B78", "#39745F", "#365D78", "#B08A55"] }),
+    modern: Object.freeze({ name: "Modern", description: "中性界面 / 克制钢蓝交互", colors: ["#F7F8FA", "#101828", "#41658A", "#417565", "#955E3C"] }),
+  });
+  const getTheme = (target) => {
+    const d = ownerDoc(target);
+    const el = target && target.nodeType === 1 ? target : d && d.documentElement;
+    return (el && el.dataset.bloraPalette) || "cinnabar";
+  };
+  const syncThemeColor = (target) => {
+    const d = ownerDoc(target);
+    const win = ownerWin(target);
+    if (!d || !win) return;
+    win.requestAnimationFrame(() => {
+      let meta = $('meta[name="theme-color"]', d);
+      if (!meta) { meta = d.createElement("meta"); meta.name = "theme-color"; d.head.appendChild(meta); }
+      meta.content = win.getComputedStyle(d.body || d.documentElement).getPropertyValue("--blora-paper").trim() || "#F8F4EC";
+    });
+  };
+  const applyTheme = (name, target, options = {}) => {
+    const d = ownerDoc(target);
+    const el = target && target.nodeType === 1 ? target : d && d.documentElement;
+    if (!el || !THEME_PRESETS[name]) return false;
+    if (name === "cinnabar") delete el.dataset.bloraPalette;
+    else el.dataset.bloraPalette = name;
+    const win = ownerWin(el);
+    if (options.persist !== false) {
+      try { win.localStorage.setItem(CONFIG.paletteStorageKey, name); } catch (e) {}
+    }
+    syncThemeColor(el);
+    if (options.emit !== false) el.dispatchEvent(new win.CustomEvent("blora:themechange", { bubbles: true, detail: { palette: name, dark: el.classList.contains("blora-dark") } }));
+    return true;
+  };
+  function initThemePicker(root) {
+    const d = ownerDoc(root);
+    const win = ownerWin(root);
+    if (!d || !win) return;
+    if (!FLAGS.paletteBoot) {
+      FLAGS.paletteBoot = true;
+      let saved = "cinnabar";
+      try { saved = win.localStorage.getItem(CONFIG.paletteStorageKey) || saved; } catch (e) {}
+      if (!THEME_PRESETS[saved]) {
+        saved = "modern";
+        try { win.localStorage.setItem(CONFIG.paletteStorageKey, saved); } catch (e) {}
+      }
+      applyTheme(saved, d.documentElement, { persist: false, emit: false });
+    }
+    $$('[data-blora-theme-picker]', root).forEach((picker) => {
+      if (bound(picker, "ThemePicker")) return;
+      const trigger = $('[data-blora-theme-trigger]', picker);
+      const menu = $(".blora-theme-picker__menu", picker);
+      if (!trigger || !menu) return;
+      trigger.setAttribute("aria-haspopup", "listbox");
+      trigger.setAttribute("aria-expanded", "false");
+      menu.setAttribute("role", "listbox");
+      menu.setAttribute("aria-label", "配色主题");
+      menu.innerHTML = '<div class="blora-theme-picker__head"><span class="blora-theme-picker__title">配色主题</span><span class="blora-theme-picker__hint">选择后应用到全部组件</span></div><div class="blora-theme-picker__list">' + Object.entries(THEME_PRESETS).map(([key, theme]) => '<button class="blora-theme-card" type="button" role="option" data-blora-palette-option="' + key + '"><span class="blora-theme-card__copy"><span class="blora-theme-card__name">' + escapeHTML(theme.name) + '</span><span class="blora-theme-card__desc">' + escapeHTML(theme.description) + '</span></span><span class="blora-theme-card__colors" aria-hidden="true">' + theme.colors.map((color) => '<span class="blora-theme-card__color" style="background:' + color + '"></span>').join("") + '</span></button>').join("") + "</div>";
+      const options = $$("[data-blora-palette-option]", menu);
+      const sync = () => {
+        const current = getTheme(d.documentElement);
+        options.forEach((option) => option.setAttribute("aria-selected", String(option.dataset.bloraPaletteOption === current)));
+        const label = $(".blora-theme-picker__label", trigger);
+        if (label) label.textContent = THEME_PRESETS[current].name;
+      };
+      const open = (focus = false) => {
+        picker.classList.add("is-open"); trigger.setAttribute("aria-expanded", "true");
+        if (focus) (options.find((option) => option.getAttribute("aria-selected") === "true") || options[0]).focus();
+      };
+      const close = (restore = false) => {
+        picker.classList.remove("is-open"); trigger.setAttribute("aria-expanded", "false");
+        if (restore) trigger.focus();
+      };
+      on(trigger, "click", (e) => { e.stopPropagation(); picker.classList.contains("is-open") ? close() : open(); });
+      on(trigger, "keydown", (e) => { if (e.key === "ArrowDown") { e.preventDefault(); open(true); } });
+      on(menu, "click", (e) => {
+        const option = e.target.closest("[data-blora-palette-option]");
+        if (!option) return;
+        applyTheme(option.dataset.bloraPaletteOption, d.documentElement); sync(); close(true);
+      });
+      on(menu, "keydown", (e) => {
+        const current = options.indexOf(d.activeElement);
+        let next = current;
+        if (e.key === "ArrowDown" || e.key === "ArrowRight") next = (current + 1 + options.length) % options.length;
+        else if (e.key === "ArrowUp" || e.key === "ArrowLeft") next = (current - 1 + options.length) % options.length;
+        else if (e.key === "Home") next = 0;
+        else if (e.key === "End") next = options.length - 1;
+        else if (e.key === "Escape") { e.preventDefault(); close(true); return; }
+        else return;
+        e.preventDefault(); options[next].focus();
+      });
+      on(d, "click", (e) => { if (!picker.contains(e.target)) close(); });
+      on(d.documentElement, "blora:themechange", sync);
+      sync();
+    });
+  }
   const ICON_MOON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>';
   const ICON_SUN = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>';
   function initThemeToggle(root) {
@@ -777,20 +878,25 @@
       if (saved ? saved === "dark" : win.matchMedia("(prefers-color-scheme: dark)").matches) {
         d.documentElement.classList.add("blora-dark");
       }
+      syncThemeColor(d.documentElement);
     }
     $$("[data-blora-theme]", root).forEach((btn) => {
       if (bound(btn, "Theme")) return;
       const sync = () => {
         const dark = d.documentElement.classList.contains("blora-dark");
         btn.innerHTML = dark ? ICON_SUN : ICON_MOON;
+        btn.disabled = false;
         btn.setAttribute("aria-label", dark ? "切换至浅色" : "切换至暗色");
       };
       sync();
       on(btn, "click", () => {
         const dark = d.documentElement.classList.toggle("blora-dark");
         try { win.localStorage.setItem(CONFIG.storageKey, dark ? "dark" : "light"); } catch (e) {}
+        syncThemeColor(d.documentElement);
+        d.documentElement.dispatchEvent(new win.CustomEvent("blora:themechange", { bubbles: true, detail: { palette: getTheme(d.documentElement), dark } }));
         sync();
       });
+      on(d.documentElement, "blora:themechange", sync);
     });
   }
 
@@ -1550,6 +1656,7 @@
     initBackTop();
     initScrollSpy(root);
     initSmoothScroll();
+    initThemePicker(root);
     initThemeToggle(root);
     initDropzone(root);
     initCommandPalette();
@@ -1570,6 +1677,9 @@
     init,
     configure,
     setOptions: configure,
+    themes: THEME_PRESETS,
+    applyTheme,
+    getTheme,
     toast,
     openModal,
     closeModal,
