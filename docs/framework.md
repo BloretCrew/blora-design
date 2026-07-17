@@ -673,6 +673,163 @@ Blora.toast({ type: 'success', message: '操作已完成', duration: 3000 });
 
 容器 `.blora-toast-container` 由 JS 自动注入。
 
+### 14. 动作与表单扩展
+
+```html
+<!-- Swap：保留原生 checkbox 语义 -->
+<label class="blora-swap" aria-label="切换收藏">
+  <input type="checkbox">
+  <span class="blora-swap__off">未收藏</span>
+  <span class="blora-swap__on">已收藏</span>
+</label>
+
+<!-- Speed Dial：支持点击、Esc、方向键、Home/End -->
+<div class="blora-speed-dial" data-blora-speed-dial>
+  <button class="blora-btn blora-btn--primary blora-btn--icon blora-speed-dial__trigger"
+          type="button" data-blora-speed-dial-trigger aria-label="快捷操作">+</button>
+  <div class="blora-speed-dial__actions">
+    <button class="blora-btn blora-speed-dial__action" type="button">新建</button>
+    <button class="blora-btn blora-speed-dial__action" type="button">上传</button>
+  </div>
+</div>
+<!-- 布局：默认向上；--left 向左；--radial 径向 -->
+
+<fieldset class="blora-fieldset">
+  <legend class="blora-fieldset__legend">发布设置</legend>
+  <p class="blora-fieldset__description">字段组说明</p>
+  <label class="blora-validator">
+    <span class="blora-label">邮箱</span>
+    <input class="blora-input" type="email" required>
+    <span class="blora-validator__hint blora-validator__hint--error">格式无效</span>
+    <span class="blora-validator__hint blora-validator__hint--success">格式有效</span>
+  </label>
+  <input class="blora-file-input" type="file">
+</fieldset>
+
+<form class="blora-filter">
+  <label class="blora-filter__item"><input type="radio" name="status" checked><span class="blora-filter__label">全部</span></label>
+  <label class="blora-filter__item"><input type="radio" name="status"><span class="blora-filter__label">进行中</span></label>
+  <button class="blora-filter__reset" type="reset">清除</button>
+</form>
+```
+
+`Validator` 复用原生约束校验；业务主动校验时可使用 `.is-error` / `.is-success`。`File Input` 是单文件或系统文件选择入口，多文件拖拽仍使用 `.blora-dropzone`。
+
+### 15. 导航与页面布局
+
+```html
+<!-- 桌面侧栏，900px 以下自动转为遮罩侧栏 -->
+<div class="blora-sidebar-layout" data-blora-sidebar-layout>
+  <button class="blora-btn blora-sidebar-layout__toggle" type="button" data-blora-sidebar-toggle>打开侧栏</button>
+  <div class="blora-sidebar-layout__mask"></div>
+  <aside class="blora-sidebar-layout__aside">…</aside>
+  <main class="blora-sidebar-layout__content">…</main>
+</div>
+<!-- 紧凑预览：添加 --compact -->
+
+<div class="blora-megamenu" data-blora-megamenu>
+  <button class="blora-btn" type="button" data-blora-megamenu-trigger>产品</button>
+  <div class="blora-megamenu__panel">
+    <div class="blora-megamenu__grid">…</div>
+  </div>
+</div>
+
+<nav class="blora-dock" aria-label="主要导航">
+  <a class="blora-dock__item is-active" href="/">首页</a>
+  <a class="blora-dock__item" href="/search">搜索</a>
+</nav>
+<!-- 文档或局部演示使用 .blora-dock--static -->
+
+<span class="blora-indicator">
+  <button class="blora-btn" type="button">通知</button>
+  <span class="blora-badge blora-indicator__item">3</span>
+</span>
+
+<div class="blora-join">
+  <input class="blora-input" type="search">
+  <button class="blora-btn blora-btn--primary" type="button">搜索</button>
+</div>
+<!-- 纵向连接：.blora-join--vertical -->
+
+<section class="blora-hero blora-hero--surface blora-hero--center">
+  <div class="blora-hero__content">…</div>
+</section>
+
+<footer class="blora-footer">
+  <div class="blora-footer__inner">…</div>
+  <div class="blora-footer__bottom">…</div>
+</footer>
+
+<span class="blora-mask blora-mask--circle blora-mask--sm"><img src="avatar.jpg" alt=""></span>
+<!-- 形状：--circle --squircle --hexagon --diamond --triangle -->
+
+<div class="blora-deck blora-deck--sm">
+  <article class="blora-card">后层</article>
+  <article class="blora-card">中层</article>
+  <article class="blora-card">当前层</article>
+</div>
+```
+
+Sidebar 在窄屏关闭时会使用 `inert` 移出焦点序列；打开后焦点进入侧栏，遮罩和 `Esc` 均可关闭。Megamenu 支持点击、`ArrowDown` 与 `Esc`，并可与 Sidebar 组合使用。
+
+### 16. 数据与媒体扩展
+
+```html
+<kbd class="blora-kbd">Ctrl</kbd> + <kbd class="blora-kbd">K</kbd>
+
+<div class="blora-chat blora-chat--end">
+  <span class="blora-avatar blora-chat__avatar">B</span>
+  <div class="blora-chat__content">
+    <div class="blora-chat__meta"><span>Blora</span><time>10:26</time></div>
+    <div class="blora-chat__bubble">消息内容</div>
+  </div>
+</div>
+
+<div class="blora-countdown" data-blora-countdown data-target="2026-12-31T23:59:59+08:00">
+  <span class="blora-countdown__unit"><strong class="blora-countdown__value" data-unit="days">0</strong><span class="blora-countdown__label">天</span></span>
+  <span class="blora-countdown__unit"><strong class="blora-countdown__value" data-unit="hours">00</strong><span class="blora-countdown__label">时</span></span>
+</div>
+<!-- 相对时长可改用 data-seconds；结束时派发 blora:complete -->
+
+<div class="blora-diff">
+  <div class="blora-diff__item"><img src="after.jpg" alt="调整后"></div>
+  <div class="blora-diff__item blora-diff__item--before"><img src="before.jpg" alt="调整前"></div>
+  <span class="blora-diff__divider"></span>
+  <input class="blora-diff__range" type="range" min="0" max="100" value="50" aria-label="比较位置">
+</div>
+
+<div class="blora-hover-gallery" aria-label="产品图库">
+  <img class="blora-hover-gallery__item is-active" src="front.jpg" alt="产品正面">
+  <img class="blora-hover-gallery__item" src="side.jpg" alt="产品侧面">
+</div>
+```
+
+Hover Gallery 根据指针横向位置切换图片，也支持方向键与 Home/End；Diff 以原生 range 作为可访问交互层。两者比例分别由 `--blora-gallery-ratio`、`--blora-diff-ratio` 配置。
+
+### 17. 可选效果与 Mockup
+
+```html
+<article class="blora-card blora-aura">需要额外关注的单个对象</article>
+<article class="blora-card blora-hover-3d" data-strength="4" tabindex="0">低幅度 3D 倾斜</article>
+
+<span class="blora-text-rotate" data-interval="3200">
+  <span class="blora-text-rotate__item is-active">清晰界面</span>
+  <span class="blora-text-rotate__item">一致体验</span>
+</span>
+
+<div class="blora-mockup blora-browser-mockup">…</div>
+<div class="blora-mockup blora-code-mockup">…</div>
+<div class="blora-mockup blora-window-mockup">…</div>
+<div class="blora-phone-mockup">
+  <div class="blora-phone-mockup__screen">
+    <span class="blora-phone-mockup__camera"></span>
+    <div class="blora-phone-mockup__body">…</div>
+  </div>
+</div>
+```
+
+Aura、Hover 3D 与 Text Rotate 属于可选强调效果，不作为运营后台和高频工作流的默认装饰。三者均服从 `prefers-reduced-motion`；Hover 3D 强度限制为 1–12。Mockup 只用于呈现真实产品或代码内容，不替代业务页面的正式容器。
+
 ---
 
 ## 配色与明暗模式
@@ -732,7 +889,7 @@ const palette = [
 
 ## 版本
 
-- **1.0.0** — 初版。28 类组件、12 级间距、设计令牌、暗色模式、命令面板。
+- **1.0.0** — 完整组件集、12 级间距、语义设计令牌、三态明暗模式与命令面板。
 
 ---
 

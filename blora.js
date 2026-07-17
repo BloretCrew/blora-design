@@ -1713,6 +1713,267 @@
     }
   }
 
+  function initSpeedDial(root) {
+    $$("[data-blora-speed-dial]", root).forEach((dial) => {
+      if (bound(dial, "SpeedDial")) return;
+      const d = ownerDoc(dial);
+      const trigger = $("[data-blora-speed-dial-trigger]", dial);
+      const actions = $(".blora-speed-dial__actions", dial);
+      if (!trigger || !actions) return;
+      trigger.setAttribute("aria-haspopup", "menu");
+      trigger.setAttribute("aria-expanded", "false");
+      actions.setAttribute("role", "menu");
+      actions.setAttribute("aria-hidden", "true");
+      const actionItems = $$(".blora-speed-dial__action", actions);
+      actionItems.forEach((action) => action.setAttribute("role", "menuitem"));
+      const setOpen = (open, focus = false) => {
+        dial.classList.toggle("is-open", open);
+        trigger.setAttribute("aria-expanded", String(open));
+        actions.setAttribute("aria-hidden", String(!open));
+        if (open && focus) actionItems[0]?.focus();
+      };
+      on(trigger, "click", (e) => { e.stopPropagation(); setOpen(!dial.classList.contains("is-open")); });
+      on(trigger, "keydown", (e) => {
+        if (e.key === "ArrowDown" || e.key === "ArrowRight") {
+          e.preventDefault();
+          setOpen(true, true);
+        }
+      });
+      on(dial, "keydown", (e) => {
+        if (e.key === "Escape") { e.preventDefault(); setOpen(false); trigger.focus(); }
+        if (!dial.classList.contains("is-open") || !actionItems.includes(e.target)) return;
+        const index = actionItems.indexOf(e.target);
+        if (e.key === "ArrowDown" || e.key === "ArrowRight") { e.preventDefault(); actionItems[(index + 1) % actionItems.length].focus(); }
+        if (e.key === "ArrowUp" || e.key === "ArrowLeft") { e.preventDefault(); actionItems[(index - 1 + actionItems.length) % actionItems.length].focus(); }
+        if (e.key === "Home") { e.preventDefault(); actionItems[0].focus(); }
+        if (e.key === "End") { e.preventDefault(); actionItems[actionItems.length - 1].focus(); }
+      });
+      on(actions, "click", () => setOpen(false));
+      on(d, "click", (e) => { if (!dial.contains(e.target)) setOpen(false); });
+    });
+  }
+
+  function initSidebarLayout(root) {
+    $$("[data-blora-sidebar-layout]", root).forEach((layout) => {
+      if (bound(layout, "SidebarLayout")) return;
+      const d = ownerDoc(layout);
+      const toggles = $$("[data-blora-sidebar-toggle]", layout);
+      const aside = $(".blora-sidebar-layout__aside", layout);
+      const mask = $(".blora-sidebar-layout__mask", layout);
+      if (!aside || !toggles.length) return;
+      const win = ownerWin(layout);
+      const mobile = win.matchMedia("(max-width: 900px)");
+      if (!aside.id) aside.id = "blora-sidebar-" + Math.random().toString(36).slice(2, 9);
+      toggles.forEach((toggle) => {
+        toggle.setAttribute("aria-controls", aside.id);
+        toggle.setAttribute("aria-expanded", "false");
+      });
+      const syncA11y = () => {
+        const unavailable = mobile.matches && !layout.classList.contains("is-open");
+        aside.setAttribute("aria-hidden", String(unavailable));
+        aside.toggleAttribute("inert", unavailable);
+      };
+      const setOpen = (open, restore = false, focus = false) => {
+        layout.classList.toggle("is-open", open);
+        toggles.forEach((toggle) => toggle.setAttribute("aria-expanded", String(open)));
+        syncA11y();
+        if (open && focus) $("a, button, input, select, textarea, [tabindex]:not([tabindex='-1'])", aside)?.focus();
+        if (!open && restore) toggles[0].focus();
+      };
+      toggles.forEach((toggle) => on(toggle, "click", () => setOpen(!layout.classList.contains("is-open"), false, true)));
+      on(mask, "click", () => setOpen(false, true));
+      on(d, "keydown", (e) => { if (e.key === "Escape" && layout.classList.contains("is-open")) setOpen(false, true); });
+      on(mobile, "change", () => {
+        if (!mobile.matches) setOpen(false);
+        else syncA11y();
+      });
+      syncA11y();
+    });
+  }
+
+  function initMegamenu(root) {
+    $$("[data-blora-megamenu]", root).forEach((menu) => {
+      if (bound(menu, "Megamenu")) return;
+      const d = ownerDoc(menu);
+      const win = ownerWin(menu);
+      const trigger = $("[data-blora-megamenu-trigger]", menu);
+      const panel = $(".blora-megamenu__panel", menu);
+      if (!trigger || !panel) return;
+      if (!panel.id) panel.id = "blora-megamenu-" + Math.random().toString(36).slice(2, 9);
+      trigger.setAttribute("aria-controls", panel.id);
+      trigger.setAttribute("aria-haspopup", "true");
+      trigger.setAttribute("aria-expanded", "false");
+      const positionPanel = () => {
+        if (!menu.classList.contains("is-open") || win.matchMedia("(max-width: 900px)").matches) return;
+        panel.style.setProperty("--blora-megamenu-offset", "0px");
+        const rect = panel.getBoundingClientRect();
+        const gutter = parseFloat(win.getComputedStyle(panel).getPropertyValue("--blora-space-4")) || 16;
+        let offset = Math.min(0, win.innerWidth - gutter - rect.right);
+        if (rect.left + offset < gutter) offset += gutter - (rect.left + offset);
+        panel.style.setProperty("--blora-megamenu-offset", offset + "px");
+      };
+      const setOpen = (open, focus = false) => {
+        menu.classList.toggle("is-open", open);
+        trigger.setAttribute("aria-expanded", String(open));
+        if (open) win.requestAnimationFrame(positionPanel);
+        if (open && focus) $("a, button", panel)?.focus();
+      };
+      on(trigger, "click", (e) => { e.stopPropagation(); setOpen(!menu.classList.contains("is-open")); });
+      on(trigger, "keydown", (e) => { if (e.key === "ArrowDown") { e.preventDefault(); setOpen(true, true); } });
+      on(menu, "keydown", (e) => { if (e.key === "Escape") { e.preventDefault(); setOpen(false); trigger.focus(); } });
+      on(panel, "click", (e) => { if (e.target.closest("a")) setOpen(false); });
+      on(d, "click", (e) => { if (!menu.contains(e.target)) setOpen(false); });
+      on(win, "resize", positionPanel);
+    });
+  }
+
+  function initCountdown(root) {
+    $$("[data-blora-countdown]", root).forEach((countdown) => {
+      if (bound(countdown, "Countdown")) return;
+      const win = ownerWin(countdown);
+      let target = Date.parse(countdown.dataset.target || "");
+      if (!Number.isFinite(target)) {
+        const seconds = Math.max(0, Number(countdown.dataset.seconds) || 0);
+        target = Date.now() + seconds * 1000;
+      }
+      let timer = null;
+      const render = () => {
+        const remaining = Math.max(0, target - Date.now());
+        const totalSeconds = Math.ceil(remaining / 1000);
+        const values = {
+          days: Math.floor(totalSeconds / 86400),
+          hours: Math.floor(totalSeconds / 3600) % 24,
+          minutes: Math.floor(totalSeconds / 60) % 60,
+          seconds: totalSeconds % 60,
+        };
+        Object.entries(values).forEach(([unit, value]) => {
+          const output = $('[data-unit="' + unit + '"]', countdown);
+          if (output) output.textContent = String(value).padStart(unit === "days" ? 1 : 2, "0");
+        });
+        countdown.setAttribute("aria-label", values.days + " 天 " + values.hours + " 小时 " + values.minutes + " 分 " + values.seconds + " 秒");
+        if (!remaining && timer) {
+          win.clearInterval(timer);
+          timer = null;
+          countdown.dispatchEvent(new win.CustomEvent("blora:complete", { bubbles: true }));
+        }
+      };
+      countdown.setAttribute("role", "timer");
+      render();
+      if (target > Date.now()) timer = win.setInterval(render, 1000);
+    });
+  }
+
+  function initDiff(root) {
+    $$(".blora-diff", root).forEach((diff) => {
+      if (bound(diff, "Diff")) return;
+      const input = $(".blora-diff__range", diff);
+      if (!input) return;
+      const sync = () => {
+        const min = Number(input.min || 0), max = Number(input.max || 100), value = Number(input.value || 50);
+        const percent = max === min ? 50 : clamp((value - min) / (max - min) * 100, 0, 100);
+        diff.style.setProperty("--blora-diff-position", percent + "%");
+        input.setAttribute("aria-valuetext", Math.round(percent) + "%");
+      };
+      on(input, "input", sync);
+      sync();
+    });
+  }
+
+  function initHover3D(root) {
+    $$(".blora-hover-3d", root).forEach((card) => {
+      if (bound(card, "Hover3D") || prefersReduced(card)) return;
+      const strength = clamp(Number(card.dataset.strength) || 6, 1, 12);
+      const reset = () => {
+        card.style.setProperty("--blora-tilt-x", "0deg");
+        card.style.setProperty("--blora-tilt-y", "0deg");
+      };
+      on(card, "pointermove", (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = clamp((e.clientX - rect.left) / rect.width, 0, 1) - 0.5;
+        const y = clamp((e.clientY - rect.top) / rect.height, 0, 1) - 0.5;
+        card.style.setProperty("--blora-tilt-x", (-y * strength * 2).toFixed(2) + "deg");
+        card.style.setProperty("--blora-tilt-y", (x * strength * 2).toFixed(2) + "deg");
+      });
+      on(card, "pointerleave", reset);
+      on(card, "blur", reset, true);
+    });
+  }
+
+  function initHoverGallery(root) {
+    $$(".blora-hover-gallery", root).forEach((gallery) => {
+      if (bound(gallery, "HoverGallery")) return;
+      const items = $$(".blora-hover-gallery__item", gallery);
+      if (!items.length) return;
+      const label = gallery.getAttribute("aria-label") || "图片库";
+      gallery.setAttribute("role", "group");
+      let progress = $(".blora-hover-gallery__progress", gallery);
+      if (!progress) {
+        progress = ownerDoc(gallery).createElement("span");
+        progress.className = "blora-hover-gallery__progress";
+        progress.setAttribute("aria-hidden", "true");
+        progress.innerHTML = items.map(() => "<span></span>").join("");
+        gallery.appendChild(progress);
+      }
+      const indicators = $$("span", progress);
+      let active = Math.max(0, items.findIndex((item) => item.classList.contains("is-active")));
+      const setActive = (index) => {
+        active = (index + items.length) % items.length;
+        items.forEach((item, i) => {
+          item.classList.toggle("is-active", i === active);
+          item.setAttribute("aria-hidden", String(i !== active));
+        });
+        indicators.forEach((item, i) => item.classList.toggle("is-active", i === active));
+        gallery.setAttribute("aria-label", label + "，图片 " + (active + 1) + " / " + items.length);
+      };
+      gallery.tabIndex = gallery.hasAttribute("tabindex") ? gallery.tabIndex : 0;
+      on(gallery, "pointermove", (e) => {
+        const rect = gallery.getBoundingClientRect();
+        const ratio = clamp((e.clientX - rect.left) / rect.width, 0, 0.9999);
+        setActive(Math.min(items.length - 1, Math.floor(ratio * items.length)));
+      });
+      on(gallery, "keydown", (e) => {
+        if (e.key === "ArrowRight" || e.key === "ArrowDown") { e.preventDefault(); setActive(active + 1); }
+        if (e.key === "ArrowLeft" || e.key === "ArrowUp") { e.preventDefault(); setActive(active - 1); }
+        if (e.key === "Home") { e.preventDefault(); setActive(0); }
+        if (e.key === "End") { e.preventDefault(); setActive(items.length - 1); }
+      });
+      setActive(active);
+    });
+  }
+
+  function initTextRotate(root) {
+    $$(".blora-text-rotate", root).forEach((rotate) => {
+      if (bound(rotate, "TextRotate")) return;
+      const items = $$(".blora-text-rotate__item", rotate);
+      if (items.length < 2 || prefersReduced(rotate)) {
+        items.forEach((item, index) => {
+          item.classList.toggle("is-active", index === 0);
+          item.setAttribute("aria-hidden", String(index !== 0));
+        });
+        return;
+      }
+      const win = ownerWin(rotate);
+      const duration = Math.max(1200, Number(rotate.dataset.interval) || 3200);
+      let active = Math.max(0, items.findIndex((item) => item.classList.contains("is-active")));
+      let timer = null;
+      const setActive = (index) => {
+        active = index % items.length;
+        items.forEach((item, i) => {
+          item.classList.toggle("is-active", i === active);
+          item.setAttribute("aria-hidden", String(i !== active));
+        });
+      };
+      const start = () => { if (!timer) timer = win.setInterval(() => setActive(active + 1), duration); };
+      const stop = () => { if (timer) win.clearInterval(timer); timer = null; };
+      on(rotate, "mouseenter", stop);
+      on(rotate, "mouseleave", start);
+      on(rotate, "focusin", stop);
+      on(rotate, "focusout", start);
+      setActive(active);
+      start();
+    });
+  }
+
   /* —— Init all —— */
   function init(root = doc(), options) {
     if (options) configure(options);
@@ -1723,6 +1984,9 @@
     initDrawer(root);
     initPopover(root);
     initDropdown(root);
+    initSpeedDial(root);
+    initSidebarLayout(root);
+    initMegamenu(root);
     initSegmented(root);
     initBtnLoading(root);
     initRate(root);
@@ -1751,6 +2015,11 @@
     initTimePicker(root);
     initCalendar(root);
     initColorPicker(root);
+    initCountdown(root);
+    initDiff(root);
+    initHover3D(root);
+    initHoverGallery(root);
+    initTextRotate(root);
   }
 
   /* —— Public API —— */

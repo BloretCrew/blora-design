@@ -320,4 +320,30 @@ Blora 的文案风格应克制、清晰、直接。
 
 ---
 
+## 十三 · 组件选择与组合
+
+### 13.1 优先使用原生语义
+
+- 输入、选择、文件、开关、Swap、Filter 与 Diff 应保留原生 `input`，自定义视觉不能替换键盘和表单语义。
+- Fieldset 必须使用 `<fieldset>` / `<legend>`，Kbd 使用 `<kbd>`，Footer、Hero、Sidebar 优先采用对应语义元素。
+- 无原生语义的展开组件由 `blora.js` 同步 `aria-expanded`、焦点与 Esc 行为；业务不重复绑定同一状态。
+
+### 13.2 组件组合边界
+
+- Sidebar Layout 负责应用级页面结构；Drawer 负责临时任务面板，两者不可因外观相似而互换。
+- Megamenu 用于多分组全局导航；普通操作集合继续使用 Dropdown。
+- Dock 适合 3–5 个高频一级入口；桌面信息密集型应用优先 Navbar 或 Sidebar。
+- Join 只连接同一任务中的连续控件；普通按钮并排使用 Row 或 Button Group。
+- Deck 只表现有明确前后顺序的同类对象，不用于隐藏大量可操作内容。
+
+### 13.3 可选视觉效果
+
+- Aura 每个视口最多强调一个主要对象，不作为卡片默认边框。
+- Hover 3D 仅用于低频展示内容，倾斜强度保持 1–6；高频工作区、表格和表单禁用。
+- Text Rotate 只用于短句轮换，间隔不低于 1200ms；关键信息必须始终静态可见。
+- Browser、Code、Phone、Window Mockup 必须承载真实内容预览，不作为空洞装饰。
+- 所有效果必须通过语义令牌取色，并在 `prefers-reduced-motion: reduce` 下静止。
+
+---
+
 > 语义清晰、默认可用、按需扩展。

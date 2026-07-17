@@ -193,6 +193,7 @@
 
       <div class="blora-shownav__group">布局</div>
       <a href="#layout">布局</a>
+      <a href="#extended">扩展组件</a>
     </nav>
   </aside>
 
@@ -213,7 +214,7 @@
         <article class="blora-card blora-card--relative blora-card--hover">
           
           <h3 class="blora-card__title">基础变量层</h3>
-          <p class="blora-card__body">覆盖按钮、表单、导航、数据展示、反馈等 30+ 类常见界面组件，满足日常开发需求。</p>
+          <p class="blora-card__body">覆盖按钮、表单、导航、数据、反馈、布局与展示等常见 Web 应用场景。</p>
         </article>
         <article class="blora-card blora-card--relative blora-card--hover">
           
@@ -1614,6 +1615,206 @@
             <div class="blora-card blora-card--flat">第一行</div>
             <div class="blora-card blora-card--flat">第二行</div>
             <div class="blora-card blora-card--flat">第三行</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         19 · 扩展组件
+         ================================================================ -->
+    <section id="extended" class="blora-sec">
+      <header class="blora-sec__head">
+        <div class="blora-sec__num">19 — 扩展组件</div>
+        <h2 class="blora-sec__title">完整组件集</h2>
+        <p class="blora-sec__desc">补齐常用动作、表单、导航、数据媒体、布局与 Mockup，全部沿用同一套语义令牌和交互规范。</p>
+      </header>
+
+      <div class="blora-panel">
+        <div class="blora-demo">
+          <div class="blora-demo__label">动作 · Swap & Speed Dial</div>
+          <div class="blora-row">
+            <label class="blora-swap" aria-label="切换收藏">
+              <input type="checkbox">
+              <span class="blora-swap__off"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3 2.7 5.47 6.04.88-4.37 4.26 1.03 6.02L12 16.79l-5.4 2.84 1.03-6.02-4.37-4.26 6.04-.88z"/></svg></span>
+              <span class="blora-swap__on blora-text-primary"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="m12 3 2.7 5.47 6.04.88-4.37 4.26 1.03 6.02L12 16.79l-5.4 2.84 1.03-6.02-4.37-4.26 6.04-.88z"/></svg></span>
+            </label>
+            <div class="blora-speed-dial" data-blora-speed-dial>
+              <button class="blora-btn blora-btn--primary blora-btn--icon blora-speed-dial__trigger" type="button" data-blora-speed-dial-trigger aria-label="快捷操作">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+              </button>
+              <div class="blora-speed-dial__actions">
+                <button class="blora-btn blora-btn--secondary blora-btn--sm blora-speed-dial__action" type="button">新建</button>
+                <button class="blora-btn blora-btn--secondary blora-btn--sm blora-speed-dial__action" type="button">上传</button>
+                <button class="blora-btn blora-btn--secondary blora-btn--sm blora-speed-dial__action" type="button">分享</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">表单分组与校验 · Fieldset, File Input, Filter & Validator</div>
+          <fieldset class="blora-fieldset">
+            <legend class="blora-fieldset__legend">发布设置</legend>
+            <p class="blora-fieldset__description">原生语义分组，兼容键盘与屏幕阅读器。</p>
+            <div class="blora-grid blora-grid--2">
+              <label class="blora-validator">
+                <span class="blora-label">项目邮箱</span>
+                <input class="blora-input" type="email" required placeholder="name@example.com">
+                <span class="blora-validator__hint blora-validator__hint--error">请输入有效邮箱。</span>
+                <span class="blora-validator__hint blora-validator__hint--success">格式有效。</span>
+              </label>
+              <label class="blora-field">
+                <span class="blora-label">附件</span>
+                <input class="blora-file-input" type="file" accept="image/*,.pdf">
+              </label>
+            </div>
+            <form class="blora-filter">
+              <label class="blora-filter__item"><input type="radio" name="project-filter"><span class="blora-filter__label">全部</span></label>
+              <label class="blora-filter__item"><input type="radio" name="project-filter"><span class="blora-filter__label">进行中</span></label>
+              <label class="blora-filter__item"><input type="radio" name="project-filter"><span class="blora-filter__label">已完成</span></label>
+              <button class="blora-filter__reset" type="reset">清除</button>
+            </form>
+          </fieldset>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">导航 · Sidebar, Dock & Megamenu</div>
+          <div class="blora-sidebar-layout blora-sidebar-layout--compact" data-blora-sidebar-layout>
+            <button class="blora-btn blora-btn--outline blora-sidebar-layout__toggle" type="button" data-blora-sidebar-toggle>打开侧栏</button>
+            <div class="blora-sidebar-layout__mask"></div>
+            <aside class="blora-sidebar-layout__aside">
+              <nav class="blora-menu">
+                <div class="blora-menu__group-label">工作区</div>
+                <a class="blora-menu__item is-active" href="#extended">概览</a>
+                <a class="blora-menu__item" href="#extended">项目</a>
+                <a class="blora-menu__item" href="#extended">设置</a>
+              </nav>
+            </aside>
+            <div class="blora-sidebar-layout__content blora-stack">
+              <div class="blora-megamenu" data-blora-megamenu>
+                <button class="blora-btn blora-btn--outline blora-megamenu__trigger" type="button" data-blora-megamenu-trigger>产品菜单</button>
+                <div class="blora-megamenu__panel">
+                  <div class="blora-megamenu__grid">
+                    <div><div class="blora-megamenu__title">工作</div><a class="blora-megamenu__link" href="#extended">项目管理</a><a class="blora-megamenu__link" href="#extended">任务中心</a></div>
+                    <div><div class="blora-megamenu__title">数据</div><a class="blora-megamenu__link" href="#extended">分析面板</a><a class="blora-megamenu__link" href="#extended">导出记录</a></div>
+                    <div><div class="blora-megamenu__title">支持</div><a class="blora-megamenu__link" href="#extended">帮助中心</a><a class="blora-megamenu__link" href="#extended">服务状态</a></div>
+                  </div>
+                </div>
+              </div>
+              <p class="blora-text-muted">桌面端保持页面侧栏；窄屏自动转换为带遮罩的可关闭侧栏。</p>
+              <nav class="blora-dock blora-dock--static" aria-label="底部导航">
+                <a class="blora-dock__item is-active" href="#extended"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 11 9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span>首页</span></a>
+                <a class="blora-dock__item" href="#extended"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><span>搜索</span></a>
+                <a class="blora-dock__item" href="#extended"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>账户</span></a>
+              </nav>
+            </div>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">数据与媒体 · Chat, Countdown, Diff, Gallery & Kbd</div>
+          <div class="blora-grid blora-grid--2">
+            <div class="blora-stack">
+              <div class="blora-chat">
+                <span class="blora-avatar blora-avatar--info blora-chat__avatar">A</span>
+                <div class="blora-chat__content"><div class="blora-chat__meta"><span>Alex</span><time>10:24</time></div><div class="blora-chat__bubble">设计稿已经同步，可以开始组件联调。</div></div>
+              </div>
+              <div class="blora-chat blora-chat--end">
+                <span class="blora-avatar blora-avatar--primary blora-chat__avatar">B</span>
+                <div class="blora-chat__content"><div class="blora-chat__meta"><span>Blora</span><time>10:26</time></div><div class="blora-chat__bubble">收到，先处理表单和导航。</div></div>
+              </div>
+              <p>快捷键 <kbd class="blora-kbd">Ctrl</kbd> + <kbd class="blora-kbd">K</kbd></p>
+              <div class="blora-countdown" data-blora-countdown data-seconds="93784">
+                <span class="blora-countdown__unit"><strong class="blora-countdown__value" data-unit="days">1</strong><span class="blora-countdown__label">天</span></span>
+                <span class="blora-countdown__unit"><strong class="blora-countdown__value" data-unit="hours">02</strong><span class="blora-countdown__label">时</span></span>
+                <span class="blora-countdown__unit"><strong class="blora-countdown__value" data-unit="minutes">03</strong><span class="blora-countdown__label">分</span></span>
+                <span class="blora-countdown__unit"><strong class="blora-countdown__value" data-unit="seconds">04</strong><span class="blora-countdown__label">秒</span></span>
+              </div>
+            </div>
+            <div class="blora-stack">
+              <div class="blora-diff">
+                <div class="blora-diff__item"><img src="https://picsum.photos/seed/blora-after/960/540" alt="调整后"></div>
+                <div class="blora-diff__item blora-diff__item--before"><img src="https://picsum.photos/seed/blora-before/960/540" alt="调整前"></div>
+                <span class="blora-diff__divider"></span>
+                <input class="blora-diff__range" type="range" min="0" max="100" value="52" aria-label="比较位置">
+              </div>
+              <div class="blora-hover-gallery" aria-label="产品图片">
+                <img class="blora-hover-gallery__item is-active" src="https://picsum.photos/seed/blora-gallery-a/800/600" alt="产品正面">
+                <img class="blora-hover-gallery__item" src="https://picsum.photos/seed/blora-gallery-b/800/600" alt="产品侧面">
+                <img class="blora-hover-gallery__item" src="https://picsum.photos/seed/blora-gallery-c/800/600" alt="产品细节">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">布局 · Indicator, Join, Hero, Footer, Mask & Deck</div>
+          <div class="blora-row">
+            <span class="blora-indicator"><button class="blora-btn blora-btn--outline">通知</button><span class="blora-badge blora-badge--circle blora-indicator__item">3</span></span>
+            <div class="blora-join">
+              <input class="blora-input" type="search" placeholder="搜索项目">
+              <button class="blora-btn blora-btn--primary" type="button">搜索</button>
+            </div>
+          </div>
+          <div class="blora-hero blora-hero--surface blora-hero--center blora-hero--compact">
+            <div class="blora-hero__content">
+              <h3 class="blora-h2">团队工作台</h3>
+              <p class="blora-text-lead">集中处理项目、任务与审批。</p>
+              <button class="blora-btn blora-btn--primary" type="button">进入工作台</button>
+            </div>
+          </div>
+          <div class="blora-row">
+            <span class="blora-mask blora-mask--circle blora-mask--sm"><img src="https://picsum.photos/seed/blora-mask-a/240/240" alt="圆形裁切"></span>
+            <span class="blora-mask blora-mask--hexagon blora-mask--sm"><img src="https://picsum.photos/seed/blora-mask-b/240/240" alt="六边形裁切"></span>
+            <span class="blora-mask blora-mask--diamond blora-mask--sm"><img src="https://picsum.photos/seed/blora-mask-c/240/240" alt="菱形裁切"></span>
+            <div class="blora-deck blora-deck--sm">
+              <article class="blora-card blora-card--flat">第三层</article>
+              <article class="blora-card blora-card--flat">第二层</article>
+              <article class="blora-card"><strong>当前卡片</strong><p class="blora-text-muted">用于相册、队列和待办预览。</p></article>
+            </div>
+          </div>
+          <footer class="blora-footer">
+            <div class="blora-footer__inner">
+              <div><div class="blora-footer__title">Blora Design</div><p>面向现代 Web 应用的统一组件规范。</p></div>
+              <div><div class="blora-footer__title">产品</div><a class="blora-footer__link" href="#extended">组件</a><a class="blora-footer__link" href="#extended">配色</a></div>
+              <div><div class="blora-footer__title">资源</div><a class="blora-footer__link" href="#extended">文档</a><a class="blora-footer__link" href="#extended">更新</a></div>
+              <div><div class="blora-footer__title">团队</div><a class="blora-footer__link" href="#extended">关于</a><a class="blora-footer__link" href="#extended">联系</a></div>
+            </div>
+          </footer>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">可选效果 · Aura, Hover 3D & Text Rotate</div>
+          <div class="blora-grid blora-grid--2">
+            <article class="blora-card blora-aura"><h3 class="blora-card__title">Aura</h3><p class="blora-card__body">仅用于需要额外关注的单个对象。</p></article>
+            <article class="blora-card blora-hover-3d" data-strength="4" tabindex="0"><h3 class="blora-card__title">Hover 3D</h3><p class="blora-card__body">低幅度倾斜，并尊重 reduced-motion。</p></article>
+          </div>
+          <p class="blora-h3">构建
+            <span class="blora-text-rotate blora-text-primary" data-interval="2200">
+              <span class="blora-text-rotate__item is-active">清晰的产品界面</span>
+              <span class="blora-text-rotate__item">一致的交互体验</span>
+              <span class="blora-text-rotate__item">可复用的设计系统</span>
+            </span>
+          </p>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">Mockup · Browser, Code, Window & Phone</div>
+          <div class="blora-grid blora-grid--2">
+            <div class="blora-mockup blora-browser-mockup">
+              <div class="blora-mockup__toolbar"><span class="blora-mockup__dots"><span></span></span><span class="blora-browser-mockup__address">https://blora.design/components</span></div>
+              <div class="blora-mockup__body"><strong>Browser Mockup</strong><p class="blora-text-muted">用于展示网页与产品预览。</p></div>
+            </div>
+            <div class="blora-mockup blora-code-mockup">
+              <div class="blora-mockup__toolbar"><span class="blora-mockup__dots"><span></span></span></div>
+              <div class="blora-mockup__body">
+                <div class="blora-code-mockup__line" data-prefix="$"><code>npm install @bloret/blora-design</code></div>
+                <div class="blora-code-mockup__line" data-prefix=">"><code>ready in 120ms</code></div>
+              </div>
+            </div>
+            <div class="blora-mockup blora-window-mockup"><div class="blora-mockup__body"><strong>Window Mockup</strong><p class="blora-text-muted">适合桌面应用与工具界面。</p></div></div>
+            <div class="blora-phone-mockup"><div class="blora-phone-mockup__screen"><span class="blora-phone-mockup__camera"></span><div class="blora-phone-mockup__body"><strong>Phone Mockup</strong><p class="blora-text-muted">375 × 812 内容区域</p><button class="blora-btn blora-btn--primary" type="button">继续</button></div></div></div>
           </div>
         </div>
       </div>
