@@ -617,7 +617,7 @@
         text = text.trim();
         if (!text) return;
         const tag = document.createElement("span");
-        tag.className = "blora-tag blora-tag--seal blora-tag--removable";
+        tag.className = "blora-tag blora-tag--primary blora-tag--removable";
         tag.textContent = text;   /* 用户输入按文本插入，防注入 */
         const close = document.createElement("span");
         close.className = "blora-tag__close";
@@ -804,22 +804,20 @@
 
   /* —— Color palettes —— */
   const PALETTE_PRESETS = Object.freeze({
-    cinnabar: Object.freeze({ name: "丹砂", description: "宣纸暖白与朱砂红", colors: ["#F8F4EC", "#A0392E", "#3D4A5C", "#5A7B6B", "#B89968"] }),
-    indigo: Object.freeze({ name: "靛青", description: "冷纸灰与沉静蓝调", colors: ["#F4F5F8", "#405D87", "#55756F", "#A74B52", "#AF8A55"] }),
-    lotus: Object.freeze({ name: "藕荷", description: "柔和藕粉与草木青", colors: ["#F8F4F6", "#9A466A", "#55786B", "#526078", "#B28A59"] }),
-    ocean: Object.freeze({ name: "海盐", description: "清透青蓝与海岸绿", colors: ["#F1F7F6", "#176B78", "#39745F", "#365D78", "#B08A55"] }),
+    cinnabar: Object.freeze({ name: "丹砂", description: "暖白基底与低饱和红", colors: ["#F8F4EC", "#A0392E", "#3D4A5C", "#5A7B6B", "#B89968"] }),
+    indigo: Object.freeze({ name: "靛青", description: "冷灰基底与沉静蓝", colors: ["#F4F5F8", "#405D87", "#55756F", "#A74B52", "#AF8A55"] }),
+    lotus: Object.freeze({ name: "藕荷", description: "柔和粉紫与低饱和绿", colors: ["#F8F4F6", "#9A466A", "#55786B", "#526078", "#B28A59"] }),
+    ocean: Object.freeze({ name: "海盐", description: "清爽青蓝与低饱和绿", colors: ["#F1F7F6", "#176B78", "#39745F", "#365D78", "#B08A55"] }),
     graphite: Object.freeze({ name: "Graphite", description: "冷灰界面与低饱和钢蓝", colors: ["#F6F7F8", "#171A1F", "#4F6578", "#596A86", "#5B756B"] }),
     mono: Object.freeze({ name: "Mono", description: "纯中性灰与近黑主色", colors: ["#FAFAF9", "#111110", "#34363A", "#5E6672", "#616D67"] }),
     circuit: Object.freeze({ name: "Circuit", description: "碳灰界面与克制青色", colors: ["#F4F5F5", "#161A1A", "#3E6C70", "#536D7D", "#4F7368"] }),
     coral: Object.freeze({ name: "Coral", description: "深靛灰与柔和珊瑚红", colors: ["#FAF7F8", "#303143", "#9F5964", "#5D6680", "#5B756B"] }),
     dusk: Object.freeze({ name: "Dusk", description: "中性柔灰与低饱和紫", colors: ["#F7F6F8", "#1D1B20", "#675F78", "#586A83", "#5D746C"] }),
   });
-  const PALETTE_ALIASES = Object.freeze({ modern: "graphite", minimal: "mono", carbon: "circuit", studio: "dusk" });
-  const normalizePalette = (name) => PALETTE_ALIASES[name] || name;
   const getPalette = (target) => {
     const d = ownerDoc(target);
     const el = target && target.nodeType === 1 ? target : d && d.documentElement;
-    return normalizePalette((el && el.dataset.bloraPalette) || "dusk");
+    return (el && el.dataset.bloraPalette) || "dusk";
   };
   const syncThemeColor = (target) => {
     const d = ownerDoc(target);
@@ -828,13 +826,13 @@
     win.requestAnimationFrame(() => {
       let meta = $('meta[name="theme-color"]', d);
       if (!meta) { meta = d.createElement("meta"); meta.name = "theme-color"; d.head.appendChild(meta); }
-      meta.content = win.getComputedStyle(d.body || d.documentElement).getPropertyValue("--blora-paper").trim() || "#F8F4EC";
+      const themeColor = win.getComputedStyle(d.body || d.documentElement).getPropertyValue("--blora-background").trim();
+      if (themeColor) meta.content = themeColor;
     });
   };
   const applyPalette = (name, target, options = {}) => {
     const d = ownerDoc(target);
     const el = target && target.nodeType === 1 ? target : d && d.documentElement;
-    name = normalizePalette(name);
     if (!el || !PALETTE_PRESETS[name]) return false;
     if (name === "dusk") delete el.dataset.bloraPalette;
     else el.dataset.bloraPalette = name;
@@ -854,7 +852,6 @@
       FLAGS.appearanceBoot = true;
       let savedPalette = "dusk";
       try { savedPalette = win.localStorage.getItem(CONFIG.paletteStorageKey) || savedPalette; } catch (e) {}
-      savedPalette = normalizePalette(savedPalette);
       if (!PALETTE_PRESETS[savedPalette]) savedPalette = "dusk";
       applyPalette(savedPalette, d.documentElement, { persist: false, emit: false });
     }
@@ -925,7 +922,7 @@
     if (!FLAGS.colorModeBoot) {
       FLAGS.colorModeBoot = true;
       let saved = null;
-      try { saved = win.localStorage.getItem(CONFIG.colorModeStorageKey) || win.localStorage.getItem("blora-theme"); } catch (e) {}
+      try { saved = win.localStorage.getItem(CONFIG.colorModeStorageKey); } catch (e) {}
       if (saved ? saved === "dark" : win.matchMedia("(prefers-color-scheme: dark)").matches) {
         d.documentElement.classList.add("blora-dark");
       }
@@ -1567,7 +1564,7 @@
       const cursor = $(".blora-color-spectrum__cursor", spectrum);
       const hexInput = $(".blora-color-hex", panel);
       const preview = $(".blora-color-preview", panel);
-      let current = normalizeHex(swatch.dataset.color || token("--blora-primary", "#675F78")) || "#675F78";
+      let current = normalizeHex(swatch.dataset.color) || normalizeHex(token("--blora-primary")) || "#000000";
       let hsv = hexToHsv(current);
       const mask = d.createElement("div"); mask.className = "blora-floating-mask blora-portal"; getPortalRoot(wrap).appendChild(mask);
       swatch.setAttribute("role", "button");

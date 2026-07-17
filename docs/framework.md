@@ -24,8 +24,8 @@ cp blora.js   your-project/
 
 ```html
 <link rel="stylesheet" href="blora.css">
-<!-- 建议同时引入三套字体 -->
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- 可选：引入 UI 与等宽字体 -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="blora.js"></script>
 ```
 
@@ -78,7 +78,7 @@ Blora.init(document.getElementById('my-mount'));
     try {
       let palette = localStorage.getItem(config.paletteStorageKey || 'blora-palette') || 'dusk';
       const modeKey = config.colorModeStorageKey || config.storageKey || 'blora-color-mode';
-      const mode = localStorage.getItem(modeKey) || localStorage.getItem('blora-theme');
+      const mode = localStorage.getItem(modeKey);
       if (palette !== 'dusk') root.dataset.bloraPalette = palette;
       if (mode === 'dark' || (!mode && matchMedia('(prefers-color-scheme: dark)').matches)) root.classList.add('blora-dark');
     } catch (error) {}
@@ -112,16 +112,16 @@ Blora.version;        // "1.0.0"
 
 ```css
 :root {
-  /* 纸 */ --blora-paper, --blora-surface-1..3, --blora-paper-deep
-  /* 墨 */ --blora-ink, --blora-ink-deep, --blora-ink-mid, --blora-ink-light, --blora-ink-mist, --blora-ink-faint, --blora-ink-ghost
-  /* 功能色 */ --blora-primary, --blora-danger, --blora-accent-neutral, --blora-info, --blora-success, --blora-support, --blora-warning, --blora-accent-secondary
-  /* 字 */ --blora-font-serif, --blora-font-sans, --blora-font-mono, --blora-font-brush
-  /*     */ --blora-text-xs .. --blora-text-5xl
-  /* 间 */ --blora-space-0 .. --blora-space-12
-  /* 角 */ --blora-radius-xs .. --blora-radius-full
-  /* 影 */ --blora-shadow-1..4, --blora-shadow-inset, --blora-shadow-seal
-  /* 动 */ --blora-ease, --blora-ease-soft, --blora-ease-overshoot, --blora-dur-fast/base/slow/ink
-  /* 层 */ --blora-z-sticky/dropdown/drawer/modal/toast
+  /* Background */ --blora-background, --blora-surface-1..3
+  /* Content */ --blora-text-strong, --blora-foreground, --blora-text-emphasis, --blora-text-muted, --blora-text-subtle, --blora-text-disabled, --blora-border-subtle
+  /* Functional colors */ --blora-primary, --blora-danger, --blora-accent-neutral, --blora-info, --blora-success, --blora-support, --blora-warning, --blora-accent-secondary
+  /* Typography */ --blora-font-heading, --blora-font-sans, --blora-font-mono
+  /* Type scale */ --blora-text-xs .. --blora-text-5xl
+  /* Spacing */ --blora-space-0 .. --blora-space-12
+  /* Radius */ --blora-radius-xs .. --blora-radius-full
+  /* Shadow */ --blora-shadow-1..4, --blora-shadow-inset, --blora-shadow-primary
+  /* Motion */ --blora-ease, --blora-ease-soft, --blora-ease-overshoot, --blora-dur-fast/base/slow/emphasis
+  /* Z-index */ --blora-z-sticky/dropdown/drawer/modal/toast
 }
 ```
 
@@ -141,12 +141,12 @@ Blora.version;        // "1.0.0"
 |----|------|
 | `.blora-h1` .. `.blora-h4` | Blora 标题字体与字阶 |
 | `.blora-text-lead` | 引导段 |
-| `.blora-text-muted` / `.blora-text-faint` / `.blora-text-seal` | 文字色调 |
+| `.blora-text-muted` / `.blora-text-faint` / `.blora-text-primary` | 文字色调 |
 | `.blora-text-caps` | 大写小字标签 |
-| `.blora-text-mono` / `.blora-text-brush` | 等宽 / 楷书 |
+| `.blora-text-mono` | 等宽文本 |
 | `.blora-quote` | 引文，可含 `<cite>` |
 | `.blora-code` / `.blora-pre` | 行内代码 / 代码块 |
-| `.blora-brush` | 飞白分隔线 |
+| `.blora-divider` | 分隔线，支持虚线和带文本变体 |
 
 ### 2. 布局
 
@@ -177,7 +177,6 @@ Blora.version;        // "1.0.0"
 <hr class="blora-divider">                 <!-- 分隔线 -->
 <hr class="blora-divider blora-divider--dashed">
 <div class="blora-divider blora-divider--text">章节标题</div>
-<hr class="blora-brush">                   <!-- 飞白分隔 -->
 ```
 
 ### 3. 按钮
@@ -275,7 +274,7 @@ Blora.version;        // "1.0.0"
 
 <!-- 标签输入（自动 JS） -->
 <div class="blora-tags-input">
-  <span class="blora-tag blora-tag--seal blora-tag--removable">重要<span class="blora-tag__close">×</span></span>
+  <span class="blora-tag blora-tag--primary blora-tag--removable">重要<span class="blora-tag__close">×</span></span>
   <input type="text" placeholder="回车添加">
 </div>
 
@@ -286,11 +285,11 @@ Blora.version;        // "1.0.0"
 
 <!-- 颜色（连续全色域 + 手动 Hex） -->
 <div class="blora-color-picker">
-  <div class="blora-color-swatch" data-color="#A0392E"></div>
+  <div class="blora-color-swatch"></div>
   <div class="blora-color-panel">
     <div class="blora-color-custom">
       <span class="blora-color-preview"></span>
-      <input class="blora-input blora-color-hex" type="text" value="#A0392E">
+      <input class="blora-input blora-color-hex" type="text" placeholder="#RRGGBB">
     </div>
   </div>
 </div>
@@ -298,7 +297,7 @@ Blora.version;        // "1.0.0"
 <!-- 上传 -->
 <div class="blora-dropzone">
   <div class="blora-dropzone__icon"><svg…></svg></div>
-  <div><strong>拖拽文件至此</strong> 或 <span class="blora-text-seal">点击选择</span></div>
+  <div><strong>拖拽文件至此</strong> 或 <span class="blora-text-primary">点击选择</span></div>
   <div class="blora-hint blora-dropzone__files">支持 PNG/JPG ≤ 8MB</div>
 </div>
 ```
@@ -344,14 +343,14 @@ Blora.version;        // "1.0.0"
 
 ```html
 <span class="blora-tag">默认</span>
-<!-- 色：--seal --tea --indigo --moss --gold --solid -->
+<!-- 色：--primary --neutral --info --success --warning --solid -->
 <!-- 可移除：--removable + .blora-tag__close -->
 
 <span class="blora-badge">9</span>
 <span class="blora-badge blora-badge--dot"></span>
 <span class="blora-badge blora-badge--circle">新</span>
 <span class="blora-badge blora-badge--pill">推荐</span>
-<!-- 色：--tea --moss --indigo -->
+<!-- 色：--neutral --success --info -->
 
 <!-- 卡面右上角徽章 -->
 <article class="blora-card blora-card--relative blora-card--with-badge">
@@ -360,11 +359,11 @@ Blora.version;        // "1.0.0"
 </article>
 
 <span class="blora-dot"></span>
-<!-- 色：--seal --moss --gold；动效：--pulse -->
+<!-- 色：--primary --success --warning；动效：--pulse -->
 
-<span class="blora-avatar blora-avatar--seal">A</span>
+<span class="blora-avatar blora-avatar--primary">A</span>
 <!-- 尺寸：--xs --sm (默认) --lg --xl -->
-<!-- 色：--seal --tea --indigo --moss --ink -->
+<!-- 色：--primary --neutral --info --success --contrast -->
 <!-- 形：--square -->
 <!-- 组：.blora-avatar-group -->
 <!-- 带徽章：.blora-avatar-wrap 内嵌 .blora-badge -->
@@ -377,7 +376,7 @@ Blora.version;        // "1.0.0"
   <div class="blora-progress__label"><span>处理中</span><span>62%</span></div>
   <div class="blora-progress__bar"><div class="blora-progress__fill"></div></div>
 </div>
-<!-- fill 色：--tea --moss --indigo；条纹：--striped -->
+<!-- fill 色：--neutral --success --info；条纹：--striped -->
 
 <!-- 环形 -->
 <div class="blora-progress--circular">
@@ -390,7 +389,7 @@ Blora.version;        // "1.0.0"
 </div>
 
 <span class="blora-spinner"></span>           <!-- 尺寸：--sm --lg -->
-<span class="blora-ink-loading"><span></span><span></span><span></span><span></span></span>
+<span class="blora-dot-loader"><span></span><span></span><span></span><span></span></span>
 
 <span class="blora-skeleton blora-skeleton--text"></span>
 <!-- 变体：--title --circle --block -->
@@ -415,8 +414,8 @@ Navbar 默认保持全宽贴顶。添加 `.blora-navbar--floating` 或 `data-var
 <!-- Tabs（需 data-blora-tabs）-->
 <div class="blora-tabs" data-blora-tabs>
   <div class="blora-tabs__nav">
-    <span class="blora-tabs__tab is-active">山</span>
-    <span class="blora-tabs__tab">水</span>
+    <span class="blora-tabs__tab is-active">概览</span>
+    <span class="blora-tabs__tab">详情</span>
   </div>
   <div class="blora-tabs__panel">…</div>
   <div class="blora-tabs__panel blora-hide">…</div>
@@ -439,8 +438,8 @@ Navbar 默认保持全宽贴顶。添加 `.blora-navbar--floating` 或 `data-var
 <div class="blora-steps">
   <div class="blora-step is-done">
     <div class="blora-step__head"><div class="blora-step__icon">✓</div><div class="blora-step__line"></div></div>
-    <div class="blora-step__title">选纸</div>
-    <div class="blora-step__desc">取宣纸一张</div>
+    <div class="blora-step__title">提交</div>
+    <div class="blora-step__desc">校验资料</div>
   </div>
   <!-- 状态：is-done is-active -->
 </div>
@@ -460,7 +459,7 @@ Navbar 默认保持全宽贴顶。添加 `.blora-navbar--floating` 或 `data-var
 </div>
 ```
 
-Tabs 初始化后会自动注入滑动指示器，内容面板会沿标签切换方向轻量进入；横向布局左右移动，纵向布局上下移动。下划线、Pills 和纵向布局共用同一套状态逻辑，键盘方向键、Home/End 与 `prefers-reduced-motion` 均自动适配。
+Tabs 初始化后会自动注入滑动指示器；内容面板切换时只做渐显，不产生方向位移。下划线、Pills 和纵向布局共用同一套状态逻辑，重复点击当前项不会重新触发动画，键盘方向键、Home/End 与 `prefers-reduced-motion` 均自动适配。
 
 ### 9. 数据展示
 
@@ -491,7 +490,7 @@ Tabs 初始化后会自动注入滑动指示器，内容面板会沿标签切换
 
 <div class="blora-timeline">
   <div class="blora-timeline__item">
-    <div class="blora-timeline__dot blora-timeline__dot--seal"></div>
+    <div class="blora-timeline__dot blora-timeline__dot--primary"></div>
     <div class="blora-timeline__time">10:24</div>
     <div class="blora-timeline__title">事件</div>
     <div class="blora-timeline__desc">描述</div>
@@ -509,7 +508,7 @@ Tabs 初始化后会自动注入滑动指示器，内容面板会沿标签切换
   <span class="blora-stat__label">项目总数</span>
   <span class="blora-stat__value">1,248</span>
   <span class="blora-stat__trend blora-stat__trend--up">↑ 12.4%</span>
-  <!-- 趋势：--up（山青）--down（印泥）-->
+  <!-- 趋势：--up（success）--down（danger）-->
   <!-- 后缀：.blora-stat__suffix -->
 </div>
 
@@ -530,10 +529,10 @@ Tabs 初始化后会自动注入滑动指示器，内容面板会沿标签切换
 </div>
 
 <span class="blora-image blora-image--hover">
-  <img src="…" class="blora-inkify">
-  <span class="blora-image__cap">题图</span>
+  <img src="…" class="blora-image-muted">
+  <span class="blora-image__cap">图片说明</span>
 </span>
-<!-- 变体：--frame（相框）--hover（放大）-->
+<!-- 变体：--frame（边框）--hover（放大）-->
 
 <div class="blora-empty">
   <div class="blora-empty__icon"><svg…></svg></div>
@@ -550,7 +549,7 @@ Tabs 初始化后会自动注入滑动指示器，内容面板会沿标签切换
 
 <div class="blora-calendar">
   <div class="blora-calendar__head">
-    <div class="blora-calendar__title">丙午年 · 六月</div>
+    <div class="blora-calendar__title">2026 年 6 月</div>
   </div>
   <div class="blora-calendar__grid">
     <div class="blora-calendar__dow">日</div> ×7
@@ -718,7 +717,7 @@ const palette = [
 ```css
 :root {
   --blora-primary: #2E5C8A;   /* 改主强调为青蓝 */
-  --blora-paper: #FAF7F0;  /* 更亮的纸 */
+  --blora-background: #FAFAFB;  /* 更亮的页面背景 */
 }
 ```
 

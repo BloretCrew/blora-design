@@ -11,63 +11,43 @@
    1. 设计令牌 · Design Tokens
    ========================================================================= */
 :root {
-  /* —— 纸 · Paper —— 底色色板 */
-  --blora-paper:          #F8F4EC;
-  --blora-paper-warm:     #F2ECDE;
-  --blora-paper-cool:     #F5F1E8;
-  --blora-paper-deep:     #E6DFCC;
-  --blora-surface-1:      #FBF8F0;
-  --blora-surface-2:      #F2EEE2;
-  --blora-surface-3:      #E9E3D2;
+  /* —— 背景与表面 · Background & Surfaces —— */
+  --blora-background:     #F7F6F8;
+  --blora-surface-1:      #FFFFFF;
+  --blora-surface-2:      #F0EEF2;
+  --blora-surface-3:      #E4E1E7;
 
-  /* —— 墨 · Ink —— 多级灰度文字色 */
-  --blora-ink:            #1C1A17;   /* 焦墨 — primary text  */
-  --blora-ink-deep:       #2D2A24;   /* 浓墨 — headings      */
-  --blora-ink-mid:        #4A453D;   /* 重墨 — body strong   */
-  --blora-ink-light:      #6B6358;   /* 淡墨 — body          */
-  --blora-ink-mist:       #9B9489;   /* 清墨 — subtle        */
-  --blora-ink-faint:      #B8B0A2;   /* 远山 — disabled      */
-  --blora-ink-ghost:      #D8D2C4;   /* 雾色 — borders       */
+  /* —— 前景与文本 · Foreground & Text —— */
+  --blora-text-strong:     #1D1B20;
+  --blora-foreground:      #2C2930;
+  --blora-text-emphasis:   #4B4750;
+  --blora-text-muted:      #716C76;
+  --blora-text-subtle:     #9A949F;
+  --blora-text-disabled:   #B7B1BB;
+  --blora-border-subtle:   #D6D1D9;
 
   /* —— 功能色 · Functional Accents —— */
-  --blora-primary:             #A0392E;
-  --blora-primary-hover:       #7E2A22;
-  --blora-primary-soft:        #C25D52;
-  --blora-danger:              #C44536;
-  --blora-accent-neutral:      #8B6F47;
-  --blora-accent-neutral-soft: #B59B78;
-  --blora-info:                #3D4A5C;
-  --blora-info-soft:           #6B7889;
-  --blora-success:             #5A7B6B;
-  --blora-success-soft:        #8AA89A;
-  --blora-support:             #7B9B7E;
-  --blora-warning:             #B89968;
-  --blora-accent-secondary:    #D4A574;
-
-  /* —— 兼容别名 · Legacy aliases —— 既有应用无需迁移 */
-  --blora-seal:         var(--blora-primary);
-  --blora-seal-deep:    var(--blora-primary-hover);
-  --blora-seal-soft:    var(--blora-primary-soft);
-  --blora-cinnabar:     var(--blora-danger);
-  --blora-tea:          var(--blora-accent-neutral);
-  --blora-tea-light:    var(--blora-accent-neutral-soft);
-  --blora-indigo:       var(--blora-info);
-  --blora-indigo-light: var(--blora-info-soft);
-  --blora-moss:         var(--blora-success);
-  --blora-moss-light:   var(--blora-success-soft);
-  --blora-bamboo:       var(--blora-support);
-  --blora-gold:         var(--blora-warning);
-  --blora-ochre:        var(--blora-accent-secondary);
+  --blora-primary:             #675F78;
+  --blora-primary-hover:       #514A61;
+  --blora-primary-soft:        #8D869B;
+  --blora-danger:              #995F68;
+  --blora-accent-neutral:      #6D6977;
+  --blora-accent-neutral-soft: #9692A0;
+  --blora-info:                #586A83;
+  --blora-info-soft:           #8492A6;
+  --blora-success:             #5D746C;
+  --blora-success-soft:        #899D96;
+  --blora-support:             #70807C;
+  --blora-warning:             #806C4F;
+  --blora-accent-secondary:    #7E6B7A;
 
   /* —— 字体 · Typography —— */
-  --blora-font-serif:     Avenir, "Avenir Next", "Segoe UI",
+  --blora-font-heading:     Avenir, "Avenir Next", "Segoe UI",
                           "Noto Sans SC", sans-serif;
   --blora-font-sans:      Avenir, "Avenir Next", "Segoe UI",
                           "Noto Sans SC", sans-serif;
   --blora-font-mono:      "JetBrains Mono", "Fira Code", "SF Mono",
                           Consolas, monospace;
-  --blora-font-brush:     "STKaiti", "KaiTi", "Noto Serif SC", serif;
-
   --blora-text-xs:    0.75rem;    /* 12px */
   --blora-text-sm:    0.875rem;   /* 14px */
   --blora-text-base:  1rem;       /* 16px */
@@ -82,7 +62,7 @@
   --blora-leading-normal:  1.6;
   --blora-leading-loose:   1.85;
 
-  --blora-tracking-tight:  -0.01em;
+  --blora-tracking-tight:  0;
   --blora-tracking-normal: 0;
   --blora-tracking-wide:   0.04em;
   --blora-tracking-caps:   0.18em;
@@ -118,14 +98,13 @@
   --blora-shadow-4: 0 24px 56px rgba(29,27,32,0.14);
   --blora-shadow-inset: inset 0 1px 0 rgba(255,255,255,0.5),
                        inset 0 -1px 0 rgba(28,26,23,0.04);
-  --blora-shadow-seal: 0 0 0 1px color-mix(in srgb, var(--blora-seal) 18%, transparent),
-                       0 2px 6px color-mix(in srgb, var(--blora-seal) 15%, transparent);
+  --blora-shadow-primary: 0 0 0 1px color-mix(in srgb, var(--blora-primary) 18%, transparent),
+                       0 2px 6px color-mix(in srgb, var(--blora-primary) 15%, transparent);
 
   /* —— 边框 · Border —— */
-  --blora-border:        1px solid var(--blora-ink-ghost);
-  --blora-border-strong: 1px solid var(--blora-ink-mist);
-  --blora-border-ink:    1px solid var(--blora-ink-mid);
-  --blora-border-seal:   1px solid var(--blora-seal);
+  --blora-border:        1px solid var(--blora-border-subtle);
+  --blora-border-strong: 1px solid var(--blora-text-subtle);
+  --blora-border-primary:   1px solid var(--blora-primary);
 
   /* —— 组件尺寸 · Component Metrics —— 宿主应用可按产品密度统一覆写 */
   --blora-control-height: 2.75em;
@@ -134,32 +113,36 @@
   --blora-range-track-size: 4px;
   --blora-range-thumb-size: 18px;
 
-  /* —— 衍生色 · Derived —— 由基础令牌实时调和；覆写基础令牌（如 --blora-seal）即全局跟随 */
-  --blora-on-accent:     #FBF8F0;   /* 彩底/墨底上的前景色，暗色模式下不翻转 */
-  --blora-seal-tint:     color-mix(in srgb, var(--blora-seal) 8%, transparent);   /* 选中/激活底 */
-  --blora-selection-bg:  color-mix(in srgb, var(--blora-seal) 28%, transparent); /* 文本选区，随配色主色变化 */
-  --blora-focus-ring:        0 0 0 3px color-mix(in srgb, var(--blora-seal) 12%, transparent);
-  --blora-focus-ring-strong: 0 0 0 3px color-mix(in srgb, var(--blora-seal) 18%, transparent);
-  --blora-overlay-modal:  rgba(28,26,23,0.5);
-  --blora-overlay-drawer: rgba(28,26,23,0.45);
-  --blora-code-bg:       color-mix(in srgb, var(--blora-ink) 92%, var(--blora-paper));
+  /* —— 衍生色 · Derived —— 由基础令牌实时调和；覆写基础令牌（如 --blora-primary）即全局跟随 */
+  --blora-on-accent:     #FFFFFF;   /* 强调色与深色表面上的前景色 */
+  --blora-on-media:      #FFFFFF;   /* 图片与视频遮罩上的前景色 */
+  --blora-media-overlay: rgba(0,0,0,0.4);
+  --blora-media-overlay-strong: rgba(0,0,0,0.7);
+  --blora-media-indicator: rgba(255,255,255,0.6);
+  --blora-primary-tint:     color-mix(in srgb, var(--blora-primary) 8%, transparent);   /* 选中/激活底 */
+  --blora-selection-bg:  color-mix(in srgb, var(--blora-primary) 28%, transparent); /* 文本选区，随配色主色变化 */
+  --blora-focus-ring:        0 0 0 3px color-mix(in srgb, var(--blora-primary) 12%, transparent);
+  --blora-focus-ring-strong: 0 0 0 3px color-mix(in srgb, var(--blora-primary) 18%, transparent);
+  --blora-overlay-modal:  rgba(29,27,32,0.52);
+  --blora-overlay-drawer: rgba(29,27,32,0.46);
+  --blora-code-bg:       color-mix(in srgb, var(--blora-text-strong) 92%, var(--blora-background));
   --blora-code-fg:       var(--blora-on-accent);
-  --blora-banner-bg:     var(--blora-ink-deep);
-  --blora-tooltip-bg:    var(--blora-ink-deep);
+  --blora-banner-bg:     var(--blora-foreground);
+  --blora-tooltip-bg:    var(--blora-foreground);
 
-  /* —— 动效 · Motion —— 含蓄过渡 */
+  /* —— 动效 · Motion —— 克制过渡 */
   --blora-ease:          cubic-bezier(0.25, 0.8, 0.25, 1);
   --blora-ease-soft:     cubic-bezier(0.4, 0, 0.2, 1);
   --blora-ease-overshoot: cubic-bezier(0.34, 1.56, 0.64, 1);
   --blora-dur-fast:      160ms;
   --blora-dur-base:      260ms;
   --blora-dur-slow:      420ms;
-  --blora-dur-ink:       700ms;
+  --blora-dur-emphasis:       700ms;
   --blora-tabs-fade-duration: 240ms;
 
   /* —— 纹理 · Texture —— 默认保持纯净，可由产品按需覆写 */
-  --blora-grain: none;
-  --blora-paper-tint: none;
+  --blora-background-texture: none;
+  --blora-background-overlay: none;
 
   /* —— 层级 · Z-index —— */
   --blora-z-base:    1;
@@ -174,66 +157,73 @@
    配色预设 · Palette Presets
    仅重映射颜色令牌，不改变 Blora 的字体、曲率、阴影与动效。
    ========================================================================= */
+:root[data-blora-palette="cinnabar"] {
+  --blora-background: #F8F4EC;
+  --blora-surface-1: #FBF8F0; --blora-surface-2: #F2EEE2; --blora-surface-3: #E9E3D2;
+  --blora-text-strong: #1C1A17; --blora-foreground: #2D2A24; --blora-text-emphasis: #4A453D; --blora-text-muted: #6B6358; --blora-text-subtle: #9B9489; --blora-text-disabled: #B8B0A2; --blora-border-subtle: #D8D2C4;
+  --blora-primary: #A0392E; --blora-primary-hover: #7E2A22; --blora-primary-soft: #C25D52; --blora-danger: #C44536;
+  --blora-accent-neutral: #8B6F47; --blora-accent-neutral-soft: #B59B78; --blora-info: #3D4A5C; --blora-info-soft: #6B7889; --blora-success: #5A7B6B; --blora-success-soft: #8AA89A; --blora-support: #7B9B7E; --blora-warning: #B89968; --blora-accent-secondary: #D4A574;
+  --blora-on-accent: #FBF8F0; --blora-overlay-modal: rgba(28,26,23,0.5); --blora-overlay-drawer: rgba(28,26,23,0.45);
+}
 :root[data-blora-palette="indigo"] {
-  --blora-paper: #F4F5F8; --blora-paper-warm: #EEEFF4; --blora-paper-cool: #EFF2F7; --blora-paper-deep: #DCE1EB;
+  --blora-background: #F4F5F8;
   --blora-surface-1: #FAFAFC; --blora-surface-2: #ECEFF5; --blora-surface-3: #E0E4ED;
-  --blora-ink: #191D26; --blora-ink-deep: #282D38; --blora-ink-mid: #454C5B; --blora-ink-light: #687080; --blora-ink-mist: #9299A7; --blora-ink-faint: #ADB3BE; --blora-ink-ghost: #D2D6DF;
+  --blora-text-strong: #191D26; --blora-foreground: #282D38; --blora-text-emphasis: #454C5B; --blora-text-muted: #687080; --blora-text-subtle: #9299A7; --blora-text-disabled: #ADB3BE; --blora-border-subtle: #D2D6DF;
   --blora-primary: #405D87; --blora-primary-hover: #30486D; --blora-primary-soft: #6D87AC; --blora-danger: #A74B52;
   --blora-accent-neutral: #756B5B; --blora-accent-neutral-soft: #A99D89; --blora-info: #405D87; --blora-info-soft: #7D91AF; --blora-success: #55756F; --blora-success-soft: #87A19C; --blora-support: #718F78; --blora-warning: #AF8A55; --blora-accent-secondary: #C7A173;
 }
 :root[data-blora-palette="lotus"] {
-  --blora-paper: #F8F4F6; --blora-paper-warm: #F3E9ED; --blora-paper-cool: #F6F1F4; --blora-paper-deep: #E7D8DE;
+  --blora-background: #F8F4F6;
   --blora-surface-1: #FCF9FA; --blora-surface-2: #F2E8EC; --blora-surface-3: #E8DBE1;
-  --blora-ink: #24191E; --blora-ink-deep: #35272D; --blora-ink-mid: #55434B; --blora-ink-light: #77636C; --blora-ink-mist: #9E8E95; --blora-ink-faint: #B9AAB0; --blora-ink-ghost: #DCCFD4;
+  --blora-text-strong: #24191E; --blora-foreground: #35272D; --blora-text-emphasis: #55434B; --blora-text-muted: #77636C; --blora-text-subtle: #9E8E95; --blora-text-disabled: #B9AAB0; --blora-border-subtle: #DCCFD4;
   --blora-primary: #9A466A; --blora-primary-hover: #78344F; --blora-primary-soft: #C06F91; --blora-danger: #B95656;
   --blora-accent-neutral: #806B59; --blora-accent-neutral-soft: #B29E8C; --blora-info: #526078; --blora-info-soft: #8792A7; --blora-success: #55786B; --blora-success-soft: #89A69B; --blora-support: #789477; --blora-warning: #B28A59; --blora-accent-secondary: #CBA071;
 }
 :root[data-blora-palette="ocean"] {
-  --blora-paper: #F1F7F6; --blora-paper-warm: #E8F1EF; --blora-paper-cool: #EDF5F5; --blora-paper-deep: #D5E4E2;
+  --blora-background: #F1F7F6;
   --blora-surface-1: #F8FBFA; --blora-surface-2: #E6F0EF; --blora-surface-3: #D9E8E6;
-  --blora-ink: #142124; --blora-ink-deep: #223236; --blora-ink-mid: #3C5358; --blora-ink-light: #60767A; --blora-ink-mist: #8A9C9F; --blora-ink-faint: #A8B7B8; --blora-ink-ghost: #CAD8D8;
+  --blora-text-strong: #142124; --blora-foreground: #223236; --blora-text-emphasis: #3C5358; --blora-text-muted: #60767A; --blora-text-subtle: #8A9C9F; --blora-text-disabled: #A8B7B8; --blora-border-subtle: #CAD8D8;
   --blora-primary: #176B78; --blora-primary-hover: #11535F; --blora-primary-soft: #4B939D; --blora-danger: #B14F47;
   --blora-accent-neutral: #6E755D; --blora-accent-neutral-soft: #A3AA8F; --blora-info: #365D78; --blora-info-soft: #728DA0; --blora-success: #39745F; --blora-success-soft: #78A18F; --blora-support: #6D946F; --blora-warning: #B08A55; --blora-accent-secondary: #C49C6D;
 }
 :root[data-blora-palette="graphite"] {
-  --blora-paper: #F6F7F8; --blora-paper-warm: #F2F3F4; --blora-paper-cool: #F4F6F8; --blora-paper-deep: #E2E5E9;
+  --blora-background: #F6F7F8;
   --blora-surface-1: #FFFFFF; --blora-surface-2: #F0F2F4; --blora-surface-3: #E3E6EA;
-  --blora-ink: #171A1F; --blora-ink-deep: #242830; --blora-ink-mid: #414751; --blora-ink-light: #68707C; --blora-ink-mist: #9299A3; --blora-ink-faint: #B0B5BD; --blora-ink-ghost: #D3D7DC;
+  --blora-text-strong: #171A1F; --blora-foreground: #242830; --blora-text-emphasis: #414751; --blora-text-muted: #68707C; --blora-text-subtle: #9299A3; --blora-text-disabled: #B0B5BD; --blora-border-subtle: #D3D7DC;
   --blora-primary: #4F6578; --blora-primary-hover: #3D5060; --blora-primary-soft: #7C8E9E; --blora-danger: #9B5E63;
   --blora-accent-neutral: #646B75; --blora-accent-neutral-soft: #9197A0; --blora-info: #596A86; --blora-info-soft: #8491A5; --blora-success: #5B756B; --blora-success-soft: #879C94; --blora-support: #6D7C87; --blora-warning: #806C4F; --blora-accent-secondary: #7B6F78;
   --blora-on-accent: #FFFFFF; --blora-overlay-modal: rgba(23,26,31,0.52); --blora-overlay-drawer: rgba(23,26,31,0.46);
   --blora-code-bg: #171A1F; --blora-code-fg: #F7F8FA; --blora-banner-bg: #242830; --blora-tooltip-bg: #171A1F;
 }
 :root[data-blora-palette="mono"] {
-  --blora-paper: #FAFAF9; --blora-paper-warm: #F5F5F3; --blora-paper-cool: #F8F8F7; --blora-paper-deep: #E7E7E4;
+  --blora-background: #FAFAF9;
   --blora-surface-1: #FFFFFF; --blora-surface-2: #F3F3F1; --blora-surface-3: #E8E8E5;
-  --blora-ink: #111110; --blora-ink-deep: #20201E; --blora-ink-mid: #454542; --blora-ink-light: #6F6F69; --blora-ink-mist: #989891; --blora-ink-faint: #B7B7B0; --blora-ink-ghost: #D8D8D3;
+  --blora-text-strong: #111110; --blora-foreground: #20201E; --blora-text-emphasis: #454542; --blora-text-muted: #6F6F69; --blora-text-subtle: #989891; --blora-text-disabled: #B7B7B0; --blora-border-subtle: #D8D8D3;
   --blora-primary: #34363A; --blora-primary-hover: #1C1E21; --blora-primary-soft: #686B70; --blora-danger: #815C60;
   --blora-accent-neutral: #66676A; --blora-accent-neutral-soft: #96979A; --blora-info: #5E6672; --blora-info-soft: #8B9199; --blora-success: #616D67; --blora-success-soft: #8C9590; --blora-support: #727976; --blora-warning: #756A58; --blora-accent-secondary: #75686C;
   --blora-on-accent: #FFFFFF; --blora-code-bg: #171716; --blora-code-fg: #FAFAF9; --blora-banner-bg: #20201E; --blora-tooltip-bg: #171716;
 }
 :root[data-blora-palette="circuit"] {
-  --blora-paper: #F4F5F5; --blora-paper-warm: #EFF0F0; --blora-paper-cool: #F2F4F4; --blora-paper-deep: #DDE0E0;
+  --blora-background: #F4F5F5;
   --blora-surface-1: #FFFFFF; --blora-surface-2: #ECEEEE; --blora-surface-3: #DDE1E1;
-  --blora-ink: #161A1A; --blora-ink-deep: #252A2A; --blora-ink-mid: #414848; --blora-ink-light: #687171; --blora-ink-mist: #929A9A; --blora-ink-faint: #AFB6B6; --blora-ink-ghost: #CDD2D2;
+  --blora-text-strong: #161A1A; --blora-foreground: #252A2A; --blora-text-emphasis: #414848; --blora-text-muted: #687171; --blora-text-subtle: #929A9A; --blora-text-disabled: #AFB6B6; --blora-border-subtle: #CDD2D2;
   --blora-primary: #3E6C70; --blora-primary-hover: #2F5659; --blora-primary-soft: #6D9294; --blora-danger: #995D61;
   --blora-accent-neutral: #626C73; --blora-accent-neutral-soft: #90989E; --blora-info: #536D7D; --blora-info-soft: #8295A0; --blora-success: #4F7368; --blora-success-soft: #7F9A91; --blora-support: #647C7C; --blora-warning: #7D6C52; --blora-accent-secondary: #716B7B;
   --blora-on-accent: #FFFFFF; --blora-code-bg: #161A1A; --blora-code-fg: #F4F5F5; --blora-banner-bg: #252A2A; --blora-tooltip-bg: #161A1A;
 }
 :root[data-blora-palette="coral"] {
-  --blora-paper: #FAF7F8; --blora-paper-warm: #F8F1F2; --blora-paper-cool: #F6F5F7; --blora-paper-deep: #E9DFE2;
+  --blora-background: #FAF7F8;
   --blora-surface-1: #FFFCFD; --blora-surface-2: #F4ECEE; --blora-surface-3: #E9DEE1;
-  --blora-ink: #303143; --blora-ink-deep: #3D3E50; --blora-ink-mid: #555565; --blora-ink-light: #74717C; --blora-ink-mist: #9B959D; --blora-ink-faint: #B9B2B8; --blora-ink-ghost: #D9D2D6;
+  --blora-text-strong: #303143; --blora-foreground: #3D3E50; --blora-text-emphasis: #555565; --blora-text-muted: #74717C; --blora-text-subtle: #9B959D; --blora-text-disabled: #B9B2B8; --blora-border-subtle: #D9D2D6;
   --blora-primary: #9F5964; --blora-primary-hover: #80464F; --blora-primary-soft: #C07E86; --blora-danger: #9E5559;
   --blora-accent-neutral: #6E6975; --blora-accent-neutral-soft: #9A95A0; --blora-info: #5D6680; --blora-info-soft: #888FA5; --blora-success: #5B756B; --blora-success-soft: #879C94; --blora-support: #687C7B; --blora-warning: #806C4F; --blora-accent-secondary: #8B6571;
   --blora-on-accent: #FFFFFF; --blora-overlay-modal: rgba(48,49,67,0.52); --blora-overlay-drawer: rgba(48,49,67,0.46);
   --blora-code-bg: #303143; --blora-code-fg: #FAF7F8; --blora-banner-bg: #3D3E50; --blora-tooltip-bg: #303143;
 }
-:root:not([data-blora-palette]),
 :root[data-blora-palette="dusk"] {
-  --blora-paper: #F7F6F8; --blora-paper-warm: #F3F1F4; --blora-paper-cool: #F5F5F7; --blora-paper-deep: #E5E2E7;
+  --blora-background: #F7F6F8;
   --blora-surface-1: #FFFFFF; --blora-surface-2: #F0EEF2; --blora-surface-3: #E4E1E7;
-  --blora-ink: #1D1B20; --blora-ink-deep: #2C2930; --blora-ink-mid: #4B4750; --blora-ink-light: #716C76; --blora-ink-mist: #9A949F; --blora-ink-faint: #B7B1BB; --blora-ink-ghost: #D6D1D9;
+  --blora-text-strong: #1D1B20; --blora-foreground: #2C2930; --blora-text-emphasis: #4B4750; --blora-text-muted: #716C76; --blora-text-subtle: #9A949F; --blora-text-disabled: #B7B1BB; --blora-border-subtle: #D6D1D9;
   --blora-primary: #675F78; --blora-primary-hover: #514A61; --blora-primary-soft: #8D869B; --blora-danger: #995F68;
   --blora-accent-neutral: #6D6977; --blora-accent-neutral-soft: #9692A0; --blora-info: #586A83; --blora-info-soft: #8492A6; --blora-success: #5D746C; --blora-success-soft: #899D96; --blora-support: #70807C; --blora-warning: #806C4F; --blora-accent-secondary: #7E6B7A;
   --blora-on-accent: #FFFFFF; --blora-code-bg: #1D1B20; --blora-code-fg: #F7F6F8; --blora-banner-bg: #2C2930; --blora-tooltip-bg: #1D1B20;
@@ -250,7 +240,7 @@
   font-family: var(--blora-font-sans);
   font-size: var(--blora-text-base);
   line-height: var(--blora-leading-normal);
-  color: var(--blora-ink-deep);
+  color: var(--blora-foreground);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -263,9 +253,9 @@ body.blora-page {
   font-family: var(--blora-font-sans);
   font-size: var(--blora-text-base);
   line-height: var(--blora-leading-normal);
-  color: var(--blora-ink-deep);
-  background-color: var(--blora-paper);
-  background-image: var(--blora-grain), var(--blora-paper-tint);
+  color: var(--blora-foreground);
+  background-color: var(--blora-background);
+  background-image: var(--blora-background-texture), var(--blora-background-overlay);
   background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -283,10 +273,10 @@ body.blora-page {
 :where(body.blora-page, .blora-scope) h3,
 :where(body.blora-page, .blora-scope) h4,
 :where(body.blora-page, .blora-scope) h5,
-:where(body.blora-page, .blora-scope) h6 { margin: 0; font-weight: 600; color: var(--blora-ink); }
+:where(body.blora-page, .blora-scope) h6 { margin: 0; font-weight: 600; color: var(--blora-text-strong); }
 :where(body.blora-page, .blora-scope) p { margin: 0; }
-:where(body.blora-page, .blora-scope) a { color: var(--blora-seal); text-decoration: none; transition: color var(--blora-dur-fast) var(--blora-ease); }
-:where(body.blora-page, .blora-scope) a:hover { color: var(--blora-seal-deep); }
+:where(body.blora-page, .blora-scope) a { color: var(--blora-primary); text-decoration: none; transition: color var(--blora-dur-fast) var(--blora-ease); }
+:where(body.blora-page, .blora-scope) a:hover { color: var(--blora-primary-hover); }
 :where(body.blora-page, .blora-scope) button,
 :where(body.blora-page, .blora-scope) input,
 :where(body.blora-page, .blora-scope) textarea,
@@ -300,68 +290,45 @@ body.blora-page {
 :where(body.blora-page, .blora-scope) img { height: auto; }
 :where(body.blora-page, .blora-scope) :focus-visible,
 [class^="blora-"]:focus-visible,
-[class*=" blora-"]:focus-visible { outline: 2px solid var(--blora-seal); outline-offset: 2px; }
+[class*=" blora-"]:focus-visible { outline: 2px solid var(--blora-primary); outline-offset: 2px; }
 
 /* =========================================================================
    3. 排版 · Typography
    ========================================================================= */
 .blora-h1, .blora-h2, .blora-h3, .blora-h4 {
-  font-family: var(--blora-font-serif);
+  font-family: var(--blora-font-heading);
   font-weight: 600;
   letter-spacing: var(--blora-tracking-tight);
-  color: var(--blora-ink);
+  color: var(--blora-text-strong);
   line-height: var(--blora-leading-tight);
 }
-.blora-h1 { font-size: var(--blora-text-4xl); letter-spacing: -0.02em; }
+.blora-h1 { font-size: var(--blora-text-4xl); letter-spacing: 0; }
 .blora-h2 { font-size: var(--blora-text-3xl); }
 .blora-h3 { font-size: var(--blora-text-2xl); }
 .blora-h4 { font-size: var(--blora-text-xl); }
-.blora-text-lead { font-size: var(--blora-text-lg); color: var(--blora-ink-light); line-height: var(--blora-leading-loose); }
-.blora-text-muted { color: var(--blora-ink-light); }
-.blora-text-faint { color: var(--blora-ink-mist); }
-.blora-text-seal  { color: var(--blora-seal); }
+.blora-text-lead { font-size: var(--blora-text-lg); color: var(--blora-text-muted); line-height: var(--blora-leading-loose); }
+.blora-text-muted { color: var(--blora-text-muted); }
+.blora-text-faint { color: var(--blora-text-subtle); }
+.blora-text-primary  { color: var(--blora-primary); }
 .blora-text-mono  { font-family: var(--blora-font-mono); font-size: 0.92em; }
 .blora-text-caps  { text-transform: uppercase; letter-spacing: var(--blora-tracking-caps); font-size: var(--blora-text-xs); font-weight: 600; }
-.blora-text-brush { font-family: var(--blora-font-brush); }
-
 .blora-prose { max-width: 68ch; }
-.blora-prose p { margin-bottom: var(--blora-space-4); color: var(--blora-ink-mid); }
+.blora-prose p { margin-bottom: var(--blora-space-4); color: var(--blora-text-emphasis); }
 .blora-prose p:last-child { margin-bottom: 0; }
-
-/* —— 飞白分隔 · Brush Divider —— 自淡至浓再至淡的渐变线，中央落一主色圆点 */
-.blora-brush {
-  position: relative;
-  height: 1px;
-  background: linear-gradient(90deg,
-    transparent 0%,
-    var(--blora-ink-ghost) 15%,
-    var(--blora-ink-mist) 50%,
-    var(--blora-ink-ghost) 85%,
-    transparent 100%);
-  border: none;
-  margin: var(--blora-space-6) 0;
-}
-.blora-brush::after {
-  content: ""; position: absolute;
-  left: 50%; top: 50%; transform: translate(-50%, -50%);
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--blora-seal);
-  box-shadow: 0 0 0 4px var(--blora-paper);
-}
 
 /* —— 引文 · Blockquote —— */
 .blora-quote {
   margin: var(--blora-space-5) 0;
   padding: var(--blora-space-4) var(--blora-space-6);
-  border-left: 3px solid var(--blora-seal);
+  border-left: 3px solid var(--blora-primary);
   background: var(--blora-surface-2);
   border-radius: 0 var(--blora-radius-md) var(--blora-radius-md) 0;
-  font-family: var(--blora-font-serif);
+  font-family: var(--blora-font-heading);
   font-size: var(--blora-text-lg);
-  color: var(--blora-ink-mid);
+  color: var(--blora-text-emphasis);
   line-height: var(--blora-leading-loose);
 }
-.blora-quote cite { display: block; margin-top: var(--blora-space-3); font-size: var(--blora-text-sm); font-style: normal; color: var(--blora-ink-mist); font-family: var(--blora-font-sans); }
+.blora-quote cite { display: block; margin-top: var(--blora-space-3); font-size: var(--blora-text-sm); font-style: normal; color: var(--blora-text-subtle); font-family: var(--blora-font-sans); }
 
 /* —— 行内代码 · Inline Code —— */
 .blora-code {
@@ -369,17 +336,17 @@ body.blora-page {
   font-size: 0.88em;
   padding: 0.15em 0.45em;
   background: var(--blora-surface-3);
-  color: var(--blora-seal-deep);
+  color: var(--blora-primary-hover);
   border-radius: var(--blora-radius-sm);
-  border: 1px solid var(--blora-ink-ghost);
+  border: 1px solid var(--blora-border-subtle);
 }
 
 /* —— 代码块 · Code Block —— */
 .blora-pre {
   margin: var(--blora-space-4) 0;
   padding: var(--blora-space-5);
-  background: var(--blora-ink);
-  color: var(--blora-paper-warm);
+  background: var(--blora-code-bg);
+  color: var(--blora-code-fg);
   border-radius: var(--blora-radius-lg);
   font-family: var(--blora-font-mono);
   font-size: var(--blora-text-sm);
@@ -391,8 +358,8 @@ body.blora-page {
 .blora-pre::before {
   content: ""; position: absolute; top: var(--blora-space-3); right: var(--blora-space-4);
   width: 8px; height: 8px; border-radius: 50%;
-  background: var(--blora-seal-soft);
-  box-shadow: -14px 0 0 var(--blora-tea-light), -28px 0 0 var(--blora-moss-light);
+  background: var(--blora-primary-soft);
+  box-shadow: -14px 0 0 var(--blora-accent-neutral-soft), -28px 0 0 var(--blora-success-soft);
   opacity: 0.5;
 }
 .blora-pre code { font-family: inherit; color: inherit; background: none; padding: 0; }
@@ -435,8 +402,8 @@ body.blora-page {
 .blora-card--hover:hover { box-shadow: var(--blora-shadow-3); transform: translateY(-2px); }
 .blora-card--flat { box-shadow: none; }
 .blora-card--inset { background: var(--blora-surface-2); box-shadow: var(--blora-shadow-inset); }
-.blora-card__title { font-family: var(--blora-font-serif); font-size: var(--blora-text-lg); color: var(--blora-ink); margin-bottom: var(--blora-space-2); }
-.blora-card__body { color: var(--blora-ink-mid); }
+.blora-card__title { font-family: var(--blora-font-heading); font-size: var(--blora-text-lg); color: var(--blora-text-strong); margin-bottom: var(--blora-space-2); }
+.blora-card__body { color: var(--blora-text-emphasis); }
 .blora-card__foot { margin-top: var(--blora-space-5); padding-top: var(--blora-space-4); border-top: var(--blora-border); }
 .blora-card__badge { position: absolute; top: var(--blora-space-4); right: var(--blora-space-4); }
 .blora-card--relative { position: relative; }
@@ -456,19 +423,19 @@ body.blora-page {
 .blora-spacer { flex: 1; }
 
 /* —— 分隔 · Divider —— */
-.blora-divider { height: 1px; background: var(--blora-ink-ghost); border: none; margin: var(--blora-space-5) 0; }
-.blora-divider--vert { width: 1px; height: auto; align-self: stretch; margin: 0 var(--blora-space-3); background: var(--blora-ink-ghost); }
-.blora-divider--dashed { background: none; border-top: 1px dashed var(--blora-ink-mist); }
-.blora-divider--text { display: flex; align-items: center; gap: var(--blora-space-3); background: none; height: auto; color: var(--blora-ink-mist); font-size: var(--blora-text-sm); }
-.blora-divider--text::before, .blora-divider--text::after { content: ""; flex: 1; height: 1px; background: var(--blora-ink-ghost); }
+.blora-divider { height: 1px; background: var(--blora-border-subtle); border: none; margin: var(--blora-space-5) 0; }
+.blora-divider--vert { width: 1px; height: auto; align-self: stretch; margin: 0 var(--blora-space-3); background: var(--blora-border-subtle); }
+.blora-divider--dashed { background: none; border-top: 1px dashed var(--blora-text-subtle); }
+.blora-divider--text { display: flex; align-items: center; gap: var(--blora-space-3); background: none; height: auto; color: var(--blora-text-subtle); font-size: var(--blora-text-sm); }
+.blora-divider--text::before, .blora-divider--text::after { content: ""; flex: 1; height: 1px; background: var(--blora-border-subtle); }
 
 /* =========================================================================
    5. 按钮 · Buttons
    ========================================================================= */
 .blora-btn {
   --btn-bg: var(--blora-surface-1);
-  --btn-fg: var(--blora-ink-deep);
-  --btn-bd: var(--blora-ink-ghost);
+  --btn-fg: var(--blora-foreground);
+  --btn-bd: var(--blora-border-subtle);
   display: inline-flex; align-items: center; justify-content: center; gap: var(--blora-space-2);
   padding: 0.55em 1.1em;
   font-family: var(--blora-font-sans);
@@ -493,22 +460,22 @@ body.blora-page {
 
 /* —— 主按钮：主色填充 —— */
 .blora-btn--primary {
-  --btn-bg: var(--blora-seal);
+  --btn-bg: var(--blora-primary);
   --btn-fg: var(--blora-on-accent);
-  --btn-bd: var(--blora-seal);
+  --btn-bd: var(--blora-primary);
   font-weight: 600;
-  box-shadow: var(--blora-shadow-seal);
+  box-shadow: var(--blora-shadow-primary);
 }
-.blora-btn--primary:hover { --btn-bg: var(--blora-seal-deep); --btn-bd: var(--blora-seal-deep); }
+.blora-btn--primary:hover { --btn-bg: var(--blora-primary-hover); --btn-bd: var(--blora-primary-hover); }
 
 /* —— 次按钮：深色 —— */
 .blora-btn--secondary {
-  --btn-bg: var(--blora-ink-deep);
+  --btn-bg: var(--blora-foreground);
   --btn-fg: var(--blora-on-accent);
-  --btn-bd: var(--blora-ink-deep);
+  --btn-bd: var(--blora-foreground);
   font-weight: 600;
 }
-.blora-btn--secondary:hover { --btn-bg: var(--blora-ink); --btn-bd: var(--blora-ink); }
+.blora-btn--secondary:hover { --btn-bg: var(--blora-text-strong); --btn-bd: var(--blora-text-strong); }
 
 /* —— 危险按钮：警示红 —— */
 .blora-btn--danger {
@@ -518,8 +485,8 @@ body.blora-page {
   font-weight: 600;
 }
 .blora-btn--danger:hover {
-  --btn-bg: color-mix(in srgb, var(--blora-danger) 85%, var(--blora-ink));
-  --btn-bd: color-mix(in srgb, var(--blora-danger) 85%, var(--blora-ink));
+  --btn-bg: color-mix(in srgb, var(--blora-danger) 85%, var(--blora-text-strong));
+  --btn-bd: color-mix(in srgb, var(--blora-danger) 85%, var(--blora-text-strong));
 }
 
 /* —— 幽灵按钮 —— */
@@ -527,18 +494,18 @@ body.blora-page {
 .blora-btn--ghost:hover { --btn-bg: var(--blora-surface-2); box-shadow: none; transform: none; }
 
 /* —— 描边按钮 —— */
-.blora-btn--outline { --btn-bg: transparent; --btn-bd: var(--blora-ink-mist); }
-.blora-btn--outline:hover { --btn-bd: var(--blora-ink-mid); --btn-bg: var(--blora-surface-2); }
+.blora-btn--outline { --btn-bg: transparent; --btn-bd: var(--blora-text-subtle); }
+.blora-btn--outline:hover { --btn-bd: var(--blora-text-emphasis); --btn-bg: var(--blora-surface-2); }
 
 /* —— 文字按钮 —— */
-.blora-btn--text { --btn-bg: transparent; --btn-bd: transparent; color: var(--blora-seal); padding-inline: 0.4em; }
-.blora-btn--text:hover { color: var(--blora-seal-deep); background: none; box-shadow: none; transform: none; text-decoration: underline; text-underline-offset: 4px; }
+.blora-btn--text { --btn-bg: transparent; --btn-bd: transparent; color: var(--blora-primary); padding-inline: 0.4em; }
+.blora-btn--text:hover { color: var(--blora-primary-hover); background: none; box-shadow: none; transform: none; text-decoration: underline; text-underline-offset: 4px; }
 
 /* —— 尺寸 —— */
 .blora-btn--xs { font-size: var(--blora-text-xs); padding: 0.3em 0.7em; }
 .blora-btn--sm { font-size: var(--blora-text-sm); padding: 0.4em 0.9em; }
 .blora-btn--lg { font-size: var(--blora-text-lg); padding: 0.7em 1.4em; }
-.blora-btn--xl { font-size: var(--blora-text-xl); padding: 0.8em 1.6em; font-family: var(--blora-font-serif); }
+.blora-btn--xl { font-size: var(--blora-text-xl); padding: 0.8em 1.6em; font-family: var(--blora-font-heading); }
 
 /* —— 图标按钮 —— */
 .blora-btn--icon { padding: 0.55em; aspect-ratio: 1; }
@@ -549,9 +516,9 @@ body.blora-page {
 .blora-fab {
   position: fixed; right: var(--blora-space-7); bottom: var(--blora-space-7);
   width: 56px; height: 56px; border-radius: 50%;
-  background: var(--blora-seal); color: var(--blora-on-accent);
+  background: var(--blora-primary); color: var(--blora-on-accent);
   display: grid; place-items: center;
-  box-shadow: var(--blora-shadow-4), var(--blora-shadow-seal);
+  box-shadow: var(--blora-shadow-4), var(--blora-shadow-primary);
   z-index: var(--blora-z-sticky);
   transition: transform var(--blora-dur-base) var(--blora-ease-overshoot),
               opacity var(--blora-dur-base) var(--blora-ease);
@@ -580,37 +547,37 @@ body.blora-page {
    6. 表单 · Forms
    ========================================================================= */
 .blora-field { display: flex; flex-direction: column; gap: var(--blora-space-2); margin-bottom: var(--blora-space-5); }
-.blora-label { font-size: var(--blora-text-sm); font-weight: 500; color: var(--blora-ink-mid); }
+.blora-label { font-size: var(--blora-text-sm); font-weight: 500; color: var(--blora-text-emphasis); }
 .blora-label--req::after { content: " *"; color: var(--blora-danger); }
-.blora-hint { font-size: var(--blora-text-xs); color: var(--blora-ink-light); }
+.blora-hint { font-size: var(--blora-text-xs); color: var(--blora-text-muted); }
 .blora-error { font-size: var(--blora-text-xs); color: var(--blora-danger); }
 
 .blora-input, .blora-textarea, .blora-select {
   width: 100%;
   padding: 0.6em 0.85em;
   font-size: var(--blora-text-sm);
-  color: var(--blora-ink-deep);
+  color: var(--blora-foreground);
   background: var(--blora-surface-1);
-  border: 1px solid var(--blora-ink-ghost);
+  border: 1px solid var(--blora-border-subtle);
   border-radius: var(--blora-radius-md);
   transition: border-color var(--blora-dur-fast) var(--blora-ease),
               box-shadow var(--blora-dur-fast) var(--blora-ease),
               background var(--blora-dur-fast) var(--blora-ease);
   font-family: var(--blora-font-sans);
 }
-.blora-input::placeholder, .blora-textarea::placeholder { color: var(--blora-ink-faint); }
+.blora-input::placeholder, .blora-textarea::placeholder { color: var(--blora-text-disabled); }
 /* —— 隐藏 number input 浏览器原生上下按钮（用自定义 .blora-number 替代）—— */
 .blora-input[type="number"]::-webkit-inner-spin-button,
 .blora-input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 .blora-input[type="number"] { -moz-appearance: textfield; }
-.blora-input:hover, .blora-textarea:hover, .blora-select:hover { border-color: var(--blora-ink-mist); }
+.blora-input:hover, .blora-textarea:hover, .blora-select:hover { border-color: var(--blora-text-subtle); }
 .blora-input:focus, .blora-textarea:focus, .blora-select:focus {
-  outline: none; border-color: var(--blora-seal);
+  outline: none; border-color: var(--blora-primary);
   box-shadow: var(--blora-focus-ring);
   background: var(--blora-surface-1);
 }
 .blora-input:disabled, .blora-textarea:disabled, .blora-select:disabled {
-  background: var(--blora-surface-3); color: var(--blora-ink-faint); cursor: not-allowed;
+  background: var(--blora-surface-3); color: var(--blora-text-disabled); cursor: not-allowed;
 }
 .blora-input.is-error, .blora-textarea.is-error { border-color: var(--blora-danger); }
 .blora-input.is-error:focus { box-shadow: 0 0 0 3px color-mix(in srgb, var(--blora-danger) 18%, transparent); }
@@ -631,7 +598,7 @@ body.blora-page {
   z-index: 2;
   display: none;
   padding: 0.6em 0 0.6em 0.85em;
-  color: var(--blora-ink-deep);
+  color: var(--blora-foreground);
   font-family: var(--blora-font-sans);
   font-size: var(--blora-text-sm);
   line-height: var(--blora-leading-normal);
@@ -654,7 +621,7 @@ body.blora-page {
   right: 0.85em;
   z-index: 4;
   transform: translateY(-50%);
-  color: var(--blora-ink-mist);
+  color: var(--blora-text-subtle);
   background: var(--blora-surface-1);
   font-family: var(--blora-font-mono);
   font-size: var(--blora-text-xs);
@@ -667,11 +634,11 @@ body.blora-page {
 .blora-limit.is-over-limit > .blora-textarea {
   color: transparent;
   -webkit-text-fill-color: transparent;
-  caret-color: var(--blora-ink-deep);
+  caret-color: var(--blora-foreground);
 }
 .blora-limit.is-over-limit > .blora-input::placeholder,
 .blora-limit.is-over-limit > .blora-textarea::placeholder {
-  -webkit-text-fill-color: var(--blora-ink-faint);
+  -webkit-text-fill-color: var(--blora-text-disabled);
 }
 .blora-limit.is-over-limit .blora-limit__mirror {
   display: block;
@@ -707,8 +674,8 @@ body.blora-page {
 .blora-input-group .blora-input:last-child  { border-radius: 0 var(--blora-radius-md) var(--blora-radius-md) 0; }
 .blora-input-group .blora-addon {
   display: inline-flex; align-items: center; padding: 0 0.85em;
-  background: var(--blora-surface-3); color: var(--blora-ink-light);
-  border: 1px solid var(--blora-ink-ghost); font-size: var(--blora-text-sm);
+  background: var(--blora-surface-3); color: var(--blora-text-muted);
+  border: 1px solid var(--blora-border-subtle); font-size: var(--blora-text-sm);
 }
 .blora-input-group .blora-addon:first-child { border-radius: var(--blora-radius-md) 0 0 var(--blora-radius-md); border-right: none; }
 .blora-input-group .blora-addon:last-child  { border-radius: 0 var(--blora-radius-md) var(--blora-radius-md) 0; border-left: none; }
@@ -716,16 +683,16 @@ body.blora-page {
 /* —— 搜索框 —— */
 .blora-search { position: relative; }
 .blora-search .blora-input { padding-left: 2.4em; }
-.blora-search__icon { position: absolute; left: 0.85em; top: 50%; transform: translateY(-50%); color: var(--blora-ink-mist); pointer-events: none; }
-.blora-search__clear { position: absolute; right: 0.6em; top: 50%; transform: translateY(-50%); color: var(--blora-ink-mist); padding: 0.25em; border-radius: 50%; }
-.blora-search__clear:hover { color: var(--blora-ink); background: var(--blora-surface-3); }
+.blora-search__icon { position: absolute; left: 0.85em; top: 50%; transform: translateY(-50%); color: var(--blora-text-subtle); pointer-events: none; }
+.blora-search__clear { position: absolute; right: 0.6em; top: 50%; transform: translateY(-50%); color: var(--blora-text-subtle); padding: 0.25em; border-radius: 50%; }
+.blora-search__clear:hover { color: var(--blora-text-strong); background: var(--blora-surface-3); }
 
 /* —— 选择框 —— */
 .blora-select {
   appearance: none; -webkit-appearance: none;
   background-image:
-    linear-gradient(45deg, transparent 50%, var(--blora-ink-light) 50%),
-    linear-gradient(135deg, var(--blora-ink-light) 50%, transparent 50%);
+    linear-gradient(45deg, transparent 50%, var(--blora-text-muted) 50%),
+    linear-gradient(135deg, var(--blora-text-muted) 50%, transparent 50%);
   background-repeat: no-repeat;
   background-position: calc(100% - 1.05em) 50%, calc(100% - 0.72em) 50%;
   background-size: 0.36em 0.36em, 0.36em 0.36em;
@@ -738,22 +705,22 @@ body.blora-page {
 .blora-select-wrap .blora-select { display: none; }
 .blora-select-trigger {
   width: 100%; padding: 0.6em 2.4em 0.6em 0.85em;
-  font-size: var(--blora-text-sm); color: var(--blora-ink-deep);
-  background: var(--blora-surface-1); border: 1px solid var(--blora-ink-ghost);
+  font-size: var(--blora-text-sm); color: var(--blora-foreground);
+  background: var(--blora-surface-1); border: 1px solid var(--blora-border-subtle);
   border-radius: var(--blora-radius-md); cursor: pointer; position: relative;
   transition: all var(--blora-dur-fast) var(--blora-ease);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.blora-select-trigger:hover { border-color: var(--blora-ink-mist); }
-.blora-select-trigger.is-open { border-color: var(--blora-seal); box-shadow: var(--blora-focus-ring); }
+.blora-select-trigger:hover { border-color: var(--blora-text-subtle); }
+.blora-select-trigger.is-open { border-color: var(--blora-primary); box-shadow: var(--blora-focus-ring); }
 .blora-select-trigger::after {
   content: ""; position: absolute; right: 0.85em; top: 50%;
   width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent;
-  border-top: 5px solid var(--blora-ink-mist); transform: translateY(-50%);
+  border-top: 5px solid var(--blora-text-subtle); transform: translateY(-50%);
   transition: transform var(--blora-dur-fast) var(--blora-ease);
 }
 .blora-select-trigger.is-open::after { transform: translateY(-50%) rotate(180deg); }
-.blora-select-trigger.is-placeholder { color: var(--blora-ink-faint); }
+.blora-select-trigger.is-placeholder { color: var(--blora-text-disabled); }
 .blora-select-menu {
   position: absolute; top: calc(100% + 4px); left: 0; right: 0;
   max-height: 240px; overflow-y: auto;
@@ -765,29 +732,29 @@ body.blora-page {
 }
 .blora-select-menu.is-open { opacity: 1; pointer-events: auto; transform: translateY(0); }
 .blora-select-option {
-  padding: 0.5em 0.8em; font-size: var(--blora-text-sm); color: var(--blora-ink-mid);
+  padding: 0.5em 0.8em; font-size: var(--blora-text-sm); color: var(--blora-text-emphasis);
   border-radius: var(--blora-radius-sm); cursor: pointer; white-space: nowrap;
   transition: all var(--blora-dur-fast) var(--blora-ease);
 }
-.blora-select-option:hover, .blora-select-option.is-active { background: var(--blora-surface-2); color: var(--blora-ink); }
-.blora-select-option.is-selected { background: var(--blora-seal-tint); color: var(--blora-seal); font-weight: 500; }
-.blora-select-option.is-disabled { color: var(--blora-ink-faint); cursor: not-allowed; }
+.blora-select-option:hover, .blora-select-option.is-active { background: var(--blora-surface-2); color: var(--blora-text-strong); }
+.blora-select-option.is-selected { background: var(--blora-primary-tint); color: var(--blora-primary); font-weight: 500; }
+.blora-select-option.is-disabled { color: var(--blora-text-disabled); cursor: not-allowed; }
 .blora-select-option.is-disabled:hover { background: none; }
 
 /* —— 数字输入 —— */
 .blora-number { position: relative; display: inline-flex; align-items: stretch; width: 100%; }
 .blora-number .blora-input { padding-right: 0.85em; width: auto; flex: 1; min-width: 0; border-radius: var(--blora-radius-md) 0 0 var(--blora-radius-md); }
-.blora-number__ctrl { display: flex; flex-direction: column; width: 2em; flex: none; border: 1px solid var(--blora-ink-ghost); border-left: none; border-radius: 0 var(--blora-radius-md) var(--blora-radius-md) 0; overflow: hidden; }
-.blora-number__btn { flex: 1; display: grid; place-items: center; color: var(--blora-ink-light); background: var(--blora-surface-1); transition: all var(--blora-dur-fast) var(--blora-ease); }
-.blora-number__btn:first-child { border-bottom: 1px solid var(--blora-ink-ghost); }
-.blora-number__btn:hover { background: var(--blora-surface-2); color: var(--blora-ink); }
+.blora-number__ctrl { display: flex; flex-direction: column; width: 2em; flex: none; border: 1px solid var(--blora-border-subtle); border-left: none; border-radius: 0 var(--blora-radius-md) var(--blora-radius-md) 0; overflow: hidden; }
+.blora-number__btn { flex: 1; display: grid; place-items: center; color: var(--blora-text-muted); background: var(--blora-surface-1); transition: all var(--blora-dur-fast) var(--blora-ease); }
+.blora-number__btn:first-child { border-bottom: 1px solid var(--blora-border-subtle); }
+.blora-number__btn:hover { background: var(--blora-surface-2); color: var(--blora-text-strong); }
 
 /* —— 复选框 —— */
-.blora-checkbox { display: inline-flex; align-items: center; gap: var(--blora-space-2); cursor: pointer; user-select: none; font-size: var(--blora-text-sm); color: var(--blora-ink-mid); }
+.blora-checkbox { display: inline-flex; align-items: center; gap: var(--blora-space-2); cursor: pointer; user-select: none; font-size: var(--blora-text-sm); color: var(--blora-text-emphasis); }
 .blora-checkbox > input { position: absolute; opacity: 0; pointer-events: none; }
 .blora-checkbox__box {
   width: 1.15em; height: 1.15em; flex: none;
-  border: 1.5px solid var(--blora-ink-mist); border-radius: var(--blora-radius-xs);
+  border: 1.5px solid var(--blora-text-subtle); border-radius: var(--blora-radius-xs);
   background: var(--blora-surface-1);
   display: grid; place-items: center;
   transition: all var(--blora-dur-fast) var(--blora-ease);
@@ -799,11 +766,11 @@ body.blora-page {
   border-width: 0 0 2px 2px;
   opacity: 0; transform: rotate(-45deg) scale(0.4); transition: all var(--blora-dur-fast) var(--blora-ease-overshoot);
 }
-.blora-checkbox > input:checked + .blora-checkbox__box { background: var(--blora-seal); border-color: var(--blora-seal); }
+.blora-checkbox > input:checked + .blora-checkbox__box { background: var(--blora-primary); border-color: var(--blora-primary); }
 .blora-checkbox > input:checked + .blora-checkbox__box::after { opacity: 1; transform: rotate(-45deg) scale(1); }
 .blora-checkbox > input:focus-visible + .blora-checkbox__box { box-shadow: var(--blora-focus-ring-strong); }
 .blora-checkbox > input:disabled + .blora-checkbox__box { opacity: 0.4; }
-.blora-checkbox.blora-checkbox--indeterminate > input + .blora-checkbox__box { background: var(--blora-seal); border-color: var(--blora-seal); }
+.blora-checkbox.blora-checkbox--indeterminate > input + .blora-checkbox__box { background: var(--blora-primary); border-color: var(--blora-primary); }
 .blora-checkbox.blora-checkbox--indeterminate > input + .blora-checkbox__box::after {
   position: absolute;
   top: 50%;
@@ -817,17 +784,17 @@ body.blora-page {
 }
 
 /* —— 单选框 —— */
-.blora-radio { display: inline-flex; align-items: center; gap: var(--blora-space-2); cursor: pointer; user-select: none; font-size: var(--blora-text-sm); color: var(--blora-ink-mid); }
+.blora-radio { display: inline-flex; align-items: center; gap: var(--blora-space-2); cursor: pointer; user-select: none; font-size: var(--blora-text-sm); color: var(--blora-text-emphasis); }
 .blora-radio > input { position: absolute; opacity: 0; pointer-events: none; }
 .blora-radio__dot {
   width: 1.15em; height: 1.15em; flex: none;
-  border: 1.5px solid var(--blora-ink-mist); border-radius: 50%;
+  border: 1.5px solid var(--blora-text-subtle); border-radius: 50%;
   background: var(--blora-surface-1);
   position: relative;
   transition: all var(--blora-dur-fast) var(--blora-ease);
 }
-.blora-radio__dot::after { content: ""; position: absolute; inset: 0; margin: auto; width: 0.4em; height: 0.4em; border-radius: 50%; background: var(--blora-seal); transform: scale(0); transition: transform var(--blora-dur-fast) var(--blora-ease-overshoot); }
-.blora-radio > input:checked + .blora-radio__dot { border-color: var(--blora-seal); }
+.blora-radio__dot::after { content: ""; position: absolute; inset: 0; margin: auto; width: 0.4em; height: 0.4em; border-radius: 50%; background: var(--blora-primary); transform: scale(0); transition: transform var(--blora-dur-fast) var(--blora-ease-overshoot); }
+.blora-radio > input:checked + .blora-radio__dot { border-color: var(--blora-primary); }
 .blora-radio > input:checked + .blora-radio__dot::after { transform: scale(1); }
 .blora-radio > input:focus-visible + .blora-radio__dot { box-shadow: var(--blora-focus-ring-strong); }
 .blora-radio > input:disabled + .blora-radio__dot { opacity: 0.4; }
@@ -841,7 +808,7 @@ body.blora-page {
   --switch-pad: 0.2em;
   --switch-knob: calc(var(--switch-h) - var(--switch-pad) * 2);
   width: var(--switch-w); height: var(--switch-h); flex: none;
-  background: var(--blora-surface-3); border: 1px solid var(--blora-ink-ghost);
+  background: var(--blora-surface-3); border: 1px solid var(--blora-border-subtle);
   border-radius: var(--blora-radius-full);
   position: relative; transition: all var(--blora-dur-base) var(--blora-ease);
 }
@@ -853,7 +820,7 @@ body.blora-page {
   transition: left var(--blora-dur-base) var(--blora-ease-overshoot),
               background var(--blora-dur-base) var(--blora-ease);
 }
-.blora-switch > input:checked + .blora-switch__track { background: var(--blora-seal); border-color: var(--blora-seal); }
+.blora-switch > input:checked + .blora-switch__track { background: var(--blora-primary); border-color: var(--blora-primary); }
 .blora-switch > input:focus-visible + .blora-switch__track { box-shadow: var(--blora-focus-ring-strong); }
 .blora-switch > input:checked + .blora-switch__track::after { left: calc(100% - var(--switch-pad) - var(--switch-knob)); background: var(--blora-on-accent); }
 .blora-switch--sm .blora-switch__track { --switch-w: 2.1em; --switch-h: 1.2em; --switch-pad: 0.16em; }
@@ -862,58 +829,58 @@ body.blora-page {
 
 /* —— 滑块 Slider —— */
 .blora-slider { display: flex; align-items: center; gap: var(--blora-space-3); }
-.blora-slider__input { -webkit-appearance: none; appearance: none; width: 100%; height: 4px; background: var(--blora-ink-ghost); border-radius: var(--blora-radius-full); outline: none; }
+.blora-slider__input { -webkit-appearance: none; appearance: none; width: 100%; height: 4px; background: var(--blora-border-subtle); border-radius: var(--blora-radius-full); outline: none; }
 .blora-slider__input::-webkit-slider-thumb {
   -webkit-appearance: none; appearance: none;
   width: 18px; height: 18px; border-radius: 50%;
-  background: var(--blora-seal); border: 2px solid var(--blora-on-accent);
+  background: var(--blora-primary); border: 2px solid var(--blora-on-accent);
   box-shadow: var(--blora-shadow-2); cursor: pointer;
   transition: transform var(--blora-dur-fast) var(--blora-ease-overshoot);
 }
 .blora-slider__input::-webkit-slider-thumb:hover { transform: scale(1.2); }
 .blora-slider__input::-moz-range-thumb {
   width: 18px; height: 18px; border-radius: 50%;
-  background: var(--blora-seal); border: 2px solid var(--blora-on-accent);
+  background: var(--blora-primary); border: 2px solid var(--blora-on-accent);
   box-shadow: var(--blora-shadow-2); cursor: pointer;
 }
-.blora-slider__value { font-family: var(--blora-font-mono); font-size: var(--blora-text-sm); color: var(--blora-ink-mid); min-width: 3ch; text-align: right; }
+.blora-slider__value { font-family: var(--blora-font-mono); font-size: var(--blora-text-sm); color: var(--blora-text-emphasis); min-width: 3ch; text-align: right; }
 /* —— 滑块悬浮提示 —— */
 .blora-slider__tip, .blora-range__tip {
   position: absolute; bottom: calc(100% + 6px); transform: translateX(-50%);
-  padding: 0.2em 0.5em; background: var(--blora-ink-deep); color: var(--blora-on-accent);
+  padding: 0.2em 0.5em; background: var(--blora-foreground); color: var(--blora-on-accent);
   font-family: var(--blora-font-mono); font-size: var(--blora-text-xs); border-radius: var(--blora-radius-sm);
   white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity var(--blora-dur-fast) var(--blora-ease);
   z-index: 10;
 }
 .blora-slider__tip::after, .blora-range__tip::after {
   content: ""; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
-  border: 4px solid transparent; border-top-color: var(--blora-ink-deep);
+  border: 4px solid transparent; border-top-color: var(--blora-foreground);
 }
 .blora-slider__tip.is-show, .blora-range__tip.is-show { opacity: 1; }
 
 /* —— 范围滑块 —— */
 .blora-range { position: relative; height: 24px; margin-bottom: 1.5em; }
-.blora-range__track { position: absolute; top: 50%; left: 0; right: 0; height: var(--blora-range-track-size); transform: translateY(-50%); background: var(--blora-ink-ghost); border-radius: var(--blora-radius-full); }
-.blora-range__fill  { position: absolute; top: 0; bottom: 0; background: var(--blora-seal); border-radius: var(--blora-radius-full); }
-.blora-range__thumb { position: absolute; top: 50%; width: var(--blora-range-thumb-size); height: var(--blora-range-thumb-size); transform: translate(-50%, -50%); border-radius: 50%; background: var(--blora-seal); border: 2px solid var(--blora-on-accent); box-shadow: var(--blora-shadow-2); cursor: grab; touch-action: none; }
+.blora-range__track { position: absolute; top: 50%; left: 0; right: 0; height: var(--blora-range-track-size); transform: translateY(-50%); background: var(--blora-border-subtle); border-radius: var(--blora-radius-full); }
+.blora-range__fill  { position: absolute; top: 0; bottom: 0; background: var(--blora-primary); border-radius: var(--blora-radius-full); }
+.blora-range__thumb { position: absolute; top: 50%; width: var(--blora-range-thumb-size); height: var(--blora-range-thumb-size); transform: translate(-50%, -50%); border-radius: 50%; background: var(--blora-primary); border: 2px solid var(--blora-on-accent); box-shadow: var(--blora-shadow-2); cursor: grab; touch-action: none; }
 .blora-range__thumb:active { cursor: grabbing; transform: translate(-50%, -50%) scale(1.15); }
 
 /* —— 评分 Rate —— */
 .blora-rate { display: inline-flex; gap: 0.2em; cursor: pointer; }
-.blora-rate__star { color: var(--blora-ink-ghost); transition: color var(--blora-dur-fast) var(--blora-ease), transform var(--blora-dur-fast) var(--blora-ease); font-size: 1.25em; }
-.blora-rate__star.is-on { color: var(--blora-gold); }
+.blora-rate__star { color: var(--blora-border-subtle); transition: color var(--blora-dur-fast) var(--blora-ease), transform var(--blora-dur-fast) var(--blora-ease); font-size: 1.25em; }
+.blora-rate__star.is-on { color: var(--blora-warning); }
 .blora-rate__star:hover { transform: scale(1.15); }
 
 /* —— 开关组 / 分段控件 Segmented —— */
 .blora-segmented { display: inline-flex; padding: 3px; background: var(--blora-surface-3); border-radius: var(--blora-radius-md); gap: 0; position: relative; }
 .blora-segmented__indicator { position: absolute; top: 3px; bottom: 3px; background: var(--blora-surface-1); border-radius: var(--blora-radius-sm); box-shadow: var(--blora-shadow-1); transition: left var(--blora-dur-base) var(--blora-ease), width var(--blora-dur-base) var(--blora-ease); pointer-events: none; z-index: 0; }
-.blora-segmented__item { padding: 0.4em 0.9em; font-size: var(--blora-text-sm); color: var(--blora-ink-light); border-radius: var(--blora-radius-sm); cursor: pointer; transition: color var(--blora-dur-base) var(--blora-ease); position: relative; z-index: 1; }
-.blora-segmented__item:hover { color: var(--blora-ink); }
-.blora-segmented__item.is-active { color: var(--blora-ink-deep); }
+.blora-segmented__item { padding: 0.4em 0.9em; font-size: var(--blora-text-sm); color: var(--blora-text-muted); border-radius: var(--blora-radius-sm); cursor: pointer; transition: color var(--blora-dur-base) var(--blora-ease); position: relative; z-index: 1; }
+.blora-segmented__item:hover { color: var(--blora-text-strong); }
+.blora-segmented__item.is-active { color: var(--blora-foreground); }
 
 /* —— 标签输入 Tags Input —— */
-.blora-tags-input { display: flex; flex-wrap: wrap; gap: var(--blora-space-2); padding: 0.4em 0.6em; min-height: 2.6em; background: var(--blora-surface-1); border: 1px solid var(--blora-ink-ghost); border-radius: var(--blora-radius-md); transition: all var(--blora-dur-fast) var(--blora-ease); }
-.blora-tags-input:focus-within { border-color: var(--blora-seal); box-shadow: var(--blora-focus-ring); }
+.blora-tags-input { display: flex; flex-wrap: wrap; gap: var(--blora-space-2); padding: 0.4em 0.6em; min-height: 2.6em; background: var(--blora-surface-1); border: 1px solid var(--blora-border-subtle); border-radius: var(--blora-radius-md); transition: all var(--blora-dur-fast) var(--blora-ease); }
+.blora-tags-input:focus-within { border-color: var(--blora-primary); box-shadow: var(--blora-focus-ring); }
 .blora-tags-input input { flex: 1; min-width: 8ch; border: none; outline: none; background: none; padding: 0.3em; font-size: var(--blora-text-sm); }
 
 /* —— 文件上传 —— */
@@ -921,24 +888,24 @@ body.blora-page {
 .blora-dropzone {
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--blora-space-2);
   padding: var(--blora-space-7); text-align: center;
-  background: var(--blora-surface-2); border: 1.5px dashed var(--blora-ink-mist); border-radius: var(--blora-radius-lg);
-  color: var(--blora-ink-light); cursor: pointer;
+  background: var(--blora-surface-2); border: 1.5px dashed var(--blora-text-subtle); border-radius: var(--blora-radius-lg);
+  color: var(--blora-text-muted); cursor: pointer;
   transition: all var(--blora-dur-base) var(--blora-ease);
 }
-.blora-dropzone:hover, .blora-dropzone.is-dragover { border-color: var(--blora-seal); color: var(--blora-seal); background: color-mix(in srgb, var(--blora-seal) 4%, transparent); }
-.blora-dropzone__icon { font-size: 2em; color: var(--blora-ink-mist); }
-.blora-dropzone:hover .blora-dropzone__icon { color: var(--blora-seal); }
+.blora-dropzone:hover, .blora-dropzone.is-dragover { border-color: var(--blora-primary); color: var(--blora-primary); background: color-mix(in srgb, var(--blora-primary) 4%, transparent); }
+.blora-dropzone__icon { font-size: 2em; color: var(--blora-text-subtle); }
+.blora-dropzone:hover .blora-dropzone__icon { color: var(--blora-primary); }
 
 /* —— OTP 验证码输入 —— */
 .blora-otp { display: inline-flex; gap: var(--blora-space-3); }
-.blora-otp__input { width: 2.5em; height: 3em; text-align: center; font-size: var(--blora-text-xl); font-family: var(--blora-font-mono); color: var(--blora-ink); background: var(--blora-surface-1); border: 1px solid var(--blora-ink-ghost); border-radius: var(--blora-radius-md); transition: all var(--blora-dur-fast) var(--blora-ease); }
-.blora-otp__input:focus { outline: none; border-color: var(--blora-seal); box-shadow: var(--blora-focus-ring); }
+.blora-otp__input { width: 2.5em; height: 3em; text-align: center; font-size: var(--blora-text-xl); font-family: var(--blora-font-mono); color: var(--blora-text-strong); background: var(--blora-surface-1); border: 1px solid var(--blora-border-subtle); border-radius: var(--blora-radius-md); transition: all var(--blora-dur-fast) var(--blora-ease); }
+.blora-otp__input:focus { outline: none; border-color: var(--blora-primary); box-shadow: var(--blora-focus-ring); }
 
 /* —— 颜色选择器 —— */
 /* —— 颜色选择器 · Custom Color Picker —— */
 .blora-color-picker { position: relative; display: inline-block; }
-.blora-color-swatch { width: 2.5em; height: 2.5em; border: 1px solid var(--blora-ink-ghost); border-radius: var(--blora-radius-md); cursor: pointer; transition: border-color var(--blora-dur-fast) var(--blora-ease), transform var(--blora-dur-fast) var(--blora-ease); }
-.blora-color-swatch:hover { border-color: var(--blora-ink-mist); transform: scale(1.05); }
+.blora-color-swatch { width: 2.5em; height: 2.5em; border: 1px solid var(--blora-border-subtle); border-radius: var(--blora-radius-md); cursor: pointer; transition: border-color var(--blora-dur-fast) var(--blora-ease), transform var(--blora-dur-fast) var(--blora-ease); }
+.blora-color-swatch:hover { border-color: var(--blora-text-subtle); transform: scale(1.05); }
 .blora-color-panel {
   position: absolute; top: calc(100% + 6px); left: 0; z-index: var(--blora-z-dropdown);
   background: var(--blora-surface-1); border: var(--blora-border); border-radius: var(--blora-radius-lg);
@@ -955,12 +922,12 @@ body.blora-page {
   position: relative; width: 100%; aspect-ratio: 5 / 3; margin-bottom: var(--blora-space-3);
   border-radius: var(--blora-radius-md); overflow: hidden; cursor: crosshair; touch-action: none;
   background: linear-gradient(to top, #000, transparent), linear-gradient(to right, #fff, transparent), hsl(var(--blora-color-hue) 100% 50%);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--blora-ink) 16%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--blora-text-strong) 16%, transparent);
 }
-.blora-color-spectrum:focus-visible { outline: 2px solid var(--blora-seal); outline-offset: 2px; }
+.blora-color-spectrum:focus-visible { outline: 2px solid var(--blora-primary); outline-offset: 2px; }
 .blora-color-spectrum__cursor {
-  position: absolute; width: 0.875rem; height: 0.875rem; border: 2px solid #fff; border-radius: 50%;
-  transform: translate(-50%, -50%); box-shadow: 0 0 0 1px rgba(0,0,0,0.72), var(--blora-shadow-1); pointer-events: none;
+  position: absolute; width: 0.875rem; height: 0.875rem; border: 2px solid var(--blora-on-media); border-radius: 50%;
+  transform: translate(-50%, -50%); box-shadow: 0 0 0 1px var(--blora-media-overlay-strong), var(--blora-shadow-1); pointer-events: none;
 }
 .blora-color-hue {
   display: block; width: 100%; height: 1.25rem; margin: 0 0 var(--blora-space-3); padding: 0;
@@ -969,11 +936,11 @@ body.blora-page {
 }
 .blora-color-hue::-webkit-slider-runnable-track { height: 0.75rem; background: transparent; border-radius: var(--blora-radius-full); }
 .blora-color-hue::-moz-range-track { height: 0.75rem; background: transparent; border-radius: var(--blora-radius-full); }
-.blora-color-hue::-webkit-slider-thumb { width: 1.125rem; height: 1.125rem; margin-top: -0.1875rem; border: 2px solid #fff; border-radius: 50%; background: hsl(var(--blora-color-hue) 100% 50%); box-shadow: 0 0 0 1px rgba(0,0,0,0.55), var(--blora-shadow-1); appearance: none; -webkit-appearance: none; }
-.blora-color-hue::-moz-range-thumb { width: 1.125rem; height: 1.125rem; border: 2px solid #fff; border-radius: 50%; background: hsl(var(--blora-color-hue) 100% 50%); box-shadow: 0 0 0 1px rgba(0,0,0,0.55), var(--blora-shadow-1); }
+.blora-color-hue::-webkit-slider-thumb { width: 1.125rem; height: 1.125rem; margin-top: -0.1875rem; border: 2px solid var(--blora-on-media); border-radius: 50%; background: hsl(var(--blora-color-hue) 100% 50%); box-shadow: 0 0 0 1px var(--blora-media-overlay-strong), var(--blora-shadow-1); appearance: none; -webkit-appearance: none; }
+.blora-color-hue::-moz-range-thumb { width: 1.125rem; height: 1.125rem; border: 2px solid var(--blora-on-media); border-radius: 50%; background: hsl(var(--blora-color-hue) 100% 50%); box-shadow: 0 0 0 1px var(--blora-media-overlay-strong), var(--blora-shadow-1); }
 .blora-color-custom { display: flex; align-items: center; gap: var(--blora-space-2); }
 .blora-color-custom input[type="text"] { flex: 1; min-width: 0; }
-.blora-color-preview { width: 2.25em; height: 2.25em; flex: none; border-radius: var(--blora-radius-sm); border: 1px solid var(--blora-ink-ghost); }
+.blora-color-preview { width: 2.25em; height: 2.25em; flex: none; border-radius: var(--blora-radius-sm); border: 1px solid var(--blora-border-subtle); }
 
 .blora-floating-mask {
   position: fixed;
@@ -992,10 +959,10 @@ body.blora-page {
 .blora-datepicker__btn {
   position: absolute; right: 0.5em; top: 50%; transform: translateY(-50%);
   width: 1.8em; height: 1.8em; display: grid; place-items: center;
-  color: var(--blora-ink-mist); border: none; background: none; cursor: pointer;
+  color: var(--blora-text-subtle); border: none; background: none; cursor: pointer;
   border-radius: var(--blora-radius-sm); transition: all var(--blora-dur-fast) var(--blora-ease);
 }
-.blora-datepicker__btn:hover { color: var(--blora-seal); background: var(--blora-surface-2); }
+.blora-datepicker__btn:hover { color: var(--blora-primary); background: var(--blora-surface-2); }
 .blora-datepicker__btn svg { display: block; }
 
 /* —— 日期选择面板 · Date Picker Panel —— */
@@ -1008,22 +975,22 @@ body.blora-page {
 }
 .blora-datepicker__panel.is-open { opacity: 1; pointer-events: auto; transform: translateY(0); }
 .blora-datepicker__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--blora-space-2); }
-.blora-datepicker__title { font-family: var(--blora-font-serif); font-size: var(--blora-text-base); color: var(--blora-ink); font-weight: 600; cursor: pointer; padding: 0.2em 0.5em; border-radius: var(--blora-radius-sm); transition: all var(--blora-dur-fast) var(--blora-ease); user-select: none; }
-.blora-datepicker__title:hover { background: var(--blora-surface-2); color: var(--blora-seal); }
-.blora-datepicker__nav { display: inline-flex; align-items: center; justify-content: center; width: 1.8em; height: 1.8em; border-radius: var(--blora-radius-sm); color: var(--blora-ink-mist); cursor: pointer; transition: all var(--blora-dur-fast) var(--blora-ease); border: none; background: none; }
-.blora-datepicker__nav:hover { background: var(--blora-surface-2); color: var(--blora-ink); }
+.blora-datepicker__title { font-family: var(--blora-font-heading); font-size: var(--blora-text-base); color: var(--blora-text-strong); font-weight: 600; cursor: pointer; padding: 0.2em 0.5em; border-radius: var(--blora-radius-sm); transition: all var(--blora-dur-fast) var(--blora-ease); user-select: none; }
+.blora-datepicker__title:hover { background: var(--blora-surface-2); color: var(--blora-primary); }
+.blora-datepicker__nav { display: inline-flex; align-items: center; justify-content: center; width: 1.8em; height: 1.8em; border-radius: var(--blora-radius-sm); color: var(--blora-text-subtle); cursor: pointer; transition: all var(--blora-dur-fast) var(--blora-ease); border: none; background: none; }
+.blora-datepicker__nav:hover { background: var(--blora-surface-2); color: var(--blora-text-strong); }
 .blora-datepicker__grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
-.blora-datepicker__dow { text-align: center; font-size: var(--blora-text-xs); color: var(--blora-ink-mist); padding: var(--blora-space-1) 0; }
-.blora-datepicker__cell { aspect-ratio: 1; display: grid; place-items: center; font-size: var(--blora-text-sm); color: var(--blora-ink-mid); border-radius: var(--blora-radius-sm); cursor: pointer; transition: all var(--blora-dur-fast) var(--blora-ease); position: relative; }
+.blora-datepicker__dow { text-align: center; font-size: var(--blora-text-xs); color: var(--blora-text-subtle); padding: var(--blora-space-1) 0; }
+.blora-datepicker__cell { aspect-ratio: 1; display: grid; place-items: center; font-size: var(--blora-text-sm); color: var(--blora-text-emphasis); border-radius: var(--blora-radius-sm); cursor: pointer; transition: all var(--blora-dur-fast) var(--blora-ease); position: relative; }
 .blora-datepicker__cell:hover { background: var(--blora-surface-2); }
-.blora-datepicker__cell.is-other { color: var(--blora-ink-faint); }
-.blora-datepicker__cell.is-today { font-weight: 700; color: var(--blora-seal); }
-.blora-datepicker__cell.is-today::after { content: ""; position: absolute; bottom: 0.15em; left: 50%; transform: translateX(-50%); width: 0.3em; height: 0.3em; border-radius: 50%; background: var(--blora-seal); }
-.blora-datepicker__cell.is-selected { background: var(--blora-seal); color: var(--blora-on-accent); }
+.blora-datepicker__cell.is-other { color: var(--blora-text-disabled); }
+.blora-datepicker__cell.is-today { font-weight: 700; color: var(--blora-primary); }
+.blora-datepicker__cell.is-today::after { content: ""; position: absolute; bottom: 0.15em; left: 50%; transform: translateX(-50%); width: 0.3em; height: 0.3em; border-radius: 50%; background: var(--blora-primary); }
+.blora-datepicker__cell.is-selected { background: var(--blora-primary); color: var(--blora-on-accent); }
 .blora-datepicker__cell.is-selected::after { background: var(--blora-on-accent); }
-.blora-datepicker__cell.is-disabled { color: var(--blora-ink-faint); cursor: not-allowed; }
+.blora-datepicker__cell.is-disabled { color: var(--blora-text-disabled); cursor: not-allowed; }
 .blora-datepicker__cell.is-disabled:hover { background: none; }
-.blora-datepicker__foot { display: flex; justify-content: flex-end; gap: var(--blora-space-2); margin-top: var(--blora-space-3); padding-top: var(--blora-space-2); border-top: 1px solid var(--blora-ink-ghost); }
+.blora-datepicker__foot { display: flex; justify-content: flex-end; gap: var(--blora-space-2); margin-top: var(--blora-space-3); padding-top: var(--blora-space-2); border-top: 1px solid var(--blora-border-subtle); }
 /* —— 月视图 / 年视图 —— */
 .blora-datepicker__grid--months { grid-template-columns: repeat(3, 1fr); }
 .blora-datepicker__grid--years  { grid-template-columns: repeat(4, 1fr); }
@@ -1040,13 +1007,13 @@ body.blora-page {
 .blora-timepicker__panel.is-open { opacity: 1; pointer-events: auto; transform: translateY(0); }
 .blora-timepicker__cols { display: flex; gap: var(--blora-space-3); align-items: center; justify-content: center; }
 .blora-timepicker__col { display: flex; flex-direction: column; align-items: center; gap: var(--blora-space-1); }
-.blora-timepicker__label { font-size: var(--blora-text-xs); color: var(--blora-ink-mist); text-transform: uppercase; letter-spacing: var(--blora-tracking-caps); }
-.blora-timepicker__scroll { height: 160px; width: 56px; overflow-y: auto; border: 1px solid var(--blora-ink-ghost); border-radius: var(--blora-radius-md); padding: var(--blora-space-1); }
+.blora-timepicker__label { font-size: var(--blora-text-xs); color: var(--blora-text-subtle); text-transform: uppercase; letter-spacing: var(--blora-tracking-caps); }
+.blora-timepicker__scroll { height: 160px; width: 56px; overflow-y: auto; border: 1px solid var(--blora-border-subtle); border-radius: var(--blora-radius-md); padding: var(--blora-space-1); }
 .blora-timepicker__scroll::-webkit-scrollbar { width: 4px; }
-.blora-timepicker__item { padding: 0.3em 0; text-align: center; font-family: var(--blora-font-mono); font-size: var(--blora-text-sm); color: var(--blora-ink-mid); border-radius: var(--blora-radius-sm); cursor: pointer; transition: all var(--blora-dur-fast) var(--blora-ease); }
+.blora-timepicker__item { padding: 0.3em 0; text-align: center; font-family: var(--blora-font-mono); font-size: var(--blora-text-sm); color: var(--blora-text-emphasis); border-radius: var(--blora-radius-sm); cursor: pointer; transition: all var(--blora-dur-fast) var(--blora-ease); }
 .blora-timepicker__item:hover { background: var(--blora-surface-2); }
-.blora-timepicker__item.is-selected { background: var(--blora-seal); color: var(--blora-on-accent); font-weight: 600; }
-.blora-timepicker__sep { font-size: var(--blora-text-xl); color: var(--blora-ink-mist); font-family: var(--blora-font-mono); margin-top: 1.2em; }
+.blora-timepicker__item.is-selected { background: var(--blora-primary); color: var(--blora-on-accent); font-weight: 600; }
+.blora-timepicker__sep { font-size: var(--blora-text-xl); color: var(--blora-text-subtle); font-family: var(--blora-font-mono); margin-top: 1.2em; }
 
 /* =========================================================================
    7. 标签 · Tags & Badges
@@ -1055,17 +1022,17 @@ body.blora-page {
   display: inline-flex; align-items: center; gap: 0.3em;
   padding: 0.2em 0.7em;
   font-size: var(--blora-text-xs); font-weight: 500;
-  background: var(--blora-surface-3); color: var(--blora-ink-mid);
-  border: 1px solid var(--blora-ink-ghost);
+  background: var(--blora-surface-3); color: var(--blora-text-emphasis);
+  border: 1px solid var(--blora-border-subtle);
   border-radius: var(--blora-radius-full);
   line-height: 1.6;
 }
-.blora-tag--seal    { background: var(--blora-seal-tint); color: var(--blora-seal); border-color: color-mix(in srgb, var(--blora-seal) 25%, transparent); }
-.blora-tag--tea     { background: color-mix(in srgb, var(--blora-tea) 8%, transparent); color: var(--blora-tea); border-color: color-mix(in srgb, var(--blora-tea) 25%, transparent); }
-.blora-tag--indigo  { background: color-mix(in srgb, var(--blora-indigo) 8%, transparent); color: var(--blora-indigo); border-color: color-mix(in srgb, var(--blora-indigo) 25%, transparent); }
-.blora-tag--moss    { background: color-mix(in srgb, var(--blora-moss) 8%, transparent); color: var(--blora-moss); border-color: color-mix(in srgb, var(--blora-moss) 25%, transparent); }
-.blora-tag--gold    { background: color-mix(in srgb, var(--blora-gold) 10%, transparent); color: var(--blora-gold); border-color: color-mix(in srgb, var(--blora-gold) 30%, transparent); }
-.blora-tag--solid   { background: var(--blora-ink-deep); color: var(--blora-on-accent); border-color: var(--blora-ink-deep); }
+.blora-tag--primary    { background: var(--blora-primary-tint); color: var(--blora-primary); border-color: color-mix(in srgb, var(--blora-primary) 25%, transparent); }
+.blora-tag--neutral     { background: color-mix(in srgb, var(--blora-accent-neutral) 8%, transparent); color: var(--blora-accent-neutral); border-color: color-mix(in srgb, var(--blora-accent-neutral) 25%, transparent); }
+.blora-tag--info  { background: color-mix(in srgb, var(--blora-info) 8%, transparent); color: var(--blora-info); border-color: color-mix(in srgb, var(--blora-info) 25%, transparent); }
+.blora-tag--success    { background: color-mix(in srgb, var(--blora-success) 8%, transparent); color: var(--blora-success); border-color: color-mix(in srgb, var(--blora-success) 25%, transparent); }
+.blora-tag--warning    { background: color-mix(in srgb, var(--blora-warning) 10%, transparent); color: var(--blora-warning); border-color: color-mix(in srgb, var(--blora-warning) 30%, transparent); }
+.blora-tag--solid   { background: var(--blora-foreground); color: var(--blora-on-accent); border-color: var(--blora-foreground); }
 .blora-tag--removable { padding-right: 0.35em; }
 .blora-tag__close { position: relative; width: 1em; height: 1em; flex: none; border-radius: 50%; cursor: pointer; transition: background var(--blora-dur-fast) var(--blora-ease); }
 .blora-tag__close::before, .blora-tag__close::after {
@@ -1074,32 +1041,32 @@ body.blora-page {
   transform: translate(-50%, -50%) rotate(45deg);
 }
 .blora-tag__close::after { transform: translate(-50%, -50%) rotate(-45deg); }
-.blora-tag__close:hover { background: color-mix(in srgb, var(--blora-ink) 15%, transparent); }
+.blora-tag__close:hover { background: color-mix(in srgb, var(--blora-text-strong) 15%, transparent); }
 
 .blora-badge {
   display: inline-flex; align-items: center; justify-content: center;
   min-width: 1.5em; height: 1.5em; padding: 0 0.4em;
   font-size: var(--blora-text-xs); font-weight: 700;
-  background: var(--blora-seal); color: var(--blora-on-accent);
+  background: var(--blora-primary); color: var(--blora-on-accent);
   border-radius: var(--blora-radius-full);
-  box-shadow: var(--blora-shadow-seal);
+  box-shadow: var(--blora-shadow-primary);
 }
 .blora-badge--dot { min-width: 0.5em; height: 0.5em; padding: 0; }
 .blora-badge--circle { width: 2em; min-width: 2em; height: 2em; padding: 0; border-radius: 50%; }
 .blora-badge--pill { min-width: max-content; height: 2em; padding-inline: 0.75em; border-radius: var(--blora-radius-full); }
-.blora-badge--tea { background: var(--blora-tea); box-shadow: none; }
-.blora-badge--moss { background: var(--blora-moss); box-shadow: none; }
-.blora-badge--indigo { background: var(--blora-indigo); box-shadow: none; }
+.blora-badge--neutral { background: var(--blora-accent-neutral); box-shadow: none; }
+.blora-badge--success { background: var(--blora-success); box-shadow: none; }
+.blora-badge--info { background: var(--blora-info); box-shadow: none; }
 
 /* —— 头像上的徽章 —— */
 .blora-avatar-wrap { position: relative; display: inline-block; }
-.blora-avatar-wrap .blora-badge { position: absolute; top: -0.2em; right: -0.2em; border: 2px solid var(--blora-paper); }
+.blora-avatar-wrap .blora-badge { position: absolute; top: -0.2em; right: -0.2em; border: 2px solid var(--blora-background); }
 
 /* —— 状态点 Status Dot —— */
-.blora-dot { display: inline-block; width: 0.6em; height: 0.6em; border-radius: 50%; background: var(--blora-ink-mist); }
-.blora-dot--seal { background: var(--blora-seal); }
-.blora-dot--moss { background: var(--blora-moss); }
-.blora-dot--gold { background: var(--blora-gold); }
+.blora-dot { display: inline-block; width: 0.6em; height: 0.6em; border-radius: 50%; background: var(--blora-text-subtle); }
+.blora-dot--primary { background: var(--blora-primary); }
+.blora-dot--success { background: var(--blora-success); }
+.blora-dot--warning { background: var(--blora-warning); }
 .blora-dot--pulse { animation: blora-pulse 2s ease-in-out infinite; }
 
 /* =========================================================================
@@ -1108,8 +1075,8 @@ body.blora-page {
 .blora-avatar {
   display: inline-flex; align-items: center; justify-content: center;
   width: 2.5em; height: 2.5em; border-radius: 50%;
-  background: var(--blora-surface-3); color: var(--blora-ink-light);
-  font-family: var(--blora-font-serif); font-weight: 600;
+  background: var(--blora-surface-3); color: var(--blora-text-muted);
+  font-family: var(--blora-font-heading); font-weight: 600;
   font-size: 1em;
   overflow: hidden; flex: none; user-select: none;
   box-shadow: var(--blora-shadow-1);
@@ -1119,14 +1086,14 @@ body.blora-page {
 .blora-avatar--sm { width: 2em; height: 2em; font-size: 0.85em; }
 .blora-avatar--lg { width: 3.5em; height: 3.5em; font-size: 1.2em; }
 .blora-avatar--xl { width: 5em; height: 5em; font-size: 1.6em; }
-.blora-avatar--seal  { background: var(--blora-seal);  color: var(--blora-on-accent); }
-.blora-avatar--tea   { background: var(--blora-tea);   color: var(--blora-on-accent); }
-.blora-avatar--indigo{ background: var(--blora-indigo);color: var(--blora-on-accent); }
-.blora-avatar--moss  { background: var(--blora-moss);  color: var(--blora-on-accent); }
-.blora-avatar--ink   { background: var(--blora-ink-deep); color: var(--blora-on-accent); }
+.blora-avatar--primary  { background: var(--blora-primary);  color: var(--blora-on-accent); }
+.blora-avatar--neutral   { background: var(--blora-accent-neutral);   color: var(--blora-on-accent); }
+.blora-avatar--info{ background: var(--blora-info);color: var(--blora-on-accent); }
+.blora-avatar--success  { background: var(--blora-success);  color: var(--blora-on-accent); }
+.blora-avatar--contrast   { background: var(--blora-foreground); color: var(--blora-on-accent); }
 .blora-avatar--square{ border-radius: var(--blora-radius-md); }
 .blora-avatar-group { display: inline-flex; }
-.blora-avatar-group .blora-avatar { margin-left: -0.6em; border: 2px solid var(--blora-paper); }
+.blora-avatar-group .blora-avatar { margin-left: -0.6em; border: 2px solid var(--blora-background); }
 .blora-avatar-group .blora-avatar:first-child { margin-left: 0; }
 
 /* =========================================================================
@@ -1134,31 +1101,31 @@ body.blora-page {
    ========================================================================= */
 .blora-progress { display: flex; flex-direction: column; gap: var(--blora-space-2); }
 .blora-progress__bar { height: 6px; background: var(--blora-surface-3); border-radius: var(--blora-radius-full); overflow: hidden; }
-.blora-progress__fill { height: 100%; background: var(--blora-seal); border-radius: var(--blora-radius-full); transition: width var(--blora-dur-slow) var(--blora-ease); }
-.blora-progress__fill--tea { background: var(--blora-tea); }
-.blora-progress__fill--moss { background: var(--blora-moss); }
-.blora-progress__fill--indigo { background: var(--blora-indigo); }
-.blora-progress__fill--striped { background-image: linear-gradient(45deg, rgba(255,255,255,0.18) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.18) 50%, rgba(255,255,255,0.18) 75%, transparent 75%); background-size: 16px 16px; animation: blora-stripe 1s linear infinite; }
-.blora-progress__label { display: flex; justify-content: space-between; font-size: var(--blora-text-xs); color: var(--blora-ink-light); }
+.blora-progress__fill { height: 100%; background: var(--blora-primary); border-radius: var(--blora-radius-full); transition: width var(--blora-dur-slow) var(--blora-ease); }
+.blora-progress__fill--neutral { background: var(--blora-accent-neutral); }
+.blora-progress__fill--success { background: var(--blora-success); }
+.blora-progress__fill--info { background: var(--blora-info); }
+.blora-progress__fill--striped { background-image: linear-gradient(45deg, color-mix(in srgb, var(--blora-on-media) 18%, transparent) 25%, transparent 25%, transparent 50%, color-mix(in srgb, var(--blora-on-media) 18%, transparent) 50%, color-mix(in srgb, var(--blora-on-media) 18%, transparent) 75%, transparent 75%); background-size: 16px 16px; animation: blora-stripe 1s linear infinite; }
+.blora-progress__label { display: flex; justify-content: space-between; font-size: var(--blora-text-xs); color: var(--blora-text-muted); }
 .blora-progress--circular { display: inline-grid; place-items: center; position: relative; }
 .blora-progress--circular svg { transform: rotate(-90deg); }
 .blora-progress--circular circle { fill: none; stroke-width: 6; }
 .blora-progress--circular .track { stroke: var(--blora-surface-3); }
-.blora-progress--circular .fill  { stroke: var(--blora-seal); stroke-linecap: round; transition: stroke-dashoffset var(--blora-dur-slow) var(--blora-ease); }
-.blora-progress--circular .blora-progress__value { position: absolute; font-family: var(--blora-font-serif); font-weight: 600; color: var(--blora-ink); }
+.blora-progress--circular .fill  { stroke: var(--blora-primary); stroke-linecap: round; transition: stroke-dashoffset var(--blora-dur-slow) var(--blora-ease); }
+.blora-progress--circular .blora-progress__value { position: absolute; font-family: var(--blora-font-heading); font-weight: 600; color: var(--blora-text-strong); }
 
 /* —— 加载 —— */
-.blora-spinner { display: inline-block; width: 1.2em; height: 1.2em; border: 2px solid var(--blora-ink-ghost); border-top-color: var(--blora-seal); border-radius: 50%; animation: blora-spin 0.8s linear infinite; }
+.blora-spinner { display: inline-block; width: 1.2em; height: 1.2em; border: 2px solid var(--blora-border-subtle); border-top-color: var(--blora-primary); border-radius: 50%; animation: blora-spin 0.8s linear infinite; }
 .blora-spinner--sm { width: 0.9em; height: 0.9em; border-width: 1.5px; }
 .blora-spinner--lg { width: 2em; height: 2em; border-width: 3px; }
 
 /* —— 圆点加载 · Bouncing dots —— */
-.blora-dot-loading, .blora-ink-loading { display: inline-flex; gap: 0.35em; align-items: flex-end; height: 1.2em; }
-.blora-dot-loading span, .blora-ink-loading span { width: 0.45em; height: 0.45em; background: var(--blora-ink-mid); border-radius: 50%; animation: blora-bounce 1s ease-in-out infinite; }
-.blora-dot-loading span:nth-child(2), .blora-ink-loading span:nth-child(2) { animation-delay: 0.15s; }
-.blora-dot-loading span:nth-child(3), .blora-ink-loading span:nth-child(3) { animation-delay: 0.3s; }
-.blora-dot-loading span:nth-child(4), .blora-ink-loading span:nth-child(4) { animation-delay: 0.45s; }
-.blora-ink-loading span:last-child { background: var(--blora-seal); }
+.blora-dot-loader { display: inline-flex; gap: 0.35em; align-items: flex-end; height: 1.2em; }
+.blora-dot-loader span { width: 0.45em; height: 0.45em; background: var(--blora-text-emphasis); border-radius: 50%; animation: blora-bounce 1s ease-in-out infinite; }
+.blora-dot-loader span:nth-child(2) { animation-delay: 0.15s; }
+.blora-dot-loader span:nth-child(3) { animation-delay: 0.3s; }
+.blora-dot-loader span:nth-child(4) { animation-delay: 0.45s; }
+.blora-dot-loader span:last-child { background: var(--blora-primary); }
 
 /* —— 骨架屏 Skeleton —— */
 .blora-skeleton { display: block; background: linear-gradient(90deg, var(--blora-surface-3) 0%, var(--blora-surface-2) 50%, var(--blora-surface-3) 100%); background-size: 200% 100%; border-radius: var(--blora-radius-sm); animation: blora-shimmer 1.6s ease-in-out infinite; }
@@ -1174,7 +1141,7 @@ body.blora-page {
 .blora-navbar {
   display: flex; align-items: center; justify-content: space-between; gap: var(--blora-space-5);
   padding: var(--blora-space-4) var(--blora-space-6);
-  background: color-mix(in srgb, var(--blora-paper) 85%, transparent);
+  background: color-mix(in srgb, var(--blora-background) 85%, transparent);
   backdrop-filter: blur(12px);
   border-bottom: var(--blora-border);
   position: sticky; top: 0; z-index: var(--blora-z-sticky);
@@ -1233,12 +1200,12 @@ body.blora-page {
     border-radius: var(--blora-radius-xl);
   }
 }
-.blora-navbar__brand { display: flex; align-items: center; gap: var(--blora-space-3); font-family: var(--blora-font-serif); font-size: var(--blora-text-lg); font-weight: 600; color: var(--blora-ink); }
-.blora-brand-mark { display: inline-grid; place-items: center; width: 1.8em; height: 1.8em; flex: none; overflow: hidden; color: var(--blora-on-accent); background: var(--blora-seal); border-radius: 50%; box-shadow: var(--blora-shadow-2); }
+.blora-navbar__brand { display: flex; align-items: center; gap: var(--blora-space-3); font-family: var(--blora-font-heading); font-size: var(--blora-text-lg); font-weight: 600; color: var(--blora-text-strong); }
+.blora-brand-mark { display: inline-grid; place-items: center; width: 1.8em; height: 1.8em; flex: none; overflow: hidden; color: var(--blora-on-accent); background: var(--blora-primary); border-radius: 50%; box-shadow: var(--blora-shadow-2); }
 .blora-navbar__menu { display: flex; gap: var(--blora-space-2); }
-.blora-navbar__link { padding: 0.4em 0.9em; font-size: var(--blora-text-sm); color: var(--blora-ink-mid); border-radius: var(--blora-radius-md); transition: all var(--blora-dur-fast) var(--blora-ease); }
-.blora-navbar__link:hover { color: var(--blora-ink); background: var(--blora-surface-2); }
-.blora-navbar__link.is-active { color: var(--blora-seal); font-weight: 500; }
+.blora-navbar__link { padding: 0.4em 0.9em; font-size: var(--blora-text-sm); color: var(--blora-text-emphasis); border-radius: var(--blora-radius-md); transition: all var(--blora-dur-fast) var(--blora-ease); }
+.blora-navbar__link:hover { color: var(--blora-text-strong); background: var(--blora-surface-2); }
+.blora-navbar__link.is-active { color: var(--blora-primary); font-weight: 500; }
 
 /* —— 配色选择器 —— */
 .blora-palette-picker { position: relative; }
@@ -1255,20 +1222,20 @@ body.blora-page {
 .blora-palette-picker.is-open .blora-palette-picker__menu { opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(0); transition-delay: 0s; }
 .blora-palette-picker.is-switching .blora-palette-picker__menu { transition: none; }
 .blora-palette-picker__head { padding: var(--blora-space-1) var(--blora-space-1) var(--blora-space-3); }
-.blora-palette-picker__title { display: block; color: var(--blora-ink); font-size: var(--blora-text-sm); font-weight: 600; }
-.blora-palette-picker__hint { display: block; margin-top: 0.15rem; color: var(--blora-ink-mist); font-size: var(--blora-text-xs); }
+.blora-palette-picker__title { display: block; color: var(--blora-text-strong); font-size: var(--blora-text-sm); font-weight: 600; }
+.blora-palette-picker__hint { display: block; margin-top: 0.15rem; color: var(--blora-text-subtle); font-size: var(--blora-text-xs); }
 .blora-palette-picker__list { display: grid; gap: var(--blora-space-2); }
 .blora-palette-card {
   display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: var(--blora-space-3);
   width: 100%; min-height: 3.75rem; padding: var(--blora-space-3); text-align: left;
-  color: var(--blora-ink-mid); background: transparent; border: 1px solid transparent; border-radius: var(--blora-radius-md);
+  color: var(--blora-text-emphasis); background: transparent; border: 1px solid transparent; border-radius: var(--blora-radius-md);
   transition: background var(--blora-dur-fast) var(--blora-ease), border-color var(--blora-dur-fast) var(--blora-ease);
 }
-.blora-palette-card:hover { background: var(--blora-surface-2); border-color: var(--blora-ink-ghost); }
-.blora-palette-card[aria-selected="true"] { background: var(--blora-seal-tint); border-color: color-mix(in srgb, var(--blora-seal) 38%, transparent); }
+.blora-palette-card:hover { background: var(--blora-surface-2); border-color: var(--blora-border-subtle); }
+.blora-palette-card[aria-selected="true"] { background: var(--blora-primary-tint); border-color: color-mix(in srgb, var(--blora-primary) 38%, transparent); }
 .blora-palette-card__copy { min-width: 0; }
-.blora-palette-card__name { display: block; color: var(--blora-ink); font-size: var(--blora-text-sm); font-weight: 600; }
-.blora-palette-card__desc { display: block; margin-top: 0.1rem; overflow: hidden; color: var(--blora-ink-mist); font-size: var(--blora-text-xs); text-overflow: ellipsis; white-space: nowrap; }
+.blora-palette-card__name { display: block; color: var(--blora-text-strong); font-size: var(--blora-text-sm); font-weight: 600; }
+.blora-palette-card__desc { display: block; margin-top: 0.1rem; overflow: hidden; color: var(--blora-text-subtle); font-size: var(--blora-text-xs); text-overflow: ellipsis; white-space: nowrap; }
 .blora-palette-card__colors { display: flex; flex: none; }
 .blora-palette-card__color { width: 1.25rem; height: 2rem; margin-left: -0.2rem; border: 2px solid var(--blora-surface-1); border-radius: var(--blora-radius-sm); box-shadow: var(--blora-shadow-1); }
 .blora-palette-card:hover .blora-palette-card__color { border-color: var(--blora-surface-2); }
@@ -1289,13 +1256,13 @@ body.blora-page {
 
 /* —— 标签页 Tabs —— */
 .blora-tabs { display: flex; flex-direction: column; }
-.blora-tabs__nav { display: flex; gap: var(--blora-space-1); border-bottom: 1px solid var(--blora-ink-ghost); position: relative; }
-.blora-tabs__indicator { position: absolute; left: 0; bottom: -1px; width: var(--blora-tab-w, 0); height: 2px; transform: translateX(var(--blora-tab-x, 0)); background: var(--blora-seal); border-radius: var(--blora-radius-full); pointer-events: none; transition: width var(--blora-dur-base) var(--blora-ease), transform var(--blora-dur-base) var(--blora-ease); z-index: 0; }
+.blora-tabs__nav { display: flex; gap: var(--blora-space-1); border-bottom: 1px solid var(--blora-border-subtle); position: relative; }
+.blora-tabs__indicator { position: absolute; left: 0; bottom: -1px; width: var(--blora-tab-w, 0); height: 2px; transform: translateX(var(--blora-tab-x, 0)); background: var(--blora-primary); border-radius: var(--blora-radius-full); pointer-events: none; transition: width var(--blora-dur-base) var(--blora-ease), transform var(--blora-dur-base) var(--blora-ease); z-index: 0; }
 .blora-tabs__indicator.is-instant { transition: none; }
-.blora-tabs__tab { padding: 0.7em 1.1em; font-size: var(--blora-text-sm); font-weight: 500; color: var(--blora-ink-light); border-bottom: 2px solid transparent; margin-bottom: -1px; cursor: pointer; transition: color var(--blora-dur-fast) var(--blora-ease), background var(--blora-dur-fast) var(--blora-ease); position: relative; z-index: 1; }
-.blora-tabs__tab:hover { color: var(--blora-ink); }
-.blora-tabs__tab.is-active { color: var(--blora-seal); }
-.blora-tabs__tab.is-disabled { color: var(--blora-ink-faint); cursor: not-allowed; }
+.blora-tabs__tab { padding: 0.7em 1.1em; font-size: var(--blora-text-sm); font-weight: 500; color: var(--blora-text-muted); border-bottom: 2px solid transparent; margin-bottom: -1px; cursor: pointer; transition: color var(--blora-dur-fast) var(--blora-ease), background var(--blora-dur-fast) var(--blora-ease); position: relative; z-index: 1; }
+.blora-tabs__tab:hover { color: var(--blora-text-strong); }
+.blora-tabs__tab.is-active { color: var(--blora-primary); }
+.blora-tabs__tab.is-disabled { color: var(--blora-text-disabled); cursor: not-allowed; }
 .blora-tabs__panel { padding-top: var(--blora-space-5); }
 .blora-tabs__panel.is-entering { animation: blora-tab-panel-in var(--blora-tabs-fade-duration) var(--blora-ease) both; }
 .blora-tabs--pills .blora-tabs__nav { border-bottom: none; gap: var(--blora-space-2); }
@@ -1303,60 +1270,60 @@ body.blora-page {
 .blora-tabs--pills .blora-tabs__indicator { top: 0; bottom: 0; height: var(--blora-tab-h, 100%); transform: translateX(var(--blora-tab-x, 0)); }
 .blora-tabs--pills .blora-tabs__tab.is-active { color: var(--blora-on-accent); }
 .blora-tabs--vert { flex-direction: row; }
-.blora-tabs--vert .blora-tabs__nav { flex-direction: column; border-bottom: none; border-right: 1px solid var(--blora-ink-ghost); padding-right: var(--blora-space-1); }
+.blora-tabs--vert .blora-tabs__nav { flex-direction: column; border-bottom: none; border-right: 1px solid var(--blora-border-subtle); padding-right: var(--blora-space-1); }
 .blora-tabs--vert .blora-tabs__tab { border-bottom: none; border-right: 2px solid transparent; margin-bottom: 0; margin-right: -1px; }
 .blora-tabs--vert .blora-tabs__indicator { top: 0; right: -1px; bottom: auto; left: auto; width: 2px; height: var(--blora-tab-h, 0); transform: translateY(var(--blora-tab-y, 0)); transition: height var(--blora-dur-base) var(--blora-ease), transform var(--blora-dur-base) var(--blora-ease); }
 .blora-tabs--vert .blora-tabs__panel { padding-top: 0; padding-left: var(--blora-space-6); flex: 1; }
 
 /* —— 面包屑 Breadcrumb —— */
-.blora-breadcrumb { display: flex; align-items: center; gap: var(--blora-space-2); font-size: var(--blora-text-sm); color: var(--blora-ink-mist); flex-wrap: wrap; }
-.blora-breadcrumb a { color: var(--blora-ink-light); }
-.blora-breadcrumb a:hover { color: var(--blora-seal); }
-.blora-breadcrumb__sep { color: var(--blora-ink-faint); }
-.blora-breadcrumb__current { color: var(--blora-ink-deep); font-weight: 500; }
+.blora-breadcrumb { display: flex; align-items: center; gap: var(--blora-space-2); font-size: var(--blora-text-sm); color: var(--blora-text-subtle); flex-wrap: wrap; }
+.blora-breadcrumb a { color: var(--blora-text-muted); }
+.blora-breadcrumb a:hover { color: var(--blora-primary); }
+.blora-breadcrumb__sep { color: var(--blora-text-disabled); }
+.blora-breadcrumb__current { color: var(--blora-foreground); font-weight: 500; }
 
 /* —— 分页 Pagination —— */
 .blora-pagination { display: flex; align-items: center; gap: var(--blora-space-1); }
-.blora-pagination__item { min-width: 2em; height: 2em; padding: 0 0.5em; display: inline-flex; align-items: center; justify-content: center; font-size: var(--blora-text-sm); color: var(--blora-ink-mid); border: 1px solid transparent; border-radius: var(--blora-radius-md); cursor: pointer; transition: all var(--blora-dur-fast) var(--blora-ease); }
-.blora-pagination__item:hover { background: var(--blora-surface-2); color: var(--blora-ink); }
-.blora-pagination__item.is-active { background: var(--blora-seal); color: var(--blora-on-accent); font-weight: 600; box-shadow: var(--blora-shadow-seal); }
-.blora-pagination__item.is-disabled { color: var(--blora-ink-faint); cursor: not-allowed; pointer-events: none; }
-.blora-pagination__ellipsis { color: var(--blora-ink-mist); padding: 0 var(--blora-space-1); }
+.blora-pagination__item { min-width: 2em; height: 2em; padding: 0 0.5em; display: inline-flex; align-items: center; justify-content: center; font-size: var(--blora-text-sm); color: var(--blora-text-emphasis); border: 1px solid transparent; border-radius: var(--blora-radius-md); cursor: pointer; transition: all var(--blora-dur-fast) var(--blora-ease); }
+.blora-pagination__item:hover { background: var(--blora-surface-2); color: var(--blora-text-strong); }
+.blora-pagination__item.is-active { background: var(--blora-primary); color: var(--blora-on-accent); font-weight: 600; box-shadow: var(--blora-shadow-primary); }
+.blora-pagination__item.is-disabled { color: var(--blora-text-disabled); cursor: not-allowed; pointer-events: none; }
+.blora-pagination__ellipsis { color: var(--blora-text-subtle); padding: 0 var(--blora-space-1); }
 
 /* —— 步骤 Steps —— */
 .blora-steps { display: flex; align-items: flex-start; gap: 0; }
 .blora-step { flex: 1; display: flex; flex-direction: column; gap: var(--blora-space-3); position: relative; padding-right: var(--blora-space-5); }
 .blora-step:last-child { flex: 0; padding-right: 0; }
 .blora-step__head { display: flex; align-items: center; gap: var(--blora-space-3); }
-.blora-step__icon { width: 2em; height: 2em; flex: none; display: grid; place-items: center; border-radius: 50%; background: var(--blora-surface-3); color: var(--blora-ink-mist); font-family: var(--blora-font-serif); font-weight: 600; font-size: var(--blora-text-sm); border: 1px solid var(--blora-ink-ghost); z-index: 1; transition: color var(--blora-dur-base) var(--blora-ease), background var(--blora-dur-base) var(--blora-ease), border-color var(--blora-dur-base) var(--blora-ease), box-shadow var(--blora-dur-base) var(--blora-ease); }
-.blora-step__line { position: absolute; top: 1em; left: 2em; right: var(--blora-space-5); height: 1px; background: var(--blora-ink-ghost); transition: background var(--blora-dur-base) var(--blora-ease); }
+.blora-step__icon { width: 2em; height: 2em; flex: none; display: grid; place-items: center; border-radius: 50%; background: var(--blora-surface-3); color: var(--blora-text-subtle); font-family: var(--blora-font-heading); font-weight: 600; font-size: var(--blora-text-sm); border: 1px solid var(--blora-border-subtle); z-index: 1; transition: color var(--blora-dur-base) var(--blora-ease), background var(--blora-dur-base) var(--blora-ease), border-color var(--blora-dur-base) var(--blora-ease), box-shadow var(--blora-dur-base) var(--blora-ease); }
+.blora-step__line { position: absolute; top: 1em; left: 2em; right: var(--blora-space-5); height: 1px; background: var(--blora-border-subtle); transition: background var(--blora-dur-base) var(--blora-ease); }
 .blora-step:last-child .blora-step__line { display: none; }
-.blora-step.is-active .blora-step__icon { background: var(--blora-seal); color: var(--blora-on-accent); border-color: var(--blora-seal); box-shadow: var(--blora-shadow-seal); }
-.blora-step.is-done .blora-step__icon { background: var(--blora-moss); color: var(--blora-on-accent); border-color: var(--blora-moss); }
-.blora-step.is-done .blora-step__line { background: var(--blora-moss); }
-.blora-step.is-active .blora-step__line { background: linear-gradient(90deg, var(--blora-moss) 0%, var(--blora-ink-ghost) 60%); }
-.blora-step__title { font-size: var(--blora-text-sm); font-weight: 500; color: var(--blora-ink-deep); transition: color var(--blora-dur-fast) var(--blora-ease); }
-.blora-step__desc { font-size: var(--blora-text-xs); color: var(--blora-ink-mist); }
-.blora-step.is-active .blora-step__title { color: var(--blora-seal); }
+.blora-step.is-active .blora-step__icon { background: var(--blora-primary); color: var(--blora-on-accent); border-color: var(--blora-primary); box-shadow: var(--blora-shadow-primary); }
+.blora-step.is-done .blora-step__icon { background: var(--blora-success); color: var(--blora-on-accent); border-color: var(--blora-success); }
+.blora-step.is-done .blora-step__line { background: var(--blora-success); }
+.blora-step.is-active .blora-step__line { background: linear-gradient(90deg, var(--blora-success) 0%, var(--blora-border-subtle) 60%); }
+.blora-step__title { font-size: var(--blora-text-sm); font-weight: 500; color: var(--blora-foreground); transition: color var(--blora-dur-fast) var(--blora-ease); }
+.blora-step__desc { font-size: var(--blora-text-xs); color: var(--blora-text-subtle); }
+.blora-step.is-active .blora-step__title { color: var(--blora-primary); }
 
 /* —— 侧栏 Menu —— */
 .blora-menu { display: flex; flex-direction: column; gap: 2px; padding: var(--blora-space-3); }
-.blora-menu__item { display: flex; align-items: center; gap: var(--blora-space-3); padding: 0.6em 0.9em; font-size: var(--blora-text-sm); color: var(--blora-ink-mid); border-radius: var(--blora-radius-md); cursor: pointer; transition: all var(--blora-dur-fast) var(--blora-ease); }
-.blora-menu__item:hover { background: var(--blora-surface-2); color: var(--blora-ink); }
-.blora-menu__item.is-active { background: var(--blora-seal-tint); color: var(--blora-seal); font-weight: 500; }
-.blora-menu__item.is-disabled { color: var(--blora-ink-faint); cursor: not-allowed; }
+.blora-menu__item { display: flex; align-items: center; gap: var(--blora-space-3); padding: 0.6em 0.9em; font-size: var(--blora-text-sm); color: var(--blora-text-emphasis); border-radius: var(--blora-radius-md); cursor: pointer; transition: all var(--blora-dur-fast) var(--blora-ease); }
+.blora-menu__item:hover { background: var(--blora-surface-2); color: var(--blora-text-strong); }
+.blora-menu__item.is-active { background: var(--blora-primary-tint); color: var(--blora-primary); font-weight: 500; }
+.blora-menu__item.is-disabled { color: var(--blora-text-disabled); cursor: not-allowed; }
 .blora-menu__icon { flex: none; width: 1.2em; }
 .blora-menu__sub { display: flex; flex-direction: column; max-height: 0; padding-left: var(--blora-space-6); margin-top: 0; overflow: hidden; opacity: 0; transform: translateY(-4px); pointer-events: none; transition: max-height var(--blora-dur-base) var(--blora-ease), opacity var(--blora-dur-fast) var(--blora-ease), transform var(--blora-dur-base) var(--blora-ease), margin-top var(--blora-dur-base) var(--blora-ease); }
 .blora-menu__item.is-open + .blora-menu__sub { max-height: 20rem; margin-top: 2px; opacity: 1; transform: translateY(0); pointer-events: auto; }
-.blora-menu__group-label { font-size: var(--blora-text-xs); text-transform: uppercase; letter-spacing: var(--blora-tracking-caps); color: var(--blora-ink-faint); padding: var(--blora-space-3) 0.9em var(--blora-space-1); }
+.blora-menu__group-label { font-size: var(--blora-text-xs); text-transform: uppercase; letter-spacing: var(--blora-tracking-caps); color: var(--blora-text-disabled); padding: var(--blora-space-3) 0.9em var(--blora-space-1); }
 
 /* —— 下拉菜单 Dropdown —— */
 .blora-dropdown { position: relative; display: inline-block; }
 .blora-dropdown-menu { position: absolute; top: calc(100% + 6px); left: 0; min-width: 180px; background: var(--blora-surface-1); border: var(--blora-border); border-radius: var(--blora-radius-md); box-shadow: var(--blora-shadow-3); padding: var(--blora-space-2); opacity: 0; pointer-events: none; transform: translateY(-4px); transition: opacity var(--blora-dur-fast) var(--blora-ease), transform var(--blora-dur-fast) var(--blora-ease); z-index: var(--blora-z-dropdown); }
 .blora-dropdown-menu.is-open { opacity: 1; pointer-events: auto; transform: translateY(0); }
-.blora-dropdown-menu__item { display: flex; align-items: center; gap: var(--blora-space-2); padding: 0.5em 0.8em; font-size: var(--blora-text-sm); color: var(--blora-ink-mid); border-radius: var(--blora-radius-sm); cursor: pointer; transition: color var(--blora-dur-fast) var(--blora-ease), background var(--blora-dur-fast) var(--blora-ease); }
-.blora-dropdown-menu__item:hover { background: var(--blora-surface-2); color: var(--blora-ink); }
-.blora-dropdown-menu__sep { height: 1px; background: var(--blora-ink-ghost); margin: var(--blora-space-1) 0; }
+.blora-dropdown-menu__item { display: flex; align-items: center; gap: var(--blora-space-2); padding: 0.5em 0.8em; font-size: var(--blora-text-sm); color: var(--blora-text-emphasis); border-radius: var(--blora-radius-sm); cursor: pointer; transition: color var(--blora-dur-fast) var(--blora-ease), background var(--blora-dur-fast) var(--blora-ease); }
+.blora-dropdown-menu__item:hover { background: var(--blora-surface-2); color: var(--blora-text-strong); }
+.blora-dropdown-menu__sep { height: 1px; background: var(--blora-border-subtle); margin: var(--blora-space-1) 0; }
 
 /* =========================================================================
    11. 数据展示 · Data Display
@@ -1364,144 +1331,144 @@ body.blora-page {
 /* —— 表格 Table —— */
 .blora-table-wrap { overflow-x: auto; border: var(--blora-border); border-radius: var(--blora-radius-lg); background: var(--blora-surface-1); }
 .blora-table { width: 100%; border-collapse: collapse; font-size: var(--blora-text-sm); }
-.blora-table thead th { padding: 0.85em 1em; text-align: left; font-weight: 600; color: var(--blora-ink-deep); background: var(--blora-surface-2); border-bottom: 1px solid var(--blora-ink-ghost); white-space: nowrap; }
-.blora-table tbody td { padding: 0.85em 1em; color: var(--blora-ink-mid); border-bottom: 1px solid var(--blora-ink-ghost); }
+.blora-table thead th { padding: 0.85em 1em; text-align: left; font-weight: 600; color: var(--blora-foreground); background: var(--blora-surface-2); border-bottom: 1px solid var(--blora-border-subtle); white-space: nowrap; }
+.blora-table tbody td { padding: 0.85em 1em; color: var(--blora-text-emphasis); border-bottom: 1px solid var(--blora-border-subtle); }
 .blora-table tbody tr:last-child td { border-bottom: none; }
 .blora-table tbody tr { transition: background var(--blora-dur-fast) var(--blora-ease); }
 .blora-table tbody tr:hover { background: var(--blora-surface-2); }
 .blora-table--striped tbody tr:nth-child(odd) { background: var(--blora-surface-2); }
 .blora-table--striped tbody tr:nth-child(odd):hover { background: var(--blora-surface-3); }
-.blora-table__caption { padding: var(--blora-space-3) 1em; font-size: var(--blora-text-xs); color: var(--blora-ink-mist); }
+.blora-table__caption { padding: var(--blora-space-3) 1em; font-size: var(--blora-text-xs); color: var(--blora-text-subtle); }
 .blora-table-sort { cursor: pointer; user-select: none; }
-.blora-table-sort:hover { color: var(--blora-seal); }
+.blora-table-sort:hover { color: var(--blora-primary); }
 
 /* —— 列表 List —— */
 .blora-list { display: flex; flex-direction: column; }
-.blora-list__item { display: flex; align-items: center; gap: var(--blora-space-3); padding: var(--blora-space-3) var(--blora-space-4); border-bottom: 1px solid var(--blora-ink-ghost); transition: background var(--blora-dur-fast) var(--blora-ease); }
+.blora-list__item { display: flex; align-items: center; gap: var(--blora-space-3); padding: var(--blora-space-3) var(--blora-space-4); border-bottom: 1px solid var(--blora-border-subtle); transition: background var(--blora-dur-fast) var(--blora-ease); }
 .blora-list__item:last-child { border-bottom: none; }
 .blora-list__item:hover { background: var(--blora-surface-2); }
 .blora-list--hover .blora-list__item { cursor: pointer; }
 .blora-list__meta { flex: 1; min-width: 0; }
-.blora-list__title { font-size: var(--blora-text-sm); font-weight: 500; color: var(--blora-ink-deep); }
-.blora-list__desc { font-size: var(--blora-text-xs); color: var(--blora-ink-light); margin-top: 0.15em; }
+.blora-list__title { font-size: var(--blora-text-sm); font-weight: 500; color: var(--blora-foreground); }
+.blora-list__desc { font-size: var(--blora-text-xs); color: var(--blora-text-muted); margin-top: 0.15em; }
 
 /* —— 折叠面板 Collapse / Accordion —— */
 .blora-collapse { border: var(--blora-border); border-radius: var(--blora-radius-md); background: var(--blora-surface-1); overflow: hidden; }
-.blora-collapse__item { border-bottom: 1px solid var(--blora-ink-ghost); }
+.blora-collapse__item { border-bottom: 1px solid var(--blora-border-subtle); }
 .blora-collapse__item:last-child { border-bottom: none; }
-.blora-collapse__head { display: flex; align-items: center; justify-content: space-between; padding: 0.85em 1.1em; cursor: pointer; font-size: var(--blora-text-sm); font-weight: 500; color: var(--blora-ink-deep); transition: background var(--blora-dur-fast) var(--blora-ease); }
+.blora-collapse__head { display: flex; align-items: center; justify-content: space-between; padding: 0.85em 1.1em; cursor: pointer; font-size: var(--blora-text-sm); font-weight: 500; color: var(--blora-foreground); transition: background var(--blora-dur-fast) var(--blora-ease); }
 .blora-collapse__head:hover { background: var(--blora-surface-2); }
-.blora-collapse__icon { transition: transform var(--blora-dur-base) var(--blora-ease); color: var(--blora-ink-mist); display: inline-flex; }
+.blora-collapse__icon { transition: transform var(--blora-dur-base) var(--blora-ease); color: var(--blora-text-subtle); display: inline-flex; }
 .blora-collapse__item.is-open .blora-collapse__icon { transform: rotate(90deg); }
 .blora-collapse__body { overflow: hidden; max-height: 0; opacity: 0; transform: translateY(-4px); transition: max-height var(--blora-dur-base) var(--blora-ease), opacity var(--blora-dur-fast) var(--blora-ease), transform var(--blora-dur-base) var(--blora-ease); }
 .blora-collapse__item.is-open .blora-collapse__body { max-height: var(--blora-collapse-h, 400px); }
 .blora-collapse__item.is-open .blora-collapse__body { opacity: 1; transform: translateY(0); }
-.blora-collapse__content { padding: 0 var(--blora-space-6) var(--blora-space-5); color: var(--blora-ink-mid); font-size: var(--blora-text-sm); }
+.blora-collapse__content { padding: 0 var(--blora-space-6) var(--blora-space-5); color: var(--blora-text-emphasis); font-size: var(--blora-text-sm); }
 
 /* —— 时间轴 Timeline —— */
 .blora-timeline { position: relative; padding-left: var(--blora-space-7); }
-.blora-timeline::before { content: ""; position: absolute; left: 0.6em; top: 0.4em; bottom: 0.4em; width: 1px; background: var(--blora-ink-ghost); }
+.blora-timeline::before { content: ""; position: absolute; left: 0.6em; top: 0.4em; bottom: 0.4em; width: 1px; background: var(--blora-border-subtle); }
 .blora-timeline__item { position: relative; padding-bottom: var(--blora-space-6); }
 .blora-timeline__item:last-child { padding-bottom: 0; }
-.blora-timeline__dot { position: absolute; left: calc(-1 * var(--blora-space-7) + 0.15em); top: 0.3em; width: 0.9em; height: 0.9em; border-radius: 50%; background: var(--blora-surface-1); border: 2px solid var(--blora-ink-mist); }
-.blora-timeline__dot--seal { border-color: var(--blora-seal); background: var(--blora-seal); }
-.blora-timeline__dot--moss { border-color: var(--blora-moss); background: var(--blora-moss); }
-.blora-timeline__time { font-size: var(--blora-text-xs); color: var(--blora-ink-light); font-family: var(--blora-font-mono); }
-.blora-timeline__title { font-size: var(--blora-text-sm); font-weight: 500; color: var(--blora-ink-deep); margin-top: 0.2em; }
-.blora-timeline__desc { font-size: var(--blora-text-xs); color: var(--blora-ink-light); margin-top: 0.3em; }
+.blora-timeline__dot { position: absolute; left: calc(-1 * var(--blora-space-7) + 0.15em); top: 0.3em; width: 0.9em; height: 0.9em; border-radius: 50%; background: var(--blora-surface-1); border: 2px solid var(--blora-text-subtle); }
+.blora-timeline__dot--primary { border-color: var(--blora-primary); background: var(--blora-primary); }
+.blora-timeline__dot--success { border-color: var(--blora-success); background: var(--blora-success); }
+.blora-timeline__time { font-size: var(--blora-text-xs); color: var(--blora-text-muted); font-family: var(--blora-font-mono); }
+.blora-timeline__title { font-size: var(--blora-text-sm); font-weight: 500; color: var(--blora-foreground); margin-top: 0.2em; }
+.blora-timeline__desc { font-size: var(--blora-text-xs); color: var(--blora-text-muted); margin-top: 0.3em; }
 
 /* —— 树 Tree —— */
 .blora-tree { font-size: var(--blora-text-sm); }
 .blora-tree__node { display: flex; align-items: center; gap: var(--blora-space-2); padding: 0.35em 0.5em; border-radius: var(--blora-radius-sm); cursor: pointer; transition: background var(--blora-dur-fast) var(--blora-ease); }
 .blora-tree__node:hover { background: var(--blora-surface-2); }
-.blora-tree__node.is-selected { background: var(--blora-seal-tint); color: var(--blora-seal); }
-.blora-tree__toggle { width: 1em; color: var(--blora-ink-mist); transition: transform var(--blora-dur-base) var(--blora-ease); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex: none; user-select: none; }
-.blora-tree__toggle:hover { color: var(--blora-ink); }
+.blora-tree__node.is-selected { background: var(--blora-primary-tint); color: var(--blora-primary); }
+.blora-tree__toggle { width: 1em; color: var(--blora-text-subtle); transition: transform var(--blora-dur-base) var(--blora-ease); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex: none; user-select: none; }
+.blora-tree__toggle:hover { color: var(--blora-text-strong); }
 .blora-tree__node.is-open > .blora-tree__toggle { transform: rotate(90deg); }
 .blora-tree__children { padding-left: var(--blora-space-5); max-height: 0; overflow: hidden; opacity: 0; transform: translateY(-3px); transition: max-height var(--blora-dur-base) var(--blora-ease), opacity var(--blora-dur-fast) var(--blora-ease), transform var(--blora-dur-base) var(--blora-ease); }
 .blora-tree__node.is-open + .blora-tree__children { max-height: var(--blora-tree-h, 500px); opacity: 1; transform: translateY(0); }
 
 /* —— 统计 Statistic —— */
 .blora-stat { display: flex; flex-direction: column; gap: var(--blora-space-1); }
-.blora-stat__label { font-size: var(--blora-text-xs); text-transform: uppercase; letter-spacing: var(--blora-tracking-caps); color: var(--blora-ink-mist); }
-.blora-stat__value { font-family: var(--blora-font-serif); font-size: var(--blora-text-3xl); font-weight: 600; color: var(--blora-ink); line-height: 1; }
+.blora-stat__label { font-size: var(--blora-text-xs); text-transform: uppercase; letter-spacing: var(--blora-tracking-caps); color: var(--blora-text-subtle); }
+.blora-stat__value { font-family: var(--blora-font-heading); font-size: var(--blora-text-3xl); font-weight: 600; color: var(--blora-text-strong); line-height: 1; }
 .blora-stat__trend { font-size: var(--blora-text-xs); display: inline-flex; align-items: center; gap: 0.3em; }
-.blora-stat__trend--up { color: var(--blora-moss); }
+.blora-stat__trend--up { color: var(--blora-success); }
 .blora-stat__trend--down { color: var(--blora-danger); }
-.blora-stat__suffix { font-size: var(--blora-text-base); color: var(--blora-ink-light); margin-left: 0.2em; }
+.blora-stat__suffix { font-size: var(--blora-text-base); color: var(--blora-text-muted); margin-left: 0.2em; }
 
 /* —— 描述列表 Descriptions —— */
 .blora-descriptions { width: 100%; border-collapse: collapse; font-size: var(--blora-text-sm); }
-.blora-descriptions th, .blora-descriptions td { padding: 0.7em 1em; border: 1px solid var(--blora-ink-ghost); }
-.blora-descriptions th { background: var(--blora-surface-2); color: var(--blora-ink-mist); font-weight: 500; text-align: left; width: 12em; }
-.blora-descriptions td { color: var(--blora-ink-mid); }
+.blora-descriptions th, .blora-descriptions td { padding: 0.7em 1em; border: 1px solid var(--blora-border-subtle); }
+.blora-descriptions th { background: var(--blora-surface-2); color: var(--blora-text-subtle); font-weight: 500; text-align: left; width: 12em; }
+.blora-descriptions td { color: var(--blora-text-emphasis); }
 
 /* —— 轮播 Carousel —— */
 .blora-carousel { position: relative; overflow: hidden; border-radius: var(--blora-radius-lg); }
 .blora-carousel__track { display: flex; transition: transform var(--blora-dur-slow) var(--blora-ease); }
 .blora-carousel__slide { flex: 0 0 100%; }
-.blora-carousel__arrow { position: absolute; top: 50%; transform: translateY(-50%); width: 2.6em; height: 2.6em; border-radius: 50%; background: rgba(28,26,23,0.4); color: var(--blora-on-accent); display: grid; place-items: center; cursor: pointer; transition: background var(--blora-dur-fast) var(--blora-ease); backdrop-filter: blur(4px); }
+.blora-carousel__arrow { position: absolute; top: 50%; transform: translateY(-50%); width: 2.6em; height: 2.6em; border-radius: 50%; background: var(--blora-media-overlay); color: var(--blora-on-media); display: grid; place-items: center; cursor: pointer; transition: background var(--blora-dur-fast) var(--blora-ease); backdrop-filter: blur(4px); }
 .blora-carousel__arrow svg { width: 22px; height: 22px; display: block; }
-.blora-carousel__arrow:hover { background: rgba(28,26,23,0.7); }
+.blora-carousel__arrow:hover { background: var(--blora-media-overlay-strong); }
 .blora-carousel__arrow--prev { left: var(--blora-space-3); }
 .blora-carousel__arrow--next { right: var(--blora-space-3); }
 .blora-carousel__dots { position: absolute; bottom: var(--blora-space-3); left: 50%; transform: translateX(-50%); display: flex; gap: var(--blora-space-2); }
-.blora-carousel__dot { width: 0.6em; height: 0.6em; border-radius: 50%; background: rgba(248,244,236,0.6); cursor: pointer; transition: all var(--blora-dur-fast) var(--blora-ease); }
+.blora-carousel__dot { width: 0.6em; height: 0.6em; border-radius: 50%; background: var(--blora-media-indicator); cursor: pointer; transition: all var(--blora-dur-fast) var(--blora-ease); }
 .blora-carousel__dot.is-active { background: var(--blora-on-accent); width: 1.6em; border-radius: var(--blora-radius-full); }
 
 /* —— 图片占位 / Image —— */
 .blora-image { position: relative; display: inline-block; border-radius: var(--blora-radius-md); overflow: hidden; background: var(--blora-surface-3); }
 .blora-image img { display: block; width: 100%; transition: transform var(--blora-dur-slow) var(--blora-ease); }
 .blora-image--hover:hover img { transform: scale(1.04); }
-.blora-image__cap { position: absolute; left: 0; right: 0; bottom: 0; padding: var(--blora-space-4); background: linear-gradient(transparent, rgba(28,26,23,0.7)); color: var(--blora-on-accent); font-size: var(--blora-text-sm); }
-.blora-image--frame { padding: var(--blora-space-2); background: var(--blora-surface-1); border: 1px solid var(--blora-ink-ghost); }
+.blora-image__cap { position: absolute; left: 0; right: 0; bottom: 0; padding: var(--blora-space-4); background: linear-gradient(transparent, var(--blora-media-overlay-strong)); color: var(--blora-on-media); font-size: var(--blora-text-sm); }
+.blora-image--frame { padding: var(--blora-space-2); background: var(--blora-surface-1); border: 1px solid var(--blora-border-subtle); }
 .blora-image--frame img { border-radius: var(--blora-radius-sm); }
 
 /* —— 空状态 Empty —— */
-.blora-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--blora-space-3); padding: var(--blora-space-9) var(--blora-space-5); text-align: center; color: var(--blora-ink-light); }
-.blora-empty__icon { font-size: 3em; color: var(--blora-ink-faint); opacity: 0.6; }
-.blora-empty__title { font-family: var(--blora-font-serif); font-size: var(--blora-text-lg); color: var(--blora-ink-light); }
+.blora-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--blora-space-3); padding: var(--blora-space-9) var(--blora-space-5); text-align: center; color: var(--blora-text-muted); }
+.blora-empty__icon { font-size: 3em; color: var(--blora-text-disabled); opacity: 0.6; }
+.blora-empty__title { font-family: var(--blora-font-heading); font-size: var(--blora-text-lg); color: var(--blora-text-muted); }
 .blora-empty__desc { font-size: var(--blora-text-sm); }
 
 /* —— 结果 Result —— */
 .blora-result { display: flex; flex-direction: column; align-items: center; gap: var(--blora-space-3); padding: var(--blora-space-9) var(--blora-space-5); text-align: center; }
 .blora-result__icon { font-size: 3.5em; }
-.blora-result--success .blora-result__icon { color: var(--blora-moss); }
-.blora-result--warning .blora-result__icon { color: var(--blora-gold); }
+.blora-result--success .blora-result__icon { color: var(--blora-success); }
+.blora-result--warning .blora-result__icon { color: var(--blora-warning); }
 .blora-result--error .blora-result__icon   { color: var(--blora-danger); }
-.blora-result--info .blora-result__icon    { color: var(--blora-indigo); }
-.blora-result__title { font-family: var(--blora-font-serif); font-size: var(--blora-text-xl); color: var(--blora-ink); }
-.blora-result__desc { font-size: var(--blora-text-sm); color: var(--blora-ink-light); }
+.blora-result--info .blora-result__icon    { color: var(--blora-info); }
+.blora-result__title { font-family: var(--blora-font-heading); font-size: var(--blora-text-xl); color: var(--blora-text-strong); }
+.blora-result__desc { font-size: var(--blora-text-sm); color: var(--blora-text-muted); }
 
 /* —— 日历 Calendar —— */
 .blora-calendar { background: var(--blora-surface-1); border: var(--blora-border); border-radius: var(--blora-radius-lg); padding: var(--blora-space-4); }
 .blora-calendar__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--blora-space-4); }
-.blora-calendar__title { font-family: var(--blora-font-serif); font-size: var(--blora-text-lg); color: var(--blora-ink); font-weight: 600; cursor: pointer; padding: 0.2em 0.6em; border-radius: var(--blora-radius-sm); transition: all var(--blora-dur-fast) var(--blora-ease); user-select: none; }
-.blora-calendar__title:hover { background: var(--blora-surface-2); color: var(--blora-seal); }
+.blora-calendar__title { font-family: var(--blora-font-heading); font-size: var(--blora-text-lg); color: var(--blora-text-strong); font-weight: 600; cursor: pointer; padding: 0.2em 0.6em; border-radius: var(--blora-radius-sm); transition: all var(--blora-dur-fast) var(--blora-ease); user-select: none; }
+.blora-calendar__title:hover { background: var(--blora-surface-2); color: var(--blora-primary); }
 .blora-calendar__grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
 .blora-calendar__grid--months { grid-template-columns: repeat(3, 1fr); }
 .blora-calendar__grid--years  { grid-template-columns: repeat(4, 1fr); }
-.blora-calendar__dow { text-align: center; font-size: var(--blora-text-xs); text-transform: uppercase; letter-spacing: var(--blora-tracking-caps); color: var(--blora-ink-mist); padding: var(--blora-space-2) 0; }
-.blora-calendar__cell { aspect-ratio: 1; display: grid; place-items: center; font-size: var(--blora-text-sm); color: var(--blora-ink-mid); border-radius: var(--blora-radius-sm); cursor: pointer; transition: all var(--blora-dur-fast) var(--blora-ease); position: relative; }
+.blora-calendar__dow { text-align: center; font-size: var(--blora-text-xs); text-transform: uppercase; letter-spacing: var(--blora-tracking-caps); color: var(--blora-text-subtle); padding: var(--blora-space-2) 0; }
+.blora-calendar__cell { aspect-ratio: 1; display: grid; place-items: center; font-size: var(--blora-text-sm); color: var(--blora-text-emphasis); border-radius: var(--blora-radius-sm); cursor: pointer; transition: all var(--blora-dur-fast) var(--blora-ease); position: relative; }
 .blora-calendar__cell--month, .blora-calendar__cell--year { aspect-ratio: unset; padding: 0.8em 0; }
 .blora-calendar__cell:hover { background: var(--blora-surface-2); }
-.blora-calendar__cell.is-other { color: var(--blora-ink-faint); }
-.blora-calendar__cell.is-today { font-weight: 700; color: var(--blora-seal); }
-.blora-calendar__cell.is-today::after { content: ""; position: absolute; bottom: 0.2em; left: 50%; transform: translateX(-50%); width: 0.3em; height: 0.3em; border-radius: 50%; background: var(--blora-seal); }
-.blora-calendar__cell.is-selected { color: var(--blora-seal); font-weight: 700; box-shadow: inset 0 0 0 2px var(--blora-seal); }
+.blora-calendar__cell.is-other { color: var(--blora-text-disabled); }
+.blora-calendar__cell.is-today { font-weight: 700; color: var(--blora-primary); }
+.blora-calendar__cell.is-today::after { content: ""; position: absolute; bottom: 0.2em; left: 50%; transform: translateX(-50%); width: 0.3em; height: 0.3em; border-radius: 50%; background: var(--blora-primary); }
+.blora-calendar__cell.is-selected { color: var(--blora-primary); font-weight: 700; box-shadow: inset 0 0 0 2px var(--blora-primary); }
 .blora-calendar__cell .blora-dot { position: absolute; top: 0.2em; right: 0.3em; width: 0.35em; height: 0.35em; }
 
 /* —— 穿梭框 Transfer —— */
 .blora-transfer { display: flex; gap: var(--blora-space-3); align-items: center; }
 .blora-transfer__panel { flex: 1; border: var(--blora-border); border-radius: var(--blora-radius-md); background: var(--blora-surface-1); display: flex; flex-direction: column; max-height: 240px; }
-.blora-transfer__head { padding: var(--blora-space-3) var(--blora-space-4); border-bottom: 1px solid var(--blora-ink-ghost); font-size: var(--blora-text-sm); font-weight: 500; }
+.blora-transfer__head { padding: var(--blora-space-3) var(--blora-space-4); border-bottom: 1px solid var(--blora-border-subtle); font-size: var(--blora-text-sm); font-weight: 500; }
 .blora-transfer__list { flex: 1; overflow-y: auto; padding: var(--blora-space-2); }
-.blora-transfer__row { display: flex; align-items: center; gap: var(--blora-space-2); padding: 0.4em 0.5em; font-size: var(--blora-text-sm); color: var(--blora-ink-mid); border-radius: var(--blora-radius-sm); cursor: pointer; user-select: none; }
+.blora-transfer__row { display: flex; align-items: center; gap: var(--blora-space-2); padding: 0.4em 0.5em; font-size: var(--blora-text-sm); color: var(--blora-text-emphasis); border-radius: var(--blora-radius-sm); cursor: pointer; user-select: none; }
 .blora-transfer__row:hover { background: var(--blora-surface-2); }
 .blora-transfer__row input[type="checkbox"] { position: absolute; opacity: 0; pointer-events: none; }
 .blora-transfer__check {
   width: 1.15em; height: 1.15em; flex: none;
-  border: 1.5px solid var(--blora-ink-mist); border-radius: var(--blora-radius-xs);
+  border: 1.5px solid var(--blora-text-subtle); border-radius: var(--blora-radius-xs);
   background: var(--blora-surface-1);
   display: grid; place-items: center;
   transition: all var(--blora-dur-fast) var(--blora-ease);
@@ -1513,7 +1480,7 @@ body.blora-page {
   border-width: 0 0 2px 2px;
   opacity: 0; transform: rotate(-45deg) scale(0.4); transition: all var(--blora-dur-fast) var(--blora-ease-overshoot);
 }
-.blora-transfer__row input:checked + .blora-transfer__check { background: var(--blora-seal); border-color: var(--blora-seal); }
+.blora-transfer__row input:checked + .blora-transfer__check { background: var(--blora-primary); border-color: var(--blora-primary); }
 .blora-transfer__row input:checked + .blora-transfer__check::after { opacity: 1; transform: rotate(-45deg) scale(1); }
 .blora-transfer__row input:focus-visible + .blora-transfer__check { box-shadow: var(--blora-focus-ring-strong); }
 .blora-transfer__row input:disabled + .blora-transfer__check { opacity: 0.4; }
@@ -1521,11 +1488,11 @@ body.blora-page {
 
 /* —— 级联选择 Cascader —— */
 .blora-cascader { display: flex; border: var(--blora-border); border-radius: var(--blora-radius-md); background: var(--blora-surface-1); overflow: hidden; }
-.blora-cascader__col { min-width: 140px; max-height: 240px; overflow-y: auto; border-right: 1px solid var(--blora-ink-ghost); padding: var(--blora-space-2); flex: none; }
+.blora-cascader__col { min-width: 140px; max-height: 240px; overflow-y: auto; border-right: 1px solid var(--blora-border-subtle); padding: var(--blora-space-2); flex: none; }
 .blora-cascader__col:last-child { border-right: none; }
-.blora-cascader__opt { padding: 0.4em 0.6em; font-size: var(--blora-text-sm); color: var(--blora-ink-mid); border-radius: var(--blora-radius-sm); cursor: pointer; display: flex; align-items: center; }
+.blora-cascader__opt { padding: 0.4em 0.6em; font-size: var(--blora-text-sm); color: var(--blora-text-emphasis); border-radius: var(--blora-radius-sm); cursor: pointer; display: flex; align-items: center; }
 .blora-cascader__opt:hover { background: var(--blora-surface-2); }
-.blora-cascader__opt.is-selected { background: var(--blora-seal-tint); color: var(--blora-seal); font-weight: 500; }
+.blora-cascader__opt.is-selected { background: var(--blora-primary-tint); color: var(--blora-primary); font-weight: 500; }
 .blora-cascader__arrow { opacity: 0.5; margin-left: auto; padding-left: 0.3em; flex: none; }
 
 /* =========================================================================
@@ -1540,38 +1507,38 @@ body.blora-page {
 .blora-alert__close { color: currentColor; opacity: 0.5; cursor: pointer; flex: none; display: inline-flex; align-items: center; }
 .blora-alert__close:hover { opacity: 1; }
 .blora-alert__close svg { display: block; }
-.blora-alert--info    { background: color-mix(in srgb, var(--blora-info) 6%, transparent); color: var(--blora-indigo); border-color: color-mix(in srgb, var(--blora-info) 20%, transparent); }
-.blora-alert--success { background: color-mix(in srgb, var(--blora-success) 6%, transparent); color: var(--blora-moss); border-color: color-mix(in srgb, var(--blora-success) 20%, transparent); }
-.blora-alert--warning { background: color-mix(in srgb, var(--blora-warning) 8%, transparent); color: var(--blora-gold); border-color: color-mix(in srgb, var(--blora-warning) 30%, transparent); }
+.blora-alert--info    { background: color-mix(in srgb, var(--blora-info) 6%, transparent); color: var(--blora-info); border-color: color-mix(in srgb, var(--blora-info) 20%, transparent); }
+.blora-alert--success { background: color-mix(in srgb, var(--blora-success) 6%, transparent); color: var(--blora-success); border-color: color-mix(in srgb, var(--blora-success) 20%, transparent); }
+.blora-alert--warning { background: color-mix(in srgb, var(--blora-warning) 8%, transparent); color: var(--blora-warning); border-color: color-mix(in srgb, var(--blora-warning) 30%, transparent); }
 .blora-alert--danger  { background: color-mix(in srgb, var(--blora-danger) 6%, transparent); color: var(--blora-danger); border-color: color-mix(in srgb, var(--blora-danger) 20%, transparent); }
 .blora-alert--ghost { background: transparent; }
 
 /* —— 横幅 Banner —— */
 .blora-banner { display: flex; align-items: center; gap: var(--blora-space-4); padding: var(--blora-space-5) var(--blora-space-6); border-radius: var(--blora-radius-lg); background: var(--blora-banner-bg); color: var(--blora-on-accent); position: relative; overflow: hidden; }
-.blora-banner::before { content: ""; position: absolute; right: -20%; top: -50%; width: 60%; height: 200%; background: radial-gradient(ellipse, color-mix(in srgb, var(--blora-seal) 25%, transparent) 0%, transparent 70%); }
+.blora-banner::before { content: ""; position: absolute; right: -20%; top: -50%; width: 60%; height: 200%; background: radial-gradient(ellipse, color-mix(in srgb, var(--blora-primary) 25%, transparent) 0%, transparent 70%); }
 .blora-banner__body { flex: 1; z-index: 1; }
-.blora-banner__title { font-family: var(--blora-font-serif); font-size: var(--blora-text-xl); margin-bottom: var(--blora-space-1); }
+.blora-banner__title { font-family: var(--blora-font-heading); font-size: var(--blora-text-xl); margin-bottom: var(--blora-space-1); }
 .blora-banner__desc { font-size: var(--blora-text-sm); opacity: 0.85; }
 .blora-banner__actions { z-index: 1; display: flex; gap: var(--blora-space-2); }
 
 /* —— 消息提示 Message (inline) —— */
-.blora-message { display: inline-flex; align-items: center; gap: var(--blora-space-3); padding: 0.7em 1.2em; background: var(--blora-surface-1); border: 1px solid var(--blora-ink-ghost); border-radius: var(--blora-radius-full); box-shadow: var(--blora-shadow-3); font-size: var(--blora-text-sm); }
+.blora-message { display: inline-flex; align-items: center; gap: var(--blora-space-3); padding: 0.7em 1.2em; background: var(--blora-surface-1); border: 1px solid var(--blora-border-subtle); border-radius: var(--blora-radius-full); box-shadow: var(--blora-shadow-3); font-size: var(--blora-text-sm); }
 .blora-message__icon { font-size: 1.1em; }
-.blora-message--success .blora-message__icon { color: var(--blora-moss); }
-.blora-message--warning .blora-message__icon { color: var(--blora-gold); }
+.blora-message--success .blora-message__icon { color: var(--blora-success); }
+.blora-message--warning .blora-message__icon { color: var(--blora-warning); }
 .blora-message--danger .blora-message__icon  { color: var(--blora-danger); }
-.blora-message--info .blora-message__icon    { color: var(--blora-indigo); }
+.blora-message--info .blora-message__icon    { color: var(--blora-info); }
 
 /* —— 通知 Notification —— */
-.blora-notification { display: flex; gap: var(--blora-space-3); padding: var(--blora-space-4) var(--blora-space-5); background: var(--blora-surface-1); border: 1px solid var(--blora-ink-ghost); border-radius: var(--blora-radius-lg); box-shadow: var(--blora-shadow-3); max-width: 360px; }
+.blora-notification { display: flex; gap: var(--blora-space-3); padding: var(--blora-space-4) var(--blora-space-5); background: var(--blora-surface-1); border: 1px solid var(--blora-border-subtle); border-radius: var(--blora-radius-lg); box-shadow: var(--blora-shadow-3); max-width: 360px; }
 .blora-notification__icon { font-size: 1.3em; flex: none; }
-.blora-notification--success .blora-notification__icon { color: var(--blora-moss); }
-.blora-notification--warning .blora-notification__icon { color: var(--blora-gold); }
+.blora-notification--success .blora-notification__icon { color: var(--blora-success); }
+.blora-notification--warning .blora-notification__icon { color: var(--blora-warning); }
 .blora-notification--danger .blora-notification__icon  { color: var(--blora-danger); }
-.blora-notification__title { font-weight: 600; font-size: var(--blora-text-sm); color: var(--blora-ink-deep); }
-.blora-notification__desc { font-size: var(--blora-text-xs); color: var(--blora-ink-light); margin-top: 0.2em; }
-.blora-notification__close { color: var(--blora-ink-mist); cursor: pointer; flex: none; align-self: flex-start; display: inline-flex; align-items: center; }
-.blora-notification__close:hover { color: var(--blora-ink); }
+.blora-notification__title { font-weight: 600; font-size: var(--blora-text-sm); color: var(--blora-foreground); }
+.blora-notification__desc { font-size: var(--blora-text-xs); color: var(--blora-text-muted); margin-top: 0.2em; }
+.blora-notification__close { color: var(--blora-text-subtle); cursor: pointer; flex: none; align-self: flex-start; display: inline-flex; align-items: center; }
+.blora-notification__close:hover { color: var(--blora-text-strong); }
 .blora-notification__close svg { display: block; }
 
 /* —— 提示文字 Tooltip —— */
@@ -1587,11 +1554,11 @@ body.blora-page {
 .blora-popover { position: relative; display: inline-flex; }
 .blora-popover__panel { position: absolute; top: calc(100% + 0.5em); left: 50%; transform: translateX(-50%) translateY(4px); min-width: 200px; padding: var(--blora-space-4); background: var(--blora-surface-1); border: var(--blora-border); border-radius: var(--blora-radius-md); box-shadow: var(--blora-shadow-3); opacity: 0; pointer-events: none; transition: all var(--blora-dur-base) var(--blora-ease); z-index: var(--blora-z-dropdown); }
 .blora-popover.is-open .blora-popover__panel { opacity: 1; pointer-events: auto; transform: translateX(-50%) translateY(0); }
-.blora-popover__title { font-family: var(--blora-font-serif); font-size: var(--blora-text-sm); font-weight: 600; color: var(--blora-ink-deep); margin-bottom: var(--blora-space-2); }
-.blora-popover__body { font-size: var(--blora-text-xs); color: var(--blora-ink-mid); }
+.blora-popover__title { font-family: var(--blora-font-heading); font-size: var(--blora-text-sm); font-weight: 600; color: var(--blora-foreground); margin-bottom: var(--blora-space-2); }
+.blora-popover__body { font-size: var(--blora-text-xs); color: var(--blora-text-emphasis); }
 
 /* —— 确认气泡 Popconfirm —— */
-.blora-popconfirm__title { font-size: var(--blora-text-sm); color: var(--blora-ink-deep); margin-bottom: var(--blora-space-3); }
+.blora-popconfirm__title { font-size: var(--blora-text-sm); color: var(--blora-foreground); margin-bottom: var(--blora-space-3); }
 
 /* —— 模态框 Modal —— */
 .blora-modal { position: fixed; inset: 0; z-index: var(--blora-z-modal); display: none; align-items: center; justify-content: center; padding: var(--blora-space-5); }
@@ -1602,11 +1569,11 @@ body.blora-page {
 .blora-modal__mask { position: absolute; inset: 0; background: var(--blora-overlay-modal); backdrop-filter: blur(4px); animation: blora-fade-in var(--blora-dur-base) var(--blora-ease); }
 .blora-modal__dialog { position: relative; background: var(--blora-surface-1); border-radius: var(--blora-radius-xl); box-shadow: var(--blora-shadow-4); max-width: 520px; width: 100%; max-height: calc(100vh - 2 * var(--blora-space-8)); overflow-y: auto; animation: blora-pop-in var(--blora-dur-base) var(--blora-ease-overshoot); }
 .blora-modal__head { display: flex; align-items: center; justify-content: space-between; padding: var(--blora-space-5) var(--blora-space-6); border-bottom: var(--blora-border); }
-.blora-modal__title { font-family: var(--blora-font-serif); font-size: var(--blora-text-xl); color: var(--blora-ink); }
-.blora-modal__close { color: var(--blora-ink-mist); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; padding: 0.2em; border-radius: var(--blora-radius-sm); transition: all var(--blora-dur-fast) var(--blora-ease); }
-.blora-modal__close:hover { color: var(--blora-ink); background: var(--blora-surface-2); }
+.blora-modal__title { font-family: var(--blora-font-heading); font-size: var(--blora-text-xl); color: var(--blora-text-strong); }
+.blora-modal__close { color: var(--blora-text-subtle); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; padding: 0.2em; border-radius: var(--blora-radius-sm); transition: all var(--blora-dur-fast) var(--blora-ease); }
+.blora-modal__close:hover { color: var(--blora-text-strong); background: var(--blora-surface-2); }
 .blora-modal__close svg { display: block; }
-.blora-modal__body { padding: var(--blora-space-6); color: var(--blora-ink-mid); font-size: var(--blora-text-sm); }
+.blora-modal__body { padding: var(--blora-space-6); color: var(--blora-text-emphasis); font-size: var(--blora-text-sm); }
 .blora-modal__foot { padding: var(--blora-space-4) var(--blora-space-6); border-top: var(--blora-border); display: flex; justify-content: flex-end; gap: var(--blora-space-2); }
 .blora-modal--lg .blora-modal__dialog { max-width: 800px; }
 .blora-modal--sm .blora-modal__dialog { max-width: 400px; }
@@ -1614,9 +1581,9 @@ body.blora-page {
 
 /* —— 命令面板列表 · Command Palette —— */
 .blora-cmdk-results { max-height: 320px; overflow-y: auto; margin-top: var(--blora-space-3); }
-.blora-cmdk-item { display: flex; align-items: center; gap: var(--blora-space-3); padding: 0.6em 0.8em; border-radius: var(--blora-radius-sm); cursor: pointer; font-size: var(--blora-text-sm); color: var(--blora-ink-mid); }
-.blora-cmdk-item:hover, .blora-cmdk-item.is-active { background: var(--blora-surface-2); color: var(--blora-ink); }
-.blora-cmdk-item__kbd { margin-left: auto; font-family: var(--blora-font-mono); font-size: var(--blora-text-xs); color: var(--blora-ink-mist); }
+.blora-cmdk-item { display: flex; align-items: center; gap: var(--blora-space-3); padding: 0.6em 0.8em; border-radius: var(--blora-radius-sm); cursor: pointer; font-size: var(--blora-text-sm); color: var(--blora-text-emphasis); }
+.blora-cmdk-item:hover, .blora-cmdk-item.is-active { background: var(--blora-surface-2); color: var(--blora-text-strong); }
+.blora-cmdk-item__kbd { margin-left: auto; font-family: var(--blora-font-mono); font-size: var(--blora-text-xs); color: var(--blora-text-subtle); }
 
 /* —— 抽屉 Drawer —— */
 .blora-drawer { position: fixed; inset: 0; z-index: var(--blora-z-drawer); display: none; }
@@ -1634,8 +1601,8 @@ body.blora-page {
 .blora-drawer--top   .blora-drawer__panel { left: 0; right: 0; top: 0; bottom: auto; height: auto; max-height: 70vh; animation: blora-slide-down var(--blora-dur-slow) var(--blora-ease); }
 .blora-drawer--bottom .blora-drawer__panel { left: 0; right: 0; bottom: 0; top: auto; height: auto; max-height: 70vh; animation: blora-slide-up var(--blora-dur-slow) var(--blora-ease); }
 .blora-drawer__head { padding: var(--blora-space-5) var(--blora-space-6); border-bottom: var(--blora-border); display: flex; align-items: center; justify-content: space-between; }
-.blora-drawer__title { font-family: var(--blora-font-serif); font-size: var(--blora-text-lg); color: var(--blora-ink); }
-.blora-drawer__body { flex: 1; padding: var(--blora-space-6); overflow-y: auto; color: var(--blora-ink-mid); }
+.blora-drawer__title { font-family: var(--blora-font-heading); font-size: var(--blora-text-lg); color: var(--blora-text-strong); }
+.blora-drawer__body { flex: 1; padding: var(--blora-space-6); overflow-y: auto; color: var(--blora-text-emphasis); }
 .blora-drawer__foot { padding: var(--blora-space-4) var(--blora-space-6); border-top: var(--blora-border); display: flex; gap: var(--blora-space-2); justify-content: flex-end; }
 
 /* —— Toast 容器 —— */
@@ -1657,37 +1624,33 @@ body.blora-page {
 .blora-gap-2 { gap: var(--blora-space-2); } .blora-gap-3 { gap: var(--blora-space-3); } .blora-gap-4 { gap: var(--blora-space-4); }
 .blora-items-center { align-items: center; } .blora-justify-between { justify-content: space-between; }
 
-/* —— 灰度滤镜（图片降色滤镜） —— */
-.blora-inkify { filter: grayscale(0.4) sepia(0.18) contrast(0.96) brightness(1.02); }
-.blora-inkify-strong { filter: grayscale(0.85) sepia(0.3) contrast(1.05); }
+/* —— 图像降色 · Image tone utilities —— */
+.blora-image-muted { filter: saturate(0.6) contrast(0.96); }
+.blora-image-monochrome { filter: grayscale(1) contrast(1.02); }
 
-/* —— 墨晕 · Ink Wash —— 装饰性背景块，径向渐变模拟晕染 */
-.blora-ink-wash  { background: radial-gradient(ellipse at 50% 40%, color-mix(in srgb, var(--blora-ink) 10%, transparent) 0%, transparent 70%); }
-.blora-seal-wash { background: radial-gradient(ellipse at 50% 40%, color-mix(in srgb, var(--blora-seal) 12%, transparent) 0%, transparent 70%); }
-
-/* —— 滚动条 · Scrollbar —— 细若游丝，不夺目 */
+/* —— 滚动条 · Scrollbar —— 低对比、始终可辨 */
 html:has(body.blora-page),
 :where(body.blora-page, .blora-scope, .blora-portal),
-:where(body.blora-page, .blora-scope, .blora-portal) * { scrollbar-width: thin; scrollbar-color: var(--blora-ink-ghost) transparent; }
-html:has(body.blora-page) { scrollbar-color: var(--blora-ink-ghost) var(--blora-paper); }
+:where(body.blora-page, .blora-scope, .blora-portal) * { scrollbar-width: thin; scrollbar-color: var(--blora-border-subtle) transparent; }
+html:has(body.blora-page) { scrollbar-color: var(--blora-border-subtle) var(--blora-background); }
 html:has(body.blora-page)::-webkit-scrollbar,
 :where(body.blora-page, .blora-scope, .blora-portal)::-webkit-scrollbar,
 :where(body.blora-page, .blora-scope, .blora-portal) *::-webkit-scrollbar { width: 10px; height: 10px; }
 html:has(body.blora-page)::-webkit-scrollbar-track,
 :where(body.blora-page, .blora-scope, .blora-portal)::-webkit-scrollbar-track,
 :where(body.blora-page, .blora-scope, .blora-portal) *::-webkit-scrollbar-track { background: transparent; }
-html:has(body.blora-page)::-webkit-scrollbar-track { background: var(--blora-paper); }
+html:has(body.blora-page)::-webkit-scrollbar-track { background: var(--blora-background); }
 html:has(body.blora-page)::-webkit-scrollbar-thumb,
 :where(body.blora-page, .blora-scope, .blora-portal)::-webkit-scrollbar-thumb,
 :where(body.blora-page, .blora-scope, .blora-portal) *::-webkit-scrollbar-thumb {
-  background: var(--blora-ink-ghost);
+  background: var(--blora-border-subtle);
   border-radius: var(--blora-radius-full);
   border: 3px solid transparent;
   background-clip: padding-box;
 }
 html:has(body.blora-page)::-webkit-scrollbar-thumb:hover,
 :where(body.blora-page, .blora-scope, .blora-portal)::-webkit-scrollbar-thumb:hover,
-:where(body.blora-page, .blora-scope, .blora-portal) *::-webkit-scrollbar-thumb:hover { background: var(--blora-ink-mist); background-clip: padding-box; border: 3px solid transparent; }
+:where(body.blora-page, .blora-scope, .blora-portal) *::-webkit-scrollbar-thumb:hover { background: var(--blora-text-subtle); background-clip: padding-box; border: 3px solid transparent; }
 html:has(body.blora-page)::-webkit-scrollbar-button,
 :where(body.blora-page, .blora-scope, .blora-portal)::-webkit-scrollbar-button,
 :where(body.blora-page, .blora-scope, .blora-portal) *::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
@@ -1696,48 +1659,83 @@ html:has(body.blora-page)::-webkit-scrollbar-corner,
 :where(body.blora-page, .blora-scope, .blora-portal) *::-webkit-scrollbar-corner { background: transparent; }
 
 /* =========================================================================
-   14. 暗色模式 · Dark Mode (夜墨)
+   14. 暗色模式 · Dark Mode
    ========================================================================= */
 :root.blora-dark, :root.blora-dark body {
-  --blora-paper:          #1B1916;
-  --blora-paper-warm:     #232017;
-  --blora-paper-cool:     #1E1C19;
-  --blora-paper-deep:     #0E0D0B;
-  --blora-surface-1:      #25221D;
-  --blora-surface-2:      #2C2823;
-  --blora-surface-3:      #36322B;
-  --blora-ink:            #F0EBDE;
-  --blora-ink-deep:       #FAF6EC;
-  --blora-ink-mid:        #D5CCB8;
-  --blora-ink-light:      #A89F8C;
-  --blora-ink-mist:       #7D7565;
-  --blora-ink-faint:      #5C5547;
-  --blora-ink-ghost:      #3F3A32;
+  --blora-background: #151317;
+  --blora-surface-1:      #201D23;
+  --blora-surface-2:      #2A262E;
+  --blora-surface-3:      #38333D;
+  --blora-text-strong:    #F5F2F6;
+  --blora-foreground:     #EAE5EC;
+  --blora-text-emphasis:  #CBC3CE;
+  --blora-text-muted:     #9E95A2;
+  --blora-text-subtle:    #756C79;
+  --blora-text-disabled:  #59515D;
+  --blora-border-subtle:  #403A44;
   --blora-overlay-modal:  rgba(0,0,0,0.62);
   --blora-overlay-drawer: rgba(0,0,0,0.58);
-  --blora-code-bg:       #14110D;
-  --blora-code-fg:       #E8DFC8;
-  --blora-banner-bg:     #2A2520;
-  --blora-tooltip-bg:    #14110D;
+  --blora-code-bg:       #0D0B0F;
+  --blora-code-fg:       #F5F2F6;
+  --blora-banner-bg:     #1B181E;
+  --blora-tooltip-bg:    #0D0B0F;
   --blora-shadow-1: 0 1px 3px rgba(0,0,0,0.3);
   --blora-shadow-2: 0 4px 12px rgba(0,0,0,0.36);
   --blora-shadow-3: 0 12px 30px rgba(0,0,0,0.44);
   --blora-shadow-4: 0 24px 56px rgba(0,0,0,0.54);
-  /* 暗色下底层纹理改用极淡白点，顶层渐光取消，避免浅色晕染显形 */
-  --blora-grain:
+  /* 暗色背景纹理保持低对比，避免产生可见亮斑 */
+  --blora-background-texture:
     radial-gradient(ellipse at 20% 30%, rgba(255,255,255,0.012) 0%, transparent 50%),
     radial-gradient(ellipse at 80% 70%, rgba(255,255,255,0.008) 0%, transparent 55%);
-  --blora-paper-tint: none;
+  --blora-background-overlay: none;
   --blora-shadow-inset: inset 0 1px 0 rgba(255,255,255,0.04),
                        inset 0 -1px 0 rgba(0,0,0,0.3);
   color-scheme: dark;
 }
 
+:root.blora-dark[data-blora-palette="cinnabar"],
+:root.blora-dark[data-blora-palette="cinnabar"] body {
+  --blora-background: #1B1916;
+  --blora-surface-1: #25221D; --blora-surface-2: #2C2823; --blora-surface-3: #36322B;
+  --blora-text-strong: #F0EBDE; --blora-foreground: #FAF6EC; --blora-text-emphasis: #D5CCB8; --blora-text-muted: #A89F8C; --blora-text-subtle: #7D7565; --blora-text-disabled: #5C5547; --blora-border-subtle: #3F3A32;
+  --blora-code-bg: #14110D; --blora-code-fg: #E8DFC8; --blora-banner-bg: #2A2520; --blora-tooltip-bg: #14110D;
+}
+
+:root.blora-dark[data-blora-palette="indigo"],
+:root.blora-dark[data-blora-palette="indigo"] body {
+  --blora-background: #12151B;
+  --blora-surface-1: #1C2028; --blora-surface-2: #252A34; --blora-surface-3: #313743;
+  --blora-text-strong: #F3F5F8; --blora-foreground: #E7EAF0; --blora-text-emphasis: #C3C8D1; --blora-text-muted: #959CA8; --blora-text-subtle: #6D7581; --blora-text-disabled: #525963; --blora-border-subtle: #3A414C;
+  --blora-primary: #8FA8CF; --blora-primary-hover: #A9BDE0; --blora-primary-soft: #6C85A9; --blora-danger: #D1848A;
+  --blora-accent-neutral: #A49A8D; --blora-accent-neutral-soft: #BBB3A8; --blora-info: #8FA8CF; --blora-info-soft: #AABBD3; --blora-success: #84A79E; --blora-success-soft: #A2BBB5; --blora-support: #91A894; --blora-warning: #C3A477; --blora-accent-secondary: #B39786;
+  --blora-on-accent: #172033; --blora-code-bg: #0B0E13; --blora-code-fg: #F3F5F8; --blora-banner-bg: #181C24; --blora-tooltip-bg: #0B0E13;
+}
+
+:root.blora-dark[data-blora-palette="lotus"],
+:root.blora-dark[data-blora-palette="lotus"] body {
+  --blora-background: #181419;
+  --blora-surface-1: #231E24; --blora-surface-2: #2D262E; --blora-surface-3: #3B323C;
+  --blora-text-strong: #F7F2F5; --blora-foreground: #ECE5E9; --blora-text-emphasis: #CFC3C9; --blora-text-muted: #A1969C; --blora-text-subtle: #786F74; --blora-text-disabled: #5A5257; --blora-border-subtle: #423A40;
+  --blora-primary: #D18AAA; --blora-primary-hover: #E1A4BE; --blora-primary-soft: #AF6B8B; --blora-danger: #D07E82;
+  --blora-accent-neutral: #A49386; --blora-accent-neutral-soft: #BAAEA4; --blora-info: #929DB8; --blora-info-soft: #ADB5C8; --blora-success: #83A699; --blora-success-soft: #A0BBB1; --blora-support: #91A58E; --blora-warning: #C2A174; --blora-accent-secondary: #B48E9F;
+  --blora-on-accent: #2A1720; --blora-code-bg: #0F0C10; --blora-code-fg: #F7F2F5; --blora-banner-bg: #1E191F; --blora-tooltip-bg: #0F0C10;
+}
+
+:root.blora-dark[data-blora-palette="ocean"],
+:root.blora-dark[data-blora-palette="ocean"] body {
+  --blora-background: #101719;
+  --blora-surface-1: #192225; --blora-surface-2: #222D30; --blora-surface-3: #2D3A3E;
+  --blora-text-strong: #F0F6F6; --blora-foreground: #E3ECEC; --blora-text-emphasis: #C0CDCE; --blora-text-muted: #919FA1; --blora-text-subtle: #68777A; --blora-text-disabled: #4E5B5E; --blora-border-subtle: #37464A;
+  --blora-primary: #75B4BC; --blora-primary-hover: #91C6CC; --blora-primary-soft: #568F97; --blora-danger: #CE817B;
+  --blora-accent-neutral: #98A08A; --blora-accent-neutral-soft: #B1B7A5; --blora-info: #82A6BF; --blora-info-soft: #A0B9CA; --blora-success: #79A992; --blora-success-soft: #99BDAA; --blora-support: #8EAA8F; --blora-warning: #C2A175; --blora-accent-secondary: #B3947F;
+  --blora-on-accent: #102326; --blora-code-bg: #090E0F; --blora-code-fg: #F0F6F6; --blora-banner-bg: #151E20; --blora-tooltip-bg: #090E0F;
+}
+
 :root.blora-dark[data-blora-palette="graphite"],
 :root.blora-dark[data-blora-palette="graphite"] body {
-  --blora-paper: #111316; --blora-paper-warm: #171A1E; --blora-paper-cool: #15181C; --blora-paper-deep: #0B0D0F;
+  --blora-background: #111316;
   --blora-surface-1: #1B1E23; --blora-surface-2: #24282E; --blora-surface-3: #30353D;
-  --blora-ink: #F3F4F6; --blora-ink-deep: #E8EAED; --blora-ink-mid: #C5C9CF; --blora-ink-light: #979EA8; --blora-ink-mist: #6F7782; --blora-ink-faint: #545B64; --blora-ink-ghost: #3B4149;
+  --blora-text-strong: #F3F4F6; --blora-foreground: #E8EAED; --blora-text-emphasis: #C5C9CF; --blora-text-muted: #979EA8; --blora-text-subtle: #6F7782; --blora-text-disabled: #545B64; --blora-border-subtle: #3B4149;
   --blora-primary: #91A5B7; --blora-primary-hover: #AEBBC7; --blora-primary-soft: #718696; --blora-danger: #C9898D;
   --blora-accent-neutral: #9AA0A8; --blora-accent-neutral-soft: #B1B6BC; --blora-info: #8FA2BA; --blora-info-soft: #AAB8C9; --blora-success: #86A399; --blora-success-soft: #A3B8B0; --blora-support: #91A2A5; --blora-warning: #BDA67E; --blora-accent-secondary: #A58D9A;
   --blora-on-accent: #14191E;
@@ -1746,9 +1744,9 @@ html:has(body.blora-page)::-webkit-scrollbar-corner,
 }
 :root.blora-dark[data-blora-palette="mono"],
 :root.blora-dark[data-blora-palette="mono"] body {
-  --blora-paper: #111110; --blora-paper-warm: #171716; --blora-paper-cool: #151514; --blora-paper-deep: #090909;
+  --blora-background: #111110;
   --blora-surface-1: #1B1B1A; --blora-surface-2: #242422; --blora-surface-3: #30302D;
-  --blora-ink: #FAFAF9; --blora-ink-deep: #EDEDEB; --blora-ink-mid: #C8C8C3; --blora-ink-light: #9A9A94; --blora-ink-mist: #71716C; --blora-ink-faint: #555551; --blora-ink-ghost: #3B3B38;
+  --blora-text-strong: #FAFAF9; --blora-foreground: #EDEDEB; --blora-text-emphasis: #C8C8C3; --blora-text-muted: #9A9A94; --blora-text-subtle: #71716C; --blora-text-disabled: #555551; --blora-border-subtle: #3B3B38;
   --blora-primary: #D8DADD; --blora-primary-hover: #FFFFFF; --blora-primary-soft: #A9ACB0; --blora-danger: #B99699;
   --blora-accent-neutral: #A7A8AA; --blora-accent-neutral-soft: #C0C1C3; --blora-info: #A1A7B0; --blora-info-soft: #BDC1C7; --blora-success: #A0AAA5; --blora-success-soft: #B9C0BC; --blora-support: #A4AAA7; --blora-warning: #B0A58F; --blora-accent-secondary: #AA9A9D;
   --blora-on-accent: #171719;
@@ -1756,9 +1754,9 @@ html:has(body.blora-page)::-webkit-scrollbar-corner,
 }
 :root.blora-dark[data-blora-palette="circuit"],
 :root.blora-dark[data-blora-palette="circuit"] body {
-  --blora-paper: #101414; --blora-paper-warm: #161B1B; --blora-paper-cool: #131818; --blora-paper-deep: #090C0C;
+  --blora-background: #101414;
   --blora-surface-1: #1A2020; --blora-surface-2: #232A2A; --blora-surface-3: #303838;
-  --blora-ink: #F1F4F4; --blora-ink-deep: #E5E9E9; --blora-ink-mid: #C2CACA; --blora-ink-light: #929D9D; --blora-ink-mist: #697575; --blora-ink-faint: #4F5959; --blora-ink-ghost: #394242;
+  --blora-text-strong: #F1F4F4; --blora-foreground: #E5E9E9; --blora-text-emphasis: #C2CACA; --blora-text-muted: #929D9D; --blora-text-subtle: #697575; --blora-text-disabled: #4F5959; --blora-border-subtle: #394242;
   --blora-primary: #7FADAF; --blora-primary-hover: #9AC0C1; --blora-primary-soft: #618F91; --blora-danger: #C98286;
   --blora-accent-neutral: #90999F; --blora-accent-neutral-soft: #AEB5BA; --blora-info: #829FB0; --blora-info-soft: #A1B5C0; --blora-success: #7DA394; --blora-success-soft: #9BB7AC; --blora-support: #86A29D; --blora-warning: #BAA27B; --blora-accent-secondary: #9B8DA6;
   --blora-on-accent: #101A1B;
@@ -1766,9 +1764,9 @@ html:has(body.blora-page)::-webkit-scrollbar-corner,
 }
 :root.blora-dark[data-blora-palette="coral"],
 :root.blora-dark[data-blora-palette="coral"] body {
-  --blora-paper: #17161C; --blora-paper-warm: #1D191E; --blora-paper-cool: #1A1920; --blora-paper-deep: #0E0D12;
+  --blora-background: #17161C;
   --blora-surface-1: #222128; --blora-surface-2: #2C2931; --blora-surface-3: #3A363F;
-  --blora-ink: #F8F2F4; --blora-ink-deep: #ECE5E8; --blora-ink-mid: #CDC3C8; --blora-ink-light: #A1979D; --blora-ink-mist: #786F75; --blora-ink-faint: #5A5358; --blora-ink-ghost: #413C41;
+  --blora-text-strong: #F8F2F4; --blora-foreground: #ECE5E8; --blora-text-emphasis: #CDC3C8; --blora-text-muted: #A1979D; --blora-text-subtle: #786F75; --blora-text-disabled: #5A5358; --blora-border-subtle: #413C41;
   --blora-primary: #D18A94; --blora-primary-hover: #E0A3AB; --blora-primary-soft: #B36F79; --blora-danger: #D27779;
   --blora-accent-neutral: #99939E; --blora-accent-neutral-soft: #B5B0B9; --blora-info: #919AB4; --blora-info-soft: #ADB3C7; --blora-success: #86A399; --blora-success-soft: #A3B8B0; --blora-support: #91A3A0; --blora-warning: #BBA27B; --blora-accent-secondary: #B08A9A;
   --blora-on-accent: #25181C; --blora-overlay-modal: rgba(7,6,10,0.72); --blora-overlay-drawer: rgba(7,6,10,0.66);
@@ -1778,29 +1776,26 @@ html:has(body.blora-page)::-webkit-scrollbar-corner,
 :root.blora-dark:not([data-blora-palette]) body,
 :root.blora-dark[data-blora-palette="dusk"],
 :root.blora-dark[data-blora-palette="dusk"] body {
-  --blora-paper: #151317; --blora-paper-warm: #1B181E; --blora-paper-cool: #18161B; --blora-paper-deep: #0D0B0F;
+  --blora-background: #151317;
   --blora-surface-1: #201D23; --blora-surface-2: #2A262E; --blora-surface-3: #38333D;
-  --blora-ink: #F5F2F6; --blora-ink-deep: #EAE5EC; --blora-ink-mid: #CBC3CE; --blora-ink-light: #9E95A2; --blora-ink-mist: #756C79; --blora-ink-faint: #59515D; --blora-ink-ghost: #403A44;
+  --blora-text-strong: #F5F2F6; --blora-foreground: #EAE5EC; --blora-text-emphasis: #CBC3CE; --blora-text-muted: #9E95A2; --blora-text-subtle: #756C79; --blora-text-disabled: #59515D; --blora-border-subtle: #403A44;
   --blora-primary: #A9A1BA; --blora-primary-hover: #C1B9CF; --blora-primary-soft: #877F99; --blora-danger: #C6818A;
   --blora-accent-neutral: #9894A1; --blora-accent-neutral-soft: #B3AFBA; --blora-info: #8799B1; --blora-info-soft: #A4B1C2; --blora-success: #82A097; --blora-success-soft: #9FB5AE; --blora-support: #8C9E9B; --blora-warning: #B6A078; --blora-accent-secondary: #A3879E;
   --blora-on-accent: #1A171E;
   --blora-code-bg: #0D0B0F; --blora-code-fg: #F5F2F6; --blora-banner-bg: #1B181E; --blora-tooltip-bg: #0D0B0F;
 }
 
-/* —— 暗色组件修正 —— 避免墨色反转成刺眼亮块 —— */
-/* "墨色"反转的元素：在暗色下保持暗调底，不变成亮块 */
-.blora-dark .blora-btn--secondary { --btn-bg: var(--blora-surface-3); --btn-bd: var(--blora-surface-3); font-weight: 500; }
-.blora-dark .blora-btn--secondary:hover { --btn-bg: var(--blora-ink-ghost); --btn-bd: var(--blora-ink-ghost); }
-.blora-dark .blora-tag--solid { background: var(--blora-surface-3); border-color: var(--blora-surface-3); }
-.blora-dark .blora-avatar--ink { background: var(--blora-surface-3); }
+/* —— 暗色组件修正 —— 控制反差，避免表面过亮 —— */
+.blora-dark .blora-btn--secondary { --btn-bg: var(--blora-surface-3); --btn-fg: var(--blora-foreground); --btn-bd: var(--blora-surface-3); font-weight: 500; }
+.blora-dark .blora-btn--secondary:hover { --btn-bg: var(--blora-border-subtle); --btn-bd: var(--blora-border-subtle); }
+.blora-dark .blora-tag--solid { background: var(--blora-surface-3); color: var(--blora-foreground); border-color: var(--blora-surface-3); }
+.blora-dark .blora-avatar--contrast { background: var(--blora-surface-3); color: var(--blora-foreground); }
 .blora-dark .blora-pre { background: var(--blora-code-bg); color: var(--blora-code-fg); }
 .blora-dark .blora-pre::before { opacity: 0.45; }
-.blora-dark .blora-banner::before { background: radial-gradient(ellipse, color-mix(in srgb, var(--blora-seal) 32%, transparent) 0%, transparent 70%); }
-.blora-dark .blora-tooltip__bubble { border: 1px solid var(--blora-ink-ghost); }
+.blora-dark .blora-banner::before { background: radial-gradient(ellipse, color-mix(in srgb, var(--blora-primary) 32%, transparent) 0%, transparent 70%); }
+.blora-dark .blora-tooltip__bubble { border: 1px solid var(--blora-border-subtle); }
 
 /* 轮播箭头底色提亮，避免暗色下不可见 */
-.blora-dark .blora-carousel__arrow { background: rgba(255,255,255,0.1); }
-.blora-dark .blora-carousel__arrow:hover { background: rgba(255,255,255,0.2); }
 
 
 /* =========================================================================

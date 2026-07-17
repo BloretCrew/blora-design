@@ -10,11 +10,9 @@
     const root = document.documentElement;
     const config = window.BloraConfig || {};
     try {
-      const aliases = { modern: "graphite", minimal: "mono", carbon: "circuit", studio: "dusk" };
       let palette = localStorage.getItem(config.paletteStorageKey || "blora-palette") || "dusk";
       const modeKey = config.colorModeStorageKey || config.storageKey || "blora-color-mode";
-      const mode = localStorage.getItem(modeKey) || localStorage.getItem("blora-theme");
-      palette = aliases[palette] || palette;
+      const mode = localStorage.getItem(modeKey);
       if (palette !== "dusk") root.dataset.bloraPalette = palette;
       if (mode === "dark" || (!mode && matchMedia("(prefers-color-scheme: dark)").matches)) root.classList.add("blora-dark");
     } catch (error) {}
@@ -23,7 +21,7 @@
 <link rel="stylesheet" href="blora.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   /* —— 仅用于本展示页的样式，不属于框架本体 —— */
   .blora-showcase { display: grid; grid-template-columns: 240px 1fr; gap: var(--blora-space-8); max-width: 1440px; margin: 0 auto; padding: var(--blora-space-6) var(--blora-space-6) var(--blora-space-12); }
@@ -35,18 +33,18 @@
   }
   .blora-showside { position: sticky; top: 88px; align-self: start; max-height: calc(100vh - 110px); overflow-y: auto; padding: 0 var(--blora-space-3); }
   .blora-shownav { font-size: var(--blora-text-sm); }
-  .blora-shownav a { display: block; padding: 0.5em 0.8em; color: var(--blora-ink-light); border-radius: var(--blora-radius-sm); transition: all var(--blora-dur-fast) var(--blora-ease); }
-  .blora-shownav a:hover { color: var(--blora-ink); background: var(--blora-surface-2); }
-  .blora-shownav a.is-active { color: var(--blora-seal); font-weight: 500; background: var(--blora-seal-tint); }
-  .blora-shownav__group { font-size: var(--blora-text-xs); text-transform: uppercase; letter-spacing: var(--blora-tracking-caps); color: var(--blora-ink-faint); padding: var(--blora-space-4) 0.7em var(--blora-space-1); }
+  .blora-shownav a { display: block; padding: 0.5em 0.8em; color: var(--blora-text-muted); border-radius: var(--blora-radius-sm); transition: all var(--blora-dur-fast) var(--blora-ease); }
+  .blora-shownav a:hover { color: var(--blora-text-strong); background: var(--blora-surface-2); }
+  .blora-shownav a.is-active { color: var(--blora-primary); font-weight: 500; background: var(--blora-primary-tint); }
+  .blora-shownav__group { font-size: var(--blora-text-xs); text-transform: uppercase; letter-spacing: var(--blora-tracking-caps); color: var(--blora-text-disabled); padding: var(--blora-space-4) 0.7em var(--blora-space-1); }
 
   .blora-hero { padding: var(--blora-space-9) var(--blora-space-6) var(--blora-space-7); text-align: center; max-width: 920px; margin: 0 auto; }
-  .blora-hero__kicker { display: inline-flex; align-items: center; gap: var(--blora-space-2); font-size: var(--blora-text-xs); letter-spacing: var(--blora-tracking-caps); text-transform: uppercase; color: var(--blora-seal); margin-bottom: var(--blora-space-4); }
-  .blora-hero__title { font-family: var(--blora-font-serif); font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 700; line-height: 1.2; letter-spacing: -0.02em; color: var(--blora-ink); margin-bottom: var(--blora-space-4); }
-  .blora-hero__sub { font-size: var(--blora-text-lg); color: var(--blora-ink-light); line-height: var(--blora-leading-loose); max-width: 640px; margin: 0 auto var(--blora-space-6); }
+  .blora-hero__kicker { display: inline-flex; align-items: center; gap: var(--blora-space-2); font-size: var(--blora-text-xs); letter-spacing: var(--blora-tracking-caps); text-transform: uppercase; color: var(--blora-primary); margin-bottom: var(--blora-space-4); }
+  .blora-hero__title { font-family: var(--blora-font-heading); font-size: var(--blora-text-5xl); font-weight: 700; line-height: 1.2; letter-spacing: 0; color: var(--blora-text-strong); margin-bottom: var(--blora-space-4); }
+  .blora-hero__sub { font-size: var(--blora-text-lg); color: var(--blora-text-muted); line-height: var(--blora-leading-loose); max-width: 640px; margin: 0 auto var(--blora-space-6); }
   @media (max-width: 560px) {
     .blora-hero { padding-inline: var(--blora-space-4); overflow: hidden; }
-    .blora-hero__title { font-size: clamp(2rem, 10vw, 2.5rem); }
+    .blora-hero__title { font-size: var(--blora-text-3xl); }
     .blora-hero__sub { max-width: 16rem; overflow-wrap: anywhere; }
     .blora-hero .blora-row--center { flex-direction: column; align-items: stretch; max-width: 16rem; margin-inline: auto; }
     .blora-hero .blora-btn { justify-content: center; }
@@ -54,50 +52,50 @@
 
   .blora-sec { margin-bottom: var(--blora-space-9); scroll-margin-top: 90px; min-width: 0; }
   .blora-sec__head { margin-bottom: var(--blora-space-5); }
-  .blora-sec__num { font-family: var(--blora-font-mono); font-size: var(--blora-text-xs); color: var(--blora-seal); letter-spacing: var(--blora-tracking-caps); }
-  .blora-sec__title { font-family: var(--blora-font-serif); font-size: var(--blora-text-3xl); color: var(--blora-ink); margin: var(--blora-space-1) 0 var(--blora-space-2); }
-  .blora-sec__desc { color: var(--blora-ink-light); max-width: min(60ch, 100%); overflow-wrap: anywhere; word-break: break-word; }
+  .blora-sec__num { font-family: var(--blora-font-mono); font-size: var(--blora-text-xs); color: var(--blora-primary); letter-spacing: var(--blora-tracking-caps); }
+  .blora-sec__title { font-family: var(--blora-font-heading); font-size: var(--blora-text-3xl); color: var(--blora-text-strong); margin: var(--blora-space-1) 0 var(--blora-space-2); }
+  .blora-sec__desc { color: var(--blora-text-muted); max-width: min(60ch, 100%); overflow-wrap: anywhere; word-break: break-word; }
   @media (max-width: 560px) { .blora-sec__desc { max-width: 18rem; } }
 
-  .blora-demo { padding: var(--blora-space-5); border: 1px dashed var(--blora-ink-ghost); border-radius: var(--blora-radius-md); margin-bottom: var(--blora-space-4); background: transparent; }
-  .blora-demo__label { font-family: var(--blora-font-mono); font-size: var(--blora-text-xs); color: var(--blora-ink-mist); margin-bottom: var(--blora-space-3); text-transform: uppercase; letter-spacing: var(--blora-tracking-caps); }
+  .blora-demo { padding: var(--blora-space-5); border: 1px dashed var(--blora-border-subtle); border-radius: var(--blora-radius-md); margin-bottom: var(--blora-space-4); background: transparent; }
+  .blora-demo__label { font-family: var(--blora-font-mono); font-size: var(--blora-text-xs); color: var(--blora-text-subtle); margin-bottom: var(--blora-space-3); text-transform: uppercase; letter-spacing: var(--blora-tracking-caps); }
 
   .blora-swatch { display: flex; flex-direction: column; gap: var(--blora-space-2); }
-  .blora-swatch__chip { height: 80px; border-radius: var(--blora-radius-md); border: 1px solid rgba(28,26,23,0.06); box-shadow: var(--blora-shadow-1); display: flex; align-items: flex-end; padding: var(--blora-space-2); color: rgba(255,255,255,0.9); font-family: var(--blora-font-mono); font-size: var(--blora-text-xs); }
-  .blora-swatch__name { font-size: var(--blora-text-sm); font-weight: 500; color: var(--blora-ink-deep); }
-  .blora-swatch__hex { font-family: var(--blora-font-mono); font-size: var(--blora-text-xs); color: var(--blora-ink-mist); }
+  .blora-swatch__chip { height: 80px; border-radius: var(--blora-radius-md); border: var(--blora-border); box-shadow: var(--blora-shadow-1); display: flex; align-items: flex-end; padding: var(--blora-space-2); color: var(--blora-on-media); font-family: var(--blora-font-mono); font-size: var(--blora-text-xs); }
+  .blora-swatch__name { font-size: var(--blora-text-sm); font-weight: 500; color: var(--blora-foreground); }
+  .blora-swatch__hex { font-family: var(--blora-font-mono); font-size: var(--blora-text-xs); color: var(--blora-text-subtle); }
 
-  .blora-typetable td { padding: var(--blora-space-3) var(--blora-space-4); border-bottom: 1px solid var(--blora-ink-ghost); }
+  .blora-typetable td { padding: var(--blora-space-3) var(--blora-space-4); border-bottom: 1px solid var(--blora-border-subtle); }
   .blora-typetable td:first-child { white-space: nowrap; }
 
   .blora-spacedemo { display: flex; align-items: flex-end; gap: var(--blora-space-2); }
-  .blora-spacedemo__bar { width: 32px; background: var(--blora-seal); border-radius: var(--blora-radius-xs) var(--blora-radius-xs) 0 0; opacity: 0.85; }
-  .blora-spacedemo__label { font-family: var(--blora-font-mono); font-size: var(--blora-text-xs); color: var(--blora-ink-mist); text-align: center; margin-top: var(--blora-space-2); }
+  .blora-spacedemo__bar { width: 32px; background: var(--blora-primary); border-radius: var(--blora-radius-xs) var(--blora-radius-xs) 0 0; opacity: 0.85; }
+  .blora-spacedemo__label { font-family: var(--blora-font-mono); font-size: var(--blora-text-xs); color: var(--blora-text-subtle); text-align: center; margin-top: var(--blora-space-2); }
 
   .blora-shadow-demo { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: var(--blora-space-5); }
-  .blora-shadow-demo__item { background: var(--blora-surface-1); border-radius: var(--blora-radius-md); padding: var(--blora-space-5); text-align: center; font-size: var(--blora-text-sm); color: var(--blora-ink-mid); }
+  .blora-shadow-demo__item { background: var(--blora-surface-1); border-radius: var(--blora-radius-md); padding: var(--blora-space-5); text-align: center; font-size: var(--blora-text-sm); color: var(--blora-text-emphasis); }
 
   .blora-control-row { display: flex; align-items: center; gap: var(--blora-space-4); flex-wrap: wrap; margin-bottom: var(--blora-space-3); }
   .blora-control-row:last-child { margin-bottom: 0; }
-  .blora-control-row > span { font-size: var(--blora-text-xs); color: var(--blora-ink-mist); min-width: 5em; font-family: var(--blora-font-mono); }
+  .blora-control-row > span { font-size: var(--blora-text-xs); color: var(--blora-text-subtle); min-width: 5em; font-family: var(--blora-font-mono); }
 
   .blora-iconset { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: var(--blora-space-2); }
-  .blora-iconset__item { display: flex; flex-direction: column; align-items: center; gap: var(--blora-space-2); padding: var(--blora-space-3); border-radius: var(--blora-radius-md); color: var(--blora-ink-mid); transition: all var(--blora-dur-fast) var(--blora-ease); }
-  .blora-iconset__item:hover { background: var(--blora-surface-2); color: var(--blora-seal); }
+  .blora-iconset__item { display: flex; flex-direction: column; align-items: center; gap: var(--blora-space-2); padding: var(--blora-space-3); border-radius: var(--blora-radius-md); color: var(--blora-text-emphasis); transition: all var(--blora-dur-fast) var(--blora-ease); }
+  .blora-iconset__item:hover { background: var(--blora-surface-2); color: var(--blora-primary); }
   .blora-iconset__item svg { width: 28px; height: 28px; }
   .blora-iconset__bloret { width: 28px; height: 28px; }
-  .blora-iconset__name { font-size: 10px; color: var(--blora-ink-mist); }
+  .blora-iconset__name { font-size: 10px; color: var(--blora-text-subtle); }
 
-  .blora-foot { text-align: center; padding: var(--blora-space-9) var(--blora-space-6); color: var(--blora-ink-mist); border-top: var(--blora-border); }
-  .blora-foot__title { font-size: 1.25rem; color: var(--blora-ink-light); margin-bottom: var(--blora-space-2); }
+  .blora-foot { text-align: center; padding: var(--blora-space-9) var(--blora-space-6); color: var(--blora-text-subtle); border-top: var(--blora-border); }
+  .blora-foot__title { font-size: 1.25rem; color: var(--blora-text-muted); margin-bottom: var(--blora-space-2); }
   .blora-foot__copy { margin-top: var(--blora-space-1); }
 
   .blora-context-menu { position: relative; }
-  .blora-mock-img { background: var(--blora-surface-3); display: grid; place-items: center; color: var(--blora-ink-mist); font-family: var(--blora-font-brush); font-size: 2em; }
+  .blora-mock-img { background: var(--blora-surface-3); display: grid; place-items: center; color: var(--blora-text-subtle); font-family: var(--blora-font-heading); font-size: 2em; }
 
   .blora-chart-mock { height: 180px; background: var(--blora-surface-2); border-radius: var(--blora-radius-md); padding: var(--blora-space-4); display: flex; align-items: flex-end; gap: var(--blora-space-2); }
-  .blora-chart-mock__bar { flex: 1; background: var(--blora-seal-soft); border-radius: var(--blora-radius-xs) var(--blora-radius-xs) 0 0; }
-  [data-demo-navbar-variant][aria-pressed="true"] { color: var(--blora-seal); background: var(--blora-seal-tint); }
+  .blora-chart-mock__bar { flex: 1; background: var(--blora-primary-soft); border-radius: var(--blora-radius-xs) var(--blora-radius-xs) 0 0; }
+  [data-demo-navbar-variant][aria-pressed="true"] { color: var(--blora-primary); background: var(--blora-primary-tint); }
 </style>
 </head>
 <body class="blora-page blora-scope">
@@ -143,7 +141,7 @@
      ========================================================================= -->
 <header class="blora-hero">
   <div class="blora-hero__kicker">
-    <span class="blora-dot blora-dot--seal blora-dot--pulse"></span>
+    <span class="blora-dot blora-dot--primary blora-dot--pulse"></span>
     一套完整的 Web UI 设计系统 · v1.0
    </div>
    <h1 class="blora-hero__title">Blora Design<br>UI 设计规范</h1>
@@ -155,7 +153,7 @@
     <a class="blora-btn blora-btn--primary blora-btn--lg" href="#buttons">浏览全部组件</a>
     <a class="blora-btn blora-btn--outline blora-btn--lg" href="#philosophy">阅读设计规范</a>
   </div>
-  <hr class="blora-brush" style="margin-top: var(--blora-space-8); max-width: 360px; margin-inline:auto;">
+  <hr class="blora-divider" style="margin-top: var(--blora-space-8); max-width: 360px; margin-inline:auto;">
 </header>
 
 <!-- =========================================================================
@@ -230,15 +228,15 @@
       <div class="blora-panel" style="margin-top: var(--blora-space-5);">
         <div class="blora-panel__header">
           <h3 class="blora-h4">核心设计原则</h3>
-          <span class="blora-tag blora-tag--seal">Principles</span>
+          <span class="blora-tag blora-tag--primary">Principles</span>
         </div>
         <div class="blora-grid blora-grid--2" style="gap: var(--blora-space-5) var(--blora-space-6);">
-          <div><strong class="blora-text-seal">间距优先。</strong> 组件间距宁大勿挤，内边距至少 16px，分组之间至少 32px。</div>
-          <div><strong class="blora-text-seal">节制用色。</strong> 主色不超过 3 种，强调色占比控制在 5% 以内，语义色用于状态反馈。</div>
-          <div><strong class="blora-text-seal">圆角温润。</strong> 默认 8px 圆角，不锋利亦不过圆。容器 12–20px，按钮恒 8px。</div>
-          <div><strong class="blora-text-seal">动效含蓄。</strong> 缓动曲线以 <code class="blora-code">cubic-bezier(.22,.61,.36,1)</code> 为主，时长 140–420ms。</div>
-          <div><strong class="blora-text-seal">字体分明。</strong> 标题、正文、代码三种字族各司其职，层级清晰。</div>
-          <div><strong class="blora-text-seal">触手可及。</strong> 交互元素 ≥ 40×40，对比度满足 WCAG AA，支持键盘与 reduced-motion。</div>
+          <div><strong class="blora-text-primary">间距一致。</strong> 组件统一使用 4px 基础间距，按内容密度选择语义层级。</div>
+          <div><strong class="blora-text-primary">功能用色。</strong> 主色仅表示关键交互，成功、警告、危险和信息使用独立语义色。</div>
+          <div><strong class="blora-text-primary">曲率连续。</strong> 圆角从 6px 到 36px 递进，胶囊控件使用统一的 full radius。</div>
+          <div><strong class="blora-text-primary">动效克制。</strong> 缓动以 <code class="blora-code">cubic-bezier(.25,.8,.25,1)</code> 为主，时长 160–420ms。</div>
+          <div><strong class="blora-text-primary">字体统一。</strong> 标题与正文共享现代无衬线字体，代码使用独立等宽字体。</div>
+          <div><strong class="blora-text-primary">无障碍优先。</strong> 交互元素 ≥ 40×40，对比度满足 WCAG AA，并支持键盘和 reduced-motion。</div>
         </div>
       </div>
     </section>
@@ -253,24 +251,24 @@
         <p class="blora-sec__desc">色板分三层：底色（背景）、文本色（内容）、强调色（交互与状态）。</p>
       </header>
 
-      <h4 class="blora-h4" style="margin-bottom: var(--blora-space-3);">Paper 底色</h4>
+      <h4 class="blora-h4" style="margin-bottom: var(--blora-space-3);">Surfaces 表面层级</h4>
       <div class="blora-grid blora-grid--4 blora-mb-6">
-        <div class="blora-swatch"><div class="blora-swatch__chip" data-blora-token="--blora-paper"></div><div class="blora-swatch__name">paper 页面底色</div><div class="blora-swatch__hex">--blora-paper</div></div>
-        <div class="blora-swatch"><div class="blora-swatch__chip" data-blora-token="--blora-surface-1"></div><div class="blora-swatch__name">surface-1 卡片底色</div><div class="blora-swatch__hex">--blora-surface-1</div></div>
-        <div class="blora-swatch"><div class="blora-swatch__chip" data-blora-token="--blora-surface-3"></div><div class="blora-swatch__name">surface-3 三级底色</div><div class="blora-swatch__hex">--blora-surface-3</div></div>
-        <div class="blora-swatch"><div class="blora-swatch__chip" data-blora-token="--blora-paper-deep"></div><div class="blora-swatch__name">paper-deep 深沉底色</div><div class="blora-swatch__hex">--blora-paper-deep</div></div>
+        <div class="blora-swatch"><div class="blora-swatch__chip" data-blora-token="--blora-background"></div><div class="blora-swatch__name">background 页面背景</div><div class="blora-swatch__hex">--blora-background</div></div>
+        <div class="blora-swatch"><div class="blora-swatch__chip" data-blora-token="--blora-surface-1"></div><div class="blora-swatch__name">surface-1 基础表面</div><div class="blora-swatch__hex">--blora-surface-1</div></div>
+        <div class="blora-swatch"><div class="blora-swatch__chip" data-blora-token="--blora-surface-2"></div><div class="blora-swatch__name">surface-2 次级表面</div><div class="blora-swatch__hex">--blora-surface-2</div></div>
+        <div class="blora-swatch"><div class="blora-swatch__chip" data-blora-token="--blora-surface-3"></div><div class="blora-swatch__name">surface-3 强调表面</div><div class="blora-swatch__hex">--blora-surface-3</div></div>
       </div>
 
-      <h4 class="blora-h4" style="margin-bottom: var(--blora-space-3);">Ink 灰度色阶</h4>
+      <h4 class="blora-h4" style="margin-bottom: var(--blora-space-3);">Text Colors 文本层级</h4>
       <div class="blora-grid blora-grid--4 blora-mb-6">
-        <div class="blora-swatch"><div class="blora-swatch__chip" data-blora-token="--blora-ink"></div><div class="blora-swatch__name">ink（主文）</div><div class="blora-swatch__hex">--blora-ink</div></div>
-        <div class="blora-swatch"><div class="blora-swatch__chip" data-blora-token="--blora-ink-deep"></div><div class="blora-swatch__name">ink-deep（标题）</div><div class="blora-swatch__hex">--blora-ink-deep</div></div>
-        <div class="blora-swatch"><div class="blora-swatch__chip" data-blora-token="--blora-ink-mid"></div><div class="blora-swatch__name">ink-mid（强调）</div><div class="blora-swatch__hex">--blora-ink-mid</div></div>
-        <div class="blora-swatch"><div class="blora-swatch__chip" data-blora-token="--blora-ink-light"></div><div class="blora-swatch__name">ink-light（正文）</div><div class="blora-swatch__hex">--blora-ink-light</div></div>
-        <div class="blora-swatch"><div class="blora-swatch__chip" data-blora-token="--blora-ink-mist"></div><div class="blora-swatch__name">ink-mist（次要）</div><div class="blora-swatch__hex">--blora-ink-mist</div></div>
-        <div class="blora-swatch"><div class="blora-swatch__chip" data-blora-token="--blora-ink-faint"></div><div class="blora-swatch__name">ink-faint（禁用）</div><div class="blora-swatch__hex">--blora-ink-faint</div></div>
-        <div class="blora-swatch"><div class="blora-swatch__chip" data-blora-token="--blora-ink-ghost"></div><div class="blora-swatch__name">ink-ghost（边框）</div><div class="blora-swatch__hex">--blora-ink-ghost</div></div>
-        <div class="blora-swatch"><div class="blora-swatch__chip" data-blora-token="--blora-paper"></div><div class="blora-swatch__name">（对比色）</div><div class="blora-swatch__hex">--blora-paper</div></div>
+        <div class="blora-swatch"><div class="blora-swatch__chip" data-blora-token="--blora-text-strong"></div><div class="blora-swatch__name">text-strong 强标题</div><div class="blora-swatch__hex">--blora-text-strong</div></div>
+        <div class="blora-swatch"><div class="blora-swatch__chip" data-blora-token="--blora-foreground"></div><div class="blora-swatch__name">foreground 默认前景</div><div class="blora-swatch__hex">--blora-foreground</div></div>
+        <div class="blora-swatch"><div class="blora-swatch__chip" data-blora-token="--blora-text-emphasis"></div><div class="blora-swatch__name">text-emphasis 强调文本</div><div class="blora-swatch__hex">--blora-text-emphasis</div></div>
+        <div class="blora-swatch"><div class="blora-swatch__chip" data-blora-token="--blora-text-muted"></div><div class="blora-swatch__name">text-muted 次要文本</div><div class="blora-swatch__hex">--blora-text-muted</div></div>
+        <div class="blora-swatch"><div class="blora-swatch__chip" data-blora-token="--blora-text-subtle"></div><div class="blora-swatch__name">text-subtle 辅助文本</div><div class="blora-swatch__hex">--blora-text-subtle</div></div>
+        <div class="blora-swatch"><div class="blora-swatch__chip" data-blora-token="--blora-text-disabled"></div><div class="blora-swatch__name">text-disabled 禁用文本</div><div class="blora-swatch__hex">--blora-text-disabled</div></div>
+        <div class="blora-swatch"><div class="blora-swatch__chip" data-blora-token="--blora-border-subtle"></div><div class="blora-swatch__name">border-subtle 低对比边框</div><div class="blora-swatch__hex">--blora-border-subtle</div></div>
+        <div class="blora-swatch"><div class="blora-swatch__chip" data-blora-token="--blora-background"></div><div class="blora-swatch__name">background 对比背景</div><div class="blora-swatch__hex">--blora-background</div></div>
       </div>
 
       <h4 class="blora-h4" style="margin-bottom: var(--blora-space-3);">Functional Colors 功能色</h4>
@@ -293,27 +291,26 @@
       <header class="blora-sec__head">
         <div class="blora-sec__num">03 — 字体</div>
         <h2 class="blora-sec__title">字体</h2>
-        <p class="blora-sec__desc">三套字族：标题衬线、正文无衬线、代码等宽。字阶以 1.25 倍率递进 Major Third。</p>
+        <p class="blora-sec__desc">两套字族：标题与正文使用现代无衬线字体，代码使用等宽字体。字阶以 1.25 倍率递进。</p>
       </header>
 
       <div class="blora-panel">
         <table class="blora-typetable" style="width:100%;">
           <tbody>
-            <tr><td><span class="blora-h1">Blora Design</span></td><td><span class="blora-text-muted">Noto Serif SC · 48 / 600 / -0.02em</span></td><td><code class="blora-code">.blora-h1</code></td></tr>
-            <tr><td><span class="blora-h2">Blora Design</span></td><td><span class="blora-text-muted">Noto Serif SC · 36 / 600</span></td><td><code class="blora-code">.blora-h2</code></td></tr>
-            <tr><td><span class="blora-h3">Blora Design</span></td><td><span class="blora-text-muted">Noto Serif SC · 28 / 600</span></td><td><code class="blora-code">.blora-h3</code></td></tr>
-            <tr><td><span class="blora-h4">Blora Design</span></td><td><span class="blora-text-muted">Noto Serif SC · 22 / 600</span></td><td><code class="blora-code">.blora-h4</code></td></tr>
+            <tr><td><span class="blora-h1">Blora Design</span></td><td><span class="blora-text-muted">Avenir / Segoe UI · 48 / 600</span></td><td><code class="blora-code">.blora-h1</code></td></tr>
+            <tr><td><span class="blora-h2">Blora Design</span></td><td><span class="blora-text-muted">Avenir / Segoe UI · 36 / 600</span></td><td><code class="blora-code">.blora-h2</code></td></tr>
+            <tr><td><span class="blora-h3">Blora Design</span></td><td><span class="blora-text-muted">Avenir / Segoe UI · 28 / 600</span></td><td><code class="blora-code">.blora-h3</code></td></tr>
+            <tr><td><span class="blora-h4">Blora Design</span></td><td><span class="blora-text-muted">Avenir / Segoe UI · 22 / 600</span></td><td><code class="blora-code">.blora-h4</code></td></tr>
             <tr><td><span style="font-size:1.125rem;">Blora Design 组件库示例文本。</span></td><td><span class="blora-text-muted">Noto Sans SC · 18 / 400 — lead</span></td><td><code class="blora-code">.blora-text-lead</code></td></tr>
             <tr><td>Blora Design 组件库示例文本。</td><td><span class="blora-text-muted">Noto Sans SC · 16 / 400 — base</span></td><td><code class="blora-code">body</code></td></tr>
-            <tr><td style="font-size:0.875rem; color:var(--blora-ink-light);">Blora Design 组件库示例文本。</td><td><span class="blora-text-muted">Noto Sans SC · 14 / 400 — sm</span></td><td><code class="blora-code">.blora-text-sm</code></td></tr>
-            <tr><td style="font-size:0.75rem; color:var(--blora-ink-mist);">Blora Design 组件库示例文本。</td><td><span class="blora-text-muted">Noto Sans SC · 12 / 400 — xs</span></td><td><code class="blora-code">.blora-text-xs</code></td></tr>
+            <tr><td style="font-size:0.875rem; color:var(--blora-text-muted);">Blora Design 组件库示例文本。</td><td><span class="blora-text-muted">Noto Sans SC · 14 / 400 — sm</span></td><td><code class="blora-code">.blora-text-sm</code></td></tr>
+            <tr><td style="font-size:0.75rem; color:var(--blora-text-subtle);">Blora Design 组件库示例文本。</td><td><span class="blora-text-muted">Noto Sans SC · 12 / 400 — xs</span></td><td><code class="blora-code">.blora-text-xs</code></td></tr>
             <tr><td><span class="blora-text-caps">UPPERCASE LETTERS</span></td><td><span class="blora-text-muted">Sans · 12 / 600 / +0.18em — caps</span></td><td><code class="blora-code">.blora-text-caps</code></td></tr>
-            <tr><td><span class="blora-text-brush" style="font-size:1.5rem;">装饰题字</span></td><td><span class="blora-text-muted">KaiTi · 仅用于非交互装饰文案</span></td><td><code class="blora-code">.blora-text-brush</code></td></tr>
             <tr><td><code class="blora-code">const blora = "v1.0";</code></td><td><span class="blora-text-muted">JetBrains Mono · inline code</span></td><td><code class="blora-code">.blora-code</code></td></tr>
           </tbody>
         </table>
 
-        <hr class="blora-brush">
+        <hr class="blora-divider">
         <div class="blora-quote">
           Design is not just what it looks like and feels like. Design is how it works.
           <cite>—— Steve Jobs</cite>
@@ -366,10 +363,10 @@
           <div class="blora-shadow-demo__item" style="box-shadow:var(--blora-shadow-2);">shadow-2<br><small>2px 卡面</small></div>
           <div class="blora-shadow-demo__item" style="box-shadow:var(--blora-shadow-3);">shadow-3<br><small>6px 浮层</small></div>
           <div class="blora-shadow-demo__item" style="box-shadow:var(--blora-shadow-4);">shadow-4<br><small>12px 模态</small></div>
-          <div class="blora-shadow-demo__item" style="box-shadow:var(--blora-shadow-seal);">shadow-seal<br><small>主色光晕</small></div>
+          <div class="blora-shadow-demo__item" style="box-shadow:var(--blora-shadow-primary);">shadow-primary<br><small>主色光晕</small></div>
           <div class="blora-shadow-demo__item" style="box-shadow:var(--blora-shadow-inset);">inset<br><small>内凹</small></div>
         </div>
-        <p class="blora-hint" style="margin-top:var(--blora-space-3);">底层纹理由 <code class="blora-code">--blora-grain</code> 径向渐变叠加于 body，肉眼几乎不可见，仅作微妙的质感铺垫。</p>
+        <p class="blora-hint" style="margin-top:var(--blora-space-3);">底层纹理由 <code class="blora-code">--blora-background-texture</code> 径向渐变叠加于 body，肉眼几乎不可见，仅作微妙的质感铺垫。</p>
       </div>
     </section>
 
@@ -591,7 +588,7 @@
               <textarea class="blora-textarea" id="f-ta" placeholder="请输入备注内容…"></textarea>
         </div>
 
-        <hr class="blora-brush">
+        <hr class="blora-divider">
 
         <div class="blora-grid blora-grid--2">
           <div class="blora-field">
@@ -617,7 +614,7 @@
           </div>
         </div>
 
-        <hr class="blora-brush">
+        <hr class="blora-divider">
 
         <div class="blora-demo">
           <div class="blora-demo__label">复选 · Checkbox</div>
@@ -660,7 +657,7 @@
               <div class="blora-range__track"><div class="blora-range__fill"></div></div>
               <div class="blora-range__thumb" data-val="20"></div>
               <div class="blora-range__thumb" data-val="75"></div>
-              <span class="blora-range__value" style="position:absolute; bottom:-1.5em; left:50%; transform:translateX(-50%); font-family:var(--blora-font-mono); font-size:var(--blora-text-xs); color:var(--blora-ink-mist);">20 – 75</span>
+              <span class="blora-range__value" style="position:absolute; bottom:-1.5em; left:50%; transform:translateX(-50%); font-family:var(--blora-font-mono); font-size:var(--blora-text-xs); color:var(--blora-text-subtle);">20 – 75</span>
             </div>
             <p class="blora-hint" style="margin-top:var(--blora-space-2);">范围滑块 · Range Slider（双滑块）</p>
           </div>
@@ -690,9 +687,9 @@
         <div class="blora-demo">
           <div class="blora-demo__label">标签输入 · Tags Input</div>
           <div class="blora-tags-input">
-            <span class="blora-tag blora-tag--seal blora-tag--removable">设计师<span class="blora-tag__close" aria-label="移除"></span></span>
-            <span class="blora-tag blora-tag--seal blora-tag--removable">前端<span class="blora-tag__close" aria-label="移除"></span></span>
-            <span class="blora-tag blora-tag--seal blora-tag--removable">React<span class="blora-tag__close" aria-label="移除"></span></span>
+            <span class="blora-tag blora-tag--primary blora-tag--removable">设计师<span class="blora-tag__close" aria-label="移除"></span></span>
+            <span class="blora-tag blora-tag--primary blora-tag--removable">前端<span class="blora-tag__close" aria-label="移除"></span></span>
+            <span class="blora-tag blora-tag--primary blora-tag--removable">React<span class="blora-tag__close" aria-label="移除"></span></span>
             <input type="text" placeholder="回车添加…">
           </div>
         </div>
@@ -732,38 +729,11 @@
           <div class="blora-demo__label">颜色选择 · Color Picker（全色域 + 手动 Hex）</div>
           <div class="blora-row">
             <div class="blora-color-picker">
-              <div class="blora-color-swatch" data-color="#A0392E" style="background:#A0392E;"></div>
+              <div class="blora-color-swatch"></div>
               <div class="blora-color-panel">
                 <div class="blora-color-custom">
-                  <span class="blora-color-preview" style="background:#A0392E;"></span>
-                  <input class="blora-input blora-color-hex" type="text" placeholder="#A0392E" value="#A0392E">
-                </div>
-              </div>
-            </div>
-            <div class="blora-color-picker">
-              <div class="blora-color-swatch" data-color="#1C1A17" style="background:#1C1A17;"></div>
-              <div class="blora-color-panel">
-                <div class="blora-color-custom">
-                  <span class="blora-color-preview" style="background:#1C1A17;"></span>
-                  <input class="blora-input blora-color-hex" type="text" placeholder="#1C1A17" value="#1C1A17">
-                </div>
-              </div>
-            </div>
-            <div class="blora-color-picker">
-              <div class="blora-color-swatch" data-color="#5A7B6B" style="background:#5A7B6B;"></div>
-              <div class="blora-color-panel">
-                <div class="blora-color-custom">
-                  <span class="blora-color-preview" style="background:#5A7B6B;"></span>
-                  <input class="blora-input blora-color-hex" type="text" placeholder="#5A7B6B" value="#5A7B6B">
-                </div>
-              </div>
-            </div>
-            <div class="blora-color-picker">
-              <div class="blora-color-swatch" data-color="#B89968" style="background:#B89968;"></div>
-              <div class="blora-color-panel">
-                <div class="blora-color-custom">
-                  <span class="blora-color-preview" style="background:#B89968;"></span>
-                  <input class="blora-input blora-color-hex" type="text" placeholder="#B89968" value="#B89968">
+                  <span class="blora-color-preview"></span>
+                  <input class="blora-input blora-color-hex" type="text" placeholder="#RRGGBB">
                 </div>
               </div>
             </div>
@@ -777,7 +747,7 @@
             <div class="blora-dropzone__icon">
               <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>
             </div>
-            <div><strong>拖拽文件至此</strong> 或 <span class="blora-text-seal">点击选择</span></div>
+            <div><strong>拖拽文件至此</strong> 或 <span class="blora-text-primary">点击选择</span></div>
             <div class="blora-hint blora-dropzone__files">支持 SVG / PNG / JPG · 单文件 ≤ 8MB</div>
           </div>
         </div>
@@ -879,13 +849,13 @@
           <div class="blora-demo__label">标签 · Tags</div>
           <div class="blora-row">
             <span class="blora-tag">默认</span>
-            <span class="blora-tag blora-tag--seal">重要</span>
-            <span class="blora-tag blora-tag--tea">茶色</span>
-            <span class="blora-tag blora-tag--indigo">信息</span>
-            <span class="blora-tag blora-tag--moss">成功</span>
-            <span class="blora-tag blora-tag--gold">警告</span>
+            <span class="blora-tag blora-tag--primary">重要</span>
+            <span class="blora-tag blora-tag--neutral">中性</span>
+            <span class="blora-tag blora-tag--info">信息</span>
+            <span class="blora-tag blora-tag--success">成功</span>
+            <span class="blora-tag blora-tag--warning">警告</span>
             <span class="blora-tag blora-tag--solid">深色</span>
-            <span class="blora-tag blora-tag--seal blora-tag--removable">可移除<span class="blora-tag__close" aria-label="移除"></span></span>
+            <span class="blora-tag blora-tag--primary blora-tag--removable">可移除<span class="blora-tag__close" aria-label="移除"></span></span>
           </div>
         </div>
 
@@ -897,9 +867,9 @@
             <span class="blora-badge blora-badge--circle">新</span>
             <span class="blora-badge blora-badge--pill">推荐</span>
             <span class="blora-badge blora-badge--dot"></span>
-            <span class="blora-badge blora-badge--tea">3</span>
-            <span class="blora-badge blora-badge--moss">新</span>
-            <span class="blora-badge blora-badge--indigo">β</span>
+            <span class="blora-badge blora-badge--neutral">3</span>
+            <span class="blora-badge blora-badge--success">新</span>
+            <span class="blora-badge blora-badge--info">β</span>
           </div>
         </div>
 
@@ -917,7 +887,7 @@
               <p class="blora-card__body">多个字使用胶囊徽章，宽度随内容自然增长。</p>
             </article>
             <article class="blora-card blora-card--relative blora-card--with-badge blora-card--hover">
-              <span class="blora-tag blora-tag--moss blora-card__badge">已发布</span>
+              <span class="blora-tag blora-tag--success blora-card__badge">已发布</span>
               <h3 class="blora-card__title">卡面标签</h3>
               <p class="blora-card__body">分类和流程状态也可直接使用语义标签。</p>
             </article>
@@ -927,9 +897,9 @@
         <div class="blora-demo">
           <div class="blora-demo__label">头像徽章 · On Avatar</div>
           <div class="blora-row">
-            <span class="blora-avatar-wrap"><span class="blora-avatar blora-avatar--seal">A</span><span class="blora-badge blora-badge--dot"></span></span>
-            <span class="blora-avatar-wrap"><span class="blora-avatar blora-avatar--tea">B</span><span class="blora-badge">5</span></span>
-            <span class="blora-avatar-wrap"><span class="blora-avatar blora-avatar--moss">C</span><span class="blora-badge blora-badge--dot" style="background:var(--blora-moss);"></span></span>
+            <span class="blora-avatar-wrap"><span class="blora-avatar blora-avatar--primary">A</span><span class="blora-badge blora-badge--dot"></span></span>
+            <span class="blora-avatar-wrap"><span class="blora-avatar blora-avatar--neutral">B</span><span class="blora-badge">5</span></span>
+            <span class="blora-avatar-wrap"><span class="blora-avatar blora-avatar--success">C</span><span class="blora-badge blora-badge--dot" style="background:var(--blora-success);"></span></span>
           </div>
         </div>
 
@@ -937,9 +907,9 @@
           <div class="blora-demo__label">状态点 · Status Dot</div>
           <div class="blora-row">
             <span class="blora-row blora-row--tight"><span class="blora-dot"></span>离线</span>
-            <span class="blora-row blora-row--tight"><span class="blora-dot blora-dot--moss blora-dot--pulse"></span>在线</span>
-            <span class="blora-row blora-row--tight"><span class="blora-dot blora-dot--seal"></span>忙碌</span>
-            <span class="blora-row blora-row--tight"><span class="blora-dot blora-dot--gold"></span>离开</span>
+            <span class="blora-row blora-row--tight"><span class="blora-dot blora-dot--success blora-dot--pulse"></span>在线</span>
+            <span class="blora-row blora-row--tight"><span class="blora-dot blora-dot--primary"></span>忙碌</span>
+            <span class="blora-row blora-row--tight"><span class="blora-dot blora-dot--warning"></span>离开</span>
           </div>
         </div>
       </div>
@@ -958,22 +928,22 @@
         <div class="blora-demo">
           <div class="blora-demo__label">尺寸</div>
           <div class="blora-row" style="align-items:flex-end;">
-            <span class="blora-avatar blora-avatar--xs blora-avatar--seal">A</span>
-            <span class="blora-avatar blora-avatar--sm blora-avatar--seal">A</span>
-            <span class="blora-avatar blora-avatar--seal">A</span>
-            <span class="blora-avatar blora-avatar--lg blora-avatar--seal">A</span>
-            <span class="blora-avatar blora-avatar--xl blora-avatar--seal">A</span>
+            <span class="blora-avatar blora-avatar--xs blora-avatar--primary">A</span>
+            <span class="blora-avatar blora-avatar--sm blora-avatar--primary">A</span>
+            <span class="blora-avatar blora-avatar--primary">A</span>
+            <span class="blora-avatar blora-avatar--lg blora-avatar--primary">A</span>
+            <span class="blora-avatar blora-avatar--xl blora-avatar--primary">A</span>
           </div>
         </div>
         <div class="blora-demo">
           <div class="blora-demo__label">配色 · 无图</div>
           <div class="blora-row">
-            <span class="blora-avatar blora-avatar--seal">甲</span>
-            <span class="blora-avatar blora-avatar--tea">乙</span>
-            <span class="blora-avatar blora-avatar--indigo">丙</span>
-            <span class="blora-avatar blora-avatar--moss">丁</span>
-            <span class="blora-avatar blora-avatar--ink">戊</span>
-            <span class="blora-avatar blora-avatar--square blora-avatar--seal">方</span>
+            <span class="blora-avatar blora-avatar--primary">A</span>
+            <span class="blora-avatar blora-avatar--neutral">B</span>
+            <span class="blora-avatar blora-avatar--info">C</span>
+            <span class="blora-avatar blora-avatar--success">D</span>
+            <span class="blora-avatar blora-avatar--contrast">E</span>
+            <span class="blora-avatar blora-avatar--square blora-avatar--primary">F</span>
           </div>
         </div>
         <div class="blora-demo">
@@ -984,7 +954,7 @@
               <span class="blora-avatar"><img src="https://picsum.photos/seed/blora-b/80/80" alt=""></span>
               <span class="blora-avatar"><img src="https://picsum.photos/seed/blora-c/80/80" alt=""></span>
               <span class="blora-avatar"><img src="https://picsum.photos/seed/blora-d/80/80" alt=""></span>
-              <span class="blora-avatar blora-avatar--ink">+5</span>
+              <span class="blora-avatar blora-avatar--contrast">+5</span>
             </div>
           </div>
           <p class="blora-hint" style="margin-top:var(--blora-space-2);">头像组用于成员叠加展示，超出可显示总数。</p>
@@ -1011,7 +981,7 @@
             </div>
             <div class="blora-progress">
               <div class="blora-progress__label"><span>数据处理</span><span>40%</span></div>
-              <div class="blora-progress__bar"><div class="blora-progress__fill blora-progress__fill--tea" style="width:40%;"></div></div>
+              <div class="blora-progress__bar"><div class="blora-progress__fill blora-progress__fill--neutral" style="width:40%;"></div></div>
             </div>
             <div class="blora-progress">
               <div class="blora-progress__label"><span>渲染完成</span><span>85%</span></div>
@@ -1028,14 +998,14 @@
                 <circle class="track" cx="36" cy="36" r="30"></circle>
                 <circle class="fill" cx="36" cy="36" r="30" stroke-dasharray="188.5" stroke-dashoffset="56.5"></circle>
               </svg>
-              <span style="position:absolute; font-family:var(--blora-font-serif); font-weight:600; color:var(--blora-ink);">70%</span>
+              <span style="position:absolute; font-family:var(--blora-font-heading); font-weight:600; color:var(--blora-text-strong);">70%</span>
             </div>
             <div class="blora-progress--circular">
               <svg width="72" height="72" viewBox="0 0 72 72">
                 <circle class="track" cx="36" cy="36" r="30"></circle>
-                <circle class="fill" cx="36" cy="36" r="30" stroke-dasharray="188.5" stroke-dashoffset="113" style="stroke:var(--blora-moss);"></circle>
+                <circle class="fill" cx="36" cy="36" r="30" stroke-dasharray="188.5" stroke-dashoffset="113" style="stroke:var(--blora-success);"></circle>
               </svg>
-              <span style="position:absolute; font-family:var(--blora-font-serif); font-weight:600; color:var(--blora-moss);">40%</span>
+              <span style="position:absolute; font-family:var(--blora-font-heading); font-weight:600; color:var(--blora-success);">40%</span>
             </div>
           </div>
         </div>
@@ -1046,8 +1016,8 @@
             <span class="blora-spinner blora-spinner--sm"></span>
             <span class="blora-spinner"></span>
             <span class="blora-spinner blora-spinner--lg"></span>
-            <span class="blora-dot-loading"><span></span><span></span><span></span><span></span></span>
-            <span class="blora-hint">圆点加载 · blora-dot-loading</span>
+            <span class="blora-dot-loader"><span></span><span></span><span></span><span></span></span>
+            <span class="blora-hint">圆点加载 · blora-dot-loader</span>
           </div>
         </div>
 
@@ -1210,11 +1180,11 @@
             <table class="blora-table blora-table--striped">
               <thead><tr><th>成员</th><th>部门</th><th>事项</th><th class="blora-table-sort">状态 ↓</th><th>评分</th></tr></thead>
               <tbody>
-                <tr><td>张三</td><td>技术部</td><td>前端框架搭建</td><td>已完成</td><td><span class="blora-tag blora-tag--seal">★★★★★</span></td></tr>
-                <tr><td>李四</td><td>技术部</td><td>接口文档撰写</td><td>审核中</td><td><span class="blora-tag blora-tag--seal">★★★★★</span></td></tr>
-                <tr><td>王五</td><td>技术部</td><td>数据库迁移</td><td>待办</td><td><span class="blora-tag blora-tag--gold">★★★★☆</span></td></tr>
-                <tr><td>赵六</td><td>设计组</td><td>官网改版</td><td>已完成</td><td><span class="blora-tag blora-tag--seal">★★★★★</span></td></tr>
-                <tr><td>孙八</td><td>设计组</td><td>Logo 设计</td><td>进行中</td><td><span class="blora-tag blora-tag--gold">★★★★☆</span></td></tr>
+                <tr><td>张三</td><td>技术部</td><td>前端框架搭建</td><td>已完成</td><td><span class="blora-tag blora-tag--primary">★★★★★</span></td></tr>
+                <tr><td>李四</td><td>技术部</td><td>接口文档撰写</td><td>审核中</td><td><span class="blora-tag blora-tag--primary">★★★★★</span></td></tr>
+                <tr><td>王五</td><td>技术部</td><td>数据库迁移</td><td>待办</td><td><span class="blora-tag blora-tag--warning">★★★★☆</span></td></tr>
+                <tr><td>赵六</td><td>设计组</td><td>官网改版</td><td>已完成</td><td><span class="blora-tag blora-tag--primary">★★★★★</span></td></tr>
+                <tr><td>孙八</td><td>设计组</td><td>Logo 设计</td><td>进行中</td><td><span class="blora-tag blora-tag--warning">★★★★☆</span></td></tr>
               </tbody>
             </table>
           </div>
@@ -1223,9 +1193,9 @@
         <div class="blora-demo">
           <div class="blora-demo__label">列表 · List</div>
           <div class="blora-list blora-list--hover">
-            <div class="blora-list__item"><span class="blora-avatar blora-avatar--sm blora-avatar--seal">张</span><div class="blora-list__meta"><div class="blora-list__title">前端框架搭建</div><div class="blora-list__desc">张三 · 技术部 · 2024年</div></div><span class="blora-tag blora-tag--seal">高优先</span></div>
-            <div class="blora-list__item"><span class="blora-avatar blora-avatar--sm blora-avatar--tea">李</span><div class="blora-list__meta"><div class="blora-list__title">接口文档撰写</div><div class="blora-list__desc">李四 · 技术部 · 2024年</div></div><span class="blora-tag blora-tag--gold">中优先</span></div>
-            <div class="blora-list__item"><span class="blora-avatar blora-avatar--sm blora-avatar--moss">赵</span><div class="blora-list__meta"><div class="blora-list__title">官网改版</div><div class="blora-list__desc">赵六 · 设计组 · 2024年</div></div><span class="blora-tag blora-tag--seal">高优先</span></div>
+            <div class="blora-list__item"><span class="blora-avatar blora-avatar--sm blora-avatar--primary">张</span><div class="blora-list__meta"><div class="blora-list__title">前端框架搭建</div><div class="blora-list__desc">张三 · 技术部 · 2024年</div></div><span class="blora-tag blora-tag--primary">高优先</span></div>
+            <div class="blora-list__item"><span class="blora-avatar blora-avatar--sm blora-avatar--neutral">李</span><div class="blora-list__meta"><div class="blora-list__title">接口文档撰写</div><div class="blora-list__desc">李四 · 技术部 · 2024年</div></div><span class="blora-tag blora-tag--warning">中优先</span></div>
+            <div class="blora-list__item"><span class="blora-avatar blora-avatar--sm blora-avatar--success">赵</span><div class="blora-list__meta"><div class="blora-list__title">官网改版</div><div class="blora-list__desc">赵六 · 设计组 · 2024年</div></div><span class="blora-tag blora-tag--primary">高优先</span></div>
           </div>
         </div>
 
@@ -1251,19 +1221,19 @@
           <div class="blora-demo__label">时间轴 · Timeline</div>
           <div class="blora-timeline">
             <div class="blora-timeline__item">
-              <div class="blora-timeline__dot blora-timeline__dot--moss"></div>
+              <div class="blora-timeline__dot blora-timeline__dot--success"></div>
               <div class="blora-timeline__time">10:24</div>
               <div class="blora-timeline__title">项目启动</div>
               <div class="blora-timeline__desc">需求评审完成，确认开发计划。</div>
             </div>
             <div class="blora-timeline__item">
-              <div class="blora-timeline__dot blora-timeline__dot--moss"></div>
+              <div class="blora-timeline__dot blora-timeline__dot--success"></div>
               <div class="blora-timeline__time">11:08</div>
               <div class="blora-timeline__title">开发准备</div>
               <div class="blora-timeline__desc">技术方案已确定，仓库初始化完成。</div>
             </div>
             <div class="blora-timeline__item">
-              <div class="blora-timeline__dot blora-timeline__dot--seal"></div>
+              <div class="blora-timeline__dot blora-timeline__dot--primary"></div>
               <div class="blora-timeline__time">14:30</div>
               <div class="blora-timeline__title">开发进行中</div>
               <div class="blora-timeline__desc">核心功能已完成，正在联调测试。</div>
@@ -1351,8 +1321,8 @@
           <div class="blora-carousel" data-autoplay>
             <div class="blora-carousel__track">
               <div class="blora-carousel__slide"><div style="height:240px;" class="blora-mock-img">项目概览</div></div>
-              <div class="blora-carousel__slide"><div class="blora-center" style="height:240px; background:var(--blora-seal); color:#FBF8F0; font-family:var(--blora-font-serif); font-size:2rem;">数据展示</div></div>
-              <div class="blora-carousel__slide"><div class="blora-center" style="height:240px; background:var(--blora-indigo); color:#FBF8F0; font-family:var(--blora-font-serif); font-size:2rem;">图表分析</div></div>
+              <div class="blora-carousel__slide"><div class="blora-center" style="height:240px; background:var(--blora-primary); color:var(--blora-on-accent); font-family:var(--blora-font-heading); font-size:2rem;">数据展示</div></div>
+              <div class="blora-carousel__slide"><div class="blora-center" style="height:240px; background:var(--blora-info); color:var(--blora-on-accent); font-family:var(--blora-font-heading); font-size:2rem;">图表分析</div></div>
             </div>
             <button class="blora-carousel__arrow blora-carousel__arrow--prev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
             <button class="blora-carousel__arrow blora-carousel__arrow--next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
@@ -1361,14 +1331,14 @@
         </div>
 
         <div class="blora-demo">
-          <div class="blora-demo__label">图片 · Image（带题图与相框）</div>
+          <div class="blora-demo__label">图片 · Image（带说明与边框）</div>
           <div class="blora-row" style="align-items:flex-start;">
             <span class="blora-image blora-image--hover" style="width:200px;">
-              <img src="https://picsum.photos/seed/blora-mtn/400/280" alt="示例配图" class="blora-inkify">
+              <img src="https://picsum.photos/seed/blora-mtn/400/280" alt="示例配图" class="blora-image-muted">
               <span class="blora-image__cap">示例配图</span>
             </span>
             <span class="blora-image blora-image--frame" style="width:200px;">
-              <img src="https://picsum.photos/seed/blora-ink/400/280" alt="示例配图" class="blora-inkify-strong">
+              <img src="https://picsum.photos/seed/blora-mono/400/280" alt="示例配图" class="blora-image-monochrome">
             </span>
           </div>
         </div>
@@ -1428,7 +1398,7 @@
             <div class="blora-chart-mock__bar" style="height:60%;"></div>
             <div class="blora-chart-mock__bar" style="height:75%;"></div>
           </div>
-          <p class="blora-hint" style="margin-top:var(--blora-space-2);">Blora 不绑定图表库；提供色变量供 ECharts / Chart.js 取用：seal · tea · indigo · moss · gold。</p>
+          <p class="blora-hint" style="margin-top:var(--blora-space-2);">Blora 不绑定图表库；可使用 primary、info、success、warning 与 secondary 功能色构建数据系列。</p>
         </div>
       </div>
     </section>
@@ -1463,7 +1433,7 @@
             </div>
             <div class="blora-banner__actions">
               <button class="blora-btn blora-btn--primary">立即升级</button>
-              <button class="blora-btn blora-btn--outline" style="color:inherit; border-color:rgba(255,255,255,0.35);">详情</button>
+              <button class="blora-btn blora-btn--outline" style="color:inherit; border-color:color-mix(in srgb, var(--blora-on-media) 35%, transparent);">详情</button>
             </div>
           </div>
         </div>
@@ -1508,7 +1478,7 @@
               <span class="blora-tooltip__bubble">点击后将打开详情</span>
             </span>
             <span class="blora-tooltip">
-              <span class="blora-tag blora-tag--seal" tabindex="0">重要</span>
+              <span class="blora-tag blora-tag--primary" tabindex="0">重要</span>
               <span class="blora-tooltip__bubble">该字段为必填项</span>
             </span>
           </div>
@@ -1633,7 +1603,7 @@
           <hr class="blora-divider">
           <hr class="blora-divider blora-divider--dashed">
           <div class="blora-divider blora-divider--text">章节分隔</div>
-          <hr class="blora-brush">
+          <hr class="blora-divider">
         </div>
 
         <div class="blora-demo">
@@ -1810,14 +1780,14 @@
       const first = luminance(a), second = luminance(b);
       return (Math.max(first, second) + 0.05) / (Math.min(first, second) + 0.05);
     };
-    const ink = parseColor(styles.getPropertyValue("--blora-ink").trim());
-    const paper = parseColor(styles.getPropertyValue("--blora-paper").trim());
+    const strongText = parseColor(styles.getPropertyValue("--blora-text-strong").trim());
+    const pageBackground = parseColor(styles.getPropertyValue("--blora-background").trim());
     document.querySelectorAll("[data-blora-token]").forEach((chip) => {
       const value = styles.getPropertyValue(chip.dataset.bloraToken).trim();
       const background = parseColor(value);
       chip.style.background = value;
-      chip.style.color = contrast(background, ink) >= contrast(background, paper) ? "var(--blora-ink)" : "var(--blora-paper)";
-      chip.style.borderColor = styles.getPropertyValue("--blora-ink-ghost").trim();
+      chip.style.color = contrast(background, strongText) >= contrast(background, pageBackground) ? "var(--blora-text-strong)" : "var(--blora-background)";
+      chip.style.borderColor = styles.getPropertyValue("--blora-border-subtle").trim();
       chip.textContent = value.toUpperCase();
     });
   };
