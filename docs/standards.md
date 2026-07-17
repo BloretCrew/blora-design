@@ -14,7 +14,7 @@ Blora 把界面拆成三个色根：**底色、文字、主色**，并由此推�
 |----|----|----------------|
 | **底** | 沉稳之底 | 默认背景取柔灰白 `#F7F6F8`，表面保持纯净，可由产品按需扩展纹理 |
 | **墨** | 结构之骨 | 文字与边框以多级灰度分层，替代纯黑纯灰 |
-| **章** | 点睛之笔 | 默认强调色为低饱和暮紫 `#6B6279`（命名 `--blora-seal`），仅用于主操作与激活态 |
+| **主色** | 交互焦点 | 默认强调色为低饱和紫灰 `#675F78`（`--blora-primary`），仅用于主操作与激活态 |
 
 一句话：**底色为底，文字为骨，主色为眼。**
 
@@ -31,7 +31,7 @@ Blora 把界面拆成三个色根：**底色、文字、主色**，并由此推�
 
 ## 二 · 色彩系统
 
-色板分三层：**底色（背景）、文字（文本与边框）、彩（强调与状态）**。彩为宾，墨为主。
+色板分三层：**底色（背景）、文字（文本与边框）、功能色（交互与状态）**。功能色只表达层级与状态，不承担装饰。
 
 ### 2.1 底 · Paper
 
@@ -61,32 +61,34 @@ Blora 把界面拆成三个色根：**底色、文字、主色**，并由此推�
 
 **铁律：单屏画面中，最深墨色面积 ≤ 5%，淡墨为常态。**
 
-### 2.3 彩 · Accents
+### 2.3 功能色 · Functional Accents
 
 | Token | Hex | 语义 |
 |------|-----|------|
-| `--blora-seal` | `#6B6279` | 暮紫 — **唯一主强调色** |
-| `--blora-seal-deep` | `#544B61` | 深主色 — hover/press |
-| `--blora-cinnabar` | `#A8545A` | 柔红 — 高亮/危险 |
-| `--blora-tea` | `#786859` | 暖灰棕 — 次强调 |
-| `--blora-indigo` | `#58677A` | 钢蓝 — 信息 |
-| `--blora-moss` | `#547065` | 灰绿 — 成功 |
-| `--blora-bamboo` | `#697D75` | 青灰 — 辅助成功 |
-| `--blora-gold` | `#8B754E` | 暗金 — 警告 |
-| `--blora-ochre` | `#A57C5C` | 暖棕 — 装饰 |
+| `--blora-primary` | `#675F78` | **唯一主强调色** |
+| `--blora-primary-hover` | `#514A61` | 主色 hover/press |
+| `--blora-danger` | `#995F68` | 危险与错误 |
+| `--blora-accent-neutral` | `#6D6977` | 中性强调 |
+| `--blora-info` | `#586A83` | 信息 |
+| `--blora-success` | `#5D746C` | 成功 |
+| `--blora-support` | `#70807C` | 辅助数据系列 |
+| `--blora-warning` | `#806C4F` | 警告 |
+| `--blora-accent-secondary` | `#7E6B7A` | 次强调/数据系列 |
+
+旧版 `seal / cinnabar / tea / indigo / moss / bamboo / gold / ochre` 令牌作为兼容别名保留；新项目应优先使用上表功能令牌。
 
 ### 2.4 状态映射
 
 | 状态 | 色 |
 |------|----|
-| 成功 success | `--blora-success` / `#547065` |
-| 警告 warning | `--blora-warning` / `#8B754E` |
-| 危险 danger  | `--blora-danger` / `#A8545A` |
-| 信息 info    | `--blora-info` / `#58677A` |
+| 成功 success | `--blora-success` / `#5D746C` |
+| 警告 warning | `--blora-warning` / `#806C4F` |
+| 危险 danger  | `--blora-danger` / `#995F68` |
+| 信息 info    | `--blora-info` / `#586A83` |
 
 ### 2.5 用色比例
 
-> **90 / 5 / 5 法则**：纸墨占 90%，印泥占 ≤ 5%，其余色彩占 ≤ 5%。任何违反此比例的设计都需复审。
+> **90 / 5 / 5 法则**：底色与文字占 90%，主色占 ≤ 5%，状态色占 ≤ 5%。任何违反此比例的设计都需复审。
 
 ---
 
@@ -176,7 +178,7 @@ Blora 把界面拆成三个色根：**底色、文字、主色**，并由此推�
 
 - 默认边框：`1px solid var(--blora-ink-ghost)`
 - 强调边框：`1px solid var(--blora-ink-mist)`
-- 印泥边框：`1px solid var(--blora-seal)`
+- 主色边框：`1px solid var(--blora-primary)`
 - 虚线分隔：`border-top: 1px dashed var(--blora-ink-mist)`
 
 ### 5.3 阴影 · Shadow
@@ -262,12 +264,12 @@ Blora 把界面拆成三个色根：**底色、文字、主色**，并由此推�
 所有正文与背景对比度 ≥ **4.5:1**（WCAG AA）；大字 ≥ 3:1。已验证：
 - `ink-mid #4B4750` / `paper #F7F6F8` ≈ 8.42:1 ✓
 - `ink-light #716C76` / `paper` ≈ 4.74:1 ✓
-- `seal #6B6279` / `paper` ≈ 5.34:1 ✓
+- `primary #675F78` / `paper` ≈ 5.59:1 ✓
 - `ink-mist #9A949F` / `paper` ≈ 2.74:1 — **仅用于非文本装饰**
 
 ### 9.2 焦点
 
-`:focus-visible` 一律 `outline: 2px solid var(--blora-seal); outline-offset: 2px;` 不移除。
+`:focus-visible` 一律 `outline: 2px solid var(--blora-primary); outline-offset: 2px;` 不移除。
 
 ### 9.3 触摸目标
 

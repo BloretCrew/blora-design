@@ -808,11 +808,11 @@
     indigo: Object.freeze({ name: "靛青", description: "冷纸灰与沉静蓝调", colors: ["#F4F5F8", "#405D87", "#55756F", "#A74B52", "#AF8A55"] }),
     lotus: Object.freeze({ name: "藕荷", description: "柔和藕粉与草木青", colors: ["#F8F4F6", "#9A466A", "#55786B", "#526078", "#B28A59"] }),
     ocean: Object.freeze({ name: "海盐", description: "清透青蓝与海岸绿", colors: ["#F1F7F6", "#176B78", "#39745F", "#365D78", "#B08A55"] }),
-    graphite: Object.freeze({ name: "Graphite", description: "中性灰与克制钢蓝", colors: ["#F6F7F8", "#171A1F", "#52697E", "#527064", "#8B744D"] }),
-    mono: Object.freeze({ name: "Mono", description: "纯净黑白与低饱和灰", colors: ["#FAFAF9", "#111110", "#333735", "#596B62", "#857252"] }),
-    circuit: Object.freeze({ name: "Circuit", description: "碳灰与低饱和青绿", colors: ["#F4F5F5", "#161A1A", "#386B6A", "#4B6472", "#887044"] }),
-    coral: Object.freeze({ name: "Coral", description: "深靛灰与柔和珊瑚红", colors: ["#FAF7F8", "#303143", "#A94F5C", "#5F756F", "#C58B70"] }),
-    dusk: Object.freeze({ name: "Dusk", description: "柔灰与安静暮紫", colors: ["#F7F6F8", "#1D1B20", "#6B6279", "#547065", "#8B754E"] }),
+    graphite: Object.freeze({ name: "Graphite", description: "冷灰界面与低饱和钢蓝", colors: ["#F6F7F8", "#171A1F", "#4F6578", "#596A86", "#5B756B"] }),
+    mono: Object.freeze({ name: "Mono", description: "纯中性灰与近黑主色", colors: ["#FAFAF9", "#111110", "#34363A", "#5E6672", "#616D67"] }),
+    circuit: Object.freeze({ name: "Circuit", description: "碳灰界面与克制青色", colors: ["#F4F5F5", "#161A1A", "#3E6C70", "#536D7D", "#4F7368"] }),
+    coral: Object.freeze({ name: "Coral", description: "深靛灰与柔和珊瑚红", colors: ["#FAF7F8", "#303143", "#9F5964", "#5D6680", "#5B756B"] }),
+    dusk: Object.freeze({ name: "Dusk", description: "中性柔灰与低饱和紫", colors: ["#F7F6F8", "#1D1B20", "#675F78", "#586A83", "#5D746C"] }),
   });
   const PALETTE_ALIASES = Object.freeze({ modern: "graphite", minimal: "mono", carbon: "circuit", studio: "dusk" });
   const normalizePalette = (name) => PALETTE_ALIASES[name] || name;
@@ -1567,7 +1567,7 @@
       const cursor = $(".blora-color-spectrum__cursor", spectrum);
       const hexInput = $(".blora-color-hex", panel);
       const preview = $(".blora-color-preview", panel);
-      let current = normalizeHex(swatch.dataset.color || token("--blora-seal", "#A0392E")) || "#A0392E";
+      let current = normalizeHex(swatch.dataset.color || token("--blora-primary", "#675F78")) || "#675F78";
       let hsv = hexToHsv(current);
       const mask = d.createElement("div"); mask.className = "blora-floating-mask blora-portal"; getPortalRoot(wrap).appendChild(mask);
       swatch.setAttribute("role", "button");

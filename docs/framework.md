@@ -114,7 +114,7 @@ Blora.version;        // "1.0.0"
 :root {
   /* 纸 */ --blora-paper, --blora-surface-1..3, --blora-paper-deep
   /* 墨 */ --blora-ink, --blora-ink-deep, --blora-ink-mid, --blora-ink-light, --blora-ink-mist, --blora-ink-faint, --blora-ink-ghost
-  /* 彩 */ --blora-seal, --blora-cinnabar, --blora-tea, --blora-indigo, --blora-moss, --blora-bamboo, --blora-gold, --blora-ochre
+  /* 功能色 */ --blora-primary, --blora-danger, --blora-accent-neutral, --blora-info, --blora-success, --blora-support, --blora-warning, --blora-accent-secondary
   /* 字 */ --blora-font-serif, --blora-font-sans, --blora-font-mono, --blora-font-brush
   /*     */ --blora-text-xs .. --blora-text-5xl
   /* 间 */ --blora-space-0 .. --blora-space-12
@@ -695,8 +695,7 @@ Blora 不内置图表库。提供语义色供 ECharts / Chart.js 取用：
 
 ```js
 const palette = [
-  getComputedStyle(document.documentElement).getPropertyValue('--blora-seal').trim(),
-  '--blora-tea', '--blora-indigo', '--blora-moss', '--blora-gold',
+  '--blora-primary', '--blora-info', '--blora-success', '--blora-warning', '--blora-accent-secondary',
 ].map(v => v.startsWith('--') ? getComputedStyle(document.documentElement).getPropertyValue(v).trim() : v);
 ```
 
@@ -718,7 +717,7 @@ const palette = [
 
 ```css
 :root {
-  --blora-seal: #2E5C8A;   /* 改主强调为青蓝 */
+  --blora-primary: #2E5C8A;   /* 改主强调为青蓝 */
   --blora-paper: #FAF7F0;  /* 更亮的纸 */
 }
 ```
