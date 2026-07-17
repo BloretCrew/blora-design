@@ -1,6 +1,6 @@
 /* ========================================================================
    Blora Design · blora.js
-   轻量的交互层 — 让静态的"水墨"活起来。
+   轻量的交互层 — 为静态组件补充可达、可复用的行为。
    无依赖。只做该做的事：开关、显隐、步进、拖拽。
    ======================================================================== */
 (function (global, factory) {
@@ -13,8 +13,7 @@
   const CONFIG = {
     autoInit: true,
     portalRoot: null,
-    storageKey: "blora-theme",
-    themeStorageKey: "blora-style-theme",
+    colorModeStorageKey: "blora-color-mode",
     paletteStorageKey: "blora-palette",
   };
   const doc = () => global && global.document;
@@ -49,8 +48,8 @@
     if (!options || typeof options !== "object") return { ...CONFIG };
     if ("autoInit" in options) CONFIG.autoInit = options.autoInit !== false;
     if ("portalRoot" in options) CONFIG.portalRoot = options.portalRoot || null;
-    if ("storageKey" in options && options.storageKey) CONFIG.storageKey = String(options.storageKey);
-    if ("themeStorageKey" in options && options.themeStorageKey) CONFIG.themeStorageKey = String(options.themeStorageKey);
+    if ("colorModeStorageKey" in options && options.colorModeStorageKey) CONFIG.colorModeStorageKey = String(options.colorModeStorageKey);
+    else if ("storageKey" in options && options.storageKey) CONFIG.colorModeStorageKey = String(options.storageKey);
     if ("paletteStorageKey" in options && options.paletteStorageKey) CONFIG.paletteStorageKey = String(options.paletteStorageKey);
     return { ...CONFIG };
   };
@@ -803,32 +802,24 @@
     });
   }
 
-  /* —— Visual themes and color palettes —— */
-  const THEME_PRESETS = Object.freeze({
-    classic: Object.freeze({ name: "Classic", description: "东方排版与温润组件形态", defaultPalette: "cinnabar", traits: ["思源宋体", "温润圆角"] }),
-    modern: Object.freeze({ name: "Modern", description: "克制、中性、面向产品界面", defaultPalette: "modern", traits: ["现代无衬线", "适中圆角"] }),
-    minimal: Object.freeze({ name: "Minimal", description: "高对比、轻装饰、边界清晰", defaultPalette: "minimal", traits: ["Helvetica", "近直角"] }),
-    studio: Object.freeze({ name: "Studio", description: "柔和层级、适合现代创意工具", defaultPalette: "studio", traits: ["Avenir", "胶囊圆角"] }),
-  });
+  /* —— Color palettes —— */
   const PALETTE_PRESETS = Object.freeze({
     cinnabar: Object.freeze({ name: "丹砂", description: "宣纸暖白与朱砂红", colors: ["#F8F4EC", "#A0392E", "#3D4A5C", "#5A7B6B", "#B89968"] }),
     indigo: Object.freeze({ name: "靛青", description: "冷纸灰与沉静蓝调", colors: ["#F4F5F8", "#405D87", "#55756F", "#A74B52", "#AF8A55"] }),
     lotus: Object.freeze({ name: "藕荷", description: "柔和藕粉与草木青", colors: ["#F8F4F6", "#9A466A", "#55786B", "#526078", "#B28A59"] }),
     ocean: Object.freeze({ name: "海盐", description: "清透青蓝与海岸绿", colors: ["#F1F7F6", "#176B78", "#39745F", "#365D78", "#B08A55"] }),
-    modern: Object.freeze({ name: "Graphite", description: "中性灰与克制钢蓝", colors: ["#F6F7F8", "#171A1F", "#52697E", "#527064", "#8B744D"] }),
-    minimal: Object.freeze({ name: "Mono", description: "纯净黑白与低饱和灰", colors: ["#FAFAF9", "#111110", "#333735", "#596B62", "#857252"] }),
-    carbon: Object.freeze({ name: "Circuit", description: "碳灰与低饱和青绿", colors: ["#F4F5F5", "#161A1A", "#386B6A", "#4B6472", "#887044"] }),
-    studio: Object.freeze({ name: "Dusk", description: "柔灰与安静暮紫", colors: ["#F7F6F8", "#1D1B20", "#6B6279", "#547065", "#8B754E"] }),
+    graphite: Object.freeze({ name: "Graphite", description: "中性灰与克制钢蓝", colors: ["#F6F7F8", "#171A1F", "#52697E", "#527064", "#8B744D"] }),
+    mono: Object.freeze({ name: "Mono", description: "纯净黑白与低饱和灰", colors: ["#FAFAF9", "#111110", "#333735", "#596B62", "#857252"] }),
+    circuit: Object.freeze({ name: "Circuit", description: "碳灰与低饱和青绿", colors: ["#F4F5F5", "#161A1A", "#386B6A", "#4B6472", "#887044"] }),
+    coral: Object.freeze({ name: "Coral", description: "深靛灰与柔和珊瑚红", colors: ["#FAF7F8", "#303143", "#A94F5C", "#5F756F", "#C58B70"] }),
+    dusk: Object.freeze({ name: "Dusk", description: "柔灰与安静暮紫", colors: ["#F7F6F8", "#1D1B20", "#6B6279", "#547065", "#8B754E"] }),
   });
-  const getTheme = (target) => {
-    const d = ownerDoc(target);
-    const el = target && target.nodeType === 1 ? target : d && d.documentElement;
-    return (el && el.dataset.bloraThemeStyle) || "classic";
-  };
+  const PALETTE_ALIASES = Object.freeze({ modern: "graphite", minimal: "mono", carbon: "circuit", studio: "dusk" });
+  const normalizePalette = (name) => PALETTE_ALIASES[name] || name;
   const getPalette = (target) => {
     const d = ownerDoc(target);
     const el = target && target.nodeType === 1 ? target : d && d.documentElement;
-    return (el && el.dataset.bloraPalette) || "cinnabar";
+    return normalizePalette((el && el.dataset.bloraPalette) || "dusk");
   };
   const syncThemeColor = (target) => {
     const d = ownerDoc(target);
@@ -840,79 +831,56 @@
       meta.content = win.getComputedStyle(d.body || d.documentElement).getPropertyValue("--blora-paper").trim() || "#F8F4EC";
     });
   };
-  const applyTheme = (name, target, options = {}) => {
-    const d = ownerDoc(target);
-    const el = target && target.nodeType === 1 ? target : d && d.documentElement;
-    if (!el || !THEME_PRESETS[name]) return false;
-    if (name === "classic") delete el.dataset.bloraThemeStyle;
-    else el.dataset.bloraThemeStyle = name;
-    const win = ownerWin(el);
-    if (options.persist !== false) {
-      try { win.localStorage.setItem(CONFIG.themeStorageKey, name); } catch (e) {}
-    }
-    if (options.applyDefaultPalette !== false) applyPalette(THEME_PRESETS[name].defaultPalette, el, { persist: options.persist, emit: false });
-    syncThemeColor(el);
-    if (options.emit !== false) el.dispatchEvent(new win.CustomEvent("blora:themechange", { bubbles: true, detail: { theme: name, palette: getPalette(el), dark: el.classList.contains("blora-dark") } }));
-    return true;
-  };
   const applyPalette = (name, target, options = {}) => {
     const d = ownerDoc(target);
     const el = target && target.nodeType === 1 ? target : d && d.documentElement;
+    name = normalizePalette(name);
     if (!el || !PALETTE_PRESETS[name]) return false;
-    if (name === "cinnabar") delete el.dataset.bloraPalette;
+    if (name === "dusk") delete el.dataset.bloraPalette;
     else el.dataset.bloraPalette = name;
     const win = ownerWin(el);
     if (options.persist !== false) {
       try { win.localStorage.setItem(CONFIG.paletteStorageKey, name); } catch (e) {}
     }
     syncThemeColor(el);
-    if (options.emit !== false) el.dispatchEvent(new win.CustomEvent("blora:themechange", { bubbles: true, detail: { theme: getTheme(el), palette: name, dark: el.classList.contains("blora-dark") } }));
+    if (options.emit !== false) el.dispatchEvent(new win.CustomEvent("blora:appearancechange", { bubbles: true, detail: { palette: name, dark: el.classList.contains("blora-dark") } }));
     return true;
   };
-  function initThemePicker(root) {
+  function initPalettePicker(root) {
     const d = ownerDoc(root);
     const win = ownerWin(root);
     if (!d || !win) return;
     if (!FLAGS.appearanceBoot) {
       FLAGS.appearanceBoot = true;
-      let savedTheme = "classic", savedPalette = "cinnabar";
-      try {
-        savedTheme = win.localStorage.getItem(CONFIG.themeStorageKey) || savedTheme;
-        savedPalette = win.localStorage.getItem(CONFIG.paletteStorageKey) || savedPalette;
-      } catch (e) {}
-      if (savedTheme === "carbon") savedTheme = "modern";
-      else if (!THEME_PRESETS[savedTheme]) savedTheme = THEME_PRESETS[savedPalette] ? savedPalette : "classic";
-      if (!PALETTE_PRESETS[savedPalette]) savedPalette = THEME_PRESETS[savedTheme].defaultPalette;
-      applyTheme(savedTheme, d.documentElement, { persist: false, emit: false, applyDefaultPalette: false });
+      let savedPalette = "dusk";
+      try { savedPalette = win.localStorage.getItem(CONFIG.paletteStorageKey) || savedPalette; } catch (e) {}
+      savedPalette = normalizePalette(savedPalette);
+      if (!PALETTE_PRESETS[savedPalette]) savedPalette = "dusk";
       applyPalette(savedPalette, d.documentElement, { persist: false, emit: false });
     }
-    const initPicker = (picker, kind) => {
-      if (bound(picker, kind + "Picker")) return;
-      const isTheme = kind === "theme";
-      const presets = isTheme ? THEME_PRESETS : PALETTE_PRESETS;
-      const trigger = $(isTheme ? '[data-blora-theme-trigger]' : '[data-blora-palette-trigger]', picker);
-      const menu = $(".blora-theme-picker__menu", picker);
+    $$('[data-blora-palette-picker]', root).forEach((picker) => {
+      if (bound(picker, "PalettePicker")) return;
+      const trigger = $('[data-blora-palette-trigger]', picker);
+      const menu = $(".blora-palette-picker__menu", picker);
       if (!trigger || !menu) return;
       trigger.setAttribute("aria-haspopup", "listbox");
       trigger.setAttribute("aria-expanded", "false");
       menu.setAttribute("role", "listbox");
-      menu.setAttribute("aria-label", isTheme ? "视觉主题" : "配色");
-      const hint = isTheme ? "控制字体、圆角、阴影与界面密度" : "仅替换语义颜色，不改变组件形态";
-      const optionAttr = isTheme ? "data-blora-theme-option" : "data-blora-palette-option";
-      menu.innerHTML = '<div class="blora-theme-picker__head"><span class="blora-theme-picker__title">' + (isTheme ? "视觉主题" : "配色") + '</span><span class="blora-theme-picker__hint">' + hint + '</span></div><div class="blora-theme-picker__list">' + Object.entries(presets).map(([key, preset]) => { const palette = isTheme ? PALETTE_PRESETS[preset.defaultPalette] : preset; return '<button class="blora-theme-card" type="button" role="option" ' + optionAttr + '="' + key + '"><span class="blora-theme-card__copy"><span class="blora-theme-card__name">' + escapeHTML(preset.name) + '</span><span class="blora-theme-card__desc">' + escapeHTML(preset.description) + '</span>' + (isTheme ? '<span class="blora-theme-card__traits">' + preset.traits.map((trait) => '<span>' + escapeHTML(trait) + '</span>').join("") + '</span>' : '') + '</span><span class="blora-theme-card__colors" aria-hidden="true">' + palette.colors.map((color) => '<span class="blora-theme-card__color" style="background:' + color + '"></span>').join("") + '</span></button>'; }).join("") + "</div>";
-      const options = $$('[' + optionAttr + ']', menu);
+      menu.setAttribute("aria-label", "配色");
+      menu.innerHTML = '<div class="blora-palette-picker__head"><span class="blora-palette-picker__title">配色</span><span class="blora-palette-picker__hint">仅替换语义颜色，不改变组件形态</span></div><div class="blora-palette-picker__list">' + Object.entries(PALETTE_PRESETS).map(([key, preset]) => '<button class="blora-palette-card" type="button" role="option" data-blora-palette-option="' + key + '"><span class="blora-palette-card__copy"><span class="blora-palette-card__name">' + escapeHTML(preset.name) + '</span><span class="blora-palette-card__desc">' + escapeHTML(preset.description) + '</span></span><span class="blora-palette-card__colors" aria-hidden="true">' + preset.colors.map((color) => '<span class="blora-palette-card__color" style="background:' + color + '"></span>').join("") + '</span></button>').join("") + "</div>";
+      const options = $$('[data-blora-palette-option]', menu);
       const sync = () => {
-        const current = isTheme ? getTheme(d.documentElement) : getPalette(d.documentElement);
-        options.forEach((option) => option.setAttribute("aria-selected", String(option.getAttribute(optionAttr) === current)));
-        const label = $(".blora-theme-picker__label", trigger);
-        if (label) label.textContent = presets[current].name;
+        const current = getPalette(d.documentElement);
+        options.forEach((option) => option.setAttribute("aria-selected", String(option.dataset.bloraPaletteOption === current)));
+        const label = $(".blora-palette-picker__label", trigger);
+        if (label) label.textContent = PALETTE_PRESETS[current].name;
       };
       const open = (focus = false) => {
-        $$('[data-blora-theme-picker].is-open, [data-blora-palette-picker].is-open', d).forEach((other) => {
+        $$('[data-blora-palette-picker].is-open', d).forEach((other) => {
           if (other === picker) return;
           other.classList.add("is-switching");
           other.classList.remove("is-open");
-          const otherTrigger = $('[data-blora-theme-trigger], [data-blora-palette-trigger]', other);
+          const otherTrigger = $('[data-blora-palette-trigger]', other);
           if (otherTrigger) otherTrigger.setAttribute("aria-expanded", "false");
           win.requestAnimationFrame(() => other.classList.remove("is-switching"));
         });
@@ -926,11 +894,9 @@
       on(trigger, "click", (e) => { e.stopPropagation(); picker.classList.contains("is-open") ? close() : open(); });
       on(trigger, "keydown", (e) => { if (e.key === "ArrowDown") { e.preventDefault(); open(true); } });
       on(menu, "click", (e) => {
-        const option = e.target.closest('[' + optionAttr + ']');
+        const option = e.target.closest('[data-blora-palette-option]');
         if (!option) return;
-        const name = option.getAttribute(optionAttr);
-        if (isTheme) applyTheme(name, d.documentElement);
-        else applyPalette(name, d.documentElement);
+        applyPalette(option.dataset.bloraPaletteOption, d.documentElement);
         sync(); close(true);
       });
       on(menu, "keydown", (e) => {
@@ -945,30 +911,28 @@
         e.preventDefault(); options[next].focus();
       });
       on(d, "click", (e) => { if (!picker.contains(e.target)) close(); });
-      on(d.documentElement, "blora:themechange", sync);
+      on(d.documentElement, "blora:appearancechange", sync);
       sync();
-    };
-    $$('[data-blora-theme-picker]', root).forEach((picker) => initPicker(picker, "theme"));
-    $$('[data-blora-palette-picker]', root).forEach((picker) => initPicker(picker, "palette"));
+    });
   }
   const ICON_MOON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>';
   const ICON_SUN = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>';
-  function initThemeToggle(root) {
+  function initColorModeToggle(root) {
     const d = ownerDoc(root);
     const win = ownerWin(root);
     if (!d || !win) return;
     /* 首次载入：读取持久化选择，未设置时跟随系统 prefers-color-scheme */
-    if (!FLAGS.themeBoot) {
-      FLAGS.themeBoot = true;
+    if (!FLAGS.colorModeBoot) {
+      FLAGS.colorModeBoot = true;
       let saved = null;
-      try { saved = win.localStorage.getItem(CONFIG.storageKey); } catch (e) {}
+      try { saved = win.localStorage.getItem(CONFIG.colorModeStorageKey) || win.localStorage.getItem("blora-theme"); } catch (e) {}
       if (saved ? saved === "dark" : win.matchMedia("(prefers-color-scheme: dark)").matches) {
         d.documentElement.classList.add("blora-dark");
       }
       syncThemeColor(d.documentElement);
     }
-    $$("[data-blora-theme]", root).forEach((btn) => {
-      if (bound(btn, "Theme")) return;
+    $$("[data-blora-color-mode]", root).forEach((btn) => {
+      if (bound(btn, "ColorMode")) return;
       const sync = () => {
         const dark = d.documentElement.classList.contains("blora-dark");
         btn.innerHTML = dark ? ICON_SUN : ICON_MOON;
@@ -978,12 +942,12 @@
       sync();
       on(btn, "click", () => {
         const dark = d.documentElement.classList.toggle("blora-dark");
-        try { win.localStorage.setItem(CONFIG.storageKey, dark ? "dark" : "light"); } catch (e) {}
+        try { win.localStorage.setItem(CONFIG.colorModeStorageKey, dark ? "dark" : "light"); } catch (e) {}
         syncThemeColor(d.documentElement);
-        d.documentElement.dispatchEvent(new win.CustomEvent("blora:themechange", { bubbles: true, detail: { theme: getTheme(d.documentElement), palette: getPalette(d.documentElement), dark } }));
+        d.documentElement.dispatchEvent(new win.CustomEvent("blora:appearancechange", { bubbles: true, detail: { palette: getPalette(d.documentElement), dark } }));
         sync();
       });
-      on(d.documentElement, "blora:themechange", sync);
+      on(d.documentElement, "blora:appearancechange", sync);
     });
   }
 
@@ -1743,8 +1707,8 @@
     initBackTop();
     initScrollSpy(root);
     initSmoothScroll();
-    initThemePicker(root);
-    initThemeToggle(root);
+    initPalettePicker(root);
+    initColorModeToggle(root);
     initDropzone(root);
     initCommandPalette();
     initDateGuard(root);
@@ -1764,10 +1728,7 @@
     init,
     configure,
     setOptions: configure,
-    themes: THEME_PRESETS,
     palettes: PALETTE_PRESETS,
-    applyTheme,
-    getTheme,
     applyPalette,
     getPalette,
     toast,

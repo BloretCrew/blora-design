@@ -12,9 +12,9 @@ Blora 把界面拆成三个色根：**底色、文字、主色**，并由此推�
 
 | 根 | 含 | 在界面中的体现 |
 |----|----|----------------|
-| **底** | 沉稳之底 | 背景取暖白 `#F8F4EC`，纹理以肉眼几乎不可见的颗粒叠加 |
+| **底** | 沉稳之底 | 默认背景取柔灰白 `#F7F6F8`，表面保持纯净，可由产品按需扩展纹理 |
 | **墨** | 结构之骨 | 文字与边框以多级灰度分层，替代纯黑纯灰 |
-| **章** | 点睛之笔 | 唯一的强调色为印泥红 `#A0392E`（命名 `--blora-seal`），仅用于主操作与激活态 |
+| **章** | 点睛之笔 | 默认强调色为低饱和暮紫 `#6B6279`（命名 `--blora-seal`），仅用于主操作与激活态 |
 
 一句话：**底色为底，文字为骨，主色为眼。**
 
@@ -22,9 +22,9 @@ Blora 把界面拆成三个色根：**底色、文字、主色**，并由此推�
 
 1. **间距优先** — 间距宁大勿挤。组件内边距 ≥ 16px，分组之间 ≥ 32px。
 2. **节制用色** — 画面约 90% 为底色与文字色，主色 ≤ 5%，余者为状态语义。
-3. **圆角温润** — 默认 8px，不锋利亦不过圆。容器 12–20px，按钮恒 8px。
-4. **动效含蓄** — 缓动以 `cubic-bezier(.22,.61,.36,1)` 为主，时长 140–420ms，不弹跳过度。
-5. **字体分明** — 标题用衬线、正文用无衬线、代码用等宽，各司其职。
+3. **曲率连续** — 基础圆角从 6px 到 36px 平滑递进，表单控件优先使用胶囊曲率。
+4. **动效含蓄** — 缓动以 `cubic-bezier(.25,.8,.25,1)` 为主，时长 160–420ms，不弹跳过度。
+5. **字体统一** — 标题与正文共享现代无衬线骨架，代码使用等宽字体，各司其职。
 6. **触手可及** — 所有交互元素 ≥ 40×40，对比度满足 WCAG AA，支持键盘与 reduced-motion。
 
 ---
@@ -37,13 +37,13 @@ Blora 把界面拆成三个色根：**底色、文字、主色**，并由此推�
 
 | Token | Hex | 用途 |
 |------|-----|------|
-| `--blora-paper` | `#F8F4EC` | 页面底色 |
-| `--blora-paper-warm` | `#F2ECDE` | 暖纸 · 营造温度 |
-| `--blora-paper-cool` | `#F5F1E8` | 冷纸 · 中性 |
-| `--blora-paper-deep` | `#E6DFCC` | 深纸 · 沉底 |
-| `--blora-surface-1` | `#FBF8F0` | 卡面/输入框 |
-| `--blora-surface-2` | `#F2EEE2` | 次级面 — hover/分组 |
-| `--blora-surface-3` | `#E9E3D2` | 三级面 — 禁用/轨道 |
+| `--blora-paper` | `#F7F6F8` | 页面底色 |
+| `--blora-paper-warm` | `#F3F1F4` | 暖调背景 |
+| `--blora-paper-cool` | `#F5F5F7` | 冷调背景 |
+| `--blora-paper-deep` | `#E5E2E7` | 深层背景 |
+| `--blora-surface-1` | `#FFFFFF` | 卡面/输入框 |
+| `--blora-surface-2` | `#F0EEF2` | 次级面 — hover/分组 |
+| `--blora-surface-3` | `#E4E1E7` | 三级面 — 禁用/轨道 |
 
 ### 2.2 墨 · Ink（多级灰度）
 
@@ -51,13 +51,13 @@ Blora 把界面拆成三个色根：**底色、文字、主色**，并由此推�
 
 | 层级 | Token | Hex | 用途 |
 |------|-------|-----|------|
-| 焦 | `--blora-ink` | `#1C1A17` | 主标题/极强文本 |
-| 浓 | `--blora-ink-deep` | `#2D2A24` | 标题 |
-| 重 | `--blora-ink-mid` | `#4A453D` | 强调正文 |
-| 淡 | `--blora-ink-light` | `#6B6358` | 正文 |
-| 清 | `--blora-ink-mist` | `#9B9489` | 次要文本（仅装饰，不满足正文对比度） |
-| 远山 | `--blora-ink-faint` | `#B8B0A2` | 禁用/占位 |
-| 雾 | `--blora-ink-ghost` | `#D8D2C4` | 边框/分隔 |
+| 焦 | `--blora-ink` | `#1D1B20` | 主标题/极强文本 |
+| 浓 | `--blora-ink-deep` | `#2C2930` | 标题 |
+| 重 | `--blora-ink-mid` | `#4B4750` | 强调正文 |
+| 淡 | `--blora-ink-light` | `#716C76` | 正文 |
+| 清 | `--blora-ink-mist` | `#9A949F` | 次要文本（仅装饰，不满足正文对比度） |
+| 远山 | `--blora-ink-faint` | `#B7B1BB` | 禁用/占位 |
+| 雾 | `--blora-ink-ghost` | `#D6D1D9` | 边框/分隔 |
 
 **铁律：单屏画面中，最深墨色面积 ≤ 5%，淡墨为常态。**
 
@@ -65,24 +65,24 @@ Blora 把界面拆成三个色根：**底色、文字、主色**，并由此推�
 
 | Token | Hex | 语义 |
 |------|-----|------|
-| `--blora-seal` | `#A0392E` | 印泥红 — **唯一主强调色** |
-| `--blora-seal-deep` | `#7E2A22` | 深印 — hover/press |
-| `--blora-cinnabar` | `#C44536` | 朱砂 — 高亮 |
-| `--blora-tea` | `#8B6F47` | 茶色 — 次强调 |
-| `--blora-indigo` | `#3D4A5C` | 黛青 — 信息 |
-| `--blora-moss` | `#5A7B6B` | 山青 — 成功 |
-| `--blora-bamboo` | `#7B9B7E` | 竹青 — 辅助成功 |
-| `--blora-gold` | `#B89968` | 赭石 — 警告 |
-| `--blora-ochre` | `#D4A574` | 黄土 — 装饰 |
+| `--blora-seal` | `#6B6279` | 暮紫 — **唯一主强调色** |
+| `--blora-seal-deep` | `#544B61` | 深主色 — hover/press |
+| `--blora-cinnabar` | `#A8545A` | 柔红 — 高亮/危险 |
+| `--blora-tea` | `#786859` | 暖灰棕 — 次强调 |
+| `--blora-indigo` | `#58677A` | 钢蓝 — 信息 |
+| `--blora-moss` | `#547065` | 灰绿 — 成功 |
+| `--blora-bamboo` | `#697D75` | 青灰 — 辅助成功 |
+| `--blora-gold` | `#8B754E` | 暗金 — 警告 |
+| `--blora-ochre` | `#A57C5C` | 暖棕 — 装饰 |
 
 ### 2.4 状态映射
 
 | 状态 | 色 |
 |------|----|
-| 成功 success | `--blora-moss` |
-| 警告 warning | `--blora-gold` |
-| 危险 danger  | `--blora-seal` |
-| 信息 info    | `--blora-indigo` |
+| 成功 success | `--blora-success` / `#547065` |
+| 警告 warning | `--blora-warning` / `#8B754E` |
+| 危险 danger  | `--blora-danger` / `#A8545A` |
+| 信息 info    | `--blora-info` / `#58677A` |
 
 ### 2.5 用色比例
 
@@ -92,16 +92,16 @@ Blora 把界面拆成三个色根：**底色、文字、主色**，并由此推�
 
 ## 三 · 字体系统
 
-### 3.1 三套字族
+### 3.1 字族
 
 | 字族 | Token | 用途 |
 |------|-------|------|
-| 衬线 | `--blora-font-serif` | 标题、品牌、印章、数字大字 |
-| 无衬线 | `--blora-font-sans` | 正文、按钮、表单、UI 文字 |
+| 展示无衬线 | `--blora-font-serif` | 标题、品牌、数字大字 |
+| UI 无衬线 | `--blora-font-sans` | 正文、按钮、表单、UI 文字 |
 | 等宽 | `--blora-font-mono` | 代码、数据、技术标签 |
-| 楷书 | `--blora-font-brush` | 装饰性题字，仅用于非交互文案 |
+| 装饰字 | `--blora-font-brush` | 可选装饰性文案，不用于交互控件 |
 
-> 优先加载 `Noto Serif SC` / `Noto Sans SC` / `JetBrains Mono`；降级到系统宋体、苹方、微软雅黑。
+> 展示与 UI 字体统一采用 `Avenir / Avenir Next`，依次降级至 `Segoe UI / Noto Sans SC / sans-serif`；代码采用 `JetBrains Mono` 等宽栈。
 
 ### 3.2 字阶 · Type Scale
 
@@ -162,13 +162,15 @@ Blora 把界面拆成三个色根：**底色、文字、主色**，并由此推�
 
 | Token | 值 | 用途 |
 |-------|----|------|
-| `--blora-radius-xs` | 2px | 标签/小方块 |
-| `--blora-radius-sm` | 4px | 输入/小按钮 |
-| `--blora-radius-md` | 8px | **按钮/输入默认** |
-| `--blora-radius-lg` | 12px | 卡面 |
-| `--blora-radius-xl` | 20px | 面板/模态 |
-| `--blora-radius-2xl` | 32px | 大面板 |
+| `--blora-radius-xs` | 6px | 标签/小方块 |
+| `--blora-radius-sm` | 10px | 紧凑控件 |
+| `--blora-radius-md` | 14px | 卡面/常规容器 |
+| `--blora-radius-lg` | 18px | 浮层/卡面 |
+| `--blora-radius-xl` | 26px | 面板/模态 |
+| `--blora-radius-2xl` | 36px | 大面板 |
 | `--blora-radius-full` | 9999px | 胶囊/圆形 |
+
+表单控件默认使用 `--blora-control-radius: var(--blora-radius-full)`；局部组件按层级选用上表曲率。
 
 ### 5.2 边框 · Border
 
@@ -179,7 +181,7 @@ Blora 把界面拆成三个色根：**底色、文字、主色**，并由此推�
 
 ### 5.3 阴影 · Shadow
 
-四级 + 两特殊。所有阴影低不透明度，呈"纸上浮起"而非"空中悬停"。
+四级 + 两特殊。所有阴影保持低不透明度，形成柔和的现代层级。
 
 | Token | 用途 |
 |-------|------|
@@ -194,14 +196,9 @@ Blora 把界面拆成三个色根：**底色、文字、主色**，并由此推�
 
 ## 六 · 纹理与装饰
 
-### 6.1 纸纹 · Paper Grain
+### 6.1 表面纹理 · Surface Texture
 
-`--blora-grain` 由三层径向渐变叠加于 `body`：
-- 茶色微点于左上
-- 印泥微点于右下
-- 黛青微点于底部
-
-肉眼几乎不可见，仅作微妙的质感铺垫。**禁止在组件内部叠加纸纹**，仅 `body` 一处。
+`--blora-grain` 与 `--blora-paper-tint` 默认均为 `none`，Blora 基础表面保持纯净。产品可以覆盖这两个令牌增加低对比纹理，但禁止在单个组件内部硬编码装饰背景。
 
 ### 6.2 飞白分隔 · Brush Divider
 
@@ -224,7 +221,7 @@ Blora 把界面拆成三个色根：**底色、文字、主色**，并由此推�
 
 | Token | 曲线 | 用途 |
 |-------|------|------|
-| `--blora-ease` | `cubic-bezier(.22,.61,.36,1)` | **默认** — 含蓄出入 |
+| `--blora-ease` | `cubic-bezier(.25,.8,.25,1)` | **默认** — 柔和快速收束 |
 | `--blora-ease-soft` | `cubic-bezier(.4,0,.2,1)` | 柔和 |
 | `--blora-ease-overshoot` | `cubic-bezier(.34,1.56,.64,1)` | 微弹 — 仅 FAB/Toast |
 
@@ -232,8 +229,8 @@ Blora 把界面拆成三个色根：**底色、文字、主色**，并由此推�
 
 | Token | 时长 | 用途 |
 |-------|------|------|
-| `--blora-dur-fast` | 140ms | 颜色/边框/hover |
-| `--blora-dur-base` | 240ms | 位移/显隐默认 |
+| `--blora-dur-fast` | 160ms | 颜色/边框/hover |
+| `--blora-dur-base` | 260ms | 位移/显隐默认 |
 | `--blora-dur-slow` | 420ms | 抽屉/折叠 |
 | `--blora-dur-ink` | 700ms | 长叙事动画 |
 
@@ -263,10 +260,10 @@ Blora 把界面拆成三个色根：**底色、文字、主色**，并由此推�
 ### 9.1 对比度
 
 所有正文与背景对比度 ≥ **4.5:1**（WCAG AA）；大字 ≥ 3:1。已验证：
-- `ink-mid #4A453D` / `paper #F8F4EC` ≈ 8.9:1 ✓
-- `ink-light #6B6358` / `paper` ≈ 5.6:1 ✓
-- `seal #A0392E` / `paper` ≈ 6.4:1 ✓
-- `ink-mist #9B9489` / `paper` ≈ 3.0:1 — **仅用于非文本装饰**
+- `ink-mid #4B4750` / `paper #F7F6F8` ≈ 8.42:1 ✓
+- `ink-light #716C76` / `paper` ≈ 4.74:1 ✓
+- `seal #6B6279` / `paper` ≈ 5.34:1 ✓
+- `ink-mist #9A949F` / `paper` ≈ 2.74:1 — **仅用于非文本装饰**
 
 ### 9.2 焦点
 
@@ -294,9 +291,9 @@ Blora 把界面拆成三个色根：**底色、文字、主色**，并由此推�
 
 加 `.blora-dark` 于 `<html>` 即可。Token 自动重映射：
 
-- 底色 → 深夜色 `#1B1916`
-- 文字色 → 月白 `#F0EBDE`
-- 主色（`--blora-seal`）保持，必要时提高对比边
+- 底色 → 深紫灰 `#151317`
+- 文字色 → 冷白 `#F5F2F6`
+- 主色 → 提亮暮紫 `#A79BB4`
 
 **不另写组件样式**，所有组件通过 token 自动适配。
 
@@ -320,9 +317,9 @@ Blora 的文案风格与视觉一致——克制、清晰、不卖弄。
 
 - [ ] 色板仅取自 token，无自定义色
 - [ ] 主色面积 ≤ 5%
-- [ ] 字体仅用三族，字阶仅取自 token
+- [ ] 字体仅取自展示、UI 与等宽字族令牌，字阶仅取自 token
 - [ ] 间距取自 12 级，无任意值
-- [ ] 圆角取自 token，按钮恒 8px
+- [ ] 圆角取自 token，表单控件遵循统一胶囊曲率
 - [ ] 阴影 ≤ shadow-4，无重投影
 - [ ] 动效时长在 token 范围内
 - [ ] 焦点态、禁用态、hover 态、error 态四态齐全

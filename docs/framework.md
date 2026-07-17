@@ -57,19 +57,18 @@ Blora.init(document.getElementById('my-mount'));
 </script>
 ```
 
-嵌入已有应用时，可把动态浮层挂到指定容器，并为不同应用设置独立主题存储键：
+嵌入已有应用时，可把动态浮层挂到指定容器，并为不同应用设置独立的明暗模式与配色存储键：
 
 ```js
 Blora.configure({
   portalRoot: '#app-overlays',
-  storageKey: 'my-app-theme',
-  themeStorageKey: 'my-app-visual-theme',
+  colorModeStorageKey: 'my-app-color-mode',
   paletteStorageKey: 'my-app-palette'
 });
 Blora.init(document.getElementById('my-mount'));
 ```
 
-为避免刷新时先绘制默认主题，可在主题 CSS 之前放置同步启动脚本。它只恢复根节点属性，完整组件仍由 `blora.js` 初始化：
+为避免刷新时配色或明暗模式闪烁，可在框架 CSS 之前放置同步启动脚本。它只恢复根节点属性，完整组件仍由 `blora.js` 初始化：
 
 ```html
 <script>
@@ -77,12 +76,10 @@ Blora.init(document.getElementById('my-mount'));
     const root = document.documentElement;
     const config = window.BloraConfig || {};
     try {
-      let theme = localStorage.getItem(config.themeStorageKey || 'blora-style-theme') || 'classic';
-      const palette = localStorage.getItem(config.paletteStorageKey || 'blora-palette') || 'cinnabar';
-      const mode = localStorage.getItem(config.storageKey || 'blora-theme');
-      if (theme === 'carbon') theme = 'modern'; // 旧版主题迁移
-      if (theme !== 'classic') root.dataset.bloraThemeStyle = theme;
-      if (palette !== 'cinnabar') root.dataset.bloraPalette = palette;
+      let palette = localStorage.getItem(config.paletteStorageKey || 'blora-palette') || 'dusk';
+      const modeKey = config.colorModeStorageKey || config.storageKey || 'blora-color-mode';
+      const mode = localStorage.getItem(modeKey) || localStorage.getItem('blora-theme');
+      if (palette !== 'dusk') root.dataset.bloraPalette = palette;
       if (mode === 'dark' || (!mode && matchMedia('(prefers-color-scheme: dark)').matches)) root.classList.add('blora-dark');
     } catch (error) {}
   })();
@@ -99,12 +96,9 @@ Blora.closeModal('modal-id');
 Blora.openDrawer('drawer-id');
 Blora.closeDrawer('drawer-id');
 Blora.init(root);     // 重新扫描并绑定（幂等：已绑定的元素自动跳过，可放心对动态子树重复调用）
-Blora.configure({ portalRoot, storageKey, themeStorageKey, paletteStorageKey, autoInit });
-Blora.applyTheme('modern');  // classic | modern | minimal | studio
-Blora.applyPalette('ocean'); // cinnabar | indigo | lotus | ocean | modern | minimal | carbon | studio
-Blora.getTheme();            // 当前视觉主题名称
+Blora.configure({ portalRoot, colorModeStorageKey, paletteStorageKey, autoInit });
+Blora.applyPalette('ocean'); // cinnabar | indigo | lotus | ocean | graphite | mono | circuit | coral | dusk
 Blora.getPalette();          // 当前配色名称
-Blora.themes;                // 主题元数据及其 defaultPalette
 Blora.palettes;              // 配色元数据
 Blora.locale;         // 日历/选择器文案（months / dow / today / clear…），可整体覆写做本地化
 Blora.version;        // "1.0.0"
@@ -131,11 +125,11 @@ Blora.version;        // "1.0.0"
 }
 ```
 
-**视觉主题与配色**：`Blora.applyTheme('modern')` 会在根节点写入 `data-blora-theme-style="modern"`，只映射字体、圆角、阴影、控件尺寸、动效和纹理，并默认应用主题的 `defaultPalette`。随后调用 `Blora.applyPalette('ocean')` 只会写入 `data-blora-palette="ocean"` 并替换语义颜色，不改变组件形态。需要保留当前配色时，可使用 `Blora.applyTheme('modern', document.documentElement, { applyDefaultPalette: false })`。
+**唯一视觉标准与配色**：Blora 只有一套字体、圆角、阴影、控件尺寸、动效和玻璃表面标准，直接定义在 `:root`，不需要主题属性或主题 API。`Blora.applyPalette('ocean')` 只会写入 `data-blora-palette="ocean"` 并替换语义颜色，不改变组件形态；未设置属性时使用默认 `dusk` 配色。
 
-**暗色模式**：`<html class="blora-dark">` 即可，所有 token 自动重映射，无需改组件。暗色模式可与任意视觉主题组合。
+**暗色模式**：`<html class="blora-dark">` 即可，所有颜色 token 自动重映射，无需改组件。暗色模式可与任意配色组合。
 
-`classic` 是丹砂、靛青、藕荷、海盐原本共同使用的东方结构主题；四者现在只是可独立选择的配色。`modern` 是克制的通用产品界面，`minimal` 强调近直角和无阴影，`studio` 使用更柔和的现代创意工具气质、胶囊控件与圆润浮动导航。所有主题与配色均可自由组合，并可叠加暗色模式。
+视觉形态不随配色改变。丹砂、靛青、藕荷、海盐、Graphite、Mono、Circuit、Coral 与 Dusk 都只负责颜色映射，其中 Dusk 是默认配色。
 
 ---
 
@@ -145,7 +139,7 @@ Blora.version;        // "1.0.0"
 
 | 类 | 说明 |
 |----|------|
-| `.blora-h1` .. `.blora-h4` | 主题标题字体（东方主题为衬线，现代主题为无衬线） |
+| `.blora-h1` .. `.blora-h4` | Blora 标题字体与字阶 |
 | `.blora-text-lead` | 引导段 |
 | `.blora-text-muted` / `.blora-text-faint` / `.blora-text-seal` | 文字色调 |
 | `.blora-text-caps` | 大写小字标签 |
@@ -678,27 +672,20 @@ Blora.toast({ type: 'success', message: '操作已完成', duration: 3000 });
 
 ---
 
-## 主题切换
+## 配色与明暗模式
 
 ```html
-<div class="blora-theme-picker" data-blora-theme-picker>
-  <button class="blora-btn blora-theme-picker__trigger" data-blora-theme-trigger>
-    <span class="blora-theme-picker__label">Classic</span>
+<div class="blora-palette-picker" data-blora-palette-picker>
+  <button class="blora-btn blora-palette-picker__trigger" data-blora-palette-trigger>
+    <span class="blora-palette-picker__label">Dusk</span>
   </button>
-  <div class="blora-theme-picker__menu"></div>
+  <div class="blora-palette-picker__menu"></div>
 </div>
 
-<div class="blora-theme-picker" data-blora-palette-picker>
-  <button class="blora-btn blora-theme-picker__trigger" data-blora-palette-trigger>
-    <span class="blora-theme-picker__label">丹砂</span>
-  </button>
-  <div class="blora-theme-picker__menu"></div>
-</div>
-
-<button data-blora-theme>夜</button>
+<button data-blora-color-mode>切换明暗模式</button>
 ```
 
-主题卡片与配色卡片分别根据 `Blora.themes`、`Blora.palettes` 自动生成，并持久化到 `themeStorageKey`、`paletteStorageKey`。选择主题时会应用该主题的默认配色；之后可独立改配色。`data-blora-theme` 仅切换 `<html class="blora-dark">`，保留该属性名以兼容既有暗色按钮。
+配色卡片根据 `Blora.palettes` 自动生成，并持久化到 `paletteStorageKey`。`data-blora-color-mode` 切换 `<html class="blora-dark">`，其选择持久化到 `colorModeStorageKey`。二者都会触发 `blora:appearancechange`，事件 `detail` 包含当前 `palette` 与 `dark` 状态。
 
 ---
 

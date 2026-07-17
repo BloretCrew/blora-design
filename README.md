@@ -14,9 +14,9 @@ Blora Design 提供完整的设计规范、CSS 框架与全部 Web 控件的示�
 
 - **三色根**：底色、文字、主色三个色根，搭建稳定配色层级
 - **零依赖**：纯 CSS + 原生 JS，不绑构建工具
-- **令牌驱动**：70+ CSS 变量，一键换肤 / 暗色模式
+- **令牌驱动**：70+ CSS 变量，九套配色与完整暗色模式
 - **28 类组件**：覆盖常见 Web 控件场景
-- **特色元素**：印章标识、飞白分隔、墨晕背景、圆点加载
+- **统一风格**：现代无衬线、连续圆角、柔和阴影与玻璃浮层
 - **可访问性**：WCAG AA 对比度、浮层/标签页/树键盘可达、reduced-motion
 - **响应式**：桌面 / 平板 / 移动 ≥ 320px 不破版
 
@@ -62,7 +62,7 @@ blora-design-2/
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="blora.css">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
   <title>我的页面</title>
 </head>
 <body class="blora-page blora-scope">
@@ -90,7 +90,7 @@ blora-design-2/
 
 | 类别 | 组件 |
 |------|------|
-| **基础** | 按钮 · 图标 · 排版 · 印章标识 · 飞白分隔 · 引文 · 代码 |
+| **基础** | 按钮 · 图标 · 排版 · 飞白分隔 · 引文 · 代码 |
 | **表单** | 输入 · 多行 · 选择 · 密码 · 搜索 · 前后缀 · 数字步进 · 复选 · 单选 · 开关 · 滑块 · 范围 · 评分 · 分段 · 标签输入 · OTP · 颜色 · 上传/拖拽 |
 | **选择器** | 日期 · 时间 · 级联 · 穿梭框 |
 | **标识** | 标签 · 徽章 · 状态点 · 头像（含图片/组/徽章） |
@@ -100,7 +100,7 @@ blora-design-2/
 | **反馈** | 警告 · 横幅 · 消息 · 通知 · Toast · Tooltip · Popover · Popconfirm |
 | **层** | 模态（S/M/L）· 抽屉（上/下/左/右）· 命令面板 |
 | **布局** | 栅格 · 卡面 · 面板 · 分隔 · 堆叠 · 行 |
-| **主题** | 暗色模式 · 令牌换肤 |
+| **外观** | 九套配色 · 暗色模式 |
 
 ---
 

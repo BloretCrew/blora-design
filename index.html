@@ -10,12 +10,12 @@
     const root = document.documentElement;
     const config = window.BloraConfig || {};
     try {
-      let theme = localStorage.getItem(config.themeStorageKey || "blora-style-theme") || "classic";
-      const palette = localStorage.getItem(config.paletteStorageKey || "blora-palette") || "cinnabar";
-      const mode = localStorage.getItem(config.storageKey || "blora-theme");
-      if (theme === "carbon") theme = "modern";
-      if (theme !== "classic") root.dataset.bloraThemeStyle = theme;
-      if (palette !== "cinnabar") root.dataset.bloraPalette = palette;
+      const aliases = { modern: "graphite", minimal: "mono", carbon: "circuit", studio: "dusk" };
+      let palette = localStorage.getItem(config.paletteStorageKey || "blora-palette") || "dusk";
+      const modeKey = config.colorModeStorageKey || config.storageKey || "blora-color-mode";
+      const mode = localStorage.getItem(modeKey) || localStorage.getItem("blora-theme");
+      palette = aliases[palette] || palette;
+      if (palette !== "dusk") root.dataset.bloraPalette = palette;
       if (mode === "dark" || (!mode && matchMedia("(prefers-color-scheme: dark)").matches)) root.classList.add("blora-dark");
     } catch (error) {}
   })();
@@ -123,21 +123,14 @@
       </button>
       <span class="blora-tooltip__bubble blora-tooltip__bubble--bottom" data-demo-navbar-variant-hint>切换为浮动导航栏</span>
     </span>
-    <div class="blora-theme-picker" data-blora-theme-picker>
-      <button class="blora-btn blora-btn--ghost blora-btn--sm blora-theme-picker__trigger" type="button" data-blora-theme-trigger>
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21v-7"/><path d="M4 10V3"/><path d="M12 21v-9"/><path d="M12 8V3"/><path d="M20 21v-5"/><path d="M20 12V3"/><path d="M2 14h4"/><path d="M10 8h4"/><path d="M18 16h4"/></svg>
-        <span class="blora-theme-picker__label">Classic</span>
-      </button>
-      <div class="blora-theme-picker__menu"></div>
-    </div>
-    <div class="blora-theme-picker" data-blora-palette-picker>
-      <button class="blora-btn blora-btn--ghost blora-btn--sm blora-theme-picker__trigger" type="button" data-blora-palette-trigger>
+    <div class="blora-palette-picker" data-blora-palette-picker>
+      <button class="blora-btn blora-btn--ghost blora-btn--sm blora-palette-picker__trigger" type="button" data-blora-palette-trigger>
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z"/><path d="M19.5 15.5c-1.4 0-2.5 1.1-2.5 2.5 0 .7.3 1.3.7 1.8"/></svg>
-        <span class="blora-theme-picker__label">丹砂</span>
+        <span class="blora-palette-picker__label">Dusk</span>
       </button>
-      <div class="blora-theme-picker__menu"></div>
+      <div class="blora-palette-picker__menu"></div>
     </div>
-    <button class="blora-btn blora-btn--ghost blora-btn--icon blora-btn--sm" data-blora-theme aria-label="切换主题">
+    <button class="blora-btn blora-btn--ghost blora-btn--icon blora-btn--sm" data-blora-color-mode aria-label="切换至暗色">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
     </button>
     <a class="blora-btn blora-btn--outline blora-btn--sm" href="docs/standards.md">规范文档</a>
@@ -1829,7 +1822,7 @@
     });
   };
   window.addEventListener("DOMContentLoaded", syncTokenSwatches, { once: true });
-  document.documentElement.addEventListener("blora:themechange", syncTokenSwatches);
+  document.documentElement.addEventListener("blora:appearancechange", syncTokenSwatches);
 
   const navbar = document.querySelector(".blora-navbar");
   const navbarVariantButton = document.querySelector("[data-demo-navbar-variant]");

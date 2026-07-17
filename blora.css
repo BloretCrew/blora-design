@@ -51,12 +51,10 @@
   --blora-info:           #3D4A5C;
 
   /* —— 字体 · Typography —— */
-  --blora-font-serif:     "Noto Serif SC", "Source Han Serif SC",
-                          "Songti SC", "SimSun", "Cormorant Garamond",
-                          Georgia, serif;
-  --blora-font-sans:      "Noto Sans SC", "Source Han Sans SC",
-                          -apple-system, "PingFang SC", "Microsoft YaHei",
-                          system-ui, sans-serif;
+  --blora-font-serif:     Avenir, "Avenir Next", "Segoe UI",
+                          "Noto Sans SC", sans-serif;
+  --blora-font-sans:      Avenir, "Avenir Next", "Segoe UI",
+                          "Noto Sans SC", sans-serif;
   --blora-font-mono:      "JetBrains Mono", "Fira Code", "SF Mono",
                           Consolas, monospace;
   --blora-font-brush:     "STKaiti", "KaiTi", "Noto Serif SC", serif;
@@ -95,24 +93,20 @@
   --blora-space-11:  6rem;      /* 96px */
   --blora-space-12:  8rem;      /* 128px */
 
-  /* —— 圆角 · Radius —— 不锋利 */
-  --blora-radius-xs:  2px;
-  --blora-radius-sm:  4px;
-  --blora-radius-md:  8px;
-  --blora-radius-lg:  12px;
-  --blora-radius-xl:  20px;
-  --blora-radius-2xl: 32px;
+  /* —— 圆角 · Radius —— 柔和、连续的现代曲率 */
+  --blora-radius-xs:  6px;
+  --blora-radius-sm:  10px;
+  --blora-radius-md:  14px;
+  --blora-radius-lg:  18px;
+  --blora-radius-xl:  26px;
+  --blora-radius-2xl: 36px;
   --blora-radius-full: 9999px;
 
-  /* —— 阴影 · Shadow —— 低不透明度，呈微浮起效果 */
-  --blora-shadow-1: 0 1px 2px rgba(28,26,23,0.04),
-                    0 1px 1px rgba(28,26,23,0.03);
-  --blora-shadow-2: 0 2px 8px rgba(28,26,23,0.06),
-                    0 1px 3px rgba(28,26,23,0.04);
-  --blora-shadow-3: 0 6px 24px rgba(28,26,23,0.08),
-                    0 2px 6px rgba(28,26,23,0.05);
-  --blora-shadow-4: 0 12px 40px rgba(28,26,23,0.12),
-                    0 4px 12px rgba(28,26,23,0.06);
+  /* —— 阴影 · Shadow —— 柔和层级，不制造厚重边界 */
+  --blora-shadow-1: 0 1px 3px rgba(29,27,32,0.05);
+  --blora-shadow-2: 0 4px 12px rgba(29,27,32,0.07);
+  --blora-shadow-3: 0 12px 30px rgba(29,27,32,0.1);
+  --blora-shadow-4: 0 24px 56px rgba(29,27,32,0.14);
   --blora-shadow-inset: inset 0 1px 0 rgba(255,255,255,0.5),
                        inset 0 -1px 0 rgba(28,26,23,0.04);
   --blora-shadow-seal: 0 0 0 1px color-mix(in srgb, var(--blora-seal) 18%, transparent),
@@ -124,10 +118,10 @@
   --blora-border-ink:    1px solid var(--blora-ink-mid);
   --blora-border-seal:   1px solid var(--blora-seal);
 
-  /* —— 组件尺寸 · Component Metrics —— 宿主应用可按主题统一覆写 */
+  /* —— 组件尺寸 · Component Metrics —— 宿主应用可按产品密度统一覆写 */
   --blora-control-height: 2.75em;
   --blora-control-pad-x: 1em;
-  --blora-control-radius: var(--blora-radius-md);
+  --blora-control-radius: var(--blora-radius-full);
   --blora-range-track-size: 4px;
   --blora-range-thumb-size: 18px;
 
@@ -145,22 +139,18 @@
   --blora-tooltip-bg:    var(--blora-ink-deep);
 
   /* —— 动效 · Motion —— 含蓄过渡 */
-  --blora-ease:          cubic-bezier(0.22, 0.61, 0.36, 1);
+  --blora-ease:          cubic-bezier(0.25, 0.8, 0.25, 1);
   --blora-ease-soft:     cubic-bezier(0.4, 0, 0.2, 1);
   --blora-ease-overshoot: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --blora-dur-fast:      140ms;
-  --blora-dur-base:      240ms;
+  --blora-dur-fast:      160ms;
+  --blora-dur-base:      260ms;
   --blora-dur-slow:      420ms;
   --blora-dur-ink:       700ms;
-  --blora-tabs-fade-duration: 210ms;
+  --blora-tabs-fade-duration: 240ms;
 
-  /* —— 纹理 · Texture —— 底层底色微噪 */
-  --blora-grain:
-    radial-gradient(ellipse at 20% 30%, color-mix(in srgb, var(--blora-tea) 2.5%, transparent) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 70%, color-mix(in srgb, var(--blora-seal) 1.8%, transparent) 0%, transparent 55%),
-    radial-gradient(ellipse at 50% 90%, color-mix(in srgb, var(--blora-indigo) 2%, transparent) 0%, transparent 60%);
-  --blora-paper-tint:
-    linear-gradient(180deg, rgba(255,253,247,0.5) 0%, transparent 40%);
+  /* —— 纹理 · Texture —— 默认保持纯净，可由产品按需覆写 */
+  --blora-grain: none;
+  --blora-paper-tint: none;
 
   /* —— 层级 · Z-index —— */
   --blora-z-base:    1;
@@ -173,7 +163,7 @@
 
 /* =========================================================================
    配色预设 · Palette Presets
-   仅重映射颜色令牌，可与任意视觉主题自由组合。
+   仅重映射颜色令牌，不改变 Blora 的字体、曲率、阴影与动效。
    ========================================================================= */
 :root[data-blora-palette="indigo"] {
   --blora-paper: #F4F5F8; --blora-paper-warm: #EEEFF4; --blora-paper-cool: #EFF2F7; --blora-paper-deep: #DCE1EB;
@@ -196,7 +186,7 @@
   --blora-seal: #176B78; --blora-seal-deep: #11535F; --blora-seal-soft: #4B939D; --blora-cinnabar: #B14F47;
   --blora-tea: #6E755D; --blora-tea-light: #A3AA8F; --blora-indigo: #365D78; --blora-indigo-light: #728DA0; --blora-moss: #39745F; --blora-moss-light: #78A18F; --blora-bamboo: #6D946F; --blora-gold: #B08A55; --blora-ochre: #C49C6D;
 }
-:root[data-blora-palette="modern"] {
+:root[data-blora-palette="graphite"] {
   --blora-paper: #F6F7F8; --blora-paper-warm: #F2F3F4; --blora-paper-cool: #F4F6F8; --blora-paper-deep: #E2E5E9;
   --blora-surface-1: #FFFFFF; --blora-surface-2: #F0F2F4; --blora-surface-3: #E3E6EA;
   --blora-ink: #171A1F; --blora-ink-deep: #242830; --blora-ink-mid: #414751; --blora-ink-light: #68707C; --blora-ink-mist: #9299A3; --blora-ink-faint: #B0B5BD; --blora-ink-ghost: #D3D7DC;
@@ -206,7 +196,7 @@
   --blora-on-accent: #FFFFFF; --blora-overlay-modal: rgba(23,26,31,0.52); --blora-overlay-drawer: rgba(23,26,31,0.46);
   --blora-code-bg: #171A1F; --blora-code-fg: #F7F8FA; --blora-banner-bg: #242830; --blora-tooltip-bg: #171A1F;
 }
-:root[data-blora-palette="minimal"] {
+:root[data-blora-palette="mono"] {
   --blora-paper: #FAFAF9; --blora-paper-warm: #F5F5F3; --blora-paper-cool: #F8F8F7; --blora-paper-deep: #E7E7E4;
   --blora-surface-1: #FFFFFF; --blora-surface-2: #F3F3F1; --blora-surface-3: #E8E8E5;
   --blora-ink: #111110; --blora-ink-deep: #20201E; --blora-ink-mid: #454542; --blora-ink-light: #6F6F69; --blora-ink-mist: #989891; --blora-ink-faint: #B7B7B0; --blora-ink-ghost: #D8D8D3;
@@ -215,7 +205,7 @@
   --blora-success: #596B62; --blora-warning: #857252; --blora-danger: #9E4F49; --blora-info: #555E68;
   --blora-on-accent: #FFFFFF; --blora-code-bg: #171716; --blora-code-fg: #FAFAF9; --blora-banner-bg: #20201E; --blora-tooltip-bg: #171716;
 }
-:root[data-blora-palette="carbon"] {
+:root[data-blora-palette="circuit"] {
   --blora-paper: #F4F5F5; --blora-paper-warm: #EFF0F0; --blora-paper-cool: #F2F4F4; --blora-paper-deep: #DDE0E0;
   --blora-surface-1: #FFFFFF; --blora-surface-2: #ECEEEE; --blora-surface-3: #DDE1E1;
   --blora-ink: #161A1A; --blora-ink-deep: #252A2A; --blora-ink-mid: #414848; --blora-ink-light: #687171; --blora-ink-mist: #929A9A; --blora-ink-faint: #AFB6B6; --blora-ink-ghost: #CDD2D2;
@@ -224,7 +214,18 @@
   --blora-success: #476D5C; --blora-warning: #887044; --blora-danger: #A64E48; --blora-info: #4B6472;
   --blora-on-accent: #FFFFFF; --blora-code-bg: #161A1A; --blora-code-fg: #F4F5F5; --blora-banner-bg: #252A2A; --blora-tooltip-bg: #161A1A;
 }
-:root[data-blora-palette="studio"] {
+:root[data-blora-palette="coral"] {
+  --blora-paper: #FAF7F8; --blora-paper-warm: #F8F1F2; --blora-paper-cool: #F6F5F7; --blora-paper-deep: #E9DFE2;
+  --blora-surface-1: #FFFCFD; --blora-surface-2: #F4ECEE; --blora-surface-3: #E9DEE1;
+  --blora-ink: #303143; --blora-ink-deep: #3D3E50; --blora-ink-mid: #555565; --blora-ink-light: #74717C; --blora-ink-mist: #9B959D; --blora-ink-faint: #B9B2B8; --blora-ink-ghost: #D9D2D6;
+  --blora-seal: #A94F5C; --blora-seal-deep: #873E49; --blora-seal-soft: #D27C84; --blora-cinnabar: #BC5E5A;
+  --blora-tea: #806B63; --blora-tea-light: #AF958B; --blora-indigo: #555A70; --blora-indigo-light: #858A9D; --blora-moss: #5F756F; --blora-moss-light: #8FA29D; --blora-bamboo: #748780; --blora-gold: #9A785E; --blora-ochre: #C58B70;
+  --blora-success: #5F756F; --blora-warning: #9A785E; --blora-danger: #A94F5C; --blora-info: #555A70;
+  --blora-on-accent: #FFFFFF; --blora-overlay-modal: rgba(48,49,67,0.52); --blora-overlay-drawer: rgba(48,49,67,0.46);
+  --blora-code-bg: #303143; --blora-code-fg: #FAF7F8; --blora-banner-bg: #3D3E50; --blora-tooltip-bg: #303143;
+}
+:root:not([data-blora-palette]),
+:root[data-blora-palette="dusk"] {
   --blora-paper: #F7F6F8; --blora-paper-warm: #F3F1F4; --blora-paper-cool: #F5F5F7; --blora-paper-deep: #E5E2E7;
   --blora-surface-1: #FFFFFF; --blora-surface-2: #F0EEF2; --blora-surface-3: #E4E1E7;
   --blora-ink: #1D1B20; --blora-ink-deep: #2C2930; --blora-ink-mid: #4B4750; --blora-ink-light: #716C76; --blora-ink-mist: #9A949F; --blora-ink-faint: #B7B1BB; --blora-ink-ghost: #D6D1D9;
@@ -232,36 +233,6 @@
   --blora-tea: #786859; --blora-tea-light: #AA9A8C; --blora-indigo: #58677A; --blora-indigo-light: #8693A2; --blora-moss: #547065; --blora-moss-light: #839D93; --blora-bamboo: #697D75; --blora-gold: #8B754E; --blora-ochre: #A57C5C;
   --blora-success: #547065; --blora-warning: #8B754E; --blora-danger: #A8545A; --blora-info: #58677A;
   --blora-on-accent: #FFFFFF; --blora-code-bg: #1D1B20; --blora-code-fg: #F7F6F8; --blora-banner-bg: #2C2930; --blora-tooltip-bg: #1D1B20;
-}
-
-/* =========================================================================
-   视觉主题 · Visual Theme Presets
-   仅控制字体、圆角、阴影、尺寸、动效与纹理。
-   ========================================================================= */
-:root[data-blora-theme-style="modern"] {
-  --blora-font-serif: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", sans-serif;
-  --blora-radius-xs: 3px; --blora-radius-sm: 5px; --blora-radius-md: 7px; --blora-radius-lg: 10px; --blora-radius-xl: 14px; --blora-radius-2xl: 20px;
-  --blora-control-height: 2.625em; --blora-control-radius: var(--blora-radius-md);
-  --blora-shadow-1: 0 1px 2px rgba(23,26,31,0.05); --blora-shadow-2: 0 3px 10px rgba(23,26,31,0.07); --blora-shadow-3: 0 10px 28px rgba(23,26,31,0.09); --blora-shadow-4: 0 20px 48px rgba(23,26,31,0.13);
-  --blora-grain: none; --blora-paper-tint: none;
-}
-:root[data-blora-theme-style="minimal"] {
-  --blora-font-serif: Helvetica, Arial, "Noto Sans SC", sans-serif;
-  --blora-font-sans: Helvetica, Arial, "Noto Sans SC", sans-serif;
-  --blora-radius-xs: 0; --blora-radius-sm: 2px; --blora-radius-md: 3px; --blora-radius-lg: 4px; --blora-radius-xl: 6px; --blora-radius-2xl: 8px;
-  --blora-control-height: 2.5em; --blora-control-radius: var(--blora-radius-sm);
-  --blora-shadow-1: none; --blora-shadow-2: none; --blora-shadow-3: 0 8px 24px rgba(17,17,16,0.08); --blora-shadow-4: 0 16px 40px rgba(17,17,16,0.12);
-  --blora-ease: cubic-bezier(0.2, 0, 0, 1); --blora-dur-fast: 100ms; --blora-dur-base: 180ms; --blora-dur-slow: 280ms; --blora-tabs-fade-duration: 150ms;
-  --blora-grain: none; --blora-paper-tint: none;
-}
-:root[data-blora-theme-style="studio"] {
-  --blora-font-serif: Avenir, "Avenir Next", "Segoe UI", "Noto Sans SC", sans-serif;
-  --blora-font-sans: Avenir, "Avenir Next", "Segoe UI", "Noto Sans SC", sans-serif;
-  --blora-radius-xs: 6px; --blora-radius-sm: 10px; --blora-radius-md: 14px; --blora-radius-lg: 18px; --blora-radius-xl: 26px; --blora-radius-2xl: 36px;
-  --blora-control-height: 2.75em; --blora-control-radius: var(--blora-radius-full);
-  --blora-shadow-1: 0 1px 3px rgba(29,27,32,0.05); --blora-shadow-2: 0 4px 12px rgba(29,27,32,0.07); --blora-shadow-3: 0 12px 30px rgba(29,27,32,0.1); --blora-shadow-4: 0 24px 56px rgba(29,27,32,0.14);
-  --blora-ease: cubic-bezier(0.25, 0.8, 0.25, 1); --blora-dur-fast: 160ms; --blora-dur-base: 260ms; --blora-tabs-fade-duration: 240ms;
-  --blora-grain: none; --blora-paper-tint: none;
 }
 
 /* =========================================================================
@@ -1226,7 +1197,7 @@ body.blora-page {
     gap: var(--blora-space-3);
   }
 }
-:root[data-blora-theme-style="studio"] .blora-navbar {
+.blora-navbar {
   padding-block: var(--blora-space-3);
   background: transparent;
   -webkit-backdrop-filter: none;
@@ -1235,13 +1206,13 @@ body.blora-page {
   border-radius: 0;
   box-shadow: var(--blora-shadow-2);
 }
-:root[data-blora-theme-style="studio"] :is(.blora-navbar--floating, .blora-navbar[data-variant="floating"]) {
+:is(.blora-navbar--floating, .blora-navbar[data-variant="floating"]) {
   --blora-navbar-inset: var(--blora-space-3);
   --blora-navbar-max-width: 96rem;
   --blora-navbar-radius: var(--blora-radius-full);
   border-radius: var(--blora-navbar-radius);
 }
-:root[data-blora-theme-style="studio"] .blora-navbar::before {
+.blora-navbar::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -1253,7 +1224,7 @@ body.blora-page {
   border-radius: inherit;
 }
 @media (max-width: 560px) {
-  :root[data-blora-theme-style="studio"] :is(.blora-navbar--floating, .blora-navbar[data-variant="floating"]) {
+  :is(.blora-navbar--floating, .blora-navbar[data-variant="floating"]) {
     --blora-navbar-inset: var(--blora-space-2);
     border-radius: var(--blora-radius-xl);
   }
@@ -1265,11 +1236,11 @@ body.blora-page {
 .blora-navbar__link:hover { color: var(--blora-ink); background: var(--blora-surface-2); }
 .blora-navbar__link.is-active { color: var(--blora-seal); font-weight: 500; }
 
-/* —— 主题选择器 —— */
-.blora-theme-picker { position: relative; }
-.blora-theme-picker__trigger { white-space: nowrap; }
-.blora-theme-picker__trigger svg { flex: none; }
-.blora-theme-picker__menu {
+/* —— 配色选择器 —— */
+.blora-palette-picker { position: relative; }
+.blora-palette-picker__trigger { white-space: nowrap; }
+.blora-palette-picker__trigger svg { flex: none; }
+.blora-palette-picker__menu {
   position: absolute; top: calc(100% + var(--blora-space-2)); right: 0; z-index: var(--blora-z-dropdown);
   width: min(22rem, calc(100vw - var(--blora-space-4) * 2)); max-height: min(34rem, calc(100vh - 5rem));
   padding: var(--blora-space-3); overflow-y: auto; overscroll-behavior: contain;
@@ -1277,39 +1248,36 @@ body.blora-page {
   opacity: 0; visibility: hidden; pointer-events: none; transform: translateY(-4px);
   transition: opacity var(--blora-dur-fast) var(--blora-ease), transform var(--blora-dur-fast) var(--blora-ease), visibility 0s linear var(--blora-dur-fast);
 }
-.blora-theme-picker.is-open .blora-theme-picker__menu { opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(0); transition-delay: 0s; }
-.blora-theme-picker.is-switching .blora-theme-picker__menu { transition: none; }
-.blora-theme-picker__head { padding: var(--blora-space-1) var(--blora-space-1) var(--blora-space-3); }
-.blora-theme-picker__title { display: block; color: var(--blora-ink); font-size: var(--blora-text-sm); font-weight: 600; }
-.blora-theme-picker__hint { display: block; margin-top: 0.15rem; color: var(--blora-ink-mist); font-size: var(--blora-text-xs); }
-.blora-theme-picker__list { display: grid; gap: var(--blora-space-2); }
-.blora-theme-card {
+.blora-palette-picker.is-open .blora-palette-picker__menu { opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(0); transition-delay: 0s; }
+.blora-palette-picker.is-switching .blora-palette-picker__menu { transition: none; }
+.blora-palette-picker__head { padding: var(--blora-space-1) var(--blora-space-1) var(--blora-space-3); }
+.blora-palette-picker__title { display: block; color: var(--blora-ink); font-size: var(--blora-text-sm); font-weight: 600; }
+.blora-palette-picker__hint { display: block; margin-top: 0.15rem; color: var(--blora-ink-mist); font-size: var(--blora-text-xs); }
+.blora-palette-picker__list { display: grid; gap: var(--blora-space-2); }
+.blora-palette-card {
   display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: var(--blora-space-3);
   width: 100%; min-height: 3.75rem; padding: var(--blora-space-3); text-align: left;
   color: var(--blora-ink-mid); background: transparent; border: 1px solid transparent; border-radius: var(--blora-radius-md);
   transition: background var(--blora-dur-fast) var(--blora-ease), border-color var(--blora-dur-fast) var(--blora-ease);
 }
-.blora-theme-card:hover { background: var(--blora-surface-2); border-color: var(--blora-ink-ghost); }
-.blora-theme-card[aria-selected="true"] { background: var(--blora-seal-tint); border-color: color-mix(in srgb, var(--blora-seal) 38%, transparent); }
-.blora-theme-card__copy { min-width: 0; }
-.blora-theme-card__name { display: block; color: var(--blora-ink); font-size: var(--blora-text-sm); font-weight: 600; }
-.blora-theme-card__desc { display: block; margin-top: 0.1rem; overflow: hidden; color: var(--blora-ink-mist); font-size: var(--blora-text-xs); text-overflow: ellipsis; white-space: nowrap; }
-.blora-theme-card__traits { display: flex; flex-wrap: wrap; gap: var(--blora-space-1); margin-top: var(--blora-space-2); }
-.blora-theme-card__traits span { padding: 0.1rem 0.35rem; color: var(--blora-ink-light); background: var(--blora-surface-2); border-radius: var(--blora-radius-sm); font-size: 0.625rem; line-height: 1.4; }
-.blora-theme-card[aria-selected="true"] .blora-theme-card__traits span { background: color-mix(in srgb, var(--blora-seal) 12%, var(--blora-surface-1)); }
-.blora-theme-card__colors { display: flex; flex: none; }
-.blora-theme-card__color { width: 1.25rem; height: 2rem; margin-left: -0.2rem; border: 2px solid var(--blora-surface-1); border-radius: var(--blora-radius-sm); box-shadow: var(--blora-shadow-1); }
-.blora-theme-card:hover .blora-theme-card__color { border-color: var(--blora-surface-2); }
+.blora-palette-card:hover { background: var(--blora-surface-2); border-color: var(--blora-ink-ghost); }
+.blora-palette-card[aria-selected="true"] { background: var(--blora-seal-tint); border-color: color-mix(in srgb, var(--blora-seal) 38%, transparent); }
+.blora-palette-card__copy { min-width: 0; }
+.blora-palette-card__name { display: block; color: var(--blora-ink); font-size: var(--blora-text-sm); font-weight: 600; }
+.blora-palette-card__desc { display: block; margin-top: 0.1rem; overflow: hidden; color: var(--blora-ink-mist); font-size: var(--blora-text-xs); text-overflow: ellipsis; white-space: nowrap; }
+.blora-palette-card__colors { display: flex; flex: none; }
+.blora-palette-card__color { width: 1.25rem; height: 2rem; margin-left: -0.2rem; border: 2px solid var(--blora-surface-1); border-radius: var(--blora-radius-sm); box-shadow: var(--blora-shadow-1); }
+.blora-palette-card:hover .blora-palette-card__color { border-color: var(--blora-surface-2); }
 @media (max-width: 560px) {
-  .blora-theme-picker__label { display: none; }
-  .blora-theme-picker__menu { position: fixed; top: 4.25rem; right: var(--blora-space-3); left: var(--blora-space-3); width: auto; }
+  .blora-palette-picker__label { display: none; }
+  .blora-palette-picker__menu { position: fixed; top: 4.25rem; right: var(--blora-space-3); left: var(--blora-space-3); width: auto; }
 }
-:root[data-blora-theme-style="studio"] :is(.blora-theme-picker__menu, .blora-dropdown-menu, .blora-popover__panel, .blora-color-panel, .blora-datepicker__panel, .blora-timepicker__panel) {
+:is(.blora-palette-picker__menu, .blora-dropdown-menu, .blora-popover__panel, .blora-color-panel, .blora-datepicker__panel, .blora-timepicker__panel) {
   background: color-mix(in srgb, var(--blora-surface-1) 84%, transparent);
   -webkit-backdrop-filter: blur(20px) saturate(1.2);
   backdrop-filter: blur(20px) saturate(1.2);
 }
-:root[data-blora-theme-style="studio"] .blora-theme-picker__menu {
+.blora-palette-picker__menu {
   background: color-mix(in srgb, var(--blora-surface-1) 76%, transparent);
   -webkit-backdrop-filter: blur(28px) saturate(1.25);
   backdrop-filter: blur(28px) saturate(1.25);
@@ -1747,10 +1715,10 @@ html:has(body.blora-page)::-webkit-scrollbar-corner,
   --blora-code-fg:       #E8DFC8;
   --blora-banner-bg:     #2A2520;
   --blora-tooltip-bg:    #14110D;
-  --blora-shadow-1: 0 1px 2px rgba(0,0,0,0.3);
-  --blora-shadow-2: 0 2px 8px rgba(0,0,0,0.35);
-  --blora-shadow-3: 0 6px 24px rgba(0,0,0,0.45);
-  --blora-shadow-4: 0 12px 40px rgba(0,0,0,0.55);
+  --blora-shadow-1: 0 1px 3px rgba(0,0,0,0.3);
+  --blora-shadow-2: 0 4px 12px rgba(0,0,0,0.36);
+  --blora-shadow-3: 0 12px 30px rgba(0,0,0,0.44);
+  --blora-shadow-4: 0 24px 56px rgba(0,0,0,0.54);
   /* 暗色下底层纹理改用极淡白点，顶层渐光取消，避免浅色晕染显形 */
   --blora-grain:
     radial-gradient(ellipse at 20% 30%, rgba(255,255,255,0.012) 0%, transparent 50%),
@@ -1761,8 +1729,8 @@ html:has(body.blora-page)::-webkit-scrollbar-corner,
   color-scheme: dark;
 }
 
-:root.blora-dark[data-blora-palette="modern"],
-:root.blora-dark[data-blora-palette="modern"] body {
+:root.blora-dark[data-blora-palette="graphite"],
+:root.blora-dark[data-blora-palette="graphite"] body {
   --blora-paper: #111316; --blora-paper-warm: #171A1E; --blora-paper-cool: #15181C; --blora-paper-deep: #0B0D0F;
   --blora-surface-1: #1B1E23; --blora-surface-2: #24282E; --blora-surface-3: #30353D;
   --blora-ink: #F3F4F6; --blora-ink-deep: #E8EAED; --blora-ink-mid: #C5C9CF; --blora-ink-light: #979EA8; --blora-ink-mist: #6F7782; --blora-ink-faint: #545B64; --blora-ink-ghost: #3B4149;
@@ -1770,39 +1738,42 @@ html:has(body.blora-page)::-webkit-scrollbar-corner,
   --blora-overlay-modal: rgba(5,6,8,0.7); --blora-overlay-drawer: rgba(5,6,8,0.64);
   --blora-code-bg: #0B0D0F; --blora-code-fg: #F3F4F6; --blora-banner-bg: #171A1E; --blora-tooltip-bg: #0B0D0F;
 }
-:root.blora-dark[data-blora-palette="minimal"],
-:root.blora-dark[data-blora-palette="minimal"] body {
+:root.blora-dark[data-blora-palette="mono"],
+:root.blora-dark[data-blora-palette="mono"] body {
   --blora-paper: #111110; --blora-paper-warm: #171716; --blora-paper-cool: #151514; --blora-paper-deep: #090909;
   --blora-surface-1: #1B1B1A; --blora-surface-2: #242422; --blora-surface-3: #30302D;
   --blora-ink: #FAFAF9; --blora-ink-deep: #EDEDEB; --blora-ink-mid: #C8C8C3; --blora-ink-light: #9A9A94; --blora-ink-mist: #71716C; --blora-ink-faint: #555551; --blora-ink-ghost: #3B3B38;
   --blora-seal: #E2E2DE; --blora-seal-deep: #FFFFFF; --blora-seal-soft: #A7A7A1; --blora-on-accent: #171716;
   --blora-code-bg: #090909; --blora-code-fg: #FAFAF9; --blora-banner-bg: #20201E; --blora-tooltip-bg: #090909;
 }
-:root.blora-dark[data-blora-palette="carbon"],
-:root.blora-dark[data-blora-palette="carbon"] body {
+:root.blora-dark[data-blora-palette="circuit"],
+:root.blora-dark[data-blora-palette="circuit"] body {
   --blora-paper: #101414; --blora-paper-warm: #161B1B; --blora-paper-cool: #131818; --blora-paper-deep: #090C0C;
   --blora-surface-1: #1A2020; --blora-surface-2: #232A2A; --blora-surface-3: #303838;
   --blora-ink: #F1F4F4; --blora-ink-deep: #E5E9E9; --blora-ink-mid: #C2CACA; --blora-ink-light: #929D9D; --blora-ink-mist: #697575; --blora-ink-faint: #4F5959; --blora-ink-ghost: #394242;
   --blora-seal: #78AAA8; --blora-seal-deep: #98C1BF; --blora-seal-soft: #5D8C8A;
   --blora-code-bg: #090C0C; --blora-code-fg: #F1F4F4; --blora-banner-bg: #161B1B; --blora-tooltip-bg: #090C0C;
 }
-:root.blora-dark[data-blora-palette="studio"],
-:root.blora-dark[data-blora-palette="studio"] body {
+:root.blora-dark[data-blora-palette="coral"],
+:root.blora-dark[data-blora-palette="coral"] body {
+  --blora-paper: #17161C; --blora-paper-warm: #1D191E; --blora-paper-cool: #1A1920; --blora-paper-deep: #0E0D12;
+  --blora-surface-1: #222128; --blora-surface-2: #2C2931; --blora-surface-3: #3A363F;
+  --blora-ink: #F8F2F4; --blora-ink-deep: #ECE5E8; --blora-ink-mid: #CDC3C8; --blora-ink-light: #A1979D; --blora-ink-mist: #786F75; --blora-ink-faint: #5A5358; --blora-ink-ghost: #413C41;
+  --blora-seal: #D9828B; --blora-seal-deep: #E79AA2; --blora-seal-soft: #B86772; --blora-cinnabar: #D9828B;
+  --blora-tea: #AF9186; --blora-tea-light: #C9AAA0; --blora-indigo: #9297AD; --blora-indigo-light: #ADB1C1; --blora-moss: #89A29A; --blora-moss-light: #A6B8B2; --blora-bamboo: #93A49E; --blora-gold: #C29B7C; --blora-ochre: #D2A087;
+  --blora-success: #89A29A; --blora-warning: #C29B7C; --blora-danger: #E08A93; --blora-info: #9297AD;
+  --blora-on-accent: #281B1E; --blora-overlay-modal: rgba(7,6,10,0.72); --blora-overlay-drawer: rgba(7,6,10,0.66);
+  --blora-code-bg: #0E0D12; --blora-code-fg: #F8F2F4; --blora-banner-bg: #1D191E; --blora-tooltip-bg: #0E0D12;
+}
+:root.blora-dark:not([data-blora-palette]),
+:root.blora-dark:not([data-blora-palette]) body,
+:root.blora-dark[data-blora-palette="dusk"],
+:root.blora-dark[data-blora-palette="dusk"] body {
   --blora-paper: #151317; --blora-paper-warm: #1B181E; --blora-paper-cool: #18161B; --blora-paper-deep: #0D0B0F;
   --blora-surface-1: #201D23; --blora-surface-2: #2A262E; --blora-surface-3: #38333D;
   --blora-ink: #F5F2F6; --blora-ink-deep: #EAE5EC; --blora-ink-mid: #CBC3CE; --blora-ink-light: #9E95A2; --blora-ink-mist: #756C79; --blora-ink-faint: #59515D; --blora-ink-ghost: #403A44;
   --blora-seal: #A79BB4; --blora-seal-deep: #C1B7CB; --blora-seal-soft: #887C96;
   --blora-code-bg: #0D0B0F; --blora-code-fg: #F5F2F6; --blora-banner-bg: #1B181E; --blora-tooltip-bg: #0D0B0F;
-}
-
-:root.blora-dark[data-blora-theme-style="modern"] {
-  --blora-shadow-1: 0 1px 2px rgba(0,0,0,0.28); --blora-shadow-2: 0 3px 10px rgba(0,0,0,0.34); --blora-shadow-3: 0 10px 28px rgba(0,0,0,0.42); --blora-shadow-4: 0 20px 48px rgba(0,0,0,0.52);
-}
-:root.blora-dark[data-blora-theme-style="minimal"] {
-  --blora-shadow-1: none; --blora-shadow-2: none; --blora-shadow-3: 0 8px 24px rgba(0,0,0,0.4); --blora-shadow-4: 0 16px 40px rgba(0,0,0,0.52);
-}
-:root.blora-dark[data-blora-theme-style="studio"] {
-  --blora-shadow-1: 0 1px 3px rgba(0,0,0,0.3); --blora-shadow-2: 0 4px 12px rgba(0,0,0,0.36); --blora-shadow-3: 0 12px 30px rgba(0,0,0,0.44); --blora-shadow-4: 0 24px 56px rgba(0,0,0,0.54);
 }
 
 /* —— 暗色组件修正 —— 避免墨色反转成刺眼亮块 —— */
