@@ -63,9 +63,31 @@ Blora.init(document.getElementById('my-mount'));
 Blora.configure({
   portalRoot: '#app-overlays',
   storageKey: 'my-app-theme',
+  themeStorageKey: 'my-app-visual-theme',
   paletteStorageKey: 'my-app-palette'
 });
 Blora.init(document.getElementById('my-mount'));
+```
+
+为避免刷新时先绘制默认主题，可在主题 CSS 之前放置同步启动脚本。它只恢复根节点属性，完整组件仍由 `blora.js` 初始化：
+
+```html
+<script>
+  (() => {
+    const root = document.documentElement;
+    const config = window.BloraConfig || {};
+    try {
+      let theme = localStorage.getItem(config.themeStorageKey || 'blora-style-theme') || 'classic';
+      const palette = localStorage.getItem(config.paletteStorageKey || 'blora-palette') || 'cinnabar';
+      const mode = localStorage.getItem(config.storageKey || 'blora-theme');
+      if (theme === 'carbon') theme = 'modern'; // 旧版主题迁移
+      if (theme !== 'classic') root.dataset.bloraThemeStyle = theme;
+      if (palette !== 'cinnabar') root.dataset.bloraPalette = palette;
+      if (mode === 'dark' || (!mode && matchMedia('(prefers-color-scheme: dark)').matches)) root.classList.add('blora-dark');
+    } catch (error) {}
+  })();
+</script>
+<link rel="stylesheet" href="blora.css">
 ```
 
 **全局 API**
@@ -77,10 +99,13 @@ Blora.closeModal('modal-id');
 Blora.openDrawer('drawer-id');
 Blora.closeDrawer('drawer-id');
 Blora.init(root);     // 重新扫描并绑定（幂等：已绑定的元素自动跳过，可放心对动态子树重复调用）
-Blora.configure({ portalRoot, storageKey, paletteStorageKey, autoInit });
-Blora.applyTheme('modern'); // cinnabar | jade | indigo | lotus | ocean | modern
-Blora.getTheme();         // 当前配色主题名称
-Blora.themes;             // 预设主题元数据，可用于构建自定义选择器
+Blora.configure({ portalRoot, storageKey, themeStorageKey, paletteStorageKey, autoInit });
+Blora.applyTheme('modern');  // classic | modern | minimal | studio
+Blora.applyPalette('ocean'); // cinnabar | indigo | lotus | ocean | modern | minimal | carbon | studio
+Blora.getTheme();            // 当前视觉主题名称
+Blora.getPalette();          // 当前配色名称
+Blora.themes;                // 主题元数据及其 defaultPalette
+Blora.palettes;              // 配色元数据
 Blora.locale;         // 日历/选择器文案（months / dow / today / clear…），可整体覆写做本地化
 Blora.version;        // "1.0.0"
 ```
@@ -106,11 +131,11 @@ Blora.version;        // "1.0.0"
 }
 ```
 
-**主题配色**：`Blora.applyTheme('jade')` 会在根节点写入 `data-blora-palette="jade"`。预设主题只重映射基础令牌，组件无需改动；业务也可直接覆写任意 `--blora-*` 令牌建立自己的主题。
+**视觉主题与配色**：`Blora.applyTheme('modern')` 会在根节点写入 `data-blora-theme-style="modern"`，只映射字体、圆角、阴影、控件尺寸、动效和纹理，并默认应用主题的 `defaultPalette`。随后调用 `Blora.applyPalette('ocean')` 只会写入 `data-blora-palette="ocean"` 并替换语义颜色，不改变组件形态。需要保留当前配色时，可使用 `Blora.applyTheme('modern', document.documentElement, { applyDefaultPalette: false })`。
 
-**暗色模式**：`<html class="blora-dark">` 即可，所有 token 自动重映射，无需改组件。暗色模式可与普通配色主题组合。
+**暗色模式**：`<html class="blora-dark">` 即可，所有 token 自动重映射，无需改组件。暗色模式可与任意视觉主题组合。
 
-`modern` 面向现代 SaaS、控制台和业务应用：使用冷中性背景、白色卡面、低饱和钢蓝主交互，以及灰绿成功色和克制的陶土暖色；亮暗模式均有独立令牌映射。
+`classic` 是丹砂、靛青、藕荷、海盐原本共同使用的东方结构主题；四者现在只是可独立选择的配色。`modern` 是克制的通用产品界面，`minimal` 强调近直角和无阴影，`studio` 使用更柔和的现代创意工具气质、胶囊控件与圆润浮动导航。所有主题与配色均可自由组合，并可叠加暗色模式。
 
 ---
 
@@ -120,14 +145,13 @@ Blora.version;        // "1.0.0"
 
 | 类 | 说明 |
 |----|------|
-| `.blora-h1` .. `.blora-h4` | 衬线标题 |
+| `.blora-h1` .. `.blora-h4` | 主题标题字体（东方主题为衬线，现代主题为无衬线） |
 | `.blora-text-lead` | 引导段 |
 | `.blora-text-muted` / `.blora-text-faint` / `.blora-text-seal` | 文字色调 |
 | `.blora-text-caps` | 大写小字标签 |
 | `.blora-text-mono` / `.blora-text-brush` | 等宽 / 楷书 |
 | `.blora-quote` | 引文，可含 `<cite>` |
 | `.blora-code` / `.blora-pre` | 行内代码 / 代码块 |
-| `.blora-seal` | 印章。修饰符：`--round` `--ghost` |
 | `.blora-brush` | 飞白分隔线 |
 
 ### 2. 布局
@@ -152,7 +176,7 @@ Blora.version;        // "1.0.0"
 <div class="blora-card blora-card--hover">…</div>
 <div class="blora-card blora-card--inset">…</div>
 <div class="blora-card blora-card--flat">…</div>
-<!-- 子结构：.blora-card__title __body __foot；--relative 配 __seal -->
+<!-- 子结构：.blora-card__title __body __foot；--relative 配 __badge -->
 
 <div class="blora-panel">…</div>           <!-- 大面板 -->
 
@@ -331,7 +355,15 @@ Blora.version;        // "1.0.0"
 
 <span class="blora-badge">9</span>
 <span class="blora-badge blora-badge--dot"></span>
+<span class="blora-badge blora-badge--circle">新</span>
+<span class="blora-badge blora-badge--pill">推荐</span>
 <!-- 色：--tea --moss --indigo -->
+
+<!-- 卡面右上角徽章 -->
+<article class="blora-card blora-card--relative blora-card--with-badge">
+  <span class="blora-badge blora-badge--pill blora-card__badge">推荐</span>
+  …
+</article>
 
 <span class="blora-dot"></span>
 <!-- 色：--seal --moss --gold；动效：--pulse -->
@@ -372,6 +404,8 @@ Blora.version;        // "1.0.0"
 
 ### 8. 导航
 
+Navbar 默认保持全宽贴顶。添加 `.blora-navbar--floating` 或 `data-variant="floating"` 即切换为浮动变体；可覆盖 `--blora-navbar-inset`、`--blora-navbar-max-width` 与 `--blora-navbar-radius`。
+
 ```html
 <nav class="blora-navbar">
   <div class="blora-navbar__brand">…</div>
@@ -379,6 +413,10 @@ Blora.version;        // "1.0.0"
     <a class="blora-navbar__link is-active" href="#">链接</a>
   </div>
 </nav>
+
+<!-- 浮动变体：以下两种写法等价 -->
+<nav class="blora-navbar blora-navbar--floating">…</nav>
+<nav class="blora-navbar" data-variant="floating">…</nav>
 
 <!-- Tabs（需 data-blora-tabs）-->
 <div class="blora-tabs" data-blora-tabs>
@@ -427,6 +465,8 @@ Blora.version;        // "1.0.0"
   </div>
 </div>
 ```
+
+Tabs 初始化后会自动注入滑动指示器，内容面板会沿标签切换方向轻量进入；横向布局左右移动，纵向布局上下移动。下划线、Pills 和纵向布局共用同一套状态逻辑，键盘方向键、Home/End 与 `prefers-reduced-motion` 均自动适配。
 
 ### 9. 数据展示
 
@@ -643,6 +683,13 @@ Blora.toast({ type: 'success', message: '操作已完成', duration: 3000 });
 ```html
 <div class="blora-theme-picker" data-blora-theme-picker>
   <button class="blora-btn blora-theme-picker__trigger" data-blora-theme-trigger>
+    <span class="blora-theme-picker__label">Classic</span>
+  </button>
+  <div class="blora-theme-picker__menu"></div>
+</div>
+
+<div class="blora-theme-picker" data-blora-palette-picker>
+  <button class="blora-btn blora-theme-picker__trigger" data-blora-palette-trigger>
     <span class="blora-theme-picker__label">丹砂</span>
   </button>
   <div class="blora-theme-picker__menu"></div>
@@ -651,7 +698,7 @@ Blora.toast({ type: 'success', message: '操作已完成', duration: 3000 });
 <button data-blora-theme>夜</button>
 ```
 
-主题卡片由 JS 根据 `Blora.themes` 自动生成，并持久化到 `paletteStorageKey`。`data-blora-theme` 独立切换 `<html class="blora-dark">`。
+主题卡片与配色卡片分别根据 `Blora.themes`、`Blora.palettes` 自动生成，并持久化到 `themeStorageKey`、`paletteStorageKey`。选择主题时会应用该主题的默认配色；之后可独立改配色。`data-blora-theme` 仅切换 `<html class="blora-dark">`，保留该属性名以兼容既有暗色按钮。
 
 ---
 

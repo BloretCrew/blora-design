@@ -1,10 +1,25 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Blora Design · 水墨 UI 设计系统</title>
+<title>Blora Design · 设计规范</title>
 <meta name="description" content="Blora Design — 一套完整的 Web UI 设计规范与组件库。">
+<script>
+  (() => {
+    const root = document.documentElement;
+    const config = window.BloraConfig || {};
+    try {
+      let theme = localStorage.getItem(config.themeStorageKey || "blora-style-theme") || "classic";
+      const palette = localStorage.getItem(config.paletteStorageKey || "blora-palette") || "cinnabar";
+      const mode = localStorage.getItem(config.storageKey || "blora-theme");
+      if (theme === "carbon") theme = "modern";
+      if (theme !== "classic") root.dataset.bloraThemeStyle = theme;
+      if (palette !== "cinnabar") root.dataset.bloraPalette = palette;
+      if (mode === "dark" || (!mode && matchMedia("(prefers-color-scheme: dark)").matches)) root.classList.add("blora-dark");
+    } catch (error) {}
+  })();
+</script>
 <link rel="stylesheet" href="blora.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,7 +44,6 @@
   .blora-hero__kicker { display: inline-flex; align-items: center; gap: var(--blora-space-2); font-size: var(--blora-text-xs); letter-spacing: var(--blora-tracking-caps); text-transform: uppercase; color: var(--blora-seal); margin-bottom: var(--blora-space-4); }
   .blora-hero__title { font-family: var(--blora-font-serif); font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 700; line-height: 1.2; letter-spacing: -0.02em; color: var(--blora-ink); margin-bottom: var(--blora-space-4); }
   .blora-hero__sub { font-size: var(--blora-text-lg); color: var(--blora-ink-light); line-height: var(--blora-leading-loose); max-width: 640px; margin: 0 auto var(--blora-space-6); }
-  .blora-hero__seal { display: inline-flex; gap: var(--blora-space-3); margin-bottom: var(--blora-space-5); }
   @media (max-width: 560px) {
     .blora-hero { padding-inline: var(--blora-space-4); overflow: hidden; }
     .blora-hero__title { font-size: clamp(2rem, 10vw, 2.5rem); }
@@ -75,7 +89,6 @@
   .blora-iconset__name { font-size: 10px; color: var(--blora-ink-mist); }
 
   .blora-foot { text-align: center; padding: var(--blora-space-9) var(--blora-space-6); color: var(--blora-ink-mist); border-top: var(--blora-border); }
-  .blora-foot__seal { margin-bottom: var(--blora-space-3); }
   .blora-foot__title { font-size: 1.25rem; color: var(--blora-ink-light); margin-bottom: var(--blora-space-2); }
   .blora-foot__copy { margin-top: var(--blora-space-1); }
 
@@ -84,6 +97,7 @@
 
   .blora-chart-mock { height: 180px; background: var(--blora-surface-2); border-radius: var(--blora-radius-md); padding: var(--blora-space-4); display: flex; align-items: flex-end; gap: var(--blora-space-2); }
   .blora-chart-mock__bar { flex: 1; background: var(--blora-seal-soft); border-radius: var(--blora-radius-xs) var(--blora-radius-xs) 0 0; }
+  [data-demo-navbar-variant][aria-pressed="true"] { color: var(--blora-seal); background: var(--blora-seal-tint); }
 </style>
 </head>
 <body class="blora-page blora-scope">
@@ -93,7 +107,7 @@
      ========================================================================= -->
 <nav class="blora-navbar">
   <div class="blora-navbar__brand">
-    <span class="blora-seal blora-seal--round" style="font-size:0.9em; display:inline-grid; place-items:center; width:1.8em; height:1.8em; min-width:0; padding:0; overflow:hidden;"><svg width="20" height="20" viewBox="0 0 28 28" fill="currentColor" style="display:block;"><path fill-rule="evenodd" d="M5.565,11.301L8.613,9.556L7.719,7.994L4.671,9.739Q3.715,10.286,3.715,11.388L3.715,21.189Q3.715,22.291,4.671,22.838L13.246,27.747Q14.189,28.287,15.133,27.747L23.708,22.838Q24.664,22.291,24.664,21.189L24.664,11.388Q24.664,10.286,23.708,9.739L15.144,4.837Q14.179,4.284,13.225,4.855L12.236,5.446L13.16,6.991L14.149,6.4Q14.199,6.37,14.25,6.399L22.814,11.301Q22.864,11.33,22.864,11.388L22.864,21.189Q22.864,21.247,22.814,21.276L14.239,26.185Q14.189,26.213,14.14,26.185L5.565,21.276Q5.515,21.247,5.515,21.189L5.515,11.388Q5.515,11.33,5.565,11.301Z"/><path fill-rule="evenodd" d="M13.677,9.829L13.676,2.586Q13.676,1.764,12.959,1.363L11.143,0.35Q10.464,-0.03,9.783,0.347L7.946,1.362Q7.223,1.761,7.223,2.587L7.223,19.635Q7.223,20.457,7.94,20.857L13.577,24.004Q14.268,24.39,14.955,23.997L20.451,20.854Q21.156,20.45,21.156,19.638L21.156,13.368Q21.156,12.542,20.432,12.143L15.607,9.48Q14.897,9.088,14.204,9.509L13.677,9.829ZM11.876,2.821L10.459,2.03L9.023,2.823L9.023,19.4L14.257,22.322L19.356,19.406L19.356,13.605L14.94,11.168L14.003,11.736Q13.303,12.161,12.59,11.759Q11.877,11.358,11.877,10.539L11.876,2.821Z"/><path fill-rule="evenodd" d="M11.362,4.572L13.074,3.671L12.235,2.079L10.462,3.012L8.688,2.079L7.85,3.671L9.562,4.572L9.562,13.982Q9.562,14.794,10.268,15.197L13.398,16.983L13.398,23.356L15.198,23.356L15.198,16.979L20.707,13.792L19.805,12.234L14.295,15.422L11.362,13.749L11.362,4.572Z"/></svg></span>
+    <span class="blora-brand-mark"><svg width="20" height="20" viewBox="0 0 28 28" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.565,11.301L8.613,9.556L7.719,7.994L4.671,9.739Q3.715,10.286,3.715,11.388L3.715,21.189Q3.715,22.291,4.671,22.838L13.246,27.747Q14.189,28.287,15.133,27.747L23.708,22.838Q24.664,22.291,24.664,21.189L24.664,11.388Q24.664,10.286,23.708,9.739L15.144,4.837Q14.179,4.284,13.225,4.855L12.236,5.446L13.16,6.991L14.149,6.4Q14.199,6.37,14.25,6.399L22.814,11.301Q22.864,11.33,22.864,11.388L22.864,21.189Q22.864,21.247,22.814,21.276L14.239,26.185Q14.189,26.213,14.14,26.185L5.565,21.276Q5.515,21.247,5.515,21.189L5.515,11.388Q5.515,11.33,5.565,11.301Z"/><path fill-rule="evenodd" d="M13.677,9.829L13.676,2.586Q13.676,1.764,12.959,1.363L11.143,0.35Q10.464,-0.03,9.783,0.347L7.946,1.362Q7.223,1.761,7.223,2.587L7.223,19.635Q7.223,20.457,7.94,20.857L13.577,24.004Q14.268,24.39,14.955,23.997L20.451,20.854Q21.156,20.45,21.156,19.638L21.156,13.368Q21.156,12.542,20.432,12.143L15.607,9.48Q14.897,9.088,14.204,9.509L13.677,9.829ZM11.876,2.821L10.459,2.03L9.023,2.823L9.023,19.4L14.257,22.322L19.356,19.406L19.356,13.605L14.94,11.168L14.003,11.736Q13.303,12.161,12.59,11.759Q11.877,11.358,11.877,10.539L11.876,2.821Z"/><path fill-rule="evenodd" d="M11.362,4.572L13.074,3.671L12.235,2.079L10.462,3.012L8.688,2.079L7.85,3.671L9.562,4.572L9.562,13.982Q9.562,14.794,10.268,15.197L13.398,16.983L13.398,23.356L15.198,23.356L15.198,16.979L20.707,13.792L19.805,12.234L14.295,15.422L11.362,13.749L11.362,4.572Z"/></svg></span>
     <span>Blora&nbsp;Design</span>
   </div>
   <div class="blora-navbar__menu" style="display:none;">
@@ -103,8 +117,21 @@
     <a class="blora-navbar__link" href="#feedback">反馈</a>
   </div>
   <div class="blora-row blora-row--tight">
+    <span class="blora-tooltip">
+      <button class="blora-btn blora-btn--ghost blora-btn--icon blora-btn--sm" type="button" data-demo-navbar-variant aria-pressed="false" aria-label="切换为浮动导航栏">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18"/></svg>
+      </button>
+      <span class="blora-tooltip__bubble blora-tooltip__bubble--bottom" data-demo-navbar-variant-hint>切换为浮动导航栏</span>
+    </span>
     <div class="blora-theme-picker" data-blora-theme-picker>
       <button class="blora-btn blora-btn--ghost blora-btn--sm blora-theme-picker__trigger" type="button" data-blora-theme-trigger>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21v-7"/><path d="M4 10V3"/><path d="M12 21v-9"/><path d="M12 8V3"/><path d="M20 21v-5"/><path d="M20 12V3"/><path d="M2 14h4"/><path d="M10 8h4"/><path d="M18 16h4"/></svg>
+        <span class="blora-theme-picker__label">Classic</span>
+      </button>
+      <div class="blora-theme-picker__menu"></div>
+    </div>
+    <div class="blora-theme-picker" data-blora-palette-picker>
+      <button class="blora-btn blora-btn--ghost blora-btn--sm blora-theme-picker__trigger" type="button" data-blora-palette-trigger>
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z"/><path d="M19.5 15.5c-1.4 0-2.5 1.1-2.5 2.5 0 .7.3 1.3.7 1.8"/></svg>
         <span class="blora-theme-picker__label">丹砂</span>
       </button>
@@ -159,7 +186,6 @@
       <a href="#forms">表单输入</a>
       <a href="#pickers">选择器</a>
       <a href="#tags">标签徽章</a>
-      <a href="#seals">标识</a>
       <a href="#avatars">头像</a>
       <a href="#progress">进度与加载</a>
 
@@ -875,10 +901,33 @@
           <div class="blora-row">
             <span class="blora-badge">9</span>
             <span class="blora-badge">99+</span>
+            <span class="blora-badge blora-badge--circle">新</span>
+            <span class="blora-badge blora-badge--pill">推荐</span>
             <span class="blora-badge blora-badge--dot"></span>
             <span class="blora-badge blora-badge--tea">3</span>
             <span class="blora-badge blora-badge--moss">新</span>
             <span class="blora-badge blora-badge--indigo">β</span>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">卡面徽章 · On Card</div>
+          <div class="blora-grid blora-grid--3">
+            <article class="blora-card blora-card--relative blora-card--with-badge blora-card--hover">
+              <span class="blora-badge blora-badge--circle blora-card__badge">新</span>
+              <h3 class="blora-card__title">圆形徽章</h3>
+              <p class="blora-card__body">单字状态使用圆形徽章，紧凑且易于识别。</p>
+            </article>
+            <article class="blora-card blora-card--relative blora-card--with-badge blora-card--hover">
+              <span class="blora-badge blora-badge--pill blora-card__badge">推荐</span>
+              <h3 class="blora-card__title">胶囊徽章</h3>
+              <p class="blora-card__body">多个字使用胶囊徽章，宽度随内容自然增长。</p>
+            </article>
+            <article class="blora-card blora-card--relative blora-card--with-badge blora-card--hover">
+              <span class="blora-tag blora-tag--moss blora-card__badge">已发布</span>
+              <h3 class="blora-card__title">卡面标签</h3>
+              <p class="blora-card__body">分类和流程状态也可直接使用语义标签。</p>
+            </article>
           </div>
         </div>
 
@@ -898,70 +947,6 @@
             <span class="blora-row blora-row--tight"><span class="blora-dot blora-dot--moss blora-dot--pulse"></span>在线</span>
             <span class="blora-row blora-row--tight"><span class="blora-dot blora-dot--seal"></span>忙碌</span>
             <span class="blora-row blora-row--tight"><span class="blora-dot blora-dot--gold"></span>离开</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ================================================================
-         10½ · 标识
-         ================================================================ -->
-    <section id="seals" class="blora-sec">
-      <header class="blora-sec__head">
-        <div class="blora-sec__num">10½ — 标识</div>
-        <h2 class="blora-sec__title">标识 · Seal</h2>
-        <p class="blora-sec__desc">用于品牌或强调的方印标识。红底白字、微旋 -2°、带光晕。节制使用：单屏不超过两枚。</p>
-      </header>
-      <div class="blora-panel">
-        <div class="blora-demo">
-          <div class="blora-demo__label">变体 · Variants</div>
-          <div class="blora-row" style="align-items:center;">
-            <span class="blora-seal">推荐</span>
-            <span class="blora-seal blora-seal--round">热门</span>
-            <span class="blora-seal blora-seal--ghost">新版</span>
-            <span class="blora-seal" style="background:#2D2A24; box-shadow:none;">深色</span>
-            <span class="blora-seal" style="background:var(--blora-moss); box-shadow:none;">成功</span>
-            <span class="blora-seal" style="background:var(--blora-tea); box-shadow:none;">茶色</span>
-            <span class="blora-seal" style="background:var(--blora-indigo); box-shadow:none;">信息</span>
-          </div>
-        </div>
-        <div class="blora-demo">
-          <div class="blora-demo__label">尺寸 · Sizes（字号驱动）</div>
-          <div class="blora-row" style="align-items:center;">
-            <span class="blora-seal" style="font-size:0.7em;">小</span>
-            <span class="blora-seal" style="font-size:0.85em;">默</span>
-            <span class="blora-seal" style="font-size:1.1em;">大</span>
-            <span class="blora-seal" style="font-size:1.5em;">特大</span>
-            <span class="blora-seal" style="font-size:2em;">巨</span>
-          </div>
-        </div>
-        <div class="blora-demo">
-          <div class="blora-demo__label">单字 · 双字 · 三字</div>
-          <div class="blora-row" style="align-items:center;">
-            <span class="blora-seal">标</span>
-            <span class="blora-seal">示例</span>
-            <span class="blora-seal" style="font-size:0.7em; line-height:1.1;">三字样</span>
-            <span class="blora-seal blora-seal--round">签</span>
-          </div>
-        </div>
-        <div class="blora-demo">
-          <div class="blora-demo__label">卡面标识 · On Card</div>
-          <div class="blora-grid blora-grid--3">
-            <article class="blora-card blora-card--relative blora-card--hover">
-
-              <h3 class="blora-card__title">卡片标识</h3>
-              <p class="blora-card__body">右上角放置标识，是卡面的常见用法。</p>
-            </article>
-            <article class="blora-card blora-card--relative blora-card--hover">
-              <span class="blora-seal blora-card__seal" style="background:#2D2A24; box-shadow:none;">深</span>
-              <h3 class="blora-card__title">深色标识</h3>
-              <p class="blora-card__body">深色标识用于次级强调，与主色形成层次。</p>
-            </article>
-            <article class="blora-card blora-card--relative blora-card--hover">
-              <span class="blora-seal blora-card__seal blora-seal--round">圆</span>
-              <h3 class="blora-card__title">圆形标识</h3>
-              <p class="blora-card__body">圆形用于品牌标识，方形用于内容标记。</p>
-            </article>
           </div>
         </div>
       </div>
@@ -1803,9 +1788,6 @@
      脚 · Footer
      ========================================================================= -->
 <footer class="blora-foot">
-  <div class="blora-foot__seal">
-    <span class="blora-seal">Blora</span>
-  </div>
   <p class="blora-foot__title">Blora Design UI Framework</p>
   <p class="blora-hint">Blora Design · v1.0.0 · Web UI 设计规范与组件库</p>
   <p class="blora-hint blora-foot__copy">© 2026 · 专为现代界面而生</p>
@@ -1848,6 +1830,30 @@
   };
   window.addEventListener("DOMContentLoaded", syncTokenSwatches, { once: true });
   document.documentElement.addEventListener("blora:themechange", syncTokenSwatches);
+
+  const navbar = document.querySelector(".blora-navbar");
+  const navbarVariantButton = document.querySelector("[data-demo-navbar-variant]");
+  const navbarVariantHint = document.querySelector("[data-demo-navbar-variant-hint]");
+  if (navbar && navbarVariantButton) {
+    const storageKey = "blora-demo-navbar-variant";
+    const applyNavbarVariant = (variant) => {
+      const floating = variant === "floating";
+      if (floating) navbar.dataset.variant = "floating";
+      else delete navbar.dataset.variant;
+      const action = floating ? "切换为全宽导航栏" : "切换为浮动导航栏";
+      navbarVariantButton.setAttribute("aria-pressed", String(floating));
+      navbarVariantButton.setAttribute("aria-label", action);
+      if (navbarVariantHint) navbarVariantHint.textContent = action;
+    };
+    let savedNavbarVariant = "default";
+    try { savedNavbarVariant = localStorage.getItem(storageKey) || savedNavbarVariant; } catch (error) {}
+    applyNavbarVariant(savedNavbarVariant);
+    navbarVariantButton.addEventListener("click", () => {
+      const variant = navbar.dataset.variant === "floating" ? "default" : "floating";
+      applyNavbarVariant(variant);
+      try { localStorage.setItem(storageKey, variant); } catch (error) {}
+    });
+  }
 
   document.querySelectorAll("[data-demo-toast]").forEach((button) => {
     const messages = {

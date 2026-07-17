@@ -6,6 +6,7 @@ declare namespace Blora {
     autoInit?: boolean;
     portalRoot?: string | Element | null;
     storageKey?: string;
+    themeStorageKey?: string;
     paletteStorageKey?: string;
   }
 
@@ -18,12 +19,20 @@ declare namespace Blora {
   interface ThemePreset {
     readonly name: string;
     readonly description: string;
+    readonly defaultPalette: string;
+    readonly traits: readonly string[];
+  }
+
+  interface PalettePreset {
+    readonly name: string;
+    readonly description: string;
     readonly colors: readonly string[];
   }
 
   interface ApplyThemeOptions {
     persist?: boolean;
     emit?: boolean;
+    applyDefaultPalette?: boolean;
   }
 
   interface Locale {
@@ -42,11 +51,14 @@ declare namespace Blora {
     readonly version: string;
     readonly locale: Locale;
     readonly themes: Readonly<Record<string, ThemePreset>>;
+    readonly palettes: Readonly<Record<string, PalettePreset>>;
     configure(options?: Options): Options;
     setOptions(options?: Options): Options;
     init(root?: Root, options?: Options): void;
     applyTheme(name: string, target?: Element, options?: ApplyThemeOptions): boolean;
     getTheme(target?: Element): string;
+    applyPalette(name: string, target?: Element, options?: ApplyThemeOptions): boolean;
+    getPalette(target?: Element): string;
     toast(options: string | ToastOptions): void;
     openModal(target: ElementTarget): void;
     closeModal(target: ElementTarget): void;
