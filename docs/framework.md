@@ -78,9 +78,11 @@ Blora.init(document.getElementById('my-mount'));
     try {
       let palette = localStorage.getItem(config.paletteStorageKey || 'blora-palette') || 'dusk';
       const modeKey = config.colorModeStorageKey || config.storageKey || 'blora-color-mode';
-      const mode = localStorage.getItem(modeKey);
+      const storedMode = localStorage.getItem(modeKey);
+      const mode = ['system', 'light', 'dark'].includes(storedMode) ? storedMode : 'system';
+      root.dataset.bloraColorPreference = mode;
       if (palette !== 'dusk') root.dataset.bloraPalette = palette;
-      if (mode === 'dark' || (!mode && matchMedia('(prefers-color-scheme: dark)').matches)) root.classList.add('blora-dark');
+      if (mode === 'dark' || (mode === 'system' && matchMedia('(prefers-color-scheme: dark)').matches)) root.classList.add('blora-dark');
     } catch (error) {}
   })();
 </script>
@@ -100,6 +102,8 @@ Blora.configure({ portalRoot, colorModeStorageKey, paletteStorageKey, autoInit }
 Blora.applyPalette('ocean'); // cinnabar | indigo | lotus | ocean | graphite | mono | circuit | coral | dusk
 Blora.getPalette();          // 当前配色名称
 Blora.palettes;              // 配色元数据
+Blora.applyColorMode('system'); // system | light | dark
+Blora.getColorMode();           // 当前模式偏好，不等同于当前有效明暗状态
 Blora.locale;         // 日历/选择器文案（months / dow / today / clear…），可整体覆写做本地化
 Blora.version;        // "1.0.0"
 ```
@@ -681,10 +685,11 @@ Blora.toast({ type: 'success', message: '操作已完成', duration: 3000 });
   <div class="blora-palette-picker__menu"></div>
 </div>
 
-<button data-blora-color-mode>切换明暗模式</button>
+<!-- 单击依次切换：跟随系统 → 浅色 → 深色 → 跟随系统 -->
+<button data-blora-color-mode aria-label="当前跟随系统，切换至浅色"></button>
 ```
 
-配色卡片根据 `Blora.palettes` 自动生成，并持久化到 `paletteStorageKey`。`data-blora-color-mode` 切换 `<html class="blora-dark">`，其选择持久化到 `colorModeStorageKey`。二者都会触发 `blora:appearancechange`，事件 `detail` 包含当前 `palette` 与 `dark` 状态。
+配色卡片根据 `Blora.palettes` 自动生成，并持久化到 `paletteStorageKey`。`data-blora-color-mode` 在 `system / light / dark` 三态之间循环，选择持久化到 `colorModeStorageKey`；`system` 会监听 `prefers-color-scheme` 并实时更新有效明暗状态。二者都会触发 `blora:appearancechange`，事件 `detail` 包含当前 `palette`、模式偏好 `mode` 与有效状态 `dark`。
 
 ---
 

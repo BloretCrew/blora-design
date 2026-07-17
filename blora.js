@@ -841,7 +841,7 @@
       try { win.localStorage.setItem(CONFIG.paletteStorageKey, name); } catch (e) {}
     }
     syncThemeColor(el);
-    if (options.emit !== false) el.dispatchEvent(new win.CustomEvent("blora:appearancechange", { bubbles: true, detail: { palette: name, dark: el.classList.contains("blora-dark") } }));
+    if (options.emit !== false) el.dispatchEvent(new win.CustomEvent("blora:appearancechange", { bubbles: true, detail: { palette: name, mode: getColorMode(el), dark: el.classList.contains("blora-dark") } }));
     return true;
   };
   function initPalettePicker(root) {
@@ -914,35 +914,68 @@
   }
   const ICON_MOON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>';
   const ICON_SUN = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>';
+  const ICON_SYSTEM = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="12" x="3" y="4" rx="2"/><path d="M8 20h8"/><path d="M12 16v4"/></svg>';
+  const COLOR_MODES = Object.freeze(["system", "light", "dark"]);
+  const COLOR_MODE_LABELS = Object.freeze({ system: "跟随系统", light: "浅色", dark: "深色" });
+  const getColorMode = (target) => {
+    const d = ownerDoc(target);
+    const el = target && target.nodeType === 1 ? target : d && d.documentElement;
+    const mode = el && el.dataset.bloraColorPreference;
+    return COLOR_MODES.includes(mode) ? mode : "system";
+  };
+  const applyColorMode = (mode, target, options = {}) => {
+    const d = ownerDoc(target);
+    const el = target && target.nodeType === 1 ? target : d && d.documentElement;
+    const win = ownerWin(el);
+    if (!el || !win) return false;
+    mode = COLOR_MODES.includes(mode) ? mode : "system";
+    const systemDark = win.matchMedia && win.matchMedia("(prefers-color-scheme: dark)").matches;
+    const dark = mode === "dark" || (mode === "system" && systemDark);
+    el.dataset.bloraColorPreference = mode;
+    el.classList.toggle("blora-dark", dark);
+    if (options.persist !== false) {
+      try { win.localStorage.setItem(CONFIG.colorModeStorageKey, mode); } catch (e) {}
+    }
+    syncThemeColor(el);
+    if (options.emit !== false) el.dispatchEvent(new win.CustomEvent("blora:appearancechange", { bubbles: true, detail: { palette: getPalette(el), mode, dark } }));
+    return true;
+  };
   function initColorModeToggle(root) {
     const d = ownerDoc(root);
     const win = ownerWin(root);
     if (!d || !win) return;
-    /* 首次载入：读取持久化选择，未设置时跟随系统 prefers-color-scheme */
+    /* 首次载入：读取三态偏好，未设置或值无效时跟随系统。 */
     if (!FLAGS.colorModeBoot) {
       FLAGS.colorModeBoot = true;
-      let saved = null;
+      let saved = "system";
       try { saved = win.localStorage.getItem(CONFIG.colorModeStorageKey); } catch (e) {}
-      if (saved ? saved === "dark" : win.matchMedia("(prefers-color-scheme: dark)").matches) {
-        d.documentElement.classList.add("blora-dark");
-      }
-      syncThemeColor(d.documentElement);
+      applyColorMode(COLOR_MODES.includes(saved) ? saved : "system", d.documentElement, { persist: false, emit: false });
+    }
+    if (!FLAGS.colorModeMedia) {
+      FLAGS.colorModeMedia = true;
+      const media = win.matchMedia("(prefers-color-scheme: dark)");
+      on(media, "change", () => {
+        if (getColorMode(d.documentElement) === "system") {
+          applyColorMode("system", d.documentElement, { persist: false });
+        }
+      });
     }
     $$("[data-blora-color-mode]", root).forEach((btn) => {
       if (bound(btn, "ColorMode")) return;
       const sync = () => {
-        const dark = d.documentElement.classList.contains("blora-dark");
-        btn.innerHTML = dark ? ICON_SUN : ICON_MOON;
+        const mode = getColorMode(d.documentElement);
+        const next = mode === "system" ? "light" : mode === "light" ? "dark" : "system";
+        btn.innerHTML = mode === "system" ? ICON_SYSTEM : mode === "light" ? ICON_SUN : ICON_MOON;
         btn.disabled = false;
-        btn.setAttribute("aria-label", dark ? "切换至浅色" : "切换至暗色");
+        btn.dataset.bloraMode = mode;
+        btn.title = COLOR_MODE_LABELS[mode];
+        btn.setAttribute("aria-label", "当前" + COLOR_MODE_LABELS[mode] + "，切换至" + COLOR_MODE_LABELS[next]);
       };
       sync();
       on(btn, "click", () => {
-        const dark = d.documentElement.classList.toggle("blora-dark");
-        try { win.localStorage.setItem(CONFIG.colorModeStorageKey, dark ? "dark" : "light"); } catch (e) {}
-        syncThemeColor(d.documentElement);
-        d.documentElement.dispatchEvent(new win.CustomEvent("blora:appearancechange", { bubbles: true, detail: { palette: getPalette(d.documentElement), dark } }));
-        sync();
+        const mode = getColorMode(d.documentElement);
+        const next = mode === "system" ? "light" : mode === "light" ? "dark" : "system";
+        applyColorMode(next, d.documentElement);
       });
       on(d.documentElement, "blora:appearancechange", sync);
     });
@@ -1728,6 +1761,8 @@
     palettes: PALETTE_PRESETS,
     applyPalette,
     getPalette,
+    applyColorMode,
+    getColorMode,
     toast,
     openModal,
     closeModal,

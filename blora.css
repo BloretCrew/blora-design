@@ -11,6 +11,8 @@
    1. 设计令牌 · Design Tokens
    ========================================================================= */
 :root {
+  color-scheme: light;
+
   /* —— 背景与表面 · Background & Surfaces —— */
   --blora-background:     #F7F6F8;
   --blora-surface-1:      #FFFFFF;

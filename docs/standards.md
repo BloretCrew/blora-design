@@ -281,7 +281,7 @@ Blora 采用 12 级非线性间距，组件与布局必须优先使用对应令�
 
 ## 十 · 暗色模式
 
-加 `.blora-dark` 于 `<html>` 即可。Token 自动重映射：
+Blora 支持浅色、深色和跟随系统三种模式。业务层优先使用 `Blora.applyColorMode('light' | 'dark' | 'system')`；`system` 根据 `prefers-color-scheme` 实时更新，框架内部通过 `<html class="blora-dark">` 表示当前有效暗色状态。Token 自动重映射：
 
 - 背景 → 深紫灰 `#151317`
 - 文字色 → 冷白 `#F5F2F6`

@@ -1,6 +1,7 @@
 declare namespace Blora {
   type Root = Document | DocumentFragment | Element;
   type ElementTarget = string | Element;
+  type ColorMode = "system" | "light" | "dark";
 
   interface Options {
     autoInit?: boolean;
@@ -26,6 +27,11 @@ declare namespace Blora {
     emit?: boolean;
   }
 
+  interface ApplyColorModeOptions {
+    persist?: boolean;
+    emit?: boolean;
+  }
+
   interface Locale {
     months: readonly string[];
     dow: readonly string[];
@@ -47,6 +53,8 @@ declare namespace Blora {
     init(root?: Root, options?: Options): void;
     applyPalette(name: string, target?: Element, options?: ApplyPaletteOptions): boolean;
     getPalette(target?: Element): string;
+    applyColorMode(mode: ColorMode, target?: Element, options?: ApplyColorModeOptions): boolean;
+    getColorMode(target?: Element): ColorMode;
     toast(options: string | ToastOptions): void;
     openModal(target: ElementTarget): void;
     closeModal(target: ElementTarget): void;
