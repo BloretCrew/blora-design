@@ -119,6 +119,7 @@ Blora.version;        // "1.0.0"
   /* Background */ --blora-background, --blora-surface-1..3
   /* Content */ --blora-text-strong, --blora-foreground, --blora-text-emphasis, --blora-text-muted, --blora-text-subtle, --blora-text-disabled, --blora-border-subtle
   /* Functional colors */ --blora-primary, --blora-danger, --blora-accent-neutral, --blora-info, --blora-success, --blora-support, --blora-warning, --blora-accent-secondary
+  /* Derived foregrounds */ --blora-on-accent, --blora-on-media, --blora-brand-glyph
   /* Typography */ --blora-font-heading, --blora-font-sans, --blora-font-mono
   /* Type scale */ --blora-text-xs .. --blora-text-5xl
   /* Spacing */ --blora-space-0 .. --blora-space-12

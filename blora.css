@@ -117,6 +117,7 @@
 
   /* —— 衍生色 · Derived —— 由基础令牌实时调和；覆写基础令牌（如 --blora-primary）即全局跟随 */
   --blora-on-accent:     #FFFFFF;   /* 强调色与深色表面上的前景色 */
+  --blora-brand-glyph:   color-mix(in srgb, var(--blora-on-accent) 94%, var(--blora-primary)); /* 品牌圆标内的轻主题染白 */
   --blora-on-media:      #FFFFFF;   /* 图片与视频遮罩上的前景色 */
   --blora-media-overlay: rgba(0,0,0,0.4);
   --blora-media-overlay-strong: rgba(0,0,0,0.7);
@@ -1247,7 +1248,7 @@ html[data-blora-navbar-variant="floating"] .blora-navbar {
   color: var(--blora-text-strong); flex: none; min-width: 0;
 }
 .blora-navbar__title { white-space: nowrap; }
-.blora-brand-mark { display: inline-grid; place-items: center; width: 1.8em; height: 1.8em; flex: none; overflow: hidden; color: var(--blora-on-accent); background: var(--blora-primary); border-radius: 50%; box-shadow: var(--blora-shadow-2); }
+.blora-brand-mark { display: inline-grid; place-items: center; width: 1.8em; height: 1.8em; flex: none; overflow: hidden; color: var(--blora-brand-glyph); background: var(--blora-primary); border-radius: 50%; box-shadow: var(--blora-shadow-2); }
 .blora-navbar__menu { display: flex; gap: var(--blora-space-2); min-width: 0; }
 .blora-navbar__link { padding: 0.4em 0.9em; font-size: var(--blora-text-sm); color: var(--blora-text-emphasis); border-radius: var(--blora-radius-md); transition: all var(--blora-dur-fast) var(--blora-ease); }
 .blora-navbar__link:hover { color: var(--blora-text-strong); background: var(--blora-surface-2); }
