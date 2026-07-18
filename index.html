@@ -17,6 +17,10 @@
       root.dataset.bloraColorPreference = mode;
       if (palette !== "dusk") root.dataset.bloraPalette = palette;
       if (mode === "dark" || (mode === "system" && matchMedia("(prefers-color-scheme: dark)").matches)) root.classList.add("blora-dark");
+      /* 浮动顶栏须在首屏绘制前恢复，避免先全宽再跳变 */
+      if (localStorage.getItem("blora-demo-navbar-variant") === "floating") {
+        root.dataset.bloraNavbarVariant = "floating";
+      }
     } catch (error) {}
   })();
 </script>
@@ -26,30 +30,77 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   /* —— 仅用于本展示页的样式，不属于框架本体 —— */
-  .blora-showcase { display: grid; grid-template-columns: 240px 1fr; gap: var(--blora-space-8); max-width: 1440px; margin: 0 auto; padding: var(--blora-space-6) var(--blora-space-6) var(--blora-space-12); }
-  .blora-showcase > main { min-width: 0; }
-  @media (max-width: 1024px) { .blora-showcase { grid-template-columns: minmax(0, 1fr); } .blora-showside { display: none; } }
-  @media (max-width: 560px) {
-    .blora-showcase { padding-inline: var(--blora-space-4); }
-    .blora-sec, .blora-panel, .blora-card, .blora-demo { min-width: 0; overflow-wrap: anywhere; word-break: break-word; }
-  }
+  .blora-showcase { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: var(--blora-space-8); max-width: 1440px; margin: 0 auto; padding: var(--blora-space-6) var(--blora-space-6) var(--blora-space-12); min-width: 0; }
+  .blora-showcase > main { min-width: 0; max-width: 100%; overflow-x: clip; }
   .blora-showside { position: sticky; top: 88px; align-self: start; max-height: calc(100vh - 110px); overflow-y: auto; padding: 0 var(--blora-space-3); }
   .blora-shownav { font-size: var(--blora-text-sm); }
   .blora-shownav a { display: block; padding: 0.5em 0.8em; color: var(--blora-text-muted); border-radius: var(--blora-radius-sm); transition: all var(--blora-dur-fast) var(--blora-ease); }
   .blora-shownav a:hover { color: var(--blora-text-strong); background: var(--blora-surface-2); }
   .blora-shownav a.is-active { color: var(--blora-primary); font-weight: 500; background: var(--blora-primary-tint); }
   .blora-shownav__group { font-size: var(--blora-text-xs); text-transform: uppercase; letter-spacing: var(--blora-tracking-caps); color: var(--blora-text-disabled); padding: var(--blora-space-4) 0.7em var(--blora-space-1); }
-
-  .blora-hero { padding: var(--blora-space-9) var(--blora-space-6) var(--blora-space-7); text-align: center; max-width: 920px; margin: 0 auto; }
-  .blora-hero__kicker { display: inline-flex; align-items: center; gap: var(--blora-space-2); font-size: var(--blora-text-xs); letter-spacing: var(--blora-tracking-caps); text-transform: uppercase; color: var(--blora-primary); margin-bottom: var(--blora-space-4); }
-  .blora-hero__title { font-family: var(--blora-font-heading); font-size: var(--blora-text-5xl); font-weight: 700; line-height: 1.2; letter-spacing: 0; color: var(--blora-text-strong); margin-bottom: var(--blora-space-4); }
-  .blora-hero__sub { font-size: var(--blora-text-lg); color: var(--blora-text-muted); line-height: var(--blora-leading-loose); max-width: 640px; margin: 0 auto var(--blora-space-6); }
+  .blora-showside-mask { display: none; }
+  .blora-shownav-toggle { display: none; }
+  @media (max-width: 1024px) {
+    .blora-showcase { grid-template-columns: minmax(0, 1fr); }
+    .blora-showside {
+      position: fixed; top: 0; left: 0; bottom: 0; z-index: calc(var(--blora-z-drawer) + 1);
+      width: min(17rem, 84vw); max-height: none; align-self: stretch;
+      padding: var(--blora-space-5) var(--blora-space-3);
+      background: color-mix(in srgb, var(--blora-surface-1) 94%, transparent);
+      -webkit-backdrop-filter: blur(18px) saturate(1.2);
+      backdrop-filter: blur(18px) saturate(1.2);
+      border-right: var(--blora-border);
+      box-shadow: var(--blora-shadow-4);
+      transform: translateX(-104%);
+      transition: transform var(--blora-dur-slow) var(--blora-ease);
+      overscroll-behavior: contain;
+    }
+    body.is-showside-open .blora-showside { transform: translateX(0); }
+    .blora-showside-mask {
+      display: block; position: fixed; inset: 0; z-index: var(--blora-z-drawer);
+      background: var(--blora-overlay-drawer); opacity: 0; visibility: hidden;
+      transition: opacity var(--blora-dur-base) var(--blora-ease), visibility 0s linear var(--blora-dur-base);
+    }
+    body.is-showside-open .blora-showside-mask { opacity: 1; visibility: visible; transition-delay: 0s; }
+    body.is-showside-open { overflow: hidden; }
+    .blora-shownav-toggle {
+      display: grid; place-items: center;
+      position: fixed;
+      left: max(var(--blora-space-4), env(safe-area-inset-left, 0px));
+      bottom: max(var(--blora-space-4), env(safe-area-inset-bottom, 0px));
+      z-index: calc(var(--blora-z-sticky) + 11);
+      width: 3rem; height: 3rem; border-radius: 50%;
+      color: var(--blora-text-strong);
+      background: color-mix(in srgb, var(--blora-surface-1) 92%, transparent);
+      border: var(--blora-border);
+      box-shadow: var(--blora-shadow-3);
+      -webkit-backdrop-filter: blur(16px) saturate(1.2);
+      backdrop-filter: blur(16px) saturate(1.2);
+      cursor: pointer;
+      transition: transform var(--blora-dur-fast) var(--blora-ease), background var(--blora-dur-fast) var(--blora-ease);
+    }
+    .blora-shownav-toggle:hover { transform: scale(1.06); background: var(--blora-surface-1); }
+    .blora-shownav-toggle[aria-expanded="true"] {
+      color: var(--blora-on-accent); background: var(--blora-primary); border-color: var(--blora-primary);
+    }
+  }
   @media (max-width: 560px) {
-    .blora-hero { padding-inline: var(--blora-space-4); overflow: hidden; }
-    .blora-hero__title { font-size: var(--blora-text-3xl); }
-    .blora-hero__sub { max-width: 16rem; overflow-wrap: anywhere; }
-    .blora-hero .blora-row--center { flex-direction: column; align-items: stretch; max-width: 16rem; margin-inline: auto; }
-    .blora-hero .blora-btn { justify-content: center; }
+    .blora-showcase { padding-inline: var(--blora-space-4); }
+    .blora-sec, .blora-panel, .blora-card, .blora-demo { min-width: 0; max-width: 100%; overflow-wrap: anywhere; word-break: break-word; }
+    .blora-control-row { max-width: 100%; overflow-x: auto; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; padding-bottom: 2px; scrollbar-width: thin; }
+    .blora-panel, .blora-demo { overflow-x: auto; }
+  }
+
+  .blora-showcase-hero { padding: var(--blora-space-9) var(--blora-space-6) var(--blora-space-7); text-align: center; max-width: 920px; margin: 0 auto; }
+  .blora-showcase-hero__kicker { display: inline-flex; align-items: center; gap: var(--blora-space-2); font-size: var(--blora-text-xs); letter-spacing: var(--blora-tracking-caps); text-transform: uppercase; color: var(--blora-primary); margin-bottom: var(--blora-space-4); }
+  .blora-showcase-hero__title { font-family: var(--blora-font-heading); font-size: var(--blora-text-5xl); font-weight: 700; line-height: 1.2; letter-spacing: 0; color: var(--blora-text-strong); margin-bottom: var(--blora-space-4); }
+  .blora-showcase-hero__sub { font-size: var(--blora-text-lg); color: var(--blora-text-muted); line-height: var(--blora-leading-loose); max-width: 640px; margin: 0 auto var(--blora-space-6); }
+  @media (max-width: 560px) {
+    .blora-showcase-hero { padding-inline: var(--blora-space-4); overflow: hidden; }
+    .blora-showcase-hero__title { font-size: var(--blora-text-3xl); }
+    .blora-showcase-hero__sub { max-width: 16rem; overflow-wrap: anywhere; }
+    .blora-showcase-hero .blora-row--center { flex-direction: column; align-items: stretch; max-width: 16rem; margin-inline: auto; }
+    .blora-showcase-hero .blora-btn { justify-content: center; }
   }
 
   .blora-sec { margin-bottom: var(--blora-space-9); scroll-margin-top: 90px; min-width: 0; }
@@ -108,46 +159,48 @@
 <nav class="blora-navbar">
   <div class="blora-navbar__brand">
     <span class="blora-brand-mark"><svg width="20" height="20" viewBox="0 0 28 28" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.565,11.301L8.613,9.556L7.719,7.994L4.671,9.739Q3.715,10.286,3.715,11.388L3.715,21.189Q3.715,22.291,4.671,22.838L13.246,27.747Q14.189,28.287,15.133,27.747L23.708,22.838Q24.664,22.291,24.664,21.189L24.664,11.388Q24.664,10.286,23.708,9.739L15.144,4.837Q14.179,4.284,13.225,4.855L12.236,5.446L13.16,6.991L14.149,6.4Q14.199,6.37,14.25,6.399L22.814,11.301Q22.864,11.33,22.864,11.388L22.864,21.189Q22.864,21.247,22.814,21.276L14.239,26.185Q14.189,26.213,14.14,26.185L5.565,21.276Q5.515,21.247,5.515,21.189L5.515,11.388Q5.515,11.33,5.565,11.301Z"/><path fill-rule="evenodd" d="M13.677,9.829L13.676,2.586Q13.676,1.764,12.959,1.363L11.143,0.35Q10.464,-0.03,9.783,0.347L7.946,1.362Q7.223,1.761,7.223,2.587L7.223,19.635Q7.223,20.457,7.94,20.857L13.577,24.004Q14.268,24.39,14.955,23.997L20.451,20.854Q21.156,20.45,21.156,19.638L21.156,13.368Q21.156,12.542,20.432,12.143L15.607,9.48Q14.897,9.088,14.204,9.509L13.677,9.829ZM11.876,2.821L10.459,2.03L9.023,2.823L9.023,19.4L14.257,22.322L19.356,19.406L19.356,13.605L14.94,11.168L14.003,11.736Q13.303,12.161,12.59,11.759Q11.877,11.358,11.877,10.539L11.876,2.821Z"/><path fill-rule="evenodd" d="M11.362,4.572L13.074,3.671L12.235,2.079L10.462,3.012L8.688,2.079L7.85,3.671L9.562,4.572L9.562,13.982Q9.562,14.794,10.268,15.197L13.398,16.983L13.398,23.356L15.198,23.356L15.198,16.979L20.707,13.792L19.805,12.234L14.295,15.422L11.362,13.749L11.362,4.572Z"/></svg></span>
-    <span>Blora&nbsp;Design</span>
+    <span class="blora-navbar__title">Blora&nbsp;Design</span>
   </div>
-  <div class="blora-navbar__menu" style="display:none;">
+  <div class="blora-navbar__menu" style="display:none;" aria-hidden="true">
     <a class="blora-navbar__link is-active" href="#philosophy">设计规范</a>
     <a class="blora-navbar__link" href="#tokens">设计令牌</a>
     <a class="blora-navbar__link" href="#buttons">组件</a>
     <a class="blora-navbar__link" href="#feedback">反馈</a>
   </div>
-  <div class="blora-row blora-row--tight">
-    <span class="blora-tooltip">
-      <button class="blora-btn blora-btn--ghost blora-btn--icon blora-btn--sm" type="button" data-demo-navbar-variant aria-pressed="false" aria-label="切换为浮动导航栏">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18"/></svg>
+  <div class="blora-navbar__actions">
+    <div class="blora-navbar__tools">
+      <span class="blora-tooltip">
+        <button class="blora-btn blora-btn--ghost blora-btn--icon blora-btn--sm" type="button" data-demo-navbar-variant aria-pressed="false" aria-label="切换为浮动导航栏">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18"/></svg>
+        </button>
+        <span class="blora-tooltip__bubble blora-tooltip__bubble--bottom" data-demo-navbar-variant-hint>切换为浮动导航栏</span>
+      </span>
+      <div class="blora-palette-picker" data-blora-palette-picker>
+        <button class="blora-btn blora-btn--ghost blora-btn--sm blora-palette-picker__trigger" type="button" data-blora-palette-trigger>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z"/><path d="M19.5 15.5c-1.4 0-2.5 1.1-2.5 2.5 0 .7.3 1.3.7 1.8"/></svg>
+          <span class="blora-palette-picker__label">Dusk</span>
+        </button>
+        <div class="blora-palette-picker__menu"></div>
+      </div>
+      <button class="blora-btn blora-btn--ghost blora-btn--icon blora-btn--sm" data-blora-color-mode aria-label="当前跟随系统，切换至浅色" title="跟随系统">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="12" x="3" y="4" rx="2"/><path d="M8 20h8"/><path d="M12 16v4"/></svg>
       </button>
-      <span class="blora-tooltip__bubble blora-tooltip__bubble--bottom" data-demo-navbar-variant-hint>切换为浮动导航栏</span>
-    </span>
-    <div class="blora-palette-picker" data-blora-palette-picker>
-      <button class="blora-btn blora-btn--ghost blora-btn--sm blora-palette-picker__trigger" type="button" data-blora-palette-trigger>
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z"/><path d="M19.5 15.5c-1.4 0-2.5 1.1-2.5 2.5 0 .7.3 1.3.7 1.8"/></svg>
-        <span class="blora-palette-picker__label">Dusk</span>
-      </button>
-      <div class="blora-palette-picker__menu"></div>
+      <a class="blora-btn blora-btn--outline blora-btn--sm blora-navbar__secondary" href="docs/standards.md">规范文档</a>
     </div>
-    <button class="blora-btn blora-btn--ghost blora-btn--icon blora-btn--sm" data-blora-color-mode aria-label="当前跟随系统，切换至浅色" title="跟随系统">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="12" x="3" y="4" rx="2"/><path d="M8 20h8"/><path d="M12 16v4"/></svg>
-    </button>
-    <a class="blora-btn blora-btn--outline blora-btn--sm" href="docs/standards.md">规范文档</a>
-    <a class="blora-btn blora-btn--primary blora-btn--sm" href="#buttons">开始使用</a>
+    <a class="blora-btn blora-btn--primary blora-btn--sm blora-navbar__cta" href="#buttons">开始使用</a>
   </div>
 </nav>
 
 <!-- =========================================================================
      序 · Hero
      ========================================================================= -->
-<header class="blora-hero">
-  <div class="blora-hero__kicker">
+<header class="blora-showcase-hero">
+  <div class="blora-showcase-hero__kicker">
     <span class="blora-dot blora-dot--primary blora-dot--pulse"></span>
     一套完整的 Web UI 设计系统 · v1.0
    </div>
-   <h1 class="blora-hero__title">Blora Design<br>UI 设计规范</h1>
-   <p class="blora-hero__sub">
+   <h1 class="blora-showcase-hero__title">Blora Design<br>UI 设计规范</h1>
+   <p class="blora-showcase-hero__sub">
      Blora Design 提供完整的设计令牌、UI 组件库与交互脚本，覆盖常见 Web 界面场景。
    </p>
   
@@ -161,10 +214,16 @@
 <!-- =========================================================================
      主体 · Showcase
      ========================================================================= -->
+<!-- 窄屏侧栏抽屉：遮罩与开关置于展示 grid 外，避免占位 -->
+<div class="blora-showside-mask" data-demo-showside-mask hidden></div>
+<button class="blora-shownav-toggle" type="button" data-demo-showside-toggle aria-expanded="false" aria-controls="blora-showside" aria-label="打开目录">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg>
+</button>
+
 <div class="blora-showcase">
 
-  <!-- 侧栏导航 -->
-  <aside class="blora-showside">
+  <!-- 侧栏导航（窄屏由左下角按钮展开为抽屉） -->
+  <aside class="blora-showside" id="blora-showside">
     <nav class="blora-shownav" data-blora-spy>
       <div class="blora-shownav__group">规范</div>
       <a href="#philosophy">概述</a>
@@ -529,7 +588,13 @@
 
         <div class="blora-demo">
           <div class="blora-demo__label">浮动按钮 · FAB</div>
-          <p class="blora-hint">页面右下角悬浮一个 FAB 浮动按钮，滚动超过 400px 后出现。</p>
+          <p class="blora-hint">页面右下角悬浮一个 FAB 浮动按钮，滚动超过 400px 后出现，点击回到顶部。下方为样式预览（不固定定位）。</p>
+          <div class="blora-control-row" style="align-items:center;">
+            <button class="blora-fab blora-fab--static" type="button" aria-label="回到顶部（样式预览）" tabindex="-1">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
+            </button>
+            <span class="blora-hint">主色圆形 · 阴影层级 4 · hover 轻微放大</span>
+          </div>
         </div>
       </div>
     </section>
@@ -1552,10 +1617,10 @@
       <header class="blora-sec__head">
         <div class="blora-sec__num">17 — 命令</div>
         <h2 class="blora-sec__title">命令面板</h2>
-        <p class="blora-sec__desc">按 <kbd class="blora-code">Ctrl/⌘ + K</kbd> 唤起，键盘优先的快捷操作。亦为 Blora 推荐的全局搜索范式。</p>
+        <p class="blora-sec__desc">按 <kbd class="blora-kbd">Ctrl/⌘ + K</kbd> 唤起，键盘优先的快捷操作。亦为 Blora 推荐的全局搜索范式。</p>
       </header>
       <div class="blora-panel">
-        <p class="blora-text-muted">试试现在就按下 <kbd class="blora-code">Ctrl + K</kbd>。</p>
+        <p class="blora-text-muted">试试现在就按下 <kbd class="blora-kbd">Ctrl + K</kbd>。</p>
         <div class="blora-row" style="margin-top:var(--blora-space-3);">
           <button class="blora-btn blora-btn--outline" data-blora-modal-open="blora-cmdk">打开命令面板</button>
         </div>
@@ -1713,8 +1778,8 @@
         </div>
 
         <div class="blora-demo">
-          <div class="blora-demo__label">数据与媒体 · Chat, Countdown, Diff, Gallery & Kbd</div>
-          <div class="blora-grid blora-grid--2">
+          <div class="blora-demo__label">数据与媒体 · Chat, Countdown, Diff & Gallery</div>
+          <div class="blora-stack blora-stack--lg">
             <div class="blora-stack">
               <div class="blora-chat">
                 <span class="blora-avatar blora-avatar--info blora-chat__avatar">A</span>
@@ -1724,25 +1789,24 @@
                 <span class="blora-avatar blora-avatar--primary blora-chat__avatar">B</span>
                 <div class="blora-chat__content"><div class="blora-chat__meta"><span>Blora</span><time>10:26</time></div><div class="blora-chat__bubble">收到，先处理表单和导航。</div></div>
               </div>
-              <p>快捷键 <kbd class="blora-kbd">Ctrl</kbd> + <kbd class="blora-kbd">K</kbd></p>
-              <div class="blora-countdown" data-blora-countdown data-seconds="93784">
-                <span class="blora-countdown__unit"><strong class="blora-countdown__value" data-unit="days">1</strong><span class="blora-countdown__label">天</span></span>
-                <span class="blora-countdown__unit"><strong class="blora-countdown__value" data-unit="hours">02</strong><span class="blora-countdown__label">时</span></span>
-                <span class="blora-countdown__unit"><strong class="blora-countdown__value" data-unit="minutes">03</strong><span class="blora-countdown__label">分</span></span>
-                <span class="blora-countdown__unit"><strong class="blora-countdown__value" data-unit="seconds">04</strong><span class="blora-countdown__label">秒</span></span>
-              </div>
             </div>
-            <div class="blora-stack">
+            <div class="blora-countdown" data-blora-countdown data-seconds="93784">
+              <span class="blora-countdown__unit"><strong class="blora-countdown__value" data-unit="days">1</strong><span class="blora-countdown__label">天</span></span>
+              <span class="blora-countdown__unit"><strong class="blora-countdown__value" data-unit="hours">02</strong><span class="blora-countdown__label">时</span></span>
+              <span class="blora-countdown__unit"><strong class="blora-countdown__value" data-unit="minutes">03</strong><span class="blora-countdown__label">分</span></span>
+              <span class="blora-countdown__unit"><strong class="blora-countdown__value" data-unit="seconds">04</strong><span class="blora-countdown__label">秒</span></span>
+            </div>
+            <div class="blora-grid blora-grid--2">
               <div class="blora-diff">
                 <div class="blora-diff__item"><img src="https://picsum.photos/seed/blora-after/960/540" alt="调整后"></div>
                 <div class="blora-diff__item blora-diff__item--before"><img src="https://picsum.photos/seed/blora-before/960/540" alt="调整前"></div>
                 <span class="blora-diff__divider"></span>
                 <input class="blora-diff__range" type="range" min="0" max="100" value="52" aria-label="比较位置">
               </div>
-              <div class="blora-hover-gallery" aria-label="产品图片">
-                <img class="blora-hover-gallery__item is-active" src="https://picsum.photos/seed/blora-gallery-a/800/600" alt="产品正面">
-                <img class="blora-hover-gallery__item" src="https://picsum.photos/seed/blora-gallery-b/800/600" alt="产品侧面">
-                <img class="blora-hover-gallery__item" src="https://picsum.photos/seed/blora-gallery-c/800/600" alt="产品细节">
+              <div class="blora-hover-gallery blora-hover-gallery--wide" aria-label="产品图片">
+                <img class="blora-hover-gallery__item is-active" src="https://picsum.photos/seed/blora-gallery-a/960/540" alt="产品正面">
+                <img class="blora-hover-gallery__item" src="https://picsum.photos/seed/blora-gallery-b/960/540" alt="产品侧面">
+                <img class="blora-hover-gallery__item" src="https://picsum.photos/seed/blora-gallery-c/960/540" alt="产品细节">
               </div>
             </div>
           </div>
@@ -1785,11 +1849,7 @@
         </div>
 
         <div class="blora-demo">
-          <div class="blora-demo__label">可选效果 · Aura, Hover 3D & Text Rotate</div>
-          <div class="blora-grid blora-grid--2">
-            <article class="blora-card blora-aura"><h3 class="blora-card__title">Aura</h3><p class="blora-card__body">仅用于需要额外关注的单个对象。</p></article>
-            <article class="blora-card blora-hover-3d" data-strength="4" tabindex="0"><h3 class="blora-card__title">Hover 3D</h3><p class="blora-card__body">低幅度倾斜，并尊重 reduced-motion。</p></article>
-          </div>
+          <div class="blora-demo__label">可选效果 · Text Rotate</div>
           <p class="blora-h3">构建
             <span class="blora-text-rotate blora-text-primary" data-interval="2200">
               <span class="blora-text-rotate__item is-active">清晰的产品界面</span>
@@ -2004,18 +2064,26 @@
     const storageKey = "blora-demo-navbar-variant";
     const applyNavbarVariant = (variant) => {
       const floating = variant === "floating";
-      if (floating) navbar.dataset.variant = "floating";
-      else delete navbar.dataset.variant;
+      if (floating) {
+        navbar.dataset.variant = "floating";
+        document.documentElement.dataset.bloraNavbarVariant = "floating";
+      } else {
+        delete navbar.dataset.variant;
+        delete document.documentElement.dataset.bloraNavbarVariant;
+      }
       const action = floating ? "切换为全宽导航栏" : "切换为浮动导航栏";
       navbarVariantButton.setAttribute("aria-pressed", String(floating));
       navbarVariantButton.setAttribute("aria-label", action);
       if (navbarVariantHint) navbarVariantHint.textContent = action;
     };
+    /* head 启动脚本已据 localStorage 写好 html[data-blora-navbar-variant]，此处同步 nav 与按钮态 */
     let savedNavbarVariant = "default";
     try { savedNavbarVariant = localStorage.getItem(storageKey) || savedNavbarVariant; } catch (error) {}
+    if (document.documentElement.dataset.bloraNavbarVariant === "floating") savedNavbarVariant = "floating";
     applyNavbarVariant(savedNavbarVariant);
     navbarVariantButton.addEventListener("click", () => {
-      const variant = navbar.dataset.variant === "floating" ? "default" : "floating";
+      const variant = (navbar.dataset.variant === "floating" || document.documentElement.dataset.bloraNavbarVariant === "floating")
+        ? "default" : "floating";
       applyNavbarVariant(variant);
       try { localStorage.setItem(storageKey, variant); } catch (error) {}
     });
@@ -2033,6 +2101,38 @@
       Blora.toast({ type, message: messages[type] || messages.info });
     });
   });
+
+  /* 展示页侧栏：窄屏抽屉 */
+  (() => {
+    const toggle = document.querySelector("[data-demo-showside-toggle]");
+    const mask = document.querySelector("[data-demo-showside-mask]");
+    const side = document.getElementById("blora-showside");
+    if (!toggle || !side) return;
+    const mq = window.matchMedia("(max-width: 1024px)");
+    const setOpen = (open) => {
+      document.body.classList.toggle("is-showside-open", open);
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute("aria-label", open ? "关闭目录" : "打开目录");
+      if (mask) {
+        if (open) mask.removeAttribute("hidden");
+        else mask.setAttribute("hidden", "");
+      }
+      toggle.innerHTML = open
+        ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>'
+        : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg>';
+    };
+    toggle.addEventListener("click", () => setOpen(!document.body.classList.contains("is-showside-open")));
+    if (mask) mask.addEventListener("click", () => setOpen(false));
+    side.querySelectorAll("a[href^='#']").forEach((link) => {
+      link.addEventListener("click", () => { if (mq.matches) setOpen(false); });
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && document.body.classList.contains("is-showside-open")) setOpen(false);
+    });
+    const onViewport = () => { if (!mq.matches) setOpen(false); };
+    if (mq.addEventListener) mq.addEventListener("change", onViewport);
+    else mq.addListener(onViewport);
+  })();
 </script>
 </body>
 </html>

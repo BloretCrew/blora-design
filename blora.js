@@ -1879,26 +1879,6 @@
     });
   }
 
-  function initHover3D(root) {
-    $$(".blora-hover-3d", root).forEach((card) => {
-      if (bound(card, "Hover3D") || prefersReduced(card)) return;
-      const strength = clamp(Number(card.dataset.strength) || 6, 1, 12);
-      const reset = () => {
-        card.style.setProperty("--blora-tilt-x", "0deg");
-        card.style.setProperty("--blora-tilt-y", "0deg");
-      };
-      on(card, "pointermove", (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = clamp((e.clientX - rect.left) / rect.width, 0, 1) - 0.5;
-        const y = clamp((e.clientY - rect.top) / rect.height, 0, 1) - 0.5;
-        card.style.setProperty("--blora-tilt-x", (-y * strength * 2).toFixed(2) + "deg");
-        card.style.setProperty("--blora-tilt-y", (x * strength * 2).toFixed(2) + "deg");
-      });
-      on(card, "pointerleave", reset);
-      on(card, "blur", reset, true);
-    });
-  }
-
   function initHoverGallery(root) {
     $$(".blora-hover-gallery", root).forEach((gallery) => {
       if (bound(gallery, "HoverGallery")) return;
@@ -2017,7 +1997,6 @@
     initColorPicker(root);
     initCountdown(root);
     initDiff(root);
-    initHover3D(root);
     initHoverGallery(root);
     initTextRotate(root);
   }

@@ -809,9 +809,6 @@ Hover Gallery 根据指针横向位置切换图片，也支持方向键与 Home/
 ### 17. 可选效果与 Mockup
 
 ```html
-<article class="blora-card blora-aura">需要额外关注的单个对象</article>
-<article class="blora-card blora-hover-3d" data-strength="4" tabindex="0">低幅度 3D 倾斜</article>
-
 <span class="blora-text-rotate" data-interval="3200">
   <span class="blora-text-rotate__item is-active">清晰界面</span>
   <span class="blora-text-rotate__item">一致体验</span>
@@ -828,7 +825,7 @@ Hover Gallery 根据指针横向位置切换图片，也支持方向键与 Home/
 </div>
 ```
 
-Aura、Hover 3D 与 Text Rotate 属于可选强调效果，不作为运营后台和高频工作流的默认装饰。三者均服从 `prefers-reduced-motion`；Hover 3D 强度限制为 1–12。Mockup 只用于呈现真实产品或代码内容，不替代业务页面的正式容器。
+Text Rotate 属于可选强调效果，不作为运营后台和高频工作流的默认装饰，并服从 `prefers-reduced-motion`。Mockup 只用于呈现真实产品或代码内容，不替代业务页面的正式容器。
 
 ---
 

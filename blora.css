@@ -248,10 +248,15 @@
   text-rendering: optimizeLegibility;
   font-feature-settings: "kern", "liga", "calt";
 }
+html:has(body.blora-page) {
+  overflow-x: clip;
+  max-width: 100%;
+}
 body.blora-page {
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
+  overflow-x: clip;
+  max-width: 100%;
   font-family: var(--blora-font-sans);
   font-size: var(--blora-text-base);
   line-height: var(--blora-leading-normal);
@@ -398,6 +403,8 @@ body.blora-page {
   border-radius: var(--blora-radius-lg);
   padding: var(--blora-space-6);
   box-shadow: var(--blora-shadow-1);
+  min-width: 0;
+  max-width: 100%;
   transition: box-shadow var(--blora-dur-base) var(--blora-ease),
               transform var(--blora-dur-base) var(--blora-ease);
 }
@@ -418,6 +425,11 @@ body.blora-page {
   border-radius: var(--blora-radius-xl);
   padding: var(--blora-space-7);
   box-shadow: var(--blora-shadow-2);
+  min-width: 0;
+  max-width: 100%;
+}
+@media (max-width: 560px) {
+  .blora-panel { padding: var(--blora-space-5); }
 }
 .blora-panel__header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: var(--blora-space-5); padding-bottom: var(--blora-space-4); border-bottom: var(--blora-border); }
 
@@ -516,17 +528,33 @@ body.blora-page {
 
 /* —— 圆形浮动按钮 FAB —— */
 .blora-fab {
-  position: fixed; right: var(--blora-space-7); bottom: var(--blora-space-7);
+  position: fixed;
+  right: max(var(--blora-space-5), env(safe-area-inset-right, 0px));
+  bottom: max(var(--blora-space-5), env(safe-area-inset-bottom, 0px));
   width: 56px; height: 56px; border-radius: 50%;
   background: var(--blora-primary); color: var(--blora-on-accent);
   display: grid; place-items: center;
+  border: none; cursor: pointer;
   box-shadow: var(--blora-shadow-4), var(--blora-shadow-primary);
-  z-index: var(--blora-z-sticky);
+  z-index: calc(var(--blora-z-sticky) + 10);
   transition: transform var(--blora-dur-base) var(--blora-ease-overshoot),
               opacity var(--blora-dur-base) var(--blora-ease);
 }
 .blora-fab:hover { transform: scale(1.12); }
-.blora-fab.is-hidden { opacity: 0; pointer-events: none; }
+.blora-fab.is-hidden { opacity: 0; pointer-events: none; transform: scale(0.86); }
+/* 展示页 / 文档中的静态预览，不脱离文档流 */
+.blora-fab--static {
+  position: relative; right: auto; bottom: auto; inset: auto; z-index: auto;
+  flex: none;
+}
+.blora-fab--static.is-hidden { opacity: 1; pointer-events: auto; transform: none; }
+@media (max-width: 560px) {
+  .blora-fab:not(.blora-fab--static) {
+    right: max(var(--blora-space-4), env(safe-area-inset-right, 0px));
+    bottom: max(var(--blora-space-4), env(safe-area-inset-bottom, 0px));
+    width: 3rem; height: 3rem;
+  }
+}
 
 /* —— 按钮组 —— */
 .blora-btn-group { display: inline-flex; }
@@ -870,13 +898,13 @@ body.blora-page {
 /* —— 评分 Rate —— */
 .blora-rate { display: inline-flex; gap: 0.2em; cursor: pointer; }
 .blora-rate__star { color: var(--blora-border-subtle); transition: color var(--blora-dur-fast) var(--blora-ease), transform var(--blora-dur-fast) var(--blora-ease); font-size: 1.25em; }
-.blora-rate__star.is-on { color: var(--blora-warning); }
+.blora-rate__star.is-on { color: var(--blora-primary); }
 .blora-rate__star:hover { transform: scale(1.15); }
 
 /* —— 开关组 / 分段控件 Segmented —— */
-.blora-segmented { display: inline-flex; padding: 3px; background: var(--blora-surface-3); border-radius: var(--blora-radius-md); gap: 0; position: relative; }
-.blora-segmented__indicator { position: absolute; top: 3px; bottom: 3px; background: var(--blora-surface-1); border-radius: var(--blora-radius-sm); box-shadow: var(--blora-shadow-1); transition: left var(--blora-dur-base) var(--blora-ease), width var(--blora-dur-base) var(--blora-ease); pointer-events: none; z-index: 0; }
-.blora-segmented__item { padding: 0.4em 0.9em; font-size: var(--blora-text-sm); color: var(--blora-text-muted); border-radius: var(--blora-radius-sm); cursor: pointer; transition: color var(--blora-dur-base) var(--blora-ease); position: relative; z-index: 1; }
+.blora-segmented { --blora-segmented-padding: 3px; display: inline-flex; padding: var(--blora-segmented-padding); background: var(--blora-surface-3); border-radius: var(--blora-control-radius); gap: 0; position: relative; }
+.blora-segmented__indicator { position: absolute; top: var(--blora-segmented-padding); bottom: var(--blora-segmented-padding); background: var(--blora-surface-1); border-radius: calc(var(--blora-control-radius) - var(--blora-segmented-padding)); box-shadow: var(--blora-shadow-1); transition: left var(--blora-dur-base) var(--blora-ease), width var(--blora-dur-base) var(--blora-ease); pointer-events: none; z-index: 0; }
+.blora-segmented__item { padding: 0.4em 0.9em; font-size: var(--blora-text-sm); color: var(--blora-text-muted); border-radius: calc(var(--blora-control-radius) - var(--blora-segmented-padding)); cursor: pointer; transition: color var(--blora-dur-base) var(--blora-ease); position: relative; z-index: 1; }
 .blora-segmented__item:hover { color: var(--blora-text-strong); }
 .blora-segmented__item.is-active { color: var(--blora-foreground); }
 
@@ -1147,9 +1175,16 @@ body.blora-page {
   backdrop-filter: blur(12px);
   border-bottom: var(--blora-border);
   position: sticky; top: 0; z-index: var(--blora-z-sticky);
+  flex-wrap: nowrap;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  /* 不可 overflow:hidden — 会裁切配色/下拉等 absolute 浮层 */
 }
+/* 浮动顶栏：class / data-variant / 根节点 early-boot 标记（防刷新闪全宽）均可触发 */
 .blora-navbar--floating,
-.blora-navbar[data-variant="floating"] {
+.blora-navbar[data-variant="floating"],
+html[data-blora-navbar-variant="floating"] .blora-navbar {
   --blora-navbar-inset: var(--blora-space-4);
   --blora-navbar-max-width: 90rem;
   --blora-navbar-radius: var(--blora-radius-lg);
@@ -1164,10 +1199,11 @@ body.blora-page {
 }
 @media (max-width: 560px) {
   .blora-navbar--floating,
-  .blora-navbar[data-variant="floating"] {
+  .blora-navbar[data-variant="floating"],
+  html[data-blora-navbar-variant="floating"] .blora-navbar {
     --blora-navbar-inset: var(--blora-space-2);
     padding-inline: var(--blora-space-3);
-    gap: var(--blora-space-3);
+    gap: var(--blora-space-2);
   }
 }
 .blora-navbar {
@@ -1179,7 +1215,7 @@ body.blora-page {
   border-radius: 0;
   box-shadow: var(--blora-shadow-2);
 }
-:is(.blora-navbar--floating, .blora-navbar[data-variant="floating"]) {
+:is(.blora-navbar--floating, .blora-navbar[data-variant="floating"], html[data-blora-navbar-variant="floating"] .blora-navbar) {
   --blora-navbar-inset: var(--blora-space-3);
   --blora-navbar-max-width: 96rem;
   --blora-navbar-radius: var(--blora-radius-full);
@@ -1197,17 +1233,72 @@ body.blora-page {
   border-radius: inherit;
 }
 @media (max-width: 560px) {
-  :is(.blora-navbar--floating, .blora-navbar[data-variant="floating"]) {
+  :is(.blora-navbar--floating, .blora-navbar[data-variant="floating"], html[data-blora-navbar-variant="floating"] .blora-navbar) {
     --blora-navbar-inset: var(--blora-space-2);
     border-radius: var(--blora-radius-xl);
   }
 }
-.blora-navbar__brand { display: flex; align-items: center; gap: var(--blora-space-3); font-family: var(--blora-font-heading); font-size: var(--blora-text-lg); font-weight: 600; color: var(--blora-text-strong); }
+.blora-navbar__brand {
+  display: flex; align-items: center; gap: var(--blora-space-3);
+  font-family: var(--blora-font-heading); font-size: var(--blora-text-lg); font-weight: 600;
+  color: var(--blora-text-strong); flex: none; min-width: 0;
+}
+.blora-navbar__title { white-space: nowrap; }
 .blora-brand-mark { display: inline-grid; place-items: center; width: 1.8em; height: 1.8em; flex: none; overflow: hidden; color: var(--blora-on-accent); background: var(--blora-primary); border-radius: 50%; box-shadow: var(--blora-shadow-2); }
-.blora-navbar__menu { display: flex; gap: var(--blora-space-2); }
+.blora-navbar__menu { display: flex; gap: var(--blora-space-2); min-width: 0; }
 .blora-navbar__link { padding: 0.4em 0.9em; font-size: var(--blora-text-sm); color: var(--blora-text-emphasis); border-radius: var(--blora-radius-md); transition: all var(--blora-dur-fast) var(--blora-ease); }
 .blora-navbar__link:hover { color: var(--blora-text-strong); background: var(--blora-surface-2); }
 .blora-navbar__link.is-active { color: var(--blora-primary); font-weight: 500; }
+/* 右侧操作区：主 CTA 始终钉住；次要工具占满剩余宽度并形成可触摸横滑滚动槽 */
+.blora-navbar__actions {
+  display: flex; align-items: center; gap: var(--blora-space-2);
+  flex: 1 1 auto; justify-content: flex-end; flex-wrap: nowrap;
+  min-width: 0; max-width: 100%;
+  /* 不可 overflow:hidden：会裁切 tools 内 absolute 浮层（tooltip 等） */
+}
+.blora-navbar__tools {
+  display: flex; align-items: center; gap: var(--blora-space-2);
+  /* basis 0：始终吃掉 brand/CTA 之间的剩余宽度，内容超出后才出现滚动 */
+  flex: 1 1 0%;
+  /* 注意：不能用 justify-content:flex-end —— 溢出会发生在左侧且 scrollLeft 滚不到 */
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  overscroll-behavior-y: none;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x; /* 手指横滑优先归本槽，不被页面竖滑抢走 */
+  scrollbar-width: none;
+  padding-inline: 2px;
+  scroll-padding-inline: var(--blora-space-2);
+}
+/* 左侧弹性垫片：空间够时把按钮推到右侧；空间不够时缩为 0，保证整串可从左滚到右 */
+.blora-navbar__tools::before {
+  content: "";
+  flex: 1 1 0;
+  min-width: 0;
+  pointer-events: none;
+}
+.blora-navbar__tools::-webkit-scrollbar { display: none; width: 0; height: 0; }
+.blora-navbar__tools > *,
+.blora-navbar__actions > .blora-btn,
+.blora-navbar__actions > a.blora-btn { flex: none; }
+/* tooltip / picker 包裹层也禁止收缩，保证按钮完整可滚入视口 */
+.blora-navbar__tools > .blora-tooltip,
+.blora-navbar__tools > .blora-palette-picker { flex: none; }
+.blora-navbar__cta { flex: none; position: relative; z-index: 1; }
+@media (max-width: 720px) {
+  .blora-navbar { gap: var(--blora-space-2); padding-inline: var(--blora-space-3); }
+  .blora-navbar__title { display: none; }
+  .blora-navbar__menu { display: none !important; }
+}
+@media (max-width: 560px) {
+  .blora-navbar a.blora-navbar__secondary,
+  .blora-navbar .blora-navbar__secondary { display: none !important; }
+}
 
 /* —— 配色选择器 —— */
 .blora-palette-picker { position: relative; }
@@ -1489,7 +1580,7 @@ body.blora-page {
 .blora-transfer__actions { display: flex; flex-direction: column; gap: var(--blora-space-2); }
 
 /* —— 级联选择 Cascader —— */
-.blora-cascader { display: flex; border: var(--blora-border); border-radius: var(--blora-radius-md); background: var(--blora-surface-1); overflow: hidden; }
+.blora-cascader { display: flex; border: var(--blora-border); border-radius: var(--blora-radius-md); background: var(--blora-surface-1); overflow-x: auto; overflow-y: hidden; max-width: 100%; }
 .blora-cascader__col { min-width: 140px; max-height: 240px; overflow-y: auto; border-right: 1px solid var(--blora-border-subtle); padding: var(--blora-space-2); flex: none; }
 .blora-cascader__col:last-child { border-right: none; }
 .blora-cascader__opt { padding: 0.4em 0.6em; font-size: var(--blora-text-sm); color: var(--blora-text-emphasis); border-radius: var(--blora-radius-sm); cursor: pointer; display: flex; align-items: center; }
@@ -1837,7 +1928,7 @@ html:has(body.blora-page)::-webkit-scrollbar-corner,
 }
 .blora-megamenu__link:hover, .blora-megamenu__link:focus-visible { color: var(--blora-primary); background: var(--blora-primary-tint); }
 
-/* —— Layout: Indicator, Join, Hero, Footer, Mask, Deck & Aura —— */
+/* —— Layout: Indicator, Join, Hero, Footer, Mask & Deck —— */
 .blora-indicator { position: relative; display: inline-flex; max-width: 100%; }
 .blora-indicator__item {
   position: absolute; top: 0; right: 0; z-index: 2; transform: translate(42%, -42%);
@@ -1895,20 +1986,6 @@ html:has(body.blora-page)::-webkit-scrollbar-corner,
 .blora-deck:hover > *:nth-last-child(3) { transform: translateY(-1.45rem) scale(0.94); }
 .blora-deck--sm { width: min(100%, 18rem); }
 
-.blora-aura { position: relative; isolation: isolate; }
-.blora-aura::before {
-  content: ""; position: absolute; inset: -2px; z-index: -1; border-radius: inherit; pointer-events: none;
-  border: 1px solid color-mix(in srgb, var(--blora-primary) 42%, transparent);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--blora-primary) 7%, transparent),
-    0 0 22px color-mix(in srgb, var(--blora-primary) 18%, transparent);
-}
-.blora-hover-3d {
-  transform: perspective(900px) rotateX(var(--blora-tilt-x, 0deg)) rotateY(var(--blora-tilt-y, 0deg));
-  transform-style: preserve-3d;
-  transition: transform var(--blora-dur-base) var(--blora-ease), box-shadow var(--blora-dur-base) var(--blora-ease);
-}
-.blora-hover-3d:hover, .blora-hover-3d:focus-visible { will-change: transform; box-shadow: var(--blora-shadow-3); }
-
 /* —— Data & Media: Kbd, Chat, Countdown, Diff, Gallery & Text Rotate —— */
 .blora-kbd {
   display: inline-flex; align-items: center; justify-content: center; min-width: 1.75em; min-height: 1.75em;
@@ -1920,10 +1997,10 @@ html:has(body.blora-page)::-webkit-scrollbar-corner,
 
 .blora-chat { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--blora-space-3); align-items: end; max-width: 42rem; }
 .blora-chat__avatar { align-self: end; }
-.blora-chat__content { min-width: 0; justify-self: start; }
+.blora-chat__content { min-width: 0; max-width: 100%; justify-self: start; }
 .blora-chat__meta { display: flex; gap: var(--blora-space-2); margin-bottom: var(--blora-space-1); color: var(--blora-text-subtle); font-size: var(--blora-text-xs); }
 .blora-chat__bubble {
-  max-width: min(32rem, 82vw); padding: 0.65rem 0.9rem;
+  width: fit-content; max-width: 100%; padding: 0.65rem 0.9rem;
   border: var(--blora-border); border-radius: var(--blora-radius-lg) var(--blora-radius-lg) var(--blora-radius-lg) var(--blora-radius-xs);
   background: var(--blora-surface-1); color: var(--blora-foreground); overflow-wrap: anywhere;
 }
@@ -1941,7 +2018,7 @@ html:has(body.blora-page)::-webkit-scrollbar-corner,
 .blora-countdown__unit { display: grid; justify-items: center; gap: var(--blora-space-1); min-width: 3.5rem; }
 .blora-countdown__value {
   min-width: 2.2ch; color: var(--blora-foreground); font-family: var(--blora-font-mono);
-  font-size: var(--blora-text-3xl); font-variant-numeric: tabular-nums; line-height: 1;
+  font-size: var(--blora-text-3xl); font-variant-numeric: tabular-nums; line-height: 1; text-align: center;
 }
 .blora-countdown__label { color: var(--blora-text-subtle); font-size: var(--blora-text-xs); }
 
@@ -1975,6 +2052,7 @@ html:has(body.blora-page)::-webkit-scrollbar-corner,
   opacity: 0; transition: opacity var(--blora-dur-base) var(--blora-ease);
 }
 .blora-hover-gallery__item.is-active { opacity: 1; }
+.blora-hover-gallery--wide { --blora-gallery-ratio: 16 / 9; }
 .blora-hover-gallery__progress {
   position: absolute; left: var(--blora-space-3); right: var(--blora-space-3); bottom: var(--blora-space-3);
   z-index: 2; display: grid; grid-auto-flow: column; gap: var(--blora-space-1);
