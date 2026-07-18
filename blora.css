@@ -1219,6 +1219,8 @@ html[data-blora-navbar-variant="floating"] .blora-navbar {
   --blora-navbar-inset: var(--blora-space-3);
   --blora-navbar-max-width: 96rem;
   --blora-navbar-radius: var(--blora-radius-full);
+  --blora-navbar-padding: var(--blora-space-3);
+  padding: var(--blora-navbar-padding);
   border-radius: var(--blora-navbar-radius);
 }
 .blora-navbar::before {
@@ -1235,6 +1237,7 @@ html[data-blora-navbar-variant="floating"] .blora-navbar {
 @media (max-width: 560px) {
   :is(.blora-navbar--floating, .blora-navbar[data-variant="floating"], html[data-blora-navbar-variant="floating"] .blora-navbar) {
     --blora-navbar-inset: var(--blora-space-2);
+    --blora-navbar-padding: var(--blora-space-3);
     border-radius: var(--blora-radius-xl);
   }
 }
