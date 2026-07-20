@@ -117,7 +117,7 @@
 
   /* —— 衍生色 · Derived —— 由基础令牌实时调和；覆写基础令牌（如 --blora-primary）即全局跟随 */
   --blora-on-accent:     #FFFFFF;   /* 强调色与深色表面上的前景色 */
-  --blora-brand-glyph:   color-mix(in srgb, var(--blora-on-accent) 94%, var(--blora-primary)); /* 品牌圆标内的轻主题染白 */
+  --blora-brand-glyph:   color-mix(in srgb, var(--blora-on-accent) 88%, var(--blora-primary)); /* 品牌圆标内的主题染白 */
   --blora-on-media:      #FFFFFF;   /* 图片与视频遮罩上的前景色 */
   --blora-media-overlay: rgba(0,0,0,0.4);
   --blora-media-overlay-strong: rgba(0,0,0,0.7);
