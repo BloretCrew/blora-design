@@ -1150,14 +1150,6 @@ body.blora-page {
 .blora-spinner--sm { width: 0.9em; height: 0.9em; border-width: 1.5px; }
 .blora-spinner--lg { width: 2em; height: 2em; border-width: 3px; }
 
-/* —— 圆点加载 · Bouncing dots —— */
-.blora-dot-loader { display: inline-flex; gap: 0.35em; align-items: flex-end; height: 1.2em; }
-.blora-dot-loader span { width: 0.45em; height: 0.45em; background: var(--blora-text-emphasis); border-radius: 50%; animation: blora-bounce 1s ease-in-out infinite; }
-.blora-dot-loader span:nth-child(2) { animation-delay: 0.15s; }
-.blora-dot-loader span:nth-child(3) { animation-delay: 0.3s; }
-.blora-dot-loader span:nth-child(4) { animation-delay: 0.45s; }
-.blora-dot-loader span:last-child { background: var(--blora-primary); }
-
 /* —— 骨架屏 Skeleton —— */
 .blora-skeleton { display: block; background: linear-gradient(90deg, var(--blora-surface-3) 0%, var(--blora-surface-2) 50%, var(--blora-surface-3) 100%); background-size: 200% 100%; border-radius: var(--blora-radius-sm); animation: blora-shimmer 1.6s ease-in-out infinite; }
 .blora-skeleton--text { height: 0.9em; margin-bottom: 0.4em; }
@@ -2279,10 +2271,6 @@ html:has(body.blora-page)::-webkit-scrollbar-corner,
 @keyframes blora-pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.25); } }
 @keyframes blora-shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 @keyframes blora-stripe { from { background-position: 0 0; } to { background-position: 16px 0; } }
-@keyframes blora-bounce {
-  0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
-  40% { transform: translateY(-0.6em); opacity: 1; }
-}
 @keyframes blora-fade-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes blora-fade-out { from { opacity: 1; } to { opacity: 0; } }
 @keyframes blora-pop-in { from { opacity: 0; transform: scale(0.94) translateY(8px); } to { opacity: 1; transform: scale(1) translateY(0); } }

@@ -394,7 +394,6 @@ Blora.version;        // "1.0.0"
 </div>
 
 <span class="blora-spinner"></span>           <!-- 尺寸：--sm --lg -->
-<span class="blora-dot-loader"><span></span><span></span><span></span><span></span></span>
 
 <span class="blora-skeleton blora-skeleton--text"></span>
 <!-- 变体：--title --circle --block -->
