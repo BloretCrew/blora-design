@@ -17,10 +17,9 @@
       root.dataset.bloraColorPreference = mode;
       if (palette !== "dusk") root.dataset.bloraPalette = palette;
       if (mode === "dark" || (mode === "system" && matchMedia("(prefers-color-scheme: dark)").matches)) root.classList.add("blora-dark");
-      /* 浮动顶栏须在首屏绘制前恢复，避免先全宽再跳变 */
-      if (localStorage.getItem("blora-demo-navbar-variant") === "floating") {
-        root.dataset.bloraNavbarVariant = "floating";
-      }
+      /* 悬浮为默认；仅在用户显式选择全宽时于首屏绘制前恢复。 */
+      const navbarVariant = localStorage.getItem("blora-demo-navbar-variant");
+      if (navbarVariant === "full" || navbarVariant === "default") root.dataset.bloraNavbarVariant = "full";
     } catch (error) {}
   })();
 </script>
@@ -170,10 +169,10 @@
   <div class="blora-navbar__actions">
     <div class="blora-navbar__tools">
       <span class="blora-tooltip">
-        <button class="blora-btn blora-btn--ghost blora-btn--icon blora-btn--sm" type="button" data-demo-navbar-variant aria-pressed="false" aria-label="切换为浮动导航栏">
+      <button class="blora-btn blora-btn--ghost blora-btn--icon blora-btn--sm" type="button" data-demo-navbar-variant aria-pressed="true" aria-label="切换为全宽导航栏">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18"/></svg>
         </button>
-        <span class="blora-tooltip__bubble blora-tooltip__bubble--bottom" data-demo-navbar-variant-hint>切换为浮动导航栏</span>
+      <span class="blora-tooltip__bubble blora-tooltip__bubble--bottom" data-demo-navbar-variant-hint>切换为全宽导航栏</span>
       </span>
       <div class="blora-palette-picker" data-blora-palette-picker>
         <button class="blora-btn blora-btn--ghost blora-btn--sm blora-palette-picker__trigger" type="button" data-blora-palette-trigger>
@@ -2068,8 +2067,8 @@
         navbar.dataset.variant = "floating";
         document.documentElement.dataset.bloraNavbarVariant = "floating";
       } else {
-        delete navbar.dataset.variant;
-        delete document.documentElement.dataset.bloraNavbarVariant;
+        navbar.dataset.variant = "full";
+        document.documentElement.dataset.bloraNavbarVariant = "full";
       }
       const action = floating ? "切换为全宽导航栏" : "切换为浮动导航栏";
       navbarVariantButton.setAttribute("aria-pressed", String(floating));
@@ -2077,13 +2076,15 @@
       if (navbarVariantHint) navbarVariantHint.textContent = action;
     };
     /* head 启动脚本已据 localStorage 写好 html[data-blora-navbar-variant]，此处同步 nav 与按钮态 */
-    let savedNavbarVariant = "default";
-    try { savedNavbarVariant = localStorage.getItem(storageKey) || savedNavbarVariant; } catch (error) {}
-    if (document.documentElement.dataset.bloraNavbarVariant === "floating") savedNavbarVariant = "floating";
+    let savedNavbarVariant = "floating";
+    try {
+      const storedNavbarVariant = localStorage.getItem(storageKey);
+      if (storedNavbarVariant === "full" || storedNavbarVariant === "default") savedNavbarVariant = "full";
+    } catch (error) {}
+    if (document.documentElement.dataset.bloraNavbarVariant === "full") savedNavbarVariant = "full";
     applyNavbarVariant(savedNavbarVariant);
     navbarVariantButton.addEventListener("click", () => {
-      const variant = (navbar.dataset.variant === "floating" || document.documentElement.dataset.bloraNavbarVariant === "floating")
-        ? "default" : "floating";
+      const variant = navbar.dataset.variant === "floating" ? "full" : "floating";
       applyNavbarVariant(variant);
       try { localStorage.setItem(storageKey, variant); } catch (error) {}
     });

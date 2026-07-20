@@ -1182,7 +1182,8 @@ body.blora-page {
   box-sizing: border-box;
   /* 不可 overflow:hidden — 会裁切配色/下拉等 absolute 浮层 */
 }
-/* 浮动顶栏：class / data-variant / 根节点 early-boot 标记（防刷新闪全宽）均可触发 */
+/* 浮动顶栏为默认；class / data-variant 保留用于显式表达与向后兼容 */
+.blora-navbar,
 .blora-navbar--floating,
 .blora-navbar[data-variant="floating"],
 html[data-blora-navbar-variant="floating"] .blora-navbar {
@@ -1199,6 +1200,7 @@ html[data-blora-navbar-variant="floating"] .blora-navbar {
   box-shadow: var(--blora-shadow-3);
 }
 @media (max-width: 560px) {
+  .blora-navbar,
   .blora-navbar--floating,
   .blora-navbar[data-variant="floating"],
   html[data-blora-navbar-variant="floating"] .blora-navbar {
@@ -1216,7 +1218,7 @@ html[data-blora-navbar-variant="floating"] .blora-navbar {
   border-radius: 0;
   box-shadow: var(--blora-shadow-2);
 }
-:is(.blora-navbar--floating, .blora-navbar[data-variant="floating"], html[data-blora-navbar-variant="floating"] .blora-navbar) {
+:is(.blora-navbar, .blora-navbar--floating, .blora-navbar[data-variant="floating"], html[data-blora-navbar-variant="floating"] .blora-navbar) {
   --blora-navbar-inset: var(--blora-space-3);
   --blora-navbar-max-width: 96rem;
   --blora-navbar-radius: var(--blora-radius-full);
@@ -1236,11 +1238,22 @@ html[data-blora-navbar-variant="floating"] .blora-navbar {
   border-radius: inherit;
 }
 @media (max-width: 560px) {
-  :is(.blora-navbar--floating, .blora-navbar[data-variant="floating"], html[data-blora-navbar-variant="floating"] .blora-navbar) {
+  :is(.blora-navbar, .blora-navbar--floating, .blora-navbar[data-variant="floating"], html[data-blora-navbar-variant="floating"] .blora-navbar) {
     --blora-navbar-inset: var(--blora-space-2);
     --blora-navbar-padding: var(--blora-space-3);
     border-radius: var(--blora-radius-xl);
   }
+}
+/* 全宽顶栏是显式变体；兼容展示页旧版本保存的 default 值。 */
+:is(.blora-navbar--full, .blora-navbar[data-variant="full"], html[data-blora-navbar-variant="full"] .blora-navbar) {
+  --blora-navbar-inset: 0;
+  width: 100%;
+  max-width: 100%;
+  margin-block-start: 0;
+  top: 0;
+  padding-block: var(--blora-space-3);
+  padding-inline: var(--blora-space-6);
+  border-radius: 0;
 }
 .blora-navbar__brand {
   display: flex; align-items: center; gap: var(--blora-space-3);

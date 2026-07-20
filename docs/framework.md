@@ -402,7 +402,7 @@ Blora.version;        // "1.0.0"
 
 ### 8. 导航
 
-Navbar 默认保持全宽贴顶。添加 `.blora-navbar--floating` 或 `data-variant="floating"` 即切换为浮动变体；可覆盖 `--blora-navbar-inset`、`--blora-navbar-max-width`、`--blora-navbar-radius` 与 `--blora-navbar-padding`。浮动变体默认使用相同的横纵内边距，使顶栏、品牌圆标和胶囊按钮的嵌套曲率保持平行。
+Navbar 默认使用悬浮胶囊形态；裸 `.blora-navbar`、`.blora-navbar--floating` 与 `data-variant="floating"` 等价。需要全宽贴顶时使用 `.blora-navbar--full` 或 `data-variant="full"`。可覆盖 `--blora-navbar-inset`、`--blora-navbar-max-width`、`--blora-navbar-radius` 与 `--blora-navbar-padding`。悬浮形态默认使用相同的横纵内边距，使顶栏、品牌圆标和胶囊按钮的嵌套曲率保持平行。
 
 ```html
 <nav class="blora-navbar">
@@ -412,9 +412,13 @@ Navbar 默认保持全宽贴顶。添加 `.blora-navbar--floating` 或 `data-var
   </div>
 </nav>
 
-<!-- 浮动变体：以下两种写法等价 -->
+<!-- 默认悬浮：以下写法等价 -->
 <nav class="blora-navbar blora-navbar--floating">…</nav>
 <nav class="blora-navbar" data-variant="floating">…</nav>
+
+<!-- 全宽贴顶 -->
+<nav class="blora-navbar blora-navbar--full">…</nav>
+<nav class="blora-navbar" data-variant="full">…</nav>
 
 <!-- Tabs（需 data-blora-tabs）-->
 <div class="blora-tabs" data-blora-tabs>
