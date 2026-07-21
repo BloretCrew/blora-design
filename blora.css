@@ -131,6 +131,7 @@
   --blora-code-bg:       color-mix(in srgb, var(--blora-text-strong) 92%, var(--blora-background));
   --blora-code-fg:       var(--blora-on-accent);
   --blora-banner-bg:     var(--blora-foreground);
+  --blora-banner-fg:     var(--blora-on-media);
   --blora-tooltip-bg:    var(--blora-foreground);
 
   /* —— 动效 · Motion —— 克制过渡 */
@@ -1677,12 +1678,20 @@ html[data-blora-navbar-variant="floating"] .blora-navbar {
 .blora-alert--ghost { background: transparent; }
 
 /* —— 横幅 Banner —— */
-.blora-banner { display: flex; align-items: center; gap: var(--blora-space-4); padding: var(--blora-space-5) var(--blora-space-6); border-radius: var(--blora-radius-lg); background: var(--blora-banner-bg); color: var(--blora-on-accent); position: relative; overflow: hidden; }
+.blora-banner { display: flex; align-items: center; gap: var(--blora-space-4); padding: var(--blora-space-5) var(--blora-space-6); border-radius: var(--blora-radius-lg); background: var(--blora-banner-bg); color: var(--blora-banner-fg); position: relative; overflow: hidden; }
 .blora-banner::before { content: ""; position: absolute; right: -20%; top: -50%; width: 60%; height: 200%; background: radial-gradient(ellipse, color-mix(in srgb, var(--blora-primary) 25%, transparent) 0%, transparent 70%); }
 .blora-banner__body { flex: 1; z-index: 1; }
 .blora-banner__title { font-family: var(--blora-font-heading); font-size: var(--blora-text-xl); margin-bottom: var(--blora-space-1); }
 .blora-banner__desc { font-size: var(--blora-text-sm); opacity: 0.85; }
 .blora-banner__actions { z-index: 1; display: flex; gap: var(--blora-space-2); }
+.blora-banner__secondary {
+  --btn-fg: var(--blora-banner-fg);
+  --btn-bd: color-mix(in srgb, var(--blora-banner-fg) 35%, transparent);
+}
+.blora-banner__secondary:hover {
+  --btn-bg: color-mix(in srgb, var(--blora-banner-fg) 10%, transparent);
+  --btn-bd: color-mix(in srgb, var(--blora-banner-fg) 55%, transparent);
+}
 
 /* —— 消息提示 Message (inline) —— */
 .blora-message { display: inline-flex; align-items: center; gap: var(--blora-space-3); padding: 0.7em 1.2em; background: var(--blora-surface-1); border: 1px solid var(--blora-border-subtle); border-radius: var(--blora-radius-full); box-shadow: var(--blora-shadow-3); font-size: var(--blora-text-sm); }

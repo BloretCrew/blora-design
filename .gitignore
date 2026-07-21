@@ -1,2 +1,6 @@
 # 本地备份压缩包
 *.zip
+
+# Local visual verification scratch
+_verify_tmp/
+
