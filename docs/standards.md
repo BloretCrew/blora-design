@@ -332,7 +332,7 @@ Blora 的文案风格应克制、清晰、直接。
 - Sidebar Layout 负责应用级页面结构；Drawer 负责临时任务面板，两者不可因外观相似而互换。
 - Megamenu 用于多分组全局导航；普通操作集合继续使用 Dropdown。
 - Dock 适合 3–5 个高频一级入口；桌面信息密集型应用优先 Navbar 或 Sidebar。
-- Join 只连接同一任务中的连续控件；普通按钮并排使用 Row 或 Button Group。
+- 搜索提交动作使用 `.blora-search--with-action` 内嵌图标按钮；并列的独立操作继续使用 Row 或 Button Group。
 - Deck 只表现有明确前后顺序的同类对象，不用于隐藏大量可操作内容。
 
 ### 13.3 可选视觉效果

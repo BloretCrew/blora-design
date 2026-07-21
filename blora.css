@@ -717,17 +717,19 @@ body.blora-page {
 .blora-search__icon { position: absolute; left: 0.85em; top: 50%; transform: translateY(-50%); color: var(--blora-text-subtle); pointer-events: none; }
 .blora-search__clear { position: absolute; right: 0.6em; top: 50%; transform: translateY(-50%); color: var(--blora-text-subtle); padding: 0.25em; border-radius: 50%; }
 .blora-search__clear:hover { color: var(--blora-text-strong); background: var(--blora-surface-3); }
-
-/* —— 组合输入 —— */
-.blora-join { display: inline-flex; align-items: stretch; max-width: 100%; }
-.blora-join > * { position: relative; border-radius: 0; margin-inline-start: -1px; }
-.blora-join > *:first-child { margin-inline-start: 0; border-start-start-radius: var(--blora-control-radius); border-end-start-radius: var(--blora-control-radius); }
-.blora-join > *:last-child { border-start-end-radius: var(--blora-control-radius); border-end-end-radius: var(--blora-control-radius); }
-.blora-join > *:focus-within, .blora-join > *:focus, .blora-join > *:hover { z-index: 1; }
-.blora-join--vertical { flex-direction: column; }
-.blora-join--vertical > * { margin-inline-start: 0; margin-block-start: -1px; }
-.blora-join--vertical > *:first-child { margin-block-start: 0; border-radius: var(--blora-control-radius) var(--blora-control-radius) 0 0; }
-.blora-join--vertical > *:last-child { border-radius: 0 0 var(--blora-control-radius) var(--blora-control-radius); }
+.blora-search--with-action .blora-input { padding-right: 3.5em; }
+.blora-search--with-action .blora-input::-webkit-search-cancel-button { display: none; }
+.blora-search__action {
+  position: absolute; top: 50%; right: 0.35em; transform: translateY(-50%);
+  display: inline-grid; place-items: center; width: 2.45em; height: calc(100% - 0.7em);
+  border-radius: var(--blora-radius-md); background: var(--blora-primary); color: var(--blora-on-accent);
+  box-shadow: var(--blora-shadow-primary); cursor: pointer;
+  transition: background var(--blora-dur-fast) var(--blora-ease), box-shadow var(--blora-dur-fast) var(--blora-ease), transform var(--blora-dur-fast) var(--blora-ease);
+}
+.blora-search__action:hover { background: var(--blora-primary-hover); box-shadow: var(--blora-shadow-2); }
+.blora-search__action:active { transform: translateY(-50%) scale(0.96); }
+.blora-search__action:focus-visible { outline: 2px solid var(--blora-primary); outline-offset: 2px; }
+.blora-search__action:disabled { background: var(--blora-surface-3); color: var(--blora-text-disabled); cursor: not-allowed; box-shadow: none; }
 
 /* —— 选择框 —— */
 .blora-select {
