@@ -467,7 +467,7 @@ body.blora-page {
   position: relative;
   user-select: none;
 }
-.blora-btn:hover { transform: translateY(-1px); box-shadow: var(--blora-shadow-2); }
+.blora-btn:hover { color: var(--btn-fg); transform: translateY(-1px); box-shadow: var(--blora-shadow-2); }
 .blora-btn:active { transform: translateY(0); box-shadow: var(--blora-shadow-1); }
 .blora-btn:disabled, .blora-btn[aria-disabled="true"] {
   opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none;
@@ -1330,6 +1330,8 @@ html[data-blora-navbar-variant="floating"] .blora-navbar {
 .blora-navbar__tools > .blora-tooltip,
 .blora-navbar__tools > .blora-palette-picker { flex: none; }
 .blora-navbar__cta { flex: none; position: relative; z-index: 1; }
+/* 顶栏是固定高度的滚动槽，按钮只做色彩与阴影反馈，避免位移越过裁切边界。 */
+.blora-navbar .blora-btn:hover { transform: none; }
 @media (max-width: 720px) {
   .blora-navbar { gap: var(--blora-space-2); padding-inline: var(--blora-space-3); }
   .blora-navbar__title { display: none; }
