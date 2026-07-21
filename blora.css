@@ -718,6 +718,17 @@ body.blora-page {
 .blora-search__clear { position: absolute; right: 0.6em; top: 50%; transform: translateY(-50%); color: var(--blora-text-subtle); padding: 0.25em; border-radius: 50%; }
 .blora-search__clear:hover { color: var(--blora-text-strong); background: var(--blora-surface-3); }
 
+/* —— 组合输入 —— */
+.blora-join { display: inline-flex; align-items: stretch; max-width: 100%; }
+.blora-join > * { position: relative; border-radius: 0; margin-inline-start: -1px; }
+.blora-join > *:first-child { margin-inline-start: 0; border-start-start-radius: var(--blora-control-radius); border-end-start-radius: var(--blora-control-radius); }
+.blora-join > *:last-child { border-start-end-radius: var(--blora-control-radius); border-end-end-radius: var(--blora-control-radius); }
+.blora-join > *:focus-within, .blora-join > *:focus, .blora-join > *:hover { z-index: 1; }
+.blora-join--vertical { flex-direction: column; }
+.blora-join--vertical > * { margin-inline-start: 0; margin-block-start: -1px; }
+.blora-join--vertical > *:first-child { margin-block-start: 0; border-radius: var(--blora-control-radius) var(--blora-control-radius) 0 0; }
+.blora-join--vertical > *:last-child { border-radius: 0 0 var(--blora-control-radius) var(--blora-control-radius); }
+
 /* —— 选择框 —— */
 .blora-select {
   appearance: none; -webkit-appearance: none;
@@ -1088,6 +1099,16 @@ body.blora-page {
 .blora-badge--neutral { background: var(--blora-accent-neutral); box-shadow: none; }
 .blora-badge--success { background: var(--blora-success); box-shadow: none; }
 .blora-badge--info { background: var(--blora-info); box-shadow: none; }
+
+/* —— 按钮徽章 —— */
+.blora-indicator { position: relative; display: inline-flex; max-width: 100%; }
+.blora-indicator__item {
+  position: absolute; top: 0; right: 0; z-index: 2; transform: translate(42%, -42%);
+}
+.blora-indicator--top-start .blora-indicator__item { left: 0; right: auto; transform: translate(-42%, -42%); }
+.blora-indicator--bottom-end .blora-indicator__item { top: auto; bottom: 0; transform: translate(42%, 42%); }
+.blora-indicator--bottom-start .blora-indicator__item { top: auto; left: 0; right: auto; bottom: 0; transform: translate(-42%, 42%); }
+.blora-indicator--inside .blora-indicator__item { transform: translate(-0.35rem, 0.35rem); }
 
 /* —— 头像上的徽章 —— */
 .blora-avatar-wrap { position: relative; display: inline-block; }
@@ -1526,6 +1547,46 @@ html[data-blora-navbar-variant="floating"] .blora-navbar {
 .blora-image--frame { padding: var(--blora-space-2); background: var(--blora-surface-1); border: 1px solid var(--blora-border-subtle); }
 .blora-image--frame img { border-radius: var(--blora-radius-sm); }
 
+/* —— 图片对比 Diff —— */
+.blora-diff {
+  position: relative; width: 100%; aspect-ratio: var(--blora-diff-ratio, 16 / 9);
+  overflow: hidden; border: var(--blora-border); border-radius: var(--blora-radius-lg);
+  background: var(--blora-surface-2); --blora-diff-position: 50%;
+}
+.blora-diff__item { position: absolute; inset: 0; overflow: hidden; }
+.blora-diff__item > :is(img, video, canvas, div) { width: 100%; height: 100%; object-fit: cover; }
+.blora-diff__item--before { z-index: 1; clip-path: inset(0 calc(100% - var(--blora-diff-position)) 0 0); }
+.blora-diff__divider {
+  position: absolute; top: 0; bottom: 0; left: var(--blora-diff-position); z-index: 2;
+  width: 2px; transform: translateX(-50%); background: var(--blora-on-media); box-shadow: 0 0 0 1px var(--blora-media-overlay);
+  pointer-events: none;
+}
+.blora-diff__divider::after {
+  content: "↔"; position: absolute; top: 50%; left: 50%; display: grid; place-items: center;
+  width: 2.25rem; height: 2.25rem; transform: translate(-50%, -50%);
+  border-radius: 50%; background: var(--blora-surface-1); color: var(--blora-foreground); box-shadow: var(--blora-shadow-2);
+}
+.blora-diff__range { position: absolute; inset: 0; z-index: 3; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: ew-resize; }
+
+/* —— 图片切换 Gallery —— */
+.blora-hover-gallery {
+  position: relative; display: block; width: 100%; aspect-ratio: var(--blora-gallery-ratio, 4 / 3);
+  overflow: hidden; border: var(--blora-border); border-radius: var(--blora-radius-lg); background: var(--blora-surface-2);
+}
+.blora-hover-gallery:focus-visible { outline: 2px solid var(--blora-primary); outline-offset: 2px; }
+.blora-hover-gallery__item {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  opacity: 0; transition: opacity var(--blora-dur-base) var(--blora-ease);
+}
+.blora-hover-gallery__item.is-active { opacity: 1; }
+.blora-hover-gallery--wide { --blora-gallery-ratio: 16 / 9; }
+.blora-hover-gallery__progress {
+  position: absolute; left: var(--blora-space-3); right: var(--blora-space-3); bottom: var(--blora-space-3);
+  z-index: 2; display: grid; grid-auto-flow: column; gap: var(--blora-space-1);
+}
+.blora-hover-gallery__progress span { height: 3px; border-radius: var(--blora-radius-full); background: var(--blora-media-indicator); }
+.blora-hover-gallery__progress span.is-active { background: var(--blora-on-media); }
+
 /* —— 空状态 Empty —— */
 .blora-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--blora-space-3); padding: var(--blora-space-9) var(--blora-space-5); text-align: center; color: var(--blora-text-muted); }
 .blora-empty__icon { font-size: 3em; color: var(--blora-text-disabled); opacity: 0.6; }
@@ -1937,25 +1998,7 @@ html:has(body.blora-page)::-webkit-scrollbar-corner,
 }
 .blora-megamenu__link:hover, .blora-megamenu__link:focus-visible { color: var(--blora-primary); background: var(--blora-primary-tint); }
 
-/* —— Layout: Indicator, Join, Hero, Footer, Mask & Deck —— */
-.blora-indicator { position: relative; display: inline-flex; max-width: 100%; }
-.blora-indicator__item {
-  position: absolute; top: 0; right: 0; z-index: 2; transform: translate(42%, -42%);
-}
-.blora-indicator--top-start .blora-indicator__item { left: 0; right: auto; transform: translate(-42%, -42%); }
-.blora-indicator--bottom-end .blora-indicator__item { top: auto; bottom: 0; transform: translate(42%, 42%); }
-.blora-indicator--bottom-start .blora-indicator__item { top: auto; left: 0; right: auto; bottom: 0; transform: translate(-42%, 42%); }
-.blora-indicator--inside .blora-indicator__item { transform: translate(-0.35rem, 0.35rem); }
-
-.blora-join { display: inline-flex; align-items: stretch; max-width: 100%; }
-.blora-join > * { position: relative; border-radius: 0; margin-inline-start: -1px; }
-.blora-join > *:first-child { margin-inline-start: 0; border-start-start-radius: var(--blora-control-radius); border-end-start-radius: var(--blora-control-radius); }
-.blora-join > *:last-child { border-start-end-radius: var(--blora-control-radius); border-end-end-radius: var(--blora-control-radius); }
-.blora-join > *:focus-within, .blora-join > *:focus, .blora-join > *:hover { z-index: 1; }
-.blora-join--vertical { flex-direction: column; }
-.blora-join--vertical > * { margin-inline-start: 0; margin-block-start: -1px; }
-.blora-join--vertical > *:first-child { margin-block-start: 0; border-radius: var(--blora-control-radius) var(--blora-control-radius) 0 0; }
-.blora-join--vertical > *:last-child { border-radius: 0 0 var(--blora-control-radius) var(--blora-control-radius); }
+/* —— Layout: Hero, Footer & Deck —— */
 
 .blora-hero {
   width: 100%; min-height: var(--blora-hero-min-height, 24rem);
@@ -1978,15 +2021,6 @@ html:has(body.blora-page)::-webkit-scrollbar-corner,
 .blora-footer__link:hover { color: var(--blora-primary); }
 .blora-footer__bottom { width: min(100%, 75rem); margin: var(--blora-space-7) auto 0; padding-top: var(--blora-space-4); border-top: var(--blora-border); font-size: var(--blora-text-xs); }
 
-.blora-mask { display: inline-block; overflow: hidden; vertical-align: middle; }
-.blora-mask > :is(img, video, canvas) { display: block; width: 100%; height: 100%; object-fit: cover; }
-.blora-mask--circle { border-radius: 50%; }
-.blora-mask--squircle { border-radius: 28%; }
-.blora-mask--hexagon { clip-path: polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0 50%); }
-.blora-mask--diamond { clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); }
-.blora-mask--triangle { clip-path: polygon(50% 4%, 98% 96%, 2% 96%); }
-.blora-mask--sm { width: 6rem; aspect-ratio: 1; }
-
 .blora-deck { display: grid; isolation: isolate; padding: var(--blora-space-4); }
 .blora-deck > * { grid-area: 1 / 1; z-index: 3; transition: transform var(--blora-dur-base) var(--blora-ease); }
 .blora-deck > *:nth-last-child(2) { z-index: 2; transform: translateY(-0.55rem) scale(0.96); opacity: 0.75; }
@@ -1995,7 +2029,7 @@ html:has(body.blora-page)::-webkit-scrollbar-corner,
 .blora-deck:hover > *:nth-last-child(3) { transform: translateY(-1.45rem) scale(0.94); }
 .blora-deck--sm { width: min(100%, 18rem); }
 
-/* —— Data & Media: Kbd, Chat, Countdown, Diff, Gallery & Text Rotate —— */
+/* —— Data & Media: Kbd, Chat, Countdown & Text Rotate —— */
 .blora-kbd {
   display: inline-flex; align-items: center; justify-content: center; min-width: 1.75em; min-height: 1.75em;
   padding: 0.1em 0.45em; border: var(--blora-border); border-bottom-width: 2px;
@@ -2030,44 +2064,6 @@ html:has(body.blora-page)::-webkit-scrollbar-corner,
   font-size: var(--blora-text-3xl); font-variant-numeric: tabular-nums; line-height: 1; text-align: center;
 }
 .blora-countdown__label { color: var(--blora-text-subtle); font-size: var(--blora-text-xs); }
-
-.blora-diff {
-  position: relative; width: 100%; aspect-ratio: var(--blora-diff-ratio, 16 / 9);
-  overflow: hidden; border: var(--blora-border); border-radius: var(--blora-radius-lg);
-  background: var(--blora-surface-2); --blora-diff-position: 50%;
-}
-.blora-diff__item { position: absolute; inset: 0; overflow: hidden; }
-.blora-diff__item > :is(img, video, canvas, div) { width: 100%; height: 100%; object-fit: cover; }
-.blora-diff__item--before { z-index: 1; clip-path: inset(0 calc(100% - var(--blora-diff-position)) 0 0); }
-.blora-diff__divider {
-  position: absolute; top: 0; bottom: 0; left: var(--blora-diff-position); z-index: 2;
-  width: 2px; transform: translateX(-50%); background: var(--blora-on-media); box-shadow: 0 0 0 1px var(--blora-media-overlay);
-  pointer-events: none;
-}
-.blora-diff__divider::after {
-  content: "↔"; position: absolute; top: 50%; left: 50%; display: grid; place-items: center;
-  width: 2.25rem; height: 2.25rem; transform: translate(-50%, -50%);
-  border-radius: 50%; background: var(--blora-surface-1); color: var(--blora-foreground); box-shadow: var(--blora-shadow-2);
-}
-.blora-diff__range { position: absolute; inset: 0; z-index: 3; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: ew-resize; }
-
-.blora-hover-gallery {
-  position: relative; display: block; width: 100%; aspect-ratio: var(--blora-gallery-ratio, 4 / 3);
-  overflow: hidden; border: var(--blora-border); border-radius: var(--blora-radius-lg); background: var(--blora-surface-2);
-}
-.blora-hover-gallery:focus-visible { outline: 2px solid var(--blora-primary); outline-offset: 2px; }
-.blora-hover-gallery__item {
-  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
-  opacity: 0; transition: opacity var(--blora-dur-base) var(--blora-ease);
-}
-.blora-hover-gallery__item.is-active { opacity: 1; }
-.blora-hover-gallery--wide { --blora-gallery-ratio: 16 / 9; }
-.blora-hover-gallery__progress {
-  position: absolute; left: var(--blora-space-3); right: var(--blora-space-3); bottom: var(--blora-space-3);
-  z-index: 2; display: grid; grid-auto-flow: column; gap: var(--blora-space-1);
-}
-.blora-hover-gallery__progress span { height: 3px; border-radius: var(--blora-radius-full); background: var(--blora-media-indicator); }
-.blora-hover-gallery__progress span.is-active { background: var(--blora-on-media); }
 
 .blora-text-rotate { display: inline-grid; vertical-align: bottom; overflow: hidden; }
 .blora-text-rotate__item {

@@ -100,7 +100,7 @@ blora-design-2/
 | **数据** | 表格 · 列表 · 折叠 · 时间轴 · 树 · 统计 · 描述列表 · 轮播 · 图片 · Hover Gallery · Diff · Chat · Countdown · Kbd · 空态 · 结果 · 日历 · 图表容器 |
 | **反馈** | 警告 · 横幅 · 消息 · 通知 · Toast · Tooltip · Popover · Popconfirm |
 | **层** | 模态（S/M/L）· 抽屉（上/下/左/右）· 命令面板 |
-| **布局** | 栅格 · 卡面 · 面板 · 分隔 · 堆叠 · 行 · Join · Indicator · Hero · Footer · Mask · Deck |
+| **布局** | 栅格 · 卡面 · 面板 · 分隔 · 堆叠 · 行 · Join · Indicator · Hero · Footer · Deck |
 | **展示** | Text Rotate · Browser/Code/Phone/Window Mockup |
 | **外观** | 九套配色 · 浅色/深色/跟随系统 |
 

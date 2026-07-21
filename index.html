@@ -640,12 +640,18 @@
             </div>
           </div>
           <div class="blora-field">
-            <label class="blora-label" for="f-search">搜索</label>
-            <div class="blora-search">
-              <span class="blora-search__icon">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.34-4.34"/></svg>
-              </span>
-              <input class="blora-input" id="f-search" type="search" placeholder="搜索项目、用户…">
+            <label class="blora-label" for="f-search">搜索框</label>
+            <div class="blora-stack">
+              <div class="blora-search">
+                <span class="blora-search__icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.34-4.34"/></svg>
+                </span>
+                <input class="blora-input" id="f-search" type="search" placeholder="搜索项目、用户…">
+              </div>
+              <div class="blora-join">
+                <input class="blora-input" type="search" placeholder="搜索项目" aria-label="搜索项目">
+                <button class="blora-btn blora-btn--primary" type="button">搜索</button>
+              </div>
             </div>
           </div>
         </div>
@@ -937,6 +943,16 @@
             <span class="blora-badge blora-badge--neutral">3</span>
             <span class="blora-badge blora-badge--success">新</span>
             <span class="blora-badge blora-badge--info">β</span>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">按钮徽章 · On Button</div>
+          <div class="blora-row">
+            <span class="blora-indicator">
+              <button class="blora-btn blora-btn--outline" type="button">通知</button>
+              <span class="blora-badge blora-badge--circle blora-indicator__item">3</span>
+            </span>
           </div>
         </div>
 
@@ -1409,6 +1425,23 @@
         </div>
 
         <div class="blora-demo">
+          <div class="blora-demo__label">图片对比与切换 · Diff & Gallery</div>
+          <div class="blora-grid blora-grid--2">
+            <div class="blora-diff">
+              <div class="blora-diff__item"><img src="https://picsum.photos/seed/blora-after/960/540" alt="调整后"></div>
+              <div class="blora-diff__item blora-diff__item--before"><img src="https://picsum.photos/seed/blora-before/960/540" alt="调整前"></div>
+              <span class="blora-diff__divider"></span>
+              <input class="blora-diff__range" type="range" min="0" max="100" value="52" aria-label="比较位置">
+            </div>
+            <div class="blora-hover-gallery blora-hover-gallery--wide" aria-label="产品图片">
+              <img class="blora-hover-gallery__item is-active" src="https://picsum.photos/seed/blora-gallery-a/960/540" alt="产品正面">
+              <img class="blora-hover-gallery__item" src="https://picsum.photos/seed/blora-gallery-b/960/540" alt="产品侧面">
+              <img class="blora-hover-gallery__item" src="https://picsum.photos/seed/blora-gallery-c/960/540" alt="产品细节">
+            </div>
+          </div>
+        </div>
+
+        <div class="blora-demo">
           <div class="blora-demo__label">空状态 · Empty</div>
           <div class="blora-empty">
             <div class="blora-empty__icon">
@@ -1775,7 +1808,7 @@
         </div>
 
         <div class="blora-demo">
-          <div class="blora-demo__label">数据与媒体 · Chat, Countdown, Diff & Gallery</div>
+          <div class="blora-demo__label">数据与媒体 · Chat & Countdown</div>
           <div class="blora-stack blora-stack--lg">
             <div class="blora-stack">
               <div class="blora-chat">
@@ -1793,42 +1826,12 @@
               <span class="blora-countdown__unit"><strong class="blora-countdown__value" data-unit="minutes">03</strong><span class="blora-countdown__label">分</span></span>
               <span class="blora-countdown__unit"><strong class="blora-countdown__value" data-unit="seconds">04</strong><span class="blora-countdown__label">秒</span></span>
             </div>
-            <div class="blora-grid blora-grid--2">
-              <div class="blora-diff">
-                <div class="blora-diff__item"><img src="https://picsum.photos/seed/blora-after/960/540" alt="调整后"></div>
-                <div class="blora-diff__item blora-diff__item--before"><img src="https://picsum.photos/seed/blora-before/960/540" alt="调整前"></div>
-                <span class="blora-diff__divider"></span>
-                <input class="blora-diff__range" type="range" min="0" max="100" value="52" aria-label="比较位置">
-              </div>
-              <div class="blora-hover-gallery blora-hover-gallery--wide" aria-label="产品图片">
-                <img class="blora-hover-gallery__item is-active" src="https://picsum.photos/seed/blora-gallery-a/960/540" alt="产品正面">
-                <img class="blora-hover-gallery__item" src="https://picsum.photos/seed/blora-gallery-b/960/540" alt="产品侧面">
-                <img class="blora-hover-gallery__item" src="https://picsum.photos/seed/blora-gallery-c/960/540" alt="产品细节">
-              </div>
-            </div>
           </div>
         </div>
 
         <div class="blora-demo">
-          <div class="blora-demo__label">布局 · Indicator, Join, Hero, Footer, Mask & Deck</div>
+          <div class="blora-demo__label">布局 · Footer & Deck</div>
           <div class="blora-row">
-            <span class="blora-indicator"><button class="blora-btn blora-btn--outline">通知</button><span class="blora-badge blora-badge--circle blora-indicator__item">3</span></span>
-            <div class="blora-join">
-              <input class="blora-input" type="search" placeholder="搜索项目">
-              <button class="blora-btn blora-btn--primary" type="button">搜索</button>
-            </div>
-          </div>
-          <div class="blora-hero blora-hero--surface blora-hero--center blora-hero--compact">
-            <div class="blora-hero__content">
-              <h3 class="blora-h2">团队工作台</h3>
-              <p class="blora-text-lead">集中处理项目、任务与审批。</p>
-              <button class="blora-btn blora-btn--primary" type="button">进入工作台</button>
-            </div>
-          </div>
-          <div class="blora-row">
-            <span class="blora-mask blora-mask--circle blora-mask--sm"><img src="https://picsum.photos/seed/blora-mask-a/240/240" alt="圆形裁切"></span>
-            <span class="blora-mask blora-mask--hexagon blora-mask--sm"><img src="https://picsum.photos/seed/blora-mask-b/240/240" alt="六边形裁切"></span>
-            <span class="blora-mask blora-mask--diamond blora-mask--sm"><img src="https://picsum.photos/seed/blora-mask-c/240/240" alt="菱形裁切"></span>
             <div class="blora-deck blora-deck--sm">
               <article class="blora-card blora-card--flat">第三层</article>
               <article class="blora-card blora-card--flat">第二层</article>

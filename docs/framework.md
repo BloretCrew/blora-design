@@ -236,6 +236,13 @@ Blora.version;        // "1.0.0"
   <input class="blora-input" type="search">
 </div>
 
+<!-- 带操作按钮的组合搜索 -->
+<div class="blora-join">
+  <input class="blora-input" type="search" aria-label="搜索项目">
+  <button class="blora-btn blora-btn--primary" type="button">搜索</button>
+</div>
+<!-- 纵向连接：.blora-join--vertical -->
+
 <!-- 数字步进；加 data-blora-manual 可跳过自动绑定，由业务自行接管 -->
 <div class="blora-number">
   <input class="blora-input" type="number" value="5" min="0" max="99">
@@ -356,6 +363,12 @@ Blora.version;        // "1.0.0"
 <span class="blora-badge blora-badge--circle">新</span>
 <span class="blora-badge blora-badge--pill">推荐</span>
 <!-- 色：--neutral --success --info -->
+
+<!-- 按钮徽章 -->
+<span class="blora-indicator">
+  <button class="blora-btn" type="button">通知</button>
+  <span class="blora-badge blora-indicator__item">3</span>
+</span>
 
 <!-- 卡面右上角徽章 -->
 <article class="blora-card blora-card--relative blora-card--with-badge">
@@ -541,6 +554,20 @@ Tabs 初始化后会自动注入滑动指示器；内容面板切换时只做渐
   <span class="blora-image__cap">图片说明</span>
 </span>
 <!-- 变体：--frame（边框）--hover（放大）-->
+
+<div class="blora-diff">
+  <div class="blora-diff__item"><img src="after.jpg" alt="调整后"></div>
+  <div class="blora-diff__item blora-diff__item--before"><img src="before.jpg" alt="调整前"></div>
+  <span class="blora-diff__divider"></span>
+  <input class="blora-diff__range" type="range" min="0" max="100" value="50" aria-label="比较位置">
+</div>
+
+<div class="blora-hover-gallery" aria-label="产品图库">
+  <img class="blora-hover-gallery__item is-active" src="front.jpg" alt="产品正面">
+  <img class="blora-hover-gallery__item" src="side.jpg" alt="产品侧面">
+</div>
+<!-- Gallery 支持方向键与 Home/End；Diff 保留原生 range 交互 -->
+<!-- 比例令牌：--blora-gallery-ratio / --blora-diff-ratio -->
 
 <div class="blora-empty">
   <div class="blora-empty__icon"><svg…></svg></div>
@@ -744,17 +771,6 @@ Blora.toast({ type: 'success', message: '操作已完成', duration: 3000 });
 </nav>
 <!-- 文档或局部演示使用 .blora-dock--static -->
 
-<span class="blora-indicator">
-  <button class="blora-btn" type="button">通知</button>
-  <span class="blora-badge blora-indicator__item">3</span>
-</span>
-
-<div class="blora-join">
-  <input class="blora-input" type="search">
-  <button class="blora-btn blora-btn--primary" type="button">搜索</button>
-</div>
-<!-- 纵向连接：.blora-join--vertical -->
-
 <section class="blora-hero blora-hero--surface blora-hero--center">
   <div class="blora-hero__content">…</div>
 </section>
@@ -763,9 +779,6 @@ Blora.toast({ type: 'success', message: '操作已完成', duration: 3000 });
   <div class="blora-footer__inner">…</div>
   <div class="blora-footer__bottom">…</div>
 </footer>
-
-<span class="blora-mask blora-mask--circle blora-mask--sm"><img src="avatar.jpg" alt=""></span>
-<!-- 形状：--circle --squircle --hexagon --diamond --triangle -->
 
 <div class="blora-deck blora-deck--sm">
   <article class="blora-card">后层</article>
@@ -776,7 +789,7 @@ Blora.toast({ type: 'success', message: '操作已完成', duration: 3000 });
 
 Sidebar 在窄屏关闭时会使用 `inert` 移出焦点序列；打开后焦点进入侧栏，遮罩和 `Esc` 均可关闭。Megamenu 支持点击、`ArrowDown` 与 `Esc`，并可与 Sidebar 组合使用。
 
-### 16. 数据与媒体扩展
+### 16. 聊天与倒计时
 
 ```html
 <kbd class="blora-kbd">Ctrl</kbd> + <kbd class="blora-kbd">K</kbd>
@@ -795,20 +808,7 @@ Sidebar 在窄屏关闭时会使用 `inert` 移出焦点序列；打开后焦点
 </div>
 <!-- 相对时长可改用 data-seconds；结束时派发 blora:complete -->
 
-<div class="blora-diff">
-  <div class="blora-diff__item"><img src="after.jpg" alt="调整后"></div>
-  <div class="blora-diff__item blora-diff__item--before"><img src="before.jpg" alt="调整前"></div>
-  <span class="blora-diff__divider"></span>
-  <input class="blora-diff__range" type="range" min="0" max="100" value="50" aria-label="比较位置">
-</div>
-
-<div class="blora-hover-gallery" aria-label="产品图库">
-  <img class="blora-hover-gallery__item is-active" src="front.jpg" alt="产品正面">
-  <img class="blora-hover-gallery__item" src="side.jpg" alt="产品侧面">
-</div>
 ```
-
-Hover Gallery 根据指针横向位置切换图片，也支持方向键与 Home/End；Diff 以原生 range 作为可访问交互层。两者比例分别由 `--blora-gallery-ratio`、`--blora-diff-ratio` 配置。
 
 ### 17. 可选效果与 Mockup
 
