@@ -230,12 +230,11 @@ Blora.version;        // "1.0.0"
   <span class="blora-addon">.00</span>
 </div>
 
-<!-- 搜索；--with-action 可在输入框内嵌提交按钮 -->
-<div class="blora-search blora-search--with-action">
-  <span class="blora-search__icon"><svg…></svg></span>
+<!-- 搜索；在 form 中使用 type="submit" 获得原生提交语义 -->
+<form class="blora-search" role="search">
+  <button class="blora-search__icon" type="submit" aria-label="搜索"><svg…></svg></button>
   <input class="blora-input" type="search">
-  <button class="blora-search__action" type="submit" aria-label="搜索"><svg…></svg></button>
-</div>
+</form>
 
 <!-- 数字步进；加 data-blora-manual 可跳过自动绑定，由业务自行接管 -->
 <div class="blora-number">
