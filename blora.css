@@ -1312,6 +1312,9 @@ html[data-blora-navbar-variant="floating"] .blora-navbar {
   -webkit-overflow-scrolling: touch;
   touch-action: pan-x; /* 手指横滑优先归本槽，不被页面竖滑抢走 */
   scrollbar-width: none;
+  /* 为按钮上浮和阴影预留垂直空间，负外边距抵消额外高度。 */
+  padding-block: var(--blora-space-1);
+  margin-block: calc(0px - var(--blora-space-1));
   padding-inline: 2px;
   scroll-padding-inline: var(--blora-space-2);
 }
@@ -1330,8 +1333,6 @@ html[data-blora-navbar-variant="floating"] .blora-navbar {
 .blora-navbar__tools > .blora-tooltip,
 .blora-navbar__tools > .blora-palette-picker { flex: none; }
 .blora-navbar__cta { flex: none; position: relative; z-index: 1; }
-/* 顶栏是固定高度的滚动槽，按钮只做色彩与阴影反馈，避免位移越过裁切边界。 */
-.blora-navbar .blora-btn:hover { transform: none; }
 @media (max-width: 720px) {
   .blora-navbar { gap: var(--blora-space-2); padding-inline: var(--blora-space-3); }
   .blora-navbar__title { display: none; }
