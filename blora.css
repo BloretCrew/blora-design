@@ -1289,47 +1289,34 @@ html[data-blora-navbar-variant="floating"] .blora-navbar {
 .blora-navbar__link { padding: 0.4em 0.9em; font-size: var(--blora-text-sm); color: var(--blora-text-emphasis); border-radius: var(--blora-radius-md); transition: all var(--blora-dur-fast) var(--blora-ease); }
 .blora-navbar__link:hover { color: var(--blora-text-strong); background: var(--blora-surface-2); }
 .blora-navbar__link.is-active { color: var(--blora-primary); font-weight: 500; }
-/* 右侧操作区：主 CTA 始终钉住；次要工具占满剩余宽度并形成可触摸横滑滚动槽 */
+/* 右侧操作区：主 CTA 始终钉住；次要工具占满剩余宽度。 */
 .blora-navbar__actions {
   display: flex; align-items: center; gap: var(--blora-space-2);
   flex: 1 1 auto; justify-content: flex-end; flex-wrap: nowrap;
   min-width: 0; max-width: 100%;
-  /* 不可 overflow:hidden：会裁切 tools 内 absolute 浮层（tooltip 等） */
+  /* 工具区包含 tooltip 和菜单，导航栏各层都必须允许浮层溢出。 */
 }
 .blora-navbar__tools {
   display: flex; align-items: center; gap: var(--blora-space-2);
-  /* basis 0：始终吃掉 brand/CTA 之间的剩余宽度，内容超出后才出现滚动 */
+  /* basis 0：始终吃掉 brand/CTA 之间的剩余宽度。 */
   flex: 1 1 0%;
-  /* 注意：不能用 justify-content:flex-end —— 溢出会发生在左侧且 scrollLeft 滚不到 */
   justify-content: flex-start;
   flex-wrap: nowrap;
   min-width: 0;
   max-width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  overscroll-behavior-x: contain;
-  overscroll-behavior-y: none;
-  -webkit-overflow-scrolling: touch;
-  touch-action: pan-x; /* 手指横滑优先归本槽，不被页面竖滑抢走 */
-  scrollbar-width: none;
-  /* 为按钮上浮和阴影预留垂直空间，负外边距抵消额外高度。 */
-  padding-block: var(--blora-space-1);
-  margin-block: calc(0px - var(--blora-space-1));
-  padding-inline: 2px;
-  scroll-padding-inline: var(--blora-space-2);
+  overflow: visible;
 }
-/* 左侧弹性垫片：空间够时把按钮推到右侧；空间不够时缩为 0，保证整串可从左滚到右 */
+/* 左侧弹性垫片：空间够时把工具推到右侧，空间不足时缩为 0。 */
 .blora-navbar__tools::before {
   content: "";
   flex: 1 1 0;
   min-width: 0;
   pointer-events: none;
 }
-.blora-navbar__tools::-webkit-scrollbar { display: none; width: 0; height: 0; }
 .blora-navbar__tools > *,
 .blora-navbar__actions > .blora-btn,
 .blora-navbar__actions > a.blora-btn { flex: none; }
-/* tooltip / picker 包裹层也禁止收缩，保证按钮完整可滚入视口 */
+/* tooltip / picker 包裹层禁止收缩，避免触发器受压变形。 */
 .blora-navbar__tools > .blora-tooltip,
 .blora-navbar__tools > .blora-palette-picker { flex: none; }
 .blora-navbar__cta { flex: none; position: relative; z-index: 1; }
