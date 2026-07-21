@@ -235,6 +235,7 @@ Blora.version;        // "1.0.0"
   <button class="blora-search__icon" type="submit" aria-label="搜索"><svg…></svg></button>
   <input class="blora-input" type="search">
 </form>
+<!-- 有值且组件聚焦时，JS 自动显示清除按钮；清空后派发原生 input 事件并保持输入焦点 -->
 
 <!-- 数字步进；加 data-blora-manual 可跳过自动绑定，由业务自行接管 -->
 <div class="blora-number">

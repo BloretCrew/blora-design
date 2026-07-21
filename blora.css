@@ -713,7 +713,8 @@ body.blora-page {
 
 /* —— 搜索框 —— */
 .blora-search { position: relative; }
-.blora-search .blora-input { padding-left: 2.4em; }
+.blora-search .blora-input { padding-left: 2.4em; padding-right: 2.4em; }
+.blora-search .blora-input::-webkit-search-cancel-button { display: none; }
 .blora-search__icon {
   position: absolute; left: 0.6em; top: 50%; transform: translateY(-50%);
   display: inline-grid; place-items: center; width: 1.6em; height: 1.6em;
@@ -726,8 +727,17 @@ button.blora-search__icon:hover { color: var(--blora-primary); }
 button.blora-search__icon:hover { background: var(--blora-primary-tint); }
 button.blora-search__icon:active { transform: translateY(-50%) scale(0.92); }
 button.blora-search__icon:focus-visible { color: var(--blora-primary); outline: 2px solid var(--blora-primary); outline-offset: 1px; }
-.blora-search__clear { position: absolute; right: 0.6em; top: 50%; transform: translateY(-50%); color: var(--blora-text-subtle); padding: 0.25em; border-radius: 50%; }
+.blora-search__clear {
+  position: absolute; right: 0.6em; top: 50%; transform: translateY(-50%);
+  display: inline-grid; place-items: center; width: 1.6em; height: 1.6em;
+  color: var(--blora-text-subtle); border-radius: 50%; cursor: pointer;
+  transition: color var(--blora-dur-fast) var(--blora-ease), background var(--blora-dur-fast) var(--blora-ease), opacity var(--blora-dur-fast) var(--blora-ease);
+}
+.blora-search__clear[hidden] { display: none; }
+.blora-search:not(:focus-within) .blora-search__clear { opacity: 0; visibility: hidden; pointer-events: none; }
 .blora-search__clear:hover { color: var(--blora-text-strong); background: var(--blora-surface-3); }
+.blora-search__clear:active { transform: translateY(-50%) scale(0.92); }
+.blora-search__clear:focus-visible { color: var(--blora-primary); outline: 2px solid var(--blora-primary); outline-offset: 1px; }
 
 /* —— 选择框 —— */
 .blora-select {

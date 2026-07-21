@@ -912,6 +912,49 @@
       sync();
     });
   }
+
+  /* —— Search —— 有值且聚焦时显示清除动作 —— */
+  function initSearch(root) {
+    $$(".blora-search", root).forEach((search) => {
+      if (bound(search, "Search")) return;
+      const input = $('input[type="search"]', search);
+      if (!input) return;
+      const d = ownerDoc(search);
+      const win = ownerWin(search);
+      const trigger = $("button.blora-search__icon", search);
+      let clear = $(".blora-search__clear", search);
+      if (!clear) {
+        clear = d.createElement("button");
+        clear.type = "button";
+        clear.className = "blora-search__clear";
+        clear.setAttribute("aria-label", "清空搜索");
+        const svg = d.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svg.setAttribute("width", "14");
+        svg.setAttribute("height", "14");
+        svg.setAttribute("viewBox", "0 0 24 24");
+        svg.setAttribute("fill", "none");
+        svg.setAttribute("stroke", "currentColor");
+        svg.setAttribute("stroke-width", "2");
+        svg.setAttribute("stroke-linecap", "round");
+        const first = d.createElementNS("http://www.w3.org/2000/svg", "path");
+        const second = d.createElementNS("http://www.w3.org/2000/svg", "path");
+        first.setAttribute("d", "M18 6 6 18");
+        second.setAttribute("d", "m6 6 12 12");
+        svg.append(first, second);
+        clear.appendChild(svg);
+        search.appendChild(clear);
+      }
+      const sync = () => { clear.hidden = !input.value; };
+      on(input, "input", sync);
+      on(clear, "click", () => {
+        input.value = "";
+        input.dispatchEvent(new win.Event("input", { bubbles: true }));
+        input.focus();
+      });
+      if (trigger && trigger.type !== "submit") on(trigger, "click", () => input.focus());
+      sync();
+    });
+  }
   const ICON_MOON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>';
   const ICON_SUN = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>';
   const ICON_SYSTEM = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="12" x="3" y="4" rx="2"/><path d="M8 20h8"/><path d="M12 16v4"/></svg>';
@@ -1968,6 +2011,7 @@
     initSidebarLayout(root);
     initMegamenu(root);
     initSegmented(root);
+    initSearch(root);
     initBtnLoading(root);
     initRate(root);
     initSlider(root);
