@@ -213,9 +213,46 @@
     if (layer._bloraPrev && typeof layer._bloraPrev.focus === "function") layer._bloraPrev.focus();
     layer._bloraPrev = null;
   };
+  /* 锁滚动：用 position:fixed 冻结 body，避免 overflow:hidden 打断 sticky 顶栏/侧栏 */
+  const lockScroll = (base) => {
+    const d = ownerDoc(base);
+    const win = ownerWin(base);
+    if (!d || !d.body || !win) return;
+    const root = d.documentElement;
+    if (root.dataset.bloraScrollLocked === "1") return;
+    const y = win.scrollY || root.scrollTop || 0;
+    const sbw = Math.max(0, win.innerWidth - root.clientWidth);
+    root.dataset.bloraScrollLocked = "1";
+    root._bloraScrollY = y;
+    d.body.style.position = "fixed";
+    d.body.style.top = `-${y}px`;
+    d.body.style.left = "0";
+    d.body.style.right = "0";
+    d.body.style.width = "100%";
+    if (sbw) d.body.style.paddingRight = `${sbw}px`;
+  };
   const unlockScroll = (base) => {
     const d = ownerDoc(base);
-    if (d && !$(".blora-modal.is-open", d) && !$(".blora-drawer.is-open", d) && d.body) d.body.style.overflow = "";
+    const win = ownerWin(base);
+    if (!d || !d.body || !win) return;
+    if ($(".blora-modal.is-open", d) || $(".blora-drawer.is-open", d)) return;
+    const root = d.documentElement;
+    if (root.dataset.bloraScrollLocked !== "1") {
+      /* 兼容旧路径：曾写过 overflow:hidden */
+      if (d.body.style.overflow === "hidden") d.body.style.overflow = "";
+      return;
+    }
+    const y = typeof root._bloraScrollY === "number" ? root._bloraScrollY : 0;
+    delete root.dataset.bloraScrollLocked;
+    root._bloraScrollY = null;
+    d.body.style.position = "";
+    d.body.style.top = "";
+    d.body.style.left = "";
+    d.body.style.right = "";
+    d.body.style.width = "";
+    d.body.style.paddingRight = "";
+    if (d.body.style.overflow === "hidden") d.body.style.overflow = "";
+    win.scrollTo(0, y);
   };
 
   /* —— Modal —— */
@@ -227,7 +264,7 @@
     m._bloraPrev = mDoc.activeElement;
     m.classList.remove("is-closing");
     m.classList.add("is-open");
-    if (mDoc.body) mDoc.body.style.overflow = "hidden";
+    lockScroll(m);
     if (!m._bloraLayerClose) {
       m._bloraLayerClose = (e) => {
         if (e.target.closest("[data-blora-close]") || e.target.classList.contains("blora-modal__mask")) closeModal(m);
@@ -274,7 +311,7 @@
     drawer._bloraPrev = dDoc.activeElement;
     drawer.classList.remove("is-closing");
     drawer.classList.add("is-open");
-    if (dDoc.body) dDoc.body.style.overflow = "hidden";
+    lockScroll(drawer);
     if (!drawer._bloraLayerClose) {
       drawer._bloraLayerClose = (e) => {
         if (e.target.closest("[data-blora-close]") || e.target.classList.contains("blora-drawer__mask")) closeDrawer(drawer);
