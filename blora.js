@@ -1936,6 +1936,14 @@
         panel.style.setProperty("--blora-megamenu-offset", offset + "px");
       };
       const setOpen = (open, focus = false) => {
+        if (open) {
+          $$('[data-blora-megamenu].is-open', d).forEach((other) => {
+            if (other === menu) return;
+            other.classList.remove("is-open");
+            const otherTrigger = $("[data-blora-megamenu-trigger]", other);
+            if (otherTrigger) otherTrigger.setAttribute("aria-expanded", "false");
+          });
+        }
         menu.classList.toggle("is-open", open);
         trigger.setAttribute("aria-expanded", String(open));
         if (open) win.requestAnimationFrame(positionPanel);

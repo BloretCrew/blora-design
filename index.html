@@ -149,6 +149,9 @@
   .blora-chart-mock { height: 180px; background: var(--blora-surface-2); border-radius: var(--blora-radius-md); padding: var(--blora-space-4); display: flex; align-items: flex-end; gap: var(--blora-space-2); }
   .blora-chart-mock__bar { flex: 1; background: var(--blora-primary-soft); border-radius: var(--blora-radius-xs) var(--blora-radius-xs) 0 0; }
   [data-demo-navbar-variant][aria-pressed="true"] { color: var(--blora-primary); background: var(--blora-primary-tint); }
+  @media (max-width: 720px) {
+    .blora-navbar__product-menu { display: none; }
+  }
 </style>
 </head>
 <body class="blora-page blora-scope">
@@ -175,6 +178,16 @@
         </button>
       <span class="blora-tooltip__bubble blora-tooltip__bubble--bottom" data-demo-navbar-variant-hint>切换为全宽导航栏</span>
       </span>
+      <div class="blora-megamenu blora-navbar__product-menu" data-blora-megamenu>
+        <button class="blora-btn blora-btn--ghost blora-btn--sm blora-megamenu__trigger" type="button" data-blora-megamenu-trigger>产品菜单</button>
+        <div class="blora-megamenu__panel">
+          <div class="blora-megamenu__grid">
+            <div><div class="blora-megamenu__title">组件</div><a class="blora-megamenu__link" href="#buttons">基础组件</a><a class="blora-megamenu__link" href="#extended">扩展组件</a></div>
+            <div><div class="blora-megamenu__title">规范</div><a class="blora-megamenu__link" href="#color">色彩系统</a><a class="blora-megamenu__link" href="#typography">字体系统</a></div>
+            <div><div class="blora-megamenu__title">资源</div><a class="blora-megamenu__link" href="docs/standards.md">规范文档</a><a class="blora-megamenu__link" href="#icons">图标资源</a></div>
+          </div>
+        </div>
+      </div>
       <div class="blora-palette-picker" data-blora-palette-picker>
         <button class="blora-btn blora-btn--ghost blora-btn--sm blora-palette-picker__trigger" type="button" data-blora-palette-trigger>
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z"/><path d="M19.5 15.5c-1.4 0-2.5 1.1-2.5 2.5 0 .7.3 1.3.7 1.8"/></svg>
@@ -498,7 +511,7 @@
       <header class="blora-sec__head">
         <div class="blora-sec__num">07 — 按钮</div>
         <h2 class="blora-sec__title">按钮</h2>
-        <p class="blora-sec__desc">五种变体（主、次、描边、幽灵、文字）加危险样式，辅以尺寸、图标、加载、分组、状态切换与速拨操作。</p>
+        <p class="blora-sec__desc">五种变体（主、次、描边、幽灵、文字）加危险样式，辅以尺寸、图标、加载、分组、状态切换、速拨操作与大型菜单。</p>
       </header>
 
       <div class="blora-panel">
@@ -619,6 +632,20 @@
                 <button class="blora-btn blora-btn--secondary blora-btn--sm blora-speed-dial__action" type="button">新建</button>
                 <button class="blora-btn blora-btn--secondary blora-btn--sm blora-speed-dial__action" type="button">上传</button>
                 <button class="blora-btn blora-btn--secondary blora-btn--sm blora-speed-dial__action" type="button">分享</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">大型菜单 · Megamenu</div>
+          <div class="blora-megamenu" data-blora-megamenu>
+            <button class="blora-btn blora-btn--outline blora-megamenu__trigger" type="button" data-blora-megamenu-trigger>浏览产品</button>
+            <div class="blora-megamenu__panel">
+              <div class="blora-megamenu__grid">
+                <div><div class="blora-megamenu__title">工作</div><a class="blora-megamenu__link" href="#buttons">项目管理</a><a class="blora-megamenu__link" href="#buttons">任务中心</a></div>
+                <div><div class="blora-megamenu__title">数据</div><a class="blora-megamenu__link" href="#data">分析面板</a><a class="blora-megamenu__link" href="#data">导出记录</a></div>
+                <div><div class="blora-megamenu__title">支持</div><a class="blora-megamenu__link" href="#feedback">帮助中心</a><a class="blora-megamenu__link" href="#feedback">服务状态</a></div>
               </div>
             </div>
           </div>
@@ -1799,37 +1826,12 @@
         </div>
 
         <div class="blora-demo">
-          <div class="blora-demo__label">导航 · Sidebar, Dock & Megamenu</div>
-          <div class="blora-sidebar-layout blora-sidebar-layout--compact" data-blora-sidebar-layout>
-            <button class="blora-btn blora-btn--outline blora-sidebar-layout__toggle" type="button" data-blora-sidebar-toggle>打开侧栏</button>
-            <div class="blora-sidebar-layout__mask"></div>
-            <aside class="blora-sidebar-layout__aside">
-              <nav class="blora-menu">
-                <div class="blora-menu__group-label">工作区</div>
-                <a class="blora-menu__item is-active" href="#extended">概览</a>
-                <a class="blora-menu__item" href="#extended">项目</a>
-                <a class="blora-menu__item" href="#extended">设置</a>
-              </nav>
-            </aside>
-            <div class="blora-sidebar-layout__content blora-stack">
-              <div class="blora-megamenu" data-blora-megamenu>
-                <button class="blora-btn blora-btn--outline blora-megamenu__trigger" type="button" data-blora-megamenu-trigger>产品菜单</button>
-                <div class="blora-megamenu__panel">
-                  <div class="blora-megamenu__grid">
-                    <div><div class="blora-megamenu__title">工作</div><a class="blora-megamenu__link" href="#extended">项目管理</a><a class="blora-megamenu__link" href="#extended">任务中心</a></div>
-                    <div><div class="blora-megamenu__title">数据</div><a class="blora-megamenu__link" href="#extended">分析面板</a><a class="blora-megamenu__link" href="#extended">导出记录</a></div>
-                    <div><div class="blora-megamenu__title">支持</div><a class="blora-megamenu__link" href="#extended">帮助中心</a><a class="blora-megamenu__link" href="#extended">服务状态</a></div>
-                  </div>
-                </div>
-              </div>
-              <p class="blora-text-muted">桌面端保持页面侧栏；窄屏自动转换为带遮罩的可关闭侧栏。</p>
-              <nav class="blora-dock blora-dock--static" aria-label="底部导航">
-                <a class="blora-dock__item is-active" href="#extended"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 11 9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span>首页</span></a>
-                <a class="blora-dock__item" href="#extended"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><span>搜索</span></a>
-                <a class="blora-dock__item" href="#extended"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>账户</span></a>
-              </nav>
-            </div>
-          </div>
+          <div class="blora-demo__label">底部导航 · Dock</div>
+          <nav class="blora-dock blora-dock--static" aria-label="底部导航">
+            <a class="blora-dock__item is-active" href="#extended"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 11 9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span>首页</span></a>
+            <a class="blora-dock__item" href="#extended"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><span>搜索</span></a>
+            <a class="blora-dock__item" href="#extended"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>账户</span></a>
+          </nav>
         </div>
 
         <div class="blora-demo">
