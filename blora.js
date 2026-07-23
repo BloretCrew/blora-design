@@ -71,6 +71,49 @@
     const value = d ? getComputedStyle(d.documentElement).getPropertyValue(name).trim() : "";
     return value || fallback || "";
   };
+  const normalizeShortcutPlatform = (platform) => /apple|mac|iphone|ipad|ipod/i.test(String(platform || "")) ? "apple" : "standard";
+  const getShortcutPlatform = (base) => {
+    const win = base ? ownerWin(base) : global;
+    const nav = win && win.navigator;
+    const platform = nav && ((nav.userAgentData && nav.userAgentData.platform) || nav.platform || nav.userAgent);
+    return normalizeShortcutPlatform(platform);
+  };
+  const shortcutTokens = (shortcut) => String(shortcut || "")
+    .split("+")
+    .map((part) => part.trim().toLowerCase())
+    .filter(Boolean);
+  const shortcutKey = (key, platform, accessible = false) => {
+    const apple = normalizeShortcutPlatform(platform) === "apple";
+    const labels = {
+      mod: accessible ? (apple ? "Command" : "Control") : (apple ? "⌘" : "Ctrl"),
+      ctrl: accessible ? "Control" : "Ctrl",
+      command: accessible ? "Command" : "⌘",
+      cmd: accessible ? "Command" : "⌘",
+      alt: accessible ? (apple ? "Option" : "Alt") : (apple ? "⌥" : "Alt"),
+      option: accessible ? "Option" : "⌥",
+      shift: accessible ? "Shift" : (apple ? "⇧" : "Shift"),
+      enter: "Enter",
+      escape: "Esc",
+      esc: "Esc",
+      space: "Space",
+    };
+    return labels[key] || (key.length === 1 ? key.toUpperCase() : key);
+  };
+  const formatShortcut = (shortcut, platform = getShortcutPlatform()) => shortcutTokens(shortcut)
+    .map((key) => shortcutKey(key, platform))
+    .join(" + ");
+
+  function initShortcutHints(root) {
+    $$('[data-blora-shortcut]', root).forEach((hint) => {
+      if (bound(hint, "Shortcut")) return;
+      const shortcut = hint.dataset.bloraShortcut;
+      const platform = getShortcutPlatform(hint);
+      hint.textContent = formatShortcut(shortcut, platform);
+      hint.setAttribute("aria-label", shortcutTokens(shortcut)
+        .map((key) => shortcutKey(key, platform, true))
+        .join(" + "));
+    });
+  }
   const makeChevron = () => {
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute("width", "10");
@@ -2080,6 +2123,7 @@
     initDiff(root);
     initHoverGallery(root);
     initTextRotate(root);
+    initShortcutHints(root);
   }
 
   /* —— Public API —— */
@@ -2092,6 +2136,8 @@
     getPalette,
     applyColorMode,
     getColorMode,
+    formatShortcut,
+    getShortcutPlatform,
     toast,
     openModal,
     closeModal,
