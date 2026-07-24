@@ -1345,17 +1345,20 @@
       trigger.setAttribute("aria-controls", listId);
       trigger.setAttribute("aria-expanded", "false");
       menu.setAttribute("role", "listbox");
-      let activeIndex = Math.max(0, opts.findIndex((o) => o.selected && !o.disabled));
+      let activeIndex = opts.findIndex((o) => o.selected && !o.disabled);
       const update = () => {
         const chosen = opts.find((o) => o.selected && !o.disabled);
         trigger.textContent = chosen ? chosen.textContent : (opts[0] && opts[0].disabled ? opts[0].textContent : placeholder);
         trigger.classList.toggle("is-placeholder", !chosen);
         $$(".blora-select-option", menu).forEach((el, i) => {
-          const selected = el.dataset.val === (chosen ? chosen.value : "");
+          const selected = Boolean(chosen) && el.dataset.val === chosen.value;
           el.classList.toggle("is-selected", selected);
           el.classList.toggle("is-active", i === activeIndex);
           el.setAttribute("aria-selected", String(selected));
         });
+        const active = optionEls()[activeIndex];
+        if (active) trigger.setAttribute("aria-activedescendant", active.id);
+        else trigger.removeAttribute("aria-activedescendant");
       };
       const optionEls = () => $$(".blora-select-option", menu);
       const setActive = (index) => {
@@ -1368,6 +1371,7 @@
           guard++;
         }
         items.forEach((el, i) => el.classList.toggle("is-active", i === activeIndex));
+        trigger.setAttribute("aria-activedescendant", items[activeIndex].id);
         items[activeIndex].scrollIntoView({ block: "nearest" });
       };
       const choose = (index) => {
@@ -1380,9 +1384,10 @@
         close();
         sel.dispatchEvent(new Event("change", { bubbles: true }));
       };
-      opts.forEach((o) => {
+      opts.forEach((o, index) => {
         const el = document.createElement("div");
         el.className = "blora-select-option" + (o.disabled ? " is-disabled" : "") + (o.selected && !o.disabled ? " is-selected" : "");
+        el.id = listId + "-option-" + index;
         el.setAttribute("role", "option");
         if (o.disabled) el.setAttribute("aria-disabled", "true");
         el.textContent = o.textContent; el.dataset.val = o.value;
@@ -1393,14 +1398,24 @@
         });
         menu.appendChild(el);
       });
-      const open = () => { trigger.classList.add("is-open"); menu.classList.add("is-open"); trigger.setAttribute("aria-expanded", "true"); setActive(activeIndex); };
+      const open = () => {
+        const selectedIndex = opts.findIndex((o) => o.selected && !o.disabled);
+        activeIndex = selectedIndex;
+        trigger.classList.add("is-open");
+        menu.classList.add("is-open");
+        trigger.setAttribute("aria-expanded", "true");
+        optionEls().forEach((el, i) => el.classList.toggle("is-active", i === activeIndex));
+        if (activeIndex >= 0) setActive(activeIndex);
+        else trigger.removeAttribute("aria-activedescendant");
+      };
       const close = () => { trigger.classList.remove("is-open"); menu.classList.remove("is-open"); trigger.setAttribute("aria-expanded", "false"); };
       on(trigger, "click", (e) => { e.stopPropagation(); trigger.classList.contains("is-open") ? close() : open(); });
       on(trigger, "keydown", (e) => {
         if (e.key === "ArrowDown" || e.key === "ArrowUp") {
           e.preventDefault();
           if (!trigger.classList.contains("is-open")) open();
-          setActive(activeIndex + (e.key === "ArrowDown" ? 1 : -1));
+          if (activeIndex < 0) setActive(e.key === "ArrowDown" ? 0 : opts.length - 1);
+          else setActive(activeIndex + (e.key === "ArrowDown" ? 1 : -1));
         } else if (e.key === "Home") {
           e.preventDefault(); open(); setActive(0);
         } else if (e.key === "End") {
