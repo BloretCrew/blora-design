@@ -531,9 +531,9 @@ body.blora-page {
 .blora-btn--xl { font-size: var(--blora-text-xl); padding: 0.8em 1.6em; font-family: var(--blora-font-heading); }
 
 /* —— 图标按钮 —— */
-.blora-btn--icon { inline-size: 2.5em; block-size: 2.5em; padding: 0; aspect-ratio: 1; flex: none; }
-.blora-btn--icon.blora-btn--sm { inline-size: 2.25em; block-size: 2.25em; padding: 0; }
-.blora-btn--icon.blora-btn--lg { inline-size: 2.75em; block-size: 2.75em; padding: 0; }
+.blora-btn--icon { padding: 0.55em; aspect-ratio: 1; flex: none; }
+.blora-btn--icon.blora-btn--sm { padding: 0.4em; }
+.blora-btn--icon.blora-btn--lg { padding: 0.7em; }
 
 /* —— 圆形浮动按钮 FAB —— */
 .blora-fab {
@@ -1356,7 +1356,7 @@ html[data-blora-navbar-variant="floating"] .blora-navbar {
   :is(.blora-navbar, .blora-navbar--floating, .blora-navbar[data-variant="floating"], html[data-blora-navbar-variant="floating"] .blora-navbar) {
     --blora-navbar-inset: var(--blora-space-2);
     --blora-navbar-padding: var(--blora-space-3);
-    border-radius: var(--blora-radius-xl);
+    border-radius: var(--blora-radius-full);
   }
 }
 /* 全宽顶栏是显式变体；兼容展示页旧版本保存的 default 值。 */
@@ -2348,6 +2348,18 @@ html:has(body.blora-page)::-webkit-scrollbar-corner,
   .blora-btn--icon, .blora-datepicker__btn, .blora-datepicker__nav,
   .blora-modal__close, .blora-alert__close,
   .blora-notification__close { min-width: 2.75rem; min-height: 2.75rem; }
+
+  /* Navbar 保持同心胶囊几何；额外触控面积不参与可见布局。 */
+  .blora-navbar .blora-btn { min-height: 0; }
+  .blora-navbar .blora-btn--icon {
+    position: relative;
+    min-width: 0;
+  }
+  .blora-navbar .blora-btn--icon::after {
+    content: "";
+    position: absolute;
+    inset: calc(-1 * var(--blora-space-1));
+  }
 }
 
 /* =========================================================================
