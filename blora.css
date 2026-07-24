@@ -2396,27 +2396,6 @@ html:has(body.blora-page)::-webkit-scrollbar-corner,
   .blora-popover__panel.is-portaled.is-open { transform: none; }
 }
 
-@media (pointer: coarse) {
-  .blora-btn:not(.blora-btn--icon), .blora-tabs__tab, .blora-pagination__item,
-  .blora-menu__item, .blora-dropdown-menu__item, .blora-select-option,
-  .blora-filter__label, .blora-filter__reset { min-height: 2.75rem; }
-  .blora-btn--icon, .blora-datepicker__btn, .blora-datepicker__nav,
-  .blora-modal__close, .blora-alert__close,
-  .blora-notification__close { min-width: 2.75rem; min-height: 2.75rem; }
-
-  /* Navbar 保持同心胶囊几何；额外触控面积不参与可见布局。 */
-  .blora-navbar .blora-btn { min-height: 0; }
-  .blora-navbar .blora-btn--icon {
-    position: relative;
-    min-width: 0;
-  }
-  .blora-navbar .blora-btn--icon::after {
-    content: "";
-    position: absolute;
-    inset: calc(-1 * var(--blora-space-1));
-  }
-}
-
 /* =========================================================================
    15. 暗色模式 · Dark Mode
    ========================================================================= */
