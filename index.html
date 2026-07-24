@@ -634,7 +634,7 @@
       <header class="blora-sec__head">
         <div class="blora-sec__num">08 — 表单</div>
         <h2 class="blora-sec__title">表单输入</h2>
-        <p class="blora-sec__desc">文本、多行、选择、勾选、单选、开关、滑块、评分、分段、标签、数字、验证码、颜色、上传。</p>
+        <p class="blora-sec__desc">文本、多行、选择、大型菜单、勾选、单选、开关、滑块、评分、分段、标签、数字、验证码、颜色、上传。</p>
       </header>
 
       <div class="blora-panel">
@@ -705,6 +705,20 @@
               <div class="blora-number__ctrl">
                 <button class="blora-number__btn" data-step="up" aria-label="增加"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg></button>
                 <button class="blora-number__btn" data-step="down" aria-label="减少"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">大型菜单 · Megamenu</div>
+          <div class="blora-megamenu" data-blora-megamenu>
+            <button class="blora-btn blora-btn--outline blora-megamenu__trigger" type="button" data-blora-megamenu-trigger>浏览产品</button>
+            <div class="blora-megamenu__panel">
+              <div class="blora-megamenu__grid">
+                <div><div class="blora-megamenu__title">工作</div><a class="blora-megamenu__link" href="#buttons">项目管理</a><a class="blora-megamenu__link" href="#buttons">任务中心</a></div>
+                <div><div class="blora-megamenu__title">数据</div><a class="blora-megamenu__link" href="#data">分析面板</a><a class="blora-megamenu__link" href="#data">导出记录</a></div>
+                <div><div class="blora-megamenu__title">支持</div><a class="blora-megamenu__link" href="#feedback">帮助中心</a><a class="blora-megamenu__link" href="#feedback">服务状态</a></div>
               </div>
             </div>
           </div>
@@ -857,7 +871,7 @@
       <header class="blora-sec__head">
         <div class="blora-sec__num">09 — 选择</div>
         <h2 class="blora-sec__title">选择器与穿梭</h2>
-        <p class="blora-sec__desc">日期与时间选择、级联选择、穿梭框及大型菜单。</p>
+        <p class="blora-sec__desc">日期与时间选择、级联选择与穿梭框。</p>
       </header>
 
       <div class="blora-panel">
@@ -928,19 +942,6 @@
           </div>
         </div>
 
-        <div class="blora-demo">
-          <div class="blora-demo__label">大型菜单 · Megamenu</div>
-          <div class="blora-megamenu" data-blora-megamenu>
-            <button class="blora-btn blora-btn--outline blora-megamenu__trigger" type="button" data-blora-megamenu-trigger>浏览产品</button>
-            <div class="blora-megamenu__panel">
-              <div class="blora-megamenu__grid">
-                <div><div class="blora-megamenu__title">工作</div><a class="blora-megamenu__link" href="#buttons">项目管理</a><a class="blora-megamenu__link" href="#buttons">任务中心</a></div>
-                <div><div class="blora-megamenu__title">数据</div><a class="blora-megamenu__link" href="#data">分析面板</a><a class="blora-megamenu__link" href="#data">导出记录</a></div>
-                <div><div class="blora-megamenu__title">支持</div><a class="blora-megamenu__link" href="#feedback">帮助中心</a><a class="blora-megamenu__link" href="#feedback">服务状态</a></div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -1163,7 +1164,7 @@
       <header class="blora-sec__head">
         <div class="blora-sec__num">13 — 导航</div>
         <h2 class="blora-sec__title">导航</h2>
-        <p class="blora-sec__desc">标签页、面包屑、分页、步骤、侧栏菜单、下拉菜单。</p>
+        <p class="blora-sec__desc">标签页、面包屑、分页、步骤、侧栏菜单、下拉菜单与底部导航。</p>
       </header>
 
       <div class="blora-panel">
@@ -1277,6 +1278,15 @@
               <div class="blora-dropdown-menu__item" style="color:var(--blora-danger);">删除</div>
             </div>
           </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">底部导航 · Dock</div>
+          <nav class="blora-dock blora-dock--static" aria-label="底部导航">
+            <a class="blora-dock__item is-active" href="#nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 11 9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span>首页</span></a>
+            <a class="blora-dock__item" href="#nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><span>搜索</span></a>
+            <a class="blora-dock__item" href="#nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>账户</span></a>
+          </nav>
         </div>
       </div>
     </section>
@@ -1783,7 +1793,7 @@
       <header class="blora-sec__head">
         <div class="blora-sec__num">19 — 扩展组件</div>
         <h2 class="blora-sec__title">完整组件集</h2>
-        <p class="blora-sec__desc">补齐常用表单、导航、布局与 Mockup，全部沿用同一套语义令牌和交互规范。</p>
+        <p class="blora-sec__desc">补齐常用表单、布局与 Mockup，全部沿用同一套语义令牌和交互规范。</p>
       </header>
 
       <div class="blora-panel">
@@ -1814,16 +1824,7 @@
         </div>
 
         <div class="blora-demo">
-          <div class="blora-demo__label">底部导航 · Dock</div>
-          <nav class="blora-dock blora-dock--static" aria-label="底部导航">
-            <a class="blora-dock__item is-active" href="#extended"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 11 9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span>首页</span></a>
-            <a class="blora-dock__item" href="#extended"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><span>搜索</span></a>
-            <a class="blora-dock__item" href="#extended"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>账户</span></a>
-          </nav>
-        </div>
-
-        <div class="blora-demo">
-          <div class="blora-demo__label">布局 · Footer & Deck</div>
+          <div class="blora-demo__label">卡片叠层 · Deck</div>
           <div class="blora-row">
             <div class="blora-deck blora-deck--sm">
               <article class="blora-card blora-card--flat">第三层</article>
@@ -1831,14 +1832,6 @@
               <article class="blora-card"><strong>当前卡片</strong><p class="blora-text-muted">用于相册、队列和待办预览。</p></article>
             </div>
           </div>
-          <footer class="blora-footer">
-            <div class="blora-footer__inner">
-              <div><div class="blora-footer__title">Blora Design</div><p>面向现代 Web 应用的统一组件规范。</p></div>
-              <div><div class="blora-footer__title">产品</div><a class="blora-footer__link" href="#extended">组件</a><a class="blora-footer__link" href="#extended">配色</a></div>
-              <div><div class="blora-footer__title">资源</div><a class="blora-footer__link" href="#extended">文档</a><a class="blora-footer__link" href="#extended">更新</a></div>
-              <div><div class="blora-footer__title">团队</div><a class="blora-footer__link" href="#extended">关于</a><a class="blora-footer__link" href="#extended">联系</a></div>
-            </div>
-          </footer>
         </div>
 
         <div class="blora-demo">
