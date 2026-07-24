@@ -1661,8 +1661,13 @@ html[data-blora-navbar-variant="floating"] .blora-navbar {
 /* —— 轮播 Carousel —— */
 .blora-carousel { position: relative; overflow: hidden; border-radius: var(--blora-radius-lg); touch-action: pan-y; cursor: grab; user-select: none; }
 .blora-carousel:active { cursor: grabbing; }
-.blora-carousel__track { display: flex; transition: transform var(--blora-dur-slow) var(--blora-ease); }
-.blora-carousel__slide { flex: 0 0 100%; }
+.blora-carousel__track {
+  display: flex;
+  will-change: transform;
+  transition: transform var(--blora-dur-slow) var(--blora-ease);
+}
+.blora-carousel__track.is-dragging { transition: none; }
+.blora-carousel__slide { flex: 0 0 100%; min-width: 0; }
 .blora-carousel__arrow { position: absolute; top: 50%; transform: translateY(-50%); width: 2.6em; height: 2.6em; border-radius: 50%; background: var(--blora-media-overlay); color: var(--blora-on-media); display: grid; place-items: center; cursor: pointer; transition: background var(--blora-dur-fast) var(--blora-ease); backdrop-filter: blur(4px); }
 .blora-carousel__arrow svg { width: 22px; height: 22px; display: block; }
 .blora-carousel__arrow:hover { background: var(--blora-media-overlay-strong); }

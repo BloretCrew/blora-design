@@ -881,10 +881,15 @@
       let i = 0;
       let pauseAutoplay = null;
       let resumeAutoplay = null;
-      const go = (n) => {
-        i = (n + slides.length) % slides.length;
-        track.style.transform = "translateX(-" + (i * 100) + "%)";
+      const last = slides.length - 1;
+      const paint = (animate) => {
+        track.classList.toggle("is-dragging", !animate);
+        track.style.transform = "translate3d(" + (-i * 100) + "%, 0, 0)";
         dots.forEach((d, j) => d.classList.toggle("is-active", j === i));
+      };
+      const go = (n) => {
+        i = ((n % slides.length) + slides.length) % slides.length;
+        paint(true);
       };
       const prev = $(".blora-carousel__arrow--prev", car);
       const next = $(".blora-carousel__arrow--next", car);
@@ -892,54 +897,107 @@
       on(next, "click", () => go(i + 1));
       dots.forEach((d, j) => on(d, "click", () => go(j)));
 
-      /* 触摸 / 指针左右滑动切换；纵向滚动不拦截 */
-      const SWIPE_PX = 40;
-      let swipe = null;
-      const swipePoint = (e) => {
+      /* 跟手拖拽：拖动时轨道实时跟随，松手按位移/速度吸附 */
+      const THRESHOLD = 0.2;
+      const VELOCITY = 0.35;
+      let drag = null;
+      const point = (e) => {
         if (e.touches && e.touches[0]) return { x: e.touches[0].clientX, y: e.touches[0].clientY };
         if (e.changedTouches && e.changedTouches[0]) return { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
         return { x: e.clientX, y: e.clientY };
       };
-      const onSwipeStart = (e) => {
+      const widthOf = () => car.getBoundingClientRect().width || 1;
+      const resist = (dx, w) => {
+        if ((i === 0 && dx > 0) || (i === last && dx < 0)) return dx * 0.35;
+        return dx;
+      };
+      const applyDrag = (dx) => {
+        const w = widthOf();
+        const offset = resist(dx, w);
+        track.classList.add("is-dragging");
+        track.style.transform = "translate3d(calc(" + (-i * 100) + "% + " + offset + "px), 0, 0)";
+      };
+      const onDragStart = (e) => {
         if (e.pointerType === "mouse" && e.button !== 0) return;
         if (e.target && e.target.closest && e.target.closest(".blora-carousel__arrow, .blora-carousel__dot, a, button, input, textarea, select, label")) return;
-        const p = swipePoint(e);
-        swipe = { x: p.x, y: p.y, locked: null, pointerId: e.pointerId };
+        const p = point(e);
+        drag = {
+          x: p.x, y: p.y, dx: 0, locked: null,
+          t: Date.now(), lx: p.x, lt: Date.now(), vx: 0,
+          pointerId: e.pointerId,
+        };
+        if (typeof e.pointerId === "number" && car.setPointerCapture) {
+          try { car.setPointerCapture(e.pointerId); } catch (_) { /* ignore */ }
+        }
         if (pauseAutoplay) pauseAutoplay();
       };
-      const onSwipeMove = (e) => {
-        if (!swipe) return;
-        const p = swipePoint(e);
-        const dx = p.x - swipe.x;
-        const dy = p.y - swipe.y;
-        if (swipe.locked == null && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) {
-          swipe.locked = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
+      const onDragMove = (e) => {
+        if (!drag) return;
+        if (typeof drag.pointerId === "number" && typeof e.pointerId === "number" && e.pointerId !== drag.pointerId) return;
+        const p = point(e);
+        const dx = p.x - drag.x;
+        const dy = p.y - drag.y;
+        if (drag.locked == null && (Math.abs(dx) > 6 || Math.abs(dy) > 6)) {
+          drag.locked = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
+          if (drag.locked === "y") {
+            drag = null;
+            if (resumeAutoplay) resumeAutoplay();
+            return;
+          }
         }
-        if (swipe.locked === "x" && e.cancelable) e.preventDefault();
+        if (drag.locked !== "x") return;
+        if (e.cancelable) e.preventDefault();
+        const now = Date.now();
+        const dt = Math.max(1, now - drag.lt);
+        drag.vx = (p.x - drag.lx) / dt;
+        drag.lx = p.x;
+        drag.lt = now;
+        drag.dx = dx;
+        applyDrag(dx);
       };
-      const onSwipeEnd = (e) => {
-        if (!swipe) return;
-        const p = swipePoint(e);
-        const dx = p.x - swipe.x;
-        const axis = swipe.locked;
-        swipe = null;
-        if (axis === "x" && Math.abs(dx) >= SWIPE_PX) go(i + (dx < 0 ? 1 : -1));
+      const finishDrag = (cancelled) => {
+        if (!drag) return;
+        const dx = drag.dx;
+        const vx = drag.vx;
+        const wasX = drag.locked === "x";
+        drag = null;
+        track.classList.remove("is-dragging");
+        if (!wasX || cancelled) {
+          paint(true);
+        } else {
+          const w = widthOf();
+          let next = i;
+          if (dx <= -w * THRESHOLD || vx <= -VELOCITY) next = i + 1;
+          else if (dx >= w * THRESHOLD || vx >= VELOCITY) next = i - 1;
+          i = Math.max(0, Math.min(last, next));
+          paint(true);
+        }
         if (resumeAutoplay) resumeAutoplay();
       };
-      const onSwipeCancel = () => {
-        swipe = null;
-        if (resumeAutoplay) resumeAutoplay();
+      const onDragEnd = (e) => {
+        if (!drag) return;
+        if (typeof drag.pointerId === "number" && typeof e.pointerId === "number" && e.pointerId !== drag.pointerId) return;
+        if (drag.locked === "x") {
+          const p = point(e);
+          drag.dx = p.x - drag.x;
+          const now = Date.now();
+          const dt = Math.max(1, now - drag.lt);
+          drag.vx = (p.x - drag.lx) / dt;
+        }
+        finishDrag(false);
       };
+      const onDragCancel = () => finishDrag(true);
+
       if (global.PointerEvent) {
-        on(car, "pointerdown", onSwipeStart);
-        on(car, "pointermove", onSwipeMove);
-        on(car, "pointerup", onSwipeEnd);
-        on(car, "pointercancel", onSwipeCancel);
+        on(car, "pointerdown", onDragStart);
+        on(car, "pointermove", onDragMove);
+        on(car, "pointerup", onDragEnd);
+        on(car, "pointercancel", onDragCancel);
       } else {
-        on(car, "touchstart", onSwipeStart, { passive: true });
-        on(car, "touchmove", onSwipeMove, { passive: false });
-        on(car, "touchend", onSwipeEnd);
-        on(car, "touchcancel", onSwipeCancel);
+        on(car, "touchstart", onDragStart, { passive: true });
+        on(car, "touchmove", onDragMove, { passive: false });
+        on(car, "touchend", onDragEnd);
+        on(car, "touchcancel", onDragCancel);
       }
 
       /* 自动播放：间隔可由 data-autoplay="毫秒" 配置，悬停暂停，跟随 reduced-motion */
