@@ -2324,22 +2324,34 @@
   function initHoverGallery(root) {
     $$(".blora-hover-gallery", root).forEach((gallery) => {
       if (bound(gallery, "HoverGallery")) return;
-      const items = $$(".blora-hover-gallery__item", gallery);
+      let items = $$(".blora-hover-gallery__item", gallery);
       if (!items.length) return;
+      const d = ownerDoc(gallery);
+      let track = $(".blora-hover-gallery__track", gallery);
+      if (!track) {
+        track = d.createElement("div");
+        track.className = "blora-hover-gallery__track";
+        items.forEach((item) => track.appendChild(item));
+        gallery.insertBefore(track, gallery.firstChild);
+        items = $$(".blora-hover-gallery__item", track);
+      }
       const label = gallery.getAttribute("aria-label") || "图片库";
       gallery.setAttribute("role", "group");
       let progress = $(".blora-hover-gallery__progress", gallery);
       if (!progress) {
-        progress = ownerDoc(gallery).createElement("span");
+        progress = d.createElement("span");
         progress.className = "blora-hover-gallery__progress";
         progress.setAttribute("aria-hidden", "true");
         progress.innerHTML = items.map(() => "<span></span>").join("");
         gallery.appendChild(progress);
       }
       const indicators = $$("span", progress);
+      const last = items.length - 1;
       let active = Math.max(0, items.findIndex((item) => item.classList.contains("is-active")));
-      const setActive = (index) => {
-        active = (index + items.length) % items.length;
+      if (active < 0) active = 0;
+      const paint = (animate) => {
+        track.classList.toggle("is-dragging", !animate);
+        track.style.transform = "translate3d(" + (-active * 100) + "%, 0, 0)";
         items.forEach((item, i) => {
           item.classList.toggle("is-active", i === active);
           item.setAttribute("aria-hidden", String(i !== active));
@@ -2347,19 +2359,116 @@
         indicators.forEach((item, i) => item.classList.toggle("is-active", i === active));
         gallery.setAttribute("aria-label", label + "，图片 " + (active + 1) + " / " + items.length);
       };
+      const go = (index) => {
+        active = Math.max(0, Math.min(last, index));
+        paint(true);
+      };
       gallery.tabIndex = gallery.hasAttribute("tabindex") ? gallery.tabIndex : 0;
-      on(gallery, "pointermove", (e) => {
-        const rect = gallery.getBoundingClientRect();
-        const ratio = clamp((e.clientX - rect.left) / rect.width, 0, 0.9999);
-        setActive(Math.min(items.length - 1, Math.floor(ratio * items.length)));
-      });
+
+      /* 跟手拖拽：轨道实时跟随，松手按位移/速度吸附 */
+      const THRESHOLD = 0.2;
+      const VELOCITY = 0.35;
+      let drag = null;
+      const point = (e) => {
+        if (e.touches && e.touches[0]) return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        if (e.changedTouches && e.changedTouches[0]) return { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
+        return { x: e.clientX, y: e.clientY };
+      };
+      const widthOf = () => gallery.getBoundingClientRect().width || 1;
+      const resist = (dx) => {
+        if ((active === 0 && dx > 0) || (active === last && dx < 0)) return dx * 0.35;
+        return dx;
+      };
+      const applyDrag = (dx) => {
+        track.classList.add("is-dragging");
+        track.style.transform = "translate3d(calc(" + (-active * 100) + "% + " + resist(dx) + "px), 0, 0)";
+      };
+      const onDragStart = (e) => {
+        if (e.pointerType === "mouse" && e.button !== 0) return;
+        const p = point(e);
+        drag = {
+          x: p.x, y: p.y, dx: 0, locked: null,
+          lx: p.x, lt: Date.now(), vx: 0,
+          pointerId: e.pointerId,
+        };
+        if (typeof e.pointerId === "number" && gallery.setPointerCapture) {
+          try { gallery.setPointerCapture(e.pointerId); } catch (_) { /* ignore */ }
+        }
+      };
+      const onDragMove = (e) => {
+        if (!drag) return;
+        if (typeof drag.pointerId === "number" && typeof e.pointerId === "number" && e.pointerId !== drag.pointerId) return;
+        const p = point(e);
+        const dx = p.x - drag.x;
+        const dy = p.y - drag.y;
+        if (drag.locked == null && (Math.abs(dx) > 6 || Math.abs(dy) > 6)) {
+          drag.locked = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
+          if (drag.locked === "y") {
+            drag = null;
+            paint(true);
+            return;
+          }
+        }
+        if (drag.locked !== "x") return;
+        if (e.cancelable) e.preventDefault();
+        const now = Date.now();
+        const dt = Math.max(1, now - drag.lt);
+        drag.vx = (p.x - drag.lx) / dt;
+        drag.lx = p.x;
+        drag.lt = now;
+        drag.dx = dx;
+        applyDrag(dx);
+      };
+      const finishDrag = (cancelled) => {
+        if (!drag) return;
+        const dx = drag.dx;
+        const vx = drag.vx;
+        const wasX = drag.locked === "x";
+        drag = null;
+        track.classList.remove("is-dragging");
+        if (!wasX || cancelled) {
+          paint(true);
+          return;
+        }
+        const w = widthOf();
+        let next = active;
+        if (dx <= -w * THRESHOLD || vx <= -VELOCITY) next = active + 1;
+        else if (dx >= w * THRESHOLD || vx >= VELOCITY) next = active - 1;
+        go(next);
+      };
+      const onDragEnd = (e) => {
+        if (!drag) return;
+        if (typeof drag.pointerId === "number" && typeof e.pointerId === "number" && e.pointerId !== drag.pointerId) return;
+        if (drag.locked === "x") {
+          const p = point(e);
+          drag.dx = p.x - drag.x;
+          const now = Date.now();
+          const dt = Math.max(1, now - drag.lt);
+          drag.vx = (p.x - drag.lx) / dt;
+        }
+        finishDrag(false);
+      };
+      const onDragCancel = () => finishDrag(true);
+
+      if (global.PointerEvent) {
+        on(gallery, "pointerdown", onDragStart);
+        on(gallery, "pointermove", onDragMove);
+        on(gallery, "pointerup", onDragEnd);
+        on(gallery, "pointercancel", onDragCancel);
+      } else {
+        on(gallery, "touchstart", onDragStart, { passive: true });
+        on(gallery, "touchmove", onDragMove, { passive: false });
+        on(gallery, "touchend", onDragEnd);
+        on(gallery, "touchcancel", onDragCancel);
+      }
+
       on(gallery, "keydown", (e) => {
-        if (e.key === "ArrowRight" || e.key === "ArrowDown") { e.preventDefault(); setActive(active + 1); }
-        if (e.key === "ArrowLeft" || e.key === "ArrowUp") { e.preventDefault(); setActive(active - 1); }
-        if (e.key === "Home") { e.preventDefault(); setActive(0); }
-        if (e.key === "End") { e.preventDefault(); setActive(items.length - 1); }
+        if (e.key === "ArrowRight" || e.key === "ArrowDown") { e.preventDefault(); go(active + 1); }
+        if (e.key === "ArrowLeft" || e.key === "ArrowUp") { e.preventDefault(); go(active - 1); }
+        if (e.key === "Home") { e.preventDefault(); go(0); }
+        if (e.key === "End") { e.preventDefault(); go(last); }
       });
-      setActive(active);
+      paint(true);
     });
   }
 
