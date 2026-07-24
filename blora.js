@@ -877,7 +877,10 @@
       const track = $(".blora-carousel__track", car);
       const slides = $$(".blora-carousel__slide", car);
       const dots = $$(".blora-carousel__dot", car);
+      if (!track || !slides.length) return;
       let i = 0;
+      let pauseAutoplay = null;
+      let resumeAutoplay = null;
       const go = (n) => {
         i = (n + slides.length) % slides.length;
         track.style.transform = "translateX(-" + (i * 100) + "%)";
@@ -888,11 +891,64 @@
       on(prev, "click", () => go(i - 1));
       on(next, "click", () => go(i + 1));
       dots.forEach((d, j) => on(d, "click", () => go(j)));
+
+      /* 触摸 / 指针左右滑动切换；纵向滚动不拦截 */
+      const SWIPE_PX = 40;
+      let swipe = null;
+      const swipePoint = (e) => {
+        if (e.touches && e.touches[0]) return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        if (e.changedTouches && e.changedTouches[0]) return { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
+        return { x: e.clientX, y: e.clientY };
+      };
+      const onSwipeStart = (e) => {
+        if (e.pointerType === "mouse" && e.button !== 0) return;
+        if (e.target && e.target.closest && e.target.closest(".blora-carousel__arrow, .blora-carousel__dot, a, button, input, textarea, select, label")) return;
+        const p = swipePoint(e);
+        swipe = { x: p.x, y: p.y, locked: null, pointerId: e.pointerId };
+        if (pauseAutoplay) pauseAutoplay();
+      };
+      const onSwipeMove = (e) => {
+        if (!swipe) return;
+        const p = swipePoint(e);
+        const dx = p.x - swipe.x;
+        const dy = p.y - swipe.y;
+        if (swipe.locked == null && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) {
+          swipe.locked = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
+        }
+        if (swipe.locked === "x" && e.cancelable) e.preventDefault();
+      };
+      const onSwipeEnd = (e) => {
+        if (!swipe) return;
+        const p = swipePoint(e);
+        const dx = p.x - swipe.x;
+        const axis = swipe.locked;
+        swipe = null;
+        if (axis === "x" && Math.abs(dx) >= SWIPE_PX) go(i + (dx < 0 ? 1 : -1));
+        if (resumeAutoplay) resumeAutoplay();
+      };
+      const onSwipeCancel = () => {
+        swipe = null;
+        if (resumeAutoplay) resumeAutoplay();
+      };
+      if (global.PointerEvent) {
+        on(car, "pointerdown", onSwipeStart);
+        on(car, "pointermove", onSwipeMove);
+        on(car, "pointerup", onSwipeEnd);
+        on(car, "pointercancel", onSwipeCancel);
+      } else {
+        on(car, "touchstart", onSwipeStart, { passive: true });
+        on(car, "touchmove", onSwipeMove, { passive: false });
+        on(car, "touchend", onSwipeEnd);
+        on(car, "touchcancel", onSwipeCancel);
+      }
+
       /* 自动播放：间隔可由 data-autoplay="毫秒" 配置，悬停暂停，跟随 reduced-motion */
-      if (car.hasAttribute("data-autoplay") && !prefersReduced()) {
+      if (car.hasAttribute("data-autoplay") && !prefersReduced(car)) {
         const ms = Number(car.getAttribute("data-autoplay")) || 4000;
         const stop = () => { if (car._timer) { clearInterval(car._timer); car._timer = null; } };
         const start = () => { stop(); car._timer = setInterval(() => go(i + 1), ms); };
+        pauseAutoplay = stop;
+        resumeAutoplay = start;
         start();
         on(car, "mouseenter", stop);
         on(car, "mouseleave", start);
