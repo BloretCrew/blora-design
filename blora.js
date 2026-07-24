@@ -102,11 +102,26 @@
   const formatShortcut = (shortcut, platform = getShortcutPlatform()) => shortcutTokens(shortcut)
     .map((key) => shortcutKey(key, platform))
     .join(" + ");
+  const cssLengthPx = (base, property, fallback = 0) => {
+    const win = ownerWin(base);
+    const d = ownerDoc(base);
+    if (!win || !d || !base) return fallback;
+    const styles = win.getComputedStyle(base);
+    const raw = styles.getPropertyValue(property).trim();
+    const value = parseFloat(raw);
+    if (!Number.isFinite(value)) return fallback;
+    if (raw.endsWith("rem")) {
+      return value * (parseFloat(win.getComputedStyle(d.documentElement).fontSize) || 16);
+    }
+    if (raw.endsWith("em")) {
+      return value * (parseFloat(styles.fontSize) || 16);
+    }
+    return value;
+  };
   const fitFloatingInline = (panel) => {
     if (!panel) return;
     const win = ownerWin(panel);
-    const styles = win.getComputedStyle(panel);
-    const gutter = parseFloat(styles.getPropertyValue("--blora-space-3")) || parseFloat(styles.fontSize);
+    const gutter = cssLengthPx(panel, "--blora-space-3", parseFloat(win.getComputedStyle(panel).fontSize) || 16);
     panel.style.setProperty("--blora-float-shift-x", "0px");
     const rect = panel.getBoundingClientRect();
     let shift = 0;
@@ -411,21 +426,62 @@
       const pop = trigger.closest(".blora-popover");
       if (!pop) return;
       const panel = $(".blora-popover__panel", pop);
+      if (!panel) return;
       const win = ownerWin(pop);
-      const position = () => pop.classList.contains("is-open") && fitFloatingInline(panel);
+      const portalRoot = getPortalRoot(pop);
+      const gap = () => cssLengthPx(panel, "--blora-space-2", 8);
+      const gutter = () => cssLengthPx(panel, "--blora-space-3", 12);
+      const position = () => {
+        if (!pop.classList.contains("is-open")) return;
+        const triggerRect = trigger.getBoundingClientRect();
+        const panelRect = panel.getBoundingClientRect();
+        const edge = gutter();
+        const offset = gap();
+        const left = Math.min(
+          Math.max(edge, triggerRect.left + (triggerRect.width - panelRect.width) / 2),
+          Math.max(edge, win.innerWidth - edge - panelRect.width)
+        );
+        const below = triggerRect.bottom + offset;
+        const above = triggerRect.top - offset - panelRect.height;
+        const top = below + panelRect.height <= win.innerHeight - edge || above < edge ? below : above;
+        panel.style.setProperty("--blora-float-left", left + "px");
+        panel.style.setProperty("--blora-float-top", Math.max(edge, top) + "px");
+      };
+      const close = () => {
+        pop.classList.remove("is-open");
+        panel.classList.remove("is-open");
+        trigger.setAttribute("aria-expanded", "false");
+      };
+      pop._bloraClosePopover = close;
+      trigger.setAttribute("aria-haspopup", "dialog");
+      trigger.setAttribute("aria-expanded", "false");
+      $$("[data-blora-close]", panel).forEach((b) => on(b, "click", close));
       on(trigger, "click", (e) => {
         e.stopPropagation();
-        $$(".blora-popover.is-open").forEach((o) => o !== pop && o.classList.remove("is-open"));
-        pop.classList.toggle("is-open");
-        if (pop.classList.contains("is-open")) win.requestAnimationFrame(position);
+        $$(".blora-popover.is-open").forEach((other) => {
+          if (other !== pop && other._bloraClosePopover) other._bloraClosePopover();
+        });
+        if (pop.classList.contains("is-open")) {
+          close();
+          return;
+        }
+        if (panel.parentNode !== portalRoot) portalRoot.appendChild(panel);
+        panel.classList.add("blora-portal", "is-portaled");
+        pop.classList.add("is-open");
+        panel.classList.add("is-open");
+        trigger.setAttribute("aria-expanded", "true");
+        win.requestAnimationFrame(position);
       });
-      $$("[data-blora-close]", pop).forEach((b) => on(b, "click", () => pop.classList.remove("is-open")));
       on(win, "resize", position);
+      on(win, "scroll", position, true);
     });
     if (!FLAGS.popoverDoc) {
       FLAGS.popoverDoc = true;
       on(document, "click", (e) => {
-        if (!e.target.closest(".blora-popover")) $$(".blora-popover.is-open").forEach((p) => p.classList.remove("is-open"));
+        if (e.target.closest(".blora-popover, .blora-popover__panel")) return;
+        $$(".blora-popover.is-open").forEach((p) => {
+          if (p._bloraClosePopover) p._bloraClosePopover();
+        });
       });
     }
   }
