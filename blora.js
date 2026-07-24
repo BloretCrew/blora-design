@@ -1104,20 +1104,100 @@
     });
   }
 
-  /* —— Dropzone —— */
-  function initDropzone(root) {
-    $$(".blora-dropzone", root).forEach((dz) => {
-      if (bound(dz, "Dropzone")) return;
-      const fileInput = $(".blora-dropzone__input", dz);
-      ["dragenter", "dragover"].forEach((ev) => on(dz, ev, (e) => { e.preventDefault(); dz.classList.add("is-dragover"); }));
-      ["dragleave", "drop"].forEach((ev) => on(dz, ev, (e) => { e.preventDefault(); dz.classList.remove("is-dragover"); }));
-      on(dz, "click", () => { if (fileInput) fileInput.click(); });
-      const showFiles = (files) => {
-        const out = $(".blora-dropzone__files", dz);
-        if (out && files && files.length) out.textContent = Array.from(files).map((f) => f.name).join(", ");
+  /* —— File Upload: compact picker & dropzone —— */
+  function initFileUpload(root) {
+    $$("[data-blora-file-upload], .blora-dropzone", root).forEach((upload) => {
+      if (bound(upload, "FileUpload")) return;
+      const input = $("[data-blora-file-input], .blora-dropzone__input, input[type='file']", upload);
+      if (!input) return;
+      const trigger = $("[data-blora-file-trigger]", upload);
+      const clear = $("[data-blora-file-clear]", upload);
+      const empty = $("[data-blora-file-empty]", upload);
+      const output = $("[data-blora-file-output]", upload);
+      const name = $("[data-blora-file-name]", upload) || $(".blora-dropzone__files", upload);
+      const win = ownerWin(upload);
+      let changeSource = "input";
+
+      const toFiles = (files) => {
+        const list = Array.from(files || []);
+        return input.multiple ? list : list.slice(0, 1);
       };
-      on(dz, "drop", (e) => { showFiles(e.dataTransfer && e.dataTransfer.files); });
-      if (fileInput) on(fileInput, "change", () => showFiles(fileInput.files));
+      const render = (files) => {
+        const list = toFiles(files);
+        const hasFiles = list.length > 0;
+        const label = list.map((file) => file.name).join(", ");
+        upload.classList.toggle("is-filled", hasFiles);
+        upload.dataset.fileCount = String(list.length);
+        if (empty) empty.hidden = hasFiles;
+        if (output) output.hidden = !hasFiles;
+        if (clear) clear.hidden = !hasFiles;
+        if (name) {
+          name.textContent = label;
+          name.title = label;
+        }
+        return list;
+      };
+      const emit = (files, source) => {
+        upload.dispatchEvent(new win.CustomEvent("blora:filechange", {
+          bubbles: true,
+          detail: { files: toFiles(files), source },
+        }));
+      };
+      const notify = (source) => {
+        const files = render(input.files);
+        emit(files, source);
+      };
+      const assignDroppedFiles = (files) => {
+        const list = toFiles(files);
+        if (!list.length) return [];
+        if (win.DataTransfer) {
+          const transfer = new win.DataTransfer();
+          list.forEach((file) => transfer.items.add(file));
+          try {
+            input.files = transfer.files;
+            return toFiles(input.files);
+          } catch (e) {}
+        }
+        return list;
+      };
+
+      ["dragenter", "dragover"].forEach((eventName) => on(upload, eventName, (event) => {
+        event.preventDefault();
+        if (event.dataTransfer) event.dataTransfer.dropEffect = "copy";
+        upload.classList.add("is-dragover");
+      }));
+      ["dragleave", "drop"].forEach((eventName) => on(upload, eventName, (event) => {
+        event.preventDefault();
+        upload.classList.remove("is-dragover");
+      }));
+      on(upload, "drop", (event) => {
+        const files = assignDroppedFiles(event.dataTransfer && event.dataTransfer.files);
+        if (!files.length) return;
+        if (input.files && input.files.length) {
+          changeSource = "drop";
+          input.dispatchEvent(new win.Event("change", { bubbles: true }));
+        } else {
+          render(files);
+          emit(files, "drop");
+        }
+      });
+      if (trigger) on(trigger, "click", () => input.click());
+      else on(upload, "click", (event) => {
+        if (!event.target.closest("[data-blora-file-clear]")) input.click();
+      });
+      on(input, "change", () => {
+        notify(changeSource);
+        changeSource = "input";
+      });
+      on(clear, "click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        input.value = "";
+        changeSource = "clear";
+        input.dispatchEvent(new win.Event("change", { bubbles: true }));
+        if (trigger) trigger.focus();
+      });
+      render(input.files);
     });
   }
 
@@ -2115,7 +2195,7 @@
     initSmoothScroll();
     initPalettePicker(root);
     initColorModeToggle(root);
-    initDropzone(root);
+    initFileUpload(root);
     initCommandPalette();
     initDateGuard(root);
     initOTP(root);

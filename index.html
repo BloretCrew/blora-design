@@ -684,6 +684,18 @@
               <textarea class="blora-textarea" id="f-ta" placeholder="请输入备注内容…"></textarea>
         </div>
 
+        <div class="blora-demo">
+          <div class="blora-demo__label">表单分组 · Fieldset</div>
+          <fieldset class="blora-fieldset">
+            <legend class="blora-fieldset__legend">发布设置</legend>
+            <p class="blora-fieldset__description">使用原生语义组织一组相关控件。</p>
+            <div class="blora-row">
+              <label class="blora-checkbox"><input type="checkbox" checked><span class="blora-checkbox__box"></span>公开访问</label>
+              <label class="blora-checkbox"><input type="checkbox"><span class="blora-checkbox__box"></span>允许评论</label>
+            </div>
+          </fieldset>
+        </div>
+
         <hr class="blora-divider">
 
         <div class="blora-grid blora-grid--2">
@@ -795,6 +807,16 @@
         </div>
 
         <div class="blora-demo">
+          <div class="blora-demo__label">筛选器 · Filter</div>
+          <form class="blora-filter" aria-label="状态筛选">
+            <label class="blora-filter__item"><input type="radio" name="status-filter"><span class="blora-filter__label">全部</span></label>
+            <label class="blora-filter__item"><input type="radio" name="status-filter"><span class="blora-filter__label">进行中</span></label>
+            <label class="blora-filter__item"><input type="radio" name="status-filter"><span class="blora-filter__label">已完成</span></label>
+            <button class="blora-filter__reset" type="reset">清除</button>
+          </form>
+        </div>
+
+        <div class="blora-demo">
           <div class="blora-demo__label">标签输入 · Tags Input</div>
           <div class="blora-tags-input">
             <span class="blora-tag blora-tag--primary blora-tag--removable">设计师<span class="blora-tag__close" aria-label="移除"></span></span>
@@ -852,13 +874,35 @@
 
         <div class="blora-demo">
           <div class="blora-demo__label">文件上传 · Upload & Dropzone</div>
-          <div class="blora-dropzone">
-            <input type="file" class="blora-dropzone__input" style="display:none;" accept="image/*">
-            <div class="blora-dropzone__icon">
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>
+          <div class="blora-dropzone" data-blora-file-upload>
+            <input type="file" class="blora-dropzone__input" data-blora-file-input accept="image/*">
+            <button class="blora-dropzone__trigger" type="button" data-blora-file-trigger>
+              <span class="blora-dropzone__icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>
+              </span>
+              <span><strong>拖拽文件至此</strong> 或 <span class="blora-text-primary">点击选择</span></span>
+            </button>
+            <div class="blora-hint" data-blora-file-empty>支持 SVG / PNG / JPG · 单文件 ≤ 8MB</div>
+            <div class="blora-file-status" data-blora-file-output aria-live="polite" hidden>
+              <span class="blora-file-status__name" data-blora-file-name></span>
+              <button class="blora-file-clear" type="button" data-blora-file-clear aria-label="移除已选文件" title="移除已选文件" hidden>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+              </button>
             </div>
-            <div><strong>拖拽文件至此</strong> 或 <span class="blora-text-primary">点击选择</span></div>
-            <div class="blora-hint blora-dropzone__files">支持 SVG / PNG / JPG · 单文件 ≤ 8MB</div>
+          </div>
+          <div class="blora-field" style="margin-top:var(--blora-space-4);">
+            <label class="blora-label" for="f-file">文件选择 · File Input</label>
+            <div class="blora-file-picker" data-blora-file-upload>
+              <input class="blora-file-picker__input" id="f-file" type="file" data-blora-file-input accept="image/*,.pdf">
+              <button class="blora-file-picker__trigger" type="button" data-blora-file-trigger>选择文件</button>
+              <span class="blora-file-picker__empty" data-blora-file-empty>点击选择或拖拽文件至此</span>
+              <span class="blora-file-status blora-file-picker__status" data-blora-file-output aria-live="polite" hidden>
+                <span class="blora-file-status__name" data-blora-file-name></span>
+                <button class="blora-file-clear" type="button" data-blora-file-clear aria-label="移除已选文件" title="移除已选文件" hidden>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                </button>
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -1793,36 +1837,10 @@
       <header class="blora-sec__head">
         <div class="blora-sec__num">19 — 扩展组件</div>
         <h2 class="blora-sec__title">完整组件集</h2>
-        <p class="blora-sec__desc">补齐常用表单、布局与 Mockup，全部沿用同一套语义令牌和交互规范。</p>
+        <p class="blora-sec__desc">补齐常用布局与 Mockup，全部沿用同一套语义令牌和交互规范。</p>
       </header>
 
       <div class="blora-panel">
-        <div class="blora-demo">
-          <div class="blora-demo__label">表单分组与校验 · Fieldset, File Input, Filter & Validator</div>
-          <fieldset class="blora-fieldset">
-            <legend class="blora-fieldset__legend">发布设置</legend>
-            <p class="blora-fieldset__description">原生语义分组，兼容键盘与屏幕阅读器。</p>
-            <div class="blora-grid blora-grid--2">
-              <label class="blora-validator">
-                <span class="blora-label">项目邮箱</span>
-                <input class="blora-input" type="email" required placeholder="name@example.com">
-                <span class="blora-validator__hint blora-validator__hint--error">请输入有效邮箱。</span>
-                <span class="blora-validator__hint blora-validator__hint--success">格式有效。</span>
-              </label>
-              <label class="blora-field">
-                <span class="blora-label">附件</span>
-                <input class="blora-file-input" type="file" accept="image/*,.pdf">
-              </label>
-            </div>
-            <form class="blora-filter">
-              <label class="blora-filter__item"><input type="radio" name="project-filter"><span class="blora-filter__label">全部</span></label>
-              <label class="blora-filter__item"><input type="radio" name="project-filter"><span class="blora-filter__label">进行中</span></label>
-              <label class="blora-filter__item"><input type="radio" name="project-filter"><span class="blora-filter__label">已完成</span></label>
-              <button class="blora-filter__reset" type="reset">清除</button>
-            </form>
-          </fieldset>
-        </div>
-
         <div class="blora-demo">
           <div class="blora-demo__label">卡片叠层 · Deck</div>
           <div class="blora-row">

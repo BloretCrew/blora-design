@@ -948,6 +948,70 @@ button.blora-search__icon:focus-visible { color: var(--blora-primary); outline: 
 .blora-dropzone:hover, .blora-dropzone.is-dragover { border-color: var(--blora-primary); color: var(--blora-primary); background: color-mix(in srgb, var(--blora-primary) 4%, transparent); }
 .blora-dropzone__icon { font-size: 2em; color: var(--blora-text-subtle); }
 .blora-dropzone:hover .blora-dropzone__icon { color: var(--blora-primary); }
+.blora-dropzone__input,
+.blora-file-picker__input {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.blora-dropzone__trigger {
+  display: flex; flex-direction: column; align-items: center; gap: var(--blora-space-2);
+  width: 100%; padding: 0; border: 0; color: inherit; background: transparent;
+  font: inherit; cursor: pointer;
+}
+.blora-dropzone__trigger:focus-visible {
+  outline: 2px solid var(--blora-primary); outline-offset: var(--blora-space-2);
+  border-radius: var(--blora-radius-sm);
+}
+.blora-file-status {
+  display: inline-flex; align-items: center; gap: var(--blora-space-2);
+  max-width: 100%; min-width: 0; padding-left: var(--blora-space-3);
+  color: var(--blora-foreground); background: var(--blora-surface-1);
+  border: var(--blora-border); border-radius: var(--blora-control-radius);
+}
+.blora-file-status[hidden] { display: none; }
+.blora-file-status__name {
+  min-width: 0; overflow: hidden; color: var(--blora-text-muted);
+  font-size: var(--blora-text-sm); white-space: nowrap; text-overflow: ellipsis;
+}
+.blora-file-clear {
+  display: inline-grid; place-items: center; flex: 0 0 auto;
+  width: var(--blora-control-height); min-height: var(--blora-control-height);
+  padding: 0; border: 0; border-radius: var(--blora-control-radius);
+  color: var(--blora-text-subtle); background: transparent; cursor: pointer;
+  transition: color var(--blora-dur-fast) var(--blora-ease), background var(--blora-dur-fast) var(--blora-ease);
+}
+.blora-file-clear[hidden] { display: none; }
+.blora-file-clear:hover { color: var(--blora-foreground); background: var(--blora-surface-3); }
+.blora-file-clear:focus-visible { outline: 2px solid var(--blora-primary); outline-offset: -3px; }
+.blora-file-picker {
+  display: flex; align-items: stretch; width: 100%; min-height: var(--blora-control-height);
+  color: var(--blora-text-muted); background: var(--blora-surface-1);
+  border: var(--blora-border); border-radius: var(--blora-control-radius); overflow: hidden;
+  transition: border-color var(--blora-dur-fast) var(--blora-ease), box-shadow var(--blora-dur-fast) var(--blora-ease),
+    background var(--blora-dur-fast) var(--blora-ease);
+}
+.blora-file-picker:hover { border-color: var(--blora-text-subtle); }
+.blora-file-picker:focus-within,
+.blora-file-picker.is-dragover { border-color: var(--blora-primary); box-shadow: var(--blora-focus-ring); }
+.blora-file-picker.is-dragover { background: var(--blora-primary-tint); }
+.blora-file-picker__trigger {
+  display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto;
+  min-height: calc(var(--blora-control-height) - 2px); padding: 0 var(--blora-control-pad-x);
+  border: 0; border-right: var(--blora-border);
+  color: var(--blora-foreground); background: var(--blora-surface-2);
+  font: inherit; font-size: var(--blora-text-sm); font-weight: 600; cursor: pointer;
+  transition: color var(--blora-dur-fast) var(--blora-ease), background var(--blora-dur-fast) var(--blora-ease);
+}
+.blora-file-picker__trigger:hover { background: var(--blora-surface-3); }
+.blora-file-picker__trigger:focus-visible { position: relative; z-index: 1; outline: 2px solid var(--blora-primary); outline-offset: -3px; }
+.blora-file-picker__empty {
+  display: flex; align-items: center; flex: 1; min-width: 0;
+  padding: 0 var(--blora-control-pad-x); font-size: var(--blora-text-sm);
+}
+.blora-file-picker__empty[hidden] { display: none; }
+.blora-file-picker__status {
+  flex: 1; border: 0; border-radius: 0; background: transparent;
+}
 
 /* —— OTP 验证码输入 —— */
 .blora-otp { display: inline-flex; gap: var(--blora-space-3); }
@@ -1901,13 +1965,14 @@ html:has(body.blora-page)::-webkit-scrollbar-corner,
 .blora-fieldset--flat { padding-inline: 0; border: 0; background: transparent; }
 
 .blora-file-input {
-  width: 100%; min-height: var(--blora-control-height); padding: 0;
+  box-sizing: border-box; width: 100%; height: var(--blora-control-height); min-height: 0; padding: 0;
   color: var(--blora-text-muted); background: var(--blora-surface-1);
   border: var(--blora-border); border-radius: var(--blora-control-radius);
-  font: inherit; font-size: var(--blora-text-sm); cursor: pointer; overflow: hidden;
+  font: inherit; font-size: var(--blora-text-sm); line-height: calc(var(--blora-control-height) - 2px);
+  cursor: pointer; overflow: hidden;
 }
 .blora-file-input::file-selector-button {
-  min-height: calc(var(--blora-control-height) - 2px); margin: 0 var(--blora-space-3) 0 0;
+  box-sizing: border-box; height: 100%; min-height: 0; margin: 0 var(--blora-space-3) 0 0;
   padding: 0 var(--blora-control-pad-x); border: 0; border-right: var(--blora-border);
   color: var(--blora-foreground); background: var(--blora-surface-2); font: inherit; font-weight: 600; cursor: pointer;
   transition: background var(--blora-dur-fast) var(--blora-ease), color var(--blora-dur-fast) var(--blora-ease);
