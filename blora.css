@@ -1010,12 +1010,13 @@ button.blora-search__icon:focus-visible { color: var(--blora-primary); outline: 
   display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto;
   min-height: calc(var(--blora-control-height) - 2px); padding: 0 var(--blora-control-pad-x);
   border: 0; border-right: var(--blora-border);
+  border-radius: calc(var(--blora-control-radius) - 1px) 0 0 calc(var(--blora-control-radius) - 1px);
   color: var(--blora-foreground); background: var(--blora-surface-2);
   font: inherit; font-size: var(--blora-text-sm); font-weight: 600; cursor: pointer;
   transition: color var(--blora-dur-fast) var(--blora-ease), background var(--blora-dur-fast) var(--blora-ease);
 }
 .blora-file-picker__trigger:hover { background: var(--blora-surface-3); }
-.blora-file-picker__trigger:focus-visible { position: relative; z-index: 1; outline: 2px solid var(--blora-primary); outline-offset: -3px; }
+.blora-file-picker__trigger:focus-visible { outline: none; background: var(--blora-surface-3); }
 .blora-file-picker__empty {
   display: flex; align-items: center; flex: 1; min-width: 0;
   padding: 0 var(--blora-control-pad-x); font-size: var(--blora-text-sm);
