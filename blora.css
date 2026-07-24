@@ -1042,6 +1042,25 @@ button.blora-search__icon:focus-visible { color: var(--blora-primary); outline: 
 }
 .blora-otp__input { width: 2.5em; height: 3em; text-align: center; font-size: var(--blora-text-xl); font-family: var(--blora-font-mono); color: var(--blora-text-strong); background: var(--blora-surface-1); border: 1px solid var(--blora-border-subtle); border-radius: var(--blora-radius-md); transition: all var(--blora-dur-fast) var(--blora-ease); }
 .blora-otp__input:focus { outline: none; border-color: var(--blora-primary); box-shadow: var(--blora-focus-ring); }
+@media (max-width: 560px) {
+  .blora-otp {
+    display: flex;
+    width: 100%;
+    gap: var(--blora-space-1);
+    overflow: visible;
+    overscroll-behavior-inline: auto;
+    scrollbar-width: auto;
+  }
+  .blora-otp__input {
+    flex: 1 1 0;
+    width: 0;
+    min-width: 0;
+    max-width: 2.5em;
+    height: 2.75em;
+    padding-inline: 0;
+    font-size: var(--blora-text-lg);
+  }
+}
 
 /* —— 颜色选择器 —— */
 /* —— 颜色选择器 · Custom Color Picker —— */
