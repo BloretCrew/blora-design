@@ -1181,10 +1181,18 @@
           emit(files, "drop");
         }
       });
-      if (trigger) on(trigger, "click", () => input.click());
-      else on(upload, "click", (event) => {
-        if (!event.target.closest("[data-blora-file-clear]")) input.click();
-      });
+      if (upload.classList.contains("blora-dropzone")) {
+        on(upload, "click", (event) => {
+          if (event.target === input || (clear && clear.contains(event.target))) return;
+          input.click();
+        });
+      } else if (trigger) {
+        on(trigger, "click", () => input.click());
+      } else {
+        on(upload, "click", (event) => {
+          if (event.target !== input && !(clear && clear.contains(event.target))) input.click();
+        });
+      }
       on(input, "change", () => {
         notify(changeSource);
         changeSource = "input";
