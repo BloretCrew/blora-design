@@ -1587,7 +1587,7 @@ html[data-blora-navbar-variant="floating"] .blora-navbar {
 .blora-table-wrap { max-width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; -webkit-overflow-scrolling: touch; border: var(--blora-border); border-radius: var(--blora-radius-lg); background: var(--blora-surface-1); }
 .blora-table { width: 100%; border-collapse: collapse; font-size: var(--blora-text-sm); }
 .blora-table thead th { padding: 0.85em 1em; text-align: left; font-weight: 600; color: var(--blora-foreground); background: var(--blora-surface-2); border-bottom: 1px solid var(--blora-border-subtle); white-space: nowrap; }
-.blora-table tbody td { padding: 0.85em 1em; color: var(--blora-text-emphasis); border-bottom: 1px solid var(--blora-border-subtle); }
+.blora-table tbody td { padding: 0.85em 1em; color: var(--blora-text-emphasis); border-bottom: 1px solid var(--blora-border-subtle); white-space: nowrap; }
 .blora-table tbody tr:last-child td { border-bottom: none; }
 .blora-table tbody tr { transition: background var(--blora-dur-fast) var(--blora-ease); }
 .blora-table tbody tr:hover { background: var(--blora-surface-2); }
