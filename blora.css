@@ -963,10 +963,9 @@ button.blora-search__icon:focus-visible { color: var(--blora-primary); outline: 
   border-radius: var(--blora-radius-sm);
 }
 .blora-file-status {
-  display: inline-flex; align-items: center; gap: var(--blora-space-2);
-  max-width: 100%; min-width: 0; padding-left: var(--blora-space-3);
-  color: var(--blora-foreground); background: var(--blora-surface-1);
-  border: var(--blora-border); border-radius: var(--blora-control-radius);
+  display: inline-flex; align-items: center; gap: var(--blora-space-1);
+  max-width: 100%; min-width: 0;
+  color: var(--blora-foreground); background: transparent;
 }
 .blora-file-status[hidden] { display: none; }
 .blora-file-status__name {
@@ -974,15 +973,28 @@ button.blora-search__icon:focus-visible { color: var(--blora-primary); outline: 
   font-size: var(--blora-text-sm); white-space: nowrap; text-overflow: ellipsis;
 }
 .blora-file-clear {
-  display: inline-grid; place-items: center; flex: 0 0 auto;
-  width: var(--blora-control-height); min-height: var(--blora-control-height);
-  padding: 0; border: 0; border-radius: var(--blora-control-radius);
+  position: relative; display: inline-grid; place-items: center; flex: 0 0 auto;
+  width: 2rem; min-height: 2rem;
+  padding: 0; border: 0; border-radius: 50%;
   color: var(--blora-text-subtle); background: transparent; cursor: pointer;
-  transition: color var(--blora-dur-fast) var(--blora-ease), background var(--blora-dur-fast) var(--blora-ease);
+  transition: color var(--blora-dur-fast) var(--blora-ease);
 }
+.blora-file-clear::before {
+  content: ""; position: absolute; inset: 0.125rem; border-radius: 50%; background: transparent;
+  transition: background var(--blora-dur-fast) var(--blora-ease), box-shadow var(--blora-dur-fast) var(--blora-ease);
+}
+.blora-file-clear::after {
+  content: ""; position: absolute;
+  inset: calc((2rem - var(--blora-control-height)) / 2);
+}
+.blora-file-clear svg { position: relative; z-index: 1; width: 14px; height: 14px; }
 .blora-file-clear[hidden] { display: none; }
-.blora-file-clear:hover { color: var(--blora-foreground); background: var(--blora-surface-3); }
-.blora-file-clear:focus-visible { outline: 2px solid var(--blora-primary); outline-offset: -3px; }
+.blora-file-clear:hover { color: var(--blora-foreground); }
+.blora-file-clear:hover::before { background: var(--blora-surface-3); }
+.blora-file-clear:focus-visible { color: var(--blora-foreground); outline: none; }
+.blora-file-clear:focus-visible::before {
+  background: var(--blora-surface-3); box-shadow: 0 0 0 2px var(--blora-primary);
+}
 .blora-file-picker {
   display: flex; align-items: stretch; width: 100%; min-height: var(--blora-control-height);
   color: var(--blora-text-muted); background: var(--blora-surface-1);
@@ -1010,7 +1022,7 @@ button.blora-search__icon:focus-visible { color: var(--blora-primary); outline: 
 }
 .blora-file-picker__empty[hidden] { display: none; }
 .blora-file-picker__status {
-  flex: 1; border: 0; border-radius: 0; background: transparent;
+  flex: 1; padding: 0 calc((var(--blora-control-height) - 2rem) / 2) 0 var(--blora-control-pad-x);
 }
 
 /* —— OTP 验证码输入 —— */
