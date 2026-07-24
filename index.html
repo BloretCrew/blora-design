@@ -31,7 +31,7 @@
   /* —— 仅用于本展示页的样式，不属于框架本体 —— */
   .blora-showcase { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: var(--blora-space-8); max-width: 1440px; margin: 0 auto; padding: var(--blora-space-6) var(--blora-space-6) var(--blora-space-12); min-width: 0; }
   .blora-showcase > main { min-width: 0; max-width: 100%; overflow-x: clip; }
-  .blora-showside { position: sticky; top: 88px; align-self: start; max-height: calc(100vh - 110px); overflow-y: auto; padding: 0 var(--blora-space-3); }
+    .blora-showside { position: sticky; top: 88px; align-self: start; max-height: calc(100dvh - 110px); overflow-y: auto; padding: 0 var(--blora-space-3); }
   .blora-shownav { font-size: var(--blora-text-sm); }
   .blora-shownav a { display: block; padding: 0.5em 0.8em; color: var(--blora-text-muted); border-radius: var(--blora-radius-sm); transition: all var(--blora-dur-fast) var(--blora-ease); }
   .blora-shownav a:hover { color: var(--blora-text-strong); background: var(--blora-surface-2); }
@@ -84,10 +84,12 @@
     }
   }
   @media (max-width: 560px) {
-    .blora-showcase { padding-inline: var(--blora-space-4); }
-    .blora-sec, .blora-panel, .blora-card, .blora-demo { min-width: 0; max-width: 100%; overflow-wrap: anywhere; word-break: break-word; }
-    .blora-control-row { max-width: 100%; overflow-x: auto; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; padding-bottom: 2px; scrollbar-width: thin; }
-    .blora-panel, .blora-demo { overflow-x: auto; }
+    .blora-showcase { gap: var(--blora-space-6); padding-inline: var(--blora-space-3); }
+    .blora-sec, .blora-panel, .blora-card, .blora-demo { min-width: 0; max-width: 100%; overflow-wrap: anywhere; }
+    .blora-control-row { max-width: 100%; align-items: flex-start; gap: var(--blora-space-3); }
+    .blora-control-row > span { width: 100%; min-width: 0; }
+    .blora-panel { padding: var(--blora-space-4); }
+    .blora-demo { padding: var(--blora-space-4); }
   }
 
   .blora-showcase-hero { padding: var(--blora-space-9) var(--blora-space-6) var(--blora-space-7); text-align: center; max-width: 920px; margin: 0 auto; }
@@ -117,10 +119,21 @@
   .blora-swatch__name { font-size: var(--blora-text-sm); font-weight: 500; color: var(--blora-foreground); }
   .blora-swatch__hex { font-family: var(--blora-font-mono); font-size: var(--blora-text-xs); color: var(--blora-text-subtle); }
 
-  .blora-typetable td { padding: var(--blora-space-3) var(--blora-space-4); border-bottom: 1px solid var(--blora-border-subtle); }
+  .blora-typetable { border-collapse: collapse; table-layout: auto; }
+  .blora-typetable td { min-width: 0; padding: var(--blora-space-3) var(--blora-space-4); border-bottom: 1px solid var(--blora-border-subtle); }
   .blora-typetable td:first-child { white-space: nowrap; }
+  .blora-typetable td:nth-child(2), .blora-typetable td:nth-child(3) { white-space: nowrap; }
+  @media (max-width: 720px) {
+    .blora-typetable, .blora-typetable tbody, .blora-typetable tr, .blora-typetable td { display: block; width: 100%; }
+    .blora-typetable tr { padding-block: var(--blora-space-4); border-bottom: 1px solid var(--blora-border-subtle); }
+    .blora-typetable td { padding: var(--blora-space-1) 0; border-bottom: 0; white-space: normal; overflow-wrap: normal; word-break: normal; }
+    .blora-typetable td:first-child { overflow-x: auto; padding-bottom: var(--blora-space-2); white-space: nowrap; }
+    .blora-typetable td:nth-child(2), .blora-typetable td:nth-child(3) { white-space: normal; }
+    .blora-typetable .blora-h1 { font-size: var(--blora-text-3xl); }
+    .blora-typetable .blora-h2 { font-size: var(--blora-text-2xl); }
+  }
 
-  .blora-spacedemo { display: flex; align-items: flex-end; gap: var(--blora-space-2); }
+  .blora-spacedemo { display: flex; align-items: flex-end; gap: var(--blora-space-2); max-width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; padding-bottom: var(--blora-space-2); }
   .blora-spacedemo__bar { width: 32px; background: var(--blora-primary); border-radius: var(--blora-radius-xs) var(--blora-radius-xs) 0 0; opacity: 0.85; }
   .blora-spacedemo__label { font-family: var(--blora-font-mono); font-size: var(--blora-text-xs); color: var(--blora-text-subtle); text-align: center; margin-top: var(--blora-space-2); }
 

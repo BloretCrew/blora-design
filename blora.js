@@ -102,6 +102,18 @@
   const formatShortcut = (shortcut, platform = getShortcutPlatform()) => shortcutTokens(shortcut)
     .map((key) => shortcutKey(key, platform))
     .join(" + ");
+  const fitFloatingInline = (panel) => {
+    if (!panel) return;
+    const win = ownerWin(panel);
+    const styles = win.getComputedStyle(panel);
+    const gutter = parseFloat(styles.getPropertyValue("--blora-space-3")) || parseFloat(styles.fontSize);
+    panel.style.setProperty("--blora-float-shift-x", "0px");
+    const rect = panel.getBoundingClientRect();
+    let shift = 0;
+    if (rect.left < gutter) shift += gutter - rect.left;
+    if (rect.right + shift > win.innerWidth - gutter) shift -= rect.right + shift - (win.innerWidth - gutter);
+    panel.style.setProperty("--blora-float-shift-x", shift + "px");
+  };
 
   function initShortcutHints(root) {
     $$('[data-blora-shortcut]', root).forEach((hint) => {
@@ -398,12 +410,17 @@
       if (bound(trigger, "Popover")) return;
       const pop = trigger.closest(".blora-popover");
       if (!pop) return;
+      const panel = $(".blora-popover__panel", pop);
+      const win = ownerWin(pop);
+      const position = () => pop.classList.contains("is-open") && fitFloatingInline(panel);
       on(trigger, "click", (e) => {
         e.stopPropagation();
         $$(".blora-popover.is-open").forEach((o) => o !== pop && o.classList.remove("is-open"));
         pop.classList.toggle("is-open");
+        if (pop.classList.contains("is-open")) win.requestAnimationFrame(position);
       });
       $$("[data-blora-close]", pop).forEach((b) => on(b, "click", () => pop.classList.remove("is-open")));
+      on(win, "resize", position);
     });
     if (!FLAGS.popoverDoc) {
       FLAGS.popoverDoc = true;
@@ -1209,6 +1226,18 @@
     });
   }
 
+  function initTooltip(root) {
+    $$(".blora-tooltip", root).forEach((tooltip) => {
+      if (bound(tooltip, "Tooltip")) return;
+      const bubble = $(".blora-tooltip__bubble", tooltip);
+      if (!bubble) return;
+      const position = () => fitFloatingInline(bubble);
+      on(tooltip, "pointerenter", position);
+      on(tooltip, "focusin", position);
+      on(ownerWin(tooltip), "resize", position);
+    });
+  }
+
   /* —— OTP —— */
   function initOTP(root) {
     $$(".blora-otp", root).forEach((otp) => {
@@ -1916,7 +1945,16 @@
       if (bound(trigger, "Dropdown")) return;
       const menu = trigger.parentElement.querySelector(".blora-dropdown-menu");
       if (!menu) return;
-      on(trigger, "click", (e) => { e.stopPropagation(); const open = menu.classList.contains("is-open"); $$(".blora-dropdown-menu.is-open").forEach((m) => m !== menu && m.classList.remove("is-open")); menu.classList.toggle("is-open", !open); });
+      const win = ownerWin(menu);
+      const position = () => menu.classList.contains("is-open") && fitFloatingInline(menu);
+      on(trigger, "click", (e) => {
+        e.stopPropagation();
+        const open = menu.classList.contains("is-open");
+        $$(".blora-dropdown-menu.is-open").forEach((m) => m !== menu && m.classList.remove("is-open"));
+        menu.classList.toggle("is-open", !open);
+        if (!open) win.requestAnimationFrame(position);
+      });
+      on(win, "resize", position);
     });
     if (!FLAGS.dropdownDoc) {
       FLAGS.dropdownDoc = true;
@@ -2182,6 +2220,7 @@
     initModal(root);
     initDrawer(root);
     initPopover(root);
+    initTooltip(root);
     initDropdown(root);
     initSpeedDial(root);
     initSidebarLayout(root);
