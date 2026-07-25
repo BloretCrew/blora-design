@@ -708,16 +708,23 @@ Blora.toast({ type: 'success', message: '操作已完成', duration: 3000 });
   <span class="blora-swap__on">已收藏</span>
 </label>
 
-<!-- Speed Dial：支持点击、Esc、方向键、Home/End -->
+<!-- Speed Dial / FAB：点击、Esc、方向键、Home/End；可配关闭钮或主操作 -->
 <div class="blora-speed-dial" data-blora-speed-dial>
   <button class="blora-btn blora-btn--primary blora-btn--icon blora-speed-dial__trigger"
           type="button" data-blora-speed-dial-trigger aria-label="快捷操作">+</button>
+  <!-- 可选：展开后替换触发器 —— 二选一 -->
+  <!-- <button class="blora-btn blora-btn--danger blora-btn--icon blora-speed-dial__close" type="button" data-blora-speed-dial-close aria-label="关闭">×</button> -->
+  <!-- <button class="blora-btn blora-btn--secondary blora-btn--icon blora-speed-dial__main" type="button" data-blora-speed-dial-main aria-label="主操作">↑</button> -->
   <div class="blora-speed-dial__actions">
-    <button class="blora-btn blora-speed-dial__action" type="button">新建</button>
-    <button class="blora-btn blora-speed-dial__action" type="button">上传</button>
+    <!-- 纯图标 / 矩形文字 / 标签+图标 -->
+    <button class="blora-btn blora-btn--secondary blora-btn--icon blora-speed-dial__action" type="button" aria-label="新建">…</button>
+    <div class="blora-speed-dial__item">
+      <span class="blora-speed-dial__label">上传</span>
+      <button class="blora-btn blora-btn--secondary blora-btn--icon blora-speed-dial__action" type="button" aria-label="上传">…</button>
+    </div>
   </div>
 </div>
-<!-- 布局：默认向上；--left 向左；--radial 径向 -->
+<!-- 布局：默认向上；--left 向左；--flower / --radial 扇形（最多 4 个动作） -->
 
 <fieldset class="blora-fieldset">
   <legend class="blora-fieldset__legend">发布设置</legend>
@@ -739,6 +746,124 @@ Blora.toast({ type: 'success', message: '操作已完成', duration: 3000 });
 ```
 
 `Validator` 复用原生约束校验；业务主动校验时可使用 `.is-error` / `.is-success`。`File Input` 是单文件或系统文件选择入口，多文件拖拽仍使用 `.blora-dropzone`。
+
+### 14.1 表单校验 API（行为层）
+
+```html
+<form data-blora-form data-blora-validate-on="submit blur">
+  <div class="blora-field">
+    <label class="blora-label blora-label--req">邮箱</label>
+    <input class="blora-input" type="email" required data-blora-rule="email">
+    <span class="blora-error" data-blora-error hidden></span>
+  </div>
+  <button class="blora-btn blora-btn--primary" type="submit">提交</button>
+</form>
+```
+
+```js
+Blora.validate("#my-form");           // { valid, errors: [{ field, message }] }
+Blora.validateField(inputEl);
+Blora.clearValidation("#my-form");
+// 事件：blora:validate / blora:invalid（detail 同上）
+// data-blora-rule：email | url | number | min:n | max:n
+// data-blora-message：覆盖默认文案
+// data-blora-validate-on：submit | blur | change（可组合，默认读 configure.validateOn）
+```
+
+### 14.2 表格排序 / 分页
+
+```html
+<div class="blora-table-wrap" data-blora-table data-page-size="10" data-page="1">
+  <table class="blora-table" id="t1">
+    <thead>
+      <tr>
+        <th class="blora-table-sort" data-blora-sort="name">名称</th>
+        <th class="blora-table-sort" data-blora-sort="status">状态</th>
+      </tr>
+    </thead>
+    <tbody>…</tbody>
+  </table>
+</div>
+<nav class="blora-pagination" data-blora-pagination data-blora-table="#t1" data-page-size="10"></nav>
+```
+
+```js
+Blora.table.sort("#t1", "status", "asc");
+Blora.table.setPage("#t1", 2);
+Blora.table.getState("#t1"); // { page, pageSize, sortKey, sortDir, total }
+// 默认 mode=local（DOM 内排序/隐藏行）
+// data-blora-table-mode="remote" 时只派发 blora:table-change，由业务拉数
+// 分页事件：blora:page-change
+```
+
+### 14.3 全局配置
+
+```js
+Blora.configure({
+  size: "md",              // sm | md | lg → html[data-blora-size]
+  validateOn: "submit",  // 默认校验触发
+  tablePageSize: 10,
+  portalRoot: "#app-overlays",
+  locale: "en",            // 或 "zh-CN" / 自定义语言码
+  messages: { "validate.required": "Required" },
+});
+Blora.getConfig();
+```
+
+### 14.4 i18n（框架生成文案）
+
+Blora **只翻译组件自己生成的字符串**（校验提示、分页 aria、日期控件、级联前缀等）。页面正文仍由业务 i18n 方案负责。
+
+**内置语言包**：`zh-CN`（默认）、`en`。
+
+```js
+// 切换内置语言
+Blora.setLocale("en");
+
+// 任意语言扩展：提供完整或部分 pack
+Blora.setLocale("ja-JP", {
+  collator: "ja",
+  months: ["1月","2月",/* … */],
+  dow: ["日","月","火","水","木","金","土"],
+  year: "年",
+  today: "今日",
+  clear: "クリア",
+  now: "現在",
+  confirm: "OK",
+  hour: "時",
+  minute: "分",
+  messages: {
+    "validate.required": "必須項目です",
+    "validate.email": "有効なメールアドレスを入力してください",
+    "pagination.prev": "前へ",
+    "pagination.next": "次へ",
+    "pagination.page": "{n} ページ",
+    "pagination.nav": "ページネーション",
+    "cascader.selectedPrefix": "選択：",
+  },
+});
+
+// 读取
+Blora.t("validate.required");
+Blora.t("pagination.page", { n: 3 });
+Blora.getLocale();     // "ja-JP"
+Blora.locales;         // ["zh-CN", "en"] 内置列表
+
+// 语言变更事件（业务可监听后重绘自有 UI）
+document.addEventListener("blora:localechange", (e) => {
+  console.log(e.detail.locale, e.detail.messages);
+});
+```
+
+**常用 key**
+
+| Key | 用途 |
+|-----|------|
+| `validate.required` / `email` / `url` / `number` / `min` / `max` / `minlength` / `maxlength` / `pattern` | 表单校验 |
+| `pagination.prev` / `next` / `page` / `nav` | 分页 |
+| `cascader.selectedPrefix` | 级联已选前缀 |
+
+兼容：`configure({ messages: { required: "…" } })` 仍支持旧短键。
 
 ### 15. 导航与页面布局
 
@@ -805,7 +930,7 @@ Sidebar 在窄屏关闭时会使用 `inert` 移出焦点序列；打开后焦点
 
 ```
 
-### 17. 可选效果与 Mockup
+### 17. Text Rotate 与 Mockup
 
 ```html
 <span class="blora-text-rotate" data-interval="3200">
@@ -813,18 +938,43 @@ Sidebar 在窄屏关闭时会使用 `inert` 移出焦点序列；打开后焦点
   <span class="blora-text-rotate__item">一致体验</span>
 </span>
 
-<div class="blora-mockup blora-browser-mockup">…</div>
-<div class="blora-mockup blora-code-mockup">…</div>
-<div class="blora-mockup blora-window-mockup">…</div>
-<div class="blora-phone-mockup">
-  <div class="blora-phone-mockup__screen">
-    <span class="blora-phone-mockup__camera"></span>
-    <div class="blora-phone-mockup__body">…</div>
+<!-- Browser -->
+<div class="blora-mockup blora-mockup--browser">
+  <div class="blora-mockup__toolbar">
+    <span class="blora-mockup__dots" aria-hidden="true"><span></span></span>
+    <div class="blora-mockup__address">https://example.com</div>
+  </div>
+  <div class="blora-mockup__body">…</div>
+</div>
+
+<!-- Code -->
+<div class="blora-mockup blora-mockup--code">
+  <pre class="blora-mockup__line" data-prefix="$"><code>npm i @bloret/blora-design</code></pre>
+  <pre class="blora-mockup__line blora-mockup__line--success" data-prefix=">"><code>Done!</code></pre>
+</div>
+
+<!-- Window -->
+<div class="blora-mockup blora-mockup--window">
+  <div class="blora-mockup__toolbar">
+    <span class="blora-mockup__dots" aria-hidden="true"><span></span></span>
+    <span class="blora-mockup__title">Preferences</span>
+  </div>
+  <div class="blora-mockup__body">…</div>
+</div>
+
+<!-- Phone：daisyUI 比例（462∶978、5px 边框、6px 内边、灵动岛 28%×3.7%） -->
+<div class="blora-mockup blora-mockup--phone">
+  <div class="blora-mockup__camera" aria-hidden="true"></div>
+  <div class="blora-mockup__display">
+    <div class="blora-mockup__display-body">…</div>
   </div>
 </div>
+<!-- 边框色：--phone-accent / --phone-silver；宽度：--blora-phone-max -->
 ```
 
-Text Rotate 属于可选强调效果，不作为运营后台和高频工作流的默认装饰，并服从 `prefers-reduced-motion`。Mockup 只用于呈现真实产品或代码内容，不替代业务页面的正式容器。
+旧类名 `blora-browser-mockup` / `blora-code-mockup` / `blora-window-mockup` / `blora-phone-mockup` 仍可作为别名。
+
+Text Rotate 为可选强调效果，服从 `prefers-reduced-motion`。Mockup 只承载真实内容预览，不替代业务容器。
 
 ---
 

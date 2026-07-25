@@ -47,8 +47,9 @@ blora-design-2/
 ├── blora.js         # 交互层 · Tab/Modal/Drawer/Toast/Carousel…
 ├── index.html       # 组件全集展示（按使用场景分组）
 └── docs/
-    ├── standards.md  # 设计规范（哲学/色彩/字体/间距/动效/无障碍）
-    └── framework.md  # 框架文档（安装/令牌/组件 API/JS 用法）
+    ├── standards.md     # 设计规范（哲学/色彩/字体/间距/动效/无障碍）
+    ├── framework.md     # 框架文档（安装/令牌/组件 API/JS 用法）
+    └── IMPROVEMENTS.md  # 完善清单（对照主流框架，可按需勾选推进）
 ```
 
 ---
@@ -92,12 +93,12 @@ blora-design-2/
 |------|------|
 | **基础** | 图标 · 排版 · 分隔线 · 引文 · 代码 |
 | **动作** | 按钮 · FAB · Speed Dial · Swap · 按钮组 |
-| **表单** | 输入 · 多行 · 选择 · 密码 · 搜索 · 前后缀 · 数字步进 · 复选 · 单选 · 开关 · 滑块 · 范围 · 评分 · 分段 · 标签输入 · OTP · 颜色 · Fieldset · File Input · Filter · Validator · 上传/拖拽 |
+| **表单** | 输入 · 多行 · 选择 · 密码 · 搜索 · 前后缀 · 数字步进 · 复选 · 单选 · 开关 · 滑块 · 范围 · 评分 · 分段 · 标签输入 · OTP · 颜色 · Fieldset · File Input · Filter · Validator · **Form 校验 API** · 上传/拖拽 |
 | **选择器** | 日期 · 时间 · 级联 · 穿梭框 |
 | **标识** | 标签 · 徽章 · 状态点 · 头像（含图片/组/徽章） |
 | **进度** | 线形 · 环形 · 条纹 · Spinner · 骨架屏 |
 | **导航** | 顶栏 · 标签页（下划线/Pills/纵向）· 面包屑 · 分页 · 步骤 · 侧栏菜单 · 响应式 Sidebar · 下拉菜单 · Megamenu · Dock |
-| **数据** | 表格 · 列表 · 折叠 · 时间轴 · 树 · 统计 · 描述列表 · 轮播 · 图片 · Hover Gallery · Diff · Chat · Countdown · Kbd · 空态 · 结果 · 日历 · 图表容器 |
+| **数据** | 表格（**排序/分页**）· 列表 · 折叠 · 时间轴 · 树 · 统计 · 描述列表 · 轮播 · 图片 · Hover Gallery · Diff · Chat · Countdown · Kbd · 空态 · 结果 · 日历 · 图表容器 |
 | **反馈** | 警告 · 横幅 · 消息 · 通知 · Toast · Tooltip · Popover · Popconfirm |
 | **层** | 模态（S/M/L）· 抽屉（上/下/左/右）· 命令面板 |
 | **布局** | 栅格 · 卡面 · 面板 · 分隔 · 堆叠 · 行 · Indicator · Hero · Footer · Deck |

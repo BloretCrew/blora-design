@@ -15,7 +15,174 @@
     portalRoot: null,
     colorModeStorageKey: "blora-color-mode",
     paletteStorageKey: "blora-palette",
+    /* sm | md | lg — 写到 html[data-blora-size] */
+    size: "md",
+    /* 校验触发：submit / blur / change，可空格组合如 "blur change" */
+    validateOn: "submit",
+    /* 表格默认每页条数（data-page-size 可覆盖） */
+    tablePageSize: 10,
+    /* 当前语言码，如 zh-CN / en */
+    locale: "zh-CN",
   };
+
+  /* —— i18n · 框架生成文案（业务页面文案仍由业务自己管） —— */
+  const I18N_PACKS = Object.freeze({
+    "zh-CN": Object.freeze({
+      collator: "zh-CN",
+      months: Object.freeze(["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"]),
+      dow: Object.freeze(["日","一","二","三","四","五","六"]),
+      year: "年",
+      today: "今日",
+      clear: "清除",
+      now: "现在",
+      confirm: "确定",
+      hour: "时",
+      minute: "分",
+      messages: Object.freeze({
+        "validate.required": "此项为必填",
+        "validate.email": "请输入有效的邮箱地址",
+        "validate.url": "请输入有效的网址",
+        "validate.number": "请输入有效数字",
+        "validate.min": "不能小于 {n}",
+        "validate.max": "不能大于 {n}",
+        "validate.minlength": "至少输入 {n} 个字符",
+        "validate.maxlength": "最多输入 {n} 个字符",
+        "validate.pattern": "格式不正确",
+        "validate.mismatch": "输入不匹配",
+        "pagination.prev": "上一页",
+        "pagination.next": "下一页",
+        "pagination.page": "第 {n} 页",
+        "pagination.nav": "分页",
+        "cascader.selectedPrefix": "已选：",
+      }),
+    }),
+    en: Object.freeze({
+      collator: "en",
+      months: Object.freeze(["January","February","March","April","May","June","July","August","September","October","November","December"]),
+      dow: Object.freeze(["Su","Mo","Tu","We","Th","Fr","Sa"]),
+      year: "",
+      today: "Today",
+      clear: "Clear",
+      now: "Now",
+      confirm: "OK",
+      hour: "Hour",
+      minute: "Min",
+      messages: Object.freeze({
+        "validate.required": "This field is required",
+        "validate.email": "Enter a valid email address",
+        "validate.url": "Enter a valid URL",
+        "validate.number": "Enter a valid number",
+        "validate.min": "Must be at least {n}",
+        "validate.max": "Must be at most {n}",
+        "validate.minlength": "At least {n} characters",
+        "validate.maxlength": "At most {n} characters",
+        "validate.pattern": "Invalid format",
+        "validate.mismatch": "Values do not match",
+        "pagination.prev": "Previous page",
+        "pagination.next": "Next page",
+        "pagination.page": "Page {n}",
+        "pagination.nav": "Pagination",
+        "cascader.selectedPrefix": "Selected: ",
+      }),
+    }),
+  });
+  /* 运行时可变：messages 深拷贝，calendar 字段同步到 LOCALE */
+  let activeMessages = {};
+  const LOCALE = {
+    months: [],
+    dow: [],
+    year: "年",
+    today: "今日",
+    clear: "清除",
+    now: "现在",
+    confirm: "确定",
+    hour: "时",
+    minute: "分",
+  };
+  /* 兼容旧 VALIDATION_MESSAGES 键名 → i18n key */
+  const VALIDATE_KEY_MAP = {
+    required: "validate.required",
+    email: "validate.email",
+    url: "validate.url",
+    number: "validate.number",
+    min: "validate.min",
+    max: "validate.max",
+    minlength: "validate.minlength",
+    maxlength: "validate.maxlength",
+    pattern: "validate.pattern",
+    mismatch: "validate.mismatch",
+  };
+  const clonePackMessages = (pack) => Object.assign({}, (pack && pack.messages) || {});
+  const applyPackToLocale = (pack) => {
+    if (!pack) return;
+    LOCALE.months = Array.from(pack.months || []);
+    LOCALE.dow = Array.from(pack.dow || []);
+    LOCALE.year = pack.year != null ? pack.year : "";
+    LOCALE.today = pack.today != null ? pack.today : "Today";
+    LOCALE.clear = pack.clear != null ? pack.clear : "Clear";
+    LOCALE.now = pack.now != null ? pack.now : "Now";
+    LOCALE.confirm = pack.confirm != null ? pack.confirm : "OK";
+    LOCALE.hour = pack.hour != null ? pack.hour : "Hour";
+    LOCALE.minute = pack.minute != null ? pack.minute : "Min";
+  };
+  const t = (key, params) => {
+    let str = activeMessages[key];
+    if (str == null && I18N_PACKS["zh-CN"]) str = I18N_PACKS["zh-CN"].messages[key];
+    if (str == null) str = key;
+    str = String(str);
+    if (params && typeof params === "object") {
+      Object.keys(params).forEach((k) => {
+        str = str.split("{" + k + "}").join(String(params[k]));
+      });
+    }
+    return str;
+  };
+  const getCollatorLocale = () => {
+    const pack = I18N_PACKS[CONFIG.locale] || I18N_PACKS["zh-CN"];
+    return (pack && pack.collator) || CONFIG.locale || "zh-CN";
+  };
+  const setLocale = (code, pack) => {
+    const next = code && I18N_PACKS[code] ? code : (code || "zh-CN");
+    const base = I18N_PACKS[next] || I18N_PACKS["zh-CN"];
+    CONFIG.locale = I18N_PACKS[next] ? next : (typeof code === "string" && code ? code : "zh-CN");
+    activeMessages = clonePackMessages(base);
+    applyPackToLocale(base);
+    if (pack && typeof pack === "object") {
+      if (pack.messages && typeof pack.messages === "object") Object.assign(activeMessages, pack.messages);
+      if (pack.months) LOCALE.months = Array.from(pack.months);
+      if (pack.dow) LOCALE.dow = Array.from(pack.dow);
+      ["year", "today", "clear", "now", "confirm", "hour", "minute"].forEach((k) => {
+        if (pack[k] != null) LOCALE[k] = pack[k];
+      });
+      if (pack.collator) { /* stored only via custom packs on CONFIG — use getCollator from pack if provided */ }
+      if (typeof pack.collator === "string") CONFIG._collator = pack.collator;
+      else delete CONFIG._collator;
+    } else {
+      delete CONFIG._collator;
+    }
+    const d = doc();
+    if (d && d.documentElement) {
+      try { d.documentElement.lang = CONFIG.locale; } catch (_) { /* ignore */ }
+    }
+    if (d) {
+      try {
+        d.dispatchEvent(new CustomEvent("blora:localechange", {
+          bubbles: true,
+          detail: { locale: CONFIG.locale, messages: { ...activeMessages }, localeData: { ...LOCALE } },
+        }));
+      } catch (_) { /* ignore */ }
+      /* 刷新已挂载分页的 aria 文案 */
+      if (FLAGS.i18nUiReady) {
+        try { $$("[data-blora-pagination]", d).forEach((nav) => renderPagination(nav)); }
+        catch (_) { /* ignore */ }
+      }
+    }
+    return CONFIG.locale;
+  };
+  /* 启动默认语言（doc 尚未声明时不触碰 DOM） */
+  activeMessages = clonePackMessages(I18N_PACKS["zh-CN"]);
+  applyPackToLocale(I18N_PACKS["zh-CN"]);
+  CONFIG.locale = "zh-CN";
   const doc = () => global && global.document;
   const $  = (sel, ctx = doc()) => (ctx ? ctx.querySelector(sel) : null);
   const $$ = (sel, ctx = doc()) => (ctx ? Array.from(ctx.querySelectorAll(sel)) : []);
@@ -44,15 +211,67 @@
     el.dataset[key] = "1";
     return false;
   };
+  const applySize = (size) => {
+    const d = doc();
+    if (!d || !d.documentElement) return;
+    const next = size === "sm" || size === "lg" ? size : "md";
+    if (next === "md") d.documentElement.removeAttribute("data-blora-size");
+    else d.documentElement.setAttribute("data-blora-size", next);
+  };
   const configure = (options = {}) => {
-    if (!options || typeof options !== "object") return { ...CONFIG };
+    if (!options || typeof options !== "object") {
+      return getConfig();
+    }
     if ("autoInit" in options) CONFIG.autoInit = options.autoInit !== false;
     if ("portalRoot" in options) CONFIG.portalRoot = options.portalRoot || null;
     if ("colorModeStorageKey" in options && options.colorModeStorageKey) CONFIG.colorModeStorageKey = String(options.colorModeStorageKey);
     else if ("storageKey" in options && options.storageKey) CONFIG.colorModeStorageKey = String(options.storageKey);
     if ("paletteStorageKey" in options && options.paletteStorageKey) CONFIG.paletteStorageKey = String(options.paletteStorageKey);
-    return { ...CONFIG };
+    if ("size" in options && options.size) {
+      CONFIG.size = String(options.size);
+      applySize(CONFIG.size);
+    }
+    if ("validateOn" in options && options.validateOn != null) CONFIG.validateOn = String(options.validateOn);
+    if ("tablePageSize" in options && Number(options.tablePageSize) > 0) CONFIG.tablePageSize = Number(options.tablePageSize);
+    /* locale: 语言码字符串，或完整/部分语言包对象 */
+    if (typeof options.locale === "string") {
+      setLocale(options.locale);
+    } else if (options.locale && typeof options.locale === "object") {
+      const looksLikePack = options.locale.messages || options.locale.months || options.locale.dow;
+      if (looksLikePack) {
+        setLocale(options.localeCode || CONFIG.locale || "zh-CN", options.locale);
+      } else {
+        /* 兼容旧用法：直接 merge 到 LOCALE（datepicker 字段） */
+        Object.assign(LOCALE, options.locale);
+      }
+    }
+    if (options.localeCode && typeof options.localeCode === "string" && typeof options.locale !== "string") {
+      setLocale(options.localeCode, typeof options.locale === "object" ? options.locale : null);
+    }
+    if (options.messages && typeof options.messages === "object") {
+      /* 支持扁平 i18n key，也支持旧的 validate 短键 required/email… */
+      Object.keys(options.messages).forEach((k) => {
+        const mapped = VALIDATE_KEY_MAP[k] || k;
+        activeMessages[mapped] = options.messages[k];
+      });
+    }
+    return getConfig();
   };
+  const getConfig = () => ({
+    ...CONFIG,
+    messages: { ...activeMessages },
+    localeData: {
+      months: LOCALE.months.slice(),
+      dow: LOCALE.dow.slice(),
+      year: LOCALE.year,
+      today: LOCALE.today,
+      clear: LOCALE.clear,
+      now: LOCALE.now,
+      confirm: LOCALE.confirm,
+      hour: LOCALE.hour,
+      minute: LOCALE.minute,
+    },
+  });
   const prefersReduced = (base) => {
     const win = ownerWin(base);
     return !!(win && win.matchMedia && win.matchMedia("(prefers-reduced-motion: reduce)").matches);
@@ -1054,18 +1273,78 @@
     sync();
   }
 
-  /* —— Smooth scroll —— 目标偏移交给 CSS scroll-margin-top，框架不写死页头高度 —— */
+  /* —— Smooth scroll —— 目标偏移交给 CSS scroll-margin-top。
+     刷新：head 已摘掉 hash 防原生硬跳；此处还原 hash 并 smooth 滚入（同侧栏点击）。 */
+  function resolveHashTarget(hash) {
+    const d = doc();
+    if (!d) return null;
+    const raw = String(hash || "").replace(/^#/, "");
+    if (!raw) return null;
+    let id = raw;
+    try { id = decodeURIComponent(raw); } catch (_) { /* keep raw */ }
+    let el = d.getElementById(id);
+    if (!el) {
+      try {
+        el = d.querySelector("#" + (global.CSS && CSS.escape ? CSS.escape(id) : id.replace(/([^\w-])/g, "\\$1")));
+      } catch (_) { el = null; }
+    }
+    return el;
+  }
+  function scrollToHashId(behavior, hash) {
+    const d = doc();
+    const win = ownerWin(d) || global;
+    if (!d || !win) return false;
+    const el = resolveHashTarget(hash != null ? hash : win.location.hash);
+    if (!el) return false;
+    const motion = behavior != null ? behavior : (prefersReduced() ? "auto" : "smooth");
+    el.scrollIntoView({ behavior: motion, block: "start" });
+    return true;
+  }
+  function restoreHashScroll() {
+    const d = doc();
+    const win = ownerWin(d) || global;
+    if (!d || !win) return;
+    const pending = win.__bloraPendingHash || "";
+    const hash = pending || win.location.hash || "";
+    if (!hash || hash.length < 2) return;
+    /* 写回地址栏（head 里为防原生跳转曾临时摘掉） */
+    try {
+      if (pending) {
+        win.history.replaceState(null, "", (win.location.pathname || "") + (win.location.search || "") + pending);
+        try { delete win.__bloraPendingHash; } catch (_) { win.__bloraPendingHash = ""; }
+      }
+    } catch (_) { /* ignore */ }
+    const behavior = prefersReduced() ? "auto" : "smooth";
+    /* 等一帧布局稳定再滚，避免顶栏/字体未就绪 */
+    const run = () => scrollToHashId(behavior, hash);
+    if (win.requestAnimationFrame) win.requestAnimationFrame(run);
+    else run();
+  }
   function initSmoothScroll() {
     if (FLAGS.smooth) return;
     FLAGS.smooth = true;
-    on(document, "click", (e) => {
+    const d = doc();
+    const win = ownerWin(d) || global;
+    try {
+      if (win && win.history && "scrollRestoration" in win.history) win.history.scrollRestoration = "manual";
+    } catch (_) { /* ignore */ }
+
+    const hasPending = !!(win && (win.__bloraPendingHash || (win.location && win.location.hash && win.location.hash.length > 1)));
+    if (hasPending) {
+      if (d.readyState === "loading") on(d, "DOMContentLoaded", restoreHashScroll, { once: true });
+      else restoreHashScroll();
+    }
+
+    on(d, "click", (e) => {
       const a = e.target.closest('a[href^="#"]');
       if (!a) return;
-      const el = document.getElementById(a.getAttribute("href").slice(1));
+      const href = a.getAttribute("href") || "";
+      if (href === "#" || href.length < 2) return;
+      const el = d.getElementById(href.slice(1));
       if (!el) return;
       e.preventDefault();
       el.scrollIntoView({ behavior: prefersReduced() ? "auto" : "smooth", block: "start" });
-      history.replaceState(null, "", "#" + el.id);
+      try { win.history.replaceState(null, "", "#" + el.id); } catch (_) { /* ignore */ }
     });
   }
 
@@ -1724,7 +2003,7 @@
       const path = [];
       const result = el.parentElement.querySelector(".blora-cascader__result");
       /* 结果前缀可由 data-prefix 配置，默认"已选：" */
-      const prefix = result && result.dataset.prefix !== undefined ? result.dataset.prefix : "已选：";
+      const prefix = result && result.dataset.prefix !== undefined ? result.dataset.prefix : t("cascader.selectedPrefix");
       const render = () => {
         el.innerHTML = "";
         let level = 0;
@@ -1765,12 +2044,7 @@
   /* —— Date picker —— */
   const CAL_ICON_PREV = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>';
   const CAL_ICON_NEXT = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>';
-  /* 日历/选择器文案集中于此，可经 Blora.locale 整体覆写做本地化 */
-  const LOCALE = {
-    months: ["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"],
-    dow: ["日","一","二","三","四","五","六"],
-    year: "年", today: "今日", clear: "清除", now: "现在", confirm: "确定", hour: "时", minute: "分",
-  };
+  /* LOCALE 由 i18n setLocale 维护（见文件顶部 I18N_PACKS） */
 
   function initDatePicker(root) {
     $$("[data-blora-datepicker]", root).forEach((wrap) => {
@@ -2154,35 +2428,97 @@
       const trigger = $("[data-blora-speed-dial-trigger]", dial);
       const actions = $(".blora-speed-dial__actions", dial);
       if (!trigger || !actions) return;
+      const closeBtn = $("[data-blora-speed-dial-close], .blora-speed-dial__close", dial);
+      const mainBtn = $("[data-blora-speed-dial-main], .blora-speed-dial__main", dial);
+      const actionItems = $$(".blora-speed-dial__action", actions);
+      if (!actions.id) actions.id = "blora-sd-actions-" + Math.random().toString(36).slice(2, 9);
+
       trigger.setAttribute("aria-haspopup", "menu");
       trigger.setAttribute("aria-expanded", "false");
+      trigger.setAttribute("aria-controls", actions.id);
       actions.setAttribute("role", "menu");
       actions.setAttribute("aria-hidden", "true");
-      const actionItems = $$(".blora-speed-dial__action", actions);
-      actionItems.forEach((action) => action.setAttribute("role", "menuitem"));
+      actionItems.forEach((action) => {
+        action.setAttribute("role", "menuitem");
+        action.setAttribute("tabindex", "-1");
+      });
+      if (closeBtn) {
+        closeBtn.setAttribute("tabindex", "-1");
+        closeBtn.setAttribute("aria-hidden", "true");
+      }
+      if (mainBtn) {
+        mainBtn.setAttribute("tabindex", "-1");
+        mainBtn.setAttribute("aria-hidden", "true");
+      }
+
       const setOpen = (open, focus = false) => {
         dial.classList.toggle("is-open", open);
         trigger.setAttribute("aria-expanded", String(open));
         actions.setAttribute("aria-hidden", String(!open));
-        if (open && focus) actionItems[0]?.focus();
+        if (closeBtn) closeBtn.setAttribute("aria-hidden", String(!open));
+        if (mainBtn) {
+          mainBtn.setAttribute("aria-hidden", String(!open));
+          mainBtn.setAttribute("tabindex", open ? "0" : "-1");
+        }
+        actionItems.forEach((action) => action.setAttribute("tabindex", open ? "0" : "-1"));
+        if (open && focus) {
+          if (mainBtn) mainBtn.focus();
+          else actionItems[0]?.focus();
+        }
+        if (!open) actionItems.forEach((action) => action.setAttribute("tabindex", "-1"));
       };
-      on(trigger, "click", (e) => { e.stopPropagation(); setOpen(!dial.classList.contains("is-open")); });
+
+      on(trigger, "click", (e) => {
+        e.stopPropagation();
+        setOpen(!dial.classList.contains("is-open"));
+      });
       on(trigger, "keydown", (e) => {
-        if (e.key === "ArrowDown" || e.key === "ArrowRight") {
+        if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "ArrowLeft" || e.key === "ArrowRight") {
           e.preventDefault();
           setOpen(true, true);
         }
       });
+      if (closeBtn) {
+        on(closeBtn, "click", (e) => {
+          e.stopPropagation();
+          setOpen(false);
+          trigger.focus();
+        });
+      }
+      if (mainBtn) {
+        on(mainBtn, "click", (e) => {
+          e.stopPropagation();
+          setOpen(false);
+          trigger.focus();
+        });
+      }
       on(dial, "keydown", (e) => {
-        if (e.key === "Escape") { e.preventDefault(); setOpen(false); trigger.focus(); }
-        if (!dial.classList.contains("is-open") || !actionItems.includes(e.target)) return;
-        const index = actionItems.indexOf(e.target);
-        if (e.key === "ArrowDown" || e.key === "ArrowRight") { e.preventDefault(); actionItems[(index + 1) % actionItems.length].focus(); }
-        if (e.key === "ArrowUp" || e.key === "ArrowLeft") { e.preventDefault(); actionItems[(index - 1 + actionItems.length) % actionItems.length].focus(); }
-        if (e.key === "Home") { e.preventDefault(); actionItems[0].focus(); }
-        if (e.key === "End") { e.preventDefault(); actionItems[actionItems.length - 1].focus(); }
+        if (e.key === "Escape" && dial.classList.contains("is-open")) {
+          e.preventDefault();
+          setOpen(false);
+          trigger.focus();
+          return;
+        }
+        if (!dial.classList.contains("is-open")) return;
+        const focusables = mainBtn
+          ? [mainBtn, ...actionItems]
+          : actionItems;
+        const index = focusables.indexOf(e.target);
+        if (index < 0) return;
+        if (e.key === "ArrowDown" || e.key === "ArrowRight") {
+          e.preventDefault();
+          focusables[(index + 1) % focusables.length].focus();
+        }
+        if (e.key === "ArrowUp" || e.key === "ArrowLeft") {
+          e.preventDefault();
+          focusables[(index - 1 + focusables.length) % focusables.length].focus();
+        }
+        if (e.key === "Home") { e.preventDefault(); focusables[0].focus(); }
+        if (e.key === "End") { e.preventDefault(); focusables[focusables.length - 1].focus(); }
       });
-      on(actions, "click", () => setOpen(false));
+      on(actions, "click", (e) => {
+        if (e.target.closest(".blora-speed-dial__action")) setOpen(false);
+      });
       on(d, "click", (e) => { if (!dial.contains(e.target)) setOpen(false); });
     });
   }
@@ -2707,10 +3043,421 @@
     });
   }
 
+  /* —— Form validation · 行为层（HTML 三件套，无框架） ——
+     form[data-blora-form] 拦截提交；字段走原生约束 + data-blora-rule / data-blora-message。
+     API: Blora.validate(form) / Blora.clearValidation(form) */
+  const FIELD_SELECTOR = [
+    "input:not([type='hidden']):not([type='submit']):not([type='button']):not([type='reset']):not([type='image']):not([type='file']):not([disabled])",
+    "textarea:not([disabled])",
+    "select:not([disabled])",
+  ].join(",");
+  const msgTpl = (key, n) => t(VALIDATE_KEY_MAP[key] || ("validate." + key), { n: n });
+  const fieldShell = (field) => field.closest(".blora-field, .blora-validator, .blora-form-item") || field.parentElement;
+  const errorSlot = (field) => {
+    const shell = fieldShell(field);
+    if (!shell) return null;
+    let slot = shell.querySelector("[data-blora-error], .blora-error, .blora-validator__hint--error");
+    if (!slot) {
+      slot = ownerDoc(field).createElement("span");
+      slot.className = "blora-error";
+      slot.setAttribute("data-blora-error", "");
+      shell.appendChild(slot);
+    }
+    return slot;
+  };
+  const setFieldInvalid = (field, message) => {
+    field.classList.add("is-error");
+    field.classList.remove("is-success");
+    field.setAttribute("aria-invalid", "true");
+    try { field.setCustomValidity(message || "invalid"); } catch (_) { /* ignore */ }
+    const slot = errorSlot(field);
+    if (slot) {
+      if (message) {
+        slot.textContent = message;
+        slot.removeAttribute("hidden");
+        slot.hidden = false;
+      } else {
+        slot.textContent = "";
+        slot.setAttribute("hidden", "");
+        slot.hidden = true;
+      }
+    }
+  };
+  const setFieldValid = (field) => {
+    field.classList.remove("is-error");
+    field.classList.add("is-success");
+    field.removeAttribute("aria-invalid");
+    try { field.setCustomValidity(""); } catch (_) { /* ignore */ }
+    const slot = errorSlot(field);
+    if (slot && (slot.hasAttribute("data-blora-error") || slot.classList.contains("blora-error"))) {
+      slot.textContent = "";
+      slot.setAttribute("hidden", "");
+    }
+  };
+  const clearFieldState = (field) => {
+    field.classList.remove("is-error", "is-success");
+    field.removeAttribute("aria-invalid");
+    try { field.setCustomValidity(""); } catch (_) { /* ignore */ }
+    const slot = errorSlot(field);
+    if (slot && (slot.hasAttribute("data-blora-error") || slot.classList.contains("blora-error"))) {
+      slot.textContent = "";
+      slot.setAttribute("hidden", "");
+    }
+  };
+  const customRuleMessage = (field) => {
+    const rule = (field.getAttribute("data-blora-rule") || "").trim().toLowerCase();
+    const value = String(field.value || "").trim();
+    const custom = field.getAttribute("data-blora-message");
+    if (!rule) return "";
+    if (rule === "email" && value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return custom || msgTpl("email");
+    if (rule === "url" && value) {
+      try { new URL(value); } catch (_) { return custom || msgTpl("url"); }
+    }
+    if (rule === "number" && value && Number.isNaN(Number(value))) return custom || msgTpl("number");
+    if (rule.startsWith("min:")) {
+      const n = Number(rule.slice(4));
+      if (value !== "" && Number(value) < n) return custom || msgTpl("min", n);
+    }
+    if (rule.startsWith("max:")) {
+      const n = Number(rule.slice(4));
+      if (value !== "" && Number(value) > n) return custom || msgTpl("max", n);
+    }
+    return "";
+  };
+  const validateField = (field) => {
+    if (!field || field.disabled) return { valid: true, field, message: "" };
+    try { field.setCustomValidity(""); } catch (_) { /* ignore */ }
+    const custom = customRuleMessage(field);
+    if (custom) {
+      setFieldInvalid(field, custom);
+      return { valid: false, field, message: custom };
+    }
+    if (typeof field.checkValidity === "function" && !field.checkValidity()) {
+      const v = field.validity || {};
+      let message = field.getAttribute("data-blora-message") || "";
+      if (!message) {
+        if (v.valueMissing) message = msgTpl("required");
+        else if (v.typeMismatch && field.type === "email") message = msgTpl("email");
+        else if (v.typeMismatch && field.type === "url") message = msgTpl("url");
+        else if (v.tooShort) message = msgTpl("minlength", field.minLength);
+        else if (v.tooLong) message = msgTpl("maxlength", field.maxLength);
+        else if (v.rangeUnderflow) message = msgTpl("min", field.min);
+        else if (v.rangeOverflow) message = msgTpl("max", field.max);
+        else if (v.patternMismatch) message = msgTpl("pattern");
+        else message = field.validationMessage || msgTpl("pattern");
+      }
+      setFieldInvalid(field, message);
+      return { valid: false, field, message };
+    }
+    if (String(field.value || "").length) setFieldValid(field);
+    else clearFieldState(field);
+    return { valid: true, field, message: "" };
+  };
+  const formFields = (form) => form ? $$(FIELD_SELECTOR, form) : [];
+  const validateForm = (target) => {
+    const form = resolveElement(target) || target;
+    if (!form) return { valid: true, errors: [] };
+    const errors = [];
+    formFields(form).forEach((field) => {
+      const result = validateField(field);
+      if (!result.valid) errors.push(result);
+    });
+    const detail = { valid: errors.length === 0, errors };
+    form.dispatchEvent(new CustomEvent("blora:validate", { bubbles: true, detail }));
+    if (errors.length) {
+      form.dispatchEvent(new CustomEvent("blora:invalid", { bubbles: true, detail }));
+      try { errors[0].field.focus({ preventScroll: false }); } catch (_) { try { errors[0].field.focus(); } catch (__) { /* ignore */ } }
+    }
+    return detail;
+  };
+  const clearValidation = (target) => {
+    const form = resolveElement(target) || target;
+    if (!form) return;
+    formFields(form).forEach(clearFieldState);
+  };
+  function initForms(root) {
+    const d = ownerDoc(root) || doc();
+    $$("form[data-blora-form], form[data-blora-validate]", root).forEach((form) => {
+      if (bound(form, "Form")) return;
+      const triggers = String(form.getAttribute("data-blora-validate-on") || CONFIG.validateOn || "submit")
+        .split(/[\s,]+/).map((s) => s.trim()).filter(Boolean);
+      on(form, "submit", (e) => {
+        const result = validateForm(form);
+        if (!result.valid) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      });
+      if (triggers.includes("blur")) {
+        on(form, "focusout", (e) => {
+          if (e.target && e.target.matches && e.target.matches(FIELD_SELECTOR)) validateField(e.target);
+        });
+      }
+      if (triggers.includes("change") || triggers.includes("input")) {
+        on(form, "input", (e) => {
+          if (e.target && e.target.matches && e.target.matches(FIELD_SELECTOR) && e.target.classList.contains("is-error")) {
+            validateField(e.target);
+          }
+        });
+        on(form, "change", (e) => {
+          if (e.target && e.target.matches && e.target.matches(FIELD_SELECTOR)) validateField(e.target);
+        });
+      }
+      on(form, "reset", () => setTimeout(() => clearValidation(form), 0));
+    });
+    /* 独立按钮 data-blora-validate-submit 可校验指定 form */
+    $$("[data-blora-validate-submit]", root).forEach((btn) => {
+      if (bound(btn, "ValidateSubmit")) return;
+      on(btn, "click", (e) => {
+        const sel = btn.getAttribute("data-blora-validate-submit");
+        const form = (sel && $(sel, d)) || btn.closest("form");
+        if (!form) return;
+        const result = validateForm(form);
+        if (!result.valid) e.preventDefault();
+      });
+    });
+  }
+
+  /* —— Table sort / pagination · 本地默认，remote 只派发事件 ——
+     table[data-blora-table] 或 .blora-table-wrap[data-blora-table]
+     th.blora-table-sort[data-blora-sort="key"]  或 自动用列索引
+     nav[data-blora-pagination][data-blora-table="#id"] */
+  const tableRoot = (el) => {
+    if (!el) return null;
+    if (el.matches && el.matches("table")) return el;
+    return $("table", el) || el;
+  };
+  const tableHost = (table) => table.closest("[data-blora-table], .blora-table-wrap") || table;
+  const tableMode = (table) => {
+    const host = tableHost(table);
+    return ((host && host.getAttribute("data-blora-table-mode")) || table.getAttribute("data-blora-table-mode") || "local").toLowerCase();
+  };
+  const tableState = (table) => {
+    const host = tableHost(table);
+    return {
+      page: Number((host && host.dataset.page) || table.dataset.page) || 1,
+      pageSize: Number((host && host.dataset.pageSize) || table.dataset.pageSize) || CONFIG.tablePageSize || 10,
+      sortKey: (host && host.dataset.sortKey) || table.dataset.sortKey || "",
+      sortDir: (host && host.dataset.sortDir) || table.dataset.sortDir || "",
+      total: Number((host && host.dataset.total) || table.dataset.total) || 0,
+    };
+  };
+  const writeTableState = (table, patch) => {
+    const host = tableHost(table);
+    const targets = [table];
+    if (host && host !== table) targets.push(host);
+    Object.keys(patch).forEach((key) => {
+      targets.forEach((t) => {
+        if (patch[key] == null || patch[key] === "") delete t.dataset[key];
+        else t.dataset[key] = String(patch[key]);
+      });
+    });
+  };
+  const emitTableChange = (table, extra) => {
+    const state = { ...tableState(table), ...extra };
+    const detail = state;
+    table.dispatchEvent(new CustomEvent("blora:table-change", { bubbles: true, detail }));
+    const host = tableHost(table);
+    if (host && host !== table) host.dispatchEvent(new CustomEvent("blora:table-change", { bubbles: true, detail }));
+  };
+  const cellText = (row, index) => {
+    const cell = row.cells && row.cells[index];
+    return cell ? String(cell.textContent || "").replace(/\s+/g, " ").trim() : "";
+  };
+  const sortTableLocal = (table, colIndex, dir) => {
+    const tbody = table.tBodies && table.tBodies[0];
+    if (!tbody) return;
+    const rows = Array.from(tbody.rows);
+    const factor = dir === "desc" ? -1 : 1;
+    rows.sort((a, b) => {
+      const av = cellText(a, colIndex);
+      const bv = cellText(b, colIndex);
+      const an = parseFloat(av.replace(/[^\d.-]/g, ""));
+      const bn = parseFloat(bv.replace(/[^\d.-]/g, ""));
+      let cmp = 0;
+      if (av !== "" && bv !== "" && !Number.isNaN(an) && !Number.isNaN(bn) && /[\d]/.test(av) && /[\d]/.test(bv)) cmp = an - bn;
+      else cmp = av.localeCompare(bv, CONFIG._collator || getCollatorLocale(), { numeric: true, sensitivity: "base" });
+      return cmp * factor;
+    });
+    rows.forEach((row) => tbody.appendChild(row));
+  };
+  const applyTablePageLocal = (table) => {
+    const tbody = table.tBodies && table.tBodies[0];
+    if (!tbody) return;
+    const state = tableState(table);
+    const rows = Array.from(tbody.rows);
+    const total = state.total || rows.length;
+    writeTableState(table, { total });
+    const pageSize = state.pageSize;
+    let page = state.page;
+    const pages = Math.max(1, Math.ceil(total / pageSize) || 1);
+    if (page > pages) page = pages;
+    if (page < 1) page = 1;
+    writeTableState(table, { page });
+    const start = (page - 1) * pageSize;
+    const end = start + pageSize;
+    rows.forEach((row, index) => { row.hidden = index < start || index >= end; });
+  };
+  const syncSortHeaders = (table, activeTh, dir) => {
+    $$("th.blora-table-sort, th[data-blora-sort]", table).forEach((th) => {
+      if (th === activeTh) th.setAttribute("aria-sort", dir === "asc" ? "ascending" : dir === "desc" ? "descending" : "none");
+      else th.setAttribute("aria-sort", "none");
+    });
+  };
+  const tableSort = (target, keyOrIndex, dir) => {
+    const table = tableRoot(resolveElement(target) || target);
+    if (!table) return null;
+    const headers = $$("th.blora-table-sort, th[data-blora-sort], thead th", table);
+    let th = null;
+    let colIndex = -1;
+    if (typeof keyOrIndex === "number") {
+      colIndex = keyOrIndex;
+      th = headers[colIndex] || null;
+    } else {
+      const key = String(keyOrIndex || "");
+      th = headers.find((h) => (h.getAttribute("data-blora-sort") || "") === key) || null;
+      colIndex = th ? Array.prototype.indexOf.call(th.parentNode.children, th) : -1;
+    }
+    if (colIndex < 0) return tableState(table);
+    const nextDir = dir === "asc" || dir === "desc" ? dir : (tableState(table).sortDir === "asc" ? "desc" : "asc");
+    const sortKey = (th && th.getAttribute("data-blora-sort")) || String(colIndex);
+    writeTableState(table, { sortKey, sortDir: nextDir, page: 1 });
+    syncSortHeaders(table, th, nextDir);
+    if (tableMode(table) !== "remote") {
+      sortTableLocal(table, colIndex, nextDir);
+      applyTablePageLocal(table);
+    }
+    emitTableChange(table, { sortKey, sortDir: nextDir, colIndex });
+    return tableState(table);
+  };
+  const tableSetPage = (target, page) => {
+    const table = tableRoot(resolveElement(target) || target);
+    if (!table) return null;
+    writeTableState(table, { page: Math.max(1, Number(page) || 1) });
+    if (tableMode(table) !== "remote") applyTablePageLocal(table);
+    emitTableChange(table, { page: tableState(table).page });
+    syncLinkedPagination(table);
+    return tableState(table);
+  };
+  const buildPaginationPages = (page, pages) => {
+    if (pages <= 7) return Array.from({ length: pages }, (_, i) => i + 1);
+    const set = new Set([1, pages, page, page - 1, page + 1, page - 2, page + 2]);
+    const list = Array.from(set).filter((n) => n >= 1 && n <= pages).sort((a, b) => a - b);
+    const out = [];
+    list.forEach((n, i) => {
+      if (i && n - list[i - 1] > 1) out.push("…");
+      out.push(n);
+    });
+    return out;
+  };
+  const renderPagination = (nav) => {
+    if (!nav) return;
+    const page = Math.max(1, Number(nav.dataset.page) || 1);
+    const pageSize = Math.max(1, Number(nav.dataset.pageSize) || CONFIG.tablePageSize || 10);
+    let total = Number(nav.dataset.total);
+    const tableSel = nav.getAttribute("data-blora-table");
+    const d = ownerDoc(nav);
+    const table = tableSel ? tableRoot($(tableSel, d)) : null;
+    if (table && tableMode(table) !== "remote") {
+      const rows = table.tBodies && table.tBodies[0] ? table.tBodies[0].rows.length : 0;
+      total = rows;
+      nav.dataset.total = String(total);
+    }
+    if (!Number.isFinite(total) || total < 0) total = 0;
+    const pages = Math.max(1, Math.ceil(total / pageSize) || 1);
+    const current = Math.min(page, pages);
+    nav.dataset.page = String(current);
+    nav.setAttribute("role", "navigation");
+    if (!nav.getAttribute("aria-label")) nav.setAttribute("aria-label", t("pagination.nav"));
+    const parts = [];
+    parts.push('<button type="button" class="blora-pagination__item' + (current <= 1 ? " is-disabled" : "") + '" data-blora-page="prev" aria-label="' + escapeHTML(t("pagination.prev")) + '"' + (current <= 1 ? " disabled" : "") + ">‹</button>");
+    buildPaginationPages(current, pages).forEach((item) => {
+      if (item === "…") parts.push('<span class="blora-pagination__ellipsis">…</span>');
+      else {
+        parts.push(
+          '<button type="button" class="blora-pagination__item' + (item === current ? " is-active" : "") + '" data-blora-page="' + item + '" aria-label="' + escapeHTML(t("pagination.page", { n: item })) + '"' + (item === current ? ' aria-current="page"' : "") + ">" + item + "</button>"
+        );
+      }
+    });
+    parts.push('<button type="button" class="blora-pagination__item' + (current >= pages ? " is-disabled" : "") + '" data-blora-page="next" aria-label="' + escapeHTML(t("pagination.next")) + '"' + (current >= pages ? " disabled" : "") + ">›</button>");
+    nav.innerHTML = parts.join("");
+  };
+  const syncLinkedPagination = (table) => {
+    const d = ownerDoc(table);
+    if (!d || !table.id) return;
+    $$('[data-blora-pagination][data-blora-table="#' + table.id + '"], [data-blora-pagination][data-blora-table="' + table.id + '"]', d).forEach((nav) => {
+      const state = tableState(table);
+      nav.dataset.page = String(state.page);
+      nav.dataset.pageSize = String(state.pageSize);
+      nav.dataset.total = String(state.total || (table.tBodies[0] ? table.tBodies[0].rows.length : 0));
+      renderPagination(nav);
+    });
+  };
+  function initTables(root) {
+    $$("table[data-blora-table], [data-blora-table] table, .blora-table-wrap[data-blora-table] table", root).forEach((table) => {
+      if (bound(table, "Table")) return;
+      const host = tableHost(table);
+      if (!table.id) table.id = "blora-table-" + Math.random().toString(36).slice(2, 9);
+      $$("th.blora-table-sort, th[data-blora-sort]", table).forEach((th) => {
+        th.setAttribute("role", "columnheader");
+        if (!th.hasAttribute("tabindex")) th.tabIndex = 0;
+        if (!th.hasAttribute("aria-sort")) th.setAttribute("aria-sort", "none");
+        const activate = () => {
+          const key = th.getAttribute("data-blora-sort") || Array.prototype.indexOf.call(th.parentNode.children, th);
+          tableSort(table, key);
+          syncLinkedPagination(table);
+        };
+        on(th, "click", activate);
+        on(th, "keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); activate(); }
+        });
+      });
+      if (tableMode(table) !== "remote") {
+        const state = tableState(table);
+        if (state.sortKey) tableSort(table, isNaN(Number(state.sortKey)) ? state.sortKey : Number(state.sortKey), state.sortDir || "asc");
+        else applyTablePageLocal(table);
+      }
+      syncLinkedPagination(table);
+    });
+    $$("[data-blora-pagination]", root).forEach((nav) => {
+      if (bound(nav, "Pagination")) return;
+      if (!nav.dataset.pageSize) nav.dataset.pageSize = String(CONFIG.tablePageSize || 10);
+      renderPagination(nav);
+      on(nav, "click", (e) => {
+        const btn = e.target.closest("[data-blora-page]");
+        if (!btn || btn.disabled || btn.classList.contains("is-disabled")) return;
+        const raw = btn.getAttribute("data-blora-page");
+        let page = Number(nav.dataset.page) || 1;
+        const pageSize = Number(nav.dataset.pageSize) || CONFIG.tablePageSize;
+        const total = Number(nav.dataset.total) || 0;
+        const pages = Math.max(1, Math.ceil(total / pageSize) || 1);
+        if (raw === "prev") page -= 1;
+        else if (raw === "next") page += 1;
+        else page = Number(raw) || page;
+        page = Math.min(pages, Math.max(1, page));
+        nav.dataset.page = String(page);
+        const tableSel = nav.getAttribute("data-blora-table");
+        const d = ownerDoc(nav);
+        const table = tableSel ? tableRoot($(tableSel, d) || $(tableSel)) : null;
+        if (table) {
+          writeTableState(table, { page, pageSize });
+          if (tableMode(table) !== "remote") applyTablePageLocal(table);
+          emitTableChange(table, { page, pageSize });
+        }
+        nav.dispatchEvent(new CustomEvent("blora:page-change", {
+          bubbles: true,
+          detail: { page, pageSize, total, pages, table },
+        }));
+        renderPagination(nav);
+      });
+    });
+  }
+
   /* —— Init all —— */
   function init(root = doc(), options) {
     if (options) configure(options);
     if (!root) return;
+    applySize(CONFIG.size);
     initTabs(root);
     initCollapse(root);
     initModal(root);
@@ -2756,6 +3503,9 @@
     initDeck(root);
     initTextRotate(root);
     initShortcutHints(root);
+    initForms(root);
+    initTables(root);
+    FLAGS.i18nUiReady = true;
   }
 
   /* —— Public API —— */
@@ -2763,6 +3513,7 @@
     init,
     configure,
     setOptions: configure,
+    getConfig,
     palettes: PALETTE_PRESETS,
     applyPalette,
     getPalette,
@@ -2770,15 +3521,40 @@
     getColorMode,
     formatShortcut,
     getShortcutPlatform,
+    /** i18n：翻译 key；setLocale 切换语言包；locales 为内置包名列表 */
+    t,
+    setLocale,
+    getLocale: () => CONFIG.locale,
+    locales: Object.keys(I18N_PACKS),
+    validate: validateForm,
+    validateField,
+    clearValidation,
+    table: {
+      sort: tableSort,
+      setPage: tableSetPage,
+      getState: (target) => {
+        const table = tableRoot(resolveElement(target) || target);
+        return table ? tableState(table) : null;
+      },
+      renderPagination,
+    },
     toast,
     openModal,
     closeModal,
     openDrawer,
     closeDrawer,
+    /** 可变：当前语言的日期/时间字段（与 setLocale 同步） */
     locale: LOCALE,
     version: "1.0.0",
   };
   if (global && global.BloraConfig) configure(global.BloraConfig);
+  else {
+    /* 无外部配置时仍同步 html[lang] */
+    try {
+      const root = doc() && doc().documentElement;
+      if (root && !root.lang) root.lang = CONFIG.locale;
+    } catch (_) { /* ignore */ }
+  }
   const d = doc();
   if (CONFIG.autoInit && d) {
     if (d.readyState === "loading") d.addEventListener("DOMContentLoaded", () => { if (CONFIG.autoInit) init(d); }, { once: true });
