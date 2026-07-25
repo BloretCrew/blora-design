@@ -2603,8 +2603,8 @@
         drag.vy = (pt.y - drag.ly) / dt;
         drag.ly = pt.y;
         drag.lt = now;
-        // 手指上滑（dy<0）→ offset 增大 → 下一张进入焦点
-        offset = drag.startOffset - dy / STEP_PX;
+        // 跟手：手指下移（dy>0）→ 卡片下移 → offset 增大
+        offset = drag.startOffset + dy / STEP_PX;
         paint(true);
       };
 
@@ -2619,8 +2619,8 @@
           paint(false);
           return;
         }
-        if (vy <= -0.4) offset += 0.55;
-        else if (vy >= 0.4) offset -= 0.55;
+        if (vy <= -0.4) offset -= 0.55;
+        else if (vy >= 0.4) offset += 0.55;
         snap();
       };
 
@@ -2632,7 +2632,7 @@
           const now = Date.now();
           const dt = Math.max(1, now - drag.lt);
           drag.vy = (pt.y - drag.ly) / dt;
-          offset = drag.startOffset - (pt.y - drag.y) / STEP_PX;
+          offset = drag.startOffset + (pt.y - drag.y) / STEP_PX;
         }
         finish(false);
       };
