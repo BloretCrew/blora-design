@@ -1343,14 +1343,14 @@
       return el || win;
     };
     const scrollYOf = () => {
-      const t = getScrollEl();
-      return t === win ? win.scrollY : t.scrollTop;
+      const el = getScrollEl();
+      return el === win ? win.scrollY : el.scrollTop;
     };
     const scrollToTop = () => {
-      const t = getScrollEl();
+      const el = getScrollEl();
       const behavior = prefersReduced(fab) ? "auto" : "smooth";
-      if (t === win) win.scrollTo({ top: 0, behavior });
-      else t.scrollTo({ top: 0, behavior });
+      if (el === win) win.scrollTo({ top: 0, behavior });
+      else el.scrollTo({ top: 0, behavior });
     };
     const sync = () => {
       const show = scrollYOf() > threshold;
@@ -1360,8 +1360,8 @@
     if (!fab.getAttribute("aria-label")) fab.setAttribute("aria-label", t("common.backTop"));
     on(fab, "click", scrollToTop);
     on(win, "scroll", sync, { passive: true });
-    const t = getScrollEl();
-    if (t !== win) on(t, "scroll", sync, { passive: true });
+    const scrollEl = getScrollEl();
+    if (scrollEl !== win) on(scrollEl, "scroll", sync, { passive: true });
     sync();
   }
   function initBackTop(root) {
