@@ -274,6 +274,7 @@
 
       <div class="blora-shownav__group">布局</div>
       <a href="#layout">布局</a>
+      <a href="#advanced">进阶组件</a>
       <a href="#mockup">Mockup</a>
     </nav>
   </aside>
@@ -1765,13 +1766,17 @@
 
         <div class="blora-demo">
           <div class="blora-demo__label">图片 · Image（带说明与边框）</div>
+          <p class="blora-hint" style="margin-bottom:var(--blora-space-3)">点击可预览：<code>data-blora-preview</code> + 可选 <code>data-blora-preview-group</code> 组图灯箱。</p>
           <div class="blora-row" style="align-items:flex-start;">
-            <span class="blora-image blora-image--hover" style="width:200px;">
-              <img src="https://picsum.photos/seed/blora-mtn/400/280" alt="示例配图" class="blora-image-muted">
-              <span class="blora-image__cap">示例配图</span>
+            <span class="blora-image blora-image--hover blora-image--preview" style="width:200px;" data-blora-preview data-blora-preview-group="demo-gallery" tabindex="0">
+              <img src="https://picsum.photos/seed/blora-mtn/400/280" alt="山景" class="blora-image-muted" data-preview-src="https://picsum.photos/seed/blora-mtn/1200/800">
+              <span class="blora-image__cap">点击预览 · 山景</span>
             </span>
-            <span class="blora-image blora-image--frame" style="width:200px;">
-              <img src="https://picsum.photos/seed/blora-mono/400/280" alt="示例配图" class="blora-image-monochrome">
+            <span class="blora-image blora-image--frame blora-image--preview" style="width:200px;" data-blora-preview data-blora-preview-group="demo-gallery" tabindex="0">
+              <img src="https://picsum.photos/seed/blora-mono/400/280" alt="建筑" class="blora-image-monochrome" data-preview-src="https://picsum.photos/seed/blora-mono/1200/800">
+            </span>
+            <span class="blora-image blora-image--preview" style="width:200px;" data-blora-preview data-blora-preview-group="demo-gallery" tabindex="0">
+              <img src="https://picsum.photos/seed/blora-lake/400/280" alt="湖面" data-preview-src="https://picsum.photos/seed/blora-lake/1200/800">
             </span>
           </div>
         </div>
@@ -2105,11 +2110,163 @@
     </section>
 
     <!-- ================================================================
-         19 · Mockup
+         19 · 进阶组件
+         ================================================================ -->
+    <section id="advanced" class="blora-sec">
+      <header class="blora-sec__head">
+        <div class="blora-sec__num">19 — 进阶组件</div>
+        <h2 class="blora-sec__title">反馈 · 导航 · 输入 · 布局增强</h2>
+        <p class="blora-sec__desc">灯箱预览、通知、固钉/锚点、树选、自动完成、漫游、水印、分栏、排版、二维码、骨架模板、评论与容器约定——仍是 HTML 三件套。</p>
+      </header>
+
+      <div class="blora-panel">
+        <div class="blora-demo">
+          <div class="blora-demo__label">反馈 · Message / Notification / Confirm</div>
+          <div class="blora-control-row">
+            <button class="blora-btn blora-btn--secondary" type="button" data-demo-message="info">Message</button>
+            <button class="blora-btn blora-btn--primary" type="button" data-demo-notify>Notification</button>
+            <button class="blora-btn blora-btn--danger" type="button" data-demo-confirm>Confirm</button>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">导航 · Affix / Anchor / BackTop</div>
+          <div class="blora-grid blora-grid--2">
+            <div>
+              <div class="blora-affix" data-blora-affix data-offset="88">
+                <div class="blora-card blora-card--flat" style="padding:var(--blora-space-3) var(--blora-space-4)">
+                  <strong>Affix 固钉</strong>
+                  <p class="blora-text-muted" style="margin:0.25em 0 0;font-size:var(--blora-text-sm)">滚动后吸顶（offset 88）</p>
+                </div>
+              </div>
+              <p class="blora-hint" style="margin-top:var(--blora-space-4)">向下滚动页面可观察固钉效果。右下角全局 FAB 为 BackTop。</p>
+              <button class="blora-btn blora-btn--outline blora-btn--sm" type="button" data-demo-backtop>显式 BackTop API</button>
+            </div>
+            <nav class="blora-anchor" data-blora-anchor data-offset="100" aria-label="页内锚点">
+              <a href="#philosophy">概述</a>
+              <a href="#forms">表单</a>
+              <a href="#data">数据</a>
+              <a href="#advanced">进阶</a>
+              <a href="#mockup">Mockup</a>
+            </nav>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">输入 · TreeSelect / AutoComplete / Mentions</div>
+          <div class="blora-grid blora-grid--3">
+            <div class="blora-treeselect" data-blora-treeselect data-options='[{"label":"华东","value":"east","children":[{"label":"上海","value":"sh"},{"label":"杭州","value":"hz"}]},{"label":"华北","value":"north","children":[{"label":"北京","value":"bj"},{"label":"天津","value":"tj"}]}]'>
+              <label class="blora-label">TreeSelect</label>
+              <input class="blora-input" type="text" placeholder="选择地区" readonly>
+            </div>
+            <div class="blora-autocomplete" data-blora-autocomplete data-options='["Blora Design","Button","Badge","Drawer","Modal","Table","Toast"]'>
+              <label class="blora-label">AutoComplete</label>
+              <input class="blora-input" type="search" placeholder="搜索组件…" autocomplete="off">
+            </div>
+            <div class="blora-mentions" data-blora-mentions data-options='["alice","bob","carol","dave"]'>
+              <label class="blora-label">Mentions</label>
+              <textarea class="blora-textarea" rows="3" placeholder="输入 @ 提及同事"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="blora-demo" data-blora-tour id="tour-demo-host">
+          <div class="blora-demo__label">引导 · Tour</div>
+          <div class="blora-control-row">
+            <button class="blora-btn blora-btn--primary" type="button" data-blora-tour-start="#tour-demo-host">开始漫游</button>
+            <span class="blora-tag blora-tag--primary" data-blora-tour-step data-tour-title="标签" data-tour-desc="这是第一步：高亮当前标签。">步骤 A</span>
+            <button class="blora-btn blora-btn--outline" type="button" data-blora-tour-step data-tour-title="按钮" data-tour-desc="第二步：关注操作按钮。">步骤 B</button>
+            <span class="blora-hint" data-blora-tour-step data-tour-title="说明" data-tour-desc="第三步：可跳过或完成引导。">步骤 C 文案</span>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">布局 · Watermark / Splitter / Masonry</div>
+          <div class="blora-watermark" data-blora-watermark data-text="Blora Design" style="min-height:8rem;padding:var(--blora-space-5);border:var(--blora-border);border-radius:var(--blora-radius-lg);margin-bottom:var(--blora-space-4)">
+            <p style="position:relative;z-index:2;margin:0">水印铺在内容之上（pointer-events: none）。</p>
+          </div>
+          <div class="blora-splitter" data-blora-splitter data-min="100" style="min-height:10rem;margin-bottom:var(--blora-space-4)">
+            <div class="blora-splitter__pane" style="background:var(--blora-surface-2)">左栏 · 拖拽中间条</div>
+            <div class="blora-splitter__pane">右栏 · 自适应</div>
+          </div>
+          <div class="blora-masonry" style="--blora-masonry-cols:3">
+            <div class="blora-masonry__item"><img src="https://picsum.photos/seed/m1/400/260" alt=""><div class="blora-masonry__item-body">瀑布流 A</div></div>
+            <div class="blora-masonry__item"><img src="https://picsum.photos/seed/m2/400/360" alt=""><div class="blora-masonry__item-body">瀑布流 B · 更高</div></div>
+            <div class="blora-masonry__item"><img src="https://picsum.photos/seed/m3/400/220" alt=""><div class="blora-masonry__item-body">瀑布流 C</div></div>
+            <div class="blora-masonry__item"><img src="https://picsum.photos/seed/m4/400/300" alt=""><div class="blora-masonry__item-body">瀑布流 D</div></div>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">排版 · Typography / QRCode / Skeleton / Stat</div>
+          <div class="blora-grid blora-grid--2">
+            <div class="blora-stack" style="gap:var(--blora-space-3)">
+              <p class="blora-typo-ellipsis" data-blora-ellipsis style="max-width:16rem">这是一段会被单行省略的长文本示例，超出宽度显示省略号。</p>
+              <p data-blora-clamp="2" style="max-width:18rem">多行截断：这是第二段较长的说明文字，用于演示两行后出现省略号。后面的内容应该被裁切掉以便观察 clamp 效果是否正常工作。</p>
+              <span data-blora-copy="npm i @bloret/blora-design"><code class="blora-code">npm i @bloret/blora-design</code></span>
+              <div class="blora-stat">
+                <div class="blora-stat__label">本月访问</div>
+                <div class="blora-stat__value" data-blora-countup="12840" data-duration="1200">0</div>
+              </div>
+            </div>
+            <div class="blora-row" style="align-items:flex-start;gap:var(--blora-space-5)">
+              <div class="blora-qrcode" data-blora-qrcode data-text="https://blora.design" data-size="132" aria-label="二维码"></div>
+              <div class="blora-skeleton-card" style="flex:1;min-width:12rem">
+                <div class="blora-skeleton-card__row">
+                  <div class="blora-skeleton blora-skeleton--circle"></div>
+                  <div class="blora-skeleton-card__body">
+                    <div class="blora-skeleton blora-skeleton--title"></div>
+                    <div class="blora-skeleton blora-skeleton--text"></div>
+                    <div class="blora-skeleton blora-skeleton--text" style="width:70%"></div>
+                  </div>
+                </div>
+                <div class="blora-skeleton blora-skeleton--block"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">社交 · Comment</div>
+          <div class="blora-comment">
+            <span class="blora-avatar blora-avatar--sm blora-avatar--primary">张</span>
+            <div class="blora-comment__main">
+              <div class="blora-comment__head"><span class="blora-comment__author">张三</span><span class="blora-comment__time">2 小时前</span></div>
+              <div class="blora-comment__body">进阶组件补齐后，文档站演示会完整很多。</div>
+              <div class="blora-comment__actions"><button type="button">回复</button><button type="button">赞</button></div>
+              <div class="blora-comment__nested">
+                <div class="blora-comment">
+                  <span class="blora-avatar blora-avatar--sm blora-avatar--neutral">李</span>
+                  <div class="blora-comment__main">
+                    <div class="blora-comment__head"><span class="blora-comment__author">李四</span><span class="blora-comment__time">1 小时前</span></div>
+                    <div class="blora-comment__body">同意，灯箱和 Tour 很实用。</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">容器 · Media / Chart</div>
+          <div class="blora-grid blora-grid--2">
+            <div class="blora-media-frame" style="--blora-media-ratio:16/9">
+              <img src="https://picsum.photos/seed/media/960/540" alt="媒体容器">
+            </div>
+            <div class="blora-chart" style="--blora-chart-min-h:12rem">
+              <div class="blora-chart__placeholder">Chart 容器约定<br><span class="blora-hint">业务挂载 ECharts / Chart.js 等</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         20 · Mockup
          ================================================================ -->
     <section id="mockup" class="blora-sec">
       <header class="blora-sec__head">
-        <div class="blora-sec__num">19 — Mockup</div>
+        <div class="blora-sec__num">20 — Mockup</div>
         <h2 class="blora-sec__title">设备与环境外壳</h2>
         <p class="blora-sec__desc">Browser · Code · Window · Phone 四类预览外壳，用于产品截图、文档与营销页中的真实内容承载。</p>
       </header>
@@ -2475,6 +2632,33 @@
     button.addEventListener("click", () => {
       const type = button.dataset.demoToast;
       Blora.toast({ type, message: messages[type] || messages.info });
+    });
+  });
+  document.querySelectorAll("[data-demo-message]").forEach((button) => {
+    button.addEventListener("click", () => {
+      Blora.message({ type: button.dataset.demoMessage || "info", message: "轻量 Message / Toast" });
+    });
+  });
+  document.querySelectorAll("[data-demo-notify]").forEach((button) => {
+    button.addEventListener("click", () => {
+      Blora.notify({
+        type: "success",
+        title: "通知标题",
+        description: "右上角堆叠的 Notification，可关闭。",
+        placement: "top-right",
+      });
+    });
+  });
+  document.querySelectorAll("[data-demo-confirm]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const ok = await Blora.confirm({ title: "确认删除？", content: "删除后无法恢复，是否继续？", danger: true });
+      Blora.toast({ type: ok ? "success" : "info", message: ok ? "已确认" : "已取消" });
+    });
+  });
+  document.querySelectorAll("[data-demo-backtop]").forEach((button) => {
+    button.addEventListener("click", () => {
+      Blora.backTop({ showAfter: 200 });
+      Blora.toast({ type: "info", message: "已挂载显式 BackTop（滚动 200px 后显示）" });
     });
   });
 

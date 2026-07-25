@@ -102,6 +102,7 @@ blora-design-2/
 | **反馈** | 警告 · 横幅 · 消息 · 通知 · Toast · Tooltip · Popover · Popconfirm |
 | **层** | 模态（S/M/L）· 抽屉（上/下/左/右）· 命令面板 |
 | **布局** | 栅格 · 卡面 · 面板 · 分隔 · 堆叠 · 行 · Indicator · Hero · Footer · Deck |
+| **进阶** | Image Preview · Notify/Message · Confirm · Affix · Anchor · TreeSelect · AutoComplete · Mentions · Tour · Watermark · Splitter · Typography · QRCode · BackTop · Skeleton 模板 · Masonry · Comment · CountUp · Media/Chart 容器 |
 | **展示** | Text Rotate · Browser/Code/Phone/Window Mockup |
 | **外观** | 九套配色 · 浅色/深色/跟随系统 |
 

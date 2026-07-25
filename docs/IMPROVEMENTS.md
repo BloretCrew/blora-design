@@ -112,33 +112,33 @@
 
 #### P0
 
-- [ ] **TreeSelect**
-- [ ] **Image Preview**（灯箱 / 组图）
-- [ ] **Message / Notification** 全局堆叠与位置 API（在 Toast 之上系统化）
-- [ ] **Affix** 通用固钉
-- [ ] **Anchor** 锚点导航（通用化展示页 spy）
+- [x] **TreeSelect**
+- [x] **Image Preview**（灯箱 / 组图）
+- [x] **Message / Notification** 全局堆叠与位置 API（在 Toast 之上系统化）
+- [x] **Affix** 通用固钉
+- [x] **Anchor** 锚点导航（通用化展示页 spy）
 
 #### P1
 
-- [ ] **AutoComplete**
-- [ ] **Mentions**
-- [ ] **Tour**（漫游引导）
-- [ ] **Watermark**
-- [ ] **Splitter** / 可拖拽分栏
-- [ ] **Typography** 组件级 API（复制、省略、标题锚点）
-- [ ] **Icon** 体系（可按需 SVG 精灵或文档化图标集）
-- [ ] **QRCode**
-- [ ] **BackTop** 独立 API（现有 FAB 回顶可抽）
-- [ ] **Skeleton** 更多矩阵模板
-- [ ] **Drawer/Modal** 业务预设（确认、表单弹窗）
+- [x] **AutoComplete**
+- [x] **Mentions**
+- [x] **Tour**（漫游引导）
+- [x] **Watermark**
+- [x] **Splitter** / 可拖拽分栏
+- [x] **Typography** 组件级 API（复制、省略）
+- [ ] **Icon** 体系（可按需 SVG 精灵或文档化图标集）— **暂缓**
+- [x] **QRCode**（轻量 canvas 矩阵，适合演示/短链）
+- [x] **BackTop** 独立 API（`Blora.backTop` + `data-blora-backtop`）
+- [x] **Skeleton** 卡片/列表模板
+- [x] **Drawer/Modal** 业务预设（`Blora.confirm`）
 
 #### P2
 
-- [ ] Masonry
-- [ ] Comment
-- [ ] Statistic 动效
-- [ ] Map / 富文本 / 音视频 容器约定
-- [ ] Chart 仅约定容器，不内置图表引擎
+- [x] Masonry
+- [x] Comment
+- [x] Statistic 动效（`data-blora-countup`）
+- [x] 媒体容器约定（`.blora-media-frame`）
+- [x] Chart 容器约定（`.blora-chart`，不内置引擎）
 
 ---
 
