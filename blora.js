@@ -2483,47 +2483,70 @@
       if (active < 0) active = cards().length - 1;
       let drag = null;
       let wheelLock = 0;
-      const DEPTH = [
-        { y: 0, scale: 1, opacity: 1, cls: "is-front" },
-        { y: -0.55, scale: 0.96, opacity: 0.75, cls: "is-mid" },
-        { y: -1, scale: 0.92, opacity: 0.5, cls: "is-back" },
+      /* 固定滚轮轨迹槽位（从上到下视觉：exit-up ← back ← mid ← front ← exit-down） */
+      const PATH = [
+        { y: 1.15, scale: 0.96, opacity: 0 },     // 0 exit-down（从下方进入）
+        { y: 0, scale: 1, opacity: 1 },            // 1 front
+        { y: -0.55, scale: 0.96, opacity: 0.75 }, // 2 mid
+        { y: -1, scale: 0.92, opacity: 0.5 },     // 3 back
+        { y: -1.45, scale: 0.88, opacity: 0 },    // 4 exit-up（向上退出）
       ];
-      const paint = (dragY) => {
+      const STEP_PX = 88;
+      const clampN = (v, a, b) => Math.min(b, Math.max(a, v));
+      const lerp = (a, b, t) => a + (b - a) * t;
+      const samplePath = (u) => {
+        const max = PATH.length - 1;
+        const x = clampN(u, 0, max);
+        const i = Math.min(max - 1, Math.floor(x));
+        const t = x - i;
+        if (x >= max) return { y: PATH[max].y, scale: PATH[max].scale, opacity: PATH[max].opacity };
+        return {
+          y: lerp(PATH[i].y, PATH[i + 1].y, t),
+          scale: lerp(PATH[i].scale, PATH[i + 1].scale, t),
+          opacity: lerp(PATH[i].opacity, PATH[i + 1].opacity, t),
+        };
+      };
+      /* p∈[-1,1]：>0 下拖看上一张，<0 上拖看下一张；卡位沿 PATH 插值，进度钳在一步内 */
+      const pathUFor = (depth, p) => {
+        if (depth < 0) return clampN(p, 0, 1); // prev：exit-down → front
+        return clampN(1 + depth - p, 0, 4);
+      };
+      const paint = (p) => {
         const list = cards();
         const n = list.length;
         if (!n) return;
         active = ((active % n) + n) % n;
-        const dragging = dragY != null;
-        deck.classList.toggle("is-dragging", dragging);
+        const progress = p == null ? 0 : clampN(p, -1, 1);
+        deck.classList.toggle("is-dragging", p != null);
         list.forEach((card, idx) => {
-          const depth = (active - idx + n) % n; // 0 = front
-          const base = DEPTH[Math.min(depth, DEPTH.length - 1)];
-          const hidden = depth >= DEPTH.length;
-          let yRem = base.y;
-          let scale = base.scale;
-          let opacity = hidden ? 0 : base.opacity;
-          let yPx = 0;
-          if (dragging && depth === 0) {
-            yPx = dragY;
-            const t = Math.min(1, Math.abs(dragY) / 120);
-            scale = 1 - t * 0.04;
-            opacity = 1 - t * 0.15;
-          } else if (dragging && depth === 1) {
-            const t = Math.min(1, Math.abs(dragY) / 120);
-            yRem = base.y + 0.35 * t;
-            scale = base.scale + (1 - base.scale) * t * 0.6;
-            opacity = base.opacity + (1 - base.opacity) * t * 0.5;
-          }
-          card.style.setProperty("--blora-deck-stack-y", yRem + "rem");
-          card.style.setProperty("--blora-deck-y", yPx + "px");
-          card.style.setProperty("--blora-deck-scale", String(scale));
-          card.style.setProperty("--blora-deck-opacity", String(opacity));
-          card.classList.toggle("is-front", depth === 0);
-          card.classList.toggle("is-mid", depth === 1);
+          let depth = (active - idx + n) % n; // 0 front, 1 mid, 2 back, …
+          if (progress > 0 && idx === (active - 1 + n) % n) depth = -1;
+          const pose = depth > 2 && progress >= 0
+            ? samplePath(4)
+            : samplePath(pathUFor(Math.min(depth, 3), progress));
+          const isFront = Math.abs(progress) < 0.5
+            ? depth === 0
+            : (progress > 0 ? depth === -1 : depth === 1);
+          const z = depth === -1 ? 4 : Math.max(0, 3 - depth);
+          card.style.setProperty("--blora-deck-stack-y", pose.y + "rem");
+          card.style.setProperty("--blora-deck-y", "0px");
+          card.style.setProperty("--blora-deck-scale", String(pose.scale));
+          card.style.setProperty("--blora-deck-opacity", String(pose.opacity));
+          card.style.zIndex = String(z);
+          card.classList.toggle("is-front", isFront);
+          card.classList.toggle("is-mid", depth === 1 && !isFront);
           card.classList.toggle("is-back", depth === 2);
-          card.setAttribute("aria-hidden", String(depth !== 0));
+          card.setAttribute("aria-hidden", String(!isFront));
         });
-        deck.setAttribute("aria-label", (deck.getAttribute("data-label") || "卡片叠层") + "，第 " + (active + 1) + " / " + n + " 张");
+        const shown = progress > 0.5 ? (active - 1 + n) % n : progress < -0.5 ? (active + 1) % n : active;
+        deck.setAttribute("aria-label", (deck.getAttribute("data-label") || "卡片叠层") + "，第 " + (shown + 1) + " / " + n + " 张");
+      };
+      const settle = (p) => {
+        const n = cards().length;
+        if (!n) return;
+        if (p <= -0.35) active = (active + 1) % n;
+        else if (p >= 0.35) active = (active - 1 + n) % n;
+        paint(null);
       };
       const go = (delta) => {
         const n = cards().length;
@@ -2538,8 +2561,8 @@
       };
       const onStart = (e) => {
         if (e.pointerType === "mouse" && e.button !== 0) return;
-        const p = point(e);
-        drag = { x: p.x, y: p.y, dy: 0, locked: null, ly: p.y, lt: Date.now(), vy: 0, pointerId: e.pointerId };
+        const pt = point(e);
+        drag = { x: pt.x, y: pt.y, progress: 0, locked: null, ly: pt.y, lt: Date.now(), vy: 0, pointerId: e.pointerId };
         if (typeof e.pointerId === "number" && deck.setPointerCapture) {
           try { deck.setPointerCapture(e.pointerId); } catch (_) { /* ignore */ }
         }
@@ -2547,9 +2570,9 @@
       const onMove = (e) => {
         if (!drag) return;
         if (typeof drag.pointerId === "number" && typeof e.pointerId === "number" && e.pointerId !== drag.pointerId) return;
-        const p = point(e);
-        const dx = p.x - drag.x;
-        const dy = p.y - drag.y;
+        const pt = point(e);
+        const dx = pt.x - drag.x;
+        const dy = pt.y - drag.y;
         if (drag.locked == null && (Math.abs(dx) > 6 || Math.abs(dy) > 6)) {
           drag.locked = Math.abs(dy) >= Math.abs(dx) ? "y" : "x";
           if (drag.locked === "x") {
@@ -2562,15 +2585,15 @@
         if (e.cancelable) e.preventDefault();
         const now = Date.now();
         const dt = Math.max(1, now - drag.lt);
-        drag.vy = (p.y - drag.ly) / dt;
-        drag.ly = p.y;
+        drag.vy = (pt.y - drag.ly) / dt;
+        drag.ly = pt.y;
         drag.lt = now;
-        drag.dy = dy;
-        paint(dy);
+        drag.progress = clampN(dy / STEP_PX, -1, 1);
+        paint(drag.progress);
       };
       const finish = (cancelled) => {
         if (!drag) return;
-        const dy = drag.dy;
+        let p = drag.progress;
         const vy = drag.vy;
         const wasY = drag.locked === "y";
         drag = null;
@@ -2578,19 +2601,19 @@
           paint(null);
           return;
         }
-        if (dy <= -48 || vy <= -0.35) go(1);
-        else if (dy >= 48 || vy >= 0.35) go(-1);
-        else paint(null);
+        if (vy <= -0.35) p = Math.min(p, -0.5);
+        if (vy >= 0.35) p = Math.max(p, 0.5);
+        settle(p);
       };
       const onEnd = (e) => {
         if (!drag) return;
         if (typeof drag.pointerId === "number" && typeof e.pointerId === "number" && e.pointerId !== drag.pointerId) return;
         if (drag.locked === "y") {
-          const p = point(e);
-          drag.dy = p.y - drag.y;
+          const pt = point(e);
+          drag.progress = clampN((pt.y - drag.y) / STEP_PX, -1, 1);
           const now = Date.now();
           const dt = Math.max(1, now - drag.lt);
-          drag.vy = (p.y - drag.ly) / dt;
+          drag.vy = (pt.y - drag.ly) / dt;
         }
         finish(false);
       };
