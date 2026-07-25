@@ -1792,7 +1792,7 @@
       <header class="blora-sec__head">
         <div class="blora-sec__num">18 — 布局</div>
         <h2 class="blora-sec__title">布局</h2>
-        <p class="blora-sec__desc">栅格、卡面、面板、分隔、堆叠、行，构成页面布局的基础构件。</p>
+        <p class="blora-sec__desc">栅格、卡面、面板、分隔、堆叠、行与卡片叠层，构成页面布局的基础构件。</p>
       </header>
 
       <div class="blora-panel">
@@ -1840,6 +1840,18 @@
             <div class="blora-card blora-card--flat">第三行</div>
           </div>
         </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">卡片叠层 · Deck</div>
+          <p class="blora-hint" style="margin-bottom:var(--blora-space-3);">上下滑动或滚轮切换；顶卡跟手拖动。</p>
+          <div class="blora-row">
+            <div class="blora-deck blora-deck--sm" tabindex="0" aria-label="卡片叠层">
+              <article class="blora-card blora-card--flat"><strong>设计评审</strong><p class="blora-text-muted">第三层 · 队列预览</p></article>
+              <article class="blora-card blora-card--flat"><strong>接口联调</strong><p class="blora-text-muted">第二层 · 待办卡片</p></article>
+              <article class="blora-card"><strong>当前卡片</strong><p class="blora-text-muted">用于相册、队列和待办预览。</p></article>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -1854,17 +1866,6 @@
       </header>
 
       <div class="blora-panel">
-        <div class="blora-demo">
-          <div class="blora-demo__label">卡片叠层 · Deck</div>
-          <div class="blora-row">
-            <div class="blora-deck blora-deck--sm">
-              <article class="blora-card blora-card--flat">第三层</article>
-              <article class="blora-card blora-card--flat">第二层</article>
-              <article class="blora-card"><strong>当前卡片</strong><p class="blora-text-muted">用于相册、队列和待办预览。</p></article>
-            </div>
-          </div>
-        </div>
-
         <div class="blora-demo">
           <div class="blora-demo__label">可选效果 · Text Rotate</div>
           <p class="blora-h3">构建

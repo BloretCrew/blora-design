@@ -2188,12 +2188,29 @@ html:has(body.blora-page)::-webkit-scrollbar-corner,
 .blora-footer__link:hover { color: var(--blora-primary); }
 .blora-footer__bottom { width: min(100%, 75rem); margin: var(--blora-space-7) auto 0; padding-top: var(--blora-space-4); border-top: var(--blora-border); font-size: var(--blora-text-xs); }
 
-.blora-deck { display: grid; isolation: isolate; padding: var(--blora-space-4); }
-.blora-deck > * { grid-area: 1 / 1; z-index: 3; transition: transform var(--blora-dur-base) var(--blora-ease); }
-.blora-deck > *:nth-last-child(2) { z-index: 2; transform: translateY(-0.55rem) scale(0.96); opacity: 0.75; }
-.blora-deck > *:nth-last-child(3) { z-index: 1; transform: translateY(-1rem) scale(0.92); opacity: 0.5; }
-.blora-deck:hover > *:nth-last-child(2) { transform: translateY(-0.8rem) scale(0.97); }
-.blora-deck:hover > *:nth-last-child(3) { transform: translateY(-1.45rem) scale(0.94); }
+.blora-deck {
+  --blora-deck-lift: 0.55rem;
+  position: relative; display: grid; isolation: isolate;
+  padding: calc(var(--blora-space-4) + 1.2rem) var(--blora-space-4) var(--blora-space-4);
+  touch-action: pan-x; cursor: grab; user-select: none; outline: none;
+}
+.blora-deck:active { cursor: grabbing; }
+.blora-deck:focus-visible { box-shadow: 0 0 0 2px var(--blora-primary); border-radius: var(--blora-radius-lg); }
+.blora-deck > * {
+  grid-area: 1 / 1; z-index: 1; align-self: stretch;
+  transform: translateY(calc(var(--blora-deck-y, 0px) + var(--blora-deck-stack-y, 0px))) scale(var(--blora-deck-scale, 0.88));
+  opacity: var(--blora-deck-opacity, 0);
+  pointer-events: none;
+  transition:
+    transform var(--blora-dur-base) var(--blora-ease),
+    opacity var(--blora-dur-base) var(--blora-ease);
+  will-change: transform, opacity;
+}
+.blora-deck > *.is-front { z-index: 3; pointer-events: auto; cursor: grab; }
+.blora-deck > *.is-front:active { cursor: grabbing; }
+.blora-deck > *.is-mid { z-index: 2; }
+.blora-deck > *.is-back { z-index: 1; }
+.blora-deck.is-dragging > * { transition: none; }
 .blora-deck--sm { width: min(100%, 18rem); }
 
 /* —— Data & Media: Kbd, Chat, Countdown & Text Rotate —— */

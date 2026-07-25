@@ -2472,6 +2472,158 @@
     });
   }
 
+  /* —— Deck · 卡片叠层（垂直跟手 + 滚轮） —— */
+  function initDeck(root) {
+    $$(".blora-deck", root).forEach((deck) => {
+      if (bound(deck, "Deck")) return;
+      const cards = () => Array.from(deck.children).filter((el) => el.nodeType === 1);
+      if (!cards().length) return;
+      if (!deck.hasAttribute("tabindex")) deck.tabIndex = 0;
+      let active = Math.max(0, cards().findIndex((c) => c.classList.contains("is-front")));
+      if (active < 0) active = cards().length - 1;
+      let drag = null;
+      let wheelLock = 0;
+      const DEPTH = [
+        { y: 0, scale: 1, opacity: 1, cls: "is-front" },
+        { y: -0.55, scale: 0.96, opacity: 0.75, cls: "is-mid" },
+        { y: -1, scale: 0.92, opacity: 0.5, cls: "is-back" },
+      ];
+      const paint = (dragY) => {
+        const list = cards();
+        const n = list.length;
+        if (!n) return;
+        active = ((active % n) + n) % n;
+        const dragging = dragY != null;
+        deck.classList.toggle("is-dragging", dragging);
+        list.forEach((card, idx) => {
+          const depth = (active - idx + n) % n; // 0 = front
+          const base = DEPTH[Math.min(depth, DEPTH.length - 1)];
+          const hidden = depth >= DEPTH.length;
+          let yRem = base.y;
+          let scale = base.scale;
+          let opacity = hidden ? 0 : base.opacity;
+          let yPx = 0;
+          if (dragging && depth === 0) {
+            yPx = dragY;
+            const t = Math.min(1, Math.abs(dragY) / 120);
+            scale = 1 - t * 0.04;
+            opacity = 1 - t * 0.15;
+          } else if (dragging && depth === 1) {
+            const t = Math.min(1, Math.abs(dragY) / 120);
+            yRem = base.y + 0.35 * t;
+            scale = base.scale + (1 - base.scale) * t * 0.6;
+            opacity = base.opacity + (1 - base.opacity) * t * 0.5;
+          }
+          card.style.setProperty("--blora-deck-stack-y", yRem + "rem");
+          card.style.setProperty("--blora-deck-y", yPx + "px");
+          card.style.setProperty("--blora-deck-scale", String(scale));
+          card.style.setProperty("--blora-deck-opacity", String(opacity));
+          card.classList.toggle("is-front", depth === 0);
+          card.classList.toggle("is-mid", depth === 1);
+          card.classList.toggle("is-back", depth === 2);
+          card.setAttribute("aria-hidden", String(depth !== 0));
+        });
+        deck.setAttribute("aria-label", (deck.getAttribute("data-label") || "卡片叠层") + "，第 " + (active + 1) + " / " + n + " 张");
+      };
+      const go = (delta) => {
+        const n = cards().length;
+        if (!n) return;
+        active = (active + delta + n) % n;
+        paint(null);
+      };
+      const point = (e) => {
+        if (e.touches && e.touches[0]) return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        if (e.changedTouches && e.changedTouches[0]) return { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
+        return { x: e.clientX, y: e.clientY };
+      };
+      const onStart = (e) => {
+        if (e.pointerType === "mouse" && e.button !== 0) return;
+        const p = point(e);
+        drag = { x: p.x, y: p.y, dy: 0, locked: null, ly: p.y, lt: Date.now(), vy: 0, pointerId: e.pointerId };
+        if (typeof e.pointerId === "number" && deck.setPointerCapture) {
+          try { deck.setPointerCapture(e.pointerId); } catch (_) { /* ignore */ }
+        }
+      };
+      const onMove = (e) => {
+        if (!drag) return;
+        if (typeof drag.pointerId === "number" && typeof e.pointerId === "number" && e.pointerId !== drag.pointerId) return;
+        const p = point(e);
+        const dx = p.x - drag.x;
+        const dy = p.y - drag.y;
+        if (drag.locked == null && (Math.abs(dx) > 6 || Math.abs(dy) > 6)) {
+          drag.locked = Math.abs(dy) >= Math.abs(dx) ? "y" : "x";
+          if (drag.locked === "x") {
+            drag = null;
+            paint(null);
+            return;
+          }
+        }
+        if (drag.locked !== "y") return;
+        if (e.cancelable) e.preventDefault();
+        const now = Date.now();
+        const dt = Math.max(1, now - drag.lt);
+        drag.vy = (p.y - drag.ly) / dt;
+        drag.ly = p.y;
+        drag.lt = now;
+        drag.dy = dy;
+        paint(dy);
+      };
+      const finish = (cancelled) => {
+        if (!drag) return;
+        const dy = drag.dy;
+        const vy = drag.vy;
+        const wasY = drag.locked === "y";
+        drag = null;
+        if (!wasY || cancelled) {
+          paint(null);
+          return;
+        }
+        if (dy <= -48 || vy <= -0.35) go(1);
+        else if (dy >= 48 || vy >= 0.35) go(-1);
+        else paint(null);
+      };
+      const onEnd = (e) => {
+        if (!drag) return;
+        if (typeof drag.pointerId === "number" && typeof e.pointerId === "number" && e.pointerId !== drag.pointerId) return;
+        if (drag.locked === "y") {
+          const p = point(e);
+          drag.dy = p.y - drag.y;
+          const now = Date.now();
+          const dt = Math.max(1, now - drag.lt);
+          drag.vy = (p.y - drag.ly) / dt;
+        }
+        finish(false);
+      };
+      if (global.PointerEvent) {
+        on(deck, "pointerdown", onStart);
+        on(deck, "pointermove", onMove);
+        on(deck, "pointerup", onEnd);
+        on(deck, "pointercancel", () => finish(true));
+      } else {
+        on(deck, "touchstart", onStart, { passive: true });
+        on(deck, "touchmove", onMove, { passive: false });
+        on(deck, "touchend", onEnd);
+        on(deck, "touchcancel", () => finish(true));
+      }
+      on(deck, "wheel", (e) => {
+        if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
+        e.preventDefault();
+        const now = Date.now();
+        if (now < wheelLock) return;
+        wheelLock = now + 280;
+        if (e.deltaY > 0) go(1);
+        else if (e.deltaY < 0) go(-1);
+      }, { passive: false });
+      on(deck, "keydown", (e) => {
+        if (e.key === "ArrowDown" || e.key === "PageDown") { e.preventDefault(); go(1); }
+        if (e.key === "ArrowUp" || e.key === "PageUp") { e.preventDefault(); go(-1); }
+        if (e.key === "Home") { e.preventDefault(); active = 0; paint(null); }
+        if (e.key === "End") { e.preventDefault(); active = cards().length - 1; paint(null); }
+      });
+      paint(null);
+    });
+  }
+
   function initTextRotate(root) {
     $$(".blora-text-rotate", root).forEach((rotate) => {
       if (bound(rotate, "TextRotate")) return;
@@ -2551,6 +2703,7 @@
     initCountdown(root);
     initDiff(root);
     initHoverGallery(root);
+    initDeck(root);
     initTextRotate(root);
     initShortcutHints(root);
   }
