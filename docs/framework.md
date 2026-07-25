@@ -774,11 +774,11 @@ Blora.toast({ type: 'success', message: '操作已完成', duration: 3000 });
   <div class="blora-footer__bottom">…</div>
 </footer>
 
-<!-- 卡片叠层：需 JS；支持上下拖动跟手与滚轮切换 -->
+<!-- 卡片叠层：需 JS；隐形滚轮模型——连续 offset + 吸附，支持拖动/滚轮/方向键 -->
 <div class="blora-deck blora-deck--sm" tabindex="0" aria-label="卡片叠层">
-  <article class="blora-card">后层</article>
-  <article class="blora-card">中层</article>
-  <article class="blora-card">当前层</article>
+  <article class="blora-card">卡片 A</article>
+  <article class="blora-card">卡片 B</article>
+  <article class="blora-card">卡片 C</article>
 </div>
 ```
 

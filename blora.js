@@ -2473,100 +2473,115 @@
   }
 
   /* —— Deck · 卡片叠层（垂直跟手 + 滚轮） —— */
+  /* —— Deck · 隐形滚轮叠层 ——
+     单一连续 offset（单位：张）。每张卡 pose 只由 wrap(i - offset) 决定。
+     拖动/滚轮改 offset，松手吸附到最近整数格。 */
   function initDeck(root) {
     $$(".blora-deck", root).forEach((deck) => {
       if (bound(deck, "Deck")) return;
       const cards = () => Array.from(deck.children).filter((el) => el.nodeType === 1);
       if (!cards().length) return;
       if (!deck.hasAttribute("tabindex")) deck.tabIndex = 0;
-      let active = Math.max(0, cards().findIndex((c) => c.classList.contains("is-front")));
-      if (active < 0) active = cards().length - 1;
-      let drag = null;
-      let wheelLock = 0;
-      /* 固定滚轮轨迹槽位（从上到下视觉：exit-up ← back ← mid ← front ← exit-down） */
-      const PATH = [
-        { y: 1.15, scale: 0.96, opacity: 0 },     // 0 exit-down（从下方进入）
-        { y: 0, scale: 1, opacity: 1 },            // 1 front
-        { y: -0.55, scale: 0.96, opacity: 0.75 }, // 2 mid
-        { y: -1, scale: 0.92, opacity: 0.5 },     // 3 back
-        { y: -1.45, scale: 0.88, opacity: 0 },    // 4 exit-up（向上退出）
-      ];
-      const STEP_PX = 88;
+
+      /* 相对焦点 d 的姿态曲线：d=0 正面；d>0 叠在后方（偏上）；d<0 偏下退出 */
+      const GAP = 0.55;       // rem / 张
+      const STEP_PX = 96;     // 拖满一张的像素
+      const VISIBLE = 2.35;   // |d| 超过此值隐藏
       const clampN = (v, a, b) => Math.min(b, Math.max(a, v));
-      const lerp = (a, b, t) => a + (b - a) * t;
-      const samplePath = (u) => {
-        const max = PATH.length - 1;
-        const x = clampN(u, 0, max);
-        const i = Math.min(max - 1, Math.floor(x));
-        const t = x - i;
-        if (x >= max) return { y: PATH[max].y, scale: PATH[max].scale, opacity: PATH[max].opacity };
-        return {
-          y: lerp(PATH[i].y, PATH[i + 1].y, t),
-          scale: lerp(PATH[i].scale, PATH[i + 1].scale, t),
-          opacity: lerp(PATH[i].opacity, PATH[i + 1].opacity, t),
-        };
+      const wrapDelta = (i, off, n) => {
+        let d = i - off;
+        d -= n * Math.round(d / n);
+        return d;
       };
-      /* p∈[-1,1]：>0 下拖看上一张，<0 上拖看下一张；卡位沿 PATH 插值，进度钳在一步内 */
-      const pathUFor = (depth, p) => {
-        if (depth < 0) return clampN(p, 0, 1); // prev：exit-down → front
-        return clampN(1 + depth - p, 0, 4);
+      const poseAt = (d) => {
+        const ad = Math.abs(d);
+        if (ad > VISIBLE) {
+          return { y: d > 0 ? -GAP * VISIBLE : GAP * VISIBLE, scale: 0.88, opacity: 0, z: 0 };
+        }
+        const y = -d * GAP;
+        const scale = 1 - clampN(ad, 0, 3) * 0.04;
+        const opacity = ad <= 0.15 ? 1 : clampN(1 - (ad - 0.15) / (VISIBLE - 0.15), 0, 1);
+        const z = Math.round(40 - ad * 10);
+        return { y, scale, opacity, z };
       };
-      const paint = (p) => {
+
+      let offset = (() => {
+        const list = cards();
+        let i = list.findIndex((c) => c.classList.contains("is-front"));
+        if (i < 0) i = 0;
+        return i;
+      })();
+      let drag = null;
+      let wheelAcc = 0;
+      let wheelLock = 0;
+
+      const paint = (dragging) => {
         const list = cards();
         const n = list.length;
         if (!n) return;
-        active = ((active % n) + n) % n;
-        const progress = p == null ? 0 : clampN(p, -1, 1);
-        deck.classList.toggle("is-dragging", p != null);
-        list.forEach((card, idx) => {
-          let depth = (active - idx + n) % n; // 0 front, 1 mid, 2 back, …
-          if (progress > 0 && idx === (active - 1 + n) % n) depth = -1;
-          const pose = depth > 2 && progress >= 0
-            ? samplePath(4)
-            : samplePath(pathUFor(Math.min(depth, 3), progress));
-          const isFront = Math.abs(progress) < 0.5
-            ? depth === 0
-            : (progress > 0 ? depth === -1 : depth === 1);
-          const z = depth === -1 ? 4 : Math.max(0, 3 - depth);
-          card.style.setProperty("--blora-deck-stack-y", pose.y + "rem");
-          card.style.setProperty("--blora-deck-y", "0px");
+        deck.classList.toggle("is-dragging", !!dragging);
+        let frontIdx = 0;
+        let frontScore = Infinity;
+        list.forEach((card, i) => {
+          const d = wrapDelta(i, offset, n);
+          const pose = poseAt(d);
+          card.style.setProperty("--blora-deck-y", pose.y + "rem");
           card.style.setProperty("--blora-deck-scale", String(pose.scale));
           card.style.setProperty("--blora-deck-opacity", String(pose.opacity));
-          card.style.zIndex = String(z);
+          card.style.zIndex = String(pose.z);
+          if (Math.abs(d) < frontScore) {
+            frontScore = Math.abs(d);
+            frontIdx = i;
+          }
+        });
+        list.forEach((card, i) => {
+          const isFront = i === frontIdx;
           card.classList.toggle("is-front", isFront);
-          card.classList.toggle("is-mid", depth === 1 && !isFront);
-          card.classList.toggle("is-back", depth === 2);
+          card.classList.toggle("is-mid", false);
+          card.classList.toggle("is-back", false);
           card.setAttribute("aria-hidden", String(!isFront));
         });
-        const shown = progress > 0.5 ? (active - 1 + n) % n : progress < -0.5 ? (active + 1) % n : active;
-        deck.setAttribute("aria-label", (deck.getAttribute("data-label") || "卡片叠层") + "，第 " + (shown + 1) + " / " + n + " 张");
+        const raw = deck.getAttribute("data-label") || deck.getAttribute("aria-label") || "卡片叠层";
+        const base = raw.replace(/，第\s*\d+\s*\/\s*\d+\s*张$/, "");
+        deck.setAttribute("aria-label", base + "，第 " + (frontIdx + 1) + " / " + n + " 张");
       };
-      const settle = (p) => {
+
+      const snap = () => {
         const n = cards().length;
         if (!n) return;
-        if (p <= -0.35) active = (active + 1) % n;
-        else if (p >= 0.35) active = (active - 1 + n) % n;
-        paint(null);
+        offset = Math.round(offset);
+        offset = ((offset % n) + n) % n;
+        paint(false);
       };
+
       const go = (delta) => {
         const n = cards().length;
         if (!n) return;
-        active = (active + delta + n) % n;
-        paint(null);
+        offset = Math.round(offset) + delta;
+        snap();
       };
+
       const point = (e) => {
         if (e.touches && e.touches[0]) return { x: e.touches[0].clientX, y: e.touches[0].clientY };
         if (e.changedTouches && e.changedTouches[0]) return { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
         return { x: e.clientX, y: e.clientY };
       };
+
       const onStart = (e) => {
         if (e.pointerType === "mouse" && e.button !== 0) return;
         const pt = point(e);
-        drag = { x: pt.x, y: pt.y, progress: 0, locked: null, ly: pt.y, lt: Date.now(), vy: 0, pointerId: e.pointerId };
+        drag = {
+          x: pt.x, y: pt.y,
+          startOffset: offset,
+          locked: null,
+          ly: pt.y, lt: Date.now(), vy: 0,
+          pointerId: e.pointerId,
+        };
         if (typeof e.pointerId === "number" && deck.setPointerCapture) {
           try { deck.setPointerCapture(e.pointerId); } catch (_) { /* ignore */ }
         }
       };
+
       const onMove = (e) => {
         if (!drag) return;
         if (typeof drag.pointerId === "number" && typeof e.pointerId === "number" && e.pointerId !== drag.pointerId) return;
@@ -2577,7 +2592,7 @@
           drag.locked = Math.abs(dy) >= Math.abs(dx) ? "y" : "x";
           if (drag.locked === "x") {
             drag = null;
-            paint(null);
+            paint(false);
             return;
           }
         }
@@ -2588,35 +2603,40 @@
         drag.vy = (pt.y - drag.ly) / dt;
         drag.ly = pt.y;
         drag.lt = now;
-        drag.progress = clampN(dy / STEP_PX, -1, 1);
-        paint(drag.progress);
+        // 手指上滑（dy<0）→ offset 增大 → 下一张进入焦点
+        offset = drag.startOffset - dy / STEP_PX;
+        paint(true);
       };
+
       const finish = (cancelled) => {
         if (!drag) return;
-        let p = drag.progress;
         const vy = drag.vy;
         const wasY = drag.locked === "y";
+        const start = drag.startOffset;
         drag = null;
         if (!wasY || cancelled) {
-          paint(null);
+          offset = start;
+          paint(false);
           return;
         }
-        if (vy <= -0.35) p = Math.min(p, -0.5);
-        if (vy >= 0.35) p = Math.max(p, 0.5);
-        settle(p);
+        if (vy <= -0.4) offset += 0.55;
+        else if (vy >= 0.4) offset -= 0.55;
+        snap();
       };
+
       const onEnd = (e) => {
         if (!drag) return;
         if (typeof drag.pointerId === "number" && typeof e.pointerId === "number" && e.pointerId !== drag.pointerId) return;
         if (drag.locked === "y") {
           const pt = point(e);
-          drag.progress = clampN((pt.y - drag.y) / STEP_PX, -1, 1);
           const now = Date.now();
           const dt = Math.max(1, now - drag.lt);
           drag.vy = (pt.y - drag.ly) / dt;
+          offset = drag.startOffset - (pt.y - drag.y) / STEP_PX;
         }
         finish(false);
       };
+
       if (global.PointerEvent) {
         on(deck, "pointerdown", onStart);
         on(deck, "pointermove", onMove);
@@ -2628,22 +2648,29 @@
         on(deck, "touchend", onEnd);
         on(deck, "touchcancel", () => finish(true));
       }
+
       on(deck, "wheel", (e) => {
         if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
         e.preventDefault();
         const now = Date.now();
-        if (now < wheelLock) return;
-        wheelLock = now + 280;
-        if (e.deltaY > 0) go(1);
-        else if (e.deltaY < 0) go(-1);
+        if (now > wheelLock + 400) wheelAcc = 0;
+        wheelLock = now;
+        wheelAcc += e.deltaY;
+        if (Math.abs(wheelAcc) < 24) return;
+        const dir = wheelAcc > 0 ? 1 : -1;
+        wheelAcc = 0;
+        go(dir);
       }, { passive: false });
+
       on(deck, "keydown", (e) => {
+        const n = cards().length;
         if (e.key === "ArrowDown" || e.key === "PageDown") { e.preventDefault(); go(1); }
         if (e.key === "ArrowUp" || e.key === "PageUp") { e.preventDefault(); go(-1); }
-        if (e.key === "Home") { e.preventDefault(); active = 0; paint(null); }
-        if (e.key === "End") { e.preventDefault(); active = cards().length - 1; paint(null); }
+        if (e.key === "Home") { e.preventDefault(); offset = 0; snap(); }
+        if (e.key === "End") { e.preventDefault(); offset = n - 1; snap(); }
       });
-      paint(null);
+
+      paint(false);
     });
   }
 
