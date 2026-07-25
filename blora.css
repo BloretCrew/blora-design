@@ -3673,10 +3673,16 @@ html:has(body.blora-page)::-webkit-scrollbar-corner,
 @keyframes blora-toast-out   { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-12px); } }
 @keyframes blora-tab-panel-in { from { opacity: 0; } to { opacity: 1; } }
 
-/* —— 减少动效偏好 —— */
+/* —— 减少动效偏好 ——
+   注意：不要给 * 写 scroll-behavior，会干扰 JS scrollIntoView/scrollTo 的 smooth。
+   滚动是否平滑由 blora.js 的 prefers-reduced-motion 判断。 */
 @media (prefers-reduced-motion: reduce) {
   :where(body.blora-page, .blora-scope, .blora-portal),
   :where(body.blora-page, .blora-scope, .blora-portal) *,
   :where(body.blora-page, .blora-scope, .blora-portal) *::before,
-  :where(body.blora-page, .blora-scope, .blora-portal) *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  :where(body.blora-page, .blora-scope, .blora-portal) *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

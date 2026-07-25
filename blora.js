@@ -1422,7 +1422,8 @@
   }
 
   /* —— Smooth scroll —— 目标偏移交给 CSS scroll-margin-top。
-     刷新：head 已摘掉 hash 防原生硬跳；此处还原 hash 并 smooth 滚入（同侧栏点击）。 */
+     刷新：head 摘掉 hash 防原生硬跳；还原后用 window.scrollTo smooth（与侧栏一致）。
+     注意：立刻 replaceState('#id') 会在部分浏览器打断 smooth，故延后写回 hash。 */
   function resolveHashTarget(hash) {
     const d = doc();
     if (!d) return null;
@@ -1438,15 +1439,41 @@
     }
     return el;
   }
+  function scrollElementIntoView(el, behavior) {
+    if (!el) return false;
+    const win = ownerWin(el) || global;
+    const motion = behavior != null ? behavior : (prefersReduced(el) ? "auto" : "smooth");
+    /* 优先 window.scrollTo：比 scrollIntoView 更少被 CSS / hash 干扰 */
+    try {
+      const rect = el.getBoundingClientRect();
+      const styles = win.getComputedStyle(el);
+      const marginTop = parseFloat(styles.scrollMarginTop) || 0;
+      const top = (win.pageYOffset || win.scrollY || 0) + rect.top - marginTop;
+      win.scrollTo({ top: Math.max(0, top), behavior: motion });
+      return true;
+    } catch (_) {
+      try {
+        el.scrollIntoView({ behavior: motion, block: "start" });
+        return true;
+      } catch (__) { return false; }
+    }
+  }
+  function setLocationHash(id) {
+    const d = doc();
+    const win = ownerWin(d) || global;
+    if (!win || !id) return;
+    try {
+      const path = (win.location.pathname || "") + (win.location.search || "");
+      win.history.replaceState(null, "", path + "#" + id);
+    } catch (_) { /* ignore */ }
+  }
   function scrollToHashId(behavior, hash) {
     const d = doc();
     const win = ownerWin(d) || global;
     if (!d || !win) return false;
     const el = resolveHashTarget(hash != null ? hash : win.location.hash);
     if (!el) return false;
-    const motion = behavior != null ? behavior : (prefersReduced() ? "auto" : "smooth");
-    el.scrollIntoView({ behavior: motion, block: "start" });
-    return true;
+    return scrollElementIntoView(el, behavior);
   }
   function restoreHashScroll() {
     const d = doc();
@@ -1455,16 +1482,17 @@
     const pending = win.__bloraPendingHash || "";
     const hash = pending || win.location.hash || "";
     if (!hash || hash.length < 2) return;
-    /* 写回地址栏（head 里为防原生跳转曾临时摘掉） */
-    try {
-      if (pending) {
-        win.history.replaceState(null, "", (win.location.pathname || "") + (win.location.search || "") + pending);
-        try { delete win.__bloraPendingHash; } catch (_) { win.__bloraPendingHash = ""; }
-      }
-    } catch (_) { /* ignore */ }
+    const id = String(hash).replace(/^#/, "");
+    const el = resolveHashTarget(hash);
+    /* 先滚再写 hash，避免写 hash 打断动画 */
     const behavior = prefersReduced() ? "auto" : "smooth";
-    /* 等一帧布局稳定再滚，避免顶栏/字体未就绪 */
-    const run = () => scrollToHashId(behavior, hash);
+    const run = () => {
+      if (el) scrollElementIntoView(el, behavior);
+      setTimeout(() => {
+        setLocationHash(el && el.id ? el.id : id);
+        try { delete win.__bloraPendingHash; } catch (_) { win.__bloraPendingHash = ""; }
+      }, behavior === "smooth" ? 450 : 0);
+    };
     if (win.requestAnimationFrame) win.requestAnimationFrame(run);
     else run();
   }
@@ -1473,27 +1501,49 @@
     FLAGS.smooth = true;
     const d = doc();
     const win = ownerWin(d) || global;
+    if (!d || !win) {
+      FLAGS.smooth = false;
+      return;
+    }
     try {
-      if (win && win.history && "scrollRestoration" in win.history) win.history.scrollRestoration = "manual";
+      if (win.history && "scrollRestoration" in win.history) win.history.scrollRestoration = "manual";
     } catch (_) { /* ignore */ }
 
-    const hasPending = !!(win && (win.__bloraPendingHash || (win.location && win.location.hash && win.location.hash.length > 1)));
+    const hasPending = !!(win.__bloraPendingHash || (win.location && win.location.hash && win.location.hash.length > 1));
     if (hasPending) {
       if (d.readyState === "loading") on(d, "DOMContentLoaded", restoreHashScroll, { once: true });
       else restoreHashScroll();
     }
 
+    /* capture 阶段拦截，避免其它逻辑抢先原生跳锚 */
     on(d, "click", (e) => {
-      const a = e.target.closest('a[href^="#"]');
-      if (!a) return;
+      if (e.defaultPrevented) return;
+      if (e.button != null && e.button !== 0) return;
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const a = e.target && e.target.closest ? e.target.closest('a[href^="#"]') : null;
+      if (!a || a.getAttribute("download") != null) return;
       const href = a.getAttribute("href") || "";
       if (href === "#" || href.length < 2) return;
-      const el = d.getElementById(href.slice(1));
+      /* 仅处理页内锚点（同文档） */
+      try {
+        const url = new URL(a.href, win.location.href);
+        if (url.pathname !== win.location.pathname || url.search !== win.location.search) return;
+      } catch (_) { /* keep going with raw hash */ }
+      const el = resolveHashTarget(href);
       if (!el) return;
       e.preventDefault();
-      el.scrollIntoView({ behavior: prefersReduced() ? "auto" : "smooth", block: "start" });
-      try { win.history.replaceState(null, "", "#" + el.id); } catch (_) { /* ignore */ }
-    });
+      const motion = prefersReduced(el) ? "auto" : "smooth";
+      scrollElementIntoView(el, motion);
+      /* 延后写 hash，防止部分引擎用瞬时跳转覆盖 smooth */
+      const writeHash = () => setLocationHash(el.id);
+      if (motion === "smooth" && "onscrollend" in win) {
+        const once = () => { writeHash(); win.removeEventListener("scrollend", once); };
+        win.addEventListener("scrollend", once);
+        setTimeout(writeHash, 700);
+      } else {
+        setTimeout(writeHash, motion === "smooth" ? 400 : 0);
+      }
+    }, true);
   }
 
   /* —— Color palettes —— */
@@ -3772,13 +3822,7 @@
       };
       links.forEach((a) => {
         a.classList.add("blora-anchor__link");
-        on(a, "click", (e) => {
-          const el = document.getElementById(a.getAttribute("href").slice(1));
-          if (!el) return;
-          e.preventDefault();
-          el.scrollIntoView({ behavior: prefersReduced() ? "auto" : "smooth", block: "start" });
-          try { history.replaceState(null, "", a.getAttribute("href")); } catch (_) { /* ignore */ }
-        });
+        /* 点击滚动交给全局 initSmoothScroll（capture），避免双重绑定 */
       });
       on(window, "scroll", sync, { passive: true });
       sync();
