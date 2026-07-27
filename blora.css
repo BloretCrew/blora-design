@@ -1816,23 +1816,43 @@ th[data-blora-sort] {
 .blora-table-sort:hover,
 th[data-blora-sort]:hover { color: var(--blora-primary); }
 
-/* 列固定 */
+/* 列固定：sticky 单元格必须有不透明底，但要与行斑马纹/hover 一致，避免「列深浅」假象 */
 .blora-table .blora-table-col--fixed-left,
 .blora-table [data-blora-fixed="left"] {
   position: sticky; left: 0; z-index: 2;
   background: var(--blora-surface-1);
   box-shadow: 1px 0 0 var(--blora-border-subtle);
 }
-.blora-table thead .blora-table-col--fixed-left,
-.blora-table thead [data-blora-fixed="left"] { background: var(--blora-surface-2); z-index: 3; }
 .blora-table .blora-table-col--fixed-right,
 .blora-table [data-blora-fixed="right"] {
   position: sticky; right: 0; z-index: 2;
   background: var(--blora-surface-1);
   box-shadow: -1px 0 0 var(--blora-border-subtle);
 }
+.blora-table thead .blora-table-col--fixed-left,
+.blora-table thead [data-blora-fixed="left"],
 .blora-table thead .blora-table-col--fixed-right,
-.blora-table thead [data-blora-fixed="right"] { background: var(--blora-surface-2); z-index: 3; }
+.blora-table thead [data-blora-fixed="right"] {
+  background: var(--blora-surface-2); z-index: 3;
+}
+.blora-table tbody tr:hover .blora-table-col--fixed-left,
+.blora-table tbody tr:hover [data-blora-fixed="left"],
+.blora-table tbody tr:hover .blora-table-col--fixed-right,
+.blora-table tbody tr:hover [data-blora-fixed="right"] {
+  background: var(--blora-surface-2);
+}
+.blora-table--striped tbody tr:nth-child(odd) .blora-table-col--fixed-left,
+.blora-table--striped tbody tr:nth-child(odd) [data-blora-fixed="left"],
+.blora-table--striped tbody tr:nth-child(odd) .blora-table-col--fixed-right,
+.blora-table--striped tbody tr:nth-child(odd) [data-blora-fixed="right"] {
+  background: var(--blora-surface-2);
+}
+.blora-table--striped tbody tr:nth-child(odd):hover .blora-table-col--fixed-left,
+.blora-table--striped tbody tr:nth-child(odd):hover [data-blora-fixed="left"],
+.blora-table--striped tbody tr:nth-child(odd):hover .blora-table-col--fixed-right,
+.blora-table--striped tbody tr:nth-child(odd):hover [data-blora-fixed="right"] {
+  background: var(--blora-surface-3);
+}
 .blora-table-select-col { width: 2.75rem; text-align: center; }
 .blora-table-check { justify-content: center; margin: 0; }
 .blora-table-bulk {
