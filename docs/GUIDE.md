@@ -866,4 +866,4 @@ Blora.init(document.getElementById("blora-app"));
 
 ---
 
-*Blora Design · MIT · BloretCrew / RhedarLiu*
+*Blora Design · Apache-2.0 · BloretCrew / RhedarLiu*

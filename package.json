@@ -2,7 +2,7 @@
   "name": "@bloret/blora-design",
   "version": "1.0.0",
   "description": "Token-driven, dark-mode ready, dependency-free Web UI design system for Bloret applications.",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "private": false,
   "type": "commonjs",
   "author": "RhedarLiu <rhedarliu@outlook.com>",
@@ -40,6 +40,7 @@
     "locales/",
     "README.md",
     "LICENSE",
+    "NOTICE",
     "docs/"
   ],
   "scripts": {
