@@ -1856,7 +1856,11 @@ th[data-blora-sort]:hover { color: var(--blora-primary); }
   display: flex; align-items: center; gap: var(--blora-space-2);
   font-size: var(--blora-text-sm);
 }
-.blora-table-cols__item span { flex: 1; min-width: 0; }
+.blora-table-cols__item > .blora-checkbox { flex: 1; min-width: 0; }
+.blora-table-cols__item > .blora-checkbox > span:last-child { flex: 1; min-width: 0; }
+.blora-table-cols__actions {
+  display: inline-flex; align-items: center; gap: var(--blora-space-1); flex-shrink: 0;
+}
 .blora-table-cols__foot { margin-top: var(--blora-space-3); display: flex; justify-content: flex-end; }
 .blora-table-wrap--virtual,
 .blora-table-virtual {

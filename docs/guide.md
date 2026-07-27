@@ -242,7 +242,18 @@ Blora.applyColorMode("dark");         // system | light | dark
 3. **和 Bootstrap/Tailwind 组件类混用** → 圆角、高度、主色打架。可并存工具类，但**控件壳只用 Blora Design**。  
 4. **自定义校验还用 `setCustomValidity` 弹出浏览器气泡** → 与 Blora Design 的 popup 叠两套。  
 5. **弹层写在滚动容器内部** → 被 `overflow` 裁切；放到 body / portal。  
-6. **硬编码颜色** → 暗色模式与换肤失效。
+6. **硬编码颜色** → 暗色模式与换肤失效。  
+7. **JS 动态拼 DOM 时写裸控件** → 例如列设置里写 `<input type="checkbox">` 会出现系统蓝框。动态节点也必须用完整结构：
+
+```html
+<label class="blora-checkbox">
+  <input type="checkbox">
+  <span class="blora-checkbox__box"></span>
+  <span>标签</span>
+</label>
+```
+
+框架内部动态生成勾选框统一走 `bloraCheckboxHTML`；业务自己拼 HTML 时同样遵守，**不要**图省事只写原生 `input`。
 
 ---
 

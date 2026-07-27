@@ -4562,6 +4562,27 @@
     measure("right");
   };
 
+  /**
+   * 动态生成勾选框时必须用这套 DOM，禁止裸 <input type="checkbox">。
+   * opts: { checked?, className?, attrs?, label? }
+   */
+  const bloraCheckboxHTML = (opts) => {
+    opts = opts || {};
+    const cls = "blora-checkbox" + (opts.className ? " " + opts.className : "");
+    const checked = opts.checked ? " checked" : "";
+    const attrs = opts.attrs ? " " + opts.attrs : "";
+    const label = opts.label != null && opts.label !== ""
+      ? "<span>" + escapeHTML(String(opts.label)) + "</span>"
+      : "";
+    return (
+      '<label class="' + cls + '">' +
+      '<input type="checkbox"' + checked + attrs + ">" +
+      '<span class="blora-checkbox__box"></span>' +
+      label +
+      "</label>"
+    );
+  };
+
   /* —— 多选行 + 批量条 —— */
   const ensureTableSelectionColumn = (table) => {
     const host = tableHost(table);
@@ -4572,7 +4593,10 @@
       const th = ownerDoc(table).createElement("th");
       th.setAttribute("data-blora-select-col", "");
       th.className = "blora-table-select-col";
-      th.innerHTML = '<label class="blora-checkbox blora-table-check"><input type="checkbox" data-blora-select-all aria-label="' + escapeHTML(t("table.selectAll")) + '"><span class="blora-checkbox__box"></span></label>';
+      th.innerHTML = bloraCheckboxHTML({
+        className: "blora-table-check",
+        attrs: 'data-blora-select-all aria-label="' + escapeHTML(t("table.selectAll")) + '"',
+      });
       theadRow.insertBefore(th, theadRow.firstChild);
     }
     Array.from((table.tBodies[0] && table.tBodies[0].rows) || []).forEach((tr) => {
@@ -4580,7 +4604,10 @@
       const td = ownerDoc(table).createElement("td");
       td.setAttribute("data-blora-select-col", "");
       td.className = "blora-table-select-col";
-      td.innerHTML = '<label class="blora-checkbox blora-table-check"><input type="checkbox" data-blora-row-select aria-label="' + escapeHTML(t("table.selectRow")) + '"><span class="blora-checkbox__box"></span></label>';
+      td.innerHTML = bloraCheckboxHTML({
+        className: "blora-table-check",
+        attrs: 'data-blora-row-select aria-label="' + escapeHTML(t("table.selectRow")) + '"',
+      });
       tr.insertBefore(td, tr.firstChild);
     });
     let bulk = host.parentElement && $(".blora-table-bulk[data-blora-table-bulk='" + table.id + "']", host.parentElement);
@@ -4810,11 +4837,18 @@
       const list = $(".blora-table-cols__list", panel);
       list.textContent = "";
       cfg.forEach((col, i) => {
-        const row = ownerDoc(table).createElement("label");
+        const row = ownerDoc(table).createElement("div");
         row.className = "blora-table-cols__item";
-        row.innerHTML = '<input type="checkbox"' + (col.visible ? " checked" : "") + ' data-col-key="' + escapeHTML(col.key) + '"> <span>' + escapeHTML(col.label) + "</span>" +
+        row.innerHTML =
+          bloraCheckboxHTML({
+            checked: !!col.visible,
+            attrs: 'data-col-key="' + escapeHTML(col.key) + '"',
+            label: col.label,
+          }) +
+          '<span class="blora-table-cols__actions">' +
           '<button type="button" class="blora-btn blora-btn--ghost blora-btn--sm" data-col-up data-i="' + i + '" aria-label="up">↑</button>' +
-          '<button type="button" class="blora-btn blora-btn--ghost blora-btn--sm" data-col-down data-i="' + i + '" aria-label="down">↓</button>';
+          '<button type="button" class="blora-btn blora-btn--ghost blora-btn--sm" data-col-down data-i="' + i + '" aria-label="down">↓</button>' +
+          "</span>";
         list.appendChild(row);
       });
     };
