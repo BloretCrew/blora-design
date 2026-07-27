@@ -1,0 +1,56 @@
+# 推送版本标签时发布到 npm（@bloret-crew/blora-design）
+# 触发：git push origin v1.2.3
+# 密钥：仓库 Settings → Secrets → NPM_TOKEN（npm Automation / Granular 发布令牌）
+
+name: Publish npm
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+          scope: "@bloret-crew"
+
+      - name: Check tag matches package.json version
+        shell: bash
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          PKG="$(node -p "require('./package.json').version")"
+          if [ "$TAG" != "$PKG" ]; then
+            echo "::error::Tag v$TAG 与 package.json version ($PKG) 不一致。请先改版本再打 tag。"
+            exit 1
+          fi
+          echo "Publishing @bloret-crew/blora-design@$PKG"
+
+      - name: Check Blora.version matches package.json
+        shell: bash
+        run: |
+          PKG="$(node -p "require('./package.json').version")"
+          JS="$(node -e "const fs=require('fs');const m=fs.readFileSync('blora.js','utf8').match(/const VERSION = \"([^\"]+)\"/);if(!m)process.exit(2);console.log(m[1])")"
+          if [ "$PKG" != "$JS" ]; then
+            echo "::error::package.json ($PKG) 与 blora.js VERSION ($JS) 不一致。"
+            exit 1
+          fi
+
+      - name: Syntax check
+        run: npm run check
+
+      - name: Publish to npm
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
