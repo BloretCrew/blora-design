@@ -45,10 +45,10 @@ Blora Design 不是 React/Vue 组件库，而是：
     (() => {
       const root = document.documentElement;
       try {
-        const palette = localStorage.getItem("blora-palette") || "dusk";
+        const palette = localStorage.getItem("blora-palette") || "coral";
         const mode = localStorage.getItem("blora-color-mode") || "system";
         root.dataset.bloraColorPreference = mode;
-        if (palette !== "dusk") root.dataset.bloraPalette = palette;
+        if (palette !== "coral") root.dataset.bloraPalette = palette;
         if (mode === "dark" || (mode === "system" && matchMedia("(prefers-color-scheme: dark)").matches)) {
           root.classList.add("blora-dark");
         }

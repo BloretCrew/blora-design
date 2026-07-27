@@ -4,7 +4,7 @@
 > 本文是 **视觉与令牌** 的信源（色彩 / 字体 / 间距 / 动效 / 无障碍）。  
 > **工程接入、组件用法、迁移** → [`guide.md`](./guide.md)  
 > **class / data API 详表** → [`framework.md`](./framework.md)  
-> 默认配色 `dusk` 的色值与当前 `blora.css` `:root` 对齐；换肤后以运行时令牌为准。
+> 默认配色 `coral` 的色值与当前 `blora.css` `:root` 对齐；换肤后以运行时令牌为准。
 
 ---
 
@@ -41,10 +41,10 @@ Blora Design 将视觉令牌分为三个基础层：**背景与表面、内容�
 
 | Token | Hex | 用途 |
 |------|-----|------|
-| `--blora-background` | `#F7F6F8` | 页面底色 |
-| `--blora-surface-1` | `#FFFFFF` | 卡面/输入框 |
-| `--blora-surface-2` | `#F0EEF2` | 次级面 — hover/分组 |
-| `--blora-surface-3` | `#E4E1E7` | 三级面 — 禁用/轨道 |
+| `--blora-background` | `#FAF7F8` | 页面底色 |
+| `--blora-surface-1` | `#FFFCFD` | 卡面/输入框 |
+| `--blora-surface-2` | `#F4ECEE` | 次级面 — hover/分组 |
+| `--blora-surface-3` | `#E9DEE1` | 三级面 — 禁用/轨道 |
 
 ### 2.2 文本与边框 · Text & Border
 
@@ -52,13 +52,13 @@ Blora Design 将视觉令牌分为三个基础层：**背景与表面、内容�
 
 | 层级 | Token | Hex | 用途 |
 |------|-------|-----|------|
-| Strong | `--blora-text-strong` | `#1D1B20` | 品牌、大标题和高强调数字 |
-| Foreground | `--blora-foreground` | `#2C2930` | 标题和默认高强调文本 |
-| Emphasis | `--blora-text-emphasis` | `#4B4750` | 强调正文 |
-| Muted | `--blora-text-muted` | `#716C76` | 正文和辅助说明 |
-| Subtle | `--blora-text-subtle` | `#9A949F` | 非关键说明（不用于小号正文） |
-| Disabled | `--blora-text-disabled` | `#B7B1BB` | 禁用和占位文本 |
-| Border | `--blora-border-subtle` | `#D6D1D9` | 边框和分隔线 |
+| Strong | `--blora-text-strong` | `#303143` | 品牌、大标题和高强调数字 |
+| Foreground | `--blora-foreground` | `#3D3E50` | 标题和默认高强调文本 |
+| Emphasis | `--blora-text-emphasis` | `#555565` | 强调正文 |
+| Muted | `--blora-text-muted` | `#74717C` | 正文和辅助说明 |
+| Subtle | `--blora-text-subtle` | `#9B959D` | 非关键说明（不用于小号正文） |
+| Disabled | `--blora-text-disabled` | `#B9B2B8` | 禁用和占位文本 |
+| Border | `--blora-border-subtle` | `#D9D2D6` | 边框和分隔线 |
 
 高强调文本用于建立层级，不应用作大面积填充。
 
@@ -66,24 +66,24 @@ Blora Design 将视觉令牌分为三个基础层：**背景与表面、内容�
 
 | Token | Hex | 语义 |
 |------|-----|------|
-| `--blora-primary` | `#675F78` | **唯一主强调色** |
-| `--blora-primary-hover` | `#514A61` | 主色 hover/press |
-| `--blora-danger` | `#995F68` | 危险与错误 |
-| `--blora-accent-neutral` | `#6D6977` | 中性强调 |
-| `--blora-info` | `#586A83` | 信息 |
-| `--blora-success` | `#5D746C` | 成功 |
-| `--blora-support` | `#70807C` | 辅助数据系列 |
+| `--blora-primary` | `#9F5964` | **唯一主强调色**（Coral） |
+| `--blora-primary-hover` | `#80464F` | 主色 hover/press |
+| `--blora-danger` | `#9E5559` | 危险与错误 |
+| `--blora-accent-neutral` | `#6E6975` | 中性强调 |
+| `--blora-info` | `#5D6680` | 信息 |
+| `--blora-success` | `#5B756B` | 成功 |
+| `--blora-support` | `#687C7B` | 辅助数据系列 |
 | `--blora-warning` | `#806C4F` | 警告 |
-| `--blora-accent-secondary` | `#7E6B7A` | 次强调/数据系列 |
+| `--blora-accent-secondary` | `#8B6571` | 次强调/数据系列 |
 
 ### 2.4 状态映射
 
 | 状态 | 色 |
 |------|----|
-| 成功 success | `--blora-success` / `#5D746C` |
+| 成功 success | `--blora-success` / `#5B756B` |
 | 警告 warning | `--blora-warning` / `#806C4F` |
-| 危险 danger  | `--blora-danger` / `#995F68` |
-| 信息 info    | `--blora-info` / `#586A83` |
+| 危险 danger  | `--blora-danger` / `#9E5559` |
+| 信息 info    | `--blora-info` / `#5D6680` |
 
 ### 2.5 用色比例
 
@@ -254,11 +254,9 @@ Blora Design 采用 12 级非线性间距，组件与布局必须优先使用对
 
 ### 9.1 对比度
 
-所有正文与背景对比度 ≥ **4.5:1**（WCAG AA）；大字 ≥ 3:1。已验证：
-- `text-emphasis #4B4750` / `background #F7F6F8` ≈ 8.42:1 ✓
-- `text-muted #716C76` / `background` ≈ 4.74:1 ✓
-- `primary #675F78` / `background` ≈ 5.59:1 ✓
-- `text-subtle #9A949F` / `background` ≈ 2.74:1 — **仅用于非文本装饰或大号辅助内容**
+所有正文与背景对比度 ≥ **4.5:1**（WCAG AA）；大字 ≥ 3:1。默认 Coral 下应满足 AA；换肤后以实际令牌复验：
+- `text-emphasis` / `background`、`text-muted` / `background`、`primary` / `background` 需 ≥ 4.5:1（正文/可点控件）
+- `text-subtle` / `background` 通常不足 4.5:1 — **仅用于非文本装饰或大号辅助内容**
 
 ### 9.2 焦点
 

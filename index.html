@@ -18,12 +18,12 @@
       }
     } catch (error) {}
     try {
-      let palette = localStorage.getItem(config.paletteStorageKey || "blora-palette") || "dusk";
+      let palette = localStorage.getItem(config.paletteStorageKey || "blora-palette") || "coral";
       const modeKey = config.colorModeStorageKey || config.storageKey || "blora-color-mode";
       const storedMode = localStorage.getItem(modeKey);
       const mode = ["system", "light", "dark"].includes(storedMode) ? storedMode : "system";
       root.dataset.bloraColorPreference = mode;
-      if (palette !== "dusk") root.dataset.bloraPalette = palette;
+      if (palette !== "coral") root.dataset.bloraPalette = palette;
       if (mode === "dark" || (mode === "system" && matchMedia("(prefers-color-scheme: dark)").matches)) root.classList.add("blora-dark");
       /* 悬浮为默认；仅在用户显式选择全宽时于首屏绘制前恢复。 */
       const navbarVariant = localStorage.getItem("blora-demo-navbar-variant");
@@ -2455,7 +2455,7 @@
               <pre class="blora-mockup__line" data-prefix="1"><code>import { init } from "@bloret/blora-design";</code></pre>
               <pre class="blora-mockup__line" data-prefix="2"><code></code></pre>
               <pre class="blora-mockup__line" data-prefix="3"><code>init(document.body, {</code></pre>
-              <pre class="blora-mockup__line blora-mockup__line--highlight" data-prefix="4"><code>  theme: "dusk",</code></pre>
+              <pre class="blora-mockup__line blora-mockup__line--highlight" data-prefix="4"><code>  theme: "coral",</code></pre>
               <pre class="blora-mockup__line" data-prefix="5"><code>  colorMode: "system",</code></pre>
               <pre class="blora-mockup__line" data-prefix="6"><code>});</code></pre>
               <pre class="blora-mockup__line blora-mockup__line--warning" data-prefix="!"><code>// highlight the active option</code></pre>

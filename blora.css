@@ -13,35 +13,35 @@
 :root {
   color-scheme: light;
 
-  /* —— 背景与表面 · Background & Surfaces —— */
-  --blora-background:     #F7F6F8;
-  --blora-surface-1:      #FFFFFF;
-  --blora-surface-2:      #F0EEF2;
-  --blora-surface-3:      #E4E1E7;
+  /* —— 背景与表面 · Background & Surfaces —— 默认配色 Coral */
+  --blora-background:     #FAF7F8;
+  --blora-surface-1:      #FFFCFD;
+  --blora-surface-2:      #F4ECEE;
+  --blora-surface-3:      #E9DEE1;
 
   /* —— 前景与文本 · Foreground & Text —— */
-  --blora-text-strong:     #1D1B20;
-  --blora-foreground:      #2C2930;
-  --blora-text-emphasis:   #4B4750;
-  --blora-text-muted:      #716C76;
-  --blora-text-subtle:     #9A949F;
-  --blora-text-disabled:   #B7B1BB;
-  --blora-border-subtle:   #D6D1D9;
+  --blora-text-strong:     #303143;
+  --blora-foreground:      #3D3E50;
+  --blora-text-emphasis:   #555565;
+  --blora-text-muted:      #74717C;
+  --blora-text-subtle:     #9B959D;
+  --blora-text-disabled:   #B9B2B8;
+  --blora-border-subtle:   #D9D2D6;
 
   /* —— 功能色 · Functional Accents —— */
-  --blora-primary:             #675F78;
-  --blora-primary-hover:       #514A61;
-  --blora-primary-soft:        #8D869B;
-  --blora-danger:              #995F68;
-  --blora-accent-neutral:      #6D6977;
-  --blora-accent-neutral-soft: #9692A0;
-  --blora-info:                #586A83;
-  --blora-info-soft:           #8492A6;
-  --blora-success:             #5D746C;
-  --blora-success-soft:        #899D96;
-  --blora-support:             #70807C;
+  --blora-primary:             #9F5964;
+  --blora-primary-hover:       #80464F;
+  --blora-primary-soft:        #C07E86;
+  --blora-danger:              #9E5559;
+  --blora-accent-neutral:      #6E6975;
+  --blora-accent-neutral-soft: #9A95A0;
+  --blora-info:                #5D6680;
+  --blora-info-soft:           #888FA5;
+  --blora-success:             #5B756B;
+  --blora-success-soft:        #879C94;
+  --blora-support:             #687C7B;
   --blora-warning:             #806C4F;
-  --blora-accent-secondary:    #7E6B7A;
+  --blora-accent-secondary:    #8B6571;
 
   /* —— 字体 · Typography —— */
   --blora-font-heading:     Avenir, "Avenir Next", "Segoe UI",
@@ -126,8 +126,8 @@
   --blora-selection-bg:  color-mix(in srgb, var(--blora-primary) 28%, transparent); /* 文本选区，随配色主色变化 */
   --blora-focus-ring:        0 0 0 3px color-mix(in srgb, var(--blora-primary) 12%, transparent);
   --blora-focus-ring-strong: 0 0 0 3px color-mix(in srgb, var(--blora-primary) 18%, transparent);
-  --blora-overlay-modal:  rgba(29,27,32,0.52);
-  --blora-overlay-drawer: rgba(29,27,32,0.46);
+  --blora-overlay-modal:  rgba(48,49,67,0.52);
+  --blora-overlay-drawer: rgba(48,49,67,0.46);
   --blora-code-bg:       color-mix(in srgb, var(--blora-text-strong) 92%, var(--blora-background));
   --blora-code-fg:       var(--blora-on-accent);
   --blora-banner-bg:     var(--blora-foreground);
@@ -4172,23 +4172,24 @@ html:has(body.blora-page)::-webkit-scrollbar-corner,
    15. 暗色模式 · Dark Mode
    ========================================================================= */
 :root.blora-dark, :root.blora-dark body {
-  --blora-background: #151317;
-  --blora-surface-1:      #201D23;
-  --blora-surface-2:      #2A262E;
-  --blora-surface-3:      #38333D;
-  --blora-text-strong:    #F5F2F6;
-  --blora-foreground:     #EAE5EC;
-  --blora-text-emphasis:  #CBC3CE;
-  --blora-text-muted:     #9E95A2;
-  --blora-text-subtle:    #756C79;
-  --blora-text-disabled:  #59515D;
-  --blora-border-subtle:  #403A44;
-  --blora-overlay-modal:  rgba(0,0,0,0.62);
-  --blora-overlay-drawer: rgba(0,0,0,0.58);
-  --blora-code-bg:       #0D0B0F;
-  --blora-code-fg:       #F5F2F6;
-  --blora-banner-bg:     #1B181E;
-  --blora-tooltip-bg:    #0D0B0F;
+  /* 默认暗色表面与 Coral 暗色对齐；各 palette 可再覆写 */
+  --blora-background: #17161C;
+  --blora-surface-1:      #222128;
+  --blora-surface-2:      #2C2931;
+  --blora-surface-3:      #3A363F;
+  --blora-text-strong:    #F8F2F4;
+  --blora-foreground:     #ECE5E8;
+  --blora-text-emphasis:  #CDC3C8;
+  --blora-text-muted:     #A1979D;
+  --blora-text-subtle:    #786F75;
+  --blora-text-disabled:  #5A5358;
+  --blora-border-subtle:  #413C41;
+  --blora-overlay-modal:  rgba(7,6,10,0.72);
+  --blora-overlay-drawer: rgba(7,6,10,0.66);
+  --blora-code-bg:       #0E0D12;
+  --blora-code-fg:       #F8F2F4;
+  --blora-banner-bg:     #1D191E;
+  --blora-tooltip-bg:    #0E0D12;
   --blora-shadow-1: 0 1px 3px rgba(0,0,0,0.3);
   --blora-shadow-2: 0 4px 12px rgba(0,0,0,0.36);
   --blora-shadow-3: 0 12px 30px rgba(0,0,0,0.44);
@@ -4272,6 +4273,9 @@ html:has(body.blora-page)::-webkit-scrollbar-corner,
   --blora-on-accent: #101A1B;
   --blora-code-bg: #090C0C; --blora-code-fg: #F1F4F4; --blora-banner-bg: #161B1B; --blora-tooltip-bg: #090C0C;
 }
+/* 默认暗色功能色 = Coral；显式 coral 与无 palette 相同 */
+:root.blora-dark:not([data-blora-palette]),
+:root.blora-dark:not([data-blora-palette]) body,
 :root.blora-dark[data-blora-palette="coral"],
 :root.blora-dark[data-blora-palette="coral"] body {
   --blora-background: #17161C;
@@ -4282,8 +4286,6 @@ html:has(body.blora-page)::-webkit-scrollbar-corner,
   --blora-on-accent: #25181C; --blora-overlay-modal: rgba(7,6,10,0.72); --blora-overlay-drawer: rgba(7,6,10,0.66);
   --blora-code-bg: #0E0D12; --blora-code-fg: #F8F2F4; --blora-banner-bg: #1D191E; --blora-tooltip-bg: #0E0D12;
 }
-:root.blora-dark:not([data-blora-palette]),
-:root.blora-dark:not([data-blora-palette]) body,
 :root.blora-dark[data-blora-palette="dusk"],
 :root.blora-dark[data-blora-palette="dusk"] body {
   --blora-background: #151317;

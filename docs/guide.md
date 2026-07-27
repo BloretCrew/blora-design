@@ -122,7 +122,7 @@ Blora.setLocale("en"); // 内置 en / zh-CN，可传自定义 pack
 | 维度 | 基线 |
 |------|------|
 | **气质** | 沉稳、克制、偏编辑器/工具产品；不花哨、不高饱和 |
-| **色彩** | 三层模型：背景表面 / 文本边框 / 功能色；默认配色 `dusk`（藕紫灰主色） |
+| **色彩** | 三层模型：背景表面 / 文本边框 / 功能色；默认配色 `coral`（深靛灰与柔和珊瑚红） |
 | **比例** | **90 / 5 / 5**：底与字约 90%，主色 ≤5%，状态色 ≤5% |
 | **字体** | 现代无衬线（展示页 Noto Sans SC）+ 等宽代码；标题与正文同一骨架，靠字号/字重分层 |
 | **圆角** | 连续曲率：控件偏胶囊，卡片/面板大圆角（`--blora-radius-*`） |
@@ -167,7 +167,7 @@ Blora.setLocale("en"); // 内置 en / zh-CN，可传自定义 pack
 ```
 
 ```js
-Blora.applyPalette("ocean");          // dusk | ocean | indigo | lotus | cinnabar | graphite | mono | circuit | coral …
+Blora.applyPalette("ocean");          // coral（默认）| dusk | ocean | indigo | lotus | cinnabar | graphite | mono | circuit …
 Blora.applyColorMode("dark");         // system | light | dark
 ```
 

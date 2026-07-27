@@ -1679,7 +1679,7 @@
   const getPalette = (target) => {
     const d = ownerDoc(target);
     const el = target && target.nodeType === 1 ? target : d && d.documentElement;
-    return (el && el.dataset.bloraPalette) || "dusk";
+    return (el && el.dataset.bloraPalette) || "coral";
   };
   const syncThemeColor = (target) => {
     const d = ownerDoc(target);
@@ -1696,7 +1696,8 @@
     const d = ownerDoc(target);
     const el = target && target.nodeType === 1 ? target : d && d.documentElement;
     if (!el || !PALETTE_PRESETS[name]) return false;
-    if (name === "dusk") delete el.dataset.bloraPalette;
+    /* 默认配色 coral：不挂 data-blora-palette，与 :root 默认令牌一致 */
+    if (name === "coral") delete el.dataset.bloraPalette;
     else el.dataset.bloraPalette = name;
     const win = ownerWin(el);
     if (options.persist !== false) {
@@ -1712,9 +1713,9 @@
     if (!d || !win) return;
     if (!FLAGS.appearanceBoot) {
       FLAGS.appearanceBoot = true;
-      let savedPalette = "dusk";
+      let savedPalette = "coral";
       try { savedPalette = win.localStorage.getItem(CONFIG.paletteStorageKey) || savedPalette; } catch (e) {}
-      if (!PALETTE_PRESETS[savedPalette]) savedPalette = "dusk";
+      if (!PALETTE_PRESETS[savedPalette]) savedPalette = "coral";
       applyPalette(savedPalette, d.documentElement, { persist: false, emit: false });
     }
     $$('[data-blora-palette-picker]', root).forEach((picker) => {

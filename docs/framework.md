@@ -80,12 +80,12 @@ Blora.init(document.getElementById('my-mount'));
     const root = document.documentElement;
     const config = window.BloraConfig || {};
     try {
-      let palette = localStorage.getItem(config.paletteStorageKey || 'blora-palette') || 'dusk';
+      let palette = localStorage.getItem(config.paletteStorageKey || 'blora-palette') || 'coral';
       const modeKey = config.colorModeStorageKey || config.storageKey || 'blora-color-mode';
       const storedMode = localStorage.getItem(modeKey);
       const mode = ['system', 'light', 'dark'].includes(storedMode) ? storedMode : 'system';
       root.dataset.bloraColorPreference = mode;
-      if (palette !== 'dusk') root.dataset.bloraPalette = palette;
+      if (palette !== 'coral') root.dataset.bloraPalette = palette;
       if (mode === 'dark' || (mode === 'system' && matchMedia('(prefers-color-scheme: dark)').matches)) root.classList.add('blora-dark');
     } catch (error) {}
   })();
@@ -102,7 +102,7 @@ Blora.getConfig();
 
 Blora.toast / message / notify / confirm
 Blora.openModal / closeModal / openDrawer / closeDrawer
-Blora.applyPalette('ocean');         // dusk | ocean | indigo | lotus | cinnabar | graphite | mono | circuit | coral | …
+Blora.applyPalette('ocean');         // coral（默认）| dusk | ocean | indigo | lotus | cinnabar | graphite | mono | circuit | …
 Blora.applyColorMode('system');      // system | light | dark
 Blora.getPalette(); Blora.getColorMode(); Blora.palettes;
 
@@ -139,11 +139,11 @@ Blora.cls / classPrefix / version   // "1.0.0"
 }
 ```
 
-**唯一视觉标准与配色**：Blora Design 只有一套字体、圆角、阴影、控件尺寸、动效和玻璃表面标准，直接定义在 `:root`，不需要主题属性或主题 API。`Blora.applyPalette('ocean')` 只会写入 `data-blora-palette="ocean"` 并替换语义颜色，不改变组件形态；未设置属性时使用默认 `dusk` 配色。
+**唯一视觉标准与配色**：Blora Design 只有一套字体、圆角、阴影、控件尺寸、动效和玻璃表面标准，直接定义在 `:root`，不需要主题属性或主题 API。`Blora.applyPalette('ocean')` 只会写入 `data-blora-palette="ocean"` 并替换语义颜色，不改变组件形态；未设置属性时使用默认 **`coral`** 配色。
 
 **暗色模式**：`<html class="blora-dark">` 即可，所有颜色 token 自动重映射，无需改组件。暗色模式可与任意配色组合。
 
-视觉形态不随配色改变。丹砂、靛青、藕荷、海盐、Graphite、Mono、Circuit、Coral 与 Dusk 都只负责颜色映射，其中 Dusk 是默认配色。
+视觉形态不随配色改变。Coral、Dusk、丹砂、靛青、藕荷、海盐、Graphite、Mono、Circuit 都只负责颜色映射，其中 **Coral 是默认配色**。
 
 ---
 
