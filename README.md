@@ -1,6 +1,7 @@
 # Blora Design
 
-> 令牌驱动、暗色友好、**零依赖** 的 Web UI 设计系统（HTML 三件套）。
+> **Blora Design** — 令牌驱动、暗色友好、**零依赖** 的 Web UI 设计系统（HTML 三件套）。  
+> **Blora** 是品牌名；产品与框架请称 **Blora Design**（代码中的 `Blora` / `blora-*` 为精简标识）。
 
 **包名** `@bloret/blora-design` · **版本** `1.0.0` · **许可** Apache-2.0  
 **仓库** [BloretCrew/blora-design](https://github.com/BloretCrew/blora-design) · **作者** [RhedarLiu](https://github.com/RhedarLiu)
@@ -15,7 +16,7 @@
 
 ## 它是什么
 
-Blora 不是 React/Vue 组件库，而是：
+Blora Design 不是 React/Vue 组件库，而是：
 
 | 文件 | 职责 |
 |------|------|
@@ -25,7 +26,7 @@ Blora 不是 React/Vue 组件库，而是：
 
 适合：静态站、论坛/BBS 壳、管理后台、文档站、任何不想绑构建链的前端。
 
-**不做**：业务 API、WebSocket、真 WYSIWYG 编辑器、React 运行时。业务逻辑用你们自己的代码接；UI 壳统一用 Blora。
+**不做**：业务 API、WebSocket、真 WYSIWYG 编辑器、React 运行时。业务逻辑用你们自己的代码接；UI 壳统一用 Blora Design。
 
 ---
 
@@ -60,7 +61,7 @@ Blora 不是 React/Vue 组件库，而是：
 </head>
 <body class="blora-page blora-scope">
   <div class="blora-container blora-stack">
-    <h1 class="blora-h1">你好，Blora</h1>
+    <h1 class="blora-h1">你好，Blora Design</h1>
     <p class="blora-text-lead">令牌驱动的界面。</p>
     <div class="blora-row">
       <button type="button" class="blora-btn blora-btn--primary">主操作</button>
@@ -99,7 +100,7 @@ cp node_modules/@bloret/blora-design/blora.{css,js,d.ts} your-project/
 
 ## 视觉基线（与展示页一致的前提）
 
-要做出和 `index.html` 同级的观感，请**整页采用 Blora**，不要「按钮用我们的、下拉用浏览器原生」。
+要做出和 `index.html` 同级的观感，请**整页采用 Blora Design**，不要「按钮用我们的、下拉用浏览器原生」。
 
 1. **页面作用域**  
    - 整站：`<body class="blora-page blora-scope">`  
@@ -117,7 +118,7 @@ cp node_modules/@bloret/blora-design/blora.{css,js,d.ts} your-project/
    - 只用 `--blora-space-*`、`--blora-radius-*`、`--blora-shadow-*`  
    - 控件默认偏「胶囊」曲率，卡片用大圆角
 
-5. **交互控件一律走 Blora class**  
+5. **交互控件一律使用 Blora Design 的 class**（`blora-*`）  
    见下方「禁止混用原生」与 [使用与迁移指南](./docs/guide.md)。
 
 更完整的哲学与令牌表见 [`docs/standards.md`](./docs/standards.md)。
@@ -213,9 +214,9 @@ npx serve .
 
 ## 原则摘要
 
-1. **一整页一套系统** — 控件、反馈、表格、导航都用 Blora，避免「半套原生」。  
+1. **一整页一套系统** — 控件、反馈、表格、导航都用 Blora Design，避免「半套原生」。  
 2. **语义令牌，不写死色值** — 组件只吃 `--blora-*`。  
-3. **声明式优先** — class + `data-blora-*`，需要时再调 `Blora.*` API。  
+3. **声明式优先** — class + `data-blora-*`，需要时再调全局 `Blora.*` API。  
 4. **零依赖** — 不引入打包器也能跑；需要时也可进 npm 工程。
 
 完整注意事项与迁移步骤见 [docs/guide.md](./docs/guide.md)。

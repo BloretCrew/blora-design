@@ -1,6 +1,7 @@
 # Blora Design · 使用与迁移指南
 
 > 面向要把页面做到与官方展示页（`index.html`）**同一套气质** 的工程师。  
+> 产品全称 **Blora Design**；**Blora** 为品牌名（全局 JS 对象与 class 前缀仍用 `Blora` / `blora-*`）。  
 > 本文假设你已通过 **npm / CDN / 本地拷贝** 拿到 `blora.css` + `blora.js`（及可选 `locales/`）。  
 > 设计哲学细节见 [`standards.md`](./standards.md)；底层 API 长文见 [`framework.md`](./framework.md)。
 
@@ -203,9 +204,9 @@ Blora.applyColorMode("dark");         // system | light | dark
 
 ## 4. 注意事项：禁止「半套原生」
 
-> 目标：用户页面应与展示页一样**统一、克制、完整**，而不是「Blora 按钮 + 浏览器原生 select + 临时 div 弹窗」。
+> 目标：用户页面应与展示页一样**统一、克制、完整**，而不是「Blora Design 按钮 + 浏览器原生 select + 临时 div 弹窗」。
 
-### 4.1 必须用 Blora、不要直接裸用浏览器控件样式
+### 4.1 必须用 Blora Design、不要直接裸用浏览器控件样式
 
 | 场景 | ❌ 不要 | ✅ 使用 |
 |------|--------|--------|
@@ -230,7 +231,7 @@ Blora.applyColorMode("dark");         // system | light | dark
 
 ### 4.2 允许保留的「原生」
 
-- 语义标签：`form`、`button`、`input` **类型**（text/email/password…）——但必须挂 Blora class。  
+- 语义标签：`form`、`button`、`input` **类型**（text/email/password…）——但必须挂 Blora Design 的 class（`blora-*`）。  
 - 无障碍：`aria-*`、`role`、`label for`。  
 - 业务逻辑：fetch、路由、WebSocket——与 UI 壳分离。
 
@@ -238,8 +239,8 @@ Blora.applyColorMode("dark");         // system | light | dark
 
 1. **只链了 CSS 没链 JS** → Select/Modal/Tabs 像半成品。  
 2. **只链了 JS 没 body class** → 页面底色、字体、链接不像展示页。  
-3. **和 Bootstrap/Tailwind 组件类混用** → 圆角、高度、主色打架。可并存工具类，但**控件壳只用 Blora**。  
-4. **自定义校验还用 `setCustomValidity` 弹出浏览器气泡** → 与 Blora popup 叠两套。  
+3. **和 Bootstrap/Tailwind 组件类混用** → 圆角、高度、主色打架。可并存工具类，但**控件壳只用 Blora Design**。  
+4. **自定义校验还用 `setCustomValidity` 弹出浏览器气泡** → 与 Blora Design 的 popup 叠两套。  
 5. **弹层写在滚动容器内部** → 被 `overflow` 裁切；放到 body / portal。  
 6. **硬编码颜色** → 暗色模式与换肤失效。
 
@@ -753,7 +754,7 @@ Blora.cls / classPrefix / formatShortcut / getShortcutPlatform
 
 ```text
 1. 先挂 blora.css + blora.js + body 作用域（整页皮肤）
-2. 全局替换原生控件 class → Blora 控件
+2. 全局替换原生控件 class → Blora Design 控件
 3. 反馈与浮层改为 toast/modal/drawer
 4. 表格/表单接 data-blora-* 行为
 5. 对照 index.html 逐区块视觉验收
@@ -778,22 +779,22 @@ Blora.cls / classPrefix / formatShortcut / getShortcutPlatform
 
 1. 去掉 `btn btn-primary` → `blora-btn blora-btn--primary`。  
 2. 去掉 `form-control` → `blora-input`。  
-3. 去掉 Bootstrap Modal JS → Blora modal 标记。  
-4. Grid：可用 `blora-grid blora-grid--3` 或继续用自己的 layout，但颜色与控件必须 Blora。  
-5. 删除冲突的 reboot/normalize 或保证 Blora 在后且在 `blora-scope` 内生效。
+3. 去掉 Bootstrap Modal JS → Blora Design 的 modal 标记。  
+4. Grid：可用 `blora-grid blora-grid--3` 或继续用自己的 layout，但颜色与控件必须用 Blora Design。  
+5. 删除冲突的 reboot/normalize，或保证 Blora Design 样式在后且在 `blora-scope` 内生效。
 
 ### 7.4 从 Ant Design / Element 等 React/Vue 库迁移
 
-Blora **没有** JSX 组件。迁移方式是 **输出同等 DOM 结构**：
+Blora Design **没有** JSX 组件。迁移方式是 **输出同等 DOM 结构**：
 
 - 用你们现有框架只负责数据与事件；  
-- `render` 结果必须是 Blora 的 class/`data-blora-*`；  
+- `render` 结果必须是 Blora Design 的 class/`data-blora-*`；  
 - `mounted` / `updated` 后 `Blora.init(el)`；  
-- 不要 `import { Button } from 'antd'` 与 Blora 混在同一表单。
+- 不要 `import { Button } from 'antd'` 与 Blora Design 控件混在同一表单。
 
 ### 7.5 论坛 / BBS / 内容站（如站点壳改造）
 
-| 页面 | Blora 拼法 |
+| 页面 | Blora Design 拼法 |
 |------|------------|
 | 帖子列表 | `blora-list` / Card + `blora-pagination` + Tag |
 | 帖子详情 | `blora-thread` + `data-blora-md` + Comment |
@@ -803,7 +804,7 @@ Blora **没有** JSX 组件。迁移方式是 **输出同等 DOM 结构**：
 | 导航壳 | Navbar + Sidebar + Dropdown |
 | 实时聊天/直播/AI | **业务模块**；UI 仍用 Card/List/输入条 |
 
-原则：**壳 100% Blora，业务逻辑外置。** 缺的「开箱大组件」用现有件拼，而不是退回原生控件。
+原则：**壳 100% Blora Design，业务逻辑外置。** 缺的「开箱大组件」用现有件拼，而不是退回原生控件。
 
 ### 7.6 迁移顺序建议（降低翻车）
 
@@ -820,7 +821,7 @@ Blora **没有** JSX 组件。迁移方式是 **输出同等 DOM 结构**：
 
 ```html
 <div id="blora-app" class="blora-scope">
-  <!-- 仅此子树使用 Blora -->
+  <!-- 仅此子树使用 Blora Design -->
 </div>
 ```
 
@@ -833,7 +834,7 @@ Blora.configure({
 Blora.init(document.getElementById("blora-app"));
 ```
 
-避免给 `body` 挂 `blora-page` 若宿主已有全局 reset 冲突；用 `blora-scope` 局部化。
+若宿主已有全局 reset 冲突，避免给 `body` 挂 `blora-page`；用 `blora-scope` 把 Blora Design 局部化。
 
 ---
 
@@ -845,8 +846,8 @@ Blora.init(document.getElementById("blora-app"));
 - [ ] 根节点具备 `blora-page` 和/或 `blora-scope`  
 - [ ] 已加载与展示页接近的 **中文字体**（或可接受的令牌字体栈）  
 - [ ] **没有**未包 class 的裸 input/select/button 出现在主流程  
-- [ ] 错误提示走 Blora（popup 或 validator），**无**浏览器默认校验黄泡  
-- [ ] 对话框/抽屉/轻提示全部为 Blora，无 `alert`  
+- [ ] 错误提示走 Blora Design（popup 或 validator），**无**浏览器默认校验黄泡  
+- [ ] 对话框/抽屉/轻提示全部为 Blora Design，无 `alert`  
 - [ ] 主色与间距来自令牌；暗色模式可切换且不「花斑」  
 - [ ] 表格/分页/表单交互与展示页同类 demo 行为一致  
 - [ ] 动态插入区域调用了 `Blora.init`  

@@ -10,7 +10,7 @@
 
 ## 一 · 设计原则
 
-Blora 将视觉令牌分为三个基础层：**背景与表面、内容、交互与状态**。组件只消费语义令牌，不依赖具体颜色名称。
+Blora Design 将视觉令牌分为三个基础层：**背景与表面、内容、交互与状态**。组件只消费语义令牌，不依赖具体颜色名称。
 
 ### 1.1 三层模型 · Three-Layer Model
 
@@ -134,7 +134,7 @@ Blora 将视觉令牌分为三个基础层：**背景与表面、内容、交互
 
 ## 四 · 间距系统
 
-Blora 采用 12 级非线性间距，组件与布局必须优先使用对应令牌：
+Blora Design 采用 12 级非线性间距，组件与布局必须优先使用对应令牌：
 
 | Token | rem | px | 典型用途 |
 |-------|-----|----|----------|
@@ -198,7 +198,7 @@ Blora 采用 12 级非线性间距，组件与布局必须优先使用对应令�
 
 ### 6.1 表面纹理 · Surface Texture
 
-`--blora-background-texture` 与 `--blora-background-overlay` 默认均为 `none`，Blora 基础表面保持纯净。产品可以覆盖这两个令牌增加低对比纹理，但禁止在单个组件内部硬编码装饰背景。
+`--blora-background-texture` 与 `--blora-background-overlay` 默认均为 `none`，Blora Design 的基础表面保持纯净。产品可以覆盖这两个令牌增加低对比纹理，但禁止在单个组件内部硬编码装饰背景。
 
 ### 6.2 分隔线 · Divider
 
@@ -284,7 +284,7 @@ Blora 采用 12 级非线性间距，组件与布局必须优先使用对应令�
 
 ## 十 · 暗色模式
 
-Blora 支持浅色、深色和跟随系统三种模式。业务层优先使用 `Blora.applyColorMode('light' | 'dark' | 'system')`；`system` 根据 `prefers-color-scheme` 实时更新，框架内部通过 `<html class="blora-dark">` 表示当前有效暗色状态。Token 自动重映射：
+Blora Design 支持浅色、深色和跟随系统三种模式。业务层优先使用 `Blora.applyColorMode('light' | 'dark' | 'system')`；`system` 根据 `prefers-color-scheme` 实时更新，框架内部通过 `<html class="blora-dark">` 表示当前有效暗色状态。Token 自动重映射：
 
 - 背景 → 深紫灰 `#151317`
 - 文字色 → 冷白 `#F5F2F6`
@@ -296,7 +296,7 @@ Blora 支持浅色、深色和跟随系统三种模式。业务层优先使用 `
 
 ## 十一 · 内容与文案
 
-Blora 的文案风格应克制、清晰、直接。
+Blora Design 界面中的文案风格应克制、清晰、直接。
 
 - **标题**：简洁直白，避免堆砌修饰。
 - **正文**：使用现代白话，优先表达任务、状态与下一步操作。

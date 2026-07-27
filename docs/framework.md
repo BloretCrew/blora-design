@@ -9,7 +9,7 @@
 
 ## 安装
 
-Blora 是 **零依赖** 框架：纯 CSS（约 4.4k 行 / ~240KB）+ 原生 JS（约 6.2k 行 / ~290KB，未压缩），不绑构建工具。
+Blora Design 是 **零依赖** 的 Web UI 框架：纯 CSS（约 4.4k 行 / ~240KB）+ 原生 JS（约 6.2k 行 / ~290KB，未压缩），不绑构建工具。品牌名 **Blora**；产品全称 **Blora Design**；全局 JS 对象与 class 前缀仍为 `Blora` / `blora-*`。
 
 ```bash
 # 1) npm / pnpm（团队 Web 应用）
@@ -34,7 +34,7 @@ cp node_modules/@bloret/blora-design/blora.{css,js,d.ts} your-project/
 **作用域约定**
 
 - 完整页面：给 `<body>` 添加 `class="blora-page blora-scope"`，启用页面底色、字体、基础元素 reset 与组件样式。
-- 嵌入已有应用：只给 Blora 局部容器添加 `.blora-scope`，避免影响宿主应用的全局标题、链接、按钮和背景。
+- 嵌入已有应用：只给 Blora Design 作用域容器添加 `.blora-scope`，避免影响宿主应用的全局标题、链接、按钮和背景。
 - 单独使用组件类时，组件读取 `:root` 中的设计令牌；换肤优先覆写 `--blora-*` 或 `Blora.applyPalette`。
 
 **仓库结构**
@@ -139,7 +139,7 @@ Blora.cls / classPrefix / version   // "1.0.0"
 }
 ```
 
-**唯一视觉标准与配色**：Blora 只有一套字体、圆角、阴影、控件尺寸、动效和玻璃表面标准，直接定义在 `:root`，不需要主题属性或主题 API。`Blora.applyPalette('ocean')` 只会写入 `data-blora-palette="ocean"` 并替换语义颜色，不改变组件形态；未设置属性时使用默认 `dusk` 配色。
+**唯一视觉标准与配色**：Blora Design 只有一套字体、圆角、阴影、控件尺寸、动效和玻璃表面标准，直接定义在 `:root`，不需要主题属性或主题 API。`Blora.applyPalette('ocean')` 只会写入 `data-blora-palette="ocean"` 并替换语义颜色，不改变组件形态；未设置属性时使用默认 `dusk` 配色。
 
 **暗色模式**：`<html class="blora-dark">` 即可，所有颜色 token 自动重映射，无需改组件。暗色模式可与任意配色组合。
 
@@ -153,7 +153,7 @@ Blora.cls / classPrefix / version   // "1.0.0"
 
 | 类 | 说明 |
 |----|------|
-| `.blora-h1` .. `.blora-h4` | Blora 标题字体与字阶 |
+| `.blora-h1` .. `.blora-h4` | Blora Design 标题字体与字阶 |
 | `.blora-text-lead` | 引导段 |
 | `.blora-text-muted` / `.blora-text-faint` / `.blora-text-primary` | 文字色调 |
 | `.blora-text-caps` | 大写小字标签 |
@@ -839,7 +839,7 @@ Blora.getConfig();
 
 ### 14.4 i18n（框架生成文案）
 
-Blora **只翻译组件自己生成的字符串**（校验提示、分页 aria、日期控件、级联前缀等）。页面正文仍由业务 i18n 方案负责。
+Blora Design **只翻译组件自己生成的字符串**（校验提示、分页 aria、日期控件、级联前缀等）。页面正文仍由业务 i18n 方案负责。
 
 **内置语言包**：`zh-CN`（默认）、`en`。
 
@@ -1093,7 +1093,7 @@ Blora.qrcode(el, { text: "https://example.com", size: 132 });
 
 ## 图表集成
 
-Blora 不内置图表库。提供语义色供 ECharts / Chart.js 取用：
+Blora Design 不内置图表库。提供语义色供 ECharts / Chart.js 取用：
 
 ```js
 const palette = [
