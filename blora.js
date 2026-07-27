@@ -4254,16 +4254,26 @@
       const triggers = String(form.getAttribute("data-blora-validate-on") || CONFIG.validateOn || "submit")
         .split(/[\s,]+/).map((s) => s.trim()).filter(Boolean);
       on(form, "submit", (e) => {
+        /* 默认拦截浏览器原生提交，避免 GET 把字段写进 ?query=…
+           需要原生跳转/POST 时显式加 data-blora-native-submit */
+        const allowNative = form.hasAttribute("data-blora-native-submit");
         const hasAsync = formFields(form).some((f) => f.getAttribute("data-blora-async"));
+        const emitOk = () => {
+          form.dispatchEvent(new CustomEvent("blora:submit", {
+            bubbles: true,
+            detail: { values: getFormValues(form), form },
+          }));
+        };
         if (hasAsync) {
           e.preventDefault();
           e.stopPropagation();
           validateFormAsync(form).then((result) => {
             if (!result.valid) return;
-            form.dispatchEvent(new CustomEvent("blora:submit", {
-              bubbles: true,
-              detail: { values: getFormValues(form), form },
-            }));
+            emitOk();
+            if (allowNative && typeof form.submit === "function") {
+              /* HTMLFormElement.submit() 不触发 submit 事件，可真正送出 */
+              HTMLFormElement.prototype.submit.call(form);
+            }
           });
           return;
         }
@@ -4271,7 +4281,14 @@
         if (!result.valid) {
           e.preventDefault();
           e.stopPropagation();
+          return;
         }
+        if (!allowNative) {
+          e.preventDefault();
+          e.stopPropagation();
+          emitOk();
+        }
+        /* allowNative 且校验通过：放行浏览器默认提交 */
       });
       if (triggers.includes("blur")) {
         on(form, "focusout", (e) => {

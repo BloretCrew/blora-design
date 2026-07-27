@@ -12,9 +12,12 @@
     try {
       /* 禁用浏览器默认滚动恢复；暂存 hash 以免原生瞬时跳锚，交给 blora.js 平滑滚入。 */
       if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+      /* 摘掉 hash 交给 blora.js 平滑滚入；顺带清掉表单 GET 残留的 ?username=… */
       if (location.hash && location.hash.length > 1) {
         window.__bloraPendingHash = location.hash;
-        history.replaceState(null, "", location.pathname + location.search);
+      }
+      if (location.search || window.__bloraPendingHash) {
+        history.replaceState(null, "", location.pathname);
       }
     } catch (error) {}
     try {
@@ -933,7 +936,7 @@
 
         <div class="blora-demo">
           <div class="blora-demo__label">表单校验 · Form validate</div>
-          <form id="demo-form-validate" class="blora-stack blora-form" data-blora-form data-blora-error-ui="popup" data-blora-validate-on="submit blur" style="max-width:28rem;gap:0">
+          <form id="demo-form-validate" class="blora-stack blora-form" data-blora-form data-blora-error-ui="popup" data-blora-validate-on="submit blur" method="post" action="#" style="max-width:28rem;gap:0">
             <div class="blora-field">
               <label class="blora-label blora-label--req" for="fv-name">用户名</label>
               <input class="blora-input" id="fv-name" name="username" type="text" required minlength="2" data-blora-async="demoUsername" data-blora-message="请填写至少 2 个字符的用户名" placeholder="至少 2 个字符（admin 会被异步拒绝）" autocomplete="username">

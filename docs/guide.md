@@ -382,6 +382,8 @@ Blora.clearValidation("#form");
 | `popup`（推荐） | 控件上方浮层错误，**不是**浏览器黄气泡 |
 | 默认/其他 | 字段下 `.blora-validator` 文案 |
 
+校验通过后默认 **不会** 走浏览器原生提交（避免 GET 把 `?username=…` 写进地址栏），只派发 `blora:submit`。若业务需要真正提交/跳转，加 `data-blora-native-submit`。
+
 ### 5.4 高级选择器
 
 **Cascader**

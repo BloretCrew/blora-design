@@ -788,6 +788,7 @@ Blora.registerAsyncRule("uniqueUser", async (value, field) => {
 // data-blora-async：异步规则名（需 registerAsyncRule）
 // data-blora-error-ui="popup"：控件上方浮层（框架 novalidate，不用浏览器黄泡）
 // data-blora-validate-on：submit | blur | change（可组合）
+// 默认拦截原生 submit，成功派发 blora:submit；需要浏览器真提交时加 data-blora-native-submit
 ```
 
 ### 14.2 表格排序 / 分页 / 数据
