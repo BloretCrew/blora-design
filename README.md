@@ -1,7 +1,7 @@
 # Blora Design
 
 > **Blora Design** — 令牌驱动、暗色友好、**零依赖** 的 Web UI 设计系统（HTML 三件套）。  
-> **Blora** 是品牌名；产品与框架请称 **Blora Design**（代码中的 `Blora` / `blora-*` 为精简标识）。
+> **Blora** 是品牌前缀；产品与框架请称 **Blora Design**（代码中的 `Blora` / `blora-*` 为精简标识）。
 
 **包名** `@bloret/blora-design` · **版本** `1.0.0` · **许可** Apache-2.0  
 **仓库** [BloretCrew/blora-design](https://github.com/BloretCrew/blora-design) · **作者** [RhedarLiu](https://github.com/RhedarLiu)

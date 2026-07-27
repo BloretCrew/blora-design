@@ -1,7 +1,7 @@
 # Blora Design · 使用与迁移指南
 
 > 面向要把页面做到与官方展示页（`index.html`）**同一套气质** 的工程师。  
-> 产品全称 **Blora Design**；**Blora** 为品牌名（全局 JS 对象与 class 前缀仍用 `Blora` / `blora-*`）。  
+> 产品全称 **Blora Design**；**Blora** 为品牌前缀（全局 JS 对象与 class 前缀仍用 `Blora` / `blora-*`）。  
 > 本文假设你已通过 **npm / CDN / 本地拷贝** 拿到 `blora.css` + `blora.js`（及可选 `locales/`）。  
 > 设计哲学细节见 [`standards.md`](./standards.md)；底层 API 长文见 [`framework.md`](./framework.md)。
 

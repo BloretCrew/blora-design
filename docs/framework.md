@@ -9,7 +9,7 @@
 
 ## 安装
 
-Blora Design 是 **零依赖** 的 Web UI 框架：纯 CSS（约 4.4k 行 / ~240KB）+ 原生 JS（约 6.2k 行 / ~290KB，未压缩），不绑构建工具。品牌名 **Blora**；产品全称 **Blora Design**；全局 JS 对象与 class 前缀仍为 `Blora` / `blora-*`。
+Blora Design 是 **零依赖** 的 Web UI 框架：纯 CSS（约 4.4k 行 / ~240KB）+ 原生 JS（约 6.2k 行 / ~290KB，未压缩），不绑构建工具。**Blora** 为品牌前缀；产品全称 **Blora Design**；全局 JS 对象与 class 前缀仍为 `Blora` / `blora-*`。
 
 ```bash
 # 1) npm / pnpm（团队 Web 应用）
