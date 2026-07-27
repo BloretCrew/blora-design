@@ -41,7 +41,9 @@
     "README.md",
     "LICENSE",
     "NOTICE",
-    "docs/"
+    "docs/guide.md",
+    "docs/framework.md",
+    "docs/standards.md"
   ],
   "scripts": {
     "check": "node --check blora.js",
