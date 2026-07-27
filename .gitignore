@@ -4,3 +4,7 @@
 # Local visual verification scratch
 _verify_tmp/
 
+
+# Local agent skills / tooling (not part of the design kit)
+.agents/
+
