@@ -1,0 +1,64 @@
+# 为「已经 push 过的 tag」补建 GitHub Release（不跑 npm publish）
+# 用法：Actions → Create Release for existing tag → Run workflow → 输入 v1.0.0
+
+name: Create Release for existing tag
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "已存在的 git tag（如 v1.0.0）"
+        required: true
+        default: "v1.0.0"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout tag
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag }}
+          fetch-depth: 0
+
+      - name: Version from tag
+        id: ver
+        shell: bash
+        run: |
+          TAG="${{ inputs.tag }}"
+          VER="${TAG#v}"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "version=$VER" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.ver.outputs.tag }}
+          name: Blora Design ${{ steps.ver.outputs.version }}
+          generate_release_notes: true
+          body: |
+            ## 安装
+
+            ```bash
+            npm i @bloret-crew/blora-design@${{ steps.ver.outputs.version }}
+            ```
+
+            ```html
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@bloret-crew/blora-design@${{ steps.ver.outputs.version }}/blora.css">
+            <script src="https://cdn.jsdelivr.net/npm/@bloret-crew/blora-design@${{ steps.ver.outputs.version }}/blora.js"></script>
+            ```
+
+            - npm: https://www.npmjs.com/package/@bloret-crew/blora-design
+            - 文档: 见仓库 `docs/guide.md`
+            - 许可: Apache-2.0
+
+            ---
+
+            ### 本版本变更
+
+            （以下由 GitHub 自动生成）
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

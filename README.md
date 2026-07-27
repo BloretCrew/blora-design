@@ -199,7 +199,7 @@ Blora.version; // "1.0.0"
 
 SemVer：补丁修 bug；次版本加兼容能力；主版本才允许破坏性变更。
 
-### 维护者：发新版（GitHub Actions → npm）
+### 维护者：发新版（GitHub Actions → npm + Release）
 
 1. 同步改 `package.json` 的 `version` 与 `blora.js` 里 `VERSION`  
 2. commit 并 push 到 `master`  
@@ -210,7 +210,9 @@ git tag -a v1.0.1 -m "Blora Design 1.0.1"
 git push origin v1.0.1
 ```
 
-4. Actions 工作流 [Publish npm](../../actions) 会在 tag 上自动 `npm publish`  
+4. Actions 工作流 [Release](../../actions) 会在该 tag 上自动：  
+   - `npm publish` 到 `@bloret-crew/blora-design`  
+   - 创建 [GitHub Release](../../releases)（安装说明 + 自动变更列表）  
 5. 仓库需配置 Secret：**`NPM_TOKEN`**（npm Automation / Granular 令牌，对 `@bloret-crew` 有 publish 权限）
 
 ---

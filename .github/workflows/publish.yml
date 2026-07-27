@@ -1,8 +1,11 @@
-# 推送版本标签时发布到 npm（@bloret-crew/blora-design）
+# 推送版本标签 v* 时：
+#   1) 校验版本 → 语法检查 → npm publish
+#   2) 创建 GitHub Release（自动生成变更说明）
+#
 # 触发：git push origin v1.2.3
-# 密钥：仓库 Settings → Secrets → NPM_TOKEN（npm Automation / Granular 发布令牌）
+# 密钥：Settings → Secrets → Actions → NPM_TOKEN
 
-name: Publish npm
+name: Release
 
 on:
   push:
@@ -10,14 +13,16 @@ on:
       - "v*"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  publish:
+  release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -26,26 +31,24 @@ jobs:
           registry-url: "https://registry.npmjs.org"
           scope: "@bloret-crew"
 
-      - name: Check tag matches package.json version
+      - name: Resolve version
+        id: ver
         shell: bash
         run: |
           TAG="${GITHUB_REF_NAME#v}"
           PKG="$(node -p "require('./package.json').version")"
+          JS="$(node -e "const fs=require('fs');const m=fs.readFileSync('blora.js','utf8').match(/const VERSION = \"([^\"]+)\"/);if(!m)process.exit(2);console.log(m[1])")"
           if [ "$TAG" != "$PKG" ]; then
-            echo "::error::Tag v$TAG 与 package.json version ($PKG) 不一致。请先改版本再打 tag。"
+            echo "::error::Tag v$TAG 与 package.json version ($PKG) 不一致。"
             exit 1
           fi
-          echo "Publishing @bloret-crew/blora-design@$PKG"
-
-      - name: Check Blora.version matches package.json
-        shell: bash
-        run: |
-          PKG="$(node -p "require('./package.json').version")"
-          JS="$(node -e "const fs=require('fs');const m=fs.readFileSync('blora.js','utf8').match(/const VERSION = \"([^\"]+)\"/);if(!m)process.exit(2);console.log(m[1])")"
           if [ "$PKG" != "$JS" ]; then
             echo "::error::package.json ($PKG) 与 blora.js VERSION ($JS) 不一致。"
             exit 1
           fi
+          echo "tag=$GITHUB_REF_NAME" >> "$GITHUB_OUTPUT"
+          echo "version=$PKG" >> "$GITHUB_OUTPUT"
+          echo "Publishing @bloret-crew/blora-design@$PKG (tag $GITHUB_REF_NAME)"
 
       - name: Syntax check
         run: npm run check
@@ -54,3 +57,33 @@ jobs:
         run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.ver.outputs.tag }}
+          name: Blora Design ${{ steps.ver.outputs.version }}
+          generate_release_notes: true
+          body: |
+            ## 安装
+
+            ```bash
+            npm i @bloret-crew/blora-design@${{ steps.ver.outputs.version }}
+            ```
+
+            ```html
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@bloret-crew/blora-design@${{ steps.ver.outputs.version }}/blora.css">
+            <script src="https://cdn.jsdelivr.net/npm/@bloret-crew/blora-design@${{ steps.ver.outputs.version }}/blora.js"></script>
+            ```
+
+            - npm: https://www.npmjs.com/package/@bloret-crew/blora-design
+            - 文档: 见仓库 `docs/guide.md`
+            - 许可: Apache-2.0
+
+            ---
+
+            ### 本版本变更
+
+            （以下由 GitHub 根据 commits / 上一个 tag 自动生成）
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
