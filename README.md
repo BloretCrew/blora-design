@@ -3,7 +3,7 @@
 > **Blora Design** — 令牌驱动、暗色友好、**零依赖** 的 Web UI 设计系统（HTML 三件套）。  
 > **Blora** 是品牌前缀；产品与框架请称 **Blora Design**（代码中的 `Blora` / `blora-*` 为精简标识）。
 
-**包名** `@bloret/blora-design` · **版本** `1.0.0` · **许可** Apache-2.0  
+**包名** `@bloret-crew/blora-design` · **版本** `1.0.0` · **许可** Apache-2.0  
 **仓库** [BloretCrew/blora-design](https://github.com/BloretCrew/blora-design) · **作者** [RhedarLiu](https://github.com/RhedarLiu)
 
 ```
@@ -55,7 +55,7 @@ Blora Design 不是 React/Vue 组件库，而是：
       } catch (_) {}
     })();
   </script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@bloret/blora-design@1/blora.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@bloret-crew/blora-design@1/blora.css">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <title>My App</title>
 </head>
@@ -68,7 +68,7 @@ Blora Design 不是 React/Vue 组件库，而是：
       <button type="button" class="blora-btn blora-btn--outline">次操作</button>
     </div>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/@bloret/blora-design@1/blora.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@bloret-crew/blora-design@1/blora.js"></script>
 </body>
 </html>
 ```
@@ -78,13 +78,13 @@ Blora Design 不是 React/Vue 组件库，而是：
 ### npm
 
 ```bash
-npm i @bloret/blora-design
+npm i @bloret-crew/blora-design
 ```
 
 ```js
 // 任意入口
-import "@bloret/blora-design/blora.css";
-import Blora from "@bloret/blora-design";
+import "@bloret-crew/blora-design/blora.css";
+import Blora from "@bloret-crew/blora-design";
 // 默认 autoInit；动态插入 DOM 后：
 // Blora.init(document.getElementById("mount"));
 ```
@@ -92,7 +92,7 @@ import Blora from "@bloret/blora-design";
 ### 直接拷贝
 
 ```bash
-cp node_modules/@bloret/blora-design/blora.{css,js,d.ts} your-project/
+cp node_modules/@bloret-crew/blora-design/blora.{css,js,d.ts} your-project/
 # 或从本仓库根目录拷贝
 ```
 
@@ -172,7 +172,7 @@ npm run check   # node --check blora.js
 ```
 
 ```ts
-import Blora from "@bloret/blora-design";
+import Blora from "@bloret-crew/blora-design";
 Blora.toast({ type: "success", message: "已保存" });
 Blora.version; // "1.0.0"
 ```
@@ -193,9 +193,9 @@ Blora.version; // "1.0.0"
 
 | 方式 | 示例 | 更新策略 |
 |------|------|----------|
-| CDN 跟主版本 | `@bloret/blora-design@1` | 自动获得 1.x 最新（推荐文档/可接受小改的站点） |
+| CDN 跟主版本 | `@bloret-crew/blora-design@1` | 自动获得 1.x 最新（推荐文档/可接受小改的站点） |
 | CDN 钉死 | `@1.0.0` | 最稳，升级时改版本号 |
-| npm | `"@bloret/blora-design": "^1.0.0"` | `npm update` |
+| npm | `"@bloret-crew/blora-design": "^1.0.0"` | `npm update` |
 
 SemVer：补丁修 bug；次版本加兼容能力；主版本才允许破坏性变更。
 

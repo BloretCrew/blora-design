@@ -2,7 +2,7 @@
  * Blora Design · zh-CN locale pack
  * 用法：
  *   // npm / bundler
- *   const zh = require("@bloret/blora-design/locales/zh-CN");
+ *   const zh = require("@bloret-crew/blora-design/locales/zh-CN");
  *   Blora.setLocale("zh-CN", zh);
  *   // 或 CDN：在 blora.js 之后加载本文件，会自动注册到 Blora
  */

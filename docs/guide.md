@@ -25,30 +25,30 @@
 ### 1.1 CDN
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@bloret/blora-design@1/blora.css">
-<script src="https://cdn.jsdelivr.net/npm/@bloret/blora-design@1/blora.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@bloret-crew/blora-design@1/blora.css">
+<script src="https://cdn.jsdelivr.net/npm/@bloret-crew/blora-design@1/blora.js"></script>
 ```
 
 钉死版本：把 `@1` 换成 `@1.0.0`。语言包：
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@bloret/blora-design@1/locales/en.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@bloret-crew/blora-design@1/locales/en.js"></script>
 <script>Blora.setLocale("en", BloraLocales.en);</script>
 ```
 
 ### 1.2 npm
 
 ```bash
-npm i @bloret/blora-design
+npm i @bloret-crew/blora-design
 ```
 
 ```js
-import "@bloret/blora-design/blora.css";
-import Blora from "@bloret/blora-design";
-// 或 require("@bloret/blora-design")
+import "@bloret-crew/blora-design/blora.css";
+import Blora from "@bloret-crew/blora-design";
+// 或 require("@bloret-crew/blora-design")
 ```
 
-CSS 也可：`@bloret/blora-design/style.css`（同 `blora.css`）。
+CSS 也可：`@bloret-crew/blora-design/style.css`（同 `blora.css`）。
 
 ### 1.3 最小合法页面
 

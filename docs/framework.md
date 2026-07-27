@@ -3,7 +3,7 @@
 > 面向工程师的 **组件 class / `data-blora-*` / `Blora.*` API** 参考。  
 > **上手、迁移、禁止混用原生** → [`guide.md`](./guide.md)  
 > **视觉令牌与设计原则** → [`standards.md`](./standards.md)  
-> 许可：**Apache-2.0** · 包名：`@bloret/blora-design` · 版本以 `Blora.version` / `package.json` 为准。
+> 许可：**Apache-2.0** · 包名：`@bloret-crew/blora-design` · 版本以 `Blora.version` / `package.json` 为准。
 
 ---
 
@@ -13,15 +13,15 @@ Blora Design 是 **零依赖** 的 Web UI 框架：纯 CSS（约 4.4k 行 / ~240
 
 ```bash
 # 1) npm / pnpm（团队 Web 应用）
-npm install @bloret/blora-design
+npm install @bloret-crew/blora-design
 
 # 2) 直接拷贝（静态站）
-cp node_modules/@bloret/blora-design/blora.{css,js,d.ts} your-project/
+cp node_modules/@bloret-crew/blora-design/blora.{css,js,d.ts} your-project/
 # 或从仓库根目录拷贝同名文件
 
 # 3) CDN（jsDelivr；@1 跟随 1.x 最新，生产可钉 @1.0.0）
-# <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@bloret/blora-design@1/blora.css">
-# <script src="https://cdn.jsdelivr.net/npm/@bloret/blora-design@1/blora.js"></script>
+# <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@bloret-crew/blora-design@1/blora.css">
+# <script src="https://cdn.jsdelivr.net/npm/@bloret-crew/blora-design@1/blora.js"></script>
 ```
 
 ```html
@@ -977,7 +977,7 @@ Sidebar 在窄屏关闭时会使用 `inert` 移出焦点序列；打开后焦点
 
 <!-- Code -->
 <div class="blora-mockup blora-mockup--code">
-  <pre class="blora-mockup__line" data-prefix="$"><code>npm i @bloret/blora-design</code></pre>
+  <pre class="blora-mockup__line" data-prefix="$"><code>npm i @bloret-crew/blora-design</code></pre>
   <pre class="blora-mockup__line blora-mockup__line--success" data-prefix=">"><code>Done!</code></pre>
 </div>
 

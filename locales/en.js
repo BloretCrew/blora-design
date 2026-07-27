@@ -1,7 +1,7 @@
 /**
  * Blora Design · en locale pack
  * Usage:
- *   const en = require("@bloret/blora-design/locales/en");
+ *   const en = require("@bloret-crew/blora-design/locales/en");
  *   Blora.setLocale("en", en);
  */
 (function (root, factory) {
