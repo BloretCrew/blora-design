@@ -102,6 +102,7 @@
         "table.bulk": "批量操作",
         "table.cols": "列设置",
         "table.colsReset": "重置列",
+        "table.colDrag": "拖动排序",
         "palette.title": "配色",
         "palette.hint": "仅替换语义颜色，不改变组件形态",
         "palette.label": "配色",
@@ -179,6 +180,7 @@
         "table.bulk": "Bulk actions",
         "table.cols": "Columns",
         "table.colsReset": "Reset columns",
+        "table.colDrag": "Drag to reorder",
         "palette.title": "Palette",
         "palette.hint": "Semantic colors only — component shapes stay the same",
         "palette.label": "Palette",
@@ -1522,20 +1524,29 @@
     return btn;
   }
 
-  /* —— Sidebar nav scrollspy —— 偏移量可由 data-blora-spy="像素" 配置 —— */
+  /* —— Sidebar nav scrollspy —— 偏移量可由 data-blora-spy="像素" 配置；滚动时同步 URL hash —— */
   function initScrollSpy(root) {
     const nav = $("[data-blora-spy]");
     if (!nav || bound(nav, "Spy")) return;
+    const win = ownerWin(nav) || global;
     const links = $$("a[href^='#']", nav);
     const sections = links.map((l) => document.getElementById(l.getAttribute("href").slice(1))).filter(Boolean);
     const offset = Number(nav.getAttribute("data-blora-spy")) || 120;
+    let lastId = "";
     const sync = () => {
-      const y = window.scrollY + offset;
+      const y = (win.pageYOffset || win.scrollY || 0) + offset;
       let active = sections[0];
       sections.forEach((s) => { if (s && s.offsetTop <= y) active = s; });
-      links.forEach((l) => l.classList.toggle("is-active", l.getAttribute("href") === "#" + (active && active.id)));
+      const id = active && active.id ? active.id : "";
+      links.forEach((l) => l.classList.toggle("is-active", l.getAttribute("href") === "#" + id));
+      /* replaceState 不触发滚动，仅在章节变化时更新 hash */
+      if (id && id !== lastId) {
+        lastId = id;
+        const cur = String((win.location && win.location.hash) || "").replace(/^#/, "");
+        if (cur !== id) setLocationHash(id);
+      }
     };
-    on(window, "scroll", sync);
+    on(win, "scroll", sync, { passive: true });
     sync();
   }
 
@@ -4836,19 +4847,20 @@
       const cfg = readColsConfig(table) || defaultColsConfig(table);
       const list = $(".blora-table-cols__list", panel);
       list.textContent = "";
-      cfg.forEach((col, i) => {
+      cfg.forEach((col) => {
         const row = ownerDoc(table).createElement("div");
         row.className = "blora-table-cols__item";
+        row.setAttribute("data-col-key", col.key);
+        row.setAttribute("draggable", "true");
         row.innerHTML =
+          '<span class="blora-table-cols__grip" aria-hidden="true" title="' + escapeHTML(t("table.colDrag")) + '">' +
+          '<svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="5" cy="4" r="1.2"/><circle cx="11" cy="4" r="1.2"/><circle cx="5" cy="8" r="1.2"/><circle cx="11" cy="8" r="1.2"/><circle cx="5" cy="12" r="1.2"/><circle cx="11" cy="12" r="1.2"/></svg>' +
+          "</span>" +
           bloraCheckboxHTML({
             checked: !!col.visible,
             attrs: 'data-col-key="' + escapeHTML(col.key) + '"',
             label: col.label,
-          }) +
-          '<span class="blora-table-cols__actions">' +
-          '<button type="button" class="blora-btn blora-btn--ghost blora-btn--sm" data-col-up data-i="' + i + '" aria-label="up">↑</button>' +
-          '<button type="button" class="blora-btn blora-btn--ghost blora-btn--sm" data-col-down data-i="' + i + '" aria-label="down">↓</button>' +
-          "</span>";
+          });
         list.appendChild(row);
       });
     };
@@ -4867,22 +4879,65 @@
       applyTableColumnLayout(table);
     });
     on(panel, "click", (e) => {
-      if (e.target.closest("[data-blora-cols-reset]")) {
-        writeColsConfig(table, defaultColsConfig(table));
-        paint();
-        applyTableColumnLayout(table);
+      if (!e.target.closest("[data-blora-cols-reset]")) return;
+      writeColsConfig(table, defaultColsConfig(table));
+      paint();
+      applyTableColumnLayout(table);
+    });
+    /* 拖拽排序列（HTML5 DnD） */
+    let dragKey = "";
+    on(panel, "dragstart", (e) => {
+      const item = e.target.closest(".blora-table-cols__item");
+      if (!item || !panel.contains(item)) return;
+      /* 点在 checkbox 上不启动拖拽，避免误操作 */
+      if (e.target.closest("input, .blora-checkbox__box, label.blora-checkbox")) {
+        e.preventDefault();
         return;
       }
-      const up = e.target.closest("[data-col-up]");
-      const down = e.target.closest("[data-col-down]");
-      if (!up && !down) return;
+      dragKey = item.getAttribute("data-col-key") || "";
+      try {
+        e.dataTransfer.effectAllowed = "move";
+        e.dataTransfer.setData("text/plain", dragKey);
+      } catch (_) { /* ignore */ }
+      item.classList.add("is-dragging");
+    });
+    on(panel, "dragend", (e) => {
+      dragKey = "";
+      $$(".blora-table-cols__item", panel).forEach((el) => {
+        el.classList.remove("is-dragging", "is-drag-over");
+      });
+    });
+    on(panel, "dragover", (e) => {
+      const item = e.target.closest(".blora-table-cols__item");
+      if (!item || !panel.contains(item)) return;
+      e.preventDefault();
+      try { e.dataTransfer.dropEffect = "move"; } catch (_) { /* ignore */ }
+      $$(".blora-table-cols__item.is-drag-over", panel).forEach((el) => {
+        if (el !== item) el.classList.remove("is-drag-over");
+      });
+      if (!item.classList.contains("is-dragging")) item.classList.add("is-drag-over");
+    });
+    on(panel, "dragleave", (e) => {
+      const item = e.target.closest(".blora-table-cols__item");
+      if (item && !item.contains(e.relatedTarget)) item.classList.remove("is-drag-over");
+    });
+    on(panel, "drop", (e) => {
+      e.preventDefault();
+      const toItem = e.target.closest(".blora-table-cols__item");
+      if (!toItem || !panel.contains(toItem)) return;
+      let fromKey = dragKey;
+      try { fromKey = e.dataTransfer.getData("text/plain") || fromKey; } catch (_) { /* ignore */ }
+      const toKey = toItem.getAttribute("data-col-key");
+      if (!fromKey || !toKey || fromKey === toKey) {
+        toItem.classList.remove("is-drag-over");
+        return;
+      }
       const cfg = readColsConfig(table) || defaultColsConfig(table);
-      const i = Number((up || down).getAttribute("data-i"));
-      const j = up ? i - 1 : i + 1;
-      if (j < 0 || j >= cfg.length) return;
-      const tmp = cfg[i];
-      cfg[i] = cfg[j];
-      cfg[j] = tmp;
+      const from = cfg.findIndex((c) => c.key === fromKey);
+      const to = cfg.findIndex((c) => c.key === toKey);
+      if (from < 0 || to < 0) return;
+      const [moved] = cfg.splice(from, 1);
+      cfg.splice(to, 0, moved);
       writeColsConfig(table, cfg);
       paint();
       applyTableColumnLayout(table);

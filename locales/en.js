@@ -62,6 +62,7 @@
       "table.bulk": "Bulk actions",
       "table.cols": "Columns",
       "table.colsReset": "Reset columns",
+      "table.colDrag": "Drag to reorder",
       "select.search": "Search…",
       "select.empty": "No matches",
       "select.placeholder": "Select",

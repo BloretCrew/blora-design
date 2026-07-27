@@ -1855,12 +1855,31 @@ th[data-blora-sort]:hover { color: var(--blora-primary); }
 .blora-table-cols__item {
   display: flex; align-items: center; gap: var(--blora-space-2);
   font-size: var(--blora-text-sm);
+  padding: 0.35em 0.4em;
+  border-radius: var(--blora-radius-sm);
+  border: 1px solid transparent;
+  cursor: grab;
+  transition: background var(--blora-dur-fast) var(--blora-ease), border-color var(--blora-dur-fast) var(--blora-ease), opacity var(--blora-dur-fast) var(--blora-ease);
+  user-select: none;
+  touch-action: none;
 }
-.blora-table-cols__item > .blora-checkbox { flex: 1; min-width: 0; }
+.blora-table-cols__item:active { cursor: grabbing; }
+.blora-table-cols__item.is-dragging {
+  opacity: 0.45;
+  background: var(--blora-surface-2);
+}
+.blora-table-cols__item.is-drag-over {
+  border-color: var(--blora-primary);
+  background: var(--blora-primary-tint);
+}
+.blora-table-cols__grip {
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0; width: 1.25em; color: var(--blora-text-subtle);
+  cursor: grab;
+}
+.blora-table-cols__item:active .blora-table-cols__grip { cursor: grabbing; }
+.blora-table-cols__item > .blora-checkbox { flex: 1; min-width: 0; cursor: pointer; }
 .blora-table-cols__item > .blora-checkbox > span:last-child { flex: 1; min-width: 0; }
-.blora-table-cols__actions {
-  display: inline-flex; align-items: center; gap: var(--blora-space-1); flex-shrink: 0;
-}
 .blora-table-cols__foot { margin-top: var(--blora-space-3); display: flex; justify-content: flex-end; }
 .blora-table-wrap--virtual,
 .blora-table-virtual {

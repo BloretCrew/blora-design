@@ -67,6 +67,7 @@
       "table.bulk": "批量操作",
       "table.cols": "列设置",
       "table.colsReset": "重置列",
+      "table.colDrag": "拖动排序",
       "select.search": "搜索…",
       "select.empty": "无匹配选项",
       "select.placeholder": "请选择",
