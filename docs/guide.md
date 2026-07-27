@@ -858,9 +858,8 @@ Blora.init(document.getElementById("blora-app"));
 
 ## 延伸阅读
 
-- [`standards.md`](./standards.md) — 设计规范 SSOT  
-- [`framework.md`](./framework.md) — 令牌与 API 详解  
-- [`IMPROVEMENTS.md`](./IMPROVEMENTS.md) — 能力矩阵与可选增强  
+- [`standards.md`](./standards.md) — 设计规范（视觉 / 令牌）  
+- [`framework.md`](./framework.md) — class 与 JS API 详表  
 - 仓库根目录 [`README.md`](../README.md) — 安装与版本策略  
 - 展示页 `index.html` — **视觉与结构的最终参照**
 

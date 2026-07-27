@@ -118,7 +118,7 @@ cp node_modules/@bloret/blora-design/blora.{css,js,d.ts} your-project/
    - 控件默认偏「胶囊」曲率，卡片用大圆角
 
 5. **交互控件一律走 Blora class**  
-   见下方「禁止混用原生」与 [使用与迁移指南](./docs/GUIDE.md)。
+   见下方「禁止混用原生」与 [使用与迁移指南](./docs/guide.md)。
 
 更完整的哲学与令牌表见 [`docs/standards.md`](./docs/standards.md)。
 
@@ -139,7 +139,7 @@ cp node_modules/@bloret/blora-design/blora.{css,js,d.ts} your-project/
 | **内容** | Typography / Markdown / Comment / **Thread 论坛跟帖** / 代码块 / Blockquote / Mockup 模型 |
 | **工具** | 配色 / 明暗 / 快捷键提示 / 回到顶部 / 图片预览 / Tour / QRCode / 倒计时 / i18n |
 
-详细 class、`data-blora-*` 与 API：**[docs/GUIDE.md](./docs/GUIDE.md)**（使用 + 迁移）。  
+详细 class、`data-blora-*` 与 API：**[docs/guide.md](./docs/guide.md)**（使用 + 迁移）。  
 工程师 API 长文：[`docs/framework.md`](./docs/framework.md)。
 
 ---
@@ -155,12 +155,11 @@ blora-design/
 ├── index.html         # 组件全集展示（开发与对照用）
 ├── locales/           # zh-CN / en 语言包（可 CDN 分包）
 ├── docs/
-│   ├── GUIDE.md       # 使用指引 + 迁移指引（从这里开始）
+│   ├── guide.md       # 使用指引 + 迁移指引（从这里开始）
 │   ├── standards.md   # 设计规范
-│   ├── framework.md   # 框架与组件 API
-│   └── IMPROVEMENTS.md
+│   └── framework.md   # 框架与组件 API
 ├── package.json
-└── LICENSE
+├── LICENSE · NOTICE   # Apache-2.0
 ```
 
 ---
@@ -183,10 +182,9 @@ Blora.version; // "1.0.0"
 
 | 文档 | 说明 |
 |------|------|
-| [**使用与迁移指南**](./docs/GUIDE.md) | 导入、每个组件怎么写、视觉基线、**不要用原生控件**、从旧站迁移 |
+| [**使用与迁移指南**](./docs/guide.md) | 导入、每个组件怎么写、视觉基线、**不要用原生控件**、从旧站迁移 |
 | [设计规范](./docs/standards.md) | 色彩 / 字体 / 间距 / 动效 / 无障碍 |
 | [框架文档](./docs/framework.md) | 令牌、初始化、组件与 JS API 详解 |
-| [完善清单](./docs/IMPROVEMENTS.md) | 对照主流库的能力矩阵 |
 
 ---
 
@@ -220,7 +218,7 @@ npx serve .
 3. **声明式优先** — class + `data-blora-*`，需要时再调 `Blora.*` API。  
 4. **零依赖** — 不引入打包器也能跑；需要时也可进 npm 工程。
 
-完整注意事项与迁移步骤见 [docs/GUIDE.md](./docs/GUIDE.md)。
+完整注意事项与迁移步骤见 [docs/guide.md](./docs/guide.md)。
 
 ---
 

@@ -1,30 +1,32 @@
 # Blora Design · UI 框架文档
 
-> 本文档面向工程师。涵盖安装、令牌、所有组件 API 与用法、JS 行为。
-> 设计规范见 [`standards.md`](./standards.md)。
+> 面向工程师的 **组件 class / `data-blora-*` / `Blora.*` API** 参考。  
+> **上手、迁移、禁止混用原生** → [`guide.md`](./guide.md)  
+> **视觉令牌与设计原则** → [`standards.md`](./standards.md)  
+> 许可：**Apache-2.0** · 包名：`@bloret/blora-design` · 版本以 `Blora.version` / `package.json` 为准。
 
 ---
 
 ## 安装
 
-Blora 是 **零依赖** 框架：纯 CSS（约 1400 行）+ 原生 JS（未压缩约 40KB），不绑构建工具。
+Blora 是 **零依赖** 框架：纯 CSS（约 4.4k 行 / ~240KB）+ 原生 JS（约 6.2k 行 / ~290KB，未压缩），不绑构建工具。
 
 ```bash
-# 1) npm / pnpm（推荐用于团队 Web 应用）
+# 1) npm / pnpm（团队 Web 应用）
 npm install @bloret/blora-design
 
-# 2) 直接拷贝（适合静态站）
-cp blora.css  your-project/
-cp blora.js   your-project/
+# 2) 直接拷贝（静态站）
+cp node_modules/@bloret/blora-design/blora.{css,js,d.ts} your-project/
+# 或从仓库根目录拷贝同名文件
 
-# 3) 或 CDN（发布后）
-# <link rel="stylesheet" href="https://cdn.blora.design/1.0/blora.css">
-# <script src="https://cdn.blora.design/1.0/blora.js"></script>
+# 3) CDN（jsDelivr；@1 跟随 1.x 最新，生产可钉 @1.0.0）
+# <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@bloret/blora-design@1/blora.css">
+# <script src="https://cdn.jsdelivr.net/npm/@bloret/blora-design@1/blora.js"></script>
 ```
 
 ```html
 <link rel="stylesheet" href="blora.css">
-<!-- 可选：引入 UI 与等宽字体 -->
+<!-- 推荐与展示页一致：中文 UI + 等宽 -->
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="blora.js"></script>
 ```
@@ -33,16 +35,18 @@ cp blora.js   your-project/
 
 - 完整页面：给 `<body>` 添加 `class="blora-page blora-scope"`，启用页面底色、字体、基础元素 reset 与组件样式。
 - 嵌入已有应用：只给 Blora 局部容器添加 `.blora-scope`，避免影响宿主应用的全局标题、链接、按钮和背景。
-- 单独使用组件类时，组件读取 `:root` 中的设计令牌；换肤优先覆写 `--blora-*`。
+- 单独使用组件类时，组件读取 `:root` 中的设计令牌；换肤优先覆写 `--blora-*` 或 `Blora.applyPalette`。
 
-**框架结构**
+**仓库结构**
 
 ```
-blora-design-2/
-├── blora.css      # 框架本体 · 1400+ 行 · 全部样式与令牌
-├── blora.js       # 交互层 · 约 1000 行 · 无依赖
-├── index.html     # 组件全集展示
+blora-design/
+├── blora.css / blora.js / blora.d.ts
+├── locales/           # zh-CN / en 语言包（可选 CDN 分包）
+├── index.html         # 组件全集展示（视觉最终参照）
+├── LICENSE · NOTICE   # Apache-2.0
 └── docs/
+    ├── guide.md       # 使用 + 迁移（推荐入口）
     ├── standards.md   # 设计规范
     └── framework.md   # 本文档
 ```
@@ -51,9 +55,9 @@ blora-design-2/
 
 ```html
 <script>
-  // 自动在 DOMContentLoaded 后初始化；
-  // 若动态插入组件，手动调用：
-Blora.init(document.getElementById('my-mount'));
+  // 默认 DOMContentLoaded 后 autoInit；
+  // 动态插入组件后：
+  Blora.init(document.getElementById('my-mount'));
 </script>
 ```
 
@@ -89,24 +93,29 @@ Blora.init(document.getElementById('my-mount'));
 <link rel="stylesheet" href="blora.css">
 ```
 
-**全局 API**
+**全局 API（节选）**
 
 ```js
-Blora.toast({ type: 'success', message: '操作已完成', duration: 3000 });
-Blora.openModal('modal-id');
-Blora.closeModal('modal-id');
-Blora.openDrawer('drawer-id');
-Blora.closeDrawer('drawer-id');
-Blora.init(root);     // 重新扫描并绑定（幂等：已绑定的元素自动跳过，可放心对动态子树重复调用）
-Blora.configure({ portalRoot, colorModeStorageKey, paletteStorageKey, autoInit });
-Blora.applyPalette('ocean'); // cinnabar | indigo | lotus | ocean | graphite | mono | circuit | coral | dusk
-Blora.getPalette();          // 当前配色名称
-Blora.palettes;              // 配色元数据
-Blora.applyColorMode('system'); // system | light | dark
-Blora.getColorMode();           // 当前模式偏好，不等同于当前有效明暗状态
-Blora.locale;         // 日历/选择器文案（months / dow / today / clear…），可整体覆写做本地化
-Blora.version;        // "1.0.0"
+Blora.init(root);                    // 幂等；动态子树可重复调用
+Blora.configure({ /* size, locale, portalRoot, validateOn, … */ });
+Blora.getConfig();
+
+Blora.toast / message / notify / confirm
+Blora.openModal / closeModal / openDrawer / closeDrawer
+Blora.applyPalette('ocean');         // dusk | ocean | indigo | lotus | cinnabar | graphite | mono | circuit | coral | …
+Blora.applyColorMode('system');      // system | light | dark
+Blora.getPalette(); Blora.getColorMode(); Blora.palettes;
+
+Blora.validate / validateAsync / validateField / getValues / setValues / registerAsyncRule
+Blora.table.sort / setPage / setRows / setLoading / getSelection / getState
+Blora.select.setOptions
+Blora.markdown / md / renderMarkdown
+Blora.preview / tour / backTop / qrcode
+Blora.t / setLocale / getLocale / locales / locale
+Blora.cls / classPrefix / version   // "1.0.0"
 ```
+
+完整迁移注意与「禁止半套原生」见 [`guide.md`](./guide.md)。类型定义见根目录 `blora.d.ts`。
 
 ---
 
@@ -750,34 +759,46 @@ Blora.toast({ type: 'success', message: '操作已完成', duration: 3000 });
 ### 14.1 表单校验 API（行为层）
 
 ```html
-<form data-blora-form data-blora-validate-on="submit blur">
+<form class="blora-form" data-blora-form data-blora-error-ui="popup" data-blora-validate-on="submit blur">
   <div class="blora-field">
     <label class="blora-label blora-label--req">邮箱</label>
-    <input class="blora-input" type="email" required data-blora-rule="email">
-    <span class="blora-error" data-blora-error hidden></span>
+    <input class="blora-input" name="email" type="email" required data-blora-rule="email"
+           data-blora-message="请输入有效邮箱">
+    <!-- 非 popup 时可用：<span class="blora-error" data-blora-error hidden></span> -->
   </div>
+  <!-- 联动：data-blora-when="plan=pro" data-blora-when-action="show|enable|…" -->
+  <div data-blora-when="plan=pro" data-blora-when-action="show">…</div>
   <button class="blora-btn blora-btn--primary" type="submit">提交</button>
 </form>
 ```
 
 ```js
-Blora.validate("#my-form");           // { valid, errors: [{ field, message }] }
+Blora.validate("#my-form");              // { valid, errors: [{ field, message }] }
+await Blora.validateAsync("#my-form");   // 含 data-blora-async 异步规则
 Blora.validateField(inputEl);
 Blora.clearValidation("#my-form");
-// 事件：blora:validate / blora:invalid（detail 同上）
-// data-blora-rule：email | url | number | min:n | max:n
-// data-blora-message：覆盖默认文案
-// data-blora-validate-on：submit | blur | change（可组合，默认读 configure.validateOn）
+Blora.getValues("#my-form");             // 按 name 聚合
+Blora.setValues("#my-form", { email: "a@b.com" });
+Blora.registerAsyncRule("uniqueUser", async (value, field) => {
+  if (value === "admin") return "不可用";
+  return true;
+});
+// 事件：blora:validate / blora:invalid
+// data-blora-rule：email | url | number | min:n | max:n | …
+// data-blora-async：异步规则名（需 registerAsyncRule）
+// data-blora-error-ui="popup"：控件上方浮层（框架 novalidate，不用浏览器黄泡）
+// data-blora-validate-on：submit | blur | change（可组合）
 ```
 
-### 14.2 表格排序 / 分页
+### 14.2 表格排序 / 分页 / 数据
 
 ```html
-<div class="blora-table-wrap" data-blora-table data-page-size="10" data-page="1">
-  <table class="blora-table" id="t1">
+<div class="blora-table-wrap" id="t1" data-blora-table data-blora-selectable data-blora-cols
+     data-blora-cols-key="my-table" data-page-size="10" data-page="1">
+  <table class="blora-table blora-table--striped">
     <thead>
       <tr>
-        <th class="blora-table-sort" data-blora-sort="name">名称</th>
+        <th class="blora-table-sort" data-blora-sort="name" data-blora-fixed="left">名称</th>
         <th class="blora-table-sort" data-blora-sort="status">状态</th>
       </tr>
     </thead>
@@ -790,9 +811,15 @@ Blora.clearValidation("#my-form");
 ```js
 Blora.table.sort("#t1", "status", "asc");
 Blora.table.setPage("#t1", 2);
+Blora.table.setRows("#t1", [{ name: "张三", status: "ok" }], { keys: ["name", "status"] });
+Blora.table.setLoading("#t1", true);
+Blora.table.getSelection("#t1");
+Blora.table.clearSelection("#t1");
 Blora.table.getState("#t1"); // { page, pageSize, sortKey, sortDir, total }
 // 默认 mode=local（DOM 内排序/隐藏行）
-// data-blora-table-mode="remote" 时只派发 blora:table-change，由业务拉数
+// data-blora-table-mode="remote" → 只派发 blora:table-change，由业务拉数
+// data-blora-virtual：大数据虚拟行（配合 setRows）
+// data-blora-selectable / data-blora-cols / data-blora-fixed
 // 分页事件：blora:page-change
 ```
 
@@ -976,6 +1003,74 @@ Sidebar 在窄屏关闭时会使用 `inert` 移出焦点序列；打开后焦点
 
 Text Rotate 为可选强调效果，服从 `prefers-reduced-motion`。Mockup 只承载真实内容预览，不替代业务容器。
 
+### 18. Markdown · Thread · 进阶选择器 · 反馈增强
+
+**Markdown**（零依赖子集：先转义再解析）
+
+```html
+<div data-blora-md>
+  <script type="text/markdown">
+## 标题
+段落 **加粗** 与 `code`。
+  </script>
+</div>
+```
+
+```js
+Blora.markdown("**hi**", { inline: true });
+Blora.renderMarkdown("#el", "## 标题\n正文"); // 别名 Blora.md
+```
+
+**论坛跟帖 Thread**（结构以展示页为准）
+
+```html
+<div class="blora-thread" data-blora-thread>
+  <article class="blora-post">
+    <header class="blora-post__head">…</header>
+    <div class="blora-post__title" data-blora-md>## 标题</div>
+    <div class="blora-post__body" data-blora-md><script type="text/markdown">正文</script></div>
+    <div class="blora-post__tools">…</div>
+    <div class="blora-post__replies">…嵌套 .blora-post…</div>
+  </article>
+</div>
+```
+
+轻量评论仍用 `.blora-comment`。发帖区可用 textarea + Mentions + 工具按钮拼装（见 `guide.md`）。
+
+**TreeSelect / AutoComplete / Mentions / Select 增强**
+
+```html
+<div class="blora-treeselect" data-blora-treeselect data-options='[…]'>
+  <input class="blora-input" readonly placeholder="选择">
+</div>
+<div class="blora-autocomplete" data-blora-autocomplete data-options='["A","B"]'>
+  <input class="blora-input">
+</div>
+<div class="blora-mentions" data-blora-mentions data-options='["alice"]'>
+  <textarea class="blora-textarea"></textarea>
+</div>
+<select class="blora-select" data-blora-search data-blora-remote multiple data-max-tag-count="2">…</select>
+```
+
+```js
+Blora.select.setOptions(sel, [{ value: "a", label: "A" }]);
+// data-blora-remote 时监听 blora:search 后 setOptions
+```
+
+**Notify / Confirm / Preview / Tour / 其它**
+
+```js
+Blora.notify({ type: "info", title: "标题", description: "详情" });
+const ok = await Blora.confirm({ title: "删除？", danger: true });
+Blora.preview(imgEl); // 或 data-blora-preview
+Blora.tour({ /* 或 DOM：data-blora-tour + data-blora-tour-step */ });
+Blora.backTop({ showAfter: 400 });
+Blora.qrcode(el, { text: "https://example.com", size: 132 });
+// 可选文字动效：Blora.textFx(el, "bloom") — 展示页默认不强调
+```
+
+进阶布局：`data-blora-affix`、`data-blora-splitter`、`data-blora-watermark`、`data-blora-anchor`、`.blora-masonry`、`.blora-skeleton*`、`data-blora-countup` — 见展示页「进阶组件」与 `guide.md`。
+
 ---
 
 ## 配色与明暗模式
@@ -1035,8 +1130,10 @@ const palette = [
 
 ## 版本
 
-- **1.0.0** — 完整组件集、12 级间距、语义设计令牌、三态明暗模式与命令面板。
+- **1.0.0** — 完整组件集、语义令牌与多配色/暗色、Form/Table/Select 行为层、i18n、Thread/Markdown、进阶组件；许可 Apache-2.0。
+
+以 `package.json` / `Blora.version` 为准。变更说明见仓库 Git 历史与 GitHub Releases（若有）。
 
 ---
 
-> 组件随取随用，按需裁剪。
+> 上手与迁移优先读 [`guide.md`](./guide.md)。组件随取随用，按需裁剪；展示页 `index.html` 为结构与视觉的最终参照。

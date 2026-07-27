@@ -8,3 +8,6 @@ _verify_tmp/
 # Local agent skills / tooling (not part of the design kit)
 .agents/
 
+# Internal checklist — keep local, do not publish
+docs/IMPROVEMENTS.md
+

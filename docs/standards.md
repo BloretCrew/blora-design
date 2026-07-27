@@ -1,6 +1,10 @@
 # Blora Design · UI 设计规范
 
-> Blora Design 是一套令牌驱动的 Web UI 设计规范。本文是设计者与工程师共同的唯一信源（Single Source of Truth）。
+> Blora Design 是一套令牌驱动的 Web UI 设计规范。  
+> 本文是 **视觉与令牌** 的信源（色彩 / 字体 / 间距 / 动效 / 无障碍）。  
+> **工程接入、组件用法、迁移** → [`guide.md`](./guide.md)  
+> **class / data API 详表** → [`framework.md`](./framework.md)  
+> 默认配色 `dusk` 的色值与当前 `blora.css` `:root` 对齐；换肤后以运行时令牌为准。
 
 ---
 
