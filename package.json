@@ -5,6 +5,15 @@
   "license": "MIT",
   "private": false,
   "type": "commonjs",
+  "author": "RhedarLiu <rhedarliu@outlook.com>",
+  "homepage": "https://github.com/BloretCrew/blora-design#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BloretCrew/blora-design.git"
+  },
+  "bugs": {
+    "url": "https://github.com/BloretCrew/blora-design/issues"
+  },
   "main": "./blora.js",
   "browser": "./blora.js",
   "style": "./blora.css",
@@ -18,6 +27,9 @@
     "./blora.css": "./blora.css",
     "./style.css": "./blora.css",
     "./blora.js": "./blora.js",
+    "./locales/zh-CN": "./locales/zh-CN.js",
+    "./locales/en": "./locales/en.js",
+    "./locales/*": "./locales/*",
     "./package.json": "./package.json"
   },
   "files": [
@@ -25,7 +37,9 @@
     "blora.js",
     "blora.d.ts",
     "bloret-mini.svg",
+    "locales/",
     "README.md",
+    "LICENSE",
     "docs/"
   ],
   "scripts": {
@@ -37,6 +51,7 @@
     "bloret",
     "design-system",
     "ui-framework",
-    "css"
+    "css",
+    "vanilla-js"
   ]
 }

@@ -275,7 +275,7 @@
       <div class="blora-shownav__group">布局</div>
       <a href="#layout">布局</a>
       <a href="#advanced">进阶组件</a>
-      <a href="#mockup">Mockup</a>
+      <a href="#mockup">模型</a>
     </nav>
   </aside>
 
@@ -308,6 +308,15 @@
           <h3 class="blora-card__title">强调色规范</h3>
           <p class="blora-card__body">统一的强调色仅用于主操作、激活态、关键标识，使界面重点突出。</p>
         </article>
+      </div>
+
+      <div class="blora-panel" style="margin-top: var(--blora-space-5);">
+        <div class="blora-panel__header">
+          <h3 class="blora-h4">快速安装</h3>
+          <span class="blora-tag">npm</span>
+        </div>
+        <p class="blora-hint" style="margin:0 0 var(--blora-space-3)">点击复制安装命令，再引入样式与脚本即可使用。</p>
+        <span data-blora-copy="npm i @bloret/blora-design"><code class="blora-code">npm i @bloret/blora-design</code></span>
       </div>
 
       <div class="blora-panel" style="margin-top: var(--blora-space-5);">
@@ -406,6 +415,15 @@
             </span>
           </p>
         </div>
+
+        <div class="blora-demo" style="margin-bottom:var(--blora-space-4)">
+          <div class="blora-demo__label">一键复制 · Copy</div>
+          <div class="blora-stack" style="gap:var(--blora-space-3);align-items:flex-start">
+            <span data-blora-copy="npm i @bloret/blora-design"><code class="blora-code">npm i @bloret/blora-design</code></span>
+            <span data-blora-copy="https://blora.design"><code class="blora-code">https://blora.design</code></span>
+          </div>
+        </div>
+
         <div class="blora-quote">
           Design is not just what it looks like and feels like. Design is how it works.
           <cite>—— Steve Jobs</cite>
@@ -863,7 +881,7 @@
       <header class="blora-sec__head">
         <div class="blora-sec__num">08 — 表单</div>
         <h2 class="blora-sec__title">表单输入</h2>
-        <p class="blora-sec__desc">文本、多行、选择、大型菜单、勾选、单选、开关、滑块、评分、分段、标签、数字、验证码、颜色、上传。</p>
+        <p class="blora-sec__desc">文本、多行、选择、勾选、开关、滑块、评分、标签、数字、验证码、颜色、上传、树选、自动完成与提及。</p>
       </header>
 
       <div class="blora-panel">
@@ -915,17 +933,31 @@
 
         <div class="blora-demo">
           <div class="blora-demo__label">表单校验 · Form validate</div>
-          <p class="blora-hint" style="margin-bottom:var(--blora-space-4)">给 <code>form</code> 加 <code>data-blora-form</code>。字段使用原生 <code>required</code> / <code>type</code> / <code>minlength</code>，或 <code>data-blora-rule</code> / <code>data-blora-message</code>。API：<code>Blora.validate(form)</code>、<code>Blora.clearValidation(form)</code>；事件 <code>blora:validate</code> / <code>blora:invalid</code>。</p>
-          <form class="blora-stack" data-blora-form data-blora-validate-on="submit blur" style="max-width:28rem;gap:0">
+          <form id="demo-form-validate" class="blora-stack blora-form" data-blora-form data-blora-error-ui="popup" data-blora-validate-on="submit blur" style="max-width:28rem;gap:0">
             <div class="blora-field">
               <label class="blora-label blora-label--req" for="fv-name">用户名</label>
-              <input class="blora-input" id="fv-name" name="username" type="text" required minlength="2" data-blora-message="请填写至少 2 个字符的用户名" placeholder="至少 2 个字符" autocomplete="username">
+              <input class="blora-input" id="fv-name" name="username" type="text" required minlength="2" data-blora-async="demoUsername" data-blora-message="请填写至少 2 个字符的用户名" placeholder="至少 2 个字符（admin 会被异步拒绝）" autocomplete="username">
               <span class="blora-error" data-blora-error hidden></span>
             </div>
             <div class="blora-field">
               <label class="blora-label blora-label--req" for="fv-email">邮箱</label>
               <input class="blora-input" id="fv-email" name="email" type="email" required data-blora-rule="email" placeholder="name@example.com" autocomplete="email">
               <span class="blora-error" data-blora-error hidden></span>
+            </div>
+            <div class="blora-field">
+              <label class="blora-label" for="fv-plan">套餐</label>
+              <div class="blora-select-wrap">
+                <select class="blora-select" id="fv-plan" name="plan">
+                  <option value="free">免费版</option>
+                  <option value="pro">专业版</option>
+                </select>
+                <div class="blora-select-trigger" data-placeholder="选择套餐">免费版</div>
+                <div class="blora-select-menu"></div>
+              </div>
+            </div>
+            <div class="blora-field" data-blora-when="plan=pro">
+              <label class="blora-label" for="fv-seat">席位数（专业版）</label>
+              <input class="blora-input" id="fv-seat" name="seats" type="number" min="1" max="99" value="3" placeholder="1–99">
             </div>
             <div class="blora-field">
               <label class="blora-label" for="fv-age">年龄（可选）</label>
@@ -935,6 +967,7 @@
             <div class="blora-row" style="gap:var(--blora-space-3)">
               <button class="blora-btn blora-btn--primary" type="submit">提交校验</button>
               <button class="blora-btn blora-btn--outline" type="reset">重置</button>
+              <button class="blora-btn blora-btn--ghost" type="button" data-demo-form-fill>填充示例</button>
             </div>
           </form>
         </div>
@@ -956,12 +989,26 @@
         <div class="blora-grid blora-grid--2">
           <div class="blora-field">
             <label class="blora-label" for="f-select">下拉选择</label>
-            <div class="blora-select-wrap">
+            <div class="blora-select-wrap" data-blora-search>
               <select class="blora-select" id="f-select">
                 <option value="" disabled selected>请选择状态</option>
                 <option>待办</option><option>进行中</option><option>审核中</option><option>已完成</option><option>已归档</option>
               </select>
-              <div class="blora-select-trigger is-placeholder">请选择状态</div>
+              <div class="blora-select-trigger is-placeholder" data-placeholder="请选择状态">请选择状态</div>
+              <div class="blora-select-menu"></div>
+            </div>
+          </div>
+          <div class="blora-field">
+            <label class="blora-label" for="f-select-multi">多选（折叠标签）</label>
+            <div class="blora-select-wrap" data-blora-multiple data-max-tag-count="2">
+              <select class="blora-select" id="f-select-multi" multiple>
+                <option value="fe">前端</option>
+                <option value="be">后端</option>
+                <option value="design">设计</option>
+                <option value="pm">产品</option>
+                <option value="ops">运营</option>
+              </select>
+              <div class="blora-select-trigger is-placeholder" data-placeholder="选择团队">选择团队</div>
               <div class="blora-select-menu"></div>
             </div>
           </div>
@@ -1157,6 +1204,24 @@
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
                 </button>
               </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">树选 / 自动完成 / 提及</div>
+          <div class="blora-grid blora-grid--3">
+            <div class="blora-treeselect" data-blora-treeselect data-options='[{"label":"华东","value":"east","children":[{"label":"上海","value":"sh"},{"label":"杭州","value":"hz"}]},{"label":"华北","value":"north","children":[{"label":"北京","value":"bj"},{"label":"天津","value":"tj"}]}]'>
+              <label class="blora-label">TreeSelect</label>
+              <input class="blora-input" type="text" placeholder="选择地区" readonly>
+            </div>
+            <div class="blora-autocomplete" data-blora-autocomplete data-options='["Blora Design","Button","Badge","Drawer","Modal","Table","Toast"]'>
+              <label class="blora-label">AutoComplete</label>
+              <input class="blora-input" type="search" placeholder="搜索组件…" autocomplete="off">
+            </div>
+            <div class="blora-mentions" data-blora-mentions data-options='["alice","bob","carol","dave"]'>
+              <label class="blora-label">Mentions</label>
+              <textarea class="blora-textarea" rows="3" placeholder="输入 @ 提及同事"></textarea>
             </div>
           </div>
         </div>
@@ -1595,16 +1660,15 @@
       <div class="blora-panel">
         <div class="blora-demo">
           <div class="blora-demo__label">表格 · Table（排序 + 分页）</div>
-          <p class="blora-hint" style="margin-bottom:var(--blora-space-3)"><code>data-blora-table</code> 默认本地排序/分页；远程模式 <code>data-blora-table-mode="remote"</code> 只派发 <code>blora:table-change</code>。API：<code>Blora.table.sort</code> / <code>setPage</code> / <code>getState</code>。</p>
-          <div class="blora-table-wrap" data-blora-table data-page-size="3" data-page="1">
+          <div class="blora-table-wrap" data-blora-table data-blora-selectable data-blora-cols data-blora-cols-key="demo-data-table-cols" data-page-size="3" data-page="1" id="demo-data-table-host">
             <table class="blora-table blora-table--striped" id="demo-data-table">
               <thead>
                 <tr>
-                  <th class="blora-table-sort" data-blora-sort="name">成员</th>
+                  <th class="blora-table-sort" data-blora-sort="name" data-blora-fixed="left">成员</th>
                   <th class="blora-table-sort" data-blora-sort="dept">部门</th>
-                  <th>事项</th>
+                  <th data-blora-sort="task">事项</th>
                   <th class="blora-table-sort" data-blora-sort="status">状态</th>
-                  <th class="blora-table-sort" data-blora-sort="score">评分</th>
+                  <th class="blora-table-sort" data-blora-sort="score" data-blora-fixed="right">评分</th>
                 </tr>
               </thead>
               <tbody>
@@ -1619,7 +1683,10 @@
             </table>
           </div>
           <div class="blora-table-toolbar">
-            <span class="blora-hint">点击表头排序 · 每页 3 条</span>
+            <div class="blora-row blora-row--tight" style="gap:var(--blora-space-2)">
+              <button type="button" class="blora-btn blora-btn--outline blora-btn--sm" data-demo-table-reload>刷新数据</button>
+              <button type="button" class="blora-btn blora-btn--ghost blora-btn--sm" data-demo-table-empty>清空</button>
+            </div>
             <nav class="blora-pagination" data-blora-pagination data-blora-table="#demo-data-table" data-page="1" data-page-size="3" aria-label="数据表格分页"></nav>
           </div>
         </div>
@@ -2115,59 +2182,20 @@
     <section id="advanced" class="blora-sec">
       <header class="blora-sec__head">
         <div class="blora-sec__num">19 — 进阶组件</div>
-        <h2 class="blora-sec__title">反馈 · 导航 · 输入 · 布局增强</h2>
-        <p class="blora-sec__desc">灯箱预览、通知、固钉/锚点、树选、自动完成、漫游、水印、分栏、排版、二维码、骨架模板、评论与容器约定——仍是 HTML 三件套。</p>
+        <h2 class="blora-sec__title">导航 · 布局增强</h2>
+        <p class="blora-sec__desc">灯箱预览、固钉、漫游、水印、分栏、排版、二维码、骨架、评论与论坛跟帖等增强能力。</p>
       </header>
 
       <div class="blora-panel">
         <div class="blora-demo">
-          <div class="blora-demo__label">反馈 · Message / Notification / Confirm</div>
-          <div class="blora-control-row">
-            <button class="blora-btn blora-btn--secondary" type="button" data-demo-message="info">Message</button>
-            <button class="blora-btn blora-btn--primary" type="button" data-demo-notify>Notification</button>
-            <button class="blora-btn blora-btn--danger" type="button" data-demo-confirm>Confirm</button>
-          </div>
-        </div>
-
-        <div class="blora-demo">
-          <div class="blora-demo__label">导航 · Affix / Anchor / BackTop</div>
-          <div class="blora-grid blora-grid--2">
-            <div>
-              <div class="blora-affix" data-blora-affix data-offset="88">
-                <div class="blora-card blora-card--flat" style="padding:var(--blora-space-3) var(--blora-space-4)">
-                  <strong>Affix 固钉</strong>
-                  <p class="blora-text-muted" style="margin:0.25em 0 0;font-size:var(--blora-text-sm)">滚动后吸顶（offset 88）</p>
-                </div>
-              </div>
-              <p class="blora-hint" style="margin-top:var(--blora-space-4)">向下滚动页面可观察固钉效果。右下角全局 FAB 为 BackTop。</p>
-              <button class="blora-btn blora-btn--outline blora-btn--sm" type="button" data-demo-backtop>显式 BackTop API</button>
-            </div>
-            <nav class="blora-anchor" data-blora-anchor data-offset="100" aria-label="页内锚点">
-              <a href="#philosophy">概述</a>
-              <a href="#forms">表单</a>
-              <a href="#data">数据</a>
-              <a href="#advanced">进阶</a>
-              <a href="#mockup">Mockup</a>
-            </nav>
-          </div>
-        </div>
-
-        <div class="blora-demo">
-          <div class="blora-demo__label">输入 · TreeSelect / AutoComplete / Mentions</div>
-          <div class="blora-grid blora-grid--3">
-            <div class="blora-treeselect" data-blora-treeselect data-options='[{"label":"华东","value":"east","children":[{"label":"上海","value":"sh"},{"label":"杭州","value":"hz"}]},{"label":"华北","value":"north","children":[{"label":"北京","value":"bj"},{"label":"天津","value":"tj"}]}]'>
-              <label class="blora-label">TreeSelect</label>
-              <input class="blora-input" type="text" placeholder="选择地区" readonly>
-            </div>
-            <div class="blora-autocomplete" data-blora-autocomplete data-options='["Blora Design","Button","Badge","Drawer","Modal","Table","Toast"]'>
-              <label class="blora-label">AutoComplete</label>
-              <input class="blora-input" type="search" placeholder="搜索组件…" autocomplete="off">
-            </div>
-            <div class="blora-mentions" data-blora-mentions data-options='["alice","bob","carol","dave"]'>
-              <label class="blora-label">Mentions</label>
-              <textarea class="blora-textarea" rows="3" placeholder="输入 @ 提及同事"></textarea>
+          <div class="blora-demo__label">固钉 · Affix</div>
+          <div class="blora-affix" data-blora-affix data-offset="88" style="max-width:22rem">
+            <div class="blora-card blora-card--flat" style="padding:var(--blora-space-3) var(--blora-space-4)">
+              <strong>Affix 固钉</strong>
+              <p class="blora-text-muted" style="margin:0.25em 0 0;font-size:var(--blora-text-sm)">滚动后吸顶（offset 88）</p>
             </div>
           </div>
+          <p class="blora-hint" style="margin-top:var(--blora-space-4)">向下滚动可观察吸顶。回到顶部使用右下角全局 FAB。</p>
         </div>
 
         <div class="blora-demo" data-blora-tour id="tour-demo-host">
@@ -2203,7 +2231,6 @@
             <div class="blora-stack" style="gap:var(--blora-space-3)">
               <p class="blora-typo-ellipsis" data-blora-ellipsis style="max-width:16rem">这是一段会被单行省略的长文本示例，超出宽度显示省略号。</p>
               <p data-blora-clamp="2" style="max-width:18rem">多行截断：这是第二段较长的说明文字，用于演示两行后出现省略号。后面的内容应该被裁切掉以便观察 clamp 效果是否正常工作。</p>
-              <span data-blora-copy="npm i @bloret/blora-design"><code class="blora-code">npm i @bloret/blora-design</code></span>
               <div class="blora-stat">
                 <div class="blora-stat__label">本月访问</div>
                 <div class="blora-stat__value" data-blora-countup="12840" data-duration="1200">0</div>
@@ -2244,6 +2271,111 @@
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+
+        <div class="blora-demo">
+          <div class="blora-demo__label">论坛跟帖 · Thread</div>
+          <div class="blora-thread" data-blora-thread>
+            <article class="blora-post">
+              <header class="blora-post__head">
+                <div class="blora-post__identity">
+                  <span class="blora-avatar blora-avatar--lg blora-avatar--primary">D</span>
+                  <div class="blora-post__who">
+                    <div class="blora-post__author-row">
+                      <a class="blora-post__author" href="#thread-demo">diddy123</a>
+                    </div>
+                    <div class="blora-post__sub">评论于 <time datetime="2026-07-17">10 天前</time> · <span class="blora-post__loc">江苏</span></div>
+                  </div>
+                </div>
+                <!-- 工具栏：插槽，业务自由放按钮/链接，不写死动作 -->
+                <div class="blora-post__tools">
+                  <button type="button">链接</button>
+                  <button type="button">回复</button>
+                  <button type="button" class="is-danger">删除</button>
+                  <button type="button">编辑</button>
+                  <button type="button" class="blora-post__more" aria-label="更多">···</button>
+                </div>
+              </header>
+              <div class="blora-post__title" data-blora-md>## 妈妈</div>
+              <div class="blora-post__react">
+                <button type="button" class="blora-post__react-btn" data-blora-post-react aria-label="添加表情" title="表情">☺</button>
+              </div>
+
+              <div class="blora-post__replies" data-blora-thread-replies>
+                <div class="blora-post__replies-body" data-blora-thread-body>
+                  <article class="blora-post blora-post--reply">
+                    <header class="blora-post__head">
+                      <div class="blora-post__identity">
+                        <span class="blora-avatar blora-avatar--sm blora-avatar--neutral">De</span>
+                        <div class="blora-post__who">
+                          <div class="blora-post__author-row">
+                            <a class="blora-post__author" href="#thread-demo">Detrital</a>
+                            <span class="blora-post__badge">何意味</span>
+                            <span class="blora-post__reply-to">回复 <a href="#thread-demo">@diddy123</a></span>
+                          </div>
+                          <div class="blora-post__sub">评论于 <time datetime="2026-07-17">10 天前</time> · <span class="blora-post__loc">浙江</span></div>
+                        </div>
+                      </div>
+                      <div class="blora-post__tools">
+                        <button type="button">链接</button>
+                        <button type="button">回复</button>
+                        <button type="button" class="is-danger">删除</button>
+                        <button type="button">编辑</button>
+                        <button type="button" class="blora-post__more" aria-label="更多">···</button>
+                      </div>
+                    </header>
+                    <div class="blora-post__quote">
+                      <span class="blora-post__quote-label">回复 @diddy123</span>
+                      <span class="blora-post__quote-text" data-blora-md data-blora-md-inline>## 妈妈</span>
+                    </div>
+                    <div class="blora-post__body" data-blora-md><script type="text/markdown">
+这个帖子仅以一个二级标题「妈妈」作为内容，没有正文。在论坛中，**这种极简发帖通常是为了引发情感共鸣或作为一个开放话题，让网友围绕「母亲」展开讨论**——比如分享与妈妈的暖心故事、求助与妈妈的矛盾、或者单纯表达思念。
+
+在网络文化中，「妈妈」一词还有延伸用法：在饭圈（粉丝圈）里，「妈妈」常作为粉丝自称（「妈妈粉」），表示以母亲般的心态爱护偶像；在一些表情包或段子里，「妈妈」也会被用来撒娇或偷懒（如经典的「妈妈，饿饿，饭饭」）。
+
+由于原帖缺乏正文，具体含义需要结合上下文才能确定，但可以推测这是一个与母亲相关的情感或闲聊帖。
+</script></div>
+                    <div class="blora-post__react">
+                      <button type="button" class="blora-post__react-btn" data-blora-post-react aria-label="添加表情" title="表情">☺</button>
+                    </div>
+                  </article>
+
+                  <article class="blora-post blora-post--reply">
+                    <header class="blora-post__head">
+                      <div class="blora-post__identity">
+                        <span class="blora-avatar blora-avatar--sm blora-avatar--primary">De</span>
+                        <div class="blora-post__who">
+                          <div class="blora-post__author-row">
+                            <a class="blora-post__author" href="#thread-demo">Detrital</a>
+                            <span class="blora-post__badge">何意味</span>
+                            <span class="blora-post__reply-to">回复 <a href="#thread-demo">@Detrital</a></span>
+                          </div>
+                          <div class="blora-post__sub">评论于 <time datetime="2026-07-17">10 天前</time> · <span class="blora-post__loc">浙江</span></div>
+                        </div>
+                      </div>
+                      <div class="blora-post__tools">
+                        <button type="button">链接</button>
+                        <button type="button">回复</button>
+                        <button type="button" class="is-danger">删除</button>
+                        <button type="button">编辑</button>
+                        <button type="button" class="blora-post__more" aria-label="更多">···</button>
+                      </div>
+                    </header>
+                    <div class="blora-post__body" data-blora-md><script type="text/markdown">
+补充一句：极简标题帖在社区里往往靠跟帖把话题撑起来，楼主不一定会回来解释。
+
+- 适合闲聊 / 情感共鸣
+- 需要结合上下文理解
+</script></div>
+                    <div class="blora-post__react">
+                      <button type="button" class="blora-post__react-btn" data-blora-post-react aria-label="添加表情" title="表情">☺</button>
+                    </div>
+                  </article>
+                </div>
+                <button type="button" class="blora-post__collapse" data-blora-thread-toggle aria-expanded="true" data-label-collapse="收起评论" data-label-expand="展开评论">收起评论</button>
+              </div>
+            </article>
           </div>
         </div>
 
@@ -2634,31 +2766,58 @@
       Blora.toast({ type, message: messages[type] || messages.info });
     });
   });
-  document.querySelectorAll("[data-demo-message]").forEach((button) => {
+
+  /* 表单：异步用户名校验 + 填充示例 */
+  if (window.Blora && Blora.registerAsyncRule) {
+    Blora.registerAsyncRule("demoUsername", (value) => new Promise((resolve) => {
+      setTimeout(() => {
+        if (String(value).toLowerCase() === "admin") resolve("用户名已被占用");
+        else resolve(true);
+      }, 450);
+    }));
+  }
+  document.querySelectorAll("[data-demo-form-fill]").forEach((button) => {
     button.addEventListener("click", () => {
-      Blora.message({ type: button.dataset.demoMessage || "info", message: "轻量 Message / Toast" });
+      const form = document.getElementById("demo-form-validate");
+      if (!form || !Blora.setValues) return;
+      Blora.setValues(form, { username: "blora", email: "hi@blora.design", plan: "pro", seats: 5, age: 28 });
+      Blora.toast({ type: "info", message: "已填充示例值" });
     });
   });
-  document.querySelectorAll("[data-demo-notify]").forEach((button) => {
+  const demoForm = document.getElementById("demo-form-validate");
+  if (demoForm) {
+    demoForm.addEventListener("blora:submit", (e) => {
+      Blora.toast({ type: "success", message: "校验通过 · " + (e.detail.values.username || "") });
+    });
+  }
+
+  /* 表格：setRows / loading / empty */
+  const DEMO_TABLE_ROWS = [
+    { name: "张三", dept: "技术部", task: "前端框架搭建", status: "已完成", score: 5 },
+    { name: "李四", dept: "技术部", task: "接口文档撰写", status: "审核中", score: 5 },
+    { name: "王五", dept: "技术部", task: "数据库迁移", status: "待办", score: 4 },
+    { name: "赵六", dept: "设计组", task: "官网改版", status: "已完成", score: 5 },
+    { name: "孙八", dept: "设计组", task: "Logo 设计", status: "进行中", score: 4 },
+    { name: "周九", dept: "产品部", task: "需求梳理", status: "进行中", score: 3 },
+    { name: "吴十", dept: "产品部", task: "竞品分析", status: "已完成", score: 4 },
+  ];
+  document.querySelectorAll("[data-demo-table-reload]").forEach((button) => {
     button.addEventListener("click", () => {
-      Blora.notify({
-        type: "success",
-        title: "通知标题",
-        description: "右上角堆叠的 Notification，可关闭。",
-        placement: "top-right",
-      });
+      const table = document.getElementById("demo-data-table");
+      if (!table || !Blora.table) return;
+      Blora.table.setLoading(table, true);
+      setTimeout(() => {
+        Blora.table.setRows(table, DEMO_TABLE_ROWS);
+        Blora.table.setLoading(table, false);
+        Blora.toast({ type: "success", message: "表格已刷新" });
+      }, 600);
     });
   });
-  document.querySelectorAll("[data-demo-confirm]").forEach((button) => {
-    button.addEventListener("click", async () => {
-      const ok = await Blora.confirm({ title: "确认删除？", content: "删除后无法恢复，是否继续？", danger: true });
-      Blora.toast({ type: ok ? "success" : "info", message: ok ? "已确认" : "已取消" });
-    });
-  });
-  document.querySelectorAll("[data-demo-backtop]").forEach((button) => {
+  document.querySelectorAll("[data-demo-table-empty]").forEach((button) => {
     button.addEventListener("click", () => {
-      Blora.backTop({ showAfter: 200 });
-      Blora.toast({ type: "info", message: "已挂载显式 BackTop（滚动 200px 后显示）" });
+      const table = document.getElementById("demo-data-table");
+      if (!table || !Blora.table) return;
+      Blora.table.setRows(table, []);
     });
   });
 

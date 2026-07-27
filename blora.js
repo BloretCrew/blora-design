@@ -10,6 +10,9 @@
 }(typeof globalThis !== "undefined" ? globalThis : this, function (global) {
   "use strict";
 
+  /* 与 package.json version 保持一致；发包时只改这一处（及 package.json） */
+  const VERSION = "1.0.0";
+
   const CONFIG = {
     autoInit: true,
     portalRoot: null,
@@ -23,6 +26,25 @@
     tablePageSize: 10,
     /* 当前语言码，如 zh-CN / en */
     locale: "zh-CN",
+    /**
+     * 动态生成 class 的前缀（默认 blora）。
+     * 静态 CSS 仍为 .blora-*；自定义前缀时请同步改 CSS 或仅用于隔离动态节点。
+     */
+    classPrefix: "blora",
+    /* 列设置持久化默认 storage key 前缀 */
+    tableColsStorageKey: "blora-table-cols",
+  };
+  const cls = (...parts) => {
+    const p = CONFIG.classPrefix || "blora";
+    return parts
+      .filter(Boolean)
+      .map((part) => {
+        const s = String(part);
+        if (s.charAt(0) === "." || s.charAt(0) === "#") return s;
+        if (s.indexOf(p + "-") === 0 || s.indexOf("is-") === 0 || s.indexOf("blora-") === 0) return s;
+        return p + "-" + s.replace(/^\-+/, "");
+      })
+      .join(" ");
   };
 
   /* —— i18n · 框架生成文案（业务页面文案仍由业务自己管） —— */
@@ -64,11 +86,44 @@
         "common.copy": "复制",
         "common.copied": "已复制",
         "common.backTop": "回到顶部",
+        "common.min": "最小值",
+        "common.max": "最大值",
+        "validate.async": "校验未通过",
+        "table.empty": "暂无数据",
+        "table.loading": "加载中…",
+        "select.search": "搜索…",
+        "select.empty": "无匹配选项",
+        "select.placeholder": "请选择",
+        "select.more": "+{n}",
+        "table.selectAll": "全选",
+        "table.selectRow": "选择行",
+        "table.selected": "已选 {n} 项",
+        "table.clearSelection": "取消选择",
+        "table.bulk": "批量操作",
+        "table.cols": "列设置",
+        "table.colsReset": "重置列",
+        "palette.title": "配色",
+        "palette.hint": "仅替换语义颜色，不改变组件形态",
+        "palette.label": "配色",
+        "colorMode.system": "跟随系统",
+        "colorMode.light": "浅色",
+        "colorMode.dark": "深色",
+        "colorMode.switch": "当前{current}，切换至{next}",
+        "upload.remove": "移除",
+        "upload.drop": "拖拽文件至此",
+        "upload.or": "或",
+        "upload.browse": "点击选择",
+        "file.clear": "移除已选文件",
         "preview.prev": "上一张",
         "preview.next": "下一张",
         "preview.close": "关闭预览",
         "tour.step": "{current} / {total}",
         "autocomplete.empty": "无匹配项",
+        "color.swatch": "选择颜色，当前 {color}",
+        "color.panel": "选择颜色",
+        "color.hue": "色相",
+        "color.spectrum": "颜色饱和度与明度",
+        "color.hex": "十六进制颜色",
       }),
     }),
     en: Object.freeze({
@@ -108,11 +163,44 @@
         "common.copy": "Copy",
         "common.copied": "Copied",
         "common.backTop": "Back to top",
+        "common.min": "Minimum",
+        "common.max": "Maximum",
+        "validate.async": "Validation failed",
+        "table.empty": "No data",
+        "table.loading": "Loading…",
+        "select.search": "Search…",
+        "select.empty": "No matches",
+        "select.placeholder": "Select",
+        "select.more": "+{n}",
+        "table.selectAll": "Select all",
+        "table.selectRow": "Select row",
+        "table.selected": "{n} selected",
+        "table.clearSelection": "Clear selection",
+        "table.bulk": "Bulk actions",
+        "table.cols": "Columns",
+        "table.colsReset": "Reset columns",
+        "palette.title": "Palette",
+        "palette.hint": "Semantic colors only — component shapes stay the same",
+        "palette.label": "Palette",
+        "colorMode.system": "System",
+        "colorMode.light": "Light",
+        "colorMode.dark": "Dark",
+        "colorMode.switch": "Now {current}, switch to {next}",
+        "upload.remove": "Remove",
+        "upload.drop": "Drop files here",
+        "upload.or": "or",
+        "upload.browse": "browse",
+        "file.clear": "Remove selected file",
         "preview.prev": "Previous image",
         "preview.next": "Next image",
         "preview.close": "Close preview",
         "tour.step": "{current} / {total}",
         "autocomplete.empty": "No matches",
+        "color.swatch": "Pick color, current {color}",
+        "color.panel": "Color picker",
+        "color.hue": "Hue",
+        "color.spectrum": "Saturation and brightness",
+        "color.hex": "Hex color",
       }),
     }),
   });
@@ -141,6 +229,7 @@
     maxlength: "validate.maxlength",
     pattern: "validate.pattern",
     mismatch: "validate.mismatch",
+    async: "validate.async",
   };
   const clonePackMessages = (pack) => Object.assign({}, (pack && pack.messages) || {});
   const applyPackToLocale = (pack) => {
@@ -263,6 +352,14 @@
     }
     if ("validateOn" in options && options.validateOn != null) CONFIG.validateOn = String(options.validateOn);
     if ("tablePageSize" in options && Number(options.tablePageSize) > 0) CONFIG.tablePageSize = Number(options.tablePageSize);
+    if ("classPrefix" in options && options.classPrefix) {
+      CONFIG.classPrefix = String(options.classPrefix).replace(/[^a-zA-Z0-9_-]/g, "") || "blora";
+      const d = doc();
+      if (d && d.documentElement) d.documentElement.setAttribute("data-blora-class-prefix", CONFIG.classPrefix);
+    }
+    if ("tableColsStorageKey" in options && options.tableColsStorageKey) {
+      CONFIG.tableColsStorageKey = String(options.tableColsStorageKey);
+    }
     /* locale: 语言码字符串，或完整/部分语言包对象 */
     if (typeof options.locale === "string") {
       setLocale(options.locale);
@@ -1330,14 +1427,42 @@
     });
   }
 
-  /* —— Back to top —— */
+  /* —— Back to top ——
+     全局只保留一个右下角 FAB（#blora-fab）。Blora.backTop() 复用它，不再另造 .blora-backtop。
+     页面里可写 data-blora-backtop / .blora-backtop 作显式按钮（非静态预览）。 */
+  function ensureGlobalBackTopFab(d) {
+    d = d || doc();
+    if (!d) return null;
+    let fab = $("#blora-fab", d);
+    if (fab) return fab;
+    const portal = getPortalRoot(d.documentElement);
+    if (!portal) return null;
+    fab = d.createElement("button");
+    fab.type = "button";
+    fab.id = "blora-fab";
+    fab.className = "blora-fab blora-portal is-hidden";
+    fab.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>';
+    portal.appendChild(fab);
+    return fab;
+  }
   function bindBackTopButton(fab, opts) {
-    if (!fab || bound(fab, "BackTopBtn")) return;
+    if (!fab || fab.classList.contains("blora-fab--static")) return;
+    if (bound(fab, "BackTopBtn")) {
+      /* 已绑定：只允许通过 data-* 热更新阈值，不重复挂监听 */
+      if (opts && opts.showAfter != null) fab.setAttribute("data-show-after", String(opts.showAfter));
+      if (opts && opts.target) fab.setAttribute("data-target", typeof opts.target === "string" ? opts.target : "");
+      fab.dispatchEvent(new Event("blora:backtop-sync"));
+      return fab;
+    }
     const d = ownerDoc(fab);
     const win = ownerWin(fab);
-    const threshold = Number((opts && opts.showAfter) != null ? opts.showAfter : fab.getAttribute("data-show-after")) || 400;
-    const targetSel = (opts && opts.target) || fab.getAttribute("data-target");
+    /* 阈值/滚动目标只读 data-*，便于 backTop() 热更新而不重复绑定 */
+    const thresholdOf = () => {
+      const n = Number(fab.getAttribute("data-show-after"));
+      return Number.isFinite(n) && n >= 0 ? n : 400;
+    };
     const getScrollEl = () => {
+      const targetSel = fab.getAttribute("data-target");
       if (!targetSel) return win;
       const el = resolveElement(targetSel, d);
       return el || win;
@@ -1353,53 +1478,46 @@
       else el.scrollTo({ top: 0, behavior });
     };
     const sync = () => {
-      const show = scrollYOf() > threshold;
+      const show = scrollYOf() > thresholdOf();
       fab.classList.toggle("is-hidden", !show);
       fab.classList.toggle("is-visible", show);
     };
+    if (opts && opts.showAfter != null) fab.setAttribute("data-show-after", String(opts.showAfter));
+    if (opts && opts.target) fab.setAttribute("data-target", typeof opts.target === "string" ? opts.target : "");
     if (!fab.getAttribute("aria-label")) fab.setAttribute("aria-label", t("common.backTop"));
     on(fab, "click", scrollToTop);
+    on(fab, "blora:backtop-sync", sync);
     on(win, "scroll", sync, { passive: true });
     const scrollEl = getScrollEl();
     if (scrollEl !== win) on(scrollEl, "scroll", sync, { passive: true });
     sync();
+    return fab;
   }
   function initBackTop(root) {
     const d = doc();
     if (!d) return;
-    $$("[data-blora-backtop], .blora-backtop", root || d).forEach((btn) => bindBackTopButton(btn));
+    /* 显式标记的按钮（排除展示用 static 预览） */
+    $$("[data-blora-backtop], .blora-backtop", root || d).forEach((btn) => {
+      if (btn.classList.contains("blora-fab--static")) return;
+      bindBackTopButton(btn);
+    });
     if (FLAGS.backTop) return;
     if (root && root !== d) return;
-    const portal = getPortalRoot(d.documentElement);
-    if (!portal) return;
-    const win = ownerWin(portal);
     FLAGS.backTop = true;
-    let fab = $("#blora-fab", d);
-    if (!fab) {
-      fab = d.createElement("button");
-      fab.id = "blora-fab";
-      fab.className = "blora-fab blora-portal is-hidden";
-      fab.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>';
-      portal.appendChild(fab);
-    }
-    bindBackTopButton(fab, { showAfter: 400 });
+    const fab = ensureGlobalBackTopFab(d);
+    if (fab) bindBackTopButton(fab, { showAfter: 400 });
   }
   function backTop(opts) {
     opts = opts || {};
     const d = doc();
-    const portal = getPortalRoot(d && d.documentElement);
-    if (!d || !portal) return null;
-    let btn = opts.el ? resolveElement(opts.el, d) : $(".blora-backtop[data-blora-backtop-api]", d);
-    if (!btn) {
-      btn = d.createElement("button");
-      btn.type = "button";
-      btn.className = "blora-backtop blora-portal";
-      btn.setAttribute("data-blora-backtop-api", "");
-      btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>';
-      portal.appendChild(btn);
-    }
+    if (!d) return null;
+    /* 指定 el → 用该元素；否则始终复用全局 #blora-fab，绝不另造一颗 */
+    let btn = opts.el ? resolveElement(opts.el, d) : ensureGlobalBackTopFab(d);
+    if (!btn) return null;
     if (opts.showAfter != null) btn.setAttribute("data-show-after", String(opts.showAfter));
-    if (opts.target) btn.setAttribute("data-target", typeof opts.target === "string" ? opts.target : "");
+    if (opts.target != null) {
+      btn.setAttribute("data-target", typeof opts.target === "string" ? opts.target : "");
+    }
     bindBackTopButton(btn, opts);
     return btn;
   }
@@ -1607,8 +1725,8 @@
       trigger.setAttribute("aria-haspopup", "listbox");
       trigger.setAttribute("aria-expanded", "false");
       menu.setAttribute("role", "listbox");
-      menu.setAttribute("aria-label", "配色");
-      menu.innerHTML = '<div class="blora-palette-picker__head"><span class="blora-palette-picker__title">配色</span><span class="blora-palette-picker__hint">仅替换语义颜色，不改变组件形态</span></div><div class="blora-palette-picker__list">' + Object.entries(PALETTE_PRESETS).map(([key, preset]) => '<button class="blora-palette-card" type="button" role="option" data-blora-palette-option="' + key + '"><span class="blora-palette-card__copy"><span class="blora-palette-card__name">' + escapeHTML(preset.name) + '</span><span class="blora-palette-card__desc">' + escapeHTML(preset.description) + '</span></span><span class="blora-palette-card__colors" aria-hidden="true">' + preset.colors.map((color) => '<span class="blora-palette-card__color" style="background:' + color + '"></span>').join("") + '</span></button>').join("") + "</div>";
+      menu.setAttribute("aria-label", t("palette.label"));
+      menu.innerHTML = '<div class="blora-palette-picker__head"><span class="blora-palette-picker__title">' + escapeHTML(t("palette.title")) + '</span><span class="blora-palette-picker__hint">' + escapeHTML(t("palette.hint")) + '</span></div><div class="blora-palette-picker__list">' + Object.entries(PALETTE_PRESETS).map(([key, preset]) => '<button class="blora-palette-card" type="button" role="option" data-blora-palette-option="' + key + '"><span class="blora-palette-card__copy"><span class="blora-palette-card__name">' + escapeHTML(preset.name) + '</span><span class="blora-palette-card__desc">' + escapeHTML(preset.description) + '</span></span><span class="blora-palette-card__colors" aria-hidden="true">' + preset.colors.map((color) => '<span class="blora-palette-card__color" style="background:' + color + '"></span>').join("") + '</span></button>').join("") + "</div>";
       const options = $$('[data-blora-palette-option]', menu);
       const sync = () => {
         const current = getPalette(d.documentElement);
@@ -1658,36 +1776,19 @@
   }
 
   /* —— Search —— 有值且聚焦时显示清除动作 —— */
-  function initSearch(root) {
-    $$(".blora-search", root).forEach((search) => {
-      if (bound(search, "Search")) return;
-      const input = $('input[type="search"]', search);
-      if (!input) return;
-      const d = ownerDoc(search);
-      const win = ownerWin(search);
-      const trigger = $("button.blora-search__icon", search);
-      let clear = $(".blora-search__clear", search);
-      if (!clear) {
-        clear = d.createElement("button");
-        clear.type = "button";
-        clear.className = "blora-search__clear";
-        clear.setAttribute("aria-label", "清空搜索");
-        const svg = d.createElementNS("http://www.w3.org/2000/svg", "svg");
-        svg.setAttribute("width", "14");
-        svg.setAttribute("height", "14");
-        svg.setAttribute("viewBox", "0 0 24 24");
-        svg.setAttribute("fill", "none");
-        svg.setAttribute("stroke", "currentColor");
-        svg.setAttribute("stroke-width", "2");
-        svg.setAttribute("stroke-linecap", "round");
-        const first = d.createElementNS("http://www.w3.org/2000/svg", "path");
-        const second = d.createElementNS("http://www.w3.org/2000/svg", "path");
-        first.setAttribute("d", "M18 6 6 18");
-        second.setAttribute("d", "m6 6 12 12");
-        svg.append(first, second);
-        clear.appendChild(svg);
-        search.appendChild(clear);
-      }
+  function ensureSearchClearButton(host, input) {
+    const d = ownerDoc(host);
+    const win = ownerWin(host);
+    let clear = $(".blora-search__clear", host);
+    if (!clear) {
+      clear = d.createElement("button");
+      clear.type = "button";
+      clear.className = "blora-search__clear";
+      clear.setAttribute("aria-label", t("clear") || "清除");
+      clear.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>';
+      host.appendChild(clear);
+    }
+    if (!bound(clear, "SearchClear")) {
       const sync = () => { clear.hidden = !input.value; };
       on(input, "input", sync);
       on(clear, "click", () => {
@@ -1695,15 +1796,26 @@
         input.dispatchEvent(new win.Event("input", { bubbles: true }));
         input.focus();
       });
-      if (trigger && trigger.type !== "submit") on(trigger, "click", () => input.focus());
       sync();
+    }
+    return clear;
+  }
+
+  function initSearch(root) {
+    $$(".blora-search", root).forEach((search) => {
+      if (bound(search, "Search")) return;
+      const input = $('input[type="search"]', search) || $("input.blora-input", search) || $("input", search);
+      if (!input) return;
+      const trigger = $("button.blora-search__icon", search);
+      ensureSearchClearButton(search, input);
+      if (trigger && trigger.type !== "submit") on(trigger, "click", () => input.focus());
     });
   }
   const ICON_MOON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>';
   const ICON_SUN = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>';
   const ICON_SYSTEM = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="12" x="3" y="4" rx="2"/><path d="M8 20h8"/><path d="M12 16v4"/></svg>';
   const COLOR_MODES = Object.freeze(["system", "light", "dark"]);
-  const COLOR_MODE_LABELS = Object.freeze({ system: "跟随系统", light: "浅色", dark: "深色" });
+  const colorModeLabel = (mode) => t("colorMode." + mode) || mode;
   const getColorMode = (target) => {
     const d = ownerDoc(target);
     const el = target && target.nodeType === 1 ? target : d && d.documentElement;
@@ -1755,8 +1867,8 @@
         btn.innerHTML = mode === "system" ? ICON_SYSTEM : mode === "light" ? ICON_SUN : ICON_MOON;
         btn.disabled = false;
         btn.dataset.bloraMode = mode;
-        btn.title = COLOR_MODE_LABELS[mode];
-        btn.setAttribute("aria-label", "当前" + COLOR_MODE_LABELS[mode] + "，切换至" + COLOR_MODE_LABELS[next]);
+        btn.title = colorModeLabel(mode);
+        btn.setAttribute("aria-label", t("colorMode.switch", { current: colorModeLabel(mode), next: colorModeLabel(next) }));
       };
       sync();
       on(btn, "click", () => {
@@ -1973,17 +2085,87 @@
     });
   }
 
-  /* —— Custom Select —— */
+  /* —— Custom Select（可选 data-blora-search / data-blora-remote 搜索） —— */
+  function selectSetOptions(target, options) {
+    const wrap = resolveElement(target) || target;
+    if (!wrap) return null;
+    if (typeof wrap._bloraSelectSetOptions === "function") {
+      wrap._bloraSelectSetOptions(options || []);
+      return wrap;
+    }
+    const sel = $("select", wrap);
+    if (!sel) return null;
+    const keep = sel.value;
+    sel.textContent = "";
+    (options || []).forEach((item) => {
+      const o = ownerDoc(sel).createElement("option");
+      if (typeof item === "string") {
+        o.value = item;
+        o.textContent = item;
+      } else {
+        o.value = item.value != null ? String(item.value) : String(item.label || "");
+        o.textContent = item.label != null ? String(item.label) : o.value;
+        if (item.disabled) o.disabled = true;
+      }
+      sel.appendChild(o);
+    });
+    if (keep) sel.value = keep;
+    sel.dispatchEvent(new Event("change", { bubbles: true }));
+    return wrap;
+  }
+  function ensureCustomSelectShell(sel) {
+    if (!sel || sel.closest(".blora-select-wrap")) return sel.closest(".blora-select-wrap");
+    const d = ownerDoc(sel);
+    const wrap = d.createElement("div");
+    wrap.className = "blora-select-wrap";
+    ["data-blora-search", "data-blora-remote", "data-blora-multiple", "data-blora-virtual", "data-max-tag-count", "data-blora-max-tag-count"].forEach((attr) => {
+      if (sel.hasAttribute(attr)) wrap.setAttribute(attr, sel.getAttribute(attr) || "");
+    });
+    sel.parentNode.insertBefore(wrap, sel);
+    wrap.appendChild(sel);
+    const trigger = d.createElement("div");
+    trigger.className = "blora-select-trigger";
+    const first = $$("option", sel).find((o) => o.selected && !o.disabled) || $$("option", sel)[0];
+    trigger.textContent = first ? first.textContent : "";
+    if (!first || first.disabled || !first.value) trigger.classList.add("is-placeholder");
+    const menu = d.createElement("div");
+    menu.className = "blora-select-menu";
+    wrap.appendChild(trigger);
+    wrap.appendChild(menu);
+    return wrap;
+  }
   function initCustomSelect(root) {
+    /* 裸 select.blora-select 自动套上自定义外壳，避免展示页/业务漏写 wrap 掉回原生丑样式 */
+    $$("select.blora-select", root).forEach((sel) => ensureCustomSelectShell(sel));
     $$(".blora-select-wrap", root).forEach((wrap) => {
       if (bound(wrap, "Select")) return;
+      const d = ownerDoc(wrap);
+      const win = ownerWin(wrap);
       const sel = $("select", wrap);
       if (!sel) return;
-      const trigger = $(".blora-select-trigger", wrap);
-      const menu = $(".blora-select-menu", wrap);
-      if (!trigger || !menu) return;
-      const opts = $$("option", sel);
-      const placeholder = trigger.dataset.placeholder || "请选择";
+      let trigger = $(".blora-select-trigger", wrap);
+      let menu = $(".blora-select-menu", wrap);
+      if (!trigger) {
+        trigger = d.createElement("div");
+        trigger.className = "blora-select-trigger";
+        wrap.appendChild(trigger);
+      }
+      if (!menu) {
+        menu = d.createElement("div");
+        menu.className = "blora-select-menu";
+        wrap.appendChild(menu);
+      }
+      const searchable = wrap.hasAttribute("data-blora-search") || wrap.hasAttribute("data-blora-remote") || sel.hasAttribute("data-blora-search");
+      const remote = wrap.hasAttribute("data-blora-remote") || sel.hasAttribute("data-blora-remote");
+      const multiple = sel.multiple || wrap.hasAttribute("data-blora-multiple");
+      const virtual = wrap.hasAttribute("data-blora-virtual") || sel.hasAttribute("data-blora-virtual");
+      const maxTag = Number(wrap.getAttribute("data-max-tag-count") || wrap.getAttribute("data-blora-max-tag-count")) || 0;
+      if (multiple) {
+        sel.multiple = true;
+        wrap.classList.add("blora-select-wrap--multiple");
+        menu.setAttribute("aria-multiselectable", "true");
+      }
+      if (searchable) wrap.classList.add("blora-select-wrap--searchable");
       const listId = menu.id || ("blora-select-" + Math.random().toString(36).slice(2));
       menu.id = listId;
       trigger.tabIndex = trigger.tabIndex >= 0 ? trigger.tabIndex : 0;
@@ -1991,23 +2173,183 @@
       trigger.setAttribute("aria-haspopup", "listbox");
       trigger.setAttribute("aria-controls", listId);
       trigger.setAttribute("aria-expanded", "false");
+      if (searchable) trigger.setAttribute("aria-autocomplete", "list");
       menu.setAttribute("role", "listbox");
-      let activeIndex = opts.findIndex((o) => o.selected && !o.disabled);
+      /* 清掉旧版菜单内搜索框 */
+      $$(".blora-select-search", menu).forEach((el) => el.remove());
+      let listbox = $(".blora-select-options", menu);
+      if (!listbox) {
+        listbox = d.createElement("div");
+        listbox.className = "blora-select-options";
+        while (menu.firstChild) listbox.appendChild(menu.firstChild);
+        menu.appendChild(listbox);
+      }
+      if (virtual) listbox.classList.add("blora-select-options--virtual");
+      let searchInput = null;
+      let searchTimer = null;
+      let activeIndex = -1;
+      let virtualStart = 0;
+      let typing = false;
+      const getOpts = () => $$("option", sel);
+      const optionEls = () => $$(".blora-select-option", listbox);
+      const selectedOpts = () => getOpts().filter((o) => o.selected && !o.disabled);
+      const phOf = () => trigger.dataset.placeholder || t("select.placeholder");
+      /* 可搜索：在 trigger 里输入，不在菜单里再塞搜索框 */
+      if (searchable) {
+        searchInput = $(".blora-select-trigger__input", trigger);
+        if (!searchInput) {
+          const label = d.createElement("span");
+          label.className = "blora-select-trigger__label";
+          label.textContent = trigger.textContent || phOf();
+          trigger.textContent = "";
+          searchInput = d.createElement("input");
+          searchInput.type = "text";
+          searchInput.className = "blora-select-trigger__input";
+          searchInput.setAttribute("autocomplete", "off");
+          searchInput.setAttribute("spellcheck", "false");
+          searchInput.setAttribute("aria-label", t("select.search"));
+          searchInput.setAttribute("placeholder", "");
+          trigger.appendChild(label);
+          trigger.appendChild(searchInput);
+        }
+      }
+      const labelEl = () => $(".blora-select-trigger__label", trigger);
       const update = () => {
-        const chosen = opts.find((o) => o.selected && !o.disabled);
-        trigger.textContent = chosen ? chosen.textContent : (opts[0] && opts[0].disabled ? opts[0].textContent : placeholder);
-        trigger.classList.toggle("is-placeholder", !chosen);
-        $$(".blora-select-option", menu).forEach((el, i) => {
-          const selected = Boolean(chosen) && el.dataset.val === chosen.value;
+        const opts = getOpts();
+        const chosenList = selectedOpts();
+        const ph = phOf();
+        if (multiple) {
+          const keepInput = searchInput;
+          trigger.textContent = "";
+          trigger.classList.toggle("is-placeholder", !chosenList.length && !typing);
+          if (!chosenList.length && !typing) {
+            if (searchable) {
+              const lab = d.createElement("span");
+              lab.className = "blora-select-trigger__label is-placeholder-label";
+              lab.textContent = ph;
+              trigger.appendChild(lab);
+            } else {
+              trigger.textContent = ph;
+            }
+          } else {
+            const max = maxTag > 0 ? maxTag : chosenList.length;
+            const shown = chosenList.slice(0, max);
+            const rest = chosenList.length - shown.length;
+            shown.forEach((o) => {
+              const tag = d.createElement("span");
+              tag.className = "blora-select-tag";
+              tag.innerHTML = '<span class="blora-select-tag__label"></span><button type="button" class="blora-select-tag__close" aria-label="' + escapeHTML(t("common.close")) + '">×</button>';
+              $(".blora-select-tag__label", tag).textContent = o.textContent;
+              on($(".blora-select-tag__close", tag), "click", (e) => {
+                e.stopPropagation();
+                o.selected = false;
+                update();
+                paintOptions();
+                sel.dispatchEvent(new Event("change", { bubbles: true }));
+              });
+              trigger.appendChild(tag);
+            });
+            if (rest > 0) {
+              const more = d.createElement("span");
+              more.className = "blora-select-tag blora-select-tag--more";
+              more.textContent = t("select.more", { n: rest });
+              trigger.appendChild(more);
+            }
+          }
+          if (keepInput) {
+            if (!keepInput.parentNode) trigger.appendChild(keepInput);
+            else trigger.appendChild(keepInput);
+            if (!typing) keepInput.value = "";
+            keepInput.placeholder = chosenList.length ? "" : "";
+          }
+        } else if (searchable) {
+          const chosen = chosenList[0];
+          let lab = labelEl();
+          if (!lab) {
+            lab = d.createElement("span");
+            lab.className = "blora-select-trigger__label";
+            trigger.insertBefore(lab, searchInput || null);
+          }
+          if (typing) {
+            lab.textContent = ph;
+            lab.classList.add("is-ghost");
+            trigger.classList.add("is-placeholder");
+          } else {
+            lab.textContent = chosen ? chosen.textContent : ph;
+            lab.classList.remove("is-ghost");
+            trigger.classList.toggle("is-placeholder", !chosen);
+            if (searchInput) searchInput.value = "";
+          }
+        } else {
+          const chosen = chosenList[0];
+          trigger.textContent = chosen ? chosen.textContent : ph;
+          trigger.classList.toggle("is-placeholder", !chosen);
+        }
+        optionEls().forEach((el) => {
+          const selected = opts.some((o) => o.selected && !o.disabled && el.dataset.val === o.value);
           el.classList.toggle("is-selected", selected);
-          el.classList.toggle("is-active", i === activeIndex);
+          el.classList.toggle("is-active", optionEls().indexOf(el) === activeIndex);
           el.setAttribute("aria-selected", String(selected));
         });
         const active = optionEls()[activeIndex];
         if (active) trigger.setAttribute("aria-activedescendant", active.id);
         else trigger.removeAttribute("aria-activedescendant");
       };
-      const optionEls = () => $$(".blora-select-option", menu);
+      const makeOptionEl = (o, index) => {
+        const el = d.createElement("div");
+        el.className = "blora-select-option" + (o.disabled ? " is-disabled" : "") + (o.selected && !o.disabled ? " is-selected" : "");
+        el.id = listId + "-option-" + index;
+        el.setAttribute("role", "option");
+        if (o.disabled) el.setAttribute("aria-disabled", "true");
+        el.textContent = o.textContent;
+        el.dataset.val = o.value;
+        el.dataset.index = String(index);
+        on(el, "click", (e) => {
+          e.stopPropagation();
+          if (o.disabled) return;
+          choose(index);
+        });
+        return el;
+      };
+      const paintOptions = () => {
+        const opts = getOpts();
+        listbox.textContent = "";
+        if (!opts.length) {
+          const empty = d.createElement("div");
+          empty.className = "blora-select-empty";
+          empty.textContent = t("select.empty");
+          listbox.appendChild(empty);
+          activeIndex = -1;
+          update();
+          return;
+        }
+        if (virtual && opts.length > 40) {
+          const rowH = 36;
+          const viewH = Math.min(240, listbox.clientHeight || 240);
+          listbox.style.height = viewH + "px";
+          listbox.style.overflowY = "auto";
+          const start = virtualStart;
+          const count = Math.ceil(viewH / rowH) + 8;
+          const end = Math.min(opts.length, start + count);
+          const padTop = d.createElement("div");
+          padTop.style.height = start * rowH + "px";
+          listbox.appendChild(padTop);
+          for (let i = start; i < end; i++) listbox.appendChild(makeOptionEl(opts[i], i));
+          const padBot = d.createElement("div");
+          padBot.style.height = Math.max(0, (opts.length - end) * rowH) + "px";
+          listbox.appendChild(padBot);
+          if (!bound(listbox, "SelectVirtual")) {
+            on(listbox, "scroll", () => {
+              virtualStart = Math.max(0, Math.floor(listbox.scrollTop / rowH) - 4);
+              paintOptions();
+            }, { passive: true });
+          }
+        } else {
+          opts.forEach((o, index) => listbox.appendChild(makeOptionEl(o, index)));
+        }
+        activeIndex = opts.findIndex((o) => o.selected && !o.disabled);
+        update();
+      };
       const setActive = (index) => {
         const items = optionEls();
         if (!items.length) return;
@@ -2022,42 +2364,153 @@
         items[activeIndex].scrollIntoView({ block: "nearest" });
       };
       const choose = (index) => {
+        const opts = getOpts();
         const option = opts[index];
         if (!option || option.disabled) return;
-        opts.forEach((oo) => oo.selected = oo === option);
+        if (multiple) {
+          option.selected = !option.selected;
+          activeIndex = index;
+          typing = false;
+          if (searchInput) searchInput.value = "";
+          update();
+          paintOptions();
+          sel.dispatchEvent(new Event("change", { bubbles: true }));
+          if (searchInput) win.setTimeout(() => { try { searchInput.focus(); } catch (_) { /* ignore */ } }, 0);
+          return;
+        }
+        opts.forEach((oo) => { oo.selected = oo === option; });
         sel.value = option.value;
         activeIndex = index;
+        typing = false;
+        if (searchInput) searchInput.value = "";
         update();
         close();
         sel.dispatchEvent(new Event("change", { bubbles: true }));
       };
-      opts.forEach((o, index) => {
-        const el = document.createElement("div");
-        el.className = "blora-select-option" + (o.disabled ? " is-disabled" : "") + (o.selected && !o.disabled ? " is-selected" : "");
-        el.id = listId + "-option-" + index;
-        el.setAttribute("role", "option");
-        if (o.disabled) el.setAttribute("aria-disabled", "true");
-        el.textContent = o.textContent; el.dataset.val = o.value;
-        on(el, "click", (e) => {
-          e.stopPropagation();
-          if (o.disabled) return;
-          choose(opts.indexOf(o));
+      const filterLocal = (query) => {
+        const q = String(query || "").trim().toLowerCase();
+        optionEls().forEach((el) => {
+          const hit = !q || String(el.textContent || "").toLowerCase().indexOf(q) >= 0;
+          el.hidden = !hit;
         });
-        menu.appendChild(el);
-      });
+        const visible = optionEls().filter((el) => !el.hidden && !el.classList.contains("is-disabled"));
+        activeIndex = visible.length ? optionEls().indexOf(visible[0]) : -1;
+        optionEls().forEach((el, i) => el.classList.toggle("is-active", i === activeIndex));
+      };
+      const emitSearch = (query) => {
+        wrap.dispatchEvent(new win.CustomEvent("blora:search", {
+          bubbles: true,
+          detail: { query: String(query || ""), select: sel, wrap, setOptions: (list) => selectSetOptions(wrap, list) },
+        }));
+      };
+      const runSearch = (q) => {
+        if (remote) {
+          wrap.classList.add("is-searching");
+          if (searchTimer) win.clearTimeout(searchTimer);
+          searchTimer = win.setTimeout(() => {
+            wrap.classList.remove("is-searching");
+            emitSearch(q);
+          }, Number(wrap.getAttribute("data-search-debounce")) || 220);
+        } else {
+          filterLocal(q);
+        }
+      };
+      if (searchInput) {
+        on(searchInput, "click", (e) => {
+          e.stopPropagation();
+          if (!wrap.classList.contains("is-open")) open();
+        });
+        on(searchInput, "focus", () => {
+          if (!wrap.classList.contains("is-open")) open();
+        });
+        on(searchInput, "input", () => {
+          typing = true;
+          if (!wrap.classList.contains("is-open")) open();
+          update();
+          runSearch(searchInput.value);
+        });
+        on(searchInput, "keydown", (e) => {
+          if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+            e.preventDefault();
+            e.stopPropagation();
+            if (!wrap.classList.contains("is-open")) open();
+            setActive(activeIndex < 0 ? 0 : activeIndex + (e.key === "ArrowDown" ? 1 : -1));
+          } else if (e.key === "Enter") {
+            e.preventDefault();
+            e.stopPropagation();
+            if (wrap.classList.contains("is-open") && activeIndex >= 0) choose(activeIndex);
+          } else if (e.key === "Escape") {
+            e.preventDefault();
+            e.stopPropagation();
+            close();
+          } else {
+            e.stopPropagation();
+          }
+        });
+      }
       const open = () => {
-        const selectedIndex = opts.findIndex((o) => o.selected && !o.disabled);
-        activeIndex = selectedIndex;
+        const opts = getOpts();
+        activeIndex = opts.findIndex((o) => o.selected && !o.disabled);
         trigger.classList.add("is-open");
         menu.classList.add("is-open");
+        wrap.classList.add("is-open");
         trigger.setAttribute("aria-expanded", "true");
         optionEls().forEach((el, i) => el.classList.toggle("is-active", i === activeIndex));
         if (activeIndex >= 0) setActive(activeIndex);
         else trigger.removeAttribute("aria-activedescendant");
+        if (searchInput) {
+          typing = false;
+          searchInput.value = "";
+          searchInput.placeholder = t("select.search");
+          if (!remote) filterLocal("");
+          update();
+          win.setTimeout(() => {
+            try { searchInput.focus(); searchInput.select && searchInput.select(); } catch (_) { /* ignore */ }
+          }, 0);
+          if (remote) emitSearch("");
+        }
       };
-      const close = () => { trigger.classList.remove("is-open"); menu.classList.remove("is-open"); trigger.setAttribute("aria-expanded", "false"); };
-      on(trigger, "click", (e) => { e.stopPropagation(); trigger.classList.contains("is-open") ? close() : open(); });
+      const close = () => {
+        trigger.classList.remove("is-open");
+        menu.classList.remove("is-open");
+        wrap.classList.remove("is-open");
+        trigger.setAttribute("aria-expanded", "false");
+        typing = false;
+        if (searchInput) {
+          searchInput.value = "";
+          searchInput.placeholder = "";
+          if (!remote) filterLocal("");
+        }
+        update();
+      };
+      wrap._bloraSelectSetOptions = (list) => {
+        const keep = sel.value;
+        sel.textContent = "";
+        (list || []).forEach((item) => {
+          const o = d.createElement("option");
+          if (typeof item === "string") {
+            o.value = item;
+            o.textContent = item;
+          } else {
+            o.value = item.value != null ? String(item.value) : String(item.label || "");
+            o.textContent = item.label != null ? String(item.label) : o.value;
+            if (item.disabled) o.disabled = true;
+            if (item.selected) o.selected = true;
+          }
+          sel.appendChild(o);
+        });
+        if (keep && $$("option", sel).some((o) => o.value === keep)) sel.value = keep;
+        paintOptions();
+      };
+      on(sel, "change", () => { typing = false; update(); });
+      on(trigger, "click", (e) => {
+        if (e.target.closest(".blora-select-tag__close, .blora-select-trigger__input")) return;
+        e.stopPropagation();
+        trigger.classList.contains("is-open") ? close() : open();
+      });
       on(trigger, "keydown", (e) => {
+        if (searchInput && d.activeElement === searchInput) return;
+        const opts = getOpts();
         if (e.key === "ArrowDown" || e.key === "ArrowUp") {
           e.preventDefault();
           if (!trigger.classList.contains("is-open")) open();
@@ -2075,8 +2528,8 @@
           close();
         }
       });
-      on(document, "click", () => close());
-      update();
+      on(d, "click", () => close());
+      paintOptions();
     });
   }
 
@@ -2125,7 +2578,7 @@
         thumb.setAttribute("role", "slider");
         thumb.setAttribute("aria-valuemin", String(min));
         thumb.setAttribute("aria-valuemax", String(max));
-        thumb.setAttribute("aria-label", thumb.getAttribute("aria-label") || (i === 0 ? "Minimum" : "Maximum"));
+        thumb.setAttribute("aria-label", thumb.getAttribute("aria-label") || (i === 0 ? t("common.min") : t("common.max")));
         thumb.tabIndex = 0;
         on(thumb, "mousedown", (e) => {
           e.preventDefault(); tips[i].classList.add("is-show");
@@ -3241,6 +3694,158 @@
     });
   }
 
+  /* —— 文字效果 · Text Effects ——
+     任意文本：class="blora-text-fx blora-text-fx--shake" 或 data-blora-text-fx="shake"
+     播放：is-play；循环：is-loop。API：Blora.textFx(el, "bloom") */
+  const TEXT_FX = Object.freeze(["grow", "shrink", "shake", "nod", "explode", "ripple", "bloom", "jitter"]);
+  const TEXT_FX_SPLIT = Object.freeze(["explode", "ripple", "bloom"]);
+  const TEXT_FX_SET = new Set(TEXT_FX);
+  function textFxNameFromEl(el) {
+    if (!el) return "";
+    const raw = (el.getAttribute("data-blora-text-fx") || "").trim().toLowerCase();
+    if (TEXT_FX_SET.has(raw)) return raw;
+    for (let i = 0; i < TEXT_FX.length; i++) {
+      if (el.classList.contains("blora-text-fx--" + TEXT_FX[i])) return TEXT_FX[i];
+    }
+    return "";
+  }
+  /** 为分字效果写入稳定物理量（避免在 keyframes 里对 --i 做取模/calc，浏览器支持差） */
+  function layoutTextFxPhysics(el, name) {
+    const chars = $$(".blora-text-fx__ch", el);
+    const n = chars.length || 1;
+    const mid = (n - 1) / 2;
+    chars.forEach((span, i) => {
+      span.style.setProperty("--i", String(i));
+      if (name === "explode") {
+        /* 扇形向上炸开再收回：左右拉开、略向上 */
+        const t = n <= 1 ? 0 : (i / (n - 1)) * 2 - 1;
+        const x = t * 1.15;
+        const y = -0.95 - (1 - Math.abs(t)) * 0.35;
+        const r = t * 26;
+        span.style.setProperty("--fx-x", x.toFixed(3) + "em");
+        span.style.setProperty("--fx-y", y.toFixed(3) + "em");
+        span.style.setProperty("--fx-r", r.toFixed(1) + "deg");
+      } else if (name === "bloom") {
+        const fromCenter = Math.abs(i - mid);
+        span.style.setProperty("--fx-center-delay", Math.round(fromCenter * 28) + "ms");
+        span.style.setProperty("--fx-r", ((i - mid) * 12).toFixed(1) + "deg");
+      } else {
+        span.style.removeProperty("--fx-x");
+        span.style.removeProperty("--fx-y");
+        span.style.removeProperty("--fx-r");
+        span.style.removeProperty("--fx-center-delay");
+      }
+    });
+  }
+  function splitTextFxLetters(el) {
+    if (!el) return;
+    if (el.dataset.bloraFxSplit === "1") {
+      layoutTextFxPhysics(el, textFxNameFromEl(el));
+      return;
+    }
+    const text = el.textContent || "";
+    el.textContent = "";
+    Array.from(text).forEach((ch, i) => {
+      const span = ownerDoc(el).createElement("span");
+      span.className = "blora-text-fx__ch";
+      span.style.setProperty("--i", String(i));
+      span.textContent = ch === " " ? "\u00a0" : ch;
+      el.appendChild(span);
+    });
+    el.dataset.bloraFxSplit = "1";
+    el.dataset.bloraFxText = text;
+    layoutTextFxPhysics(el, textFxNameFromEl(el));
+  }
+  function unsplitTextFxLetters(el) {
+    if (!el || el.dataset.bloraFxSplit !== "1") return;
+    const text = el.dataset.bloraFxText != null
+      ? el.dataset.bloraFxText
+      : $$(".blora-text-fx__ch", el).map((n) => (n.textContent === "\u00a0" ? " " : n.textContent)).join("");
+    el.textContent = text;
+    el.removeAttribute("data-blora-fx-split");
+    el.removeAttribute("data-blora-fx-text");
+  }
+  function applyTextFxName(el, name) {
+    if (!el || !TEXT_FX_SET.has(name)) return false;
+    el.classList.add("blora-text-fx");
+    TEXT_FX.forEach((n) => el.classList.toggle("blora-text-fx--" + n, n === name));
+    el.setAttribute("data-blora-text-fx", name);
+    if (TEXT_FX_SPLIT.includes(name)) {
+      splitTextFxLetters(el);
+      layoutTextFxPhysics(el, name);
+    } else {
+      unsplitTextFxLetters(el);
+    }
+    return true;
+  }
+  function restartTextFxAnimation(el) {
+    el.classList.remove("is-play");
+    $$(".blora-text-fx__ch", el).forEach((ch) => {
+      ch.style.animation = "none";
+    });
+    void el.offsetWidth;
+    $$(".blora-text-fx__ch", el).forEach((ch) => {
+      ch.style.animation = "";
+    });
+    el.classList.add("is-play");
+  }
+  function playTextFx(el, name) {
+    if (!el) return null;
+    if (name) applyTextFxName(el, name);
+    else if (!textFxNameFromEl(el)) return null;
+    else layoutTextFxPhysics(el, textFxNameFromEl(el));
+    if (prefersReduced(el)) {
+      el.classList.add("is-play");
+      return el;
+    }
+    restartTextFxAnimation(el);
+    return el;
+  }
+  function textFx(target, name, opts) {
+    opts = opts || {};
+    const el = resolveElement(target) || (target && target.nodeType ? target : null);
+    if (!el || !el.nodeType) return null;
+    const fx = String(name || textFxNameFromEl(el) || "grow").toLowerCase();
+    if (!TEXT_FX_SET.has(fx)) return null;
+    applyTextFxName(el, fx);
+    if (opts.loop) el.classList.add("is-loop");
+    if (opts.loop === false) el.classList.remove("is-loop");
+    if (opts.play !== false) playTextFx(el);
+    return el;
+  }
+  function initTextFx(root) {
+    const scope = root || doc();
+    if (!scope) return;
+    $$(".blora-text-fx, [data-blora-text-fx]", scope).forEach((el) => {
+      if (bound(el, "TextFx")) return;
+      /* 播放按钮本身不当作目标文字 */
+      if (el.hasAttribute("data-blora-text-fx-play")) return;
+      const name = textFxNameFromEl(el) || "grow";
+      applyTextFxName(el, name);
+      if (!el.classList.contains("is-loop") && !el.classList.contains("is-play")) {
+        el.classList.add("is-play");
+      }
+      if (el.getAttribute("data-blora-text-fx-click") !== "off") {
+        el.classList.add("is-clickable");
+        on(el, "click", (e) => {
+          if (e.target.closest("a, button, input, textarea, select, [data-blora-text-fx-play]")) return;
+          playTextFx(el);
+        });
+      }
+    });
+    $$("[data-blora-text-fx-play]", scope).forEach((btn) => {
+      if (bound(btn, "TextFxPlay")) return;
+      on(btn, "click", () => {
+        const name = (btn.getAttribute("data-blora-text-fx-play") || "").trim().toLowerCase();
+        if (!TEXT_FX_SET.has(name)) return;
+        const host = btn.closest("[data-blora-text-fx-host], .blora-demo, .blora-panel") || scope;
+        const preview = $("[data-blora-text-fx-preview]", host) || $(".blora-text-fx", host);
+        if (preview) playTextFx(preview, name);
+        else playTextFx(btn, name);
+      });
+    });
+  }
+
   /* —— Form validation · 行为层（HTML 三件套，无框架） ——
      form[data-blora-form] 拦截提交；字段走原生约束 + data-blora-rule / data-blora-message。
      API: Blora.validate(form) / Blora.clearValidation(form) */
@@ -3251,6 +3856,14 @@
   ].join(",");
   const msgTpl = (key, n) => t(VALIDATE_KEY_MAP[key] || ("validate." + key), { n: n });
   const fieldShell = (field) => field.closest(".blora-field, .blora-validator, .blora-form-item") || field.parentElement;
+  /* inline（默认）| popup 浮层；form 或字段 data-blora-error-ui 可配 */
+  const errorUiOf = (field) => {
+    const form = field && field.closest && field.closest("form");
+    const raw = (field && field.getAttribute("data-blora-error-ui"))
+      || (form && form.getAttribute("data-blora-error-ui"))
+      || "inline";
+    return String(raw).toLowerCase() === "popup" ? "popup" : "inline";
+  };
   const errorSlot = (field) => {
     const shell = fieldShell(field);
     if (!shell) return null;
@@ -3259,21 +3872,67 @@
       slot = ownerDoc(field).createElement("span");
       slot.className = "blora-error";
       slot.setAttribute("data-blora-error", "");
+      slot.id = (field.id || ("blora-field-" + Math.random().toString(36).slice(2, 7))) + "-error";
       shell.appendChild(slot);
     }
+    if (!slot.id) slot.id = (field.id || "blora-field") + "-error";
     return slot;
+  };
+  /* 可见控件（自定义 select 外壳优先），用于 popup 锚点 */
+  const errorAnchor = (field) => {
+    if (!field) return null;
+    return field.closest(".blora-select-wrap")
+      || field.closest(".blora-number")
+      || field.closest(".blora-search")
+      || field.closest(".blora-input-group")
+      || field;
+  };
+  const positionErrorPopup = (field, slot) => {
+    if (!field || !slot || !slot.classList.contains("blora-error--popup") || slot.hidden) return;
+    const shell = fieldShell(field);
+    const anchor = errorAnchor(field);
+    if (!shell || !anchor) return;
+    if (ownerDoc(shell).defaultView.getComputedStyle(shell).position === "static") {
+      shell.style.position = "relative";
+    }
+    const shellRect = shell.getBoundingClientRect();
+    const anchorRect = anchor.getBoundingClientRect();
+    const gap = 10; /* 箭头到输入框顶的间隙 */
+    const left = anchorRect.left - shellRect.left + anchorRect.width / 2;
+    const top = anchorRect.top - shellRect.top - gap;
+    slot.style.left = left + "px";
+    slot.style.top = top + "px";
+    slot.style.bottom = "auto";
+    slot.style.transform = "translate(-50%, -100%)";
   };
   const setFieldInvalid = (field, message) => {
     field.classList.add("is-error");
     field.classList.remove("is-success");
     field.setAttribute("aria-invalid", "true");
-    try { field.setCustomValidity(message || "invalid"); } catch (_) { /* ignore */ }
+    /* 不写 setCustomValidity 文案：会触发浏览器原生黄/白气泡，无法自定义 */
+    try { field.setCustomValidity(""); } catch (_) { /* ignore */ }
     const slot = errorSlot(field);
     if (slot) {
+      const popup = errorUiOf(field) === "popup";
+      slot.classList.toggle("blora-error--popup", popup);
+      field.setAttribute("aria-describedby", slot.id);
       if (message) {
         slot.textContent = message;
         slot.removeAttribute("hidden");
         slot.hidden = false;
+        if (popup) {
+          /* 等布局稳定再量，避免和框重叠 */
+          positionErrorPopup(field, slot);
+          const win = ownerWin(field);
+          if (win && win.requestAnimationFrame) {
+            win.requestAnimationFrame(() => positionErrorPopup(field, slot));
+          }
+        } else {
+          slot.style.left = "";
+          slot.style.top = "";
+          slot.style.bottom = "";
+          slot.style.transform = "";
+        }
       } else {
         slot.textContent = "";
         slot.setAttribute("hidden", "");
@@ -3290,6 +3949,7 @@
     if (slot && (slot.hasAttribute("data-blora-error") || slot.classList.contains("blora-error"))) {
       slot.textContent = "";
       slot.setAttribute("hidden", "");
+      slot.classList.remove("blora-error--popup");
     }
   };
   const clearFieldState = (field) => {
@@ -3300,6 +3960,7 @@
     if (slot && (slot.hasAttribute("data-blora-error") || slot.classList.contains("blora-error"))) {
       slot.textContent = "";
       slot.setAttribute("hidden", "");
+      slot.classList.remove("blora-error--popup");
     }
   };
   const customRuleMessage = (field) => {
@@ -3352,6 +4013,30 @@
     return { valid: true, field, message: "" };
   };
   const formFields = (form) => form ? $$(FIELD_SELECTOR, form) : [];
+  const ASYNC_RULES = Object.create(null);
+  const registerAsyncRule = (name, fn) => {
+    if (!name || typeof fn !== "function") return;
+    ASYNC_RULES[String(name)] = fn;
+  };
+  const resolveAsyncRule = (name) => {
+    if (!name) return null;
+    if (typeof ASYNC_RULES[name] === "function") return ASYNC_RULES[name];
+    try {
+      if (global && typeof global[name] === "function") return global[name];
+    } catch (_) { /* ignore */ }
+    return null;
+  };
+  const emitValidate = (form, detail) => {
+    form.dispatchEvent(new CustomEvent("blora:validate", { bubbles: true, detail }));
+    if (!detail.valid) {
+      form.dispatchEvent(new CustomEvent("blora:invalid", { bubbles: true, detail }));
+      const first = detail.errors && detail.errors[0] && detail.errors[0].field;
+      if (first) {
+        try { first.focus({ preventScroll: false }); } catch (_) { try { first.focus(); } catch (__) { /* ignore */ } }
+      }
+    }
+    return detail;
+  };
   const validateForm = (target) => {
     const form = resolveElement(target) || target;
     if (!form) return { valid: true, errors: [] };
@@ -3360,26 +4045,216 @@
       const result = validateField(field);
       if (!result.valid) errors.push(result);
     });
-    const detail = { valid: errors.length === 0, errors };
-    form.dispatchEvent(new CustomEvent("blora:validate", { bubbles: true, detail }));
-    if (errors.length) {
-      form.dispatchEvent(new CustomEvent("blora:invalid", { bubbles: true, detail }));
-      try { errors[0].field.focus({ preventScroll: false }); } catch (_) { try { errors[0].field.focus(); } catch (__) { /* ignore */ } }
-    }
-    return detail;
+    return emitValidate(form, { valid: errors.length === 0, errors });
+  };
+  const runAsyncRule = (field) => {
+    const key = field.getAttribute("data-blora-async");
+    if (!key) return Promise.resolve({ valid: true, field, message: "" });
+    const fn = resolveAsyncRule(key);
+    if (!fn) return Promise.resolve({ valid: true, field, message: "" });
+    field.classList.add("is-validating");
+    return Promise.resolve()
+      .then(() => fn(field.value, field))
+      .then((result) => {
+        field.classList.remove("is-validating");
+        if (result === true || result == null || result === "") {
+          if (String(field.value || "").length) setFieldValid(field);
+          else clearFieldState(field);
+          return { valid: true, field, message: "" };
+        }
+        const message = typeof result === "string"
+          ? result
+          : (result && (result.message || result.error)) || field.getAttribute("data-blora-message") || msgTpl("async");
+        setFieldInvalid(field, message);
+        return { valid: false, field, message };
+      })
+      .catch((err) => {
+        field.classList.remove("is-validating");
+        const message = (err && err.message) || field.getAttribute("data-blora-message") || msgTpl("async");
+        setFieldInvalid(field, message);
+        return { valid: false, field, message };
+      });
+  };
+  const validateFieldAsync = (field) => {
+    if (!field || field.disabled) return Promise.resolve({ valid: true, field, message: "" });
+    const sync = validateField(field);
+    if (!sync.valid) return Promise.resolve(sync);
+    if (!field.getAttribute("data-blora-async")) return Promise.resolve(sync);
+    return runAsyncRule(field);
+  };
+  const validateFormAsync = (target) => {
+    const form = resolveElement(target) || target;
+    if (!form) return Promise.resolve({ valid: true, errors: [] });
+    const fields = formFields(form);
+    return fields.reduce(
+      (chain, field) => chain.then((errors) => validateFieldAsync(field).then((result) => {
+        if (!result.valid) errors.push(result);
+        return errors;
+      })),
+      Promise.resolve([])
+    ).then((errors) => emitValidate(form, { valid: errors.length === 0, errors }));
   };
   const clearValidation = (target) => {
     const form = resolveElement(target) || target;
     if (!form) return;
     formFields(form).forEach(clearFieldState);
   };
+  const getFormValues = (target) => {
+    const form = resolveElement(target) || target;
+    if (!form) return {};
+    const values = {};
+    const seenRadio = Object.create(null);
+    formFields(form).forEach((field) => {
+      const name = field.name || field.id;
+      if (!name) return;
+      const type = (field.type || "").toLowerCase();
+      if (type === "checkbox") {
+        const group = form.querySelectorAll('input[type="checkbox"][name="' + name.replace(/"/g, '\\"') + '"]');
+        if (group.length > 1) {
+          if (!Array.isArray(values[name])) values[name] = [];
+          if (field.checked) values[name].push(field.value || "on");
+        } else {
+          values[name] = !!field.checked;
+        }
+        return;
+      }
+      if (type === "radio") {
+        if (seenRadio[name]) return;
+        seenRadio[name] = true;
+        const checked = form.querySelector('input[type="radio"][name="' + name.replace(/"/g, '\\"') + '"]:checked');
+        values[name] = checked ? checked.value : "";
+        return;
+      }
+      if (field.tagName === "SELECT" && field.multiple) {
+        values[name] = Array.from(field.selectedOptions || []).map((o) => o.value);
+        return;
+      }
+      values[name] = field.value;
+    });
+    return values;
+  };
+  const cssEscape = (value) => {
+    const s = String(value == null ? "" : value);
+    if (typeof CSS !== "undefined" && typeof CSS.escape === "function") return CSS.escape(s);
+    return s.replace(/[^a-zA-Z0-9_\u00A0-\uFFFF-]/g, "\\$&");
+  };
+  const setFormValues = (target, values) => {
+    const form = resolveElement(target) || target;
+    if (!form || !values || typeof values !== "object") return getFormValues(form);
+    Object.keys(values).forEach((name) => {
+      const val = values[name];
+      const nodes = form.querySelectorAll('[name="' + name.replace(/\\/g, "\\\\").replace(/"/g, '\\"') + '"]');
+      if (!nodes.length) {
+        const byId = form.querySelector("#" + cssEscape(name));
+        if (byId) {
+          if (byId.type === "checkbox") byId.checked = !!val;
+          else byId.value = val == null ? "" : String(val);
+        }
+        return;
+      }
+      nodes.forEach((field) => {
+        const type = (field.type || "").toLowerCase();
+        if (type === "checkbox") {
+          if (Array.isArray(val)) field.checked = val.map(String).indexOf(String(field.value || "on")) >= 0;
+          else if (typeof val === "boolean") field.checked = val;
+          else field.checked = String(val) === String(field.value || "on") || val === true || val === "on";
+        } else if (type === "radio") {
+          field.checked = String(field.value) === String(val);
+        } else if (field.tagName === "SELECT" && field.multiple && Array.isArray(val)) {
+          Array.from(field.options).forEach((o) => { o.selected = val.map(String).indexOf(String(o.value)) >= 0; });
+        } else {
+          field.value = val == null ? "" : String(val);
+        }
+        field.dispatchEvent(new Event("change", { bubbles: true }));
+      });
+    });
+    syncFormWhen(form);
+    return getFormValues(form);
+  };
+  /* data-blora-when="name=value" | "name!=value" | "#id=value"；action: show(默认) | enable */
+  const evalWhenExpr = (form, expr) => {
+    const raw = String(expr || "").trim();
+    if (!raw) return true;
+    const m = raw.match(/^(#?[\w-]+)\s*(!=|=)\s*(.*)$/);
+    if (!m) return true;
+    const key = m[1];
+    const op = m[2];
+    const expect = m[3];
+    let actual = "";
+    if (key.charAt(0) === "#") {
+      const el = form.querySelector(key) || (doc() && doc().querySelector(key));
+      if (!el) actual = "";
+      else if (el.type === "checkbox" || el.type === "radio") actual = el.checked ? (el.value || "on") : "";
+      else actual = el.value || "";
+    } else {
+      const vals = getFormValues(form);
+      const v = vals[key];
+      actual = Array.isArray(v) ? v.join(",") : (v == null ? "" : String(v));
+      if (typeof v === "boolean") actual = v ? "true" : "false";
+    }
+    const ok = String(actual) === String(expect);
+    return op === "!=" ? !ok : ok;
+  };
+  const syncFormWhen = (form) => {
+    if (!form) return;
+    $$("[data-blora-when]", form).forEach((el) => {
+      const ok = evalWhenExpr(form, el.getAttribute("data-blora-when"));
+      const action = (el.getAttribute("data-blora-when-action") || "show").toLowerCase();
+      if (action === "enable") {
+        const controls = el.matches("input,select,textarea,button")
+          ? [el]
+          : $$("input,select,textarea,button", el);
+        controls.forEach((c) => { c.disabled = !ok; });
+        el.classList.toggle("is-when-disabled", !ok);
+      } else {
+        el.hidden = !ok;
+        el.classList.toggle("is-when-hidden", !ok);
+      }
+    });
+  };
   function initForms(root) {
     const d = ownerDoc(root) || doc();
+    const win = ownerWin(d);
     $$("form[data-blora-form], form[data-blora-validate]", root).forEach((form) => {
       if (bound(form, "Form")) return;
+      form.classList.add("blora-form");
+      /* 关掉浏览器原生校验气泡（样式不可控）；校验由 Blora 承接 */
+      if (!form.hasAttribute("data-blora-native-validate")) {
+        form.setAttribute("novalidate", "");
+      }
+      on(form, "invalid", (e) => {
+        if (form.hasAttribute("data-blora-native-validate")) return;
+        e.preventDefault();
+      }, true);
+      const repositionPopups = () => {
+        formFields(form).forEach((field) => {
+          if (!field.classList.contains("is-error")) return;
+          const slot = errorSlot(field);
+          if (slot && slot.classList.contains("blora-error--popup") && !slot.hidden) {
+            positionErrorPopup(field, slot);
+          }
+        });
+      };
+      if (win) {
+        on(win, "resize", repositionPopups);
+        on(win, "scroll", repositionPopups, { passive: true, capture: true });
+      }
       const triggers = String(form.getAttribute("data-blora-validate-on") || CONFIG.validateOn || "submit")
         .split(/[\s,]+/).map((s) => s.trim()).filter(Boolean);
       on(form, "submit", (e) => {
+        const hasAsync = formFields(form).some((f) => f.getAttribute("data-blora-async"));
+        if (hasAsync) {
+          e.preventDefault();
+          e.stopPropagation();
+          validateFormAsync(form).then((result) => {
+            if (!result.valid) return;
+            form.dispatchEvent(new CustomEvent("blora:submit", {
+              bubbles: true,
+              detail: { values: getFormValues(form), form },
+            }));
+          });
+          return;
+        }
         const result = validateForm(form);
         if (!result.valid) {
           e.preventDefault();
@@ -3388,7 +4263,11 @@
       });
       if (triggers.includes("blur")) {
         on(form, "focusout", (e) => {
-          if (e.target && e.target.matches && e.target.matches(FIELD_SELECTOR)) validateField(e.target);
+          if (e.target && e.target.matches && e.target.matches(FIELD_SELECTOR)) {
+            const field = e.target;
+            if (field.getAttribute("data-blora-async")) validateFieldAsync(field);
+            else validateField(field);
+          }
         });
       }
       if (triggers.includes("change") || triggers.includes("input")) {
@@ -3398,18 +4277,39 @@
           }
         });
         on(form, "change", (e) => {
-          if (e.target && e.target.matches && e.target.matches(FIELD_SELECTOR)) validateField(e.target);
+          if (e.target && e.target.matches && e.target.matches(FIELD_SELECTOR)) {
+            if (e.target.getAttribute("data-blora-async")) validateFieldAsync(e.target);
+            else validateField(e.target);
+          }
         });
       }
-      on(form, "reset", () => setTimeout(() => clearValidation(form), 0));
+      on(form, "change", () => syncFormWhen(form));
+      on(form, "input", () => syncFormWhen(form));
+      on(form, "reset", () => setTimeout(() => {
+        clearValidation(form);
+        syncFormWhen(form);
+      }, 0));
+      syncFormWhen(form);
     });
-    /* 独立按钮 data-blora-validate-submit 可校验指定 form */
     $$("[data-blora-validate-submit]", root).forEach((btn) => {
       if (bound(btn, "ValidateSubmit")) return;
       on(btn, "click", (e) => {
         const sel = btn.getAttribute("data-blora-validate-submit");
         const form = (sel && $(sel, d)) || btn.closest("form");
         if (!form) return;
+        const hasAsync = formFields(form).some((f) => f.getAttribute("data-blora-async"));
+        if (hasAsync) {
+          e.preventDefault();
+          validateFormAsync(form).then((result) => {
+            if (result.valid) {
+              form.dispatchEvent(new CustomEvent("blora:submit", {
+                bubbles: true,
+                detail: { values: getFormValues(form), form },
+              }));
+            }
+          });
+          return;
+        }
         const result = validateForm(form);
         if (!result.valid) e.preventDefault();
       });
@@ -3537,6 +4437,424 @@
     syncLinkedPagination(table);
     return tableState(table);
   };
+  const ensureTableEmptyNode = (host) => {
+    let empty = $(".blora-table-empty", host);
+    if (!empty) {
+      empty = ownerDoc(host).createElement("div");
+      empty.className = "blora-table-empty blora-empty";
+      empty.innerHTML = '<div class="blora-empty__title"></div>';
+      host.appendChild(empty);
+    }
+    const title = $(".blora-empty__title", empty);
+    if (title) title.textContent = t("table.empty");
+    return empty;
+  };
+  const syncTableEmpty = (table) => {
+    const host = tableHost(table);
+    if (!host) return;
+    const tbody = table.tBodies && table.tBodies[0];
+    const count = tbody ? tbody.rows.length : 0;
+    const empty = ensureTableEmptyNode(host);
+    host.classList.toggle("is-empty", count === 0);
+    empty.hidden = count !== 0;
+    empty.setAttribute("aria-hidden", count === 0 ? "false" : "true");
+  };
+  const tableSetLoading = (target, loading) => {
+    const table = tableRoot(resolveElement(target) || target);
+    if (!table) return null;
+    const host = tableHost(table);
+    const on = !!loading;
+    host.classList.toggle("is-loading", on);
+    host.setAttribute("aria-busy", on ? "true" : "false");
+    let mask = $(".blora-table-loading", host);
+    if (on) {
+      if (!mask) {
+        mask = ownerDoc(host).createElement("div");
+        mask.className = "blora-table-loading";
+        mask.innerHTML = '<span class="blora-spinner" aria-hidden="true"></span><span class="blora-table-loading__text"></span>';
+        host.appendChild(mask);
+      }
+      const text = $(".blora-table-loading__text", mask);
+      if (text) text.textContent = t("table.loading");
+      mask.hidden = false;
+    } else if (mask) {
+      mask.hidden = true;
+    }
+    return tableState(table);
+  };
+  const tableSetRows = (target, rows, opts) => {
+    opts = opts || {};
+    const table = tableRoot(resolveElement(target) || target);
+    if (!table) return null;
+    let tbody = table.tBodies && table.tBodies[0];
+    if (!tbody) tbody = table.createTBody();
+    const headers = $$("th[data-blora-sort], thead th", table);
+    const keys = opts.keys || headers.map((th) => th.getAttribute("data-blora-sort") || "").filter(Boolean);
+    tbody.textContent = "";
+    (rows || []).forEach((row) => {
+      const tr = ownerDoc(table).createElement("tr");
+      if (Array.isArray(row)) {
+        row.forEach((cell) => {
+          const td = ownerDoc(table).createElement("td");
+          if (cell != null && typeof cell === "object" && "html" in cell) td.innerHTML = String(cell.html);
+          else td.textContent = cell == null ? "" : String(cell);
+          tr.appendChild(td);
+        });
+      } else if (row && typeof row === "object") {
+        const cols = keys.length ? keys : Object.keys(row);
+        cols.forEach((key) => {
+          const td = ownerDoc(table).createElement("td");
+          const cell = row[key];
+          if (cell != null && typeof cell === "object" && "html" in cell) td.innerHTML = String(cell.html);
+          else td.textContent = cell == null ? "" : String(cell);
+          tr.appendChild(td);
+        });
+      }
+      tbody.appendChild(tr);
+    });
+    writeTableState(table, { total: (rows || []).length, page: opts.page != null ? opts.page : 1 });
+    table._bloraRowData = Array.isArray(rows) ? rows.slice() : [];
+    table._bloraRowKeys = keys.slice();
+    if (tableHost(table).hasAttribute("data-blora-virtual")) {
+      renderVirtualTable(table);
+    } else if (tableMode(table) !== "remote") {
+      const state = tableState(table);
+      if (state.sortKey) tableSort(table, isNaN(Number(state.sortKey)) ? state.sortKey : Number(state.sortKey), state.sortDir || "asc");
+      else applyTablePageLocal(table);
+    }
+    ensureTableSelectionColumn(table);
+    applyTableColumnLayout(table);
+    syncTableEmpty(table);
+    syncTableSelection(table);
+    syncLinkedPagination(table);
+    emitTableChange(table, { reason: "setRows", total: (rows || []).length });
+    return tableState(table);
+  };
+
+  /* —— 列固定：th/td[data-blora-fixed=left|right] —— */
+  const applyFixedColumns = (table) => {
+    if (!table) return;
+    const rows = $$("tr", table);
+    const measure = (side) => {
+      let offset = 0;
+      const first = rows[0];
+      if (!first) return;
+      const cells = Array.from(first.children);
+      const indexes = [];
+      cells.forEach((cell, i) => {
+        const fixed = cell.getAttribute("data-blora-fixed") || (cell.classList.contains("blora-table-col--fixed-left") ? "left" : cell.classList.contains("blora-table-col--fixed-right") ? "right" : "");
+        if (fixed === side) indexes.push(i);
+      });
+      if (side === "right") indexes.reverse();
+      indexes.forEach((i) => {
+        rows.forEach((tr) => {
+          const cell = tr.children[i];
+          if (!cell) return;
+          cell.classList.add(side === "left" ? "blora-table-col--fixed-left" : "blora-table-col--fixed-right");
+          cell.style[side] = offset + "px";
+        });
+        const sample = first.children[i];
+        offset += sample ? sample.getBoundingClientRect().width : 0;
+      });
+    };
+    measure("left");
+    measure("right");
+  };
+
+  /* —— 多选行 + 批量条 —— */
+  const ensureTableSelectionColumn = (table) => {
+    const host = tableHost(table);
+    if (!host || !host.hasAttribute("data-blora-selectable")) return;
+    const theadRow = table.tHead && table.tHead.rows[0];
+    if (!theadRow) return;
+    if (!$("th[data-blora-select-col]", theadRow)) {
+      const th = ownerDoc(table).createElement("th");
+      th.setAttribute("data-blora-select-col", "");
+      th.className = "blora-table-select-col";
+      th.innerHTML = '<label class="blora-checkbox blora-table-check"><input type="checkbox" data-blora-select-all aria-label="' + escapeHTML(t("table.selectAll")) + '"><span class="blora-checkbox__box"></span></label>';
+      theadRow.insertBefore(th, theadRow.firstChild);
+    }
+    Array.from((table.tBodies[0] && table.tBodies[0].rows) || []).forEach((tr) => {
+      if ($("td[data-blora-select-col]", tr)) return;
+      const td = ownerDoc(table).createElement("td");
+      td.setAttribute("data-blora-select-col", "");
+      td.className = "blora-table-select-col";
+      td.innerHTML = '<label class="blora-checkbox blora-table-check"><input type="checkbox" data-blora-row-select aria-label="' + escapeHTML(t("table.selectRow")) + '"><span class="blora-checkbox__box"></span></label>';
+      tr.insertBefore(td, tr.firstChild);
+    });
+    let bulk = host.parentElement && $(".blora-table-bulk[data-blora-table-bulk='" + table.id + "']", host.parentElement);
+    if (!bulk) {
+      bulk = $(".blora-table-bulk", host.parentElement || host) || null;
+    }
+    if (!bulk && host.parentElement) {
+      bulk = ownerDoc(table).createElement("div");
+      bulk.className = "blora-table-bulk";
+      bulk.setAttribute("data-blora-table-bulk", table.id);
+      bulk.hidden = true;
+      bulk.innerHTML =
+        '<span class="blora-table-bulk__count"></span>' +
+        '<button type="button" class="blora-btn blora-btn--ghost blora-btn--sm" data-blora-clear-selection>' + escapeHTML(t("table.clearSelection")) + "</button>" +
+        '<span class="blora-table-bulk__slot" data-blora-bulk-actions></span>';
+      host.parentElement.insertBefore(bulk, host);
+    }
+    table._bloraBulk = bulk;
+  };
+  const getSelectedRows = (table) => {
+    const tbody = table.tBodies && table.tBodies[0];
+    if (!tbody) return [];
+    return Array.from(tbody.rows).filter((tr) => {
+      const cb = $("input[data-blora-row-select]", tr);
+      return cb && cb.checked && !tr.hidden;
+    });
+  };
+  const syncTableSelection = (table) => {
+    const host = tableHost(table);
+    if (!host || !host.hasAttribute("data-blora-selectable")) return;
+    const rows = Array.from((table.tBodies[0] && table.tBodies[0].rows) || []).filter((tr) => !tr.hidden);
+    const selected = rows.filter((tr) => {
+      const cb = $("input[data-blora-row-select]", tr);
+      return cb && cb.checked;
+    });
+    const all = $("input[data-blora-select-all]", table);
+    if (all) {
+      all.checked = rows.length > 0 && selected.length === rows.length;
+      all.indeterminate = selected.length > 0 && selected.length < rows.length;
+    }
+    const bulk = table._bloraBulk || (host.parentElement && $(".blora-table-bulk[data-blora-table-bulk='" + table.id + "']", host.parentElement));
+    if (bulk) {
+      bulk.hidden = selected.length === 0;
+      const count = $(".blora-table-bulk__count", bulk);
+      if (count) count.textContent = t("table.selected", { n: selected.length });
+    }
+    host.classList.toggle("has-selection", selected.length > 0);
+    table.dispatchEvent(new CustomEvent("blora:table-select", {
+      bubbles: true,
+      detail: { selected: selected.length, rows: selected, table },
+    }));
+  };
+  const tableGetSelection = (target) => {
+    const table = tableRoot(resolveElement(target) || target);
+    if (!table) return [];
+    return getSelectedRows(table);
+  };
+  const tableClearSelection = (target) => {
+    const table = tableRoot(resolveElement(target) || target);
+    if (!table) return;
+    $$("input[data-blora-row-select], input[data-blora-select-all]", table).forEach((cb) => {
+      cb.checked = false;
+      cb.indeterminate = false;
+    });
+    syncTableSelection(table);
+  };
+
+  /* —— 虚拟滚动：data-blora-virtual + setRows 数据源 —— */
+  const renderVirtualTable = (table) => {
+    const host = tableHost(table);
+    if (!host || !host.hasAttribute("data-blora-virtual")) return;
+    const data = table._bloraRowData || [];
+    const keys = table._bloraRowKeys || [];
+    const rowH = Number(host.getAttribute("data-row-height")) || 44;
+    const overscan = Number(host.getAttribute("data-overscan")) || 6;
+    let tbody = table.tBodies && table.tBodies[0];
+    if (!tbody) tbody = table.createTBody();
+    host.classList.add("blora-table-wrap--virtual");
+    let scroller = $(".blora-table-virtual", host);
+    if (!scroller) {
+      scroller = ownerDoc(host).createElement("div");
+      scroller.className = "blora-table-virtual";
+      table.parentNode.insertBefore(scroller, table);
+      scroller.appendChild(table);
+    }
+    const viewportH = scroller.clientHeight || Number(host.getAttribute("data-viewport-height")) || 360;
+    scroller.style.height = viewportH + "px";
+    const total = data.length;
+    writeTableState(table, { total, page: 1, pageSize: total || 1 });
+    const scrollTop = scroller.scrollTop || 0;
+    const start = Math.max(0, Math.floor(scrollTop / rowH) - overscan);
+    const visible = Math.ceil(viewportH / rowH) + overscan * 2;
+    const end = Math.min(total, start + visible);
+    tbody.textContent = "";
+    const padTop = ownerDoc(table).createElement("tr");
+    padTop.className = "blora-table-virtual-pad";
+    padTop.innerHTML = '<td colspan="99" style="height:' + (start * rowH) + 'px;padding:0;border:0"></td>';
+    tbody.appendChild(padTop);
+    for (let i = start; i < end; i++) {
+      const row = data[i];
+      const tr = ownerDoc(table).createElement("tr");
+      tr.dataset.virtualIndex = String(i);
+      tr.style.height = rowH + "px";
+      if (Array.isArray(row)) {
+        row.forEach((cell) => {
+          const td = ownerDoc(table).createElement("td");
+          td.textContent = cell == null ? "" : String(cell);
+          tr.appendChild(td);
+        });
+      } else if (row && typeof row === "object") {
+        const cols = keys.length ? keys : Object.keys(row);
+        cols.forEach((key) => {
+          const td = ownerDoc(table).createElement("td");
+          const cell = row[key];
+          td.textContent = cell == null ? "" : String(cell);
+          tr.appendChild(td);
+        });
+      }
+      tbody.appendChild(tr);
+    }
+    const padBot = ownerDoc(table).createElement("tr");
+    padBot.className = "blora-table-virtual-pad";
+    padBot.innerHTML = '<td colspan="99" style="height:' + (Math.max(0, total - end) * rowH) + 'px;padding:0;border:0"></td>';
+    tbody.appendChild(padBot);
+    ensureTableSelectionColumn(table);
+    applyTableColumnLayout(table);
+    applyFixedColumns(table);
+    syncTableEmpty(table);
+  };
+  const bindVirtualScroll = (table) => {
+    const host = tableHost(table);
+    if (!host || !host.hasAttribute("data-blora-virtual") || bound(host, "TableVirtual")) return;
+    const scroller = $(".blora-table-virtual", host) || host;
+    let ticking = false;
+    on(scroller, "scroll", () => {
+      if (ticking) return;
+      ticking = true;
+      const win = ownerWin(host);
+      win.requestAnimationFrame(() => {
+        ticking = false;
+        renderVirtualTable(table);
+      });
+    }, { passive: true });
+  };
+
+  /* —— 列显示/顺序持久化：data-blora-cols + data-blora-cols-key —— */
+  const readColsConfig = (table) => {
+    const host = tableHost(table);
+    const key = host.getAttribute("data-blora-cols-key") || (CONFIG.tableColsStorageKey + ":" + (table.id || "default"));
+    try {
+      const raw = ownerWin(table).localStorage.getItem(key);
+      if (raw) return JSON.parse(raw);
+    } catch (_) { /* ignore */ }
+    return null;
+  };
+  const writeColsConfig = (table, cfg) => {
+    const host = tableHost(table);
+    const key = host.getAttribute("data-blora-cols-key") || (CONFIG.tableColsStorageKey + ":" + (table.id || "default"));
+    try { ownerWin(table).localStorage.setItem(key, JSON.stringify(cfg)); } catch (_) { /* ignore */ }
+  };
+  const defaultColsConfig = (table) => {
+    const ths = $$("thead th", table).filter((th) => !th.hasAttribute("data-blora-select-col"));
+    return ths.map((th, i) => ({
+      key: th.getAttribute("data-blora-sort") || th.getAttribute("data-col-key") || String(i),
+      label: (th.textContent || "").trim() || String(i + 1),
+      visible: th.getAttribute("data-col-hidden") !== "true",
+      index: i,
+    }));
+  };
+  const applyTableColumnLayout = (table) => {
+    const host = tableHost(table);
+    if (!host || !host.hasAttribute("data-blora-cols")) return;
+    let cfg = readColsConfig(table) || defaultColsConfig(table);
+    const ths = $$("thead th", table);
+    const selectOffset = ths[0] && ths[0].hasAttribute("data-blora-select-col") ? 1 : 0;
+    const dataThs = ths.filter((th) => !th.hasAttribute("data-blora-select-col"));
+    /* 按 cfg 顺序重排可见性 */
+    cfg.forEach((col, order) => {
+      const th = dataThs.find((h) => (h.getAttribute("data-blora-sort") || h.getAttribute("data-col-key") || "") === col.key)
+        || dataThs[col.index];
+      if (!th) return;
+      const idx = Array.prototype.indexOf.call(th.parentNode.children, th);
+      Array.from((table.tBodies[0] && table.tBodies[0].rows) || []).concat([table.tHead && table.tHead.rows[0]].filter(Boolean)).forEach((tr) => {
+        if (!tr || !tr.children[idx]) return;
+        tr.children[idx].hidden = !col.visible;
+        tr.children[idx].dataset.colOrder = String(order);
+      });
+    });
+    /* 可选：按 data-col-order 重排 DOM */
+    const head = table.tHead && table.tHead.rows[0];
+    if (head) {
+      const ordered = Array.from(head.children)
+        .filter((c) => !c.hasAttribute("data-blora-select-col"))
+        .sort((a, b) => Number(a.dataset.colOrder || 0) - Number(b.dataset.colOrder || 0));
+      ordered.forEach((cell) => head.appendChild(cell));
+      Array.from((table.tBodies[0] && table.tBodies[0].rows) || []).forEach((tr) => {
+        const map = {};
+        Array.from(tr.children).forEach((td, i) => { map[i] = td; });
+        /* rebuild by matching previous header keys is hard; use colOrder on cells */
+        const dataCells = Array.from(tr.children).filter((c) => !c.hasAttribute("data-blora-select-col"));
+        dataCells.sort((a, b) => Number(a.dataset.colOrder || 0) - Number(b.dataset.colOrder || 0));
+        const selectCell = $("td[data-blora-select-col]", tr);
+        tr.textContent = "";
+        if (selectCell) tr.appendChild(selectCell);
+        dataCells.forEach((c) => tr.appendChild(c));
+      });
+    }
+    void selectOffset;
+  };
+  const ensureColsPanel = (table) => {
+    const host = tableHost(table);
+    if (!host || !host.hasAttribute("data-blora-cols")) return null;
+    let panel = $(".blora-table-cols", host.parentElement || host);
+    if (panel) return panel;
+    const parent = host.parentElement || host;
+    const bar = ownerDoc(table).createElement("div");
+    bar.className = "blora-table-cols-bar";
+    bar.innerHTML = '<button type="button" class="blora-btn blora-btn--outline blora-btn--sm" data-blora-cols-toggle>' + escapeHTML(t("table.cols")) + "</button>";
+    panel = ownerDoc(table).createElement("div");
+    panel.className = "blora-table-cols";
+    panel.hidden = true;
+    panel.innerHTML = '<div class="blora-table-cols__list"></div><div class="blora-table-cols__foot"><button type="button" class="blora-btn blora-btn--text blora-btn--sm" data-blora-cols-reset>' + escapeHTML(t("table.colsReset")) + "</button></div>";
+    parent.insertBefore(bar, host);
+    parent.insertBefore(panel, host);
+    const paint = () => {
+      const cfg = readColsConfig(table) || defaultColsConfig(table);
+      const list = $(".blora-table-cols__list", panel);
+      list.textContent = "";
+      cfg.forEach((col, i) => {
+        const row = ownerDoc(table).createElement("label");
+        row.className = "blora-table-cols__item";
+        row.innerHTML = '<input type="checkbox"' + (col.visible ? " checked" : "") + ' data-col-key="' + escapeHTML(col.key) + '"> <span>' + escapeHTML(col.label) + "</span>" +
+          '<button type="button" class="blora-btn blora-btn--ghost blora-btn--sm" data-col-up data-i="' + i + '" aria-label="up">↑</button>' +
+          '<button type="button" class="blora-btn blora-btn--ghost blora-btn--sm" data-col-down data-i="' + i + '" aria-label="down">↓</button>';
+        list.appendChild(row);
+      });
+    };
+    on(bar, "click", (e) => {
+      if (!e.target.closest("[data-blora-cols-toggle]")) return;
+      panel.hidden = !panel.hidden;
+      if (!panel.hidden) paint();
+    });
+    on(panel, "change", (e) => {
+      const input = e.target.closest("input[data-col-key]");
+      if (!input) return;
+      const cfg = readColsConfig(table) || defaultColsConfig(table);
+      const col = cfg.find((c) => c.key === input.getAttribute("data-col-key"));
+      if (col) col.visible = input.checked;
+      writeColsConfig(table, cfg);
+      applyTableColumnLayout(table);
+    });
+    on(panel, "click", (e) => {
+      if (e.target.closest("[data-blora-cols-reset]")) {
+        writeColsConfig(table, defaultColsConfig(table));
+        paint();
+        applyTableColumnLayout(table);
+        return;
+      }
+      const up = e.target.closest("[data-col-up]");
+      const down = e.target.closest("[data-col-down]");
+      if (!up && !down) return;
+      const cfg = readColsConfig(table) || defaultColsConfig(table);
+      const i = Number((up || down).getAttribute("data-i"));
+      const j = up ? i - 1 : i + 1;
+      if (j < 0 || j >= cfg.length) return;
+      const tmp = cfg[i];
+      cfg[i] = cfg[j];
+      cfg[j] = tmp;
+      writeColsConfig(table, cfg);
+      paint();
+      applyTableColumnLayout(table);
+    });
+    return panel;
+  };
+
   const buildPaginationPages = (page, pages) => {
     if (pages <= 7) return Array.from({ length: pages }, (_, i) => i + 1);
     const set = new Set([1, pages, page, page - 1, page + 1, page - 2, page + 2]);
@@ -3595,6 +4913,7 @@
     $$("table[data-blora-table], [data-blora-table] table, .blora-table-wrap[data-blora-table] table", root).forEach((table) => {
       if (bound(table, "Table")) return;
       const host = tableHost(table);
+      const d = ownerDoc(table);
       if (!table.id) table.id = "blora-table-" + Math.random().toString(36).slice(2, 9);
       $$("th.blora-table-sort, th[data-blora-sort]", table).forEach((th) => {
         th.setAttribute("role", "columnheader");
@@ -3605,16 +4924,49 @@
           tableSort(table, key);
           syncLinkedPagination(table);
         };
-        on(th, "click", activate);
+        on(th, "click", (e) => {
+          if (e.target.closest("input, label, button")) return;
+          activate();
+        });
         on(th, "keydown", (e) => {
           if (e.key === "Enter" || e.key === " ") { e.preventDefault(); activate(); }
         });
       });
-      if (tableMode(table) !== "remote") {
+      ensureTableSelectionColumn(table);
+      ensureColsPanel(table);
+      applyTableColumnLayout(table);
+      if (host.hasAttribute("data-blora-virtual") && table._bloraRowData) {
+        bindVirtualScroll(table);
+        renderVirtualTable(table);
+      } else if (tableMode(table) !== "remote") {
         const state = tableState(table);
         if (state.sortKey) tableSort(table, isNaN(Number(state.sortKey)) ? state.sortKey : Number(state.sortKey), state.sortDir || "asc");
         else applyTablePageLocal(table);
       }
+      applyFixedColumns(table);
+      on(table, "change", (e) => {
+        const all = e.target.closest("input[data-blora-select-all]");
+        const row = e.target.closest("input[data-blora-row-select]");
+        if (all) {
+          const on = all.checked;
+          $$("input[data-blora-row-select]", table).forEach((cb) => {
+            const tr = cb.closest("tr");
+            if (tr && !tr.hidden) cb.checked = on;
+          });
+          syncTableSelection(table);
+        } else if (row) {
+          syncTableSelection(table);
+        }
+      });
+      const bulk = table._bloraBulk;
+      if (bulk) {
+        on(bulk, "click", (e) => {
+          if (e.target.closest("[data-blora-clear-selection]")) tableClearSelection(table);
+        });
+      }
+      on(ownerWin(table), "resize", () => applyFixedColumns(table));
+      syncTableEmpty(table);
+      syncTableSelection(table);
       syncLinkedPagination(table);
     });
     $$("[data-blora-pagination]", root).forEach((nav) => {
@@ -3635,12 +4987,13 @@
         page = Math.min(pages, Math.max(1, page));
         nav.dataset.page = String(page);
         const tableSel = nav.getAttribute("data-blora-table");
-        const d = ownerDoc(nav);
-        const table = tableSel ? tableRoot($(tableSel, d) || $(tableSel)) : null;
+        const docRef = ownerDoc(nav);
+        const table = tableSel ? tableRoot($(tableSel, docRef) || $(tableSel)) : null;
         if (table) {
           writeTableState(table, { page, pageSize });
           if (tableMode(table) !== "remote") applyTablePageLocal(table);
           emitTableChange(table, { page, pageSize });
+          syncTableSelection(table);
         }
         nav.dispatchEvent(new CustomEvent("blora:page-change", {
           bubbles: true,
@@ -3908,15 +5261,28 @@
     $$("[data-blora-autocomplete], .blora-autocomplete", root).forEach((wrap) => {
       if (bound(wrap, "AutoComplete")) return;
       wrap.classList.add("blora-autocomplete");
-      const input = $("input", wrap);
+      const d = ownerDoc(wrap);
+      const win = ownerWin(wrap);
+      let input = $("input", wrap);
       if (!input) return;
+      /* 输入区套一层 control，清除钮与搜索框同款定位 */
+      let control = $(".blora-autocomplete__control", wrap);
+      if (!control) {
+        control = d.createElement("div");
+        control.className = "blora-autocomplete__control";
+        input.parentNode.insertBefore(control, input);
+        control.appendChild(input);
+      }
+      ensureSearchClearButton(control, input);
       let menu = $(".blora-autocomplete__menu", wrap);
       if (!menu) {
-        menu = ownerDoc(wrap).createElement("ul");
+        menu = d.createElement("ul");
         menu.className = "blora-autocomplete__menu";
         menu.setAttribute("role", "listbox");
         wrap.appendChild(menu);
       }
+      /* 菜单锚定在 control 下方，而不是含 label 的整壳 */
+      if (menu.parentNode !== control) control.appendChild(menu);
       let options = [];
       try { options = JSON.parse(wrap.getAttribute("data-options") || "[]"); } catch (_) { options = []; }
       let active = -1;
@@ -3938,13 +5304,14 @@
         }
         list.forEach((o, i) => {
           const label = typeof o === "string" ? o : (o.label || o.value || "");
-          const li = ownerDoc(wrap).createElement("li");
+          const li = d.createElement("li");
           li.className = "blora-autocomplete__option" + (i === active ? " is-active" : "");
           li.setAttribute("role", "option");
           li.textContent = label;
           on(li, "mousedown", (e) => {
             e.preventDefault();
             input.value = label;
+            input.dispatchEvent(new win.Event("input", { bubbles: true }));
             setOpen(false);
             wrap.dispatchEvent(new CustomEvent("blora:autocomplete-select", { bubbles: true, detail: { value: label, option: o } }));
           });
@@ -3961,7 +5328,7 @@
         if (e.key === "Enter" && active >= 0 && items[active]) { e.preventDefault(); items[active].dispatchEvent(new Event("mousedown")); }
         if (e.key === "Escape") setOpen(false);
       });
-      on(ownerDoc(wrap), "click", (e) => { if (!wrap.contains(e.target)) setOpen(false); });
+      on(d, "click", (e) => { if (!wrap.contains(e.target)) setOpen(false); });
       wrap._bloraAutoCompleteSetOptions = (opts) => { options = opts || []; };
     });
   }
@@ -4206,6 +5573,261 @@
     });
   }
 
+  /* —— 论坛跟帖 · Thread：收起/展开评论（高度动画）、表情点选 —— */
+  function initThread(root) {
+    $$("[data-blora-thread], .blora-thread", root).forEach((thread) => {
+      if (bound(thread, "Thread")) return;
+      const win = ownerWin(thread);
+      const reduced = prefersReduced(thread);
+      $$("[data-blora-thread-toggle]", thread).forEach((btn) => {
+        on(btn, "click", () => {
+          const box = btn.closest("[data-blora-thread-replies]")
+            || thread.querySelector("[data-blora-thread-replies]");
+          if (!box) return;
+          let body = $("[data-blora-thread-body], .blora-post__replies-body", box);
+          if (!body) {
+            /* 兼容：无 body 时把帖子包一层再动画 */
+            body = ownerDoc(box).createElement("div");
+            body.className = "blora-post__replies-body";
+            body.setAttribute("data-blora-thread-body", "");
+            Array.from(box.children).forEach((el) => {
+              if (el !== btn && el.classList && el.classList.contains("blora-post")) body.appendChild(el);
+            });
+            box.insertBefore(body, btn);
+          }
+          const expand = btn.getAttribute("data-label-expand") || "展开评论";
+          const collapse = btn.getAttribute("data-label-collapse") || "收起评论";
+          const willCollapse = !box.classList.contains("is-collapsed");
+
+          if (reduced) {
+            box.classList.toggle("is-collapsed", willCollapse);
+            body.style.maxHeight = "";
+            btn.textContent = willCollapse ? expand : collapse;
+            btn.setAttribute("aria-expanded", String(!willCollapse));
+            return;
+          }
+
+          if (willCollapse) {
+            /* 收起：先锁当前高度再收到 0 */
+            body.style.maxHeight = body.scrollHeight + "px";
+            void body.offsetHeight;
+            box.classList.add("is-collapsed");
+            body.style.maxHeight = "0px";
+            btn.textContent = expand;
+            btn.setAttribute("aria-expanded", "false");
+          } else {
+            /* 展开：从 0 到内容高度，结束后放开 max-height */
+            box.classList.remove("is-collapsed");
+            body.style.maxHeight = "0px";
+            void body.offsetHeight;
+            body.style.maxHeight = body.scrollHeight + "px";
+            btn.textContent = collapse;
+            btn.setAttribute("aria-expanded", "true");
+            const onEnd = (e) => {
+              if (e.propertyName && e.propertyName !== "max-height") return;
+              if (!box.classList.contains("is-collapsed")) body.style.maxHeight = "none";
+              body.removeEventListener("transitionend", onEnd);
+            };
+            body.addEventListener("transitionend", onEnd);
+            /* 兜底：无 transitionend 时也放开 */
+            win.setTimeout(() => {
+              if (!box.classList.contains("is-collapsed")) body.style.maxHeight = "none";
+            }, 420);
+          }
+        });
+      });
+      $$("[data-blora-post-react]", thread).forEach((btn) => {
+        on(btn, "click", () => {
+          btn.classList.toggle("is-active");
+          btn.setAttribute("aria-pressed", String(btn.classList.contains("is-active")));
+        });
+      });
+    });
+  }
+
+  /* —— Markdown（零依赖轻量子集，先 escape 防 XSS）——
+     支持：标题、加粗/斜体/删除线、行内代码、围栏代码、链接、图片、
+     无序/有序列表、引用、分割线、段落。
+     用法：
+       <div data-blora-md>**hello**</div>
+       <div data-blora-md="**hello**"></div>
+       <div data-blora-md><script type="text/markdown">...</script></div>
+       Blora.markdown(src) / Blora.md(src)
+  */
+  const mdInline = (text) => {
+    let s = escapeHTML(text);
+    /* 图片 ![alt](url) */
+    s = s.replace(/!\[([^\]]*)\]\(([^)\s]+)(?:\s+"([^"]*)")?\)/g, (_, alt, url, title) => {
+      const t = title ? ' title="' + escapeHTML(title) + '"' : "";
+      return '<img class="blora-md__img" src="' + escapeHTML(url) + '" alt="' + escapeHTML(alt) + '"' + t + " loading=\"lazy\">";
+    });
+    /* 链接 [text](url) — 仅 http(s)/mailto/# 相对路径 */
+    s = s.replace(/\[([^\]]+)\]\(([^)\s]+)(?:\s+"([^"]*)")?\)/g, (_, label, url, title) => {
+      const u = String(url || "").trim();
+      if (!/^(https?:|mailto:|#|\/|\.\/|\.\.\/)/i.test(u)) return escapeHTML("[" + label + "](" + url + ")");
+      const t = title ? ' title="' + escapeHTML(title) + '"' : "";
+      const rel = /^https?:/i.test(u) ? ' rel="noopener noreferrer" target="_blank"' : "";
+      return '<a class="blora-md__a" href="' + escapeHTML(u) + '"' + t + rel + ">" + label + "</a>";
+    });
+    /* 行内代码 */
+    s = s.replace(/`([^`\n]+)`/g, '<code class="blora-md__code">$1</code>');
+    /* 粗斜体 / 粗体 / 斜体 / 删除线 */
+    s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, "<strong><em>$1</em></strong>");
+    s = s.replace(/___([^_\n]+)___/g, "<strong><em>$1</em></strong>");
+    s = s.replace(/\*\*([^*\n]+)\*\*/g, "<strong>$1</strong>");
+    s = s.replace(/__([^_\n]+)__/g, "<strong>$1</strong>");
+    /* 先处理 ** 再处理 *，避免 lookbehind 兼容问题 */
+    s = s.replace(/\*([^*\n]+)\*/g, "<em>$1</em>");
+    s = s.replace(/_([^_\n]+)_/g, "<em>$1</em>");
+    s = s.replace(/~~([^~\n]+)~~/g, "<del>$1</del>");
+    return s;
+  };
+  const renderMarkdown = (source, opts) => {
+    opts = opts || {};
+    const inlineOnly = !!opts.inline;
+    let src = String(source == null ? "" : source).replace(/\r\n?/g, "\n");
+    if (inlineOnly) return mdInline(src.trim());
+
+    /* 抽出围栏代码块，避免内部被解析 */
+    const fences = [];
+    src = src.replace(/```([a-zA-Z0-9_-]*)\n([\s\S]*?)```/g, (_, lang, code) => {
+      const i = fences.length;
+      const cls = lang ? ' class="language-' + escapeHTML(lang) + '"' : "";
+      fences.push("<pre class=\"blora-md__pre\"><code" + cls + ">" + escapeHTML(code.replace(/\n$/, "")) + "</code></pre>");
+      return "\n\n%%BLORA_FENCE_" + i + "%%\n\n";
+    });
+
+    const lines = src.split("\n");
+    const out = [];
+    let i = 0;
+    const flushPara = (buf) => {
+      if (!buf.length) return;
+      out.push("<p class=\"blora-md__p\">" + mdInline(buf.join("\n").trim()) + "</p>");
+      buf.length = 0;
+    };
+
+    while (i < lines.length) {
+      const line = lines[i];
+      const trimmed = line.trim();
+
+      if (!trimmed) { flushPara([]); i++; continue; }
+
+      const fenceTok = trimmed.match(/^%%BLORA_FENCE_(\d+)%%$/);
+      if (fenceTok) {
+        flushPara([]);
+        out.push(fences[Number(fenceTok[1])] || "");
+        i++;
+        continue;
+      }
+
+      if (/^(-{3,}|\*{3,}|_{3,})$/.test(trimmed)) {
+        flushPara([]);
+        out.push('<hr class="blora-md__hr">');
+        i++;
+        continue;
+      }
+
+      const heading = trimmed.match(/^(#{1,6})\s+(.+)$/);
+      if (heading) {
+        flushPara([]);
+        const lv = heading[1].length;
+        out.push("<h" + lv + " class=\"blora-md__h blora-md__h" + lv + "\">" + mdInline(heading[2]) + "</h" + lv + ">");
+        i++;
+        continue;
+      }
+
+      if (/^>\s?/.test(trimmed)) {
+        flushPara([]);
+        const q = [];
+        while (i < lines.length && /^>\s?/.test(lines[i].trim())) {
+          q.push(lines[i].trim().replace(/^>\s?/, ""));
+          i++;
+        }
+        out.push('<blockquote class="blora-md__blockquote">' + mdInline(q.join("\n")) + "</blockquote>");
+        continue;
+      }
+
+      if (/^[-*+]\s+/.test(trimmed)) {
+        flushPara([]);
+        const items = [];
+        while (i < lines.length && /^[-*+]\s+/.test(lines[i].trim())) {
+          items.push("<li>" + mdInline(lines[i].trim().replace(/^[-*+]\s+/, "")) + "</li>");
+          i++;
+        }
+        out.push('<ul class="blora-md__ul">' + items.join("") + "</ul>");
+        continue;
+      }
+
+      if (/^\d+\.\s+/.test(trimmed)) {
+        flushPara([]);
+        const items = [];
+        while (i < lines.length && /^\d+\.\s+/.test(lines[i].trim())) {
+          items.push("<li>" + mdInline(lines[i].trim().replace(/^\d+\.\s+/, "")) + "</li>");
+          i++;
+        }
+        out.push('<ol class="blora-md__ol">' + items.join("") + "</ol>");
+        continue;
+      }
+
+      const para = [];
+      while (i < lines.length) {
+        const t = lines[i].trim();
+        if (!t || /^%%BLORA_FENCE_/.test(t) || /^#{1,6}\s/.test(t) || /^>\s?/.test(t)
+          || /^[-*+]\s+/.test(t) || /^\d+\.\s+/.test(t) || /^(-{3,}|\*{3,}|_{3,})$/.test(t)) break;
+        para.push(lines[i]);
+        i++;
+      }
+      flushPara(para);
+    }
+
+    return out.join("\n") || "";
+  };
+  const markdownSourceOf = (el) => {
+    if (!el) return "";
+    const attr = el.getAttribute("data-blora-md");
+    if (attr != null && String(attr).length) return attr;
+    const srcSel = el.getAttribute("data-blora-md-src");
+    if (srcSel) {
+      const node = resolveElement(srcSel, ownerDoc(el)) || $(srcSel, ownerDoc(el));
+      if (node) return node.value != null ? node.value : (node.textContent || "");
+    }
+    const embedded = $("script[type='text/markdown'], script[type='text/plain'], template", el);
+    if (embedded) {
+      return embedded.tagName === "TEMPLATE"
+        ? (embedded.content && embedded.content.textContent) || embedded.textContent || ""
+        : (embedded.textContent || "");
+    }
+    return el.textContent || "";
+  };
+  const applyMarkdown = (el, source, opts) => {
+    if (!el) return null;
+    opts = opts || {};
+    const src = source != null ? source : markdownSourceOf(el);
+    /* 仅 data-blora-md-inline / opts.inline 走行内；标题槽走块级以便解析 # / ## */
+    const inline = opts.inline != null
+      ? !!opts.inline
+      : el.hasAttribute("data-blora-md-inline");
+    if (inline) {
+      el.innerHTML = renderMarkdown(src, { inline: true });
+    } else {
+      el.innerHTML = renderMarkdown(src, { inline: false });
+      /* 标题槽且只解析出一个 heading：剥标签，沿用 .blora-post__title 字号 */
+      if (el.classList.contains("blora-post__title")) {
+        const only = el.children.length === 1 && /^H[1-6]$/.test(el.children[0].tagName);
+        if (only) el.innerHTML = el.children[0].innerHTML;
+      }
+    }
+    el.classList.add("blora-md");
+    el.setAttribute("data-blora-md-ready", "1");
+    return el;
+  };
+  function initMarkdown(root) {
+    $$("[data-blora-md]", root).forEach((el) => {
+      if (bound(el, "Markdown")) return;
+      applyMarkdown(el);
+    });
+  }
+
   function initTypography(root) {
     $$("[data-blora-ellipsis]", root).forEach((el) => {
       el.classList.add("blora-typo-ellipsis");
@@ -4435,70 +6057,86 @@
     });
   }
 
-  /* —— Init all —— */
+  /* —— Init all ——
+     各 init 相互隔离：单个组件抛错不再拖垮整页（曾出现 TDZ 导致 OTP/滑块全挂）。 */
+  function runInit(name, fn, root) {
+    try {
+      fn(root);
+    } catch (err) {
+      if (typeof console !== "undefined" && console.error) {
+        console.error("[Blora] init failed: " + name, err);
+      }
+    }
+  }
   function init(root = doc(), options) {
     if (options) configure(options);
     if (!root) return;
     applySize(CONFIG.size);
-    initTabs(root);
-    initCollapse(root);
-    initModal(root);
-    initDrawer(root);
-    initPopover(root);
-    initTooltip(root);
-    initDropdown(root);
-    initSpeedDial(root);
-    initSidebarLayout(root);
-    initMegamenu(root);
-    initSegmented(root);
-    initSearch(root);
-    initBtnLoading(root);
-    initRate(root);
-    initSlider(root);
-    initProgress(root);
-    initTextLimit(root);
-    initTagsInput(root);
-    initNumber(root);
-    initCheckbox(root);
-    initTree(root);
-    initCarousel(root);
-    initBackTop(root);
-    initScrollSpy(root);
-    initSmoothScroll();
-    initPalettePicker(root);
-    initColorModeToggle(root);
-    initFileUpload(root);
-    initCommandPalette();
-    initDateGuard(root);
-    initOTP(root);
-    initCustomSelect(root);
-    initRange(root);
-    initTransfer(root);
-    initCascader(root);
-    initDatePicker(root);
-    initTimePicker(root);
-    initCalendar(root);
-    initColorPicker(root);
-    initCountdown(root);
-    initDiff(root);
-    initHoverGallery(root);
-    initDeck(root);
-    initTextRotate(root);
-    initShortcutHints(root);
-    initForms(root);
-    initTables(root);
-    initImagePreview(root);
-    initAffix(root);
-    initAnchor(root);
-    initTreeSelect(root);
-    initAutoComplete(root);
-    initMentions(root);
-    initTour(root);
-    initWatermark(root);
-    initSplitter(root);
-    initTypography(root);
-    initQRCode(root);
-    initCountUp(root);
+    const steps = [
+      ["tabs", initTabs],
+      ["collapse", initCollapse],
+      ["modal", initModal],
+      ["drawer", initDrawer],
+      ["popover", initPopover],
+      ["tooltip", initTooltip],
+      ["dropdown", initDropdown],
+      ["speedDial", initSpeedDial],
+      ["sidebarLayout", initSidebarLayout],
+      ["megamenu", initMegamenu],
+      ["segmented", initSegmented],
+      ["search", initSearch],
+      ["btnLoading", initBtnLoading],
+      ["rate", initRate],
+      ["slider", initSlider],
+      ["progress", initProgress],
+      ["textLimit", initTextLimit],
+      ["tagsInput", initTagsInput],
+      ["number", initNumber],
+      ["checkbox", initCheckbox],
+      ["tree", initTree],
+      ["carousel", initCarousel],
+      ["backTop", initBackTop],
+      ["scrollSpy", initScrollSpy],
+      ["smoothScroll", () => initSmoothScroll()],
+      ["palettePicker", initPalettePicker],
+      ["colorModeToggle", initColorModeToggle],
+      ["fileUpload", initFileUpload],
+      ["commandPalette", () => initCommandPalette()],
+      ["dateGuard", initDateGuard],
+      ["otp", initOTP],
+      ["customSelect", initCustomSelect],
+      ["range", initRange],
+      ["transfer", initTransfer],
+      ["cascader", initCascader],
+      ["datePicker", initDatePicker],
+      ["timePicker", initTimePicker],
+      ["calendar", initCalendar],
+      ["colorPicker", initColorPicker],
+      ["countdown", initCountdown],
+      ["diff", initDiff],
+      ["hoverGallery", initHoverGallery],
+      ["deck", initDeck],
+      ["textRotate", initTextRotate],
+      ["textFx", initTextFx],
+      ["shortcutHints", initShortcutHints],
+      ["forms", initForms],
+      ["tables", initTables],
+      ["imagePreview", initImagePreview],
+      ["affix", initAffix],
+      ["anchor", initAnchor],
+      ["treeSelect", initTreeSelect],
+      ["autoComplete", initAutoComplete],
+      ["mentions", initMentions],
+      ["tour", initTour],
+      ["watermark", initWatermark],
+      ["splitter", initSplitter],
+      ["markdown", initMarkdown],
+      ["typography", initTypography],
+      ["thread", initThread],
+      ["qrcode", initQRCode],
+      ["countUp", initCountUp],
+    ];
+    steps.forEach(([name, fn]) => runInit(name, fn, root));
     FLAGS.i18nUiReady = true;
   }
 
@@ -4520,17 +6158,31 @@
     getLocale: () => CONFIG.locale,
     locales: Object.keys(I18N_PACKS),
     validate: validateForm,
+    validateAsync: validateFormAsync,
     validateField,
+    validateFieldAsync,
     clearValidation,
+    getValues: getFormValues,
+    setValues: setFormValues,
+    registerAsyncRule,
     table: {
       sort: tableSort,
       setPage: tableSetPage,
+      setRows: tableSetRows,
+      setLoading: tableSetLoading,
+      getSelection: tableGetSelection,
+      clearSelection: tableClearSelection,
       getState: (target) => {
         const table = tableRoot(resolveElement(target) || target);
         return table ? tableState(table) : null;
       },
       renderPagination,
     },
+    select: {
+      setOptions: selectSetOptions,
+    },
+    cls,
+    classPrefix: () => CONFIG.classPrefix || "blora",
     toast,
     message,
     notify,
@@ -4539,6 +6191,11 @@
     closePreview: closeImagePreview,
     tour: runTour,
     backTop,
+    textFx,
+    textFxNames: TEXT_FX,
+    markdown: renderMarkdown,
+    md: renderMarkdown,
+    renderMarkdown: applyMarkdown,
     qrcode: (el, opts) => {
       const node = resolveElement(el);
       if (!node) return;
@@ -4550,7 +6207,7 @@
     openDrawer,
     closeDrawer,
     locale: LOCALE,
-    version: "1.0.0",
+    version: VERSION,
   };
   if (global && global.BloraConfig) configure(global.BloraConfig);
   else {

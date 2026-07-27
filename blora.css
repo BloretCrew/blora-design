@@ -300,6 +300,13 @@ body.blora-page {
 :where(body.blora-page, .blora-scope) :focus-visible,
 [class^="blora-"]:focus-visible,
 [class*=" blora-"]:focus-visible { outline: 2px solid var(--blora-primary); outline-offset: 2px; }
+/* 可搜索下拉的内联输入：焦点只体现在外层 trigger，避免内框再套一圈矩形 outline */
+.blora-select-trigger__input:focus,
+.blora-select-trigger__input:focus-visible {
+  outline: none !important;
+  outline-offset: 0 !important;
+  box-shadow: none !important;
+}
 
 /* =========================================================================
    3. 排版 · Typography
@@ -616,11 +623,97 @@ html[data-blora-size="lg"] {
 .blora-error { font-size: var(--blora-text-xs); color: var(--blora-danger); }
 .blora-error:empty,
 .blora-error[hidden] { display: none; }
+/* 浮层错误提示（data-blora-error-ui="popup"）
+   left/top 由 JS 按控件 getBoundingClientRect 写入，保证悬在框上方不重叠 */
+.blora-field { position: relative; }
+.blora-error--popup {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, calc(-100% - 10px));
+  z-index: calc(var(--blora-z-dropdown, 1000) + 5);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  width: max-content;
+  max-width: min(18rem, 92%);
+  margin: 0;
+  padding: 0.45em 0.8em;
+  border-radius: var(--blora-radius-md);
+  border: 1px solid var(--blora-border-subtle);
+  background: var(--blora-surface-1);
+  color: var(--blora-text-strong);
+  font-size: var(--blora-text-xs);
+  line-height: 1.35;
+  white-space: nowrap;
+  box-shadow: var(--blora-shadow-3);
+  pointer-events: none;
+}
+.blora-error--popup::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--blora-surface-1);
+  filter: drop-shadow(0 1px 0 var(--blora-border-subtle));
+}
+.blora-error--popup:not(:empty)::before {
+  content: "!";
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 1.15em;
+  height: 1.15em;
+  border-radius: 50%;
+  background: var(--blora-warning);
+  color: var(--blora-on-accent, #fff);
+  font-size: 0.7em;
+  font-weight: 700;
+  line-height: 1;
+}
 .blora-field .blora-input.is-success,
 .blora-field .blora-textarea.is-success,
 .blora-field .blora-select.is-success {
   border-color: color-mix(in srgb, var(--blora-success) 70%, var(--blora-border-subtle));
 }
+.blora-input.is-validating,
+.blora-textarea.is-validating,
+.blora-select.is-validating { border-color: var(--blora-primary); }
+/* 表单布局变体 */
+.blora-form--horizontal .blora-field,
+.blora-form[data-layout="horizontal"] .blora-field {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: var(--blora-space-4);
+}
+.blora-form--horizontal .blora-label,
+.blora-form[data-layout="horizontal"] .blora-label {
+  flex: 0 0 7.5rem;
+  padding-top: 0.65em;
+  margin: 0;
+}
+.blora-form--horizontal .blora-field > :not(.blora-label),
+.blora-form[data-layout="horizontal"] .blora-field > :not(.blora-label) {
+  flex: 1;
+  min-width: 0;
+}
+.blora-form--inline,
+.blora-form[data-layout="inline"] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--blora-space-3) var(--blora-space-4);
+}
+.blora-form--inline .blora-field,
+.blora-form[data-layout="inline"] .blora-field {
+  margin-bottom: 0;
+  flex: 1 1 11rem;
+  min-width: 0;
+}
+.blora-form [data-blora-when].is-when-hidden,
+.blora-form [data-blora-when][hidden] { display: none !important; }
 
 .blora-input, .blora-textarea, .blora-select {
   width: 100%;
@@ -754,7 +847,9 @@ html[data-blora-size="lg"] {
 /* —— 搜索框 —— */
 .blora-search { position: relative; }
 .blora-search .blora-input { padding-left: 2.4em; padding-right: 2.4em; }
-.blora-search .blora-input::-webkit-search-cancel-button { display: none; }
+/* 隐藏原生 search 叉，统一用 .blora-search__clear（搜索框 / AutoComplete 共用） */
+.blora-search .blora-input::-webkit-search-cancel-button,
+.blora-autocomplete .blora-input::-webkit-search-cancel-button { display: none; }
 .blora-search__icon {
   position: absolute; left: 0.6em; top: 50%; transform: translateY(-50%);
   display: inline-grid; place-items: center; width: 1.6em; height: 1.6em;
@@ -774,7 +869,8 @@ button.blora-search__icon:focus-visible { color: var(--blora-primary); outline: 
   transition: color var(--blora-dur-fast) var(--blora-ease), background var(--blora-dur-fast) var(--blora-ease), opacity var(--blora-dur-fast) var(--blora-ease);
 }
 .blora-search__clear[hidden] { display: none; }
-.blora-search:not(:focus-within) .blora-search__clear { opacity: 0; visibility: hidden; pointer-events: none; }
+.blora-search:not(:focus-within) .blora-search__clear,
+.blora-autocomplete__control:not(:focus-within) .blora-search__clear { opacity: 0; visibility: hidden; pointer-events: none; }
 .blora-search__clear:hover { color: var(--blora-text-strong); background: var(--blora-surface-3); }
 .blora-search__clear:active { transform: translateY(-50%) scale(0.92); }
 .blora-search__clear:focus-visible { color: var(--blora-primary); outline: 2px solid var(--blora-primary); outline-offset: 1px; }
@@ -832,6 +928,82 @@ button.blora-search__icon:focus-visible { color: var(--blora-primary); outline: 
 .blora-select-option.is-selected { background: var(--blora-primary-tint); color: var(--blora-primary); font-weight: 500; }
 .blora-select-option.is-disabled { color: var(--blora-text-disabled); cursor: not-allowed; }
 .blora-select-option.is-disabled:hover { background: none; }
+.blora-select-option[hidden] { display: none; }
+.blora-select-options { max-height: min(14rem, 40vh); overflow-y: auto; }
+.blora-select-empty { padding: 0.65em 0.8em; font-size: var(--blora-text-xs); color: var(--blora-text-subtle); }
+.blora-select-menu {
+  display: flex; flex-direction: column;
+  max-height: min(18rem, 50vh); overflow: hidden;
+}
+/* 可搜索：字打在触发器里，外壳仍是同一块圆角框，输入本身无边框无背景 */
+.blora-select-wrap--searchable .blora-select-trigger {
+  display: flex; align-items: center; gap: 0.25em;
+  cursor: text;
+}
+.blora-select-trigger__label {
+  flex: 1; min-width: 0;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  pointer-events: none;
+}
+.blora-select-trigger__label.is-ghost,
+.blora-select-trigger__label.is-placeholder-label {
+  color: var(--blora-text-disabled);
+}
+.blora-select-wrap--searchable.is-open:not(.blora-select-wrap--multiple) .blora-select-trigger__label {
+  display: none;
+}
+/* 关键输入的系统/全局 input 皮肤，避免套出「矩形内框」 */
+.blora-select-trigger__input,
+.blora-select-trigger__input:hover,
+.blora-select-trigger__input:focus,
+.blora-select-trigger__input:focus-visible,
+.blora-select-trigger__input:active {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: 1;
+  min-width: 2ch;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  border: 0 !important;
+  border-radius: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+  caret-color: var(--blora-primary);
+}
+.blora-select-trigger__input::placeholder {
+  color: var(--blora-text-disabled);
+  opacity: 1;
+}
+.blora-select-wrap--searchable:not(.is-open):not(.blora-select-wrap--multiple) .blora-select-trigger__input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.blora-select-wrap--searchable.is-open .blora-select-trigger__input {
+  position: relative;
+  inset: auto;
+  opacity: 1;
+  cursor: text;
+  /* 给箭头留空，避免文字顶到 chevron */
+  padding-right: 0.25em;
+}
+.blora-select-wrap--multiple.blora-select-wrap--searchable .blora-select-trigger__input {
+  flex: 1 1 4em;
+  min-width: 4em;
+  width: auto;
+  opacity: 1;
+  position: relative;
+  inset: auto;
+}
 
 /* —— 数字输入 —— */
 .blora-number { position: relative; display: inline-flex; align-items: stretch; width: 100%; }
@@ -1610,7 +1782,23 @@ html[data-blora-navbar-variant="floating"] .blora-navbar {
    11. 数据展示 · Data Display
    ========================================================================= */
 /* —— 表格 Table —— */
-.blora-table-wrap { max-width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; -webkit-overflow-scrolling: touch; border: var(--blora-border); border-radius: var(--blora-radius-lg); background: var(--blora-surface-1); }
+.blora-table-wrap {
+  position: relative;
+  max-width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; -webkit-overflow-scrolling: touch;
+  border: var(--blora-border); border-radius: var(--blora-radius-lg); background: var(--blora-surface-1);
+}
+.blora-table-wrap.is-loading { min-height: 8rem; }
+.blora-table-wrap.is-empty .blora-table { display: none; }
+.blora-table-empty { display: none; padding: var(--blora-space-8) var(--blora-space-5); }
+.blora-table-wrap.is-empty .blora-table-empty { display: flex; }
+.blora-table-loading {
+  position: absolute; inset: 0; z-index: 2;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--blora-space-3);
+  background: color-mix(in srgb, var(--blora-surface-1) 78%, transparent);
+  backdrop-filter: blur(2px);
+  color: var(--blora-text-muted); font-size: var(--blora-text-sm);
+}
+.blora-table-loading[hidden] { display: none; }
 .blora-table { width: 100%; border-collapse: collapse; font-size: var(--blora-text-sm); }
 .blora-table thead th { padding: 0.85em 1em; text-align: left; font-weight: 600; color: var(--blora-foreground); background: var(--blora-surface-2); border-bottom: 1px solid var(--blora-border-subtle); white-space: nowrap; }
 .blora-table tbody td { padding: 0.85em 1em; color: var(--blora-text-emphasis); border-bottom: 1px solid var(--blora-border-subtle); white-space: nowrap; }
@@ -1627,6 +1815,76 @@ th[data-blora-sort] {
 }
 .blora-table-sort:hover,
 th[data-blora-sort]:hover { color: var(--blora-primary); }
+
+/* 列固定 */
+.blora-table .blora-table-col--fixed-left,
+.blora-table [data-blora-fixed="left"] {
+  position: sticky; left: 0; z-index: 2;
+  background: var(--blora-surface-1);
+  box-shadow: 1px 0 0 var(--blora-border-subtle);
+}
+.blora-table thead .blora-table-col--fixed-left,
+.blora-table thead [data-blora-fixed="left"] { background: var(--blora-surface-2); z-index: 3; }
+.blora-table .blora-table-col--fixed-right,
+.blora-table [data-blora-fixed="right"] {
+  position: sticky; right: 0; z-index: 2;
+  background: var(--blora-surface-1);
+  box-shadow: -1px 0 0 var(--blora-border-subtle);
+}
+.blora-table thead .blora-table-col--fixed-right,
+.blora-table thead [data-blora-fixed="right"] { background: var(--blora-surface-2); z-index: 3; }
+.blora-table-select-col { width: 2.75rem; text-align: center; }
+.blora-table-check { justify-content: center; margin: 0; }
+.blora-table-bulk {
+  display: flex; align-items: center; gap: var(--blora-space-3); flex-wrap: wrap;
+  margin-bottom: var(--blora-space-3);
+  padding: var(--blora-space-3) var(--blora-space-4);
+  border: var(--blora-border); border-radius: var(--blora-radius-md);
+  background: var(--blora-primary-tint); color: var(--blora-text-emphasis);
+  font-size: var(--blora-text-sm);
+}
+.blora-table-bulk[hidden] { display: none; }
+.blora-table-bulk__count { font-weight: 600; color: var(--blora-primary); }
+.blora-table-cols-bar { display: flex; justify-content: flex-end; margin-bottom: var(--blora-space-2); }
+.blora-table-cols {
+  margin-bottom: var(--blora-space-3); padding: var(--blora-space-3);
+  border: var(--blora-border); border-radius: var(--blora-radius-md); background: var(--blora-surface-1);
+}
+.blora-table-cols[hidden] { display: none; }
+.blora-table-cols__list { display: flex; flex-direction: column; gap: var(--blora-space-2); }
+.blora-table-cols__item {
+  display: flex; align-items: center; gap: var(--blora-space-2);
+  font-size: var(--blora-text-sm);
+}
+.blora-table-cols__item span { flex: 1; min-width: 0; }
+.blora-table-cols__foot { margin-top: var(--blora-space-3); display: flex; justify-content: flex-end; }
+.blora-table-wrap--virtual,
+.blora-table-virtual {
+  max-height: 22rem; overflow: auto; overscroll-behavior: contain;
+}
+.blora-table-virtual .blora-table { border: 0; }
+
+/* 多选 Select 标签 */
+.blora-select-wrap--multiple .blora-select-trigger {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0.3em;
+  min-height: var(--blora-control-height, 2.65em);
+  white-space: normal; height: auto; padding-top: 0.35em; padding-bottom: 0.35em;
+}
+.blora-select-tag {
+  display: inline-flex; align-items: center; gap: 0.2em;
+  max-width: 100%; padding: 0.1em 0.4em 0.1em 0.55em;
+  border-radius: var(--blora-radius-sm); background: var(--blora-surface-3);
+  color: var(--blora-text-emphasis); font-size: var(--blora-text-xs);
+}
+.blora-select-tag__label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 8em; }
+.blora-select-tag__close {
+  border: 0; background: transparent; color: var(--blora-text-subtle);
+  cursor: pointer; line-height: 1; padding: 0 0.15em; border-radius: var(--blora-radius-xs);
+}
+.blora-select-tag__close:hover { color: var(--blora-danger); background: var(--blora-surface-2); }
+.blora-select-tag--more { background: var(--blora-primary-tint); color: var(--blora-primary); font-weight: 600; }
+.blora-select-options--virtual { position: relative; }
+
 .blora-table-sort:focus-visible,
 th[data-blora-sort]:focus-visible {
   outline: 2px solid var(--blora-primary); outline-offset: 2px;
@@ -2646,6 +2904,74 @@ html:has(body.blora-page)::-webkit-scrollbar-corner,
 }
 .blora-text-rotate__item.is-active { opacity: 1; transform: translateY(0); pointer-events: auto; }
 
+/* —— 文字效果 · Text Effects（可套任意文本）——
+   class="blora-text-fx blora-text-fx--grow" 或 data-blora-text-fx="grow"
+   播放：is-play；循环：is-loop。分字效果由 JS 写 --fx-* 物理量。 */
+.blora-text-fx {
+  --blora-fx-dur: 0.75s;
+  display: inline-block;
+  transform-origin: center center;
+  white-space: pre-wrap;
+  line-height: 1.15;
+  vertical-align: baseline;
+}
+.blora-text-fx.is-clickable { cursor: pointer; }
+.blora-text-fx__ch {
+  display: inline-block;
+  transform-origin: center center;
+  /* 避免把字距撑开 */
+  white-space: pre;
+}
+/* 整词效果 */
+.blora-text-fx--grow.is-play {
+  animation: blora-fx-grow var(--blora-fx-dur, 0.75s) cubic-bezier(0.22, 1.4, 0.36, 1) both;
+}
+.blora-text-fx--shrink.is-play {
+  animation: blora-fx-shrink var(--blora-fx-dur, 0.75s) cubic-bezier(0.22, 1.2, 0.36, 1) both;
+}
+.blora-text-fx--shake.is-play {
+  animation: blora-fx-shake 0.65s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+.blora-text-fx--nod.is-play {
+  transform-origin: 50% 0%;
+  animation: blora-fx-nod 0.7s cubic-bezier(0.34, 1.3, 0.64, 1) both;
+}
+.blora-text-fx--jitter.is-play {
+  animation: blora-fx-jitter 0.45s steps(2, end) both;
+}
+/* 分字效果：位移/旋转由 --fx-x / --fx-y / --fx-r（JS 写入）驱动 */
+.blora-text-fx--explode.is-play .blora-text-fx__ch {
+  animation: blora-fx-explode 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: calc(var(--i, 0) * 18ms);
+}
+.blora-text-fx--ripple.is-play .blora-text-fx__ch {
+  animation: blora-fx-ripple 0.7s cubic-bezier(0.22, 1.15, 0.36, 1) both;
+  animation-delay: calc(var(--i, 0) * 48ms);
+}
+.blora-text-fx--bloom.is-play .blora-text-fx__ch {
+  animation: blora-fx-bloom 0.85s cubic-bezier(0.22, 1.45, 0.36, 1) both;
+  animation-delay: calc(var(--i, 0) * 36ms + var(--fx-center-delay, 0ms));
+}
+/* 无 JS 分字时的整词回退 */
+.blora-text-fx--explode.is-play:not(:has(.blora-text-fx__ch)) {
+  animation: blora-fx-grow 0.75s cubic-bezier(0.22, 1.4, 0.36, 1) both;
+}
+.blora-text-fx--ripple.is-play:not(:has(.blora-text-fx__ch)),
+.blora-text-fx--bloom.is-play:not(:has(.blora-text-fx__ch)) {
+  animation: blora-fx-bloom 0.85s cubic-bezier(0.22, 1.45, 0.36, 1) both;
+}
+/* 循环 */
+.blora-text-fx.is-loop.blora-text-fx--grow { animation: blora-fx-grow 1.35s cubic-bezier(0.22, 1.4, 0.36, 1) infinite; }
+.blora-text-fx.is-loop.blora-text-fx--shrink { animation: blora-fx-shrink 1.35s cubic-bezier(0.22, 1.2, 0.36, 1) infinite; }
+.blora-text-fx.is-loop.blora-text-fx--shake { animation: blora-fx-shake 0.85s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite; }
+.blora-text-fx.is-loop.blora-text-fx--nod { animation: blora-fx-nod 1s cubic-bezier(0.34, 1.3, 0.64, 1) infinite; }
+.blora-text-fx.is-loop.blora-text-fx--jitter { animation: blora-fx-jitter 0.5s steps(2, end) infinite; }
+.blora-text-fx.is-loop.blora-text-fx--explode .blora-text-fx__ch,
+.blora-text-fx.is-loop.blora-text-fx--ripple .blora-text-fx__ch,
+.blora-text-fx.is-loop.blora-text-fx--bloom .blora-text-fx__ch {
+  animation-iteration-count: infinite;
+}
+
 /* =========================================================================
    进阶组件 · Advanced (Preview / Affix / Anchor / TreeSelect / …)
    ========================================================================= */
@@ -2713,6 +3039,8 @@ html:has(body.blora-page)::-webkit-scrollbar-corner,
 .blora-affix { position: relative; }
 .blora-affix.is-fixed > .blora-affix__inner {
   position: fixed; z-index: calc(var(--blora-z-sticky) + 1);
+  /* 阴影跟圆角走，避免直角阴影从卡片圆角后露出 */
+  border-radius: var(--blora-radius-lg);
   box-shadow: var(--blora-shadow-2);
 }
 
@@ -2733,8 +3061,27 @@ html:has(body.blora-page)::-webkit-scrollbar-corner,
 }
 .blora-anchor__link--l2 { padding-left: 1.25em; font-size: var(--blora-text-xs); }
 
-/* TreeSelect */
-.blora-treeselect { position: relative; display: inline-block; width: 100%; max-width: 22rem; }
+/* TreeSelect / AutoComplete / Mentions
+   align-self:start + height:fit-content：在 grid 等高拉伸时，
+   下拉 top:100% 才贴输入框，而不是贴到整列底部。 */
+.blora-treeselect,
+.blora-autocomplete,
+.blora-mentions {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-self: start;
+  width: 100%;
+  height: fit-content;
+  min-width: 0;
+}
+.blora-treeselect,
+.blora-autocomplete { max-width: 22rem; }
+.blora-mentions { max-width: 28rem; }
+.blora-treeselect > .blora-label,
+.blora-autocomplete > .blora-label,
+.blora-mentions > .blora-label { margin-bottom: var(--blora-space-2); }
+/* 面板锚定在控件（input/textarea）下方，避免 label 把 top:100% 撑开语义不清 */
 .blora-treeselect__panel {
   position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: var(--blora-z-dropdown);
   max-height: 16rem; overflow: auto; padding: var(--blora-space-2);
@@ -2760,7 +3107,8 @@ html:has(body.blora-page)::-webkit-scrollbar-corner,
 .blora-treeselect__children.is-open { display: block; }
 
 /* AutoComplete */
-.blora-autocomplete { position: relative; width: 100%; max-width: 22rem; }
+.blora-autocomplete__control { position: relative; width: 100%; }
+.blora-autocomplete__control > .blora-input { padding-right: 2.4em; }
 .blora-autocomplete__menu {
   position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: var(--blora-z-dropdown);
   max-height: 14rem; overflow: auto; margin: 0; padding: var(--blora-space-2); list-style: none;
@@ -2777,7 +3125,6 @@ html:has(body.blora-page)::-webkit-scrollbar-corner,
 .blora-autocomplete__empty { padding: 0.6em 0.65em; font-size: var(--blora-text-xs); color: var(--blora-text-subtle); }
 
 /* Mentions */
-.blora-mentions { position: relative; width: 100%; max-width: 28rem; }
 .blora-mentions__menu {
   position: absolute; left: 0; right: 0; bottom: calc(100% + 4px); z-index: var(--blora-z-dropdown);
   max-height: 12rem; overflow: auto; margin: 0; padding: var(--blora-space-2); list-style: none;
@@ -2886,20 +3233,21 @@ html:has(body.blora-page)::-webkit-scrollbar-corner,
 .blora-skeleton-list__item { display: flex; gap: var(--blora-space-3); align-items: center; }
 .blora-skeleton-list__item > .blora-skeleton--block { flex: 1; height: 0.85em; margin: 0; }
 
-/* BackTop explicit */
-.blora-backtop {
+/* BackTop 显式 class：与 FAB 同一套外观，避免第二套尺寸/阴影叠出双钮 */
+.blora-backtop:not(.blora-fab) {
   position: fixed; right: max(var(--blora-space-5), env(safe-area-inset-right, 0px));
   bottom: max(var(--blora-space-5), env(safe-area-inset-bottom, 0px));
   z-index: calc(var(--blora-z-sticky) + 10);
-  width: 2.75rem; height: 2.75rem; border: 0; border-radius: 50%;
+  width: 56px; height: 56px; border: 0; border-radius: 50%;
   display: grid; place-items: center; cursor: pointer;
   color: var(--blora-on-accent); background: var(--blora-primary);
-  box-shadow: var(--blora-shadow-3), var(--blora-shadow-primary);
-  opacity: 0; pointer-events: none; transform: scale(0.88);
+  box-shadow: var(--blora-shadow-4), var(--blora-shadow-primary);
+  opacity: 0; pointer-events: none; transform: scale(0.86);
   transition: opacity var(--blora-dur-base) var(--blora-ease), transform var(--blora-dur-base) var(--blora-ease-overshoot);
 }
-.blora-backtop.is-visible { opacity: 1; pointer-events: auto; transform: scale(1); }
-.blora-backtop:hover { transform: scale(1.08); }
+.blora-backtop:not(.blora-fab).is-visible { opacity: 1; pointer-events: auto; transform: scale(1); }
+.blora-backtop:not(.blora-fab).is-hidden { opacity: 0; pointer-events: none; transform: scale(0.86); }
+.blora-backtop:not(.blora-fab):hover { transform: scale(1.12); }
 
 /* Masonry */
 .blora-masonry {
@@ -2930,6 +3278,316 @@ html:has(body.blora-page)::-webkit-scrollbar-corner,
 }
 .blora-comment__actions button:hover { color: var(--blora-primary); }
 .blora-comment__nested { margin-top: var(--blora-space-4); padding-left: var(--blora-space-5); border-left: 2px solid var(--blora-border-subtle); display: grid; gap: var(--blora-space-4); }
+
+/* —— 论坛跟帖 · Thread / Post（比 Comment 更完整的帖子流）—— */
+.blora-thread {
+  display: flex;
+  flex-direction: column;
+  gap: var(--blora-space-3);
+  max-width: 48rem;
+}
+.blora-post {
+  position: relative;
+  padding: var(--blora-space-4) var(--blora-space-5);
+  border: var(--blora-border);
+  border-radius: var(--blora-radius-lg);
+  background: var(--blora-surface-1);
+  box-shadow: var(--blora-shadow-1);
+}
+.blora-post + .blora-post { margin-top: var(--blora-space-3); }
+/* 跟帖底色略浅于主帖，避免和 surface-3 按钮糊成一片 */
+.blora-post--reply {
+  background: color-mix(in srgb, var(--blora-surface-1) 88%, var(--blora-surface-2));
+  box-shadow: none;
+  border-color: var(--blora-border-subtle);
+}
+.blora-dark .blora-post--reply {
+  background: color-mix(in srgb, var(--blora-surface-1) 70%, var(--blora-surface-2));
+}
+.blora-post__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--blora-space-3);
+  margin-bottom: var(--blora-space-4);
+}
+.blora-post__identity {
+  display: flex;
+  align-items: center;
+  gap: var(--blora-space-3);
+  min-width: 0;
+  flex: 1 1 12rem;
+}
+.blora-post__who { min-width: 0; display: flex; flex-direction: column; gap: 0.15em; }
+.blora-post__author-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35em 0.55em;
+}
+.blora-post__author {
+  font-weight: 600;
+  font-size: var(--blora-text-sm);
+  color: var(--blora-text-strong);
+  text-decoration: none;
+}
+.blora-post__author:hover { color: var(--blora-primary); }
+.blora-post__badge {
+  font-size: var(--blora-text-xs);
+  font-weight: 600;
+  padding: 0.1em 0.45em;
+  border-radius: var(--blora-radius-xs);
+  background: color-mix(in srgb, var(--blora-warning) 22%, var(--blora-surface-1));
+  color: color-mix(in srgb, var(--blora-warning) 75%, var(--blora-text-strong));
+  border: 1px solid color-mix(in srgb, var(--blora-warning) 35%, transparent);
+}
+.blora-post__reply-to {
+  font-size: var(--blora-text-xs);
+  color: var(--blora-text-muted);
+}
+.blora-post__reply-to a {
+  color: var(--blora-primary);
+  font-weight: 500;
+}
+.blora-post__sub {
+  font-size: var(--blora-text-xs);
+  color: var(--blora-text-subtle);
+}
+.blora-post__sub time,
+.blora-post__loc {
+  font-family: var(--blora-font-mono);
+}
+.blora-post__tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.15em 0.1em;
+  margin-left: auto;
+}
+.blora-post__tools button,
+.blora-post__tools a {
+  border: 0;
+  background: none;
+  padding: 0.3em 0.55em;
+  border-radius: var(--blora-radius-xs);
+  font-size: var(--blora-text-xs);
+  color: var(--blora-text-subtle);
+  cursor: pointer;
+  text-decoration: none;
+  line-height: 1.3;
+  transition: color var(--blora-dur-fast) var(--blora-ease), background var(--blora-dur-fast) var(--blora-ease);
+}
+.blora-post__tools button:hover,
+.blora-post__tools a:hover {
+  color: var(--blora-primary);
+  background: var(--blora-primary-tint);
+}
+.blora-post__tools .is-danger:hover {
+  color: var(--blora-danger);
+  background: color-mix(in srgb, var(--blora-danger) 12%, transparent);
+}
+.blora-post__more {
+  letter-spacing: 0.05em;
+  font-weight: 700;
+}
+.blora-post__title {
+  font-family: var(--blora-font-heading);
+  font-size: var(--blora-text-xl);
+  font-weight: 600;
+  color: var(--blora-text-strong);
+  line-height: var(--blora-leading-tight);
+  margin: 0 0 var(--blora-space-3);
+}
+.blora-post__title.blora-md :is(h1, h2, h3, h4, h5, h6, p) {
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  line-height: inherit;
+}
+
+/* Markdown 渲染产物 */
+.blora-md { min-width: 0; }
+.blora-md__p { margin: 0 0 0.75em; }
+.blora-md__p:last-child { margin-bottom: 0; }
+.blora-md__h { font-family: var(--blora-font-heading); font-weight: 600; color: var(--blora-text-strong); line-height: var(--blora-leading-tight); margin: 0.9em 0 0.4em; }
+.blora-md__h:first-child { margin-top: 0; }
+.blora-md__h1 { font-size: var(--blora-text-2xl); }
+.blora-md__h2 { font-size: var(--blora-text-xl); }
+.blora-md__h3 { font-size: var(--blora-text-lg); }
+.blora-md__h4, .blora-md__h5, .blora-md__h6 { font-size: var(--blora-text-md, 1rem); }
+.blora-md__ul, .blora-md__ol { margin: 0.4em 0 0.75em; padding-left: 1.35em; }
+.blora-md__ul { list-style: disc; }
+.blora-md__ol { list-style: decimal; }
+.blora-md__ul li, .blora-md__ol li { margin: 0.2em 0; }
+.blora-md__blockquote {
+  margin: 0.5em 0 0.75em;
+  padding: 0.15em 0 0.15em 0.85em;
+  border-left: 3px solid var(--blora-primary);
+  border-radius: 0 var(--blora-radius-xs) var(--blora-radius-xs) 0;
+  color: var(--blora-text-muted);
+}
+.blora-md__pre {
+  margin: 0.5em 0 0.75em;
+  padding: var(--blora-space-3);
+  border-radius: var(--blora-radius-md);
+  background: var(--blora-code-bg, var(--blora-surface-3));
+  color: var(--blora-code-fg, var(--blora-foreground));
+  overflow-x: auto;
+  font-family: var(--blora-font-mono);
+  font-size: 0.88em;
+  line-height: 1.5;
+}
+.blora-md__code {
+  font-family: var(--blora-font-mono);
+  font-size: 0.9em;
+  padding: 0.1em 0.35em;
+  border-radius: var(--blora-radius-xs);
+  background: var(--blora-surface-3);
+  color: var(--blora-text-strong);
+}
+.blora-md__pre .blora-md__code,
+.blora-md__pre code {
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  font-size: inherit;
+}
+.blora-md__a { color: var(--blora-primary); text-decoration: underline; text-underline-offset: 0.15em; }
+.blora-md__a:hover { color: var(--blora-primary-hover); }
+.blora-md__img { max-width: 100%; height: auto; border-radius: var(--blora-radius-md); margin: 0.5em 0; }
+.blora-md__hr {
+  border: 0;
+  border-top: 1px solid var(--blora-border-subtle);
+  margin: 1em 0;
+}
+.blora-md strong { color: var(--blora-text-strong); font-weight: 600; }
+.blora-md del { opacity: 0.75; }
+/* 引用：左侧圆角竖线，无色块底 */
+.blora-post__quote {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35em 0.65em;
+  margin: 0 0 var(--blora-space-3);
+  padding: 0.15em 0 0.15em 0.9em;
+  background: transparent;
+  font-size: var(--blora-text-sm);
+  color: var(--blora-text-muted);
+}
+.blora-post__quote::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.15em;
+  bottom: 0.15em;
+  width: 3px;
+  border-radius: var(--blora-radius-full);
+  background: var(--blora-primary);
+}
+.blora-post__quote-label { font-weight: 500; color: var(--blora-text-emphasis); }
+.blora-post__quote-text { color: var(--blora-text-subtle); }
+.blora-post__body {
+  font-size: var(--blora-text-sm);
+  color: var(--blora-text-emphasis);
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+.blora-post__body p { margin: 0 0 0.75em; }
+.blora-post__body p:last-child { margin-bottom: 0; }
+.blora-post__body strong { color: var(--blora-text-strong); font-weight: 600; }
+/* 表情等底部操作：可选插槽，样式保留供落地时自行插入 */
+.blora-post__react {
+  margin-top: var(--blora-space-4);
+}
+.blora-post__react-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border: 1px solid var(--blora-border-subtle);
+  border-radius: 50%;
+  background: var(--blora-surface-1);
+  color: var(--blora-text-muted);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: border-color var(--blora-dur-fast) var(--blora-ease),
+              color var(--blora-dur-fast) var(--blora-ease),
+              background var(--blora-dur-fast) var(--blora-ease),
+              transform var(--blora-dur-fast) var(--blora-ease);
+}
+.blora-post__react-btn:hover {
+  border-color: var(--blora-primary);
+  color: var(--blora-primary);
+  background: var(--blora-primary-tint);
+  transform: scale(1.06);
+}
+.blora-post__react-btn.is-active {
+  border-color: var(--blora-primary);
+  background: var(--blora-primary-tint);
+  color: var(--blora-primary);
+}
+.blora-post__replies {
+  margin-top: var(--blora-space-5);
+  padding-top: var(--blora-space-4);
+  border-top: 1px solid var(--blora-border-subtle);
+}
+.blora-post__replies-body {
+  display: grid;
+  gap: var(--blora-space-3);
+  overflow: hidden;
+  opacity: 1;
+  transform: translateY(0);
+  max-height: none;
+  transition:
+    max-height var(--blora-dur-base) var(--blora-ease),
+    opacity var(--blora-dur-base) var(--blora-ease),
+    transform var(--blora-dur-base) var(--blora-ease),
+    margin var(--blora-dur-base) var(--blora-ease);
+}
+.blora-post__replies.is-collapsed .blora-post__replies-body {
+  max-height: 0 !important;
+  opacity: 0;
+  transform: translateY(-0.35em);
+  margin-bottom: 0;
+  pointer-events: none;
+}
+.blora-post__collapse {
+  display: block;
+  width: 100%;
+  margin-top: var(--blora-space-3);
+  padding: 0.65em 1em;
+  border: 1px solid var(--blora-border-subtle);
+  border-radius: var(--blora-radius-md);
+  background: var(--blora-surface-1);
+  color: var(--blora-primary);
+  font-size: var(--blora-text-sm);
+  font-weight: 500;
+  cursor: pointer;
+  text-align: center;
+  transition: background var(--blora-dur-fast) var(--blora-ease), color var(--blora-dur-fast) var(--blora-ease), border-color var(--blora-dur-fast) var(--blora-ease);
+}
+.blora-post__replies.is-collapsed .blora-post__collapse {
+  margin-top: 0;
+}
+.blora-post__collapse:hover {
+  background: var(--blora-primary-tint);
+  border-color: color-mix(in srgb, var(--blora-primary) 35%, var(--blora-border-subtle));
+}
+.blora-post--reply .blora-post__replies {
+  margin-top: var(--blora-space-4);
+  padding-top: var(--blora-space-3);
+}
+@media (prefers-reduced-motion: reduce) {
+  .blora-post__replies-body {
+    transition: none;
+  }
+}
+@media (max-width: 560px) {
+  .blora-post { padding: var(--blora-space-3) var(--blora-space-4); }
+  .blora-post__tools { width: 100%; justify-content: flex-start; margin-left: 0; }
+}
 
 /* Stat count-up */
 .blora-stat__value[data-blora-countup] { font-variant-numeric: tabular-nums; }
@@ -3673,6 +4331,83 @@ html:has(body.blora-page)::-webkit-scrollbar-corner,
 @keyframes blora-toast-out   { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-12px); } }
 @keyframes blora-tab-panel-in { from { opacity: 0; } to { opacity: 1; } }
 
+/* 文字效果 · 整词 */
+@keyframes blora-fx-grow {
+  0%   { transform: scale(0.15); opacity: 0; }
+  55%  { transform: scale(1.32); opacity: 1; }
+  75%  { transform: scale(0.94); }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes blora-fx-shrink {
+  0%   { transform: scale(2.1); opacity: 0; }
+  55%  { transform: scale(0.78); opacity: 1; }
+  78%  { transform: scale(1.06); }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes blora-fx-shake {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0); }
+  12% { transform: translate3d(-0.14em, 0, 0) rotate(-5deg); }
+  24% { transform: translate3d(0.16em, 0, 0) rotate(5deg); }
+  36% { transform: translate3d(-0.12em, 0, 0) rotate(-4deg); }
+  48% { transform: translate3d(0.12em, 0, 0) rotate(3deg); }
+  60% { transform: translate3d(-0.08em, 0, 0) rotate(-2deg); }
+  72% { transform: translate3d(0.06em, 0, 0) rotate(1deg); }
+  84% { transform: translate3d(-0.03em, 0, 0) rotate(0); }
+}
+@keyframes blora-fx-nod {
+  0%, 100% { transform: rotate(0deg); }
+  20% { transform: rotate(14deg); }
+  40% { transform: rotate(-10deg); }
+  60% { transform: rotate(7deg); }
+  80% { transform: rotate(-3deg); }
+}
+@keyframes blora-fx-jitter {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  20% { transform: translate3d(-0.06em, 0.04em, 0); }
+  40% { transform: translate3d(0.07em, -0.03em, 0); }
+  60% { transform: translate3d(-0.05em, -0.05em, 0); }
+  80% { transform: translate3d(0.04em, 0.03em, 0); }
+}
+/* 分字：--fx-x / --fx-y 单位 em，--fx-r 为 deg（由 JS 设置） */
+@keyframes blora-fx-explode {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.55) rotate(0deg);
+    opacity: 0;
+  }
+  22% { opacity: 1; }
+  48% {
+    transform:
+      translate3d(var(--fx-x, 0.8em), var(--fx-y, -0.9em), 0)
+      scale(1.08)
+      rotate(var(--fx-r, 18deg));
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+@keyframes blora-fx-ripple {
+  0%   { transform: translate3d(0, 0.55em, 0) scale(0.88); opacity: 0; }
+  35%  { transform: translate3d(0, -0.22em, 0) scale(1.06); opacity: 1; }
+  65%  { transform: translate3d(0, 0.08em, 0) scale(0.98); opacity: 1; }
+  100% { transform: translate3d(0, 0, 0) scale(1); opacity: 1; }
+}
+@keyframes blora-fx-bloom {
+  0% {
+    transform: translate3d(0, 0.2em, 0) scale(0) rotate(var(--fx-r, -16deg));
+    opacity: 0;
+  }
+  60% {
+    transform: translate3d(0, 0, 0) scale(1.12) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
 /* —— 减少动效偏好 ——
    注意：不要给 * 写 scroll-behavior，会干扰 JS scrollIntoView/scrollTo 的 smooth。
    滚动是否平滑由 blora.js 的 prefers-reduced-motion 判断。 */
@@ -3685,4 +4420,35 @@ html:has(body.blora-page)::-webkit-scrollbar-corner,
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* =========================================================================
+   RTL · dir=rtl
+   ========================================================================= */
+[dir="rtl"] .blora-table thead th,
+[dir="rtl"] .blora-table tbody td { text-align: right; }
+[dir="rtl"] .blora-select-trigger { padding-left: 2.4em; padding-right: 0.85em; }
+[dir="rtl"] .blora-select-trigger::after { left: 0.85em; right: auto; }
+[dir="rtl"] .blora-search .blora-input { padding-left: 2.4em; padding-right: 2.4em; }
+[dir="rtl"] .blora-search__icon { left: auto; right: 0.6em; }
+[dir="rtl"] .blora-search__clear { right: auto; left: 0.6em; }
+[dir="rtl"] .blora-fab:not(.blora-fab--static),
+[dir="rtl"] .blora-backtop:not(.blora-fab) {
+  right: auto;
+  left: max(var(--blora-space-5), env(safe-area-inset-left, 0px));
+}
+[dir="rtl"] .blora-drawer__panel--right { right: auto; left: 0; }
+[dir="rtl"] .blora-form--horizontal .blora-label,
+[dir="rtl"] .blora-form[data-layout="horizontal"] .blora-label { text-align: left; }
+[dir="rtl"] .blora-breadcrumb { direction: rtl; }
+[dir="rtl"] .blora-pagination { direction: rtl; }
+[dir="rtl"] .blora-table .blora-table-col--fixed-left,
+[dir="rtl"] .blora-table [data-blora-fixed="left"] {
+  left: auto; right: 0;
+  box-shadow: -1px 0 0 var(--blora-border-subtle);
+}
+[dir="rtl"] .blora-table .blora-table-col--fixed-right,
+[dir="rtl"] .blora-table [data-blora-fixed="right"] {
+  right: auto; left: 0;
+  box-shadow: 1px 0 0 var(--blora-border-subtle);
 }

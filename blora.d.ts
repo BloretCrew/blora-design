@@ -28,6 +28,9 @@ declare namespace Blora {
     portalRoot?: string | Element | null;
     colorModeStorageKey?: string;
     paletteStorageKey?: string;
+    /** 动态生成 class 前缀，默认 blora */
+    classPrefix?: string;
+    tableColsStorageKey?: string;
     size?: ControlSize;
     validateOn?: string;
     tablePageSize?: number;
@@ -114,8 +117,16 @@ declare namespace Blora {
   interface TableAPI {
     sort(target: ElementTarget, keyOrIndex: string | number, dir?: SortDir): TableState | null;
     setPage(target: ElementTarget, page: number): TableState | null;
+    setRows(target: ElementTarget, rows: unknown[], options?: { keys?: string[]; page?: number }): TableState | null;
+    setLoading(target: ElementTarget, loading: boolean): TableState | null;
+    getSelection(target: ElementTarget): Element[];
+    clearSelection(target: ElementTarget): void;
     getState(target: ElementTarget): TableState | null;
     renderPagination(nav: Element): void;
+  }
+
+  interface SelectAPI {
+    setOptions(target: ElementTarget, options: Array<string | { value?: string; label?: string; disabled?: boolean; selected?: boolean }>): Element | null;
   }
 
   interface API {
@@ -125,6 +136,10 @@ declare namespace Blora {
     readonly locales: string[];
     readonly palettes: Readonly<Record<string, PalettePreset>>;
     readonly table: TableAPI;
+    readonly select: SelectAPI;
+    /** 拼接 classPrefix：Blora.cls("table", "table--striped") */
+    cls(...parts: string[]): string;
+    classPrefix(): string;
     configure(options?: Options): Config;
     setOptions(options?: Options): Config;
     getConfig(): Config;
@@ -141,13 +156,56 @@ declare namespace Blora {
     setLocale(code: string, pack?: LocalePack): string;
     getLocale(): string;
     validate(form: ElementTarget): FormValidationResult;
+    validateAsync(form: ElementTarget): Promise<FormValidationResult>;
     validateField(field: Element): FieldValidationResult;
+    validateFieldAsync(field: Element): Promise<FieldValidationResult>;
     clearValidation(form: ElementTarget): void;
+    getValues(form: ElementTarget): Record<string, unknown>;
+    setValues(form: ElementTarget, values: Record<string, unknown>): Record<string, unknown>;
+    registerAsyncRule(name: string, fn: (value: string, field: Element) => unknown): void;
     toast(options: string | ToastOptions): void;
+    /** toast 别名 */
+    message(options: string | ToastOptions): void;
+    notify(options: string | NotifyOptions): { close: () => void; el: Element } | null;
+    confirm(options?: ConfirmOptions): Promise<boolean>;
+    preview(target: ElementTarget | Element[], options?: Record<string, unknown>): void;
+    closePreview(): void;
+    tour(options?: Record<string, unknown>): void;
+    backTop(options?: { el?: ElementTarget; showAfter?: number; target?: string }): Element | null;
+    qrcode(target: ElementTarget, options?: { text?: string; value?: string; size?: number }): void;
     openModal(target: ElementTarget): void;
     closeModal(target: ElementTarget): void;
     openDrawer(target: ElementTarget): void;
     closeDrawer(target: ElementTarget): void;
+    /** 文字效果名：grow | shrink | shake | nod | explode | ripple | bloom | jitter */
+    readonly textFxNames: readonly string[];
+    /** 对任意文本节点播放文字效果 */
+    textFx(target: ElementTarget, name?: string, options?: { play?: boolean; loop?: boolean }): Element | null;
+    /** Markdown → HTML（字符串） */
+    markdown(source: string, options?: { inline?: boolean }): string;
+    md(source: string, options?: { inline?: boolean }): string;
+    /** 把 Markdown 渲染进元素（data-blora-md） */
+    renderMarkdown(el: ElementTarget, source?: string, options?: { inline?: boolean }): Element | null;
+  }
+
+  interface NotifyOptions {
+    type?: "info" | "success" | "warning" | "danger";
+    title?: string;
+    description?: string;
+    message?: string;
+    duration?: number;
+    placement?: string;
+  }
+
+  interface ConfirmOptions {
+    title?: string;
+    content?: string;
+    message?: string;
+    okText?: string;
+    cancelText?: string;
+    danger?: boolean;
+    onOk?: () => void;
+    onCancel?: () => void;
   }
 }
 
