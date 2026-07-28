@@ -6,11 +6,7 @@
 **包名** `@bloret-crew/blora-design` · **版本** `1.0.0` · **许可** Apache-2.0  
 **仓库** [BloretCrew/blora-design](https://github.com/BloretCrew/blora-design) · **作者** [RhedarLiu](https://github.com/RhedarLiu)
 
-```
-底色 → 沉稳之底    文字 → 结构之骨    主色 → 点睛之笔
-```
-
-打开本仓库的 `index.html`，即可看到与线上一致的设计基线与全部组件演示。
+打开本仓库的 `index.html`，可浏览设计令牌与全部组件演示。
 
 ---
 
@@ -62,7 +58,7 @@ Blora Design 不是 React/Vue 组件库，而是：
 <body class="blora-page blora-scope">
   <div class="blora-container blora-stack">
     <h1 class="blora-h1">你好，Blora Design</h1>
-    <p class="blora-text-lead">令牌驱动的界面。</p>
+    <p class="blora-text-lead">示例页面</p>
     <div class="blora-row">
       <button type="button" class="blora-btn blora-btn--primary">主操作</button>
       <button type="button" class="blora-btn blora-btn--outline">次操作</button>
@@ -110,18 +106,18 @@ cp node_modules/@bloret-crew/blora-design/blora.{css,js,d.ts} your-project/
    - UI / 标题：`Noto Sans SC`（或令牌默认的系统无衬线栈）  
    - 代码：`JetBrains Mono`
 
-3. **节制用色**  
-   - 约 90% 底色与文字，主色 ≤ 5%，状态色 ≤ 5%  
-   - 改色请覆写 `--blora-*` 或 `Blora.applyPalette('ocean')`，不要给组件写死 `#hex`
+3. **颜色**  
+   - 底色与文字占大部分，主色 / 状态色少用  
+   - 改色请覆写 `--blora-*` 或 `Blora.applyPalette('ocean')`，不要在组件上写死 `#hex`
 
 4. **圆角 / 间距 / 阴影**  
    - 只用 `--blora-space-*`、`--blora-radius-*`、`--blora-shadow-*`  
-   - 控件默认偏「胶囊」曲率，卡片用大圆角
+   - 表单控件默认全圆角，卡片用较大圆角
 
 5. **交互控件一律使用 Blora Design 的 class**（`blora-*`）  
-   见下方「禁止混用原生」与 [使用与迁移指南](./docs/guide.md)。
+   见 [使用与迁移指南](./docs/guide.md) 中的「禁止半套原生」。
 
-更完整的哲学与令牌表见 [`docs/standards.md`](./docs/standards.md)。
+完整令牌与规范见 [`docs/standards.md`](./docs/standards.md)。
 
 ---
 
