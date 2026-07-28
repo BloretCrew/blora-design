@@ -11,3 +11,7 @@ _verify_tmp/
 # Internal checklist — keep local, do not publish
 docs/IMPROVEMENTS.md
 
+
+# Local AI migration prompt — do not publish
+docs/migrate-bbs-prompt.md
+
