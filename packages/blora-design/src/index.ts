@@ -31,3 +31,11 @@ export {
   type BloraDialogOpenDetail,
   type BloraDialogCloseDetail,
 } from "./components/dialog/index.js";
+
+// Select component
+export {
+  BloraSelect,
+  defineBloraSelect,
+  BLORA_SELECT_TAG,
+  type BloraOptionData,
+} from "./components/select/index.js";
