@@ -16,6 +16,15 @@ coverage/
 # Temporary files
 _verify_tmp/
 *.tmp
+*.zip
+
+# Local agent tooling and private working documents
+.agents/
+docs/IMPROVEMENTS.md
+docs/migrate-bbs-prompt.md
+
+# Generated token outputs
+packages/tokens/generated/
 
 # OS files
 .DS_Store

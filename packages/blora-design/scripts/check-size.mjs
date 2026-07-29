@@ -1,24 +1,48 @@
-/**
- * Size checker stub.
- * Will enforce package size budgets from the spec:
- * - Tokens CSS: <= 8 KB gzip
- * - Foundations CSS: <= 10 KB gzip
- * - Button CSS + helper: <= 3 KB gzip
- * - Select JS: <= 15 KB gzip
- * - Dialog JS: <= 10 KB gzip
- * - Stable components JS total: <= 80 KB gzip
- * - Stable components CSS total: <= 70 KB gzip
- */
-import { existsSync, statSync } from "node:fs";
-import { gzipSync } from "node:zlib";
+import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { gzipSync } from "node:zlib";
 
 const distDir = resolve(import.meta.dirname, "..", "dist");
 
+const budgets = [
+  { file: "tokens.css", gzipBytes: 8 * 1024 },
+  { file: "tokens.dark.css", gzipBytes: 4 * 1024 },
+];
+
 if (!existsSync(distDir)) {
-  console.log("[size] dist/ does not exist yet. Build first.");
-  process.exit(0);
+  console.error("[size] dist/ does not exist. Run the build before size checks.");
+  process.exit(1);
 }
 
-console.log("[size] Package size check (stub - budgets will be enforced in Phase 2+)");
-console.log("[size] OK");
+let failures = 0;
+for (const budget of budgets) {
+  const path = resolve(distDir, budget.file);
+  if (!existsSync(path)) {
+    console.error(`[size] Missing required artifact: ${budget.file}`);
+    failures += 1;
+    continue;
+  }
+
+  const source = readFileSync(path);
+  const gzipBytes = gzipSync(source, { level: 9 }).length;
+  const status = gzipBytes <= budget.gzipBytes ? "OK" : "OVER";
+  console.log(
+    `[size] ${budget.file}: ${gzipBytes} B gzip / ${budget.gzipBytes} B budget (${status})`,
+  );
+  if (gzipBytes > budget.gzipBytes) failures += 1;
+}
+
+const themesPath = resolve(distDir, "tokens.themes.css");
+if (existsSync(themesPath)) {
+  const gzipBytes = gzipSync(readFileSync(themesPath), { level: 9 }).length;
+  console.log(
+    `[size] tokens.themes.css: ${gzipBytes} B gzip (optional theme bundle, reported separately)`,
+  );
+}
+
+if (failures > 0) {
+  console.error(`[size] ${failures} artifact(s) exceeded budget or were missing.`);
+  process.exit(1);
+}
+
+console.log("[size] All active Phase 2 budgets passed.");

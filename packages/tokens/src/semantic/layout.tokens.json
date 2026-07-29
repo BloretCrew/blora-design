@@ -1,0 +1,38 @@
+{
+  "$description": "Semantic layout mappings. Z-index, borders, control metrics, texture.",
+  "z": {
+    "base": { "$type": "number", "$value": 1 },
+    "sticky": { "$type": "number", "$value": 100 },
+    "dropdown": { "$type": "number", "$value": 1000 },
+    "drawer": { "$type": "number", "$value": 1100 },
+    "modal": { "$type": "number", "$value": 1200 },
+    "toast": { "$type": "number", "$value": 1300 }
+  },
+  "border": {
+    "subtle": {
+      "$type": "border",
+      "$value": "1px solid var(--blora-color-border-subtle)"
+    },
+    "strong": {
+      "$type": "border",
+      "$value": "1px solid var(--blora-color-text-subtle)"
+    },
+    "primary": {
+      "$type": "border",
+      "$value": "1px solid var(--blora-color-action-primary-default)"
+    }
+  },
+  "control": {
+    "height": { "$type": "dimension", "$value": "{primitive.control.height}" },
+    "padX": { "$type": "dimension", "$value": "{primitive.control.padX}" },
+    "radius": { "$type": "dimension", "$value": "{primitive.control.radius}" }
+  },
+  "range": {
+    "trackSize": { "$type": "dimension", "$value": "{primitive.range.trackSize}" },
+    "thumbSize": { "$type": "dimension", "$value": "{primitive.range.thumbSize}" }
+  },
+  "texture": {
+    "background": { "$type": "other", "$value": "none" },
+    "overlay": { "$type": "other", "$value": "none" }
+  }
+}

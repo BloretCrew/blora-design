@@ -28,6 +28,7 @@
     "docs/refactor/**",
     "docs/migrate-bbs-prompt.md",
     "docs/IMPROVEMENTS.md",
+    "docs/migration/**",
     "README.md",
   ],
 }

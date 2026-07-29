@@ -15,13 +15,17 @@
     "url": "https://github.com/BloretCrew/blora-design/issues"
   },
   "sideEffects": [
-    "**/*.css"
+    "./dist/*.css"
   ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./tokens.css": "./dist/tokens.css",
+    "./tokens.dark.css": "./dist/tokens.dark.css",
+    "./tokens.themes.css": "./dist/tokens.themes.css",
+    "./token-manifest.json": "./dist/token-manifest.json",
     "./package.json": "./package.json"
   },
   "main": "./dist/index.js",
@@ -38,8 +42,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run --config vitest.config.ts",
     "test:browser": "playwright test --config ../../playwright.config.ts",
-    "build": "tsc && vite build",
-    "build:tokens": "node scripts/build-tokens.mjs",
+    "build": "node ../tokens/scripts/build-tokens.mjs && vite build && tsc --emitDeclarationOnly && node scripts/copy-tokens.mjs",
+    "build:tokens": "node ../tokens/scripts/build-tokens.mjs",
     "size": "node scripts/check-size.mjs",
     "pack:test": "node scripts/pack-test.mjs",
     "storybook": "storybook dev -p 6006",

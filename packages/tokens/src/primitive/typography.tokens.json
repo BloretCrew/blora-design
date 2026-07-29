@@ -1,0 +1,41 @@
+{
+  "$description": "Primitive typography values from Blora Design 1.x.",
+  "primitive": {
+    "font": {
+      "heading": {
+        "$type": "fontFamily",
+        "$value": "Avenir, \"Avenir Next\", \"Segoe UI\", \"Noto Sans SC\", sans-serif"
+      },
+      "sans": {
+        "$type": "fontFamily",
+        "$value": "Avenir, \"Avenir Next\", \"Segoe UI\", \"Noto Sans SC\", sans-serif"
+      },
+      "mono": {
+        "$type": "fontFamily",
+        "$value": "\"JetBrains Mono\", \"Fira Code\", \"SF Mono\", Consolas, monospace"
+      }
+    }
+  },
+  "text": {
+    "xs": { "$type": "dimension", "$value": "0.75rem" },
+    "sm": { "$type": "dimension", "$value": "0.875rem" },
+    "base": { "$type": "dimension", "$value": "1rem" },
+    "lg": { "$type": "dimension", "$value": "1.125rem" },
+    "xl": { "$type": "dimension", "$value": "1.375rem" },
+    "2xl": { "$type": "dimension", "$value": "1.75rem" },
+    "3xl": { "$type": "dimension", "$value": "2.25rem" },
+    "4xl": { "$type": "dimension", "$value": "3rem" },
+    "5xl": { "$type": "dimension", "$value": "4rem" }
+  },
+  "leading": {
+    "tight": { "$type": "number", "$value": 1.25 },
+    "normal": { "$type": "number", "$value": 1.6 },
+    "loose": { "$type": "number", "$value": 1.85 }
+  },
+  "tracking": {
+    "tight": { "$type": "dimension", "$value": "0" },
+    "normal": { "$type": "dimension", "$value": "0" },
+    "wide": { "$type": "dimension", "$value": "0.04em" },
+    "caps": { "$type": "dimension", "$value": "0.18em" }
+  }
+}

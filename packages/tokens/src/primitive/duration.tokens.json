@@ -1,0 +1,12 @@
+{
+  "$description": "Primitive duration values from Blora Design 1.x.",
+  "primitive": {
+    "duration": {
+      "fast": { "$type": "duration", "$value": "160ms" },
+      "base": { "$type": "duration", "$value": "260ms" },
+      "slow": { "$type": "duration", "$value": "420ms" },
+      "emphasis": { "$type": "duration", "$value": "700ms" },
+      "tabsFade": { "$type": "duration", "$value": "240ms" }
+    }
+  }
+}

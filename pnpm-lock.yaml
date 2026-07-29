@@ -99,6 +99,12 @@ importers:
         specifier: workspace:*
         version: 'link:'
 
+  packages/tokens:
+    devDependencies:
+      '@bloret-crew/blora-design':
+        specifier: workspace:*
+        version: link:../blora-design
+
 packages:
 
   '@adobe/css-tools@4.5.0':

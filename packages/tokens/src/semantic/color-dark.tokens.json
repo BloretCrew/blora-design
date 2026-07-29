@@ -1,0 +1,75 @@
+{
+  "$description": "Semantic overrides for the default Coral dark mode, extracted from the frozen 1.x baseline.",
+  "color": {
+    "surface": {
+      "canvas": { "$type": "color", "$value": "#17161C" },
+      "default": { "$type": "color", "$value": "#222128" },
+      "raised": { "$type": "color", "$value": "#2C2931" },
+      "sunken": { "$type": "color", "$value": "#3A363F" }
+    },
+    "text": {
+      "primary": { "$type": "color", "$value": "#F8F2F4" },
+      "secondary": { "$type": "color", "$value": "#ECE5E8" },
+      "emphasis": { "$type": "color", "$value": "#CDC3C8" },
+      "muted": { "$type": "color", "$value": "#A1979D" },
+      "subtle": { "$type": "color", "$value": "#786F75" },
+      "disabled": { "$type": "color", "$value": "#5A5358" },
+      "onAccent": { "$type": "color", "$value": "#25181C" },
+      "onMedia": { "$type": "color", "$value": "#FFFFFF" }
+    },
+    "border": {
+      "subtle": { "$type": "color", "$value": "#413C41" }
+    },
+    "action": {
+      "primary": {
+        "default": { "$type": "color", "$value": "#D18A94" },
+        "hover": { "$type": "color", "$value": "#E0A3AB" },
+        "soft": { "$type": "color", "$value": "#B36F79" }
+      }
+    },
+    "status": {
+      "danger": { "$type": "color", "$value": "#D27779" },
+      "neutral": { "$type": "color", "$value": "#99939E" },
+      "neutralSoft": { "$type": "color", "$value": "#B5B0B9" },
+      "info": { "$type": "color", "$value": "#919AB4" },
+      "infoSoft": { "$type": "color", "$value": "#ADB3C7" },
+      "success": { "$type": "color", "$value": "#86A399" },
+      "successSoft": { "$type": "color", "$value": "#A3B8B0" },
+      "support": { "$type": "color", "$value": "#91A3A0" },
+      "warning": { "$type": "color", "$value": "#BBA27B" },
+      "secondary": { "$type": "color", "$value": "#B08A9A" }
+    },
+    "overlay": {
+      "modal": { "$type": "color", "$value": "rgba(7,6,10,0.72)" },
+      "drawer": { "$type": "color", "$value": "rgba(7,6,10,0.66)" }
+    },
+    "code": {
+      "background": { "$type": "color", "$value": "#0E0D12" },
+      "foreground": { "$type": "color", "$value": "#F8F2F4" }
+    },
+    "banner": {
+      "background": { "$type": "color", "$value": "#1D191E" },
+      "foreground": { "$type": "color", "$value": "#FFFFFF" }
+    },
+    "tooltip": {
+      "background": { "$type": "color", "$value": "#0E0D12" }
+    }
+  },
+  "shadow": {
+    "1": { "$type": "shadow", "$value": "0 1px 3px rgba(0,0,0,0.3)" },
+    "2": { "$type": "shadow", "$value": "0 4px 12px rgba(0,0,0,0.36)" },
+    "3": { "$type": "shadow", "$value": "0 12px 30px rgba(0,0,0,0.44)" },
+    "4": { "$type": "shadow", "$value": "0 24px 56px rgba(0,0,0,0.54)" },
+    "inset": {
+      "$type": "shadow",
+      "$value": "inset 0 1px 0 rgba(255,255,255,0.04), inset 0 -1px 0 rgba(0,0,0,0.3)"
+    }
+  },
+  "texture": {
+    "background": {
+      "$type": "other",
+      "$value": "radial-gradient(ellipse at 20% 30%, rgba(255,255,255,0.012) 0%, transparent 50%), radial-gradient(ellipse at 80% 70%, rgba(255,255,255,0.008) 0%, transparent 55%)"
+    },
+    "overlay": { "$type": "other", "$value": "none" }
+  }
+}

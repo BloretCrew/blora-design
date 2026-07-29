@@ -107,6 +107,28 @@ arethetypeswrong 默认 strict profile 会将 ESM-only 包的 `cjs-resolves-to-e
 
 ---
 
+## ADR-006: Token primitive 层使用 palette-specific 命名而非通用色阶
+
+**日期**：2026-07-29
+**状态**：已采纳
+
+### 背景
+
+Spec §7.2 的示例使用 `color.coral.600` 这样的色阶命名作为 primitive token。但 1.x 的 `blora.css` 没有使用色阶系统，而是直接用语义名称（如 `--blora-background: #FAF7F8`）。
+
+### 决策
+
+Primitive 层使用与 1.x token 名称对应的 palette-specific 命名（如 `color.coral.background`、`color.coral.primary`），而不是通用色阶。Semantic 层通过引用 primitive 层实现语义映射。每个 theme 文件覆写 primitive 层的颜色值。
+
+### 理由
+
+- 精确映射 1.x 事实来源，不引入 1.x 不存在的色阶概念
+- theme 切换时只覆写 primitive 颜色值，semantic 引用自动跟随
+- 避免人为推断 1.x 的单一 hex 值属于哪个色阶
+- Phase 8 兼容层可以直接将 `--blora-background` 映射到 `--blora-color-coral-background`
+
+---
+
 ## 待决策
 
 - [ ] 视觉回归测试框架的具体截图策略（Playwright snapshot vs 第三方工具）

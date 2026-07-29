@@ -1,0 +1,183 @@
+{
+  "$description": "Cinnabar palette extracted from the frozen 1.x baseline.",
+  "light": {
+    "color": {
+      "coral": {
+        "background": {
+          "$type": "color",
+          "$value": "#F8F4EC"
+        },
+        "surface1": {
+          "$type": "color",
+          "$value": "#FBF8F0"
+        },
+        "surface2": {
+          "$type": "color",
+          "$value": "#F2EEE2"
+        },
+        "surface3": {
+          "$type": "color",
+          "$value": "#E9E3D2"
+        },
+        "textStrong": {
+          "$type": "color",
+          "$value": "#1C1A17"
+        },
+        "foreground": {
+          "$type": "color",
+          "$value": "#2D2A24"
+        },
+        "textEmphasis": {
+          "$type": "color",
+          "$value": "#4A453D"
+        },
+        "textMuted": {
+          "$type": "color",
+          "$value": "#6B6358"
+        },
+        "textSubtle": {
+          "$type": "color",
+          "$value": "#9B9489"
+        },
+        "textDisabled": {
+          "$type": "color",
+          "$value": "#B8B0A2"
+        },
+        "borderSubtle": {
+          "$type": "color",
+          "$value": "#D8D2C4"
+        },
+        "primary": {
+          "$type": "color",
+          "$value": "#A0392E"
+        },
+        "primaryHover": {
+          "$type": "color",
+          "$value": "#7E2A22"
+        },
+        "primarySoft": {
+          "$type": "color",
+          "$value": "#C25D52"
+        },
+        "danger": {
+          "$type": "color",
+          "$value": "#C44536"
+        },
+        "accentNeutral": {
+          "$type": "color",
+          "$value": "#8B6F47"
+        },
+        "accentNeutralSoft": {
+          "$type": "color",
+          "$value": "#B59B78"
+        },
+        "info": {
+          "$type": "color",
+          "$value": "#3D4A5C"
+        },
+        "infoSoft": {
+          "$type": "color",
+          "$value": "#6B7889"
+        },
+        "success": {
+          "$type": "color",
+          "$value": "#5A7B6B"
+        },
+        "successSoft": {
+          "$type": "color",
+          "$value": "#8AA89A"
+        },
+        "support": {
+          "$type": "color",
+          "$value": "#7B9B7E"
+        },
+        "warning": {
+          "$type": "color",
+          "$value": "#B89968"
+        },
+        "accentSecondary": {
+          "$type": "color",
+          "$value": "#D4A574"
+        },
+        "onAccent": {
+          "$type": "color",
+          "$value": "#FBF8F0"
+        },
+        "overlayModal": {
+          "$type": "color",
+          "$value": "rgba(28,26,23,0.5)"
+        },
+        "overlayDrawer": {
+          "$type": "color",
+          "$value": "rgba(28,26,23,0.45)"
+        }
+      }
+    }
+  },
+  "dark": {
+    "color": {
+      "coral": {
+        "background": {
+          "$type": "color",
+          "$value": "#1B1916"
+        },
+        "surface1": {
+          "$type": "color",
+          "$value": "#25221D"
+        },
+        "surface2": {
+          "$type": "color",
+          "$value": "#2C2823"
+        },
+        "surface3": {
+          "$type": "color",
+          "$value": "#36322B"
+        },
+        "textStrong": {
+          "$type": "color",
+          "$value": "#F0EBDE"
+        },
+        "foreground": {
+          "$type": "color",
+          "$value": "#FAF6EC"
+        },
+        "textEmphasis": {
+          "$type": "color",
+          "$value": "#D5CCB8"
+        },
+        "textMuted": {
+          "$type": "color",
+          "$value": "#A89F8C"
+        },
+        "textSubtle": {
+          "$type": "color",
+          "$value": "#7D7565"
+        },
+        "textDisabled": {
+          "$type": "color",
+          "$value": "#5C5547"
+        },
+        "borderSubtle": {
+          "$type": "color",
+          "$value": "#3F3A32"
+        },
+        "codeBg": {
+          "$type": "color",
+          "$value": "#14110D"
+        },
+        "codeFg": {
+          "$type": "color",
+          "$value": "#E8DFC8"
+        },
+        "bannerBg": {
+          "$type": "color",
+          "$value": "#2A2520"
+        },
+        "tooltipBg": {
+          "$type": "color",
+          "$value": "#14110D"
+        }
+      }
+    }
+  }
+}

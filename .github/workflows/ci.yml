@@ -23,8 +23,13 @@ jobs:
           node-version: "22"
           cache: "pnpm"
       - run: pnpm install --frozen-lockfile
+      - run: pnpm build:tokens
       - run: pnpm lint
       - run: pnpm lint:css
+      - run: pnpm lint:contracts
+      - run: pnpm lint:contrast
+      - run: pnpm lint:md
+      - run: pnpm format:check
       - run: pnpm typecheck
 
   unit:

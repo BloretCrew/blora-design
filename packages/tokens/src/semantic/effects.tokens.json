@@ -1,0 +1,19 @@
+{
+  "$description": "Semantic focus and accent shadows derived from the primary action color.",
+  "shadow": {
+    "primary": {
+      "$type": "shadow",
+      "$value": "0 0 0 1px color-mix(in srgb, {color.action.primary.default} 18%, transparent), 0 2px 6px color-mix(in srgb, {color.action.primary.default} 15%, transparent)"
+    }
+  },
+  "focusRing": {
+    "default": {
+      "$type": "shadow",
+      "$value": "0 0 0 3px color-mix(in srgb, {color.action.primary.default} 12%, transparent)"
+    },
+    "strong": {
+      "$type": "shadow",
+      "$value": "0 0 0 3px color-mix(in srgb, {color.action.primary.default} 18%, transparent)"
+    }
+  }
+}

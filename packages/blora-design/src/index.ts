@@ -1,17 +1,15 @@
 /**
- * Blora Design 2.0 - Package entry point
+ * Blora Design 2.0 package entry point.
  *
- * This is the modern ESM entry. Importing from here will tree-shake
- * to only the components you actually use.
+ * This modern ESM entry is side-effect free and safe to import during SSR.
+ * The version is injected from package.json by Vite.
  *
  * @packageDocumentation
  */
 
-export const VERSION = "2.0.0-alpha.0";
+export const VERSION: string = __BLORA_VERSION__;
 
-/**
- * SSR-safe check for whether we are in a browser environment.
- */
+/** SSR-safe check for a browser environment. */
 export function isBrowser(): boolean {
   return typeof window !== "undefined" && typeof document !== "undefined";
 }

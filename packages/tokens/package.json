@@ -1,0 +1,29 @@
+{
+  "name": "@bloret-crew/blora-tokens",
+  "version": "2.0.0-alpha.0",
+  "private": true,
+  "type": "module",
+  "description": "Blora Design 2.0 design token source and generated outputs.",
+  "license": "Apache-2.0",
+  "exports": {
+    ".": {
+      "types": "./generated/tokens.d.ts",
+      "import": "./generated/tokens.js"
+    },
+    "./tokens.css": "./generated/tokens.css",
+    "./tokens.dark.css": "./generated/tokens.dark.css",
+    "./manifest.json": "./generated/token-manifest.json"
+  },
+  "scripts": {
+    "build": "node scripts/build-tokens.mjs",
+    "typecheck": "node scripts/build-tokens.mjs && tsc --noEmit",
+    "test": "node scripts/build-tokens.mjs && vitest run --config vitest.config.ts",
+    "check:contrast": "node scripts/check-contrast.mjs",
+    "check:contracts": "node scripts/build-tokens.mjs && node scripts/check-token-contracts.mjs",
+    "lint": "eslint src/ tests/ --no-error-on-unmatched-pattern",
+    "lint:css": "stylelint \"src/**/*.css\" --allow-empty-input"
+  },
+  "devDependencies": {
+    "@bloret-crew/blora-design": "workspace:*"
+  }
+}

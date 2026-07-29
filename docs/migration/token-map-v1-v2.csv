@@ -1,0 +1,111 @@
+v1_token,v2_token,status,reason,removal_version
+--blora-background,--blora-color-surface-canvas,mapped,Renamed to semantic surface canvas,2.0.0
+--blora-surface-1,--blora-color-surface-default,mapped,Renamed to semantic surface default,2.0.0
+--blora-surface-2,--blora-color-surface-raised,mapped,Renamed to semantic surface raised,2.0.0
+--blora-surface-3,--blora-color-surface-sunken,mapped,Renamed to semantic surface sunken,2.0.0
+--blora-text-strong,--blora-color-text-primary,mapped,Renamed to semantic text primary,2.0.0
+--blora-foreground,--blora-color-text-secondary,mapped,Renamed to semantic text secondary,2.0.0
+--blora-text-emphasis,--blora-color-text-emphasis,mapped,Name kept same with prefix change,2.0.0
+--blora-text-muted,--blora-color-text-muted,mapped,Name kept same with prefix change,2.0.0
+--blora-text-subtle,--blora-color-text-subtle,mapped,Name kept same with prefix change,2.0.0
+--blora-text-disabled,--blora-color-text-disabled,mapped,Name kept same with prefix change,2.0.0
+--blora-border-subtle,--blora-color-border-subtle,mapped,Name kept same with prefix change,2.0.0
+--blora-primary,--blora-color-action-primary-default,mapped,Renamed to action primary default,2.0.0
+--blora-primary-hover,--blora-color-action-primary-hover,mapped,Renamed to action primary hover,2.0.0
+--blora-primary-soft,--blora-color-action-primary-soft,mapped,Renamed to action primary soft,2.0.0
+--blora-danger,--blora-color-status-danger,mapped,Renamed to status danger,2.0.0
+--blora-accent-neutral,--blora-color-status-neutral,mapped,Renamed to status neutral,2.0.0
+--blora-accent-neutral-soft,--blora-color-status-neutral-soft,mapped,Renamed to status neutral soft,2.0.0
+--blora-info,--blora-color-status-info,mapped,Renamed to status info,2.0.0
+--blora-info-soft,--blora-color-status-info-soft,mapped,Renamed to status info soft,2.0.0
+--blora-success,--blora-color-status-success,mapped,Renamed to status success,2.0.0
+--blora-success-soft,--blora-color-status-success-soft,mapped,Renamed to status success soft,2.0.0
+--blora-support,--blora-color-status-support,mapped,Renamed to status support,2.0.0
+--blora-warning,--blora-color-status-warning,mapped,Renamed to status warning,2.0.0
+--blora-accent-secondary,--blora-color-status-secondary,mapped,Renamed to status secondary,2.0.0
+--blora-on-accent,--blora-color-text-on-accent,mapped,Moved to text namespace,2.0.0
+--blora-on-media,--blora-color-text-on-media,mapped,Moved to text namespace,2.0.0
+--blora-media-overlay,--blora-color-overlay-media,mapped,Moved to overlay namespace,2.0.0
+--blora-media-overlay-strong,--blora-color-overlay-media-strong,mapped,Moved to overlay namespace,2.0.0
+--blora-media-indicator,--blora-color-overlay-media-indicator,mapped,Moved to overlay namespace,2.0.0
+--blora-primary-tint,--blora-color-action-primary-tint,mapped,Moved to action namespace,2.0.0
+--blora-selection-bg,--blora-color-action-selection-bg,mapped,Moved to action namespace,2.0.0
+--blora-overlay-modal,--blora-color-overlay-modal,mapped,Moved to overlay namespace,2.0.0
+--blora-overlay-drawer,--blora-color-overlay-drawer,mapped,Moved to overlay namespace,2.0.0
+--blora-code-bg,--blora-color-code-background,mapped,Moved to code namespace,2.0.0
+--blora-code-fg,--blora-color-code-foreground,mapped,Moved to code namespace,2.0.0
+--blora-banner-bg,--blora-color-banner-background,mapped,Moved to banner namespace,2.0.0
+--blora-banner-fg,--blora-color-banner-foreground,mapped,Moved to banner namespace,2.0.0
+--blora-tooltip-bg,--blora-color-tooltip-background,mapped,Moved to tooltip namespace,2.0.0
+--blora-brand-glyph,--blora-color-brand-glyph,mapped,Moved to brand namespace,2.0.0
+--blora-font-heading,--blora-font-heading,mapped,Same name (already in font namespace),2.0.0
+--blora-font-sans,--blora-font-sans,mapped,Same name (already in font namespace),2.0.0
+--blora-font-mono,--blora-font-mono,mapped,Same name (already in font namespace),2.0.0
+--blora-text-xs,--blora-text-xs,mapped,Same name,2.0.0
+--blora-text-sm,--blora-text-sm,mapped,Same name,2.0.0
+--blora-text-base,--blora-text-base,mapped,Same name,2.0.0
+--blora-text-lg,--blora-text-lg,mapped,Same name,2.0.0
+--blora-text-xl,--blora-text-xl,mapped,Same name,2.0.0
+--blora-text-2xl,--blora-text-2xl,mapped,Same name,2.0.0
+--blora-text-3xl,--blora-text-3xl,mapped,Same name,2.0.0
+--blora-text-4xl,--blora-text-4xl,mapped,Same name,2.0.0
+--blora-text-5xl,--blora-text-5xl,mapped,Same name,2.0.0
+--blora-leading-tight,--blora-leading-tight,mapped,Same name,2.0.0
+--blora-leading-normal,--blora-leading-normal,mapped,Same name,2.0.0
+--blora-leading-loose,--blora-leading-loose,mapped,Same name,2.0.0
+--blora-tracking-tight,--blora-tracking-tight,mapped,Same name,2.0.0
+--blora-tracking-normal,--blora-tracking-normal,mapped,Same name,2.0.0
+--blora-tracking-wide,--blora-tracking-wide,mapped,Same name,2.0.0
+--blora-tracking-caps,--blora-tracking-caps,mapped,Same name,2.0.0
+--blora-space-0,--blora-space-0,mapped,Same name,2.0.0
+--blora-space-1,--blora-space-1,mapped,Same name,2.0.0
+--blora-space-2,--blora-space-2,mapped,Same name,2.0.0
+--blora-space-3,--blora-space-3,mapped,Same name,2.0.0
+--blora-space-4,--blora-space-4,mapped,Same name,2.0.0
+--blora-space-5,--blora-space-5,mapped,Same name,2.0.0
+--blora-space-6,--blora-space-6,mapped,Same name,2.0.0
+--blora-space-7,--blora-space-7,mapped,Same name,2.0.0
+--blora-space-8,--blora-space-8,mapped,Same name,2.0.0
+--blora-space-9,--blora-space-9,mapped,Same name,2.0.0
+--blora-space-10,--blora-space-10,mapped,Same name,2.0.0
+--blora-space-11,--blora-space-11,mapped,Same name,2.0.0
+--blora-space-12,--blora-space-12,mapped,Same name,2.0.0
+--blora-radius-xs,--blora-radius-xs,mapped,Same name,2.0.0
+--blora-radius-sm,--blora-radius-sm,mapped,Same name,2.0.0
+--blora-radius-md,--blora-radius-md,mapped,Same name,2.0.0
+--blora-radius-lg,--blora-radius-lg,mapped,Same name,2.0.0
+--blora-radius-xl,--blora-radius-xl,mapped,Same name,2.0.0
+--blora-radius-2xl,--blora-radius-2xl,mapped,Same name,2.0.0
+--blora-radius-full,--blora-radius-full,mapped,Same name,2.0.0
+--blora-shadow-1,--blora-shadow-1,mapped,Same name,2.0.0
+--blora-shadow-2,--blora-shadow-2,mapped,Same name,2.0.0
+--blora-shadow-3,--blora-shadow-3,mapped,Same name,2.0.0
+--blora-shadow-4,--blora-shadow-4,mapped,Same name,2.0.0
+--blora-shadow-inset,--blora-shadow-inset,mapped,Same name,2.0.0
+--blora-shadow-primary,--blora-shadow-primary,mapped,Same name,2.0.0
+--blora-focus-ring,--blora-focus-ring-default,mapped,Renamed to focus-ring default,2.0.0
+--blora-focus-ring-strong,--blora-focus-ring-strong,mapped,Name kept same with prefix change,2.0.0
+--blora-border,--blora-border-subtle,mapped,Renamed from border to border-subtle,2.0.0
+--blora-border-strong,--blora-border-strong,mapped,Name kept same with prefix change,2.0.0
+--blora-border-primary,--blora-border-primary,mapped,Name kept same with prefix change,2.0.0
+--blora-control-height,--blora-control-height,mapped,Same name,2.0.0
+--blora-control-pad-x,--blora-control-pad-x,mapped,Same name,2.0.0
+--blora-control-radius,--blora-control-radius,mapped,Same name,2.0.0
+--blora-range-track-size,--blora-range-track-size,mapped,Same name,2.0.0
+--blora-range-thumb-size,--blora-range-thumb-size,mapped,Same name,2.0.0
+--blora-ease,--blora-easing-standard,mapped,Renamed from ease to easing-standard,2.0.0
+--blora-ease-soft,--blora-easing-soft,mapped,Renamed from ease-soft to easing-soft,2.0.0
+--blora-ease-overshoot,--blora-easing-overshoot,mapped,Renamed from ease-overshoot to easing-overshoot,2.0.0
+--blora-dur-fast,--blora-duration-fast,mapped,Renamed from dur to duration,2.0.0
+--blora-dur-base,--blora-duration-base,mapped,Renamed from dur to duration,2.0.0
+--blora-dur-slow,--blora-duration-slow,mapped,Renamed from dur to duration,2.0.0
+--blora-dur-emphasis,--blora-duration-emphasis,mapped,Renamed from dur to duration,2.0.0
+--blora-tabs-fade-duration,--blora-duration-tabs-fade,mapped,Moved to duration namespace,2.0.0
+--blora-z-base,--blora-z-base,mapped,Same name,2.0.0
+--blora-z-sticky,--blora-z-sticky,mapped,Same name,2.0.0
+--blora-z-dropdown,--blora-z-dropdown,mapped,Same name,2.0.0
+--blora-z-drawer,--blora-z-drawer,mapped,Same name,2.0.0
+--blora-z-modal,--blora-z-modal,mapped,Same name,2.0.0
+--blora-z-toast,--blora-z-toast,mapped,Same name,2.0.0
+--blora-background-texture,--blora-texture-background,mapped,Moved to texture namespace,2.0.0
+--blora-background-overlay,--blora-texture-overlay,mapped,Moved to texture namespace,2.0.0

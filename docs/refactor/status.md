@@ -4,7 +4,7 @@
 
 ## 当前阶段
 
-**Phase 1：Workspace 与门禁** - ✅ 完成（待提交）
+**Phase 2：Token** - ✅ 完成（待提交）
 
 ## 阶段进度
 
@@ -12,7 +12,7 @@
 |---|---|---|
 | Phase 0：冻结与基线 | ✅ 完成 | 冻结 1.x 行为事实、捕获公共 API、生成视觉基线 |
 | Phase 1：Workspace 与门禁 | ✅ 完成 | pnpm workspace、TS strict、lint、test、CI、Storybook、publint |
-| Phase 2：Token | ⬚ 未开始 | DTCG 三层 token、生成器、v1 映射 |
+| Phase 2：Token | ✅ 完成 | DTCG 三层 token、确定性生成器、9 套主题、v1 映射、对比度门禁 |
 | Phase 3：Foundations | ⬚ 未开始 | 可选 reset、排版、focus、布局、@layer |
 | Phase 4：三个试点组件 | ⬚ 未开始 | Button -> Dialog -> Select |
 | Phase 5：核心表单和反馈 | ⬚ 未开始 | Field/Input/Checkbox/Radio/Switch/Tag/Alert/Progress/Spinner/Skeleton/Toast |
@@ -125,9 +125,63 @@
 - [x] 没有迁移业务组件
 - [x] `pnpm verify` 全部通过
 
+### 已提交
+
+- [x] 提交 Phase 1（commit `838c92b`）
+
+## Phase 2 详细进度
+
+### 已完成
+
+#### Token 源与包结构（Spec §7.1-7.2）
+
+- [x] 创建内部 workspace 包 `packages/tokens/`（`@bloret-crew/blora-tokens`）
+- [x] Primitive：color、dimension、duration、typography、shadow
+- [x] Semantic：color-light、color-dark、typography、motion、layout
+- [x] Component token 目录预留给 Phase 4+
+- [x] Themes：coral、cinnabar、indigo、lotus、ocean、graphite、mono、circuit、dusk
+- [x] 9 套主题值由一次性迁移脚本直接从冻结的 `legacy/v1/blora.css` 提取
+
+#### 确定性生成器（Spec §7.6）
+
+- [x] 校验 `$type` / `$value` 与允许的 token 类型
+- [x] 校验引用存在并检测真实循环引用
+- [x] 生成 `tokens.css`、`tokens.dark.css`、`tokens.themes.css`
+- [x] 生成可执行 `tokens.js`、类型声明 `tokens.d.ts`、源码参考 `tokens.ts`
+- [x] 生成确定性的 `token-manifest.json` 与 `tokens.json`（不含时间戳）
+- [x] CSS 变量统一为小写 kebab-case
+- [x] light / dark / system 颜色模式选择器
+- [x] 主包构建时复制 token CSS 与 manifest，并开放子路径 exports
+
+#### 自动门禁
+
+- [x] v1 冻结主题基线逐 palette、逐 light/dark 值比对
+- [x] light/dark 必需语义 token 完整性检查
+- [x] v1→v2 token 映射完整性及目标存在性检查
+- [x] 组件 CSS 未登记 `--blora-*` 检测
+- [x] 组件 CSS 直接颜色值检测
+- [x] 组件 CSS 未登记 z-index 检测
+- [x] WCAG 2.2 AA 文本对比度检查（9 套主题 light/dark）
+- [x] Stylelint 禁止直接 hex 与未登记 z-index
+
+#### 迁移与测试
+
+- [x] `docs/migration/token-map-v1-v2.csv`
+- [x] token 来源、生成产物、可执行 JS、主题、确定性单元测试
+- [x] 主包 pack fixture 验证 CSS 子路径、manifest、ESM/SSR 与 TypeScript
+- [x] 删除全部 generated/dist 后，`pnpm verify` 可重新生成并通过
+
+### 验收
+
+- [x] 所有 token 值可追溯到冻结的 1.x 基线
+- [x] dark 语义完整
+- [x] palette 仅覆盖颜色 token
+- [x] 连续构建产物无 diff
+- [x] `pnpm verify` 全部通过
+
 ### 待完成
 
-- [ ] 提交 Phase 1
+- [ ] 提交 Phase 2
 
 ## 阻塞项
 

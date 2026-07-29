@@ -1,0 +1,147 @@
+{
+  "$description": "Semantic color mappings for light mode. Maps semantic names to primitive coral palette values.",
+  "color": {
+    "surface": {
+      "canvas": {
+        "$type": "color",
+        "$value": "{color.coral.background}",
+        "$description": "页面最底层背景"
+      },
+      "default": {
+        "$type": "color",
+        "$value": "{color.coral.surface1}",
+        "$description": "卡片、菜单和控件的默认表面"
+      },
+      "raised": {
+        "$type": "color",
+        "$value": "{color.coral.surface2}",
+        "$description": "次要层级表面"
+      },
+      "sunken": {
+        "$type": "color",
+        "$value": "{color.coral.surface3}",
+        "$description": "凹陷区域"
+      }
+    },
+    "text": {
+      "primary": {
+        "$type": "color",
+        "$value": "{color.coral.textStrong}",
+        "$description": "最强文本色"
+      },
+      "secondary": {
+        "$type": "color",
+        "$value": "{color.coral.foreground}",
+        "$description": "正文文本色"
+      },
+      "emphasis": {
+        "$type": "color",
+        "$value": "{color.coral.textEmphasis}",
+        "$description": "强调文本"
+      },
+      "muted": {
+        "$type": "color",
+        "$value": "{color.coral.textMuted}",
+        "$description": "弱化文本"
+      },
+      "subtle": {
+        "$type": "color",
+        "$value": "{color.coral.textSubtle}",
+        "$description": "次要弱化文本"
+      },
+      "disabled": {
+        "$type": "color",
+        "$value": "{color.coral.textDisabled}",
+        "$description": "禁用文本"
+      },
+      "onAccent": {
+        "$type": "color",
+        "$value": "{color.coral.onAccent}",
+        "$description": "强调色上的前景色"
+      },
+      "onMedia": {
+        "$type": "color",
+        "$value": "{color.coral.onMedia}",
+        "$description": "媒体遮罩上的前景色"
+      }
+    },
+    "border": {
+      "subtle": {
+        "$type": "color",
+        "$value": "{color.coral.borderSubtle}",
+        "$description": "细微边框"
+      }
+    },
+    "action": {
+      "primary": {
+        "default": {
+          "$type": "color",
+          "$value": "{color.coral.primary}",
+          "$description": "主操作色"
+        },
+        "hover": {
+          "$type": "color",
+          "$value": "{color.coral.primaryHover}",
+          "$description": "主操作悬停"
+        },
+        "soft": {
+          "$type": "color",
+          "$value": "{color.coral.primarySoft}",
+          "$description": "主操作弱化"
+        },
+        "tint": {
+          "$type": "color",
+          "$value": "color-mix(in srgb, {color.action.primary.default} 8%, transparent)",
+          "$description": "选中/激活底色"
+        }
+      },
+      "selectionBg": {
+        "$type": "color",
+        "$value": "color-mix(in srgb, {color.action.primary.default} 28%, transparent)",
+        "$description": "文本选区背景"
+      }
+    },
+    "status": {
+      "danger": { "$type": "color", "$value": "{color.coral.danger}" },
+      "neutral": { "$type": "color", "$value": "{color.coral.accentNeutral}" },
+      "neutralSoft": { "$type": "color", "$value": "{color.coral.accentNeutralSoft}" },
+      "info": { "$type": "color", "$value": "{color.coral.info}" },
+      "infoSoft": { "$type": "color", "$value": "{color.coral.infoSoft}" },
+      "success": { "$type": "color", "$value": "{color.coral.success}" },
+      "successSoft": { "$type": "color", "$value": "{color.coral.successSoft}" },
+      "support": { "$type": "color", "$value": "{color.coral.support}" },
+      "warning": { "$type": "color", "$value": "{color.coral.warning}" },
+      "secondary": { "$type": "color", "$value": "{color.coral.accentSecondary}" }
+    },
+    "overlay": {
+      "media": { "$type": "color", "$value": "{color.coral.mediaOverlay}" },
+      "mediaStrong": { "$type": "color", "$value": "{color.coral.mediaOverlayStrong}" },
+      "mediaIndicator": { "$type": "color", "$value": "{color.coral.mediaIndicator}" },
+      "modal": { "$type": "color", "$value": "{color.coral.overlayModal}" },
+      "drawer": { "$type": "color", "$value": "{color.coral.overlayDrawer}" }
+    },
+    "code": {
+      "background": {
+        "$type": "color",
+        "$value": "color-mix(in srgb, {color.text.primary} 92%, {color.surface.canvas})"
+      },
+      "foreground": {
+        "$type": "color",
+        "$value": "{color.coral.onAccent}"
+      }
+    },
+    "banner": {
+      "background": { "$type": "color", "$value": "{color.coral.foreground}" },
+      "foreground": { "$type": "color", "$value": "{color.coral.onMedia}" }
+    },
+    "tooltip": {
+      "background": { "$type": "color", "$value": "{color.coral.textStrong}" }
+    },
+    "brand": {
+      "glyph": {
+        "$type": "color",
+        "$value": "color-mix(in srgb, {color.text.onAccent} 88%, {color.action.primary.default})"
+      }
+    }
+  }
+}

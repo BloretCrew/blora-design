@@ -12,7 +12,25 @@
     ],
     "color-hex-length": "short",
     "declaration-block-no-redundant-longhand-properties": null,
-    "media-feature-range-notation": null
+    "media-feature-range-notation": null,
+    "color-no-hex": [
+      true,
+      {
+        "severity": "error",
+        "message": "Do not use hex colors directly in component CSS. Use registered design tokens (--blora-*) instead. Hex colors are only allowed in primitive token source files."
+      }
+    ],
+    "declaration-property-value-allowed-list": {
+      "z-index": ["/^var\\(--blora-z-[a-z0-9-]+\\)$/", "auto"]
+    }
   },
-  "ignoreFiles": ["legacy/**", "dist/**", "node_modules/**", "coverage/**", "*.min.css"]
+  "ignoreFiles": [
+    "legacy/**",
+    "dist/**",
+    "node_modules/**",
+    "coverage/**",
+    "*.min.css",
+    "packages/tokens/src/**/*.json",
+    "packages/tokens/generated/**"
+  ]
 }

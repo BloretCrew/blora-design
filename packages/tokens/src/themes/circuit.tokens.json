@@ -1,0 +1,247 @@
+{
+  "$description": "Circuit palette extracted from the frozen 1.x baseline.",
+  "light": {
+    "color": {
+      "coral": {
+        "background": {
+          "$type": "color",
+          "$value": "#F4F5F5"
+        },
+        "surface1": {
+          "$type": "color",
+          "$value": "#FFFFFF"
+        },
+        "surface2": {
+          "$type": "color",
+          "$value": "#ECEEEE"
+        },
+        "surface3": {
+          "$type": "color",
+          "$value": "#DDE1E1"
+        },
+        "textStrong": {
+          "$type": "color",
+          "$value": "#161A1A"
+        },
+        "foreground": {
+          "$type": "color",
+          "$value": "#252A2A"
+        },
+        "textEmphasis": {
+          "$type": "color",
+          "$value": "#414848"
+        },
+        "textMuted": {
+          "$type": "color",
+          "$value": "#687171"
+        },
+        "textSubtle": {
+          "$type": "color",
+          "$value": "#929A9A"
+        },
+        "textDisabled": {
+          "$type": "color",
+          "$value": "#AFB6B6"
+        },
+        "borderSubtle": {
+          "$type": "color",
+          "$value": "#CDD2D2"
+        },
+        "primary": {
+          "$type": "color",
+          "$value": "#3E6C70"
+        },
+        "primaryHover": {
+          "$type": "color",
+          "$value": "#2F5659"
+        },
+        "primarySoft": {
+          "$type": "color",
+          "$value": "#6D9294"
+        },
+        "danger": {
+          "$type": "color",
+          "$value": "#995D61"
+        },
+        "accentNeutral": {
+          "$type": "color",
+          "$value": "#626C73"
+        },
+        "accentNeutralSoft": {
+          "$type": "color",
+          "$value": "#90989E"
+        },
+        "info": {
+          "$type": "color",
+          "$value": "#536D7D"
+        },
+        "infoSoft": {
+          "$type": "color",
+          "$value": "#8295A0"
+        },
+        "success": {
+          "$type": "color",
+          "$value": "#4F7368"
+        },
+        "successSoft": {
+          "$type": "color",
+          "$value": "#7F9A91"
+        },
+        "support": {
+          "$type": "color",
+          "$value": "#647C7C"
+        },
+        "warning": {
+          "$type": "color",
+          "$value": "#7D6C52"
+        },
+        "accentSecondary": {
+          "$type": "color",
+          "$value": "#716B7B"
+        },
+        "onAccent": {
+          "$type": "color",
+          "$value": "#FFFFFF"
+        },
+        "codeBg": {
+          "$type": "color",
+          "$value": "#161A1A"
+        },
+        "codeFg": {
+          "$type": "color",
+          "$value": "#F4F5F5"
+        },
+        "bannerBg": {
+          "$type": "color",
+          "$value": "#252A2A"
+        },
+        "tooltipBg": {
+          "$type": "color",
+          "$value": "#161A1A"
+        }
+      }
+    }
+  },
+  "dark": {
+    "color": {
+      "coral": {
+        "background": {
+          "$type": "color",
+          "$value": "#101414"
+        },
+        "surface1": {
+          "$type": "color",
+          "$value": "#1A2020"
+        },
+        "surface2": {
+          "$type": "color",
+          "$value": "#232A2A"
+        },
+        "surface3": {
+          "$type": "color",
+          "$value": "#303838"
+        },
+        "textStrong": {
+          "$type": "color",
+          "$value": "#F1F4F4"
+        },
+        "foreground": {
+          "$type": "color",
+          "$value": "#E5E9E9"
+        },
+        "textEmphasis": {
+          "$type": "color",
+          "$value": "#C2CACA"
+        },
+        "textMuted": {
+          "$type": "color",
+          "$value": "#929D9D"
+        },
+        "textSubtle": {
+          "$type": "color",
+          "$value": "#697575"
+        },
+        "textDisabled": {
+          "$type": "color",
+          "$value": "#4F5959"
+        },
+        "borderSubtle": {
+          "$type": "color",
+          "$value": "#394242"
+        },
+        "primary": {
+          "$type": "color",
+          "$value": "#7FADAF"
+        },
+        "primaryHover": {
+          "$type": "color",
+          "$value": "#9AC0C1"
+        },
+        "primarySoft": {
+          "$type": "color",
+          "$value": "#618F91"
+        },
+        "danger": {
+          "$type": "color",
+          "$value": "#C98286"
+        },
+        "accentNeutral": {
+          "$type": "color",
+          "$value": "#90999F"
+        },
+        "accentNeutralSoft": {
+          "$type": "color",
+          "$value": "#AEB5BA"
+        },
+        "info": {
+          "$type": "color",
+          "$value": "#829FB0"
+        },
+        "infoSoft": {
+          "$type": "color",
+          "$value": "#A1B5C0"
+        },
+        "success": {
+          "$type": "color",
+          "$value": "#7DA394"
+        },
+        "successSoft": {
+          "$type": "color",
+          "$value": "#9BB7AC"
+        },
+        "support": {
+          "$type": "color",
+          "$value": "#86A29D"
+        },
+        "warning": {
+          "$type": "color",
+          "$value": "#BAA27B"
+        },
+        "accentSecondary": {
+          "$type": "color",
+          "$value": "#9B8DA6"
+        },
+        "onAccent": {
+          "$type": "color",
+          "$value": "#101A1B"
+        },
+        "codeBg": {
+          "$type": "color",
+          "$value": "#090C0C"
+        },
+        "codeFg": {
+          "$type": "color",
+          "$value": "#F1F4F4"
+        },
+        "bannerBg": {
+          "$type": "color",
+          "$value": "#161B1B"
+        },
+        "tooltipBg": {
+          "$type": "color",
+          "$value": "#090C0C"
+        }
+      }
+    }
+  }
+}

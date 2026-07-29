@@ -1,7 +1,13 @@
-import { defineConfig } from "vite";
+import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { defineConfig } from "vite";
+
+const packageJson = JSON.parse(readFileSync(resolve(__dirname, "package.json"), "utf8"));
 
 export default defineConfig({
+  define: {
+    __BLORA_VERSION__: JSON.stringify(packageJson.version),
+  },
   build: {
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
@@ -16,6 +22,6 @@ export default defineConfig({
     },
     cssCodeSplit: true,
     outDir: "dist",
-    emptyOutDir: false,
+    emptyOutDir: true,
   },
 });

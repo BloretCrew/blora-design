@@ -1,0 +1,8 @@
+{
+  "$description": "Semantic typography mappings. Font families assigned to semantic roles.",
+  "font": {
+    "heading": { "$type": "fontFamily", "$value": "{primitive.font.heading}" },
+    "sans": { "$type": "fontFamily", "$value": "{primitive.font.sans}" },
+    "mono": { "$type": "fontFamily", "$value": "{primitive.font.mono}" }
+  }
+}

@@ -50,9 +50,9 @@ export default tseslint.config(
       "no-var": "error",
     },
   },
-  // Typed-linting block: rules that require type information
+  // Typed-linting block for blora-design package
   {
-    files: ["packages/*/src/**/*.ts", "packages/*/tests/**/*.test.ts"],
+    files: ["packages/blora-design/src/**/*.ts", "packages/blora-design/tests/**/*.test.ts"],
     languageOptions: {
       parserOptions: {
         project: "packages/blora-design/tsconfig.lint.json",
@@ -61,6 +61,19 @@ export default tseslint.config(
     },
     rules: {
       // §5.4 禁止未处理 Promise
+      "@typescript-eslint/no-floating-promises": "error",
+    },
+  },
+  // Typed-linting block for blora-tokens package
+  {
+    files: ["packages/tokens/src/**/*.ts", "packages/tokens/tests/**/*.test.ts"],
+    languageOptions: {
+      parserOptions: {
+        project: "packages/tokens/tsconfig.lint.json",
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+    rules: {
       "@typescript-eslint/no-floating-promises": "error",
     },
   },
