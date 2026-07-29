@@ -25,7 +25,7 @@
     "size": "pnpm -r run size",
     "pack:test": "pnpm -r run pack:test",
     "publint": "publint packages/blora-design",
-    "attw": "attw --pack packages/blora-design --profile esm-only --exclude-entrypoints ./tokens.css ./tokens.dark.css ./tokens.themes.css ./reset.css ./foundations.css ./blora.css ./components/button.css",
+    "attw": "attw --pack packages/blora-design --profile esm-only --exclude-entrypoints ./tokens.css ./tokens.dark.css ./tokens.themes.css ./reset.css ./foundations.css ./blora.css ./components/button.css ./components/dialog.css",
     "verify": "pnpm run build:tokens && pnpm run lint && pnpm run lint:css && pnpm run lint:contracts && pnpm run lint:contrast && pnpm run lint:md && pnpm run format:check && pnpm run typecheck && pnpm run test && pnpm run build && pnpm run publint && pnpm run attw && pnpm run test:browser && pnpm run size && pnpm run pack:test",
     "storybook": "pnpm -r run storybook",
     "build-storybook": "pnpm -r run build-storybook",

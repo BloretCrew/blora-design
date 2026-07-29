@@ -1,0 +1,80 @@
+{
+  "$schema": "../../schemas/component-contract.schema.json",
+  "name": "dialog",
+  "status": "stable",
+  "kind": "custom-element",
+  "tagName": "blora-dialog",
+  "since": "2.0.0",
+  "requiresJavaScript": true,
+  "formAssociated": false,
+  "attributes": {
+    "open": {
+      "type": "boolean",
+      "reflects": true
+    },
+    "size": {
+      "type": "\"sm\" | \"md\" | \"lg\"",
+      "default": "md",
+      "reflects": true
+    },
+    "close-on-escape": {
+      "type": "boolean",
+      "default": "true",
+      "reflects": true
+    },
+    "close-on-outside-click": {
+      "type": "boolean",
+      "default": "true",
+      "reflects": true
+    },
+    "aria-labelledby": {
+      "type": "string"
+    },
+    "aria-label": {
+      "type": "string"
+    }
+  },
+  "properties": {},
+  "methods": {
+    "show": { "returns": "void" },
+    "close": { "returns": "void" }
+  },
+  "events": {
+    "blora-before-open": {
+      "detail": "{ source: string; reason: string }",
+      "bubbles": true,
+      "composed": true,
+      "cancelable": true
+    },
+    "blora-open": {
+      "detail": "{ source: string; reason: string }",
+      "bubbles": true,
+      "composed": true
+    },
+    "blora-before-close": {
+      "detail": "{ source: string; reason: string; returnValue?: unknown }",
+      "bubbles": true,
+      "composed": true,
+      "cancelable": true
+    },
+    "blora-close": {
+      "detail": "{ source: string; reason: string; returnValue?: unknown }",
+      "bubbles": true,
+      "composed": true
+    }
+  },
+  "slots": {
+    "default": "Dialog body content",
+    "header": "Dialog header (title, close button)",
+    "footer": "Dialog footer (action buttons)"
+  },
+  "parts": ["backdrop", "panel", "header", "title", "close-button", "body", "footer"],
+  "cssProperties": [
+    "--blora-dialog-max-width",
+    "--blora-button-bg",
+    "--blora-button-fg",
+    "--blora-button-bd"
+  ],
+  "accessibilityPattern": "dialog",
+  "migrationFromV1": "dialog.migration.md"
+}

@@ -29,6 +29,7 @@
     "./foundations.css": "./dist/foundations.css",
     "./blora.css": "./dist/blora.css",
     "./components/button.css": "./dist/components/button/button.css",
+    "./components/dialog.css": "./dist/components/dialog/dialog.css",
     "./token-manifest.json": "./dist/token-manifest.json",
     "./package.json": "./package.json"
   },

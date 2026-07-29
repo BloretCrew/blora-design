@@ -16,8 +16,7 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        preserveModules: true,
-        preserveModulesRoot: "src",
+        preserveModules: false,
       },
     },
     cssCodeSplit: true,

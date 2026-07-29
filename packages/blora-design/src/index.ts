@@ -14,5 +14,20 @@ export function isBrowser(): boolean {
   return typeof window !== "undefined" && typeof document !== "undefined";
 }
 
+// Core
+export { BloraElement } from "./core/blora-element.js";
+
+// Controllers
+export { OverlayController, type OverlayOptions } from "./controllers/overlay-controller.js";
+
 // Component helpers
 export { setButtonLoading, type ButtonLoadingOptions } from "./components/button/index.js";
+
+// Dialog component
+export {
+  BloraDialog,
+  defineBloraDialog,
+  BLORA_DIALOG_TAG,
+  type BloraDialogOpenDetail,
+  type BloraDialogCloseDetail,
+} from "./components/dialog/index.js";

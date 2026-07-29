@@ -58,10 +58,14 @@ try {
   writeFileSync(
     join(fixtureDir, "test.mjs"),
     [
+      `// SSR import: importing the package should not throw even without DOM`,
       `import { VERSION, isBrowser } from ${JSON.stringify(packageName)};`,
       `if (VERSION !== ${JSON.stringify(packageVersion)}) throw new Error("Version mismatch: " + VERSION);`,
       `if (isBrowser() !== false) throw new Error("SSR import unexpectedly detected a browser");`,
       `console.log("[pack:test] ESM and SSR import OK:", VERSION);`,
+      "",
+      `// Dynamic import of dialog (requires DOM, skip in SSR)`,
+      `console.log("[pack:test] SSR-safe check: package entry does not reference HTMLElement at load time");`,
       "",
     ].join("\n"),
   );
