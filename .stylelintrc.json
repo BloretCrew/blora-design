@@ -11,7 +11,8 @@
       }
     ],
     "color-hex-length": "short",
-    "declaration-block-no-redundant-longhand-properties": null,
+    "import-notation": ["string", { "except": ["url"] }],
+    "selector-no-vendor-prefix": null,
     "media-feature-range-notation": null,
     "color-no-hex": [
       true,

@@ -1,0 +1,15 @@
+/* =========================================================================
+   Blora Design 2.0 - Full CSS entry with @layer declaration
+   Spec §8.1: Cascade Layers - fixed order, not changeable by single component
+
+   Usage:
+     import "@bloret-crew/blora-design/blora.css";
+   ========================================================================= */
+
+@layer blora.tokens, blora.reset, blora.base, blora.components, blora.utilities;
+
+@import "../generated/tokens.css" layer(blora.tokens);
+@import "./foundations/reset.css" layer(blora.reset);
+@import "./foundations/base.css" layer(blora.base);
+@import "./foundations/layout.css" layer(blora.base);
+@import "./foundations/utilities.css" layer(blora.utilities);

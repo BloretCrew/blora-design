@@ -4,7 +4,7 @@
 
 ## 当前阶段
 
-**Phase 2：Token** - ✅ 完成（待提交）
+**Phase 3：Foundations** - ✅ 完成（待提交）
 
 ## 阶段进度
 
@@ -13,7 +13,7 @@
 | Phase 0：冻结与基线 | ✅ 完成 | 冻结 1.x 行为事实、捕获公共 API、生成视觉基线 |
 | Phase 1：Workspace 与门禁 | ✅ 完成 | pnpm workspace、TS strict、lint、test、CI、Storybook、publint |
 | Phase 2：Token | ✅ 完成 | DTCG 三层 token、确定性生成器、9 套主题、v1 映射、对比度门禁 |
-| Phase 3：Foundations | ⬚ 未开始 | 可选 reset、排版、focus、布局、@layer |
+| Phase 3：Foundations | ✅ 完成 | reset、base、layout、utilities、@layer、RTL、reduced-motion |
 | Phase 4：三个试点组件 | ⬚ 未开始 | Button -> Dialog -> Select |
 | Phase 5：核心表单和反馈 | ⬚ 未开始 | Field/Input/Checkbox/Radio/Switch/Tag/Alert/Progress/Spinner/Skeleton/Toast |
 | Phase 6：导航与浮层 | ⬚ 未开始 | Tabs/Breadcrumb/Pagination/Dropdown/Tooltip/Popover/Drawer/Navbar |
@@ -179,9 +179,82 @@
 - [x] 连续构建产物无 diff
 - [x] `pnpm verify` 全部通过
 
+### 已提交
+
+- [x] 提交 Phase 2（commit `4c2d5ce`）
+
+## Phase 3 详细进度
+
+### 已完成
+
+#### CSS 架构（Spec §8.1）
+
+- [x] `@layer blora.tokens, blora.reset, blora.base, blora.components, blora.utilities;` 声明
+- [x] 全量入口 `blora.css`：`@import` 各层按固定顺序
+
+#### Reset（Spec §8.2）
+
+- [x] `reset.css`：独立入口，侵入性 reset 仅在 `.blora-scope` / `.blora-portal` / `body.blora-page` 下生效
+- [x] 不导入 reset 时组件仍可正常工作
+- [x] `:where()` 零 specificity
+- [x] 无 `!important`
+
+#### Base（Spec §8.3-8.4, 8.6）
+
+- [x] 作用域字体、颜色、行高
+- [x] 标题 `.blora-h1` ~ `.blora-h4`
+- [x] 辅助文本 `.blora-text-lead` / `.blora-text-muted` / `.blora-text-faint` / `.blora-text-primary` / `.blora-text-mono` / `.blora-text-caps`
+- [x] 链接颜色与过渡
+- [x] 引文 `.blora-quote`（`border-inline-start` 逻辑属性）
+- [x] 行内代码 `.blora-code`
+- [x] 代码块 `.blora-pre`（`inset-inline-end` 逻辑属性）
+- [x] Prose `.blora-prose`
+- [x] 焦点环 `:focus-visible`（2px outline + offset）
+- [x] `@media (prefers-reduced-motion: reduce)` 全局降级
+
+#### Layout（Spec §8.5）
+
+- [x] Container（`.blora-container` / `--prose` / `--wide`，`margin-inline` / `padding-inline` 逻辑属性）
+- [x] Stack（`.blora-stack` / `--sm` / `--lg` / `--xl`）
+- [x] Row（`.blora-row` / `--tight` / `--between` / `--center`）
+- [x] Actions（`.blora-actions` / `--tight` / `--end`）
+- [x] Grid（`.blora-grid` / `--2` / `--3` / `--4`）
+- [x] `container-type: inline-size` + `@container` 响应式
+- [x] `@media` viewport fallback
+- [x] Card（`.blora-card` + 子元素 + `--hover` / `--flat` / `--inset`，`container-type: inline-size`）
+- [x] Panel（`.blora-panel` + `__header`）
+- [x] Spacer（`.blora-spacer`）
+- [x] Divider（`.blora-divider` / `--vert` / `--dashed` / `--text`）
+
+#### Utilities
+
+- [x] 最小集合：`.blora-sr-only` / `.blora-hidden` / `.blora-text-start` / `.blora-text-center` / `.blora-text-end` / `.blora-w-full` / `.blora-w-auto` / `.blora-overflow-*` / `.blora-gap-*`
+
+#### 包集成
+
+- [x] `copy-tokens.mjs` 同时复制 token CSS、foundation CSS 文件、组装 `blora.css`
+- [x] 独立入口：`reset.css`、`foundations.css`（reset+base+layout）
+- [x] 全量入口：`blora.css`（@layer + @import 全部）
+- [x] 包 exports 开放 `./reset.css`、`./foundations.css`、`./blora.css`
+- [x] Size 预算：foundations.css ≤10KB、blora.css ≤20KB gzip
+
+#### 测试
+
+- [x] 9 个单元测试：CSS 结构、逻辑属性、@layer 声明、产物完整性
+- [x] 2 个浏览器测试：320px 响应式网格折叠、RTL 方向
+- [x] 总计 29 个单元测试 + 9 个浏览器测试通过
+
+### 验收
+
+- [x] 嵌入任意宿主页面不会重置宿主全部 button/list（reset 独立入口）
+- [x] 纯 HTML fixture 可用（浏览器测试验证）
+- [x] 布局通过 320px 和 RTL 浏览器测试
+- [x] 无 Demo 专属修复
+- [x] `pnpm verify` 从干净状态全部通过
+
 ### 待完成
 
-- [ ] 提交 Phase 2
+- [ ] 提交 Phase 3
 
 ## 阻塞项
 

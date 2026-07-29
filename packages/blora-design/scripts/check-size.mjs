@@ -7,6 +7,8 @@ const distDir = resolve(import.meta.dirname, "..", "dist");
 const budgets = [
   { file: "tokens.css", gzipBytes: 8 * 1024 },
   { file: "tokens.dark.css", gzipBytes: 4 * 1024 },
+  { file: "foundations.css", gzipBytes: 10 * 1024 },
+  { file: "blora.css", gzipBytes: 20 * 1024 },
 ];
 
 if (!existsSync(distDir)) {
