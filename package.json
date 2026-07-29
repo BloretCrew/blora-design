@@ -1,60 +1,68 @@
 {
-  "name": "@bloret-crew/blora-design",
-  "version": "1.0.0",
-  "description": "Token-driven, dark-mode ready, dependency-free Web UI design system for Bloret applications.",
+  "name": "@bloret-crew/blora-design-monorepo",
+  "version": "2.0.0-alpha.0",
+  "private": true,
+  "description": "Blora Design 2.0 — token-driven, accessible Web UI design system (monorepo root)",
   "license": "Apache-2.0",
-  "private": false,
-  "type": "commonjs",
-  "author": "RhedarLiu <rhedarliu@outlook.com>",
-  "homepage": "https://github.com/BloretCrew/blora-design#readme",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/BloretCrew/blora-design.git"
+  "type": "module",
+  "engines": {
+    "node": ">=22",
+    "pnpm": ">=10"
   },
-  "bugs": {
-    "url": "https://github.com/BloretCrew/blora-design/issues"
-  },
-  "main": "./blora.js",
-  "browser": "./blora.js",
-  "style": "./blora.css",
-  "types": "./blora.d.ts",
-  "exports": {
-    ".": {
-      "types": "./blora.d.ts",
-      "require": "./blora.js",
-      "default": "./blora.js"
-    },
-    "./blora.css": "./blora.css",
-    "./style.css": "./blora.css",
-    "./blora.js": "./blora.js",
-    "./locales/zh-CN": "./locales/zh-CN.js",
-    "./locales/en": "./locales/en.js",
-    "./locales/*": "./locales/*",
-    "./package.json": "./package.json"
-  },
-  "files": [
-    "blora.css",
-    "blora.js",
-    "blora.d.ts",
-    "bloret-mini.svg",
-    "locales/",
-    "README.md",
-    "LICENSE",
-    "NOTICE",
-    "docs/guide.md",
-    "docs/framework.md",
-    "docs/standards.md"
-  ],
+  "packageManager": "pnpm@10.33.0",
   "scripts": {
-    "check": "node --check blora.js",
-    "test": "npm run check"
+    "lint": "pnpm -r run lint",
+    "lint:css": "pnpm -r run lint:css",
+    "lint:contracts": "node packages/blora-design/scripts/check-contracts.mjs",
+    "typecheck": "pnpm -r run typecheck",
+    "test": "pnpm -r run test",
+    "test:browser": "pnpm -r run test:browser",
+    "test:a11y": "playwright test --project=a11y",
+    "test:visual": "playwright test --project=visual",
+    "build": "pnpm -r run build",
+    "build:tokens": "pnpm -r run build:tokens",
+    "size": "pnpm -r run size",
+    "pack:test": "pnpm -r run pack:test",
+    "publint": "publint packages/blora-design",
+    "attw": "attw --pack packages/blora-design --profile esm-only",
+    "verify": "pnpm run lint && pnpm run lint:css && pnpm run lint:contracts && pnpm run lint:md && pnpm run format:check && pnpm run typecheck && pnpm run test && pnpm run build && pnpm run publint && pnpm run attw && pnpm run test:browser && pnpm run size",
+    "storybook": "pnpm -r run storybook",
+    "build-storybook": "pnpm -r run build-storybook",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint:md": "markdownlint-cli2",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "pnpm run build && changeset publish"
   },
-  "keywords": [
-    "blora",
-    "bloret",
-    "design-system",
-    "ui-framework",
-    "css",
-    "vanilla-js"
-  ]
+  "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.5",
+    "@axe-core/playwright": "^4.10.1",
+    "@changesets/cli": "^2.27.12",
+    "@eslint/js": "^9.18.0",
+    "@playwright/test": "^1.49.1",
+    "@storybook/addon-a11y": "^8.5.0",
+    "@storybook/addon-essentials": "^8.5.0",
+    "@storybook/addon-interactions": "^8.5.0",
+    "@storybook/web-components": "^8.6.18",
+    "@storybook/web-components-vite": "^8.5.0",
+    "@types/node": "^22.10.0",
+    "@vitest/coverage-v8": "^2.1.8",
+    "eslint": "^9.18.0",
+    "eslint-plugin-no-unsanitized": "^4.1.5",
+    "globals": "^15.14.0",
+    "jsdom": "^25.0.1",
+    "lit": "^3.2.1",
+    "markdownlint-cli2": "^0.23.2",
+    "playwright": "^1.49.1",
+    "prettier": "^3.4.2",
+    "publint": "^0.3.22",
+    "storybook": "^8.5.0",
+    "stylelint": "^16.12.0",
+    "stylelint-config-standard": "^36.0.1",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.20.0",
+    "vite": "^6.0.7",
+    "vitest": "^2.1.8"
+  }
 }

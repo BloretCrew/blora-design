@@ -1,0 +1,49 @@
+# Blora Design
+
+> Token-driven, accessible, zero-dependency Web UI design system for Bloret applications.
+
+## System
+
+Blora Design is a Web UI design system based on native HTML semantics, Web Components (Custom Elements + Shadow DOM), and CSS Custom Properties (Design Tokens). It supports light/dark themes, RTL, and WCAG 2.2 AA.
+
+## Installation
+
+```bash
+pnpm add @bloret-crew/blora-design
+# or
+npm install @bloret-crew/blora-design
+```
+
+## Core Principles
+
+- Prefer native HTML elements; use Custom Elements only for composite interactions.
+- Design Tokens drive all visual properties (DTCG JSON → generated CSS).
+- Zero runtime third-party dependencies in the core package.
+- ESM-first, SSR-safe, CSP-friendly.
+- Progressive enhancement: components work without JavaScript where possible.
+
+## Key Entry Points
+
+- Package: `@bloret-crew/blora-design`
+- Full docs: `docs/`
+- Component contracts: `packages/blora-design/contracts/*.contract.json`
+- Contract schema: `packages/blora-design/schemas/component-contract.schema.json`
+- Component matrix: `docs/refactor/component-matrix.md`
+- Migration guide: `docs/migration/v1-to-v2.md` (Phase 8)
+
+## Component Index
+
+Components are being migrated from 1.x to 2.0. See `docs/refactor/component-matrix.md` for current status.
+
+## Prohibitions
+
+- Do not extract visual styles from historical commits, old npm packages, or other UI frameworks.
+- Do not use `innerHTML` with untrusted strings.
+- Do not hardcode colors, spacing, radii, shadows, durations, or z-index in component CSS.
+- Do not add public APIs without updating the contract and API snapshot.
+- Do not skip tests or fabricate empty tests.
+
+## Migration
+
+1.x → 2.0 migration guide will be at `docs/migration/v1-to-v2.md` (Phase 8).
+Codemod and `migrate:check` tool will be available in Phase 8.

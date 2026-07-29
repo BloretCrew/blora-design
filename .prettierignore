@@ -1,0 +1,27 @@
+legacy/
+dist/
+node_modules/
+coverage/
+.storybook-static/
+pnpm-lock.yaml
+*.min.css
+*.min.js
+
+# 1.x files (frozen, not reformatted)
+blora.css
+blora.js
+blora.d.ts
+bloret-mini.svg
+index.html
+locales/
+docs/framework.md
+docs/guide.md
+docs/standards.md
+docs/IMPROVEMENTS.md
+docs/migrate-bbs-prompt.md
+docs/refactor/
+Blora-Design-2.0-Refactor-Spec.md
+README.md
+
+# .agents tooling
+.agents/

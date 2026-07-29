@@ -45,8 +45,70 @@ Phase 0 的重点精力放在从 CSS/JS/d.ts 源码提取结构化清单（`v1-c
 
 ---
 
+## ADR-003: ESM-only 包，不提供 CJS 入口
+
+**日期**：2026-07-29
+**状态**：已采纳
+
+### 背景
+
+Spec §3.5 要求 ESM-first。根 `package.json` 设为 `"type": "module"`，包也设为 `"type": "module"`。arethetypeswrong 检测到 CJS 消费者无法直接 `require()` 包入口。
+
+### 决策
+
+2.0 核心包为 ESM-only。CJS 消费者需使用动态 `import()`。`arethetypeswrong` 使用 `--profile esm-only`，忽略 `node10` 和 `node16-cjs` 解析。未来如需 CJS 兼容，通过独立 `cjs` 入口或 wrapper 包提供，不降级主入口。
+
+### 理由
+
+- Spec 明确 ESM-first，现代 Node 22+ 和所有现代打包器原生支持 ESM。
+- 提供双入口增加维护成本和包体积。
+- CJS 消费者可用动态 import 作为 fallback。
+
+---
+
+## ADR-004: 包 exports 暂时只暴露主入口
+
+**日期**：2026-07-29
+**状态**：已采纳
+
+### 背景
+
+Spec §6.1 建议包 exports 包含 `./tokens.css`、`./foundations.css`、`./reset.css`、`./components/*`、`./auto` 等子路径。但 Phase 1 尚无任何 CSS 或组件产物，publint 会报错指向不存在的文件。
+
+### 决策
+
+Phase 1 阶段包 exports 只暴露 `.`（主入口）和 `./package.json`。随着 Phase 2（tokens）、Phase 3（foundations）、Phase 4+（components）逐步添加产物，再扩展 exports 子路径。
+
+### 理由
+
+- publint 要求 exports 指向的文件必须存在。
+- 提前声明不存在的入口会误导消费者。
+- 每个 Phase 独立扩展 exports 符合渐进式构建原则。
+
+---
+
+## ADR-005: 使用 arethetypeswrong esm-only profile
+
+**日期**：2026-07-29
+**状态**：已采纳
+
+### 背景
+
+arethetypeswrong 默认 strict profile 会将 ESM-only 包的 `cjs-resolves-to-esm` 标记为错误。
+
+### 决策
+
+使用 `--profile esm-only` 运行 arethetypeswrong，忽略 `node10` 和 `node16-cjs` 解析条件。
+
+### 理由
+
+- 见 ADR-003，包为 ESM-only，CJS 兼容不是目标。
+- ESM 和 bundler 解析均通过即可。
+
+---
+
 ## 待决策
 
-- [ ] Phase 1 的包管理器配置（pnpm workspace 结构、包名 `@bloret-crew/blora-design`）
-- [ ] Storybook vs 自建 Story 系统
-- [ ] 视觉回归测试框架（Playwright snapshot vs 第三方工具）
+- [ ] 视觉回归测试框架的具体截图策略（Playwright snapshot vs 第三方工具）
+- [ ] Firefox/WebKit CI 矩阵何时启用（Phase 1 暂只跑 Chromium）
+

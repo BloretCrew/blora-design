@@ -1,0 +1,18 @@
+{
+  "extends": ["stylelint-config-standard"],
+  "rules": {
+    "no-descending-specificity": null,
+    "custom-property-pattern": "^blora-[a-z0-9-]+$",
+    "selector-class-pattern": "^blora-[a-z0-9_-]+$",
+    "at-rule-no-unknown": [
+      true,
+      {
+        "ignoreAtRules": ["layer", "container", "import"]
+      }
+    ],
+    "color-hex-length": "short",
+    "declaration-block-no-redundant-longhand-properties": null,
+    "media-feature-range-notation": null
+  },
+  "ignoreFiles": ["legacy/**", "dist/**", "node_modules/**", "coverage/**", "*.min.css"]
+}

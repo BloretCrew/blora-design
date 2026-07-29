@@ -1,17 +1,31 @@
-# 本地备份压缩包
-*.zip
+# Dependencies
+node_modules/
 
-# Local visual verification scratch
+# Build output
+dist/
+build/
+.storybook-static/
+.out/
+
+# Test output
+test-results/
+playwright-report/
+coverage/
+*.lcov
+
+# Temporary files
 _verify_tmp/
+*.tmp
 
+# OS files
+.DS_Store
+Thumbs.db
 
-# Local agent skills / tooling (not part of the design kit)
-.agents/
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea/
 
-# Internal checklist — keep local, do not publish
-docs/IMPROVEMENTS.md
-
-
-# Local AI migration prompt — do not publish
-docs/migrate-bbs-prompt.md
-
+# Environment
+.env
+.env.local

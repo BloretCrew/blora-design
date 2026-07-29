@@ -1,0 +1,51 @@
+{
+  "name": "@bloret-crew/blora-design",
+  "version": "2.0.0-alpha.0",
+  "description": "Token-driven, accessible, zero-dependency Web UI design system.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "author": "RhedarLiu <rhedarliu@outlook.com>",
+  "homepage": "https://github.com/BloretCrew/blora-design#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BloretCrew/blora-design.git",
+    "directory": "packages/blora-design"
+  },
+  "bugs": {
+    "url": "https://github.com/BloretCrew/blora-design/issues"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/",
+    "contracts/",
+    "schemas/",
+    "README.md"
+  ],
+  "scripts": {
+    "lint": "eslint src/ tests/",
+    "lint:css": "stylelint \"src/**/*.css\" --allow-empty-input",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --config vitest.config.ts",
+    "test:browser": "playwright test --config ../../playwright.config.ts",
+    "build": "tsc && vite build",
+    "build:tokens": "node scripts/build-tokens.mjs",
+    "size": "node scripts/check-size.mjs",
+    "pack:test": "node scripts/pack-test.mjs",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "devDependencies": {
+    "@bloret-crew/blora-design": "workspace:*"
+  }
+}
