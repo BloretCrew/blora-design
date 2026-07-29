@@ -1,0 +1,49 @@
+{
+  "$schema": "v1-public-surface",
+  "description": "Blora Design 1.x 公共 API 结构化清单，从 blora.css、blora.js、blora.d.ts 提取。2.0 迁移的事实来源。",
+  "baselineCommit": "a148715d06ee9551cbee262ffae6ad377b564df6",
+  "version": "1.0.0",
+  "generatedDate": "2026-07-29",
+
+  "css": {
+    "inventoryFile": "docs/refactor/v1-css-inventory.json",
+    "summaryFile": "docs/refactor/v1-css-inventory.md",
+    "totalLines": 4499,
+    "organization": "无 @layer，靠源码顺序和 :where() 控制优先级",
+    "scopeSelectors": [":where(body.blora-page, .blora-scope, .blora-portal)"],
+    "darkMode": ".blora-dark 类 + [data-blora-color-scheme]",
+    "paletteMode": "[data-blora-palette='name']",
+    "sizeMode": "[data-blora-size]",
+    "rtlSupport": "有 [dir='rtl'] 覆盖",
+    "reducedMotion": "有 @media (prefers-reduced-motion: reduce)"
+  },
+
+  "js": {
+    "inventoryFile": "docs/refactor/v1-js-inventory.md",
+    "totalLines": 6214,
+    "modulePattern": "UMD",
+    "globalName": "Blora",
+    "externalDependencies": 0,
+    "initializerCount": 50,
+    "initFunction": "Blora.init(root, options) 遍历 50 个初始化器，每个用 querySelectorAll 扫描 DOM"
+  },
+
+  "typeDeclaration": {
+    "file": "blora.d.ts",
+    "totalLines": 196,
+    "coverage": "仅全局 API，不覆盖组件属性、事件、slot、CSS Parts、生命周期"
+  },
+
+  "knownProblems": [
+    "CSS 令牌、reset、布局、组件、工具类、Demo 样式混在一个文件",
+    "50 多个初始化器共享一个闭包",
+    "Blora.init() 每次遍历所有初始化器",
+    "事件命名不一致：change / blora:change / blora:table-change / blora:treeselect-change / blora:autocomplete-select 并存",
+    "约 100 个 data-blora-* 属性",
+    "状态表达不统一：disabled/loading/open/selected 有时是 class，有时是属性，有时是 dataset",
+    "部分组件由脚本动态拼接 innerHTML",
+    "主题、语言、表单、表格、Markdown、QRCode、文字特效共用同一运行时",
+    "简单 CSS 组件和复杂交互组件没有清晰的包边界",
+    "package.json 只有 node --check blora.js，缺少构建、类型、测试、a11y 和视觉门禁"
+  ]
+}

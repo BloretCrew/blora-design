@@ -1,0 +1,1725 @@
+{
+  "$schema": "v1-js-inventory",
+  "source": "blora.js / blora.d.ts",
+  "version": "1.0.0",
+  "generated": "2026-07-29",
+  "umdPattern": "(function(global, factory) { ... }(globalThis, function(global) { ... return Blora; }))",
+  "moduleExports": true,
+  "globalName": "Blora",
+  "globalAPI": {
+    "namespace": "Blora",
+    "declaredType": "Blora.API",
+    "properties": [
+      {
+        "name": "version",
+        "type": "string",
+        "readonly": true,
+        "value": "1.0.0"
+      },
+      {
+        "name": "locale",
+        "type": "Blora.Locale",
+        "readonly": true,
+        "desc": "Current date-picker locale fields synced with setLocale"
+      },
+      {
+        "name": "locales",
+        "type": "string[]",
+        "readonly": true,
+        "value": [
+          "zh-CN",
+          "en"
+        ]
+      },
+      {
+        "name": "palettes",
+        "type": "Readonly<Record<string, PalettePreset>>",
+        "readonly": true,
+        "keys": [
+          "cinnabar",
+          "indigo",
+          "lotus",
+          "ocean",
+          "graphite",
+          "mono",
+          "circuit",
+          "coral",
+          "dusk"
+        ]
+      },
+      {
+        "name": "table",
+        "type": "TableAPI",
+        "readonly": true
+      },
+      {
+        "name": "select",
+        "type": "SelectAPI",
+        "readonly": true
+      },
+      {
+        "name": "textFxNames",
+        "type": "readonly string[]",
+        "readonly": true,
+        "value": [
+          "grow",
+          "shrink",
+          "shake",
+          "nod",
+          "explode",
+          "ripple",
+          "bloom",
+          "jitter"
+        ]
+      }
+    ],
+    "methods": [
+      {
+        "name": "init",
+        "params": [
+          {
+            "name": "root",
+            "type": "Root",
+            "optional": true
+          },
+          {
+            "name": "options",
+            "type": "Options",
+            "optional": true
+          }
+        ],
+        "returns": "void",
+        "desc": "Scans DOM and initializes all components"
+      },
+      {
+        "name": "configure",
+        "params": [
+          {
+            "name": "options",
+            "type": "Options",
+            "optional": true
+          }
+        ],
+        "returns": "Config",
+        "desc": "Merges options into CONFIG"
+      },
+      {
+        "name": "setOptions",
+        "params": [
+          {
+            "name": "options",
+            "type": "Options",
+            "optional": true
+          }
+        ],
+        "returns": "Config",
+        "desc": "Alias for configure"
+      },
+      {
+        "name": "getConfig",
+        "params": [],
+        "returns": "Config",
+        "desc": "Returns snapshot of current config"
+      },
+      {
+        "name": "cls",
+        "params": [
+          {
+            "name": "...parts",
+            "type": "string[]"
+          }
+        ],
+        "returns": "string",
+        "desc": "Joins class names with configured classPrefix"
+      },
+      {
+        "name": "classPrefix",
+        "params": [],
+        "returns": "string",
+        "desc": "Returns current class prefix"
+      },
+      {
+        "name": "applyPalette",
+        "params": [
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "target",
+            "type": "Element",
+            "optional": true
+          },
+          {
+            "name": "options",
+            "type": "ApplyPaletteOptions",
+            "optional": true
+          }
+        ],
+        "returns": "boolean",
+        "desc": "Applies color palette preset"
+      },
+      {
+        "name": "getPalette",
+        "params": [
+          {
+            "name": "target",
+            "type": "Element",
+            "optional": true
+          }
+        ],
+        "returns": "string",
+        "desc": "Returns current palette name"
+      },
+      {
+        "name": "applyColorMode",
+        "params": [
+          {
+            "name": "mode",
+            "type": "ColorMode"
+          },
+          {
+            "name": "target",
+            "type": "Element",
+            "optional": true
+          },
+          {
+            "name": "options",
+            "type": "ApplyColorModeOptions",
+            "optional": true
+          }
+        ],
+        "returns": "boolean",
+        "desc": "Sets color mode (system/light/dark)"
+      },
+      {
+        "name": "getColorMode",
+        "params": [
+          {
+            "name": "target",
+            "type": "Element",
+            "optional": true
+          }
+        ],
+        "returns": "ColorMode",
+        "desc": "Returns current color mode"
+      },
+      {
+        "name": "formatShortcut",
+        "params": [
+          {
+            "name": "shortcut",
+            "type": "string"
+          },
+          {
+            "name": "platform",
+            "type": "string",
+            "optional": true
+          }
+        ],
+        "returns": "string",
+        "desc": "Formats keyboard shortcut with platform symbols"
+      },
+      {
+        "name": "getShortcutPlatform",
+        "params": [
+          {
+            "name": "base",
+            "type": "Element",
+            "optional": true
+          }
+        ],
+        "returns": "string",
+        "desc": "Detects apple vs standard platform"
+      },
+      {
+        "name": "t",
+        "params": [
+          {
+            "name": "key",
+            "type": "string"
+          },
+          {
+            "name": "params",
+            "type": "Record<string,string|number>",
+            "optional": true
+          }
+        ],
+        "returns": "string",
+        "desc": "Translates framework i18n keys"
+      },
+      {
+        "name": "setLocale",
+        "params": [
+          {
+            "name": "code",
+            "type": "string"
+          },
+          {
+            "name": "pack",
+            "type": "LocalePack",
+            "optional": true
+          }
+        ],
+        "returns": "string",
+        "desc": "Switches language"
+      },
+      {
+        "name": "getLocale",
+        "params": [],
+        "returns": "string",
+        "desc": "Returns current locale code"
+      },
+      {
+        "name": "validate",
+        "params": [
+          {
+            "name": "form",
+            "type": "ElementTarget"
+          }
+        ],
+        "returns": "FormValidationResult",
+        "desc": "Synchronously validates a form"
+      },
+      {
+        "name": "validateAsync",
+        "params": [
+          {
+            "name": "form",
+            "type": "ElementTarget"
+          }
+        ],
+        "returns": "Promise<FormValidationResult>",
+        "desc": "Async validates a form"
+      },
+      {
+        "name": "validateField",
+        "params": [
+          {
+            "name": "field",
+            "type": "Element"
+          }
+        ],
+        "returns": "FieldValidationResult",
+        "desc": "Validates single field"
+      },
+      {
+        "name": "validateFieldAsync",
+        "params": [
+          {
+            "name": "field",
+            "type": "Element"
+          }
+        ],
+        "returns": "Promise<FieldValidationResult>",
+        "desc": "Async validates single field"
+      },
+      {
+        "name": "clearValidation",
+        "params": [
+          {
+            "name": "form",
+            "type": "ElementTarget"
+          }
+        ],
+        "returns": "void",
+        "desc": "Clears validation states"
+      },
+      {
+        "name": "getValues",
+        "params": [
+          {
+            "name": "form",
+            "type": "ElementTarget"
+          }
+        ],
+        "returns": "Record<string,unknown>",
+        "desc": "Collects form field values"
+      },
+      {
+        "name": "setValues",
+        "params": [
+          {
+            "name": "form",
+            "type": "ElementTarget"
+          },
+          {
+            "name": "values",
+            "type": "Record<string,unknown>"
+          }
+        ],
+        "returns": "Record<string,unknown>",
+        "desc": "Sets form field values"
+      },
+      {
+        "name": "registerAsyncRule",
+        "params": [
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "fn",
+            "type": "(value:string,field:Element)=>unknown"
+          }
+        ],
+        "returns": "void",
+        "desc": "Registers custom async validation rule"
+      },
+      {
+        "name": "toast",
+        "params": [
+          {
+            "name": "options",
+            "type": "string|ToastOptions"
+          }
+        ],
+        "returns": "void",
+        "desc": "Shows toast message"
+      },
+      {
+        "name": "message",
+        "params": [
+          {
+            "name": "options",
+            "type": "string|ToastOptions"
+          }
+        ],
+        "returns": "void",
+        "desc": "Alias for toast"
+      },
+      {
+        "name": "notify",
+        "params": [
+          {
+            "name": "options",
+            "type": "NotifyOptions"
+          }
+        ],
+        "returns": "{close:()=>void,el:Element}|null",
+        "desc": "Shows notification card"
+      },
+      {
+        "name": "confirm",
+        "params": [
+          {
+            "name": "options",
+            "type": "ConfirmOptions",
+            "optional": true
+          }
+        ],
+        "returns": "Promise<boolean>",
+        "desc": "Shows confirm dialog"
+      },
+      {
+        "name": "preview",
+        "params": [
+          {
+            "name": "target",
+            "type": "ElementTarget|Element[]"
+          },
+          {
+            "name": "options",
+            "type": "Record<string,unknown>",
+            "optional": true
+          }
+        ],
+        "returns": "void",
+        "desc": "Opens image preview lightbox"
+      },
+      {
+        "name": "closePreview",
+        "params": [],
+        "returns": "void",
+        "desc": "Closes image preview"
+      },
+      {
+        "name": "tour",
+        "params": [
+          {
+            "name": "options",
+            "type": "Record<string,unknown>",
+            "optional": true
+          }
+        ],
+        "returns": "void",
+        "desc": "Runs guided tour"
+      },
+      {
+        "name": "backTop",
+        "params": [
+          {
+            "name": "options",
+            "type": "object",
+            "optional": true
+          }
+        ],
+        "returns": "Element|null",
+        "desc": "Configures back-to-top button"
+      },
+      {
+        "name": "qrcode",
+        "params": [
+          {
+            "name": "target",
+            "type": "ElementTarget"
+          },
+          {
+            "name": "options",
+            "type": "object",
+            "optional": true
+          }
+        ],
+        "returns": "void",
+        "desc": "Renders QR code"
+      },
+      {
+        "name": "openModal",
+        "params": [
+          {
+            "name": "target",
+            "type": "ElementTarget"
+          }
+        ],
+        "returns": "void",
+        "desc": "Opens modal"
+      },
+      {
+        "name": "closeModal",
+        "params": [
+          {
+            "name": "target",
+            "type": "ElementTarget"
+          }
+        ],
+        "returns": "void",
+        "desc": "Closes modal"
+      },
+      {
+        "name": "openDrawer",
+        "params": [
+          {
+            "name": "target",
+            "type": "ElementTarget"
+          }
+        ],
+        "returns": "void",
+        "desc": "Opens drawer"
+      },
+      {
+        "name": "closeDrawer",
+        "params": [
+          {
+            "name": "target",
+            "type": "ElementTarget"
+          }
+        ],
+        "returns": "void",
+        "desc": "Closes drawer"
+      },
+      {
+        "name": "textFx",
+        "params": [
+          {
+            "name": "target",
+            "type": "ElementTarget"
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "optional": true
+          },
+          {
+            "name": "options",
+            "type": "object",
+            "optional": true
+          }
+        ],
+        "returns": "Element|null",
+        "desc": "Plays text effect"
+      },
+      {
+        "name": "markdown",
+        "params": [
+          {
+            "name": "source",
+            "type": "string"
+          },
+          {
+            "name": "options",
+            "type": "object",
+            "optional": true
+          }
+        ],
+        "returns": "string",
+        "desc": "Markdown to HTML string"
+      },
+      {
+        "name": "md",
+        "params": [
+          {
+            "name": "source",
+            "type": "string"
+          },
+          {
+            "name": "options",
+            "type": "object",
+            "optional": true
+          }
+        ],
+        "returns": "string",
+        "desc": "Alias for markdown"
+      },
+      {
+        "name": "renderMarkdown",
+        "params": [
+          {
+            "name": "el",
+            "type": "ElementTarget"
+          },
+          {
+            "name": "source",
+            "type": "string",
+            "optional": true
+          },
+          {
+            "name": "options",
+            "type": "object",
+            "optional": true
+          }
+        ],
+        "returns": "Element|null",
+        "desc": "Renders Markdown into element"
+      }
+    ],
+    "subAPIs": {
+      "table": {
+        "type": "TableAPI",
+        "methods": [
+          {
+            "name": "sort",
+            "params": [
+              {
+                "name": "target",
+                "type": "ElementTarget"
+              },
+              {
+                "name": "keyOrIndex",
+                "type": "string|number"
+              },
+              {
+                "name": "dir",
+                "type": "SortDir",
+                "optional": true
+              }
+            ],
+            "returns": "TableState|null"
+          },
+          {
+            "name": "setPage",
+            "params": [
+              {
+                "name": "target",
+                "type": "ElementTarget"
+              },
+              {
+                "name": "page",
+                "type": "number"
+              }
+            ],
+            "returns": "TableState|null"
+          },
+          {
+            "name": "setRows",
+            "params": [
+              {
+                "name": "target",
+                "type": "ElementTarget"
+              },
+              {
+                "name": "rows",
+                "type": "unknown[]"
+              },
+              {
+                "name": "options",
+                "type": "object",
+                "optional": true
+              }
+            ],
+            "returns": "TableState|null"
+          },
+          {
+            "name": "setLoading",
+            "params": [
+              {
+                "name": "target",
+                "type": "ElementTarget"
+              },
+              {
+                "name": "loading",
+                "type": "boolean"
+              }
+            ],
+            "returns": "TableState|null"
+          },
+          {
+            "name": "getSelection",
+            "params": [
+              {
+                "name": "target",
+                "type": "ElementTarget"
+              }
+            ],
+            "returns": "Element[]"
+          },
+          {
+            "name": "clearSelection",
+            "params": [
+              {
+                "name": "target",
+                "type": "ElementTarget"
+              }
+            ],
+            "returns": "void"
+          },
+          {
+            "name": "getState",
+            "params": [
+              {
+                "name": "target",
+                "type": "ElementTarget"
+              }
+            ],
+            "returns": "TableState|null"
+          },
+          {
+            "name": "renderPagination",
+            "params": [
+              {
+                "name": "nav",
+                "type": "Element"
+              }
+            ],
+            "returns": "void"
+          }
+        ]
+      },
+      "select": {
+        "type": "SelectAPI",
+        "methods": [
+          {
+            "name": "setOptions",
+            "params": [
+              {
+                "name": "target",
+                "type": "ElementTarget"
+              },
+              {
+                "name": "options",
+                "type": "Array<object|string>"
+              }
+            ],
+            "returns": "Element|null"
+          }
+        ]
+      }
+    }
+  },
+  "componentInitializers": [
+    {
+      "fn": "initTabs",
+      "selector": "[data-blora-tabs]",
+      "component": "Tabs"
+    },
+    {
+      "fn": "initCollapse",
+      "selector": ".blora-collapse__head",
+      "component": "Collapse/Accordion"
+    },
+    {
+      "fn": "initModal",
+      "selector": "[data-blora-modal-open]",
+      "component": "Modal"
+    },
+    {
+      "fn": "initDrawer",
+      "selector": "[data-blora-drawer-open]",
+      "component": "Drawer"
+    },
+    {
+      "fn": "initPopover",
+      "selector": "[data-blora-popover]",
+      "component": "Popover"
+    },
+    {
+      "fn": "initTooltip",
+      "selector": ".blora-tooltip",
+      "component": "Tooltip"
+    },
+    {
+      "fn": "initDropdown",
+      "selector": "[data-blora-dropdown-trigger]",
+      "component": "Dropdown Menu"
+    },
+    {
+      "fn": "initSpeedDial",
+      "selector": "[data-blora-speed-dial]",
+      "component": "Speed Dial"
+    },
+    {
+      "fn": "initSidebarLayout",
+      "selector": "[data-blora-sidebar-layout]",
+      "component": "Sidebar Layout"
+    },
+    {
+      "fn": "initMegamenu",
+      "selector": "[data-blora-megamenu]",
+      "component": "Megamenu"
+    },
+    {
+      "fn": "initSegmented",
+      "selector": ".blora-segmented",
+      "component": "Segmented Control"
+    },
+    {
+      "fn": "initSearch",
+      "selector": ".blora-search",
+      "component": "Search Input"
+    },
+    {
+      "fn": "initBtnLoading",
+      "selector": "[data-blora-loading]",
+      "component": "Button Loading"
+    },
+    {
+      "fn": "initRate",
+      "selector": ".blora-rate",
+      "component": "Rate"
+    },
+    {
+      "fn": "initSlider",
+      "selector": ".blora-slider",
+      "component": "Slider"
+    },
+    {
+      "fn": "initProgress",
+      "selector": ".blora-progress[data-value]",
+      "component": "Progress"
+    },
+    {
+      "fn": "initTextLimit",
+      "selector": "input[data-blora-limit], textarea[data-blora-limit]",
+      "component": "Text Limit"
+    },
+    {
+      "fn": "initTagsInput",
+      "selector": ".blora-tags-input",
+      "component": "Tags Input"
+    },
+    {
+      "fn": "initNumber",
+      "selector": ".blora-number",
+      "component": "Number Stepper"
+    },
+    {
+      "fn": "initCheckbox",
+      "selector": "[data-blora-checkall]",
+      "component": "Checkbox Indeterminate"
+    },
+    {
+      "fn": "initTree",
+      "selector": ".blora-tree__node",
+      "component": "Tree"
+    },
+    {
+      "fn": "initCarousel",
+      "selector": ".blora-carousel",
+      "component": "Carousel"
+    },
+    {
+      "fn": "initBackTop",
+      "selector": "[data-blora-backtop], .blora-backtop",
+      "component": "Back to Top"
+    },
+    {
+      "fn": "initScrollSpy",
+      "selector": "[data-blora-spy]",
+      "component": "Scroll Spy"
+    },
+    {
+      "fn": "initSmoothScroll",
+      "selector": "a[href^='#'] (capture)",
+      "component": "Smooth Scroll"
+    },
+    {
+      "fn": "initPalettePicker",
+      "selector": "[data-blora-palette-picker]",
+      "component": "Palette Picker"
+    },
+    {
+      "fn": "initColorModeToggle",
+      "selector": "[data-blora-color-mode]",
+      "component": "Color Mode Toggle"
+    },
+    {
+      "fn": "initFileUpload",
+      "selector": "[data-blora-file-upload], .blora-dropzone",
+      "component": "File Upload"
+    },
+    {
+      "fn": "initCommandPalette",
+      "selector": "#blora-cmdk (Ctrl/Cmd+K)",
+      "component": "Command Palette"
+    },
+    {
+      "fn": "initDateGuard",
+      "selector": "input[type='date']",
+      "component": "Date Guard"
+    },
+    {
+      "fn": "initOTP",
+      "selector": ".blora-otp",
+      "component": "OTP Input"
+    },
+    {
+      "fn": "initCustomSelect",
+      "selector": "select.blora-select, .blora-select-wrap",
+      "component": "Custom Select"
+    },
+    {
+      "fn": "initRange",
+      "selector": ".blora-range",
+      "component": "Range Slider"
+    },
+    {
+      "fn": "initTransfer",
+      "selector": ".blora-transfer",
+      "component": "Transfer"
+    },
+    {
+      "fn": "initCascader",
+      "selector": "[data-blora-cascader]",
+      "component": "Cascader"
+    },
+    {
+      "fn": "initDatePicker",
+      "selector": "[data-blora-datepicker]",
+      "component": "Date Picker"
+    },
+    {
+      "fn": "initTimePicker",
+      "selector": "[data-blora-timepicker]",
+      "component": "Time Picker"
+    },
+    {
+      "fn": "initCalendar",
+      "selector": "[data-blora-calendar]",
+      "component": "Calendar"
+    },
+    {
+      "fn": "initColorPicker",
+      "selector": ".blora-color-picker",
+      "component": "Color Picker"
+    },
+    {
+      "fn": "initCountdown",
+      "selector": "[data-blora-countdown]",
+      "component": "Countdown"
+    },
+    {
+      "fn": "initDiff",
+      "selector": ".blora-diff",
+      "component": "Diff Slider"
+    },
+    {
+      "fn": "initHoverGallery",
+      "selector": ".blora-hover-gallery",
+      "component": "Hover Gallery"
+    },
+    {
+      "fn": "initDeck",
+      "selector": ".blora-deck",
+      "component": "Card Deck"
+    },
+    {
+      "fn": "initTextRotate",
+      "selector": ".blora-text-rotate",
+      "component": "Text Rotate"
+    },
+    {
+      "fn": "initTextFx",
+      "selector": ".blora-text-fx, [data-blora-text-fx]",
+      "component": "Text Effects"
+    },
+    {
+      "fn": "initShortcutHints",
+      "selector": "[data-blora-shortcut]",
+      "component": "Shortcut Hints"
+    },
+    {
+      "fn": "initForms",
+      "selector": "form[data-blora-form], form[data-blora-validate]",
+      "component": "Form Validation"
+    },
+    {
+      "fn": "initTables",
+      "selector": "table[data-blora-table], [data-blora-pagination]",
+      "component": "Table"
+    },
+    {
+      "fn": "initImagePreview",
+      "selector": "[data-blora-preview], .blora-image--preview",
+      "component": "Image Preview"
+    },
+    {
+      "fn": "initAffix",
+      "selector": "[data-blora-affix], .blora-affix",
+      "component": "Affix"
+    },
+    {
+      "fn": "initAnchor",
+      "selector": "[data-blora-anchor], .blora-anchor",
+      "component": "Anchor Nav"
+    },
+    {
+      "fn": "initTreeSelect",
+      "selector": "[data-blora-treeselect], .blora-treeselect",
+      "component": "Tree Select"
+    },
+    {
+      "fn": "initAutoComplete",
+      "selector": "[data-blora-autocomplete], .blora-autocomplete",
+      "component": "Autocomplete"
+    },
+    {
+      "fn": "initMentions",
+      "selector": "[data-blora-mentions], .blora-mentions",
+      "component": "Mentions"
+    },
+    {
+      "fn": "initTour",
+      "selector": "[data-blora-tour-start]",
+      "component": "Tour"
+    },
+    {
+      "fn": "initWatermark",
+      "selector": "[data-blora-watermark], .blora-watermark",
+      "component": "Watermark"
+    },
+    {
+      "fn": "initSplitter",
+      "selector": "[data-blora-splitter], .blora-splitter",
+      "component": "Splitter"
+    },
+    {
+      "fn": "initMarkdown",
+      "selector": "[data-blora-md]",
+      "component": "Markdown"
+    },
+    {
+      "fn": "initTypography",
+      "selector": "[data-blora-ellipsis], [data-blora-clamp], [data-blora-copy]",
+      "component": "Typography"
+    },
+    {
+      "fn": "initThread",
+      "selector": "[data-blora-thread], .blora-thread",
+      "component": "Thread"
+    },
+    {
+      "fn": "initQRCode",
+      "selector": "[data-blora-qrcode], .blora-qrcode",
+      "component": "QR Code"
+    },
+    {
+      "fn": "initCountUp",
+      "selector": "[data-blora-countup]",
+      "component": "Count Up"
+    }
+  ],
+  "dataAttributes": {
+    "global": {
+      "data-blora-size": "sm|md|lg on html",
+      "data-blora-class-prefix": "custom prefix on html",
+      "data-blora-color-preference": "system|light|dark on html",
+      "data-blora-palette": "palette name on html",
+      "data-blora-scroll-locked": "1 on html (scroll lock)",
+      "data-blora-mode": "system|light|dark on color mode btn"
+    },
+    "tabs": {
+      "data-blora-tabs": "marks tabs group",
+      "data-tab": "panel index on .blora-tabs__tab"
+    },
+    "collapse": {
+      "data-blora-accordion": "accordion mode (single-open)"
+    },
+    "modal": {
+      "data-blora-modal-open": "modal id on trigger button",
+      "data-blora-close": "close trigger inside modal/drawer/popover"
+    },
+    "drawer": {
+      "data-blora-drawer-open": "drawer id on trigger button"
+    },
+    "popover": {
+      "data-blora-popover": "marks popover trigger"
+    },
+    "loading": {
+      "data-blora-loading": "ms duration on button"
+    },
+    "textLimit": {
+      "data-blora-limit": "char limit number on input/textarea",
+      "data-blora-limit-invalid": "true/false (JS-written)",
+      "data-blora-limit-group": "group container for action sync",
+      "data-blora-limit-action": "action button disabled when invalid"
+    },
+    "checkbox": {
+      "data-blora-checkall": "master checkbox",
+      "data-blora-check-group": "checkbox group container",
+      "data-readonly": "rate read-only flag"
+    },
+    "backTop": {
+      "data-blora-backtop": "explicit back-top button",
+      "data-show-after": "px scroll threshold",
+      "data-target": "scroll container selector"
+    },
+    "scrollSpy": {
+      "data-blora-spy": "px offset for spy nav"
+    },
+    "palette": {
+      "data-blora-palette-picker": "palette picker container",
+      "data-blora-palette-trigger": "trigger button",
+      "data-blora-palette-option": "palette key on option button"
+    },
+    "colorMode": {
+      "data-blora-color-mode": "color mode toggle button"
+    },
+    "fileUpload": {
+      "data-blora-file-upload": "file upload container",
+      "data-blora-file-input": "file input",
+      "data-blora-file-trigger": "browse trigger",
+      "data-blora-file-clear": "clear button",
+      "data-blora-file-empty": "empty state element",
+      "data-blora-file-output": "output element",
+      "data-blora-file-name": "filename display",
+      "data-file-count": "JS-written file count"
+    },
+    "otp": {
+      "data-mode": "numeric|alphanumeric|any",
+      "data-upper-ctrl": "id of uppercase checkbox",
+      "data-otp-ctrl": "id of digits stepper",
+      "data-mode-ctrl": "id of mode segmented control"
+    },
+    "customSelect": {
+      "data-blora-search": "enables search",
+      "data-blora-remote": "enables remote search",
+      "data-blora-multiple": "multi-select",
+      "data-blora-virtual": "virtual scroll",
+      "data-max-tag-count": "max visible tags",
+      "data-blora-max-tag-count": "max visible tags (alt)",
+      "data-search-debounce": "remote debounce ms",
+      "data-placeholder": "placeholder text"
+    },
+    "transfer": {
+      "data-blora-transfer": "right|left direction on button"
+    },
+    "cascader": {
+      "data-blora-cascader": "JSON tree data",
+      "data-prefix": "result prefix text"
+    },
+    "datePicker": {
+      "data-blora-datepicker": "date picker container"
+    },
+    "timePicker": {
+      "data-blora-timepicker": "time picker container"
+    },
+    "calendar": {
+      "data-blora-calendar": "calendar container"
+    },
+    "dropdown": {
+      "data-blora-dropdown-trigger": "dropdown trigger"
+    },
+    "speedDial": {
+      "data-blora-speed-dial": "speed dial container",
+      "data-blora-speed-dial-trigger": "trigger button",
+      "data-blora-speed-dial-close": "close button",
+      "data-blora-speed-dial-main": "main action button"
+    },
+    "sidebarLayout": {
+      "data-blora-sidebar-layout": "sidebar layout container",
+      "data-blora-sidebar-toggle": "toggle button"
+    },
+    "megamenu": {
+      "data-blora-megamenu": "megamenu container",
+      "data-blora-megamenu-trigger": "trigger button"
+    },
+    "countdown": {
+      "data-blora-countdown": "countdown container",
+      "data-target": "target datetime string",
+      "data-seconds": "seconds from now",
+      "data-unit": "days|hours|minutes|seconds on output"
+    },
+    "textFx": {
+      "data-blora-text-fx": "effect name",
+      "data-blora-text-fx-play": "play button (value=fx name)",
+      "data-blora-text-fx-click": "off to disable click play",
+      "data-blora-text-fx-host": "play button scope",
+      "data-blora-text-fx-preview": "preview target",
+      "data-blora-fx-split": "1 (JS-written, letters split)",
+      "data-blora-fx-text": "original text (JS-written)"
+    },
+    "shortcut": {
+      "data-blora-shortcut": "shortcut string e.g. mod+k"
+    },
+    "forms": {
+      "data-blora-form": "form to validate",
+      "data-blora-validate": "form to validate (alt)",
+      "data-blora-validate-on": "submit|blur|change",
+      "data-blora-validate-submit": "form selector on submit button",
+      "data-blora-native-validate": "allow browser validation",
+      "data-blora-native-submit": "allow native form submit",
+      "data-blora-rule": "email|url|number|min:N|max:N",
+      "data-blora-message": "custom validation message",
+      "data-blora-async": "async rule name",
+      "data-blora-error": "error slot element",
+      "data-blora-error-ui": "inline|popup"
+    },
+    "formConditional": {
+      "data-blora-when": "name=value | name!=value | #id=value",
+      "data-blora-when-action": "show|enable"
+    },
+    "table": {
+      "data-blora-table": "table id or marker",
+      "data-blora-table-mode": "local|remote",
+      "data-blora-sort": "sort key on th",
+      "data-blora-fixed": "left|right on th/td",
+      "data-blora-selectable": "enables row selection",
+      "data-blora-select-col": "JS-written selection column",
+      "data-blora-select-all": "select-all checkbox",
+      "data-blora-row-select": "row select checkbox",
+      "data-blora-table-bulk": "table id on bulk bar",
+      "data-blora-clear-selection": "clear selection button",
+      "data-blora-bulk-actions": "bulk actions slot",
+      "data-blora-virtual": "virtual scroll",
+      "data-row-height": "virtual row height px",
+      "data-overscan": "virtual overscan count",
+      "data-viewport-height": "virtual viewport px",
+      "data-blora-cols": "enable column settings",
+      "data-blora-cols-key": "localStorage key for cols",
+      "data-blora-cols-toggle": "toggle cols panel",
+      "data-blora-cols-reset": "reset cols button",
+      "data-col-key": "column key",
+      "data-col-hidden": "true to hide column",
+      "data-col-order": "JS-written column order",
+      "data-page": "current page",
+      "data-page-size": "page size",
+      "data-sort-key": "current sort key",
+      "data-sort-dir": "asc|desc",
+      "data-total": "total rows",
+      "data-blora-pagination": "pagination nav",
+      "data-blora-page": "page number or prev|next",
+      "data-virtual-index": "JS-written virtual row index"
+    },
+    "imagePreview": {
+      "data-blora-preview": "preview trigger",
+      "data-blora-preview-group": "group name for gallery",
+      "data-preview-src": "custom src",
+      "data-preview-alt": "custom alt",
+      "data-preview-caption": "caption text"
+    },
+    "affix": {
+      "data-blora-affix": "offset px or presence flag",
+      "data-offset": "offset px"
+    },
+    "anchor": {
+      "data-blora-anchor": "anchor nav container",
+      "data-offset": "scroll offset px"
+    },
+    "treeSelect": {
+      "data-blora-treeselect": "container",
+      "data-options": "JSON tree data",
+      "data-value": "JS-written selected value"
+    },
+    "autocomplete": {
+      "data-blora-autocomplete": "container",
+      "data-options": "JSON array of options"
+    },
+    "mentions": {
+      "data-blora-mentions": "container",
+      "data-options": "JSON array of users"
+    },
+    "tour": {
+      "data-blora-tour": "tour host container",
+      "data-blora-tour-start": "tour start button (value=selector)",
+      "data-blora-tour-step": "tour step element",
+      "data-tour-title": "step title",
+      "data-tour-desc": "step description",
+      "data-tour": "next|prev|skip on tour buttons"
+    },
+    "watermark": {
+      "data-blora-watermark": "watermark text or container",
+      "data-text": "watermark text"
+    },
+    "splitter": {
+      "data-blora-splitter": "splitter container",
+      "data-direction": "vertical",
+      "data-min": "min pane size px"
+    },
+    "markdown": {
+      "data-blora-md": "markdown source or container",
+      "data-blora-md-src": "selector for markdown source",
+      "data-blora-md-inline": "inline mode",
+      "data-blora-md-ready": "1 (JS-written)"
+    },
+    "typography": {
+      "data-blora-ellipsis": "enable ellipsis",
+      "data-blora-clamp": "line count for clamp",
+      "data-blora-copy": "text to copy"
+    },
+    "thread": {
+      "data-blora-thread": "thread container",
+      "data-blora-thread-toggle": "toggle replies button",
+      "data-blora-thread-replies": "replies container",
+      "data-blora-thread-body": "replies body",
+      "data-blora-post-react": "react button",
+      "data-label-expand": "expand label",
+      "data-label-collapse": "collapse label"
+    },
+    "qrcode": {
+      "data-blora-qrcode": "qr text or container",
+      "data-text": "qr text",
+      "data-value": "qr text (alt)",
+      "data-size": "qr size px"
+    },
+    "countUp": {
+      "data-blora-countup": "target number",
+      "data-duration": "animation duration ms",
+      "data-decimals": "decimal places",
+      "data-prefix": "text prefix",
+      "data-suffix": "text suffix"
+    },
+    "hoverGallery": {
+      "data-blora-text-fx-click": "(shared, off)"
+    },
+    "deck": {
+      "data-label": "aria label"
+    }
+  },
+  "events": {
+    "global": [
+      "blora:localechange",
+      "blora:appearancechange"
+    ],
+    "segmented": [
+      "blora:change"
+    ],
+    "rate": [
+      "blora:change"
+    ],
+    "range": [
+      "blora:change"
+    ],
+    "colorPicker": [
+      "blora:change"
+    ],
+    "fileUpload": [
+      "blora:filechange",
+      "change"
+    ],
+    "customSelect": [
+      "blora:search",
+      "change"
+    ],
+    "countdown": [
+      "blora:complete"
+    ],
+    "forms": [
+      "blora:validate",
+      "blora:invalid",
+      "blora:submit",
+      "change",
+      "input",
+      "invalid",
+      "submit",
+      "reset",
+      "focusout"
+    ],
+    "table": [
+      "blora:table-change",
+      "blora:table-select",
+      "blora:page-change",
+      "change"
+    ],
+    "pagination": [
+      "blora:page-change"
+    ],
+    "treeSelect": [
+      "blora:treeselect-change"
+    ],
+    "autocomplete": [
+      "blora:autocomplete-select",
+      "input"
+    ],
+    "mentions": [
+      "input"
+    ],
+    "carousel": [
+      "pointerdown",
+      "pointermove",
+      "pointerup",
+      "pointercancel",
+      "keydown"
+    ],
+    "hoverGallery": [
+      "pointerdown",
+      "pointermove",
+      "pointerup",
+      "pointercancel"
+    ],
+    "deck": [
+      "pointerdown",
+      "pointermove",
+      "pointerup",
+      "pointercancel",
+      "wheel",
+      "keydown"
+    ],
+    "modal": [
+      "click",
+      "keydown"
+    ],
+    "drawer": [
+      "click",
+      "keydown"
+    ],
+    "popover": [
+      "click",
+      "resize",
+      "scroll"
+    ],
+    "dropdown": [
+      "click",
+      "resize"
+    ],
+    "splitter": [
+      "pointerdown",
+      "pointermove",
+      "pointerup",
+      "pointercancel"
+    ],
+    "textFx": [
+      "click"
+    ],
+    "thread": [
+      "transitionend",
+      "click"
+    ],
+    "tabs": [
+      "click",
+      "keydown"
+    ],
+    "collapse": [
+      "click"
+    ],
+    "tooltip": [
+      "pointerenter",
+      "focusin",
+      "resize"
+    ],
+    "speedDial": [
+      "click",
+      "keydown"
+    ],
+    "sidebarLayout": [
+      "click",
+      "keydown",
+      "change(media)"
+    ],
+    "megamenu": [
+      "click",
+      "keydown",
+      "resize"
+    ],
+    "scrollSpy": [
+      "scroll"
+    ],
+    "smoothScroll": [
+      "click(capture)",
+      "DOMContentLoaded",
+      "scrollend"
+    ],
+    "backTop": [
+      "scroll",
+      "click"
+    ],
+    "rangeSlider": [
+      "mousedown",
+      "touchstart",
+      "focus",
+      "blur",
+      "keydown"
+    ],
+    "dateGuard": [
+      "blur"
+    ],
+    "search": [
+      "input",
+      "click"
+    ],
+    "typography_copy": [
+      "click"
+    ],
+    "nativeDOM": [
+      "change",
+      "input",
+      "submit",
+      "blur",
+      "focus",
+      "keydown",
+      "click",
+      "scroll",
+      "resize",
+      "dragenter",
+      "dragover",
+      "dragleave",
+      "drop",
+      "paste",
+      "wheel",
+      "pointerdown",
+      "pointermove",
+      "pointerup",
+      "pointercancel",
+      "touchstart",
+      "touchmove",
+      "touchend",
+      "touchcancel",
+      "focusin",
+      "focusout",
+      "mouseenter",
+      "mouseleave",
+      "invalid"
+    ]
+  },
+  "cssClasses": {
+    "state": [
+      "is-open",
+      "is-active",
+      "is-disabled",
+      "is-selected",
+      "is-loading",
+      "is-error",
+      "is-success",
+      "is-validating",
+      "is-dragging",
+      "is-dragover",
+      "is-filled",
+      "is-dragover",
+      "is-leaving",
+      "is-closing",
+      "is-entering",
+      "is-show",
+      "is-on",
+      "is-over-limit",
+      "is-hidden",
+      "is-visible",
+      "is-fixed",
+      "is-open",
+      "is-placeholder",
+      "is-ghost",
+      "is-searching",
+      "is-switching",
+      "is-clickable",
+      "is-play",
+      "is-loop",
+      "is-front",
+      "is-back",
+      "is-mid",
+      "is-collapsed",
+      "is-align-end",
+      "is-portaled",
+      "is-instant",
+      "is-today",
+      "is-other",
+      "is-when-disabled",
+      "is-when-hidden"
+    ],
+    "component": [
+      "blora-dark",
+      "blora-hide",
+      "blora-form",
+      "blora-md",
+      "blora-portal",
+      "blora-affix",
+      "blora-checkbox--indeterminate",
+      "blora-limit--textarea",
+      "blora-limit--secure",
+      "blora-select-wrap--multiple",
+      "blora-select-wrap--searchable",
+      "blora-select-options--virtual",
+      "blora-table-col--fixed-left",
+      "blora-table-col--fixed-right",
+      "blora-table-wrap--virtual",
+      "blora-typo-ellipsis",
+      "blora-typo-clamp",
+      "blora-typo-copy",
+      "blora-error--popup",
+      "blora-text-fx",
+      "blora-splitter--vertical",
+      "blora-anchor__link",
+      "blora-treeselect",
+      "blora-autocomplete",
+      "blora-mentions",
+      "blora-watermark",
+      "blora-splitter",
+      "blora-anchor",
+      "blora-affix__inner",
+      "blora-backtop",
+      "blora-qrcode"
+    ]
+  },
+  "configOptions": {
+    "Options": {
+      "autoInit": {
+        "type": "boolean",
+        "default": true,
+        "desc": "Auto-init on DOMContentLoaded"
+      },
+      "portalRoot": {
+        "type": "string|Element|null",
+        "default": null,
+        "desc": "Portal root for floating elements"
+      },
+      "colorModeStorageKey": {
+        "type": "string",
+        "default": "blora-color-mode",
+        "desc": "localStorage key for color mode"
+      },
+      "paletteStorageKey": {
+        "type": "string",
+        "default": "blora-palette",
+        "desc": "localStorage key for palette"
+      },
+      "classPrefix": {
+        "type": "string",
+        "default": "blora",
+        "desc": "Dynamic class prefix"
+      },
+      "tableColsStorageKey": {
+        "type": "string",
+        "default": "blora-table-cols",
+        "desc": "localStorage prefix for table col config"
+      },
+      "size": {
+        "type": "ControlSize",
+        "default": "md",
+        "desc": "sm|md|lg written to html[data-blora-size]"
+      },
+      "validateOn": {
+        "type": "string",
+        "default": "submit",
+        "desc": "Validation trigger: submit|blur|change"
+      },
+      "tablePageSize": {
+        "type": "number",
+        "default": 10,
+        "desc": "Default table page size"
+      },
+      "locale": {
+        "type": "string|LocalePack|Partial<LocaleData>",
+        "default": "zh-CN",
+        "desc": "Language code or pack"
+      },
+      "localeCode": {
+        "type": "string",
+        "desc": "Language code when locale is a pack object"
+      },
+      "messages": {
+        "type": "Record<string,string>",
+        "desc": "Custom i18n message overrides"
+      }
+    },
+    "Config": {
+      "autoInit": "boolean",
+      "portalRoot": "string|Element|null",
+      "colorModeStorageKey": "string",
+      "paletteStorageKey": "string",
+      "size": "ControlSize|string",
+      "validateOn": "string",
+      "tablePageSize": "number",
+      "locale": "string",
+      "messages": "Record<string,string>",
+      "localeData": "LocaleData"
+    }
+  },
+  "components": [
+    "Tabs",
+    "Collapse/Accordion",
+    "Modal",
+    "Drawer",
+    "Popover",
+    "Tooltip",
+    "Dropdown Menu",
+    "Speed Dial",
+    "Sidebar Layout",
+    "Megamenu",
+    "Segmented Control",
+    "Search Input",
+    "Button Loading",
+    "Rate",
+    "Slider",
+    "Progress",
+    "Text Limit",
+    "Tags Input",
+    "Number Stepper",
+    "Checkbox Indeterminate",
+    "Tree",
+    "Carousel",
+    "Back to Top",
+    "Scroll Spy",
+    "Smooth Scroll",
+    "Palette Picker",
+    "Color Mode Toggle",
+    "File Upload",
+    "Command Palette",
+    "Date Guard",
+    "OTP Input",
+    "Custom Select",
+    "Range Slider",
+    "Transfer",
+    "Cascader",
+    "Date Picker",
+    "Time Picker",
+    "Calendar",
+    "Color Picker",
+    "Countdown",
+    "Diff Slider",
+    "Hover Gallery",
+    "Card Deck",
+    "Text Rotate",
+    "Text Effects",
+    "Shortcut Hints",
+    "Form Validation",
+    "Table",
+    "Image Preview",
+    "Affix",
+    "Anchor Nav",
+    "Tree Select",
+    "Autocomplete",
+    "Mentions",
+    "Tour",
+    "Watermark",
+    "Splitter",
+    "Markdown",
+    "Typography",
+    "Thread",
+    "QR Code",
+    "Count Up",
+    "Toast/Message",
+    "Notification",
+    "Confirm Dialog"
+  ],
+  "externalDependencies": {
+    "count": 0,
+    "libraries": [],
+    "note": "Zero external dependencies per design. Uses only browser native APIs: DOM, Canvas 2D, IntersectionObserver, ResizeObserver, matchMedia, PointerEvent, DataTransfer, localStorage, history.replaceState. UMD pattern exports as module.exports and global.Blora."
+  }
+}

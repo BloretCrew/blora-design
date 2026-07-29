@@ -1,0 +1,2989 @@
+{
+  "$schema": "v1-css-inventory",
+  "source": "blora.css",
+  "sourcePath": "D:\\MyFiles\\Documents\\projects\\blora-design-2\\blora.css",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "totalLines": 4499,
+  "generatedNote": "Inventory of the Blora Design 1.x CSS public surface, extracted from blora.css. Covers --blora-* custom properties, .blora-* classes, data-blora-* attributes, structure, and notable patterns.",
+  "organization": {
+    "cascadeLayers": false,
+    "layerNote": "No @layer declarations are used. The stylesheet relies entirely on source order, selector specificity, and :where() (zero-specificity) wrappers to keep the reset/base rules from inflating specificity.",
+    "scopeMechanism": "Three root scopes gate base styles: body.blora-page, .blora-scope, .blora-portal. Component styles use the .blora-* class prefix. Palette/dark/size modes switch via :root[data-blora-*] and :root.blora-dark attribute/class selectors.",
+    "sections": [
+      {
+        "id": 1,
+        "title": "Design Tokens",
+        "title_zh": "设计令牌",
+        "startLine": 10,
+        "endLine": 158
+      },
+      {
+        "id": "palette",
+        "title": "Palette Presets (light)",
+        "title_zh": "配色预设",
+        "startLine": 160,
+        "endLine": 234
+      },
+      {
+        "id": 2,
+        "title": "Reset",
+        "title_zh": "重置",
+        "startLine": 236,
+        "endLine": 309
+      },
+      {
+        "id": 3,
+        "title": "Typography",
+        "title_zh": "排版",
+        "startLine": 311,
+        "endLine": 381
+      },
+      {
+        "id": 4,
+        "title": "Layout",
+        "title_zh": "容器与布局",
+        "startLine": 383,
+        "endLine": 473
+      },
+      {
+        "id": 5,
+        "title": "Buttons",
+        "title_zh": "按钮",
+        "startLine": 474,
+        "endLine": 602
+      },
+      {
+        "id": 6,
+        "title": "Forms",
+        "title_zh": "表单",
+        "startLine": 604,
+        "endLine": 1382
+      },
+      {
+        "id": 7,
+        "title": "Tags & Badges",
+        "title_zh": "标签",
+        "startLine": 1384,
+        "endLine": 1446
+      },
+      {
+        "id": 8,
+        "title": "Avatar",
+        "title_zh": "头像",
+        "startLine": 1448,
+        "endLine": 1473
+      },
+      {
+        "id": 9,
+        "title": "Progress & Loading",
+        "title_zh": "进度与加载",
+        "startLine": 1475,
+        "endLine": 1503
+      },
+      {
+        "id": 10,
+        "title": "Navigation",
+        "title_zh": "导航",
+        "startLine": 1505,
+        "endLine": 1779
+      },
+      {
+        "id": 11,
+        "title": "Data Display",
+        "title_zh": "数据展示",
+        "startLine": 1781,
+        "endLine": 2157
+      },
+      {
+        "id": 12,
+        "title": "Feedback",
+        "title_zh": "反馈",
+        "startLine": 2159,
+        "endLine": 2293
+      },
+      {
+        "id": 13,
+        "title": "Utilities",
+        "title_zh": "工具与杂项",
+        "startLine": 2295,
+        "endLine": 2341
+      },
+      {
+        "id": 14,
+        "title": "Extended Components",
+        "title_zh": "扩展组件",
+        "startLine": 2343,
+        "endLine": 3016
+      },
+      {
+        "id": "advanced",
+        "title": "Advanced Components",
+        "title_zh": "进阶组件",
+        "startLine": 3018,
+        "endLine": 4212
+      },
+      {
+        "id": 15,
+        "title": "Dark Mode",
+        "title_zh": "暗色模式",
+        "startLine": 4214,
+        "endLine": 4354
+      },
+      {
+        "id": 16,
+        "title": "Keyframes",
+        "title_zh": "关键帧",
+        "startLine": 4356,
+        "endLine": 4467
+      },
+      {
+        "id": "reduced-motion",
+        "title": "Reduced Motion",
+        "startLine": 4459,
+        "endLine": 4467
+      },
+      {
+        "id": "rtl",
+        "title": "RTL",
+        "startLine": 4470,
+        "endLine": 4499
+      }
+    ]
+  },
+  "customProperties": {
+    "_note": "Grouped by token category. Each entry: name, value, selector, line. Value shown is the default :root (Coral light) definition unless noted. Palette + dark overrides summarized separately after categories.",
+    "defaultSelector": ":root",
+    "categories": {
+      "color_primitive": [
+        {
+          "name": "--blora-background",
+          "value": "#FAF7F8",
+          "selector": ":root",
+          "line": 17
+        },
+        {
+          "name": "--blora-surface-1",
+          "value": "#FFFCFD",
+          "selector": ":root",
+          "line": 18
+        },
+        {
+          "name": "--blora-surface-2",
+          "value": "#F4ECEE",
+          "selector": ":root",
+          "line": 19
+        },
+        {
+          "name": "--blora-surface-3",
+          "value": "#E9DEE1",
+          "selector": ":root",
+          "line": 20
+        },
+        {
+          "name": "--blora-text-strong",
+          "value": "#303143",
+          "selector": ":root",
+          "line": 23
+        },
+        {
+          "name": "--blora-foreground",
+          "value": "#3D3E50",
+          "selector": ":root",
+          "line": 24
+        },
+        {
+          "name": "--blora-text-emphasis",
+          "value": "#555565",
+          "selector": ":root",
+          "line": 25
+        },
+        {
+          "name": "--blora-text-muted",
+          "value": "#74717C",
+          "selector": ":root",
+          "line": 26
+        },
+        {
+          "name": "--blora-text-subtle",
+          "value": "#9B959D",
+          "selector": ":root",
+          "line": 27
+        },
+        {
+          "name": "--blora-text-disabled",
+          "value": "#B9B2B8",
+          "selector": ":root",
+          "line": 28
+        },
+        {
+          "name": "--blora-border-subtle",
+          "value": "#D9D2D6",
+          "selector": ":root",
+          "line": 29
+        },
+        {
+          "name": "--blora-primary",
+          "value": "#9F5964",
+          "selector": ":root",
+          "line": 32
+        },
+        {
+          "name": "--blora-primary-hover",
+          "value": "#80464F",
+          "selector": ":root",
+          "line": 33
+        },
+        {
+          "name": "--blora-primary-soft",
+          "value": "#C07E86",
+          "selector": ":root",
+          "line": 34
+        },
+        {
+          "name": "--blora-danger",
+          "value": "#9E5559",
+          "selector": ":root",
+          "line": 35
+        },
+        {
+          "name": "--blora-accent-neutral",
+          "value": "#6E6975",
+          "selector": ":root",
+          "line": 36
+        },
+        {
+          "name": "--blora-accent-neutral-soft",
+          "value": "#9A95A0",
+          "selector": ":root",
+          "line": 37
+        },
+        {
+          "name": "--blora-info",
+          "value": "#5D6680",
+          "selector": ":root",
+          "line": 38
+        },
+        {
+          "name": "--blora-info-soft",
+          "value": "#888FA5",
+          "selector": ":root",
+          "line": 39
+        },
+        {
+          "name": "--blora-success",
+          "value": "#5B756B",
+          "selector": ":root",
+          "line": 40
+        },
+        {
+          "name": "--blora-success-soft",
+          "value": "#879C94",
+          "selector": ":root",
+          "line": 41
+        },
+        {
+          "name": "--blora-support",
+          "value": "#687C7B",
+          "selector": ":root",
+          "line": 42
+        },
+        {
+          "name": "--blora-warning",
+          "value": "#806C4F",
+          "selector": ":root",
+          "line": 43
+        },
+        {
+          "name": "--blora-accent-secondary",
+          "value": "#8B6571",
+          "selector": ":root",
+          "line": 44
+        }
+      ],
+      "spacing": [
+        {
+          "name": "--blora-space-0",
+          "value": "0",
+          "selector": ":root",
+          "line": 72
+        },
+        {
+          "name": "--blora-space-1",
+          "value": "0.25rem",
+          "selector": ":root",
+          "line": 73
+        },
+        {
+          "name": "--blora-space-2",
+          "value": "0.5rem",
+          "selector": ":root",
+          "line": 74
+        },
+        {
+          "name": "--blora-space-3",
+          "value": "0.75rem",
+          "selector": ":root",
+          "line": 75
+        },
+        {
+          "name": "--blora-space-4",
+          "value": "1rem",
+          "selector": ":root",
+          "line": 76
+        },
+        {
+          "name": "--blora-space-5",
+          "value": "1.5rem",
+          "selector": ":root",
+          "line": 77
+        },
+        {
+          "name": "--blora-space-6",
+          "value": "2rem",
+          "selector": ":root",
+          "line": 78
+        },
+        {
+          "name": "--blora-space-7",
+          "value": "2.5rem",
+          "selector": ":root",
+          "line": 79
+        },
+        {
+          "name": "--blora-space-8",
+          "value": "3rem",
+          "selector": ":root",
+          "line": 80
+        },
+        {
+          "name": "--blora-space-9",
+          "value": "4rem",
+          "selector": ":root",
+          "line": 81
+        },
+        {
+          "name": "--blora-space-10",
+          "value": "5rem",
+          "selector": ":root",
+          "line": 82
+        },
+        {
+          "name": "--blora-space-11",
+          "value": "6rem",
+          "selector": ":root",
+          "line": 83
+        },
+        {
+          "name": "--blora-space-12",
+          "value": "8rem",
+          "selector": ":root",
+          "line": 84
+        }
+      ],
+      "typography": [
+        {
+          "name": "--blora-font-heading",
+          "value": "Avenir, \"Avenir Next\", \"Segoe UI\", \"Noto Sans SC\", sans-serif",
+          "selector": ":root",
+          "line": 47
+        },
+        {
+          "name": "--blora-font-sans",
+          "value": "Avenir, \"Avenir Next\", \"Segoe UI\", \"Noto Sans SC\", sans-serif",
+          "selector": ":root",
+          "line": 49
+        },
+        {
+          "name": "--blora-font-mono",
+          "value": "\"JetBrains Mono\", \"Fira Code\", \"SF Mono\", Consolas, monospace",
+          "selector": ":root",
+          "line": 52
+        },
+        {
+          "name": "--blora-text-xs",
+          "value": "0.75rem",
+          "selector": ":root",
+          "line": 54
+        },
+        {
+          "name": "--blora-text-sm",
+          "value": "0.875rem",
+          "selector": ":root",
+          "line": 55
+        },
+        {
+          "name": "--blora-text-base",
+          "value": "1rem",
+          "selector": ":root",
+          "line": 56
+        },
+        {
+          "name": "--blora-text-lg",
+          "value": "1.125rem",
+          "selector": ":root",
+          "line": 57
+        },
+        {
+          "name": "--blora-text-xl",
+          "value": "1.375rem",
+          "selector": ":root",
+          "line": 58
+        },
+        {
+          "name": "--blora-text-2xl",
+          "value": "1.75rem",
+          "selector": ":root",
+          "line": 59
+        },
+        {
+          "name": "--blora-text-3xl",
+          "value": "2.25rem",
+          "selector": ":root",
+          "line": 60
+        },
+        {
+          "name": "--blora-text-4xl",
+          "value": "3rem",
+          "selector": ":root",
+          "line": 61
+        },
+        {
+          "name": "--blora-text-5xl",
+          "value": "4rem",
+          "selector": ":root",
+          "line": 62
+        },
+        {
+          "name": "--blora-leading-tight",
+          "value": "1.25",
+          "selector": ":root",
+          "line": 64
+        },
+        {
+          "name": "--blora-leading-normal",
+          "value": "1.6",
+          "selector": ":root",
+          "line": 65
+        },
+        {
+          "name": "--blora-leading-loose",
+          "value": "1.85",
+          "selector": ":root",
+          "line": 66
+        },
+        {
+          "name": "--blora-tracking-tight",
+          "value": "0",
+          "selector": ":root",
+          "line": 68
+        },
+        {
+          "name": "--blora-tracking-normal",
+          "value": "0",
+          "selector": ":root",
+          "line": 69
+        },
+        {
+          "name": "--blora-tracking-wide",
+          "value": "0.04em",
+          "selector": ":root",
+          "line": 70
+        },
+        {
+          "name": "--blora-tracking-caps",
+          "value": "0.18em",
+          "selector": ":root",
+          "line": 71
+        }
+      ],
+      "radius": [
+        {
+          "name": "--blora-radius-xs",
+          "value": "6px",
+          "selector": ":root",
+          "line": 88
+        },
+        {
+          "name": "--blora-radius-sm",
+          "value": "10px",
+          "selector": ":root",
+          "line": 89
+        },
+        {
+          "name": "--blora-radius-md",
+          "value": "14px",
+          "selector": ":root",
+          "line": 90
+        },
+        {
+          "name": "--blora-radius-lg",
+          "value": "18px",
+          "selector": ":root",
+          "line": 91
+        },
+        {
+          "name": "--blora-radius-xl",
+          "value": "26px",
+          "selector": ":root",
+          "line": 92
+        },
+        {
+          "name": "--blora-radius-2xl",
+          "value": "36px",
+          "selector": ":root",
+          "line": 93
+        },
+        {
+          "name": "--blora-radius-full",
+          "value": "9999px",
+          "selector": ":root",
+          "line": 94
+        }
+      ],
+      "shadow": [
+        {
+          "name": "--blora-shadow-1",
+          "value": "0 1px 3px rgba(29,27,32,0.05)",
+          "selector": ":root",
+          "line": 97
+        },
+        {
+          "name": "--blora-shadow-2",
+          "value": "0 4px 12px rgba(29,27,32,0.07)",
+          "selector": ":root",
+          "line": 98
+        },
+        {
+          "name": "--blora-shadow-3",
+          "value": "0 12px 30px rgba(29,27,32,0.1)",
+          "selector": ":root",
+          "line": 99
+        },
+        {
+          "name": "--blora-shadow-4",
+          "value": "0 24px 56px rgba(29,27,32,0.14)",
+          "selector": ":root",
+          "line": 100
+        },
+        {
+          "name": "--blora-shadow-inset",
+          "value": "inset 0 1px 0 rgba(255,255,255,0.5), inset 0 -1px 0 rgba(28,26,23,0.04)",
+          "selector": ":root",
+          "line": 101
+        },
+        {
+          "name": "--blora-shadow-primary",
+          "value": "0 0 0 1px color-mix(in srgb, var(--blora-primary) 18%, transparent), 0 2px 6px color-mix(in srgb, var(--blora-primary) 15%, transparent)",
+          "selector": ":root",
+          "line": 103
+        },
+        {
+          "name": "--blora-focus-ring",
+          "value": "0 0 0 3px color-mix(in srgb, var(--blora-primary) 12%, transparent)",
+          "selector": ":root",
+          "line": 126
+        },
+        {
+          "name": "--blora-focus-ring-strong",
+          "value": "0 0 0 3px color-mix(in srgb, var(--blora-primary) 18%, transparent)",
+          "selector": ":root",
+          "line": 127
+        }
+      ],
+      "duration_easing": [
+        {
+          "name": "--blora-ease",
+          "value": "cubic-bezier(0.25, 0.8, 0.25, 1)",
+          "selector": ":root",
+          "line": 139
+        },
+        {
+          "name": "--blora-ease-soft",
+          "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+          "selector": ":root",
+          "line": 140
+        },
+        {
+          "name": "--blora-ease-overshoot",
+          "value": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+          "selector": ":root",
+          "line": 141
+        },
+        {
+          "name": "--blora-dur-fast",
+          "value": "160ms",
+          "selector": ":root",
+          "line": 142
+        },
+        {
+          "name": "--blora-dur-base",
+          "value": "260ms",
+          "selector": ":root",
+          "line": 143
+        },
+        {
+          "name": "--blora-dur-slow",
+          "value": "420ms",
+          "selector": ":root",
+          "line": 144
+        },
+        {
+          "name": "--blora-dur-emphasis",
+          "value": "700ms",
+          "selector": ":root",
+          "line": 145
+        },
+        {
+          "name": "--blora-tabs-fade-duration",
+          "value": "240ms",
+          "selector": ":root",
+          "line": 146
+        }
+      ],
+      "z_index": [
+        {
+          "name": "--blora-z-base",
+          "value": "1",
+          "selector": ":root",
+          "line": 152
+        },
+        {
+          "name": "--blora-z-sticky",
+          "value": "100",
+          "selector": ":root",
+          "line": 153
+        },
+        {
+          "name": "--blora-z-dropdown",
+          "value": "1000",
+          "selector": ":root",
+          "line": 154
+        },
+        {
+          "name": "--blora-z-drawer",
+          "value": "1100",
+          "selector": ":root",
+          "line": 155
+        },
+        {
+          "name": "--blora-z-modal",
+          "value": "1200",
+          "selector": ":root",
+          "line": 156
+        },
+        {
+          "name": "--blora-z-toast",
+          "value": "1300",
+          "selector": ":root",
+          "line": 157
+        }
+      ],
+      "border": [
+        {
+          "name": "--blora-border",
+          "value": "1px solid var(--blora-border-subtle)",
+          "selector": ":root",
+          "line": 106
+        },
+        {
+          "name": "--blora-border-strong",
+          "value": "1px solid var(--blora-text-subtle)",
+          "selector": ":root",
+          "line": 107
+        },
+        {
+          "name": "--blora-border-primary",
+          "value": "1px solid var(--blora-primary)",
+          "selector": ":root",
+          "line": 108
+        }
+      ],
+      "component_metrics": [
+        {
+          "name": "--blora-control-height",
+          "value": "2.75em",
+          "selector": ":root",
+          "line": 112
+        },
+        {
+          "name": "--blora-control-pad-x",
+          "value": "1em",
+          "selector": ":root",
+          "line": 113
+        },
+        {
+          "name": "--blora-control-radius",
+          "value": "var(--blora-radius-full)",
+          "selector": ":root",
+          "line": 114
+        },
+        {
+          "name": "--blora-range-track-size",
+          "value": "4px",
+          "selector": ":root",
+          "line": 115
+        },
+        {
+          "name": "--blora-range-thumb-size",
+          "value": "18px",
+          "selector": ":root",
+          "line": 116
+        }
+      ],
+      "derived_color": [
+        {
+          "name": "--blora-on-accent",
+          "value": "#FFFFFF",
+          "selector": ":root",
+          "line": 119
+        },
+        {
+          "name": "--blora-brand-glyph",
+          "value": "color-mix(in srgb, var(--blora-on-accent) 88%, var(--blora-primary))",
+          "selector": ":root",
+          "line": 120
+        },
+        {
+          "name": "--blora-on-media",
+          "value": "#FFFFFF",
+          "selector": ":root",
+          "line": 121
+        },
+        {
+          "name": "--blora-media-overlay",
+          "value": "rgba(0,0,0,0.4)",
+          "selector": ":root",
+          "line": 122
+        },
+        {
+          "name": "--blora-media-overlay-strong",
+          "value": "rgba(0,0,0,0.7)",
+          "selector": ":root",
+          "line": 123
+        },
+        {
+          "name": "--blora-media-indicator",
+          "value": "rgba(255,255,255,0.6)",
+          "selector": ":root",
+          "line": 124
+        },
+        {
+          "name": "--blora-primary-tint",
+          "value": "color-mix(in srgb, var(--blora-primary) 8%, transparent)",
+          "selector": ":root",
+          "line": 125
+        },
+        {
+          "name": "--blora-selection-bg",
+          "value": "color-mix(in srgb, var(--blora-primary) 28%, transparent)",
+          "selector": ":root",
+          "line": 126
+        },
+        {
+          "name": "--blora-overlay-modal",
+          "value": "rgba(48,49,67,0.52)",
+          "selector": ":root",
+          "line": 128
+        },
+        {
+          "name": "--blora-overlay-drawer",
+          "value": "rgba(48,49,67,0.46)",
+          "selector": ":root",
+          "line": 129
+        },
+        {
+          "name": "--blora-code-bg",
+          "value": "color-mix(in srgb, var(--blora-text-strong) 92%, var(--blora-background))",
+          "selector": ":root",
+          "line": 130
+        },
+        {
+          "name": "--blora-code-fg",
+          "value": "var(--blora-on-accent)",
+          "selector": ":root",
+          "line": 131
+        },
+        {
+          "name": "--blora-banner-bg",
+          "value": "var(--blora-foreground)",
+          "selector": ":root",
+          "line": 132
+        },
+        {
+          "name": "--blora-banner-fg",
+          "value": "var(--blora-on-media)",
+          "selector": ":root",
+          "line": 133
+        },
+        {
+          "name": "--blora-tooltip-bg",
+          "value": "var(--blora-foreground)",
+          "selector": ":root",
+          "line": 134
+        }
+      ],
+      "texture": [
+        {
+          "name": "--blora-background-texture",
+          "value": "none",
+          "selector": ":root",
+          "line": 148
+        },
+        {
+          "name": "--blora-background-overlay",
+          "value": "none",
+          "selector": ":root",
+          "line": 149
+        }
+      ],
+      "component_specific": [
+        {
+          "name": "--btn-bg",
+          "value": "var(--blora-surface-1)",
+          "selector": ".blora-btn",
+          "line": 479,
+          "note": "Local button token, not --blora-* prefixed"
+        },
+        {
+          "name": "--btn-fg",
+          "value": "var(--blora-foreground)",
+          "selector": ".blora-btn",
+          "line": 480,
+          "note": "Local button token"
+        },
+        {
+          "name": "--btn-bd",
+          "value": "var(--blora-border-subtle)",
+          "selector": ".blora-btn",
+          "line": 481,
+          "note": "Local button token"
+        },
+        {
+          "name": "--switch-w",
+          "value": "2.6em",
+          "selector": ".blora-switch__track",
+          "line": 1071,
+          "note": "Local switch token"
+        },
+        {
+          "name": "--switch-h",
+          "value": "1.5em",
+          "selector": ".blora-switch__track",
+          "line": 1072,
+          "note": "Local switch token"
+        },
+        {
+          "name": "--switch-pad",
+          "value": "0.2em",
+          "selector": ".blora-switch__track",
+          "line": 1073,
+          "note": "Local switch token"
+        },
+        {
+          "name": "--switch-knob",
+          "value": "calc(var(--switch-h) - var(--switch-pad) * 2)",
+          "selector": ".blora-switch__track",
+          "line": 1074,
+          "note": "Local switch token"
+        },
+        {
+          "name": "--blora-color-hue",
+          "value": "0",
+          "selector": ".blora-color-spectrum",
+          "line": 1284
+        },
+        {
+          "name": "--blora-segmented-padding",
+          "value": "3px",
+          "selector": ".blora-segmented",
+          "line": 1139
+        },
+        {
+          "name": "--blora-tab-w",
+          "value": "0",
+          "selector": ".blora-tabs__indicator (via JS)",
+          "line": 1702,
+          "note": "Set by JS"
+        },
+        {
+          "name": "--blora-tab-x",
+          "value": "0",
+          "selector": ".blora-tabs__indicator (via JS)",
+          "line": 1702,
+          "note": "Set by JS"
+        },
+        {
+          "name": "--blora-tab-h",
+          "value": "100%",
+          "selector": ".blora-tabs__indicator (via JS)",
+          "line": 1714,
+          "note": "Set by JS"
+        },
+        {
+          "name": "--blora-tab-y",
+          "value": "0",
+          "selector": ".blora-tabs__indicator (via JS)",
+          "line": 1717,
+          "note": "Set by JS"
+        },
+        {
+          "name": "--blora-collapse-h",
+          "value": "400px",
+          "selector": ".blora-collapse__item (via JS)",
+          "line": 1973,
+          "note": "Set by JS"
+        },
+        {
+          "name": "--blora-tree-h",
+          "value": "500px",
+          "selector": ".blora-tree (via JS)",
+          "line": 1998,
+          "note": "Set by JS"
+        },
+        {
+          "name": "--blora-float-shift-x",
+          "value": "0px",
+          "selector": "floating components (via JS)",
+          "line": 1782,
+          "note": "Set by JS for tooltip/popover/dropdown horizontal shift"
+        },
+        {
+          "name": "--blora-float-top",
+          "value": "0",
+          "selector": ".blora-popover__panel.is-portaled (via JS)",
+          "line": 2231,
+          "note": "Set by JS"
+        },
+        {
+          "name": "--blora-float-left",
+          "value": "0",
+          "selector": ".blora-popover__panel.is-portaled (via JS)",
+          "line": 2232,
+          "note": "Set by JS"
+        },
+        {
+          "name": "--blora-deck-y",
+          "value": "0rem",
+          "selector": ".blora-deck (via JS)",
+          "line": 2896,
+          "note": "Set by JS"
+        },
+        {
+          "name": "--blora-deck-scale",
+          "value": "0.92",
+          "selector": ".blora-deck (via JS)",
+          "line": 2896,
+          "note": "Set by JS"
+        },
+        {
+          "name": "--blora-deck-opacity",
+          "value": "0",
+          "selector": ".blora-deck (via JS)",
+          "line": 2897,
+          "note": "Set by JS"
+        },
+        {
+          "name": "--blora-diff-position",
+          "value": "50%",
+          "selector": ".blora-diff (via JS)",
+          "line": 2044,
+          "note": "Set by JS"
+        },
+        {
+          "name": "--blora-diff-ratio",
+          "value": "16 / 9",
+          "selector": ".blora-diff (overridable)",
+          "line": 2043
+        },
+        {
+          "name": "--blora-gallery-ratio",
+          "value": "4 / 3",
+          "selector": ".blora-hover-gallery (overridable)",
+          "line": 2066
+        },
+        {
+          "name": "--blora-line-clamp",
+          "value": "2",
+          "selector": ".blora-typo-clamp (overridable)",
+          "line": 3248
+        },
+        {
+          "name": "--blora-qr-size",
+          "value": "148px",
+          "selector": ".blora-qrcode (overridable)",
+          "line": 3267
+        },
+        {
+          "name": "--blora-masonry-cols",
+          "value": "3",
+          "selector": ".blora-masonry (overridable)",
+          "line": 3297
+        },
+        {
+          "name": "--blora-navbar-inset",
+          "value": "var(--blora-space-4)",
+          "selector": ".blora-navbar",
+          "line": 1527
+        },
+        {
+          "name": "--blora-navbar-max-width",
+          "value": "90rem",
+          "selector": ".blora-navbar",
+          "line": 1528
+        },
+        {
+          "name": "--blora-navbar-radius",
+          "value": "var(--blora-radius-lg)",
+          "selector": ".blora-navbar",
+          "line": 1529
+        },
+        {
+          "name": "--blora-navbar-padding",
+          "value": "var(--blora-space-3)",
+          "selector": ".blora-navbar",
+          "line": 1562
+        },
+        {
+          "name": "--blora-sidebar-width",
+          "value": "17rem",
+          "selector": ".blora-sidebar-layout (overridable)",
+          "line": 2807
+        },
+        {
+          "name": "--blora-sidebar-min-height",
+          "value": "28rem",
+          "selector": ".blora-sidebar-layout (overridable)",
+          "line": 2807
+        },
+        {
+          "name": "--blora-hero-min-height",
+          "value": "24rem",
+          "selector": ".blora-hero (overridable)",
+          "line": 2865
+        },
+        {
+          "name": "--blora-media-ratio",
+          "value": "16 / 9",
+          "selector": ".blora-media-frame (overridable)",
+          "line": 3642
+        },
+        {
+          "name": "--blora-chart-min-h",
+          "value": "16rem",
+          "selector": ".blora-chart (overridable)",
+          "line": 3649
+        },
+        {
+          "name": "--blora-sd-gap",
+          "value": "var(--blora-space-3)",
+          "selector": ".blora-speed-dial",
+          "line": 2371
+        },
+        {
+          "name": "--blora-sd-r",
+          "value": "7rem",
+          "selector": ".blora-speed-dial",
+          "line": 2372
+        },
+        {
+          "name": "--blora-sd-trigger-size",
+          "value": "3.25rem",
+          "selector": ".blora-speed-dial",
+          "line": 2373
+        },
+        {
+          "name": "--blora-sd-action-size",
+          "value": "2.75rem",
+          "selector": ".blora-speed-dial",
+          "line": 2374
+        },
+        {
+          "name": "--blora-fx-dur",
+          "value": "0.75s",
+          "selector": ".blora-text-fx",
+          "line": 2956
+        },
+        {
+          "name": "--blora-phone-rim",
+          "value": "#6b6b6b",
+          "selector": ".blora-mockup--phone",
+          "line": 3950
+        },
+        {
+          "name": "--blora-phone-max",
+          "value": "18.75rem",
+          "selector": ".blora-mockup--phone",
+          "line": 3952
+        },
+        {
+          "name": "--blora-phone-radius",
+          "selector": ".blora-mockup--phone",
+          "line": 3953,
+          "value": "calc(65 * 18.75rem / 462)"
+        },
+        {
+          "name": "--blora-phone-screen-radius",
+          "selector": ".blora-mockup--phone",
+          "line": 3954,
+          "value": "calc(54 * 18.75rem / 462)"
+        },
+        {
+          "name": "--blora-phone-island-radius",
+          "selector": ".blora-mockup--phone",
+          "line": 3955,
+          "value": "calc(17 * 18.75rem / 462)"
+        },
+        {
+          "name": "--blora-phone-radius-se",
+          "selector": ".blora-mockup--phone",
+          "line": 3956,
+          "value": "calc(90 * 18.75rem / 462)"
+        },
+        {
+          "name": "--blora-phone-screen-radius-se",
+          "selector": ".blora-mockup--phone",
+          "line": 3957,
+          "value": "calc(101 * 18.75rem / 462)"
+        }
+      ]
+    }
+  },
+  "paletteOverrides": {
+    "_note": "Light-mode palette presets redefine only color + a few derived tokens at :root[data-blora-palette=\"<name>\"]. Non-color tokens (spacing/radius/shadow/motion/typography) are inherited unchanged.",
+    "palettes": [
+      "cinnabar",
+      "indigo",
+      "lotus",
+      "ocean",
+      "graphite",
+      "mono",
+      "circuit",
+      "coral",
+      "dusk"
+    ],
+    "defaultPalette": "coral",
+    "tokensRedefined": [
+      "--blora-background",
+      "--blora-surface-1",
+      "--blora-surface-2",
+      "--blora-surface-3",
+      "--blora-text-strong",
+      "--blora-foreground",
+      "--blora-text-emphasis",
+      "--blora-text-muted",
+      "--blora-text-subtle",
+      "--blora-text-disabled",
+      "--blora-border-subtle",
+      "--blora-primary",
+      "--blora-primary-hover",
+      "--blora-primary-soft",
+      "--blora-danger",
+      "--blora-accent-neutral",
+      "--blora-accent-neutral-soft",
+      "--blora-info",
+      "--blora-info-soft",
+      "--blora-success",
+      "--blora-success-soft",
+      "--blora-support",
+      "--blora-warning",
+      "--blora-accent-secondary"
+    ],
+    "tokensRedefinedInSomePalettes": [
+      "--blora-on-accent",
+      "--blora-overlay-modal",
+      "--blora-overlay-drawer",
+      "--blora-code-bg",
+      "--blora-code-fg",
+      "--blora-banner-bg",
+      "--blora-tooltip-bg"
+    ]
+  },
+  "darkModeOverrides": {
+    "_note": "Dark mode (:root.blora-dark) redefines surface/text/shadow tokens globally, and each palette has its own dark variant. Dark functional colors (primary/danger/etc.) are NOT overridden for all palettes - only indigo, lotus, ocean, graphite, mono, circuit, coral, dusk get explicit dark functional colors. cinnabar dark only overrides surface/text/code tokens.",
+    "globalDarkSelector": ":root.blora-dark, :root.blora-dark body",
+    "globalDarkRedefinedTokens": [
+      "--blora-background",
+      "--blora-surface-1",
+      "--blora-surface-2",
+      "--blora-surface-3",
+      "--blora-text-strong",
+      "--blora-foreground",
+      "--blora-text-emphasis",
+      "--blora-text-muted",
+      "--blora-text-subtle",
+      "--blora-text-disabled",
+      "--blora-border-subtle",
+      "--blora-overlay-modal",
+      "--blora-overlay-drawer",
+      "--blora-code-bg",
+      "--blora-code-fg",
+      "--blora-banner-bg",
+      "--blora-tooltip-bg",
+      "--blora-shadow-1",
+      "--blora-shadow-2",
+      "--blora-shadow-3",
+      "--blora-shadow-4",
+      "--blora-background-texture",
+      "--blora-background-overlay",
+      "--blora-shadow-inset"
+    ],
+    "globalDarkSetsColorScheme": "dark",
+    "darkPaletteSelectors": [
+      ":root.blora-dark[data-blora-palette=\"cinnabar\"]",
+      ":root.blora-dark[data-blora-palette=\"indigo\"]",
+      ":root.blora-dark[data-blora-palette=\"lotus\"]",
+      ":root.blora-dark[data-blora-palette=\"ocean\"]",
+      ":root.blora-dark[data-blora-palette=\"graphite\"]",
+      ":root.blora-dark[data-blora-palette=\"mono\"]",
+      ":root.blora-dark[data-blora-palette=\"circuit\"]",
+      ":root.blora-dark[data-blora-palette=\"coral\"]",
+      ":root.blora-dark[data-blora-palette=\"dusk\"]"
+    ],
+    "darkComponentAdjustments": [
+      ".blora-dark .blora-btn--secondary",
+      ".blora-dark .blora-tag--solid",
+      ".blora-dark .blora-avatar--contrast",
+      ".blora-dark .blora-pre",
+      ".blora-dark .blora-pre::before",
+      ".blora-dark .blora-banner::before",
+      ".blora-dark .blora-tooltip__bubble",
+      ".blora-dark .blora-post--reply"
+    ]
+  },
+  "densityOverrides": {
+    "_note": "Global density via html[data-blora-size=\"sm\"|\"lg\"] overrides control metrics + text-sm.",
+    "selectors": {
+      "html[data-blora-size=\"sm\"]": {
+        "tokens": [
+          "--blora-control-height: 2.35em",
+          "--blora-control-pad-x: 0.85em",
+          "--blora-text-sm: 0.8125rem"
+        ],
+        "line": 609
+      },
+      "html[data-blora-size=\"lg\"]": {
+        "tokens": [
+          "--blora-control-height: 3.05em",
+          "--blora-control-pad-x: 1.1em",
+          "--blora-text-sm: 0.9375rem"
+        ],
+        "line": 613
+      }
+    }
+  },
+  "dataAttributes": {
+    "_note": "All data-blora-* attributes consumed by CSS selectors.",
+    "attributes": [
+      {
+        "name": "data-blora-palette",
+        "values": [
+          "cinnabar",
+          "indigo",
+          "lotus",
+          "ocean",
+          "graphite",
+          "mono",
+          "circuit",
+          "coral",
+          "dusk"
+        ],
+        "appliedTo": ":root (light + dark)",
+        "purpose": "Switch color palette preset",
+        "lines": [
+          164,
+          168,
+          172,
+          179,
+          186,
+          193,
+          202,
+          211,
+          218,
+          227,
+          4250,
+          4259,
+          4269,
+          4279,
+          4289,
+          4299,
+          4309,
+          4320,
+          4321,
+          4333
+        ]
+      },
+      {
+        "name": "data-blora-size",
+        "values": [
+          "sm",
+          "lg"
+        ],
+        "appliedTo": "html",
+        "purpose": "Global density/scale override",
+        "lines": [
+          609,
+          613
+        ]
+      },
+      {
+        "name": "data-blora-navbar-variant",
+        "values": [
+          "floating",
+          "full"
+        ],
+        "appliedTo": "html",
+        "purpose": "Navbar layout variant (floating vs full-width)",
+        "lines": [
+          1525,
+          1526,
+          1583,
+          1584
+        ]
+      },
+      {
+        "name": "data-variant",
+        "values": [
+          "floating",
+          "full"
+        ],
+        "appliedTo": ".blora-navbar",
+        "purpose": "Per-instance navbar variant (class/data attr kept for backward compat)",
+        "lines": [
+          1525,
+          1526,
+          1583,
+          1584
+        ]
+      },
+      {
+        "name": "data-blora-error-ui",
+        "values": [
+          "popup"
+        ],
+        "appliedTo": "form field containers (used by JS to toggle .blora-error--popup)",
+        "purpose": "Error display style (popup vs inline)",
+        "lines": [
+          627
+        ],
+        "note": "Referenced in comment; CSS itself keys off .blora-error--popup class"
+      },
+      {
+        "name": "data-blora-when",
+        "values": [],
+        "appliedTo": ".blora-form children",
+        "purpose": "Conditional field visibility (JS-driven); CSS hides via .is-when-hidden or [hidden]",
+        "lines": [
+          716
+        ]
+      },
+      {
+        "name": "data-blora-sort",
+        "values": [],
+        "appliedTo": "th (table headers)",
+        "purpose": "Enable sortable column header with aria-sort indicators",
+        "lines": [
+          1816,
+          1817,
+          1832,
+          1933,
+          1934,
+          1939,
+          1945,
+          1946
+        ]
+      },
+      {
+        "name": "data-blora-fixed",
+        "values": [
+          "left",
+          "right"
+        ],
+        "appliedTo": "td/th in .blora-table",
+        "purpose": "Sticky fixed table columns",
+        "lines": [
+          1822,
+          1829,
+          1840,
+          1841,
+          1842,
+          1843,
+          1851,
+          1852,
+          1853,
+          1854,
+          4491,
+          4496
+        ]
+      },
+      {
+        "name": "data-blora-preview",
+        "values": [],
+        "appliedTo": ".blora-image",
+        "purpose": "Enable lightbox preview on click",
+        "lines": [
+          3025
+        ]
+      },
+      {
+        "name": "data-blora-text-fx",
+        "values": [
+          "grow",
+          "shrink",
+          "shake",
+          "nod",
+          "jitter",
+          "explode",
+          "ripple",
+          "bloom"
+        ],
+        "appliedTo": "text elements",
+        "purpose": "Text animation effect selector (alternative to .blora-text-fx--* class)",
+        "lines": [
+          2952
+        ],
+        "note": "Referenced in comment; effect classes are .blora-text-fx--<name>"
+      },
+      {
+        "name": "data-blora-countup",
+        "values": [],
+        "appliedTo": ".blora-stat__value",
+        "purpose": "Mark value for count-up animation (JS)",
+        "lines": [
+          3634
+        ],
+        "note": "CSS only sets font-variant-numeric: tabular-nums"
+      },
+      {
+        "name": "data-layout",
+        "values": [
+          "horizontal",
+          "inline"
+        ],
+        "appliedTo": ".blora-form",
+        "purpose": "Form layout variant (alternative to .blora-form--horizontal / .blora-form--inline classes)",
+        "lines": [
+          688,
+          693,
+          701,
+          709
+        ],
+        "note": "Not data-blora-* prefixed but used in selectors"
+      },
+      {
+        "name": "data-prefix",
+        "values": [],
+        "appliedTo": ".blora-mockup__line / .blora-code-mockup__line",
+        "purpose": "Line number/prefix label in code mockups",
+        "lines": [
+          3871,
+          3872
+        ],
+        "note": "Not data-blora-* prefixed"
+      }
+    ]
+  },
+  "classes": {
+    "_note": "All .blora-* public classes grouped by component. Each component lists base, modifiers, states, sub-elements.",
+    "components": {
+      "scope_and_page": {
+        "base": [
+          "body.blora-page",
+          ".blora-scope",
+          ".blora-portal"
+        ],
+        "modifiers": [],
+        "states": [],
+        "subElements": [],
+        "note": "Root scoping classes that gate base/reset/typography rules"
+      },
+      "typography": {
+        "base": [
+          ".blora-h1",
+          ".blora-h2",
+          ".blora-h3",
+          ".blora-h4",
+          ".blora-text-lead",
+          ".blora-text-muted",
+          ".blora-text-faint",
+          ".blora-text-primary",
+          ".blora-text-mono",
+          ".blora-text-caps",
+          ".blora-prose",
+          ".blora-quote",
+          ".blora-code",
+          ".blora-pre"
+        ],
+        "modifiers": [],
+        "states": [],
+        "subElements": [
+          ".blora-quote cite",
+          ".blora-pre::before",
+          ".blora-pre code"
+        ]
+      },
+      "layout": {
+        "base": [
+          ".blora-container",
+          ".blora-stack",
+          ".blora-row",
+          ".blora-actions",
+          ".blora-grid",
+          ".blora-card",
+          ".blora-panel",
+          ".blora-spacer",
+          ".blora-divider"
+        ],
+        "modifiers": [
+          ".blora-container--prose",
+          ".blora-container--wide",
+          ".blora-stack--sm",
+          ".blora-stack--lg",
+          ".blora-stack--xl",
+          ".blora-row--tight",
+          ".blora-row--between",
+          ".blora-row--center",
+          ".blora-actions--tight",
+          ".blora-actions--end",
+          ".blora-grid--2",
+          ".blora-grid--3",
+          ".blora-grid--4",
+          ".blora-card--hover",
+          ".blora-card--flat",
+          ".blora-card--inset",
+          ".blora-card--relative",
+          ".blora-card--with-badge",
+          ".blora-divider--vert",
+          ".blora-divider--dashed",
+          ".blora-divider--text"
+        ],
+        "states": [],
+        "subElements": [
+          ".blora-card__title",
+          ".blora-card__body",
+          ".blora-card__foot",
+          ".blora-card__badge",
+          ".blora-panel__header"
+        ]
+      },
+      "buttons": {
+        "base": [
+          ".blora-btn",
+          ".blora-fab",
+          ".blora-btn-group"
+        ],
+        "modifiers": [
+          ".blora-btn--primary",
+          ".blora-btn--secondary",
+          ".blora-btn--danger",
+          ".blora-btn--ghost",
+          ".blora-btn--outline",
+          ".blora-btn--text",
+          ".blora-btn--xs",
+          ".blora-btn--sm",
+          ".blora-btn--lg",
+          ".blora-btn--xl",
+          ".blora-btn--icon",
+          ".blora-fab--static"
+        ],
+        "states": [
+          ".blora-btn.is-loading",
+          ".blora-fab.is-hidden"
+        ],
+        "subElements": [
+          ".blora-btn.is-loading::after"
+        ]
+      },
+      "forms": {
+        "base": [
+          ".blora-field",
+          ".blora-label",
+          ".blora-hint",
+          ".blora-error",
+          ".blora-input",
+          ".blora-textarea",
+          ".blora-select",
+          ".blora-limit",
+          ".blora-input-group",
+          ".blora-search",
+          ".blora-select-wrap",
+          ".blora-select-trigger",
+          ".blora-select-menu",
+          ".blora-select-option",
+          ".blora-select-options",
+          ".blora-select-empty",
+          ".blora-number",
+          ".blora-checkbox",
+          ".blora-radio",
+          ".blora-switch",
+          ".blora-slider",
+          ".blora-range",
+          ".blora-rate",
+          ".blora-segmented",
+          ".blora-tags-input",
+          ".blora-upload",
+          ".blora-dropzone",
+          ".blora-file-status",
+          ".blora-file-clear",
+          ".blora-file-picker",
+          ".blora-otp",
+          ".blora-color-picker",
+          ".blora-color-swatch",
+          ".blora-color-panel",
+          ".blora-color-grid",
+          ".blora-color-spectrum",
+          ".blora-color-hue",
+          ".blora-color-custom",
+          ".blora-color-preview",
+          ".blora-floating-mask",
+          ".blora-datepicker",
+          ".blora-file-input",
+          ".blora-filter",
+          ".blora-validator"
+        ],
+        "modifiers": [
+          ".blora-label--req",
+          ".blora-error--popup",
+          ".blora-limit--textarea",
+          ".blora-select-wrap--searchable",
+          ".blora-select-wrap--multiple",
+          ".blora-select-trigger__label.is-ghost",
+          ".blora-select-trigger__label.is-placeholder-label",
+          ".blora-select-option.is-selected",
+          ".blora-select-option.is-disabled",
+          ".blora-select-tag--more",
+          ".blora-select-options--virtual",
+          ".blora-checkbox--indeterminate",
+          ".blora-switch--sm",
+          ".blora-switch--lg",
+          ".blora-input.is-success",
+          ".blora-input.is-validating",
+          ".blora-input.is-error",
+          ".blora-textarea.is-success",
+          ".blora-textarea.is-validating",
+          ".blora-textarea.is-error",
+          ".blora-select.is-success",
+          ".blora-select.is-validating",
+          ".blora-form--horizontal",
+          ".blora-form--inline",
+          ".blora-tag--removable",
+          ".blora-validator__hint--error",
+          ".blora-validator__hint--success",
+          ".blora-filter__reset"
+        ],
+        "states": [
+          ".blora-select-trigger.is-open",
+          ".blora-select-trigger.is-placeholder",
+          ".blora-select-menu.is-open",
+          ".blora-select-option.is-active",
+          ".blora-select-option.is-selected",
+          ".blora-select-option.is-disabled",
+          ".blora-checkbox > input:checked + .blora-checkbox__box",
+          ".blora-checkbox > input:focus-visible + .blora-checkbox__box",
+          ".blora-checkbox > input:disabled + .blora-checkbox__box",
+          ".blora-radio > input:checked + .blora-radio__dot",
+          ".blora-switch > input:checked + .blora-switch__track",
+          ".blora-limit.is-over-limit",
+          ".blora-dropzone.is-dragover",
+          ".blora-file-picker.is-dragover",
+          ".blora-floating-mask.is-open",
+          ".blora-filter__item > input:checked + .blora-filter__label",
+          ".blora-validator :is(.blora-input,.blora-textarea,.blora-select):user-invalid",
+          ".blora-validator :is(.blora-input,.blora-textarea,.blora-select):user-valid"
+        ],
+        "subElements": [
+          ".blora-limit__mirror",
+          ".blora-limit__mirror-inner",
+          ".blora-limit__overflow",
+          ".blora-limit__count",
+          ".blora-limit-action",
+          ".blora-input-group .blora-addon",
+          ".blora-search__icon",
+          ".blora-search__clear",
+          ".blora-select-trigger__label",
+          ".blora-select-trigger__input",
+          ".blora-select-tag",
+          ".blora-select-tag__label",
+          ".blora-select-tag__close",
+          ".blora-number__ctrl",
+          ".blora-number__btn",
+          ".blora-checkbox__box",
+          ".blora-radio__dot",
+          ".blora-switch__track",
+          ".blora-slider__input",
+          ".blora-slider__value",
+          ".blora-slider__tip",
+          ".blora-range__track",
+          ".blora-range__fill",
+          ".blora-range__thumb",
+          ".blora-range__tip",
+          ".blora-rate__star",
+          ".blora-segmented__indicator",
+          ".blora-segmented__item",
+          ".blora-dropzone__icon",
+          ".blora-dropzone__input",
+          ".blora-dropzone__trigger",
+          ".blora-file-status__name",
+          ".blora-file-picker__input",
+          ".blora-file-picker__trigger",
+          ".blora-file-picker__empty",
+          ".blora-file-picker__status",
+          ".blora-otp__input",
+          ".blora-color-spectrum__cursor",
+          ".blora-datepicker__btn",
+          ".blora-datepicker__panel",
+          ".blora-datepicker__head",
+          ".blora-datepicker__title",
+          ".blora-datepicker__nav",
+          ".blora-datepicker__grid",
+          ".blora-datepicker__dow",
+          ".blora-datepicker__cell",
+          ".blora-datepicker__foot",
+          ".blora-timepicker__panel",
+          ".blora-timepicker__cols",
+          ".blora-timepicker__col",
+          ".blora-timepicker__label",
+          ".blora-timepicker__scroll",
+          ".blora-timepicker__item",
+          ".blora-timepicker__sep",
+          ".blora-validator__hint",
+          ".blora-filter__item",
+          ".blora-filter__label"
+        ],
+        "extraModifiers": [
+          ".blora-datepicker__grid--months",
+          ".blora-datepicker__grid--years",
+          ".blora-datepicker__cell--month",
+          ".blora-datepicker__cell--year",
+          ".blora-datepicker__cell.is-other",
+          ".blora-datepicker__cell.is-today",
+          ".blora-datepicker__cell.is-selected",
+          ".blora-datepicker__cell.is-disabled",
+          ".blora-color-panel.is-align-end",
+          ".blora-timepicker__panel.is-open",
+          ".blora-timepicker__item.is-selected"
+        ]
+      },
+      "tags_badges": {
+        "base": [
+          ".blora-tag",
+          ".blora-badge",
+          ".blora-indicator",
+          ".blora-avatar-wrap",
+          ".blora-dot"
+        ],
+        "modifiers": [
+          ".blora-tag--primary",
+          ".blora-tag--neutral",
+          ".blora-tag--info",
+          ".blora-tag--success",
+          ".blora-tag--warning",
+          ".blora-tag--solid",
+          ".blora-tag--removable",
+          ".blora-badge--dot",
+          ".blora-badge--circle",
+          ".blora-badge--pill",
+          ".blora-badge--neutral",
+          ".blora-badge--success",
+          ".blora-badge--info",
+          ".blora-indicator--top-start",
+          ".blora-indicator--bottom-end",
+          ".blora-indicator--bottom-start",
+          ".blora-indicator--inside",
+          ".blora-dot--primary",
+          ".blora-dot--success",
+          ".blora-dot--warning",
+          ".blora-dot--pulse"
+        ],
+        "states": [],
+        "subElements": [
+          ".blora-tag__close",
+          ".blora-indicator__item"
+        ]
+      },
+      "avatar": {
+        "base": [
+          ".blora-avatar",
+          ".blora-avatar-group"
+        ],
+        "modifiers": [
+          ".blora-avatar--xs",
+          ".blora-avatar--sm",
+          ".blora-avatar--lg",
+          ".blora-avatar--xl",
+          ".blora-avatar--primary",
+          ".blora-avatar--neutral",
+          ".blora-avatar--info",
+          ".blora-avatar--success",
+          ".blora-avatar--contrast",
+          ".blora-avatar--square"
+        ],
+        "states": [],
+        "subElements": [
+          ".blora-avatar img"
+        ]
+      },
+      "progress_loading": {
+        "base": [
+          ".blora-progress",
+          ".blora-spinner",
+          ".blora-skeleton"
+        ],
+        "modifiers": [
+          ".blora-progress--circular",
+          ".blora-progress__fill--neutral",
+          ".blora-progress__fill--success",
+          ".blora-progress__fill--info",
+          ".blora-progress__fill--striped",
+          ".blora-spinner--sm",
+          ".blora-spinner--lg",
+          ".blora-skeleton--text",
+          ".blora-skeleton--title",
+          ".blora-skeleton--circle",
+          ".blora-skeleton--block"
+        ],
+        "states": [],
+        "subElements": [
+          ".blora-progress__bar",
+          ".blora-progress__fill",
+          ".blora-progress__label",
+          ".blora-progress--circular .track",
+          ".blora-progress--circular .fill",
+          ".blora-progress__value"
+        ]
+      },
+      "navigation": {
+        "base": [
+          ".blora-navbar",
+          ".blora-palette-picker",
+          ".blora-palette-card",
+          ".blora-tabs",
+          ".blora-breadcrumb",
+          ".blora-pagination",
+          ".blora-steps",
+          ".blora-step",
+          ".blora-menu",
+          ".blora-dropdown",
+          ".blora-brand-mark"
+        ],
+        "modifiers": [
+          ".blora-navbar--floating",
+          ".blora-navbar--full",
+          ".blora-tabs--pills",
+          ".blora-tabs--vert",
+          ".blora-step.is-active",
+          ".blora-step.is-done",
+          ".blora-menu__item.is-active",
+          ".blora-menu__item.is-disabled",
+          ".blora-palette-picker.is-switching"
+        ],
+        "states": [
+          ".blora-navbar__link.is-active",
+          ".blora-palette-picker.is-open",
+          ".blora-palette-card[aria-selected=\"true\"]",
+          ".blora-tabs__tab.is-active",
+          ".blora-tabs__tab.is-disabled",
+          ".blora-tabs__panel.is-entering",
+          ".blora-tabs__indicator.is-instant",
+          ".blora-pagination__item.is-active",
+          ".blora-pagination__item.is-disabled",
+          ".blora-menu__item.is-open",
+          ".blora-dropdown-menu.is-open"
+        ],
+        "subElements": [
+          ".blora-navbar__brand",
+          ".blora-navbar__title",
+          ".blora-navbar__menu",
+          ".blora-navbar__link",
+          ".blora-navbar__actions",
+          ".blora-navbar__tools",
+          ".blora-navbar__cta",
+          ".blora-navbar__secondary",
+          ".blora-palette-picker__trigger",
+          ".blora-palette-picker__menu",
+          ".blora-palette-picker__head",
+          ".blora-palette-picker__title",
+          ".blora-palette-picker__hint",
+          ".blora-palette-picker__list",
+          ".blora-palette-picker__label",
+          ".blora-palette-card__copy",
+          ".blora-palette-card__name",
+          ".blora-palette-card__desc",
+          ".blora-palette-card__colors",
+          ".blora-palette-card__color",
+          ".blora-tabs__nav",
+          ".blora-tabs__indicator",
+          ".blora-tabs__tab",
+          ".blora-tabs__panel",
+          ".blora-breadcrumb__sep",
+          ".blora-breadcrumb__current",
+          ".blora-pagination__item",
+          ".blora-pagination__ellipsis",
+          ".blora-step__head",
+          ".blora-step__icon",
+          ".blora-step__line",
+          ".blora-step__title",
+          ".blora-step__desc",
+          ".blora-menu__item",
+          ".blora-menu__icon",
+          ".blora-menu__sub",
+          ".blora-menu__group-label",
+          ".blora-dropdown-menu",
+          ".blora-dropdown-menu__item",
+          ".blora-dropdown-menu__sep"
+        ]
+      },
+      "data_display": {
+        "base": [
+          ".blora-table-wrap",
+          ".blora-table",
+          ".blora-table-empty",
+          ".blora-table-loading",
+          ".blora-table-bulk",
+          ".blora-table-cols",
+          ".blora-table-cols-bar",
+          ".blora-table-virtual",
+          ".blora-table-sort",
+          ".blora-table-toolbar",
+          ".blora-table-check",
+          ".blora-table-select-col",
+          ".blora-list",
+          ".blora-collapse",
+          ".blora-timeline",
+          ".blora-tree",
+          ".blora-stat",
+          ".blora-descriptions",
+          ".blora-carousel",
+          ".blora-image",
+          ".blora-diff",
+          ".blora-hover-gallery",
+          ".blora-empty",
+          ".blora-result",
+          ".blora-calendar",
+          ".blora-transfer",
+          ".blora-cascader",
+          ".blora-table-cols__grip"
+        ],
+        "modifiers": [
+          ".blora-table--striped",
+          ".blora-table-wrap--virtual",
+          ".blora-table-col--fixed-left",
+          ".blora-table-col--fixed-right",
+          ".blora-table__caption",
+          ".blora-list--hover",
+          ".blora-stat__trend--up",
+          ".blora-stat__trend--down",
+          ".blora-carousel__arrow--prev",
+          ".blora-carousel__arrow--next",
+          ".blora-image--hover",
+          ".blora-image--frame",
+          ".blora-image--preview",
+          ".blora-hover-gallery--wide",
+          ".blora-result--success",
+          ".blora-result--warning",
+          ".blora-result--error",
+          ".blora-result--info",
+          ".blora-calendar__grid--months",
+          ".blora-calendar__grid--years",
+          ".blora-calendar__cell--month",
+          ".blora-calendar__cell--year",
+          ".blora-timeline__dot--primary",
+          ".blora-timeline__dot--success",
+          ".blora-diff__item--before"
+        ],
+        "states": [
+          ".blora-table-wrap.is-loading",
+          ".blora-table-wrap.is-empty",
+          ".blora-table tbody tr:hover",
+          ".blora-table-cols__item.is-dragging",
+          ".blora-table-cols__item.is-drag-over",
+          ".blora-list__item:hover",
+          ".blora-collapse__item.is-open",
+          ".blora-tree__node.is-selected",
+          ".blora-tree__node.is-open",
+          ".blora-carousel__track.is-dragging",
+          ".blora-carousel__dot.is-active",
+          ".blora-hover-gallery__track.is-dragging",
+          ".blora-hover-gallery__progress span.is-active",
+          ".blora-calendar__cell.is-other",
+          ".blora-calendar__cell.is-today",
+          ".blora-calendar__cell.is-selected",
+          ".blora-cascader__opt.is-selected"
+        ],
+        "subElements": [
+          ".blora-table thead th",
+          ".blora-table tbody td",
+          ".blora-table tbody tr",
+          ".blora-table-bulk__count",
+          ".blora-table-cols__list",
+          ".blora-table-cols__item",
+          ".blora-table-cols__foot",
+          ".blora-list__item",
+          ".blora-list__meta",
+          ".blora-list__title",
+          ".blora-list__desc",
+          ".blora-collapse__item",
+          ".blora-collapse__head",
+          ".blora-collapse__icon",
+          ".blora-collapse__body",
+          ".blora-collapse__content",
+          ".blora-timeline__item",
+          ".blora-timeline__dot",
+          ".blora-timeline__time",
+          ".blora-timeline__title",
+          ".blora-timeline__desc",
+          ".blora-tree__node",
+          ".blora-tree__toggle",
+          ".blora-tree__children",
+          ".blora-stat__label",
+          ".blora-stat__value",
+          ".blora-stat__trend",
+          ".blora-stat__suffix",
+          ".blora-carousel__track",
+          ".blora-carousel__slide",
+          ".blora-carousel__arrow",
+          ".blora-carousel__dots",
+          ".blora-carousel__dot",
+          ".blora-image img",
+          ".blora-image__cap",
+          ".blora-diff__item",
+          ".blora-diff__divider",
+          ".blora-diff__range",
+          ".blora-hover-gallery__track",
+          ".blora-hover-gallery__item",
+          ".blora-hover-gallery__progress",
+          ".blora-empty__icon",
+          ".blora-empty__title",
+          ".blora-empty__desc",
+          ".blora-result__icon",
+          ".blora-result__title",
+          ".blora-result__desc",
+          ".blora-calendar__head",
+          ".blora-calendar__title",
+          ".blora-calendar__grid",
+          ".blora-calendar__dow",
+          ".blora-calendar__cell",
+          ".blora-transfer__panel",
+          ".blora-transfer__head",
+          ".blora-transfer__list",
+          ".blora-transfer__row",
+          ".blora-transfer__check",
+          ".blora-transfer__actions",
+          ".blora-cascader__col",
+          ".blora-cascader__opt",
+          ".blora-cascader__arrow"
+        ]
+      },
+      "feedback": {
+        "base": [
+          ".blora-alert",
+          ".blora-banner",
+          ".blora-message",
+          ".blora-notification",
+          ".blora-tooltip",
+          ".blora-popover",
+          ".blora-popconfirm",
+          ".blora-modal",
+          ".blora-cmdk-results",
+          ".blora-cmdk-item",
+          ".blora-drawer",
+          ".blora-toast-container",
+          ".blora-toast",
+          ".blora-confirm-dialog"
+        ],
+        "modifiers": [
+          ".blora-alert--info",
+          ".blora-alert--success",
+          ".blora-alert--warning",
+          ".blora-alert--danger",
+          ".blora-alert--ghost",
+          ".blora-message--success",
+          ".blora-message--warning",
+          ".blora-message--danger",
+          ".blora-message--info",
+          ".blora-notification--success",
+          ".blora-notification--warning",
+          ".blora-notification--danger",
+          ".blora-tooltip__bubble--bottom",
+          ".blora-modal--lg",
+          ".blora-modal--sm",
+          ".blora-modal--cmdk",
+          ".blora-drawer--right",
+          ".blora-drawer--left",
+          ".blora-drawer--top",
+          ".blora-drawer--bottom",
+          ".blora-banner__secondary"
+        ],
+        "states": [
+          ".blora-modal.is-open",
+          ".blora-modal.is-closing",
+          ".blora-drawer.is-open",
+          ".blora-drawer.is-closing",
+          ".blora-popover.is-open",
+          ".blora-toast.is-leaving",
+          ".blora-popover__panel.is-portaled",
+          ".blora-popover__panel.is-portaled.is-open",
+          ".blora-cmdk-item.is-active"
+        ],
+        "subElements": [
+          ".blora-alert__icon",
+          ".blora-alert__body",
+          ".blora-alert__title",
+          ".blora-alert__desc",
+          ".blora-alert__close",
+          ".blora-banner__body",
+          ".blora-banner__title",
+          ".blora-banner__desc",
+          ".blora-banner__actions",
+          ".blora-message__icon",
+          ".blora-notification__icon",
+          ".blora-notification__title",
+          ".blora-notification__desc",
+          ".blora-notification__close",
+          ".blora-tooltip__bubble",
+          ".blora-popover__panel",
+          ".blora-popover__title",
+          ".blora-popover__body",
+          ".blora-popconfirm__title",
+          ".blora-modal__mask",
+          ".blora-modal__dialog",
+          ".blora-modal__head",
+          ".blora-modal__title",
+          ".blora-modal__close",
+          ".blora-modal__body",
+          ".blora-modal__foot",
+          ".blora-cmdk-item__kbd",
+          ".blora-drawer__mask",
+          ".blora-drawer__panel",
+          ".blora-drawer__head",
+          ".blora-drawer__title",
+          ".blora-drawer__body",
+          ".blora-drawer__foot"
+        ]
+      },
+      "utilities": {
+        "base": [
+          ".blora-center",
+          ".blora-text-center",
+          ".blora-text-right",
+          ".blora-hide",
+          ".blora-mt-0",
+          ".blora-mt-2",
+          ".blora-mt-4",
+          ".blora-mt-6",
+          ".blora-mb-0",
+          ".blora-mb-2",
+          ".blora-mb-4",
+          ".blora-mb-6",
+          ".blora-w-full",
+          ".blora-w-auto",
+          ".blora-flex",
+          ".blora-flex-col",
+          ".blora-flex-1",
+          ".blora-gap-2",
+          ".blora-gap-3",
+          ".blora-gap-4",
+          ".blora-items-center",
+          ".blora-justify-between",
+          ".blora-image-muted",
+          ".blora-image-monochrome"
+        ],
+        "modifiers": [],
+        "states": [],
+        "subElements": []
+      },
+      "extended_components": {
+        "base": [
+          ".blora-swap",
+          ".blora-speed-dial",
+          ".blora-speed-dial-stage",
+          ".blora-speed-dial-grid",
+          ".blora-fieldset",
+          ".blora-file-input",
+          ".blora-filter",
+          ".blora-validator",
+          ".blora-sidebar-layout",
+          ".blora-dock",
+          ".blora-megamenu",
+          ".blora-hero",
+          ".blora-footer",
+          ".blora-deck",
+          ".blora-kbd",
+          ".blora-chat",
+          ".blora-countdown",
+          ".blora-text-rotate",
+          ".blora-text-fx"
+        ],
+        "modifiers": [
+          ".blora-swap--rotate",
+          ".blora-speed-dial--left",
+          ".blora-speed-dial--flower",
+          ".blora-speed-dial--radial",
+          ".blora-fieldset--flat",
+          ".blora-dock--static",
+          ".blora-hero--center",
+          ".blora-hero--surface",
+          ".blora-hero--compact",
+          ".blora-deck--sm",
+          ".blora-chat--end",
+          ".blora-text-fx--grow",
+          ".blora-text-fx--shrink",
+          ".blora-text-fx--shake",
+          ".blora-text-fx--nod",
+          ".blora-text-fx--jitter",
+          ".blora-text-fx--explode",
+          ".blora-text-fx--ripple",
+          ".blora-text-fx--bloom"
+        ],
+        "states": [
+          ".blora-swap > input:checked ~ .blora-swap__on",
+          ".blora-speed-dial.is-open",
+          ".blora-text-fx.is-play",
+          ".blora-text-fx.is-loop",
+          ".blora-text-fx.is-clickable",
+          ".blora-text-rotate__item.is-active",
+          ".blora-sidebar-layout.is-open",
+          ".blora-dock__item.is-active",
+          ".blora-megamenu.is-open",
+          ".blora-deck > *.is-front",
+          ".blora-deck.is-dragging"
+        ],
+        "subElements": [
+          ".blora-swap__on",
+          ".blora-swap__off",
+          ".blora-speed-dial__trigger",
+          ".blora-speed-dial__close",
+          ".blora-speed-dial__main",
+          ".blora-speed-dial__actions",
+          ".blora-speed-dial__item",
+          ".blora-speed-dial__action",
+          ".blora-speed-dial__label",
+          ".blora-speed-dial-stage__label",
+          ".blora-fieldset__legend",
+          ".blora-fieldset__description",
+          ".blora-filter__item",
+          ".blora-filter__label",
+          ".blora-filter__reset",
+          ".blora-validator__hint",
+          ".blora-sidebar-layout__aside",
+          ".blora-sidebar-layout__content",
+          ".blora-sidebar-layout__toggle",
+          ".blora-sidebar-layout__mask",
+          ".blora-dock__item",
+          ".blora-megamenu__trigger",
+          ".blora-megamenu__panel",
+          ".blora-megamenu__grid",
+          ".blora-megamenu__title",
+          ".blora-megamenu__link",
+          ".blora-hero__content",
+          ".blora-footer__inner",
+          ".blora-footer__title",
+          ".blora-footer__link",
+          ".blora-footer__bottom",
+          ".blora-chat__avatar",
+          ".blora-chat__content",
+          ".blora-chat__meta",
+          ".blora-chat__bubble",
+          ".blora-countdown__unit",
+          ".blora-countdown__value",
+          ".blora-countdown__label",
+          ".blora-text-rotate__item",
+          ".blora-text-fx__ch"
+        ]
+      },
+      "advanced_components": {
+        "base": [
+          ".blora-image-preview",
+          ".blora-notify-container",
+          ".blora-affix",
+          ".blora-anchor",
+          ".blora-treeselect",
+          ".blora-autocomplete",
+          ".blora-mentions",
+          ".blora-tour-mask",
+          ".blora-tour-pop",
+          ".blora-tour-target-ring",
+          ".blora-watermark",
+          ".blora-splitter",
+          ".blora-typo-ellipsis",
+          ".blora-typo-clamp",
+          ".blora-typo-copy",
+          ".blora-qrcode",
+          ".blora-skeleton-card",
+          ".blora-skeleton-list",
+          ".blora-backtop",
+          ".blora-masonry",
+          ".blora-comment",
+          ".blora-thread",
+          ".blora-post",
+          ".blora-md",
+          ".blora-media-frame",
+          ".blora-chart",
+          ".blora-confirm-dialog",
+          ".blora-mockup",
+          ".blora-mockup--browser",
+          ".blora-browser-mockup",
+          ".blora-mockup--code",
+          ".blora-code-mockup",
+          ".blora-mockup--window",
+          ".blora-window-mockup",
+          ".blora-mockup--phone",
+          ".blora-phone-mockup"
+        ],
+        "modifiers": [
+          ".blora-notify-container--top-right",
+          ".blora-notify-container--top-left",
+          ".blora-notify-container--bottom-right",
+          ".blora-notify-container--bottom-left",
+          ".blora-anchor__link--l2",
+          ".blora-splitter--vertical",
+          ".blora-skeleton-card__row",
+          ".blora-skeleton-card__body",
+          ".blora-skeleton-list__item",
+          ".blora-masonry__item-body",
+          ".blora-post--reply",
+          ".blora-mockup--phone-silver",
+          ".blora-phone-mockup--silver",
+          ".blora-mockup--phone-accent",
+          ".blora-phone-mockup--accent",
+          ".blora-mockup--flush",
+          ".blora-mockup--elevated",
+          ".blora-mockup__body--center",
+          ".blora-mockup__display--center"
+        ],
+        "states": [
+          ".blora-affix.is-fixed",
+          ".blora-anchor__link.is-active",
+          ".blora-treeselect.is-open",
+          ".blora-treeselect__node.is-selected",
+          ".blora-treeselect__node.is-disabled",
+          ".blora-treeselect__toggle.is-open",
+          ".blora-treeselect__children.is-open",
+          ".blora-autocomplete.is-open",
+          ".blora-autocomplete__option.is-active",
+          ".blora-mentions.is-open",
+          ".blora-mentions__option.is-active",
+          ".blora-image-preview.is-open",
+          ".blora-notify-container > *.is-leaving",
+          ".blora-splitter__bar.is-dragging",
+          ".blora-backtop.is-visible",
+          ".blora-backtop.is-hidden",
+          ".blora-post__react-btn.is-active",
+          ".blora-post__replies.is-collapsed"
+        ],
+        "subElements": [
+          ".blora-image-preview__stage",
+          ".blora-image-preview__img",
+          ".blora-image-preview__cap",
+          ".blora-image-preview__btn",
+          ".blora-image-preview__btn--prev",
+          ".blora-image-preview__btn--next",
+          ".blora-image-preview__close",
+          ".blora-image-preview__count",
+          ".blora-affix__inner",
+          ".blora-anchor__link",
+          ".blora-treeselect__panel",
+          ".blora-treeselect__node",
+          ".blora-treeselect__toggle",
+          ".blora-treeselect__children",
+          ".blora-autocomplete__control",
+          ".blora-autocomplete__menu",
+          ".blora-autocomplete__option",
+          ".blora-autocomplete__empty",
+          ".blora-mentions__menu",
+          ".blora-mentions__option",
+          ".blora-tour-pop__title",
+          ".blora-tour-pop__body",
+          ".blora-tour-pop__foot",
+          ".blora-tour-pop__steps",
+          ".blora-watermark__canvas",
+          ".blora-splitter__pane",
+          ".blora-splitter__bar",
+          ".blora-typo-copy__btn",
+          ".blora-skeleton-card__row",
+          ".blora-skeleton-card__body",
+          ".blora-skeleton-list__item",
+          ".blora-masonry__item",
+          ".blora-masonry__item-body",
+          ".blora-comment__main",
+          ".blora-comment__head",
+          ".blora-comment__author",
+          ".blora-comment__time",
+          ".blora-comment__body",
+          ".blora-comment__actions",
+          ".blora-comment__nested",
+          ".blora-post__head",
+          ".blora-post__identity",
+          ".blora-post__who",
+          ".blora-post__author-row",
+          ".blora-post__author",
+          ".blora-post__badge",
+          ".blora-post__reply-to",
+          ".blora-post__sub",
+          ".blora-post__tools",
+          ".blora-post__more",
+          ".blora-post__title",
+          ".blora-post__body",
+          ".blora-post__quote",
+          ".blora-post__quote-label",
+          ".blora-post__quote-text",
+          ".blora-post__react",
+          ".blora-post__react-btn",
+          ".blora-post__replies",
+          ".blora-post__replies-body",
+          ".blora-post__collapse",
+          ".blora-md__p",
+          ".blora-md__h",
+          ".blora-md__h1",
+          ".blora-md__h2",
+          ".blora-md__h3",
+          ".blora-md__h4",
+          ".blora-md__h5",
+          ".blora-md__h6",
+          ".blora-md__ul",
+          ".blora-md__ol",
+          ".blora-md__blockquote",
+          ".blora-md__pre",
+          ".blora-md__code",
+          ".blora-md__a",
+          ".blora-md__img",
+          ".blora-md__hr",
+          ".blora-chart__placeholder",
+          ".blora-mockup__dots",
+          ".blora-mockup__toolbar",
+          ".blora-mockup__title",
+          ".blora-mockup__body",
+          ".blora-mockup__address",
+          ".blora-browser-mockup__address",
+          ".blora-mockup__line",
+          ".blora-code-mockup__line",
+          ".blora-mockup__camera",
+          ".blora-phone-mockup__camera",
+          ".blora-mockup__display",
+          ".blora-phone-mockup__screen",
+          ".blora-mockup__display-body",
+          ".blora-phone-mockup__body",
+          ".blora-mockup__home",
+          ".blora-mockup__line--muted",
+          ".blora-mockup__line--success",
+          ".blora-mockup__line--warning",
+          ".blora-mockup__line--danger",
+          ".blora-mockup__line--info",
+          ".blora-mockup__line--highlight"
+        ]
+      }
+    }
+  },
+  "notablePatterns": {
+    "important": {
+      "count": 18,
+      "usages": [
+        {
+          "line": 306,
+          "context": ".blora-select-trigger__input focus reset (outline: none !important)"
+        },
+        {
+          "line": 307,
+          "context": ".blora-select-trigger__input focus reset (outline-offset: 0 !important)"
+        },
+        {
+          "line": 308,
+          "context": ".blora-select-trigger__input focus reset (box-shadow: none !important)"
+        },
+        {
+          "line": 595,
+          "context": ".blora-btn.is-loading (color: transparent !important)"
+        },
+        {
+          "line": 716,
+          "context": ".blora-form [data-blora-when].is-when-hidden / [hidden] (display: none !important)"
+        },
+        {
+          "line": 969,
+          "context": ".blora-select-trigger__input (border: 0 !important)"
+        },
+        {
+          "line": 970,
+          "context": ".blora-select-trigger__input (border-radius: 0 !important)"
+        },
+        {
+          "line": 971,
+          "context": ".blora-select-trigger__input (outline: none !important)"
+        },
+        {
+          "line": 972,
+          "context": ".blora-select-trigger__input (box-shadow: none !important)"
+        },
+        {
+          "line": 973,
+          "context": ".blora-select-trigger__input (background: transparent !important)"
+        },
+        {
+          "line": 1321,
+          "context": ".blora-datepicker native calendar indicator hidden (display: none !important)"
+        },
+        {
+          "line": 1640,
+          "context": "navbar menu hidden on mobile (display: none !important)"
+        },
+        {
+          "line": 1644,
+          "context": "navbar secondary hidden on mobile (display: none !important)"
+        },
+        {
+          "line": 2301,
+          "context": ".blora-hide utility (display: none !important)"
+        },
+        {
+          "line": 3593,
+          "context": ".blora-post__replies.is-collapsed body (max-height: 0 !important)"
+        },
+        {
+          "line": 4464,
+          "context": "prefers-reduced-motion (animation-duration: 0.01ms !important)"
+        },
+        {
+          "line": 4465,
+          "context": "prefers-reduced-motion (animation-iteration-count: 1 !important)"
+        },
+        {
+          "line": 4466,
+          "context": "prefers-reduced-motion (transition-duration: 0.01ms !important)"
+        }
+      ],
+      "note": "!important is mostly used to defeat native browser chrome (search-cancel, calendar-picker) and to force-zero native input styling inside the custom select trigger, plus the reduced-motion guard and the .blora-hide utility."
+    },
+    "transitionAll": {
+      "count": 9,
+      "usages": [
+        {
+          "line": 491,
+          "selector": ".blora-btn",
+          "value": "transition: all var(--blora-dur-base) var(--blora-ease)"
+        },
+        {
+          "line": 898,
+          "selector": ".blora-select-trigger",
+          "value": "transition: all var(--blora-dur-fast) var(--blora-ease)"
+        },
+        {
+          "line": 919,
+          "selector": ".blora-select-menu",
+          "value": "transition: all var(--blora-dur-fast) var(--blora-ease)"
+        },
+        {
+          "line": 925,
+          "selector": ".blora-select-option",
+          "value": "transition: all var(--blora-dur-fast) var(--blora-ease)"
+        },
+        {
+          "line": 1019,
+          "selector": ".blora-checkbox__box",
+          "value": "transition: all var(--blora-dur-fast) var(--blora-ease)"
+        },
+        {
+          "line": 1057,
+          "selector": ".blora-radio__dot",
+          "value": "transition: all var(--blora-dur-fast) var(--blora-ease)"
+        },
+        {
+          "line": 1075,
+          "selector": ".blora-switch__track",
+          "value": "transition: all var(--blora-dur-base) var(--blora-ease)"
+        },
+        {
+          "line": 1155,
+          "selector": ".blora-tags-input",
+          "value": "transition: all var(--blora-dur-fast) var(--blora-ease)"
+        },
+        {
+          "line": 1333,
+          "selector": ".blora-datepicker__btn",
+          "value": "transition: all var(--blora-dur-fast) var(--blora-ease)"
+        }
+      ],
+      "note": "transition: all is used on interactive elements (buttons, selects, checkbox/radio/switch tracks). A refactor should prefer explicit property lists."
+    },
+    "zIndexValues": {
+      "tokenBased": [
+        {
+          "token": "--blora-z-base",
+          "value": 1
+        },
+        {
+          "token": "--blora-z-sticky",
+          "value": 100
+        },
+        {
+          "token": "--blora-z-dropdown",
+          "value": 1000
+        },
+        {
+          "token": "--blora-z-drawer",
+          "value": 1100
+        },
+        {
+          "token": "--blora-z-modal",
+          "value": 1200
+        },
+        {
+          "token": "--blora-z-toast",
+          "value": 1300
+        }
+      ],
+      "calcOffsets": [
+        {
+          "line": 566,
+          "selector": ".blora-fab",
+          "value": "calc(var(--blora-z-sticky) + 10) = 110"
+        },
+        {
+          "line": 635,
+          "selector": ".blora-error--popup",
+          "value": "calc(var(--blora-z-dropdown, 1000) + 5) = 1005"
+        },
+        {
+          "line": 1312,
+          "selector": ".blora-floating-mask",
+          "value": "calc(var(--blora-z-dropdown) - 1) = 999"
+        },
+        {
+          "line": 2379,
+          "selector": ".blora-speed-dial (default)",
+          "value": "z-index: 1"
+        },
+        {
+          "line": 2382,
+          "selector": ".blora-speed-dial:focus-within",
+          "value": "z-index: 4"
+        },
+        {
+          "line": 2383,
+          "selector": ".blora-speed-dial.is-open",
+          "value": "z-index: 5"
+        },
+        {
+          "line": 3086,
+          "selector": ".blora-affix.is-fixed > .blora-affix__inner",
+          "value": "calc(var(--blora-z-sticky) + 1) = 101"
+        },
+        {
+          "line": 3287,
+          "selector": ".blora-backtop:not(.blora-fab)",
+          "value": "calc(var(--blora-z-sticky) + 10) = 110"
+        },
+        {
+          "line": 3031,
+          "selector": ".blora-image-preview",
+          "value": "calc(var(--blora-z-modal) + 20) = 1220"
+        },
+        {
+          "line": 3192,
+          "selector": ".blora-tour-mask",
+          "value": "calc(var(--blora-z-modal) + 5) = 1205"
+        },
+        {
+          "line": 3196,
+          "selector": ".blora-tour-pop",
+          "value": "calc(var(--blora-z-modal) + 6) = 1206"
+        },
+        {
+          "line": 3211,
+          "selector": ".blora-tour-target-ring",
+          "value": "calc(var(--blora-z-modal) + 5) = 1205"
+        }
+      ],
+      "hardcoded": [
+        {
+          "line": 1116,
+          "selector": ".blora-slider__tip / .blora-range__tip",
+          "value": "z-index: 10"
+        },
+        {
+          "line": 1432,
+          "selector": ".blora-indicator__item",
+          "value": "z-index: 2"
+        },
+        {
+          "line": 1822,
+          "selector": ".blora-table fixed-left/right td",
+          "value": "z-index: 2"
+        },
+        {
+          "line": 1833,
+          "selector": ".blora-table thead fixed cells",
+          "value": "z-index: 3"
+        },
+        {
+          "line": 1702,
+          "selector": ".blora-tabs__indicator",
+          "value": "z-index: 0"
+        },
+        {
+          "line": 1702,
+          "selector": ".blora-tabs__tab",
+          "value": "z-index: 1"
+        }
+      ]
+    },
+    "hardcodedColorsInComponentCSS": [
+      {
+        "line": 671,
+        "selector": ".blora-error--popup::before",
+        "color": "var(--blora-on-accent, #fff)",
+        "note": "fallback literal"
+      },
+      {
+        "line": 1288,
+        "selector": ".blora-color-spectrum",
+        "color": "#000, #fff",
+        "note": "hardcoded black/white gradients for color picker spectrum"
+      },
+      {
+        "line": 1298,
+        "selector": ".blora-color-hue",
+        "color": "#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00",
+        "note": "hardcoded rainbow gradient for hue slider"
+      },
+      {
+        "line": 3049,
+        "selector": ".blora-image-preview__btn",
+        "color": "#fff",
+        "note": "hardcoded white"
+      },
+      {
+        "line": 3059,
+        "selector": ".blora-image-preview__close",
+        "color": "#fff",
+        "note": "hardcoded white"
+      },
+      {
+        "line": 3950,
+        "selector": ".blora-mockup--phone",
+        "color": "#6b6b6b",
+        "note": "hardcoded phone rim default color"
+      },
+      {
+        "line": 3966,
+        "selector": ".blora-mockup--phone",
+        "color": "#000",
+        "note": "hardcoded black phone background"
+      },
+      {
+        "line": 3992,
+        "selector": ".blora-mockup__camera",
+        "color": "#000",
+        "note": "hardcoded black camera island"
+      },
+      {
+        "line": 4055,
+        "selector": ".blora-phone-mockup--accent",
+        "color": "#c47a4a",
+        "note": "hardcoded accent rim mix"
+      },
+      {
+        "line": 3029,
+        "selector": ".blora-image-preview",
+        "color": "rgba(12,10,14,0.82)",
+        "note": "hardcoded preview backdrop"
+      },
+      {
+        "line": 3190,
+        "selector": ".blora-tour-mask",
+        "color": "rgba(20,18,22,0.45)",
+        "note": "hardcoded tour mask"
+      },
+      {
+        "line": 3211,
+        "selector": ".blora-tour-target-ring",
+        "color": "rgba(20,18,22,0.45)",
+        "note": "hardcoded tour ring overlay"
+      },
+      {
+        "line": 3043,
+        "selector": ".blora-image-preview__cap",
+        "color": "rgba(255,255,255,0.82)",
+        "note": "hardcoded caption color"
+      },
+      {
+        "line": 3056,
+        "selector": ".blora-image-preview__count",
+        "color": "rgba(255,255,255,0.75)",
+        "note": "hardcoded count color"
+      }
+    ],
+    "otherPatterns": {
+      "containerQueries": [
+        "@container (max-width: 34rem) - grid, descriptions, steps, transfer, banner",
+        "@container (max-width: 32rem) - vertical tabs collapse"
+      ],
+      "mediaQueries": [
+        "(max-width: 880px)",
+        "(max-width: 900px)",
+        "(max-width: 720px)",
+        "(max-width: 560px)",
+        "(prefers-reduced-motion: reduce)"
+      ],
+      "supportsFeatureQueries": [
+        "@supports (corner-shape: superellipse(1.45)) - phone mockup rounded corners",
+        "@supports (corner-shape: superellipse(1.87)) - phone screen rounded corners"
+      ],
+      "hasSelectorUsage": [
+        ":has(.blora-speed-dial__close)",
+        ":has(.blora-speed-dial__main)",
+        ":has(.blora-megamenu.is-open)",
+        ":has(input:checked)",
+        ":has(:user-invalid, .is-error)",
+        ":has(:user-valid, .is-success)",
+        ":has(.blora-mockup__toolbar)",
+        ":has(.blora-mockup__dots)",
+        "html:has(body.blora-page)"
+      ],
+      "isSelectorUsage": [
+        ":is(.blora-navbar, .blora-navbar--floating, ...)",
+        ":is(img, video, iframe, canvas)",
+        ":is(.blora-input, .blora-textarea, .blora-select)",
+        ":is(.blora-palette-picker__menu, .blora-dropdown-menu, ...)"
+      ],
+      "whereSelectorUsage": ":where(body.blora-page, .blora-scope, .blora-portal) wrappers for zero-specificity reset/base",
+      "userInvalidPseudo": ":user-invalid / :user-valid used in .blora-validator",
+      "backdropFilterUsage": "navbar, dropdown menus, popovers, color panels, datepicker/timepicker panels, dock, megamenu, modal mask, image preview",
+      "containerTypeInline": ".blora-card, .blora-panel, .blora-tabs, .blora-steps, .blora-calendar, .blora-transfer, .blora-banner, .blora-fieldset, .blora-sidebar-layout"
+    }
+  },
+  "keyframes": [
+    {
+      "name": "blora-spin",
+      "line": 4359
+    },
+    {
+      "name": "blora-pulse",
+      "line": 4360
+    },
+    {
+      "name": "blora-shimmer",
+      "line": 4361
+    },
+    {
+      "name": "blora-stripe",
+      "line": 4362
+    },
+    {
+      "name": "blora-fade-in",
+      "line": 4363
+    },
+    {
+      "name": "blora-fade-out",
+      "line": 4364
+    },
+    {
+      "name": "blora-pop-in",
+      "line": 4365
+    },
+    {
+      "name": "blora-pop-out",
+      "line": 4366
+    },
+    {
+      "name": "blora-slide-right",
+      "line": 4367
+    },
+    {
+      "name": "blora-slide-right-out",
+      "line": 4368
+    },
+    {
+      "name": "blora-slide-left",
+      "line": 4369
+    },
+    {
+      "name": "blora-slide-left-out",
+      "line": 4370
+    },
+    {
+      "name": "blora-slide-down",
+      "line": 4371
+    },
+    {
+      "name": "blora-slide-down-out",
+      "line": 4372
+    },
+    {
+      "name": "blora-slide-up",
+      "line": 4373
+    },
+    {
+      "name": "blora-slide-up-out",
+      "line": 4374
+    },
+    {
+      "name": "blora-toast-in",
+      "line": 4375
+    },
+    {
+      "name": "blora-toast-out",
+      "line": 4376
+    },
+    {
+      "name": "blora-tab-panel-in",
+      "line": 4377
+    },
+    {
+      "name": "blora-fx-grow",
+      "line": 4381
+    },
+    {
+      "name": "blora-fx-shrink",
+      "line": 4387
+    },
+    {
+      "name": "blora-fx-shake",
+      "line": 4393
+    },
+    {
+      "name": "blora-fx-nod",
+      "line": 4402
+    },
+    {
+      "name": "blora-fx-jitter",
+      "line": 4410
+    },
+    {
+      "name": "blora-fx-explode",
+      "line": 4418
+    },
+    {
+      "name": "blora-fx-ripple",
+      "line": 4435
+    },
+    {
+      "name": "blora-fx-bloom",
+      "line": 4441
+    }
+  ],
+  "rtlOverrides": {
+    "_note": "[dir=\"rtl\"] overrides for direction-aware components.",
+    "affectedSelectors": [
+      ".blora-table thead th / tbody td",
+      ".blora-select-trigger",
+      ".blora-search .blora-input",
+      ".blora-search__icon",
+      ".blora-search__clear",
+      ".blora-fab:not(.blora-fab--static)",
+      ".blora-backtop:not(.blora-fab)",
+      ".blora-drawer__panel--right",
+      ".blora-form--horizontal .blora-label",
+      ".blora-breadcrumb",
+      ".blora-pagination",
+      ".blora-table .blora-table-col--fixed-left / [data-blora-fixed=\"left\"]",
+      ".blora-table .blora-table-col--fixed-right / [data-blora-fixed=\"right\"]"
+    ]
+  },
+  "scopeSelectors": {
+    "page": "body.blora-page",
+    "scope": ".blora-scope",
+    "portal": ".blora-portal",
+    "darkClass": ".blora-dark",
+    "note": "Base/reset/typography rules are scoped via :where(body.blora-page, .blora-scope, .blora-portal). Component classes work in any of these scopes."
+  }
+}

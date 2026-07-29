@@ -1,0 +1,42 @@
+{
+  "$schema": "./visual-baseline.schema.json",
+  "description": "Blora Design 2.0 唯一视觉基线元数据。所有 2.0 组件的视觉必须可追溯到此基线。",
+  "baselineCommit": "a148715d06ee9551cbee262ffae6ad377b564df6",
+  "baselineDate": "2025-07-29",
+  "showcaseFile": "legacy/showcase-v1.html",
+  "v1Sources": {
+    "css": "legacy/v1/blora.css",
+    "js": "legacy/v1/blora.js",
+    "dts": "legacy/v1/blora.d.ts",
+    "locales": "legacy/v1/locales/"
+  },
+  "screenshots": [
+    {
+      "name": "showcase-light-fullpage",
+      "path": "legacy/visual-baseline-light.png",
+      "mode": "light",
+      "viewport": { "width": 1440, "height": 900 },
+      "description": "展示页浅色模式首屏截图"
+    },
+    {
+      "name": "showcase-dark-fullpage",
+      "path": "legacy/visual-baseline-dark.png",
+      "mode": "dark",
+      "viewport": { "width": 1440, "height": 900 },
+      "description": "展示页深色模式首屏截图"
+    }
+  ],
+  "browser": {
+    "name": "Chrome",
+    "headless": true,
+    "flags": ["--headless=new", "--disable-gpu", "--hide-scrollbars", "--virtual-time-budget=8000"]
+  },
+  "fontNote": "使用系统字体 fallback，未加载 Google Fonts（展示页本身引用了 Google Fonts，headless 截图可能 fallback 到系统字体）",
+  "rules": [
+    "2.0 视觉参考只能来自此基线，禁止以历史提交、旧 npm 包、隐藏分支、其他 UI 框架或 AI 自行生成的风格为视觉基准。",
+    "允许为 WCAG 2.2 AA 调整对比度、焦点环或点击区域；允许修复移动端溢出、RTL、缩放和字体 fallback；允许修复明显 bug。",
+    "允许的变化不能改变组件的识别特征和整体设计语言。",
+    "每个允许的可见差异必须记录在 docs/refactor/known-differences.md。",
+    "若无法判断某一视觉细节，应从当前展示页生成最小复现并截图，不得去历史版本寻找答案。"
+  ]
+}
