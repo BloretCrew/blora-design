@@ -28,6 +28,7 @@
     "./reset.css": "./dist/reset.css",
     "./foundations.css": "./dist/foundations.css",
     "./blora.css": "./dist/blora.css",
+    "./components/button.css": "./dist/components/button/button.css",
     "./token-manifest.json": "./dist/token-manifest.json",
     "./package.json": "./package.json"
   },

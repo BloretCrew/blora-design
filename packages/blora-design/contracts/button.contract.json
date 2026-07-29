@@ -1,0 +1,59 @@
+{
+  "$schema": "../../schemas/component-contract.schema.json",
+  "name": "button",
+  "status": "stable",
+  "kind": "native",
+  "since": "2.0.0",
+  "requiresJavaScript": false,
+  "formAssociated": true,
+  "attributes": {
+    "type": {
+      "type": "\"button\" | \"submit\" | \"reset\"",
+      "default": "submit"
+    },
+    "data-variant": {
+      "type": "\"primary\" | \"secondary\" | \"outline\" | \"ghost\" | \"danger\" | \"text\"",
+      "default": "secondary",
+      "reflects": true
+    },
+    "data-size": {
+      "type": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\"",
+      "default": "md",
+      "reflects": true
+    },
+    "data-loading": {
+      "type": "boolean",
+      "reflects": true
+    },
+    "disabled": {
+      "type": "boolean",
+      "reflects": true
+    },
+    "aria-busy": {
+      "type": "boolean"
+    },
+    "aria-label": {
+      "type": "string"
+    }
+  },
+  "properties": {},
+  "methods": {
+    "focus": { "returns": "void" },
+    "blur": { "returns": "void" },
+    "click": { "returns": "void" }
+  },
+  "events": {
+    "click": {
+      "native": true,
+      "bubbles": true,
+      "composed": true
+    }
+  },
+  "slots": {
+    "default": "Button label text or icon + label"
+  },
+  "parts": [],
+  "cssProperties": ["--blora-button-bg", "--blora-button-fg", "--blora-button-bd"],
+  "accessibilityPattern": "button",
+  "migrationFromV1": "button.migration.md"
+}

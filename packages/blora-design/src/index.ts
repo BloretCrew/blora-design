@@ -13,3 +13,6 @@ export const VERSION: string = __BLORA_VERSION__;
 export function isBrowser(): boolean {
   return typeof window !== "undefined" && typeof document !== "undefined";
 }
+
+// Component helpers
+export { setButtonLoading, type ButtonLoadingOptions } from "./components/button/index.js";

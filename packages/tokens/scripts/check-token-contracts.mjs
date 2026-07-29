@@ -87,6 +87,17 @@ export function checkTokenContracts() {
   const registeredVariables = new Set(manifest.tokens.map((token) => token.name));
   for (const token of manifest.darkOverrides) registeredVariables.add(token.name);
 
+  // Load component contract declared CSS properties (component-scoped variables)
+  const contractsDir = join(repositoryRoot, "packages", "blora-design", "contracts");
+  if (existsSync(contractsDir)) {
+    for (const file of readdirSync(contractsDir).filter((f) => f.endsWith(".contract.json"))) {
+      const contract = JSON.parse(readFileSync(join(contractsDir, file), "utf8"));
+      for (const prop of contract.cssProperties ?? []) {
+        registeredVariables.add(prop);
+      }
+    }
+  }
+
   for (const path of requiredLightTokens) {
     if (!lightPaths.has(path)) errors.push(`Missing required light semantic token: ${path}`);
   }

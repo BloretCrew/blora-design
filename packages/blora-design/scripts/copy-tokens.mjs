@@ -1,9 +1,10 @@
-import { copyFileSync, mkdirSync, readdirSync, existsSync } from "node:fs";
-import { resolve } from "node:path";
+import { copyFileSync, mkdirSync, readdirSync, existsSync, writeFileSync } from "node:fs";
+import { resolve, join, relative } from "node:path";
 
 const packageDir = resolve(import.meta.dirname, "..");
 const tokenDir = resolve(packageDir, "..", "tokens", "generated");
 const foundationsDir = resolve(packageDir, "src", "foundations");
+const componentsDir = resolve(packageDir, "src", "components");
 const distDir = resolve(packageDir, "dist");
 
 mkdirSync(distDir, { recursive: true });
@@ -23,6 +24,34 @@ if (existsSync(foundationsDir)) {
   }
 }
 
+// Copy component CSS files
+const componentsDistDir = resolve(distDir, "components");
+mkdirSync(componentsDistDir, { recursive: true });
+
+const componentImports = [];
+
+if (existsSync(componentsDir)) {
+  for (const componentDir of readdirSync(componentsDir, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name)
+    .sort()) {
+    const componentPath = resolve(componentsDir, componentDir);
+    const cssFiles = readdirSync(componentPath).filter((f) => f.endsWith(".css"));
+    if (cssFiles.length === 0) continue;
+
+    const componentDistDir = resolve(componentsDistDir, componentDir);
+    mkdirSync(componentDistDir, { recursive: true });
+
+    for (const cssFile of cssFiles) {
+      copyFileSync(resolve(componentPath, cssFile), resolve(componentDistDir, cssFile));
+    }
+
+    componentImports.push(
+      `@import "./components/${componentDir}/${cssFiles[0]}" layer(blora.components);`,
+    );
+  }
+}
+
 // Assemble and copy the full blora.css entry with @layer
 const bloraCss = [
   "/* =========================================================================",
@@ -36,12 +65,12 @@ const bloraCss = [
   `@import "./foundations/reset.css" layer(blora.reset);`,
   `@import "./foundations/base.css" layer(blora.base);`,
   `@import "./foundations/layout.css" layer(blora.base);`,
+  ...componentImports,
   `@import "./foundations/utilities.css" layer(blora.utilities);`,
   `@import "./tokens.themes.css" layer(blora.tokens);`,
   "",
 ].join("\n");
 
-const { writeFileSync } = await import("node:fs");
 writeFileSync(resolve(distDir, "blora.css"), bloraCss);
 
 // Also copy reset.css and foundations.css as standalone entries
@@ -57,5 +86,5 @@ const foundationsEntry = [
 writeFileSync(resolve(distDir, "foundations.css"), foundationsEntry);
 
 console.log(
-  "[copy-tokens] Copied token assets, foundations CSS, and assembled blora.css into dist/.",
+  "[copy-tokens] Copied token assets, foundations CSS, component CSS, and assembled blora.css into dist/.",
 );
