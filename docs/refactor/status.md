@@ -4,7 +4,7 @@
 
 ## 当前阶段
 
-**Phase 7：数据与内容基础** - ✅ 完成（待提交）
+**Phase 8：兼容层与 Codemod** - ✅ 完成（待提交）
 
 ## 阶段进度
 
@@ -18,7 +18,7 @@
 | Phase 5：核心表单和反馈 | ✅ 完成 | Field/Input/Checkbox/Radio/Switch/Tag/Alert/Badge/Progress/Spinner/Skeleton/Toast |
 | Phase 6：导航与浮层 | ✅ 完成 | Tabs/Breadcrumb/Pagination/Dropdown/Tooltip/Popover/Drawer/Navbar |
 | Phase 7：数据与内容基础 | ✅ 完成 | Card/Table/List/Accordion/Timeline/Empty/Result/Avatar |
-| Phase 8：兼容层与 Codemod | ⬚ 未开始 | Token/class 映射、event 别名、codemod、migrate:check |
+| Phase 8：兼容层与 Codemod | ✅ 完成 | Token/class 映射、event 别名、warning、codemod、migrate:check、fixtures |
 | Phase 9：Add-ons | ⬚ 未开始 | Markdown/Thread/QRCode/Effects 拆出 |
 | Phase 10：预发布 | ⬚ 未开始 | Alpha -> Beta -> RC -> Stable |
 
@@ -302,6 +302,67 @@
 - [x] 17 个浏览器测试 × 3 个 project = 51 个测试用例
 - [x] 总计 49 个单元测试 + 99 个浏览器测试通过
 - [x] `pnpm verify` 从干净状态全部通过
+
+## Phase 8 详细进度
+
+### 已完成
+
+#### 兼容层 CSS（Spec §7.4, §23.2）
+
+- [x] `compat/v1.css`：Token 变量映射（110 条，从 CSV 生成）+ `.blora-dark` 暗色模式兼容
+- [x] 使用 `@layer blora.compat` 隔离，不干扰现代样式
+
+#### 兼容层 JS（Spec §23.2-23.3）
+
+- [x] `compat/v1.ts`：`initV1Compatibility()` 运行时兼容
+- [x] Class 映射：旧 class 名 -> 新 class 名 + data 属性（46 条规则）
+- [x] State 映射：`.is-open`/`.is-loading`/`.is-empty`/`.is-hidden` -> data 属性（5 条规则）
+- [x] Data 属性映射：`data-blora-palette` -> `data-blora-theme` 等（3 条规则）
+- [x] 事件别名：`blora:appearancechange` -> `blora-appearance-change` 等（3 条规则）
+- [x] Deprecation warning：每页每规则只警告一次（Set 去重）
+- [x] MutationObserver：监听动态添加的 DOM 节点
+- [x] `getCompatReport()`：不修改 DOM 的检测报告
+- [x] SSR 安全：`typeof document === "undefined"` 守卫
+
+#### 独立入口（Spec §23.2）
+
+- [x] Vite 多入口构建：`index.js`（25 kB）+ `compat/v1/index.js`（12.8 kB）
+- [x] compat 不进入 modern bundle
+- [x] 包 exports：`./compat/v1` + `./compat/v1.css`
+
+#### Codemod（Spec §19.6）
+
+- [x] `codemod.mjs`：自动转换 class 名、modifier -> data 属性、state class -> data 属性、data 属性重命名、事件名重命名
+- [x] 支持 `--check` dry-run 模式
+- [x] 支持 HTML/Vue/JSX/TSX/Svelte/PHP 文件
+
+#### 迁移校验器（Spec §19.5）
+
+- [x] `migrate-check.mjs`：检测废弃 class、state class、data 属性、事件名、全局 API、a11y 问题
+- [x] 输出格式：文件:行号、规则 ID、问题、建议替换、文档链接、是否可自动修复
+
+#### Fixtures（Spec §23 验收）
+
+- [x] 3 个迁移 fixture：button+card、accordion、table+list+avatar+result
+- [x] 浏览器测试验证 v1 -> v2 迁移后视觉一致性
+
+#### 迁移文档（Spec §23.4）
+
+- [x] `docs/migration/v1-to-v2.md`：12 节完整迁移指南
+
+#### 测试
+
+- [x] 19 个 compat 单元测试（映射表、CSS token 映射、codemod/migrate-check 脚本内容）
+- [x] 5 个浏览器测试 × 3 个 project = 15 个测试用例
+- [x] 总计 50 个单元测试 + 114 个浏览器测试通过
+- [x] `pnpm verify` 从干净状态全部通过
+
+### 验收
+
+- [x] 至少三个真实风格 fixture 从 1.x 迁到 2.x
+- [x] compat 不进入 modern bundle（独立入口 12.8 kB vs 主入口 25 kB）
+- [x] warning 不重复（Set 去重，每规则每页一次）
+- [x] 迁移报告可定位文件与行（migrate-check.mjs 输出 file:line 格式）
 
 ## 阻塞项
 

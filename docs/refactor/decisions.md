@@ -170,7 +170,51 @@ v1 的 `@keyframes blora-pulse` 定义在 `blora.css` 全局作用域。v2 按�
 - 将动画定义在使用它的组件 CSS 中，保持组件自包含。
 - 全量 `blora.css` 加载时浏览器会合并同名 `@keyframes`，无副作用。
 
-## 待决策
+---
+
+## ADR-009: compat 层通过 JS 运行时转换 class，而非复制组件 CSS
+
+**日期**：2026-07-30
+**状态**：已采纳
+
+### 背景
+
+Spec §23.1 定义了兼容等级 A（旧 markup 基本不改即可工作）。1.x 使用 `.blora-btn--primary` 等 BEM modifier class，2.0 使用 `data-variant="primary"` 等 data 属性。需要让旧 markup 在 2.0 中工作。
+
+### 决策
+
+compat/v1.css 只提供 token 变量映射（旧变量名指向新变量名），不复制组件 CSS。compat/v1.ts 的 `initV1Compatibility()` 在运行时扫描 DOM，将旧 class 名替换为新 class 名 + data 属性。
+
+### 理由
+
+- 复制组件 CSS 到 compat 层会导致大量样式重复，增加包体积。
+- CSS 没有原生的 class 别名机制。
+- JS 运行时转换只需 ~12 kB，且不进入 modern bundle。
+- MutationObserver 确保动态添加的 DOM 也能被转换。
+- 符合 Spec "compat 不进入 modern bundle" 的要求。
+
+---
+
+## ADR-010: codemod 和 migrate:check 作为独立 Node.js 脚本
+
+**日期**：2026-07-30
+**状态**：已采纳
+
+### 背景
+
+Spec §19.5-19.6 要求实现 codemod 和 migrate:check。需要选择实现方式。
+
+### 决策
+
+作为 `packages/blora-design/scripts/` 下的独立 Node.js 脚本实现，不依赖 TypeScript 编译。映射规则在 `mappings.ts`（运行时）和 `codemod.mjs`（构建时）中分别维护。
+
+### 理由
+
+- Node.js 脚本可直接 `npx` 运行，无需安装额外依赖。
+- 不引入 jscodeshift 等重型 codemod 框架，保持零依赖。
+- 正则表达式转换足以覆盖低风险自动转换（class 重命名、data 属性）。
+- 复杂 DOM（Select、Table controller）只生成 TODO 报告，不做自动重写（Spec §19.6 要求）。
+- mappings.ts 和 codemod.mjs 中的映射规则保持一致，未来可考虑提取为共享 JSON。
 
 - [ ] 视觉回归测试框架的具体截图策略（Playwright snapshot vs 第三方工具）
 - [ ] Firefox/WebKit CI 矩阵何时启用（Phase 1 暂只跑 Chromium）

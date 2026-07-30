@@ -85,6 +85,20 @@ const foundationsEntry = [
 ].join("\n");
 writeFileSync(resolve(distDir, "foundations.css"), foundationsEntry);
 
+// Copy compat CSS
+const compatDir = resolve(packageDir, "src", "compat", "v1");
+if (existsSync(compatDir)) {
+  const compatDistDir = resolve(distDir, "compat", "v1");
+  mkdirSync(compatDistDir, { recursive: true });
+  for (const file of readdirSync(compatDir).filter((f) => f.endsWith(".css"))) {
+    copyFileSync(resolve(compatDir, file), resolve(compatDistDir, file));
+  }
+  // Also place at dist/compat/v1.css for the ./compat/v1.css export
+  if (existsSync(resolve(compatDir, "v1.css"))) {
+    copyFileSync(resolve(compatDir, "v1.css"), resolve(distDir, "compat", "v1.css"));
+  }
+}
+
 console.log(
-  "[copy-tokens] Copied token assets, foundations CSS, component CSS, and assembled blora.css into dist/.",
+  "[copy-tokens] Copied token assets, foundations CSS, component CSS, compat CSS, and assembled blora.css into dist/.",
 );

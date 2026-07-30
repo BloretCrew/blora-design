@@ -61,7 +61,12 @@
     "./components/timeline.css": "./dist/components/timeline/timeline.css",
     "./components/empty.css": "./dist/components/empty/empty.css",
     "./components/result.css": "./dist/components/result/result.css",
-    "./components/avatar.css": "./dist/components/avatar/avatar.css"
+    "./components/avatar.css": "./dist/components/avatar/avatar.css",
+    "./compat/v1": {
+      "types": "./dist/compat/v1/index.d.ts",
+      "import": "./dist/compat/v1/index.js"
+    },
+    "./compat/v1.css": "./dist/compat/v1.css"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -81,6 +86,8 @@
     "build:tokens": "node ../tokens/scripts/build-tokens.mjs",
     "size": "node scripts/check-size.mjs",
     "pack:test": "node scripts/pack-test.mjs",
+    "migrate:check": "node scripts/migrate-check.mjs",
+    "codemod": "node scripts/codemod.mjs",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },

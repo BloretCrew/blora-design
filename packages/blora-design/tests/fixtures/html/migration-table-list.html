@@ -1,0 +1,85 @@
+<!--
+  Migration fixture: Table + List + Avatar + Result
+  v1 markup (left) vs v2 markup (right) after codemod.
+-->
+<div class="blora-scope" style="display: flex; gap: 2rem; flex-wrap: wrap">
+  <!-- v1 markup (before codemod) -->
+  <div id="v1" style="flex: 1; min-width: 300px">
+    <div class="blora-table-wrap" style="margin-bottom: 1rem">
+      <table class="blora-table blora-table--striped">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Alice</td>
+            <td><span class="blora-dot blora-dot--success"></span> Active</td>
+          </tr>
+          <tr>
+            <td>Bob</td>
+            <td><span class="blora-dot blora-dot--primary"></span> Pending</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="blora-list blora-list--hover" style="margin-bottom: 1rem">
+      <div class="blora-list__item">
+        <div class="blora-avatar blora-avatar--sm blora-avatar--primary">AB</div>
+        <div class="blora-list__meta">
+          <div class="blora-list__title">Alice</div>
+          <div class="blora-list__desc">Admin</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="blora-result blora-result--success">
+      <div class="blora-result__icon">✓</div>
+      <div class="blora-result__title">Success</div>
+      <div class="blora-result__desc">Operation completed</div>
+    </div>
+  </div>
+
+  <!-- v2 markup (after codemod) -->
+  <div id="v2" style="flex: 1; min-width: 300px">
+    <div class="blora-table-wrap" style="margin-bottom: 1rem">
+      <table class="blora-table" data-striped>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Alice</td>
+            <td><span class="blora-dot" data-variant="success"></span> Active</td>
+          </tr>
+          <tr>
+            <td>Bob</td>
+            <td><span class="blora-dot" data-variant="primary"></span> Pending</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="blora-list" data-hover style="margin-bottom: 1rem">
+      <div class="blora-list__item">
+        <div class="blora-avatar" data-size="sm" data-variant="primary">AB</div>
+        <div class="blora-list__meta">
+          <div class="blora-list__title">Alice</div>
+          <div class="blora-list__desc">Admin</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="blora-result" data-variant="success">
+      <div class="blora-result__icon">✓</div>
+      <div class="blora-result__title">Success</div>
+      <div class="blora-result__desc">Operation completed</div>
+    </div>
+  </div>
+</div>
