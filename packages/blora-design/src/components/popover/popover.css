@@ -1,0 +1,35 @@
+/* Blora Design 2.0 - Popover */
+
+.blora-popover {
+  position: relative;
+  display: inline-flex;
+}
+
+.blora-popover__panel {
+  position: absolute;
+  inset-block-start: calc(100% + 0.5em);
+  inset-inline-start: 50%;
+  width: max-content;
+  min-width: min(200px, calc(100vw - 2 * var(--blora-space-3)));
+  max-width: min(22rem, calc(100vw - 2 * var(--blora-space-3)));
+  max-height: min(24rem, calc(100dvh - 2 * var(--blora-space-3)));
+  overflow: auto;
+  transform: translateX(-50%) translateY(4px);
+  padding: var(--blora-space-4);
+  background: var(--blora-color-surface-default);
+  border: var(--blora-border-subtle);
+  border-radius: var(--blora-radius-md);
+  box-shadow: var(--blora-shadow-3);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity var(--blora-duration-base) var(--blora-easing-standard),
+    transform var(--blora-duration-base) var(--blora-easing-standard);
+  z-index: var(--blora-z-dropdown);
+}
+
+.blora-popover[data-open] .blora-popover__panel {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}

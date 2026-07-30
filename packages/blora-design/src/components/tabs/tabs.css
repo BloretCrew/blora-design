@@ -1,0 +1,120 @@
+/* Blora Design 2.0 - Tabs */
+
+.blora-tabs {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  container-type: inline-size;
+}
+
+.blora-tabs__nav {
+  display: flex;
+  gap: var(--blora-space-1);
+  min-width: 0;
+  max-width: 100%;
+  border-bottom: 1px solid var(--blora-color-border-subtle);
+  position: relative;
+  overflow: auto hidden;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: none;
+}
+
+.blora-tabs__nav::-webkit-scrollbar {
+  display: none;
+}
+
+.blora-tabs__indicator {
+  position: absolute;
+  inset-inline-start: 0;
+  bottom: -1px;
+  width: var(--blora-tab-w, 0);
+  height: 2px;
+  transform: translateX(var(--blora-tab-x, 0));
+  background: var(--blora-color-action-primary-default);
+  border-radius: var(--blora-radius-full);
+  pointer-events: none;
+  transition:
+    width var(--blora-duration-base) var(--blora-easing-standard),
+    transform var(--blora-duration-base) var(--blora-easing-standard);
+  z-index: var(--blora-z-base);
+}
+
+.blora-tabs__tab {
+  flex: none;
+  padding: 0.7em 1.1em;
+  font-size: var(--blora-text-sm);
+  font-weight: 500;
+  color: var(--blora-color-text-muted);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  cursor: pointer;
+  white-space: nowrap;
+  scroll-snap-align: start;
+  transition:
+    color var(--blora-duration-fast) var(--blora-easing-standard),
+    background var(--blora-duration-fast) var(--blora-easing-standard);
+  position: relative;
+  z-index: var(--blora-z-sticky);
+  background: none;
+  border-inline-start: none;
+  border-inline-end: none;
+  border-block-start: none;
+}
+
+.blora-tabs__tab:hover {
+  color: var(--blora-color-text-primary);
+}
+
+.blora-tabs__tab[aria-selected="true"] {
+  color: var(--blora-color-action-primary-default);
+}
+
+.blora-tabs__tab[disabled] {
+  color: var(--blora-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.blora-tabs__panel {
+  padding-top: var(--blora-space-5);
+}
+
+/* Pills variant */
+.blora-tabs[data-variant="pills"] .blora-tabs__nav {
+  border-bottom: none;
+  gap: var(--blora-space-2);
+}
+
+.blora-tabs[data-variant="pills"] .blora-tabs__tab {
+  border-bottom: none;
+  border-radius: var(--blora-radius-full);
+  padding: 0.4em 1em;
+}
+
+.blora-tabs[data-variant="pills"] .blora-tabs__tab[aria-selected="true"] {
+  color: var(--blora-color-text-on-accent);
+}
+
+/* Vertical variant */
+.blora-tabs[data-orientation="vertical"] {
+  flex-direction: row;
+}
+
+.blora-tabs[data-orientation="vertical"] .blora-tabs__nav {
+  flex-direction: column;
+  border-bottom: none;
+  border-inline-end: 1px solid var(--blora-color-border-subtle);
+  padding-inline-end: var(--blora-space-1);
+}
+
+.blora-tabs[data-orientation="vertical"] .blora-tabs__tab {
+  border-bottom: none;
+  border-inline-end: 2px solid transparent;
+  margin-bottom: 0;
+  margin-inline-end: -1px;
+}
+
+.blora-tabs[data-orientation="vertical"] .blora-tabs__panel {
+  padding-top: 0;
+  padding-inline-start: var(--blora-space-6);
+  flex: 1;
+}

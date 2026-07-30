@@ -1,0 +1,51 @@
+/* Blora Design 2.0 - Pagination */
+
+.blora-pagination {
+  display: flex;
+  align-items: center;
+  gap: var(--blora-space-1);
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: thin;
+}
+
+.blora-pagination__item {
+  min-width: 2em;
+  height: 2em;
+  padding: 0 0.5em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font: inherit;
+  font-size: var(--blora-text-sm);
+  color: var(--blora-color-text-emphasis);
+  border: 1px solid transparent;
+  border-radius: var(--blora-radius-md);
+  background: transparent;
+  cursor: pointer;
+  transition: all var(--blora-duration-fast) var(--blora-easing-standard);
+}
+
+.blora-pagination__item:hover {
+  background: var(--blora-color-surface-raised);
+  color: var(--blora-color-text-primary);
+}
+
+.blora-pagination__item[aria-current="page"] {
+  background: var(--blora-color-action-primary-default);
+  color: var(--blora-color-text-on-accent);
+  font-weight: 600;
+  box-shadow: var(--blora-shadow-primary);
+}
+
+.blora-pagination__item[disabled] {
+  color: var(--blora-color-text-disabled);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.blora-pagination__ellipsis {
+  color: var(--blora-color-text-subtle);
+  padding: 0 var(--blora-space-1);
+}

@@ -45,7 +45,15 @@
     "./components/progress.css": "./dist/components/progress/progress.css",
     "./components/spinner.css": "./dist/components/spinner/spinner.css",
     "./components/skeleton.css": "./dist/components/skeleton/skeleton.css",
-    "./components/toast.css": "./dist/components/toast/toast.css"
+    "./components/toast.css": "./dist/components/toast/toast.css",
+    "./components/tabs.css": "./dist/components/tabs/tabs.css",
+    "./components/breadcrumb.css": "./dist/components/breadcrumb/breadcrumb.css",
+    "./components/pagination.css": "./dist/components/pagination/pagination.css",
+    "./components/dropdown.css": "./dist/components/dropdown/dropdown.css",
+    "./components/tooltip.css": "./dist/components/tooltip/tooltip.css",
+    "./components/popover.css": "./dist/components/popover/popover.css",
+    "./components/drawer.css": "./dist/components/drawer/drawer.css",
+    "./components/navbar.css": "./dist/components/navbar/navbar.css"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

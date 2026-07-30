@@ -1,0 +1,27 @@
+{
+  "name": "tabs",
+  "status": "stable",
+  "kind": "css-only",
+  "since": "2.0.0",
+  "requiresJavaScript": false,
+  "formAssociated": false,
+  "attributes": {},
+  "properties": {},
+  "methods": {},
+  "events": {},
+  "slots": {
+    "default": "Content"
+  },
+  "parts": [],
+  "cssProperties": [
+    "--blora-tab-w",
+    "--blora-tab-x",
+    "--blora-tab-h",
+    "--blora-tab-y",
+    "--blora-button-bg",
+    "--blora-button-fg",
+    "--blora-button-bd"
+  ],
+  "accessibilityPattern": "navigation",
+  "migrationFromV1": "tabs.migration.md"
+}
