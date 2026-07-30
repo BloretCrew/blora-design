@@ -1,0 +1,68 @@
+/* =========================================================================
+   Blora Design 2.0 - Accordion (Collapse) component
+   Visual baseline: legacy/v1/blora.css lines 1965-1975
+   ========================================================================= */
+
+.blora-accordion {
+  border: var(--blora-border-subtle);
+  border-radius: var(--blora-radius-md);
+  background: var(--blora-color-surface-default);
+  overflow: hidden;
+}
+
+.blora-accordion__item {
+  border-bottom: 1px solid var(--blora-color-border-subtle);
+}
+
+.blora-accordion__item:last-child {
+  border-bottom: none;
+}
+
+.blora-accordion__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85em 1.1em;
+  cursor: pointer;
+  font-size: var(--blora-text-sm);
+  font-weight: 500;
+  color: var(--blora-color-text-secondary);
+  transition: background var(--blora-duration-fast) var(--blora-easing-standard);
+}
+
+.blora-accordion__head:hover {
+  background: var(--blora-color-surface-raised);
+}
+
+.blora-accordion__icon {
+  transition: transform var(--blora-duration-base) var(--blora-easing-standard);
+  color: var(--blora-color-text-subtle);
+  display: inline-flex;
+}
+
+.blora-accordion__item[data-open] .blora-accordion__icon {
+  transform: rotate(90deg);
+}
+
+.blora-accordion__body {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition:
+    max-height var(--blora-duration-base) var(--blora-easing-standard),
+    opacity var(--blora-duration-fast) var(--blora-easing-standard),
+    transform var(--blora-duration-base) var(--blora-easing-standard);
+}
+
+.blora-accordion__item[data-open] .blora-accordion__body {
+  max-height: var(--blora-accordion-max-height, 400px);
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.blora-accordion__content {
+  padding: 0 var(--blora-space-6) var(--blora-space-5);
+  color: var(--blora-color-text-emphasis);
+  font-size: var(--blora-text-sm);
+}

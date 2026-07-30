@@ -1,0 +1,36 @@
+{
+  "name": "avatar",
+  "status": "stable",
+  "kind": "css-only",
+  "since": "2.0.0",
+  "requiresJavaScript": false,
+  "formAssociated": false,
+  "attributes": {
+    "data-size": {
+      "type": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\"",
+      "default": "md"
+    },
+    "data-variant": {
+      "type": "\"primary\" | \"neutral\" | \"info\" | \"success\" | \"contrast\"",
+      "default": null
+    },
+    "data-shape": {
+      "type": "\"circle\" | \"square\"",
+      "default": "circle"
+    },
+    "data-pulse": {
+      "type": "boolean",
+      "default": null
+    }
+  },
+  "properties": {},
+  "methods": {},
+  "events": {},
+  "slots": {
+    "default": "Avatar content (text initials or image)"
+  },
+  "parts": [],
+  "cssProperties": [],
+  "accessibilityPattern": "image",
+  "migrationFromV1": "avatar.migration.md"
+}

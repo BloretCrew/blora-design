@@ -129,6 +129,47 @@ Primitive 层使用与 1.x token 名称对应的 palette-specific 命名（如 `
 
 ---
 
+## ADR-007: Table controller 推迟到 beta，Phase 7 只交付 CSS-only table
+
+**日期**：2026-07-30
+**状态**：已采纳
+
+### 背景
+
+Spec §17.5 将 Table 拆成两层：CSS-only native table 和可选 headless controller（排序、选择、分页、虚拟化）。Spec 明确虚拟表格、列固定、列设置和拖拽排序属于 advanced，必须单独测试。
+
+### 决策
+
+Phase 7 只交付 CSS-only table 样式（含 sortable header `::after` 箭头、sticky column z-index、striped/hover 行样式、loading overlay、bulk bar、virtual scroll 容器）。`createTableController()` headless controller 推迟到 beta 阶段单独实现和测试。
+
+### 理由
+
+- Controller 涉及排序/选择/分页/虚拟化等复杂状态管理，需要完整的交互测试覆盖。
+- CSS-only table 已覆盖所有视觉样式，消费者可自行用原生 JS 或框架实现交互。
+- Spec 要求 advanced 功能必须单独测试，不适合在组件迁移批次中混入。
+- 遵循"每个阶段独立提交，不做巨型提交"的执行纪律。
+
+---
+
+## ADR-008: Avatar 的 blora-pulse 动画定义在组件 CSS 内
+
+**日期**：2026-07-30
+**状态**：已采纳
+
+### 背景
+
+v1 的 `@keyframes blora-pulse` 定义在 `blora.css` 全局作用域。v2 按组件拆分 CSS，每个组件 CSS 独立加载。Avatar 的 `blora-dot[data-pulse]` 依赖此动画。
+
+### 决策
+
+将 `@keyframes blora-pulse` 定义在 `avatar.css` 内。由于 CSS `@keyframes` 是全局的（不受 `@layer` 隔离），当 `blora.css` 全量加载时不会有重复定义问题；当仅加载 `avatar.css` 子路径时动画也可用。
+
+### 理由
+
+- `@keyframes` 在 CSS 中是全局标识符，不受 `@layer` 或组件隔离影响。
+- 将动画定义在使用它的组件 CSS 中，保持组件自包含。
+- 全量 `blora.css` 加载时浏览器会合并同名 `@keyframes`，无副作用。
+
 ## 待决策
 
 - [ ] 视觉回归测试框架的具体截图策略（Playwright snapshot vs 第三方工具）

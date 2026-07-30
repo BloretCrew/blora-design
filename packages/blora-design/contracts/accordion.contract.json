@@ -1,0 +1,24 @@
+{
+  "name": "accordion",
+  "status": "stable",
+  "kind": "css-only",
+  "since": "2.0.0",
+  "requiresJavaScript": false,
+  "formAssociated": false,
+  "attributes": {
+    "data-open": {
+      "type": "boolean",
+      "default": null
+    }
+  },
+  "properties": {},
+  "methods": {},
+  "events": {},
+  "slots": {
+    "default": "Accordion content"
+  },
+  "parts": [],
+  "cssProperties": ["--blora-accordion-max-height"],
+  "accessibilityPattern": "accordion",
+  "migrationFromV1": "accordion.migration.md"
+}

@@ -1,0 +1,19 @@
+{
+  "name": "timeline",
+  "status": "stable",
+  "kind": "css-only",
+  "since": "2.0.0",
+  "requiresJavaScript": false,
+  "formAssociated": false,
+  "attributes": {},
+  "properties": {},
+  "methods": {},
+  "events": {},
+  "slots": {
+    "default": "Timeline items"
+  },
+  "parts": [],
+  "cssProperties": [],
+  "accessibilityPattern": "list",
+  "migrationFromV1": "timeline.migration.md"
+}

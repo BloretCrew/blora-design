@@ -1,0 +1,19 @@
+{
+  "name": "empty",
+  "status": "stable",
+  "kind": "css-only",
+  "since": "2.0.0",
+  "requiresJavaScript": false,
+  "formAssociated": false,
+  "attributes": {},
+  "properties": {},
+  "methods": {},
+  "events": {},
+  "slots": {
+    "default": "Empty state content"
+  },
+  "parts": [],
+  "cssProperties": [],
+  "accessibilityPattern": "status",
+  "migrationFromV1": "empty.migration.md"
+}

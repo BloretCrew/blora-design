@@ -53,7 +53,15 @@
     "./components/tooltip.css": "./dist/components/tooltip/tooltip.css",
     "./components/popover.css": "./dist/components/popover/popover.css",
     "./components/drawer.css": "./dist/components/drawer/drawer.css",
-    "./components/navbar.css": "./dist/components/navbar/navbar.css"
+    "./components/navbar.css": "./dist/components/navbar/navbar.css",
+    "./components/card.css": "./dist/components/card/card.css",
+    "./components/table.css": "./dist/components/table/table.css",
+    "./components/list.css": "./dist/components/list/list.css",
+    "./components/accordion.css": "./dist/components/accordion/accordion.css",
+    "./components/timeline.css": "./dist/components/timeline/timeline.css",
+    "./components/empty.css": "./dist/components/empty/empty.css",
+    "./components/result.css": "./dist/components/result/result.css",
+    "./components/avatar.css": "./dist/components/avatar/avatar.css"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

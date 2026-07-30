@@ -4,7 +4,7 @@
 
 ## 当前阶段
 
-**Phase 3：Foundations** - ✅ 完成（待提交）
+**Phase 7：数据与内容基础** - ✅ 完成（待提交）
 
 ## 阶段进度
 
@@ -14,10 +14,10 @@
 | Phase 1：Workspace 与门禁 | ✅ 完成 | pnpm workspace、TS strict、lint、test、CI、Storybook、publint |
 | Phase 2：Token | ✅ 完成 | DTCG 三层 token、确定性生成器、9 套主题、v1 映射、对比度门禁 |
 | Phase 3：Foundations | ✅ 完成 | reset、base、layout、utilities、@layer、RTL、reduced-motion |
-| Phase 4：三个试点组件 | ⬚ 未开始 | Button -> Dialog -> Select |
-| Phase 5：核心表单和反馈 | ⬚ 未开始 | Field/Input/Checkbox/Radio/Switch/Tag/Alert/Progress/Spinner/Skeleton/Toast |
-| Phase 6：导航与浮层 | ⬚ 未开始 | Tabs/Breadcrumb/Pagination/Dropdown/Tooltip/Popover/Drawer/Navbar |
-| Phase 7：数据与内容基础 | ⬚ 未开始 | Card/Table/List/Accordion/Timeline/Empty/Result/Avatar/Badge |
+| Phase 4：三个试点组件 | ✅ 完成 | Button -> Dialog -> Select |
+| Phase 5：核心表单和反馈 | ✅ 完成 | Field/Input/Checkbox/Radio/Switch/Tag/Alert/Badge/Progress/Spinner/Skeleton/Toast |
+| Phase 6：导航与浮层 | ✅ 完成 | Tabs/Breadcrumb/Pagination/Dropdown/Tooltip/Popover/Drawer/Navbar |
+| Phase 7：数据与内容基础 | ✅ 完成 | Card/Table/List/Accordion/Timeline/Empty/Result/Avatar |
 | Phase 8：兼容层与 Codemod | ⬚ 未开始 | Token/class 映射、event 别名、codemod、migrate:check |
 | Phase 9：Add-ons | ⬚ 未开始 | Markdown/Thread/QRCode/Effects 拆出 |
 | Phase 10：预发布 | ⬚ 未开始 | Alpha -> Beta -> RC -> Stable |
@@ -255,6 +255,53 @@
 ### 待完成
 
 - [ ] 提交 Phase 3
+
+## Phase 4-6 详细进度（汇总）
+
+### Phase 4：三个试点组件
+
+- [x] Button（CSS-only native button + `setButtonLoading()` helper）
+- [x] Dialog（Web Component + Shadow DOM + OverlayController）
+- [x] Select（form-associated combobox + keyboard navigation）
+
+### Phase 5：核心表单和反馈
+
+- [x] Field/Input/Textarea、Checkbox/Radio/Switch、Tag/Alert/Badge、Progress/Spinner/Skeleton、Toast（共 13 个 CSS-only 组件）
+
+### Phase 6：导航与浮层
+
+- [x] Tabs/Breadcrumb/Pagination/Dropdown/Tooltip/Popover/Drawer/Navbar（共 8 个 CSS-only 组件）
+
+## Phase 7 详细进度
+
+### 已完成
+
+#### 组件（Spec §17 + Phase 7 清单）
+
+- [x] Card/Panel（CSS-only）：`data-variant`（hover/flat/inset）、`data-positioned`、`data-with-badge`、`__title/__body/__foot/__badge` 子元素
+- [x] Table（CSS-only native table）：`data-striped`、sortable headers（`aria-sort` + `::after` 箭头）、sticky columns（`data-blora-fixed`）、selection column、bulk bar、virtual scroll container、loading overlay
+- [x] List（CSS-only）：`__item/__meta/__title/__desc`、`data-hover` 可交互模式
+- [x] Accordion（CSS-only）：`data-open` 展开收起、`__icon` 旋转动画、`--blora-accordion-max-height` 组件变量
+- [x] Timeline（CSS-only）：`::before` 垂直线、`__dot` 绝对定位 + `data-variant`、`__time/__title/__desc`
+- [x] Empty（CSS-only）：居中布局、`__icon/__title/__desc`
+- [x] Result（CSS-only）：`data-variant`（success/warning/error/info）图标着色、`__icon/__title/__desc`
+- [x] Avatar（CSS-only）：`data-size`（xs/sm/md/lg/xl）、`data-variant`（primary/neutral/info/success/contrast）、`data-shape`（circle/square）、`blora-avatar-group` 重叠、`blora-avatar-wrap` + `blora-badge` 定位、`blora-dot` 状态点 + `blora-pulse` 动画
+
+#### 工程约束
+
+- [x] 所有组件 CSS 仅使用登记的 token，无硬编码颜色
+- [x] z-index 仅使用 `var(--blora-z-base)` / `var(--blora-z-sticky)`
+- [x] 逻辑属性（`inset-inline-start/end`、`padding-inline-start`、`margin-inline-start`）替代物理方向
+- [x] 8 个 `*.contract.json` 通过 schema 校验
+- [x] 包 exports 新增 8 个组件子路径
+- [x] attw 排除新增 8 个 CSS 入口
+- [x] Playwright config 支持 `PLAYWRIGHT_WORKERS` 环境变量
+
+#### 测试
+
+- [x] 17 个浏览器测试 × 3 个 project = 51 个测试用例
+- [x] 总计 49 个单元测试 + 99 个浏览器测试通过
+- [x] `pnpm verify` 从干净状态全部通过
 
 ## 阻塞项
 

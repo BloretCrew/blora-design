@@ -1,0 +1,24 @@
+{
+  "name": "result",
+  "status": "stable",
+  "kind": "css-only",
+  "since": "2.0.0",
+  "requiresJavaScript": false,
+  "formAssociated": false,
+  "attributes": {
+    "data-variant": {
+      "type": "\"success\" | \"warning\" | \"error\" | \"info\"",
+      "default": null
+    }
+  },
+  "properties": {},
+  "methods": {},
+  "events": {},
+  "slots": {
+    "default": "Result content"
+  },
+  "parts": [],
+  "cssProperties": [],
+  "accessibilityPattern": "status",
+  "migrationFromV1": "result.migration.md"
+}

@@ -1,0 +1,24 @@
+{
+  "name": "table",
+  "status": "stable",
+  "kind": "css-only",
+  "since": "2.0.0",
+  "requiresJavaScript": false,
+  "formAssociated": false,
+  "attributes": {
+    "data-striped": {
+      "type": "boolean",
+      "default": null
+    }
+  },
+  "properties": {},
+  "methods": {},
+  "events": {},
+  "slots": {
+    "default": "Table rows and cells"
+  },
+  "parts": [],
+  "cssProperties": [],
+  "accessibilityPattern": "table",
+  "migrationFromV1": "table.migration.md"
+}

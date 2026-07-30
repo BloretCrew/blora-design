@@ -1,0 +1,24 @@
+{
+  "name": "list",
+  "status": "stable",
+  "kind": "css-only",
+  "since": "2.0.0",
+  "requiresJavaScript": false,
+  "formAssociated": false,
+  "attributes": {
+    "data-hover": {
+      "type": "boolean",
+      "default": null
+    }
+  },
+  "properties": {},
+  "methods": {},
+  "events": {},
+  "slots": {
+    "default": "List items"
+  },
+  "parts": [],
+  "cssProperties": [],
+  "accessibilityPattern": "list",
+  "migrationFromV1": "list.migration.md"
+}

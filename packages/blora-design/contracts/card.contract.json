@@ -1,0 +1,32 @@
+{
+  "name": "card",
+  "status": "stable",
+  "kind": "css-only",
+  "since": "2.0.0",
+  "requiresJavaScript": false,
+  "formAssociated": false,
+  "attributes": {
+    "data-variant": {
+      "type": "\"hover\" | \"flat\" | \"inset\"",
+      "default": null
+    },
+    "data-positioned": {
+      "type": "boolean",
+      "default": null
+    },
+    "data-with-badge": {
+      "type": "boolean",
+      "default": null
+    }
+  },
+  "properties": {},
+  "methods": {},
+  "events": {},
+  "slots": {
+    "default": "Card content"
+  },
+  "parts": [],
+  "cssProperties": [],
+  "accessibilityPattern": "landmark",
+  "migrationFromV1": "card.migration.md"
+}
