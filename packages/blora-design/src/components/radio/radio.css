@@ -1,0 +1,60 @@
+/* =========================================================================
+   Blora Design 2.0 - Radio component
+   Spec §11.1: Native input + visual dot, no JS required
+   ========================================================================= */
+
+.blora-radio {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--blora-space-2);
+  cursor: pointer;
+  user-select: none;
+  font-size: var(--blora-text-sm);
+  color: var(--blora-color-text-emphasis);
+}
+
+.blora-radio > input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.blora-radio__dot {
+  width: 1.15em;
+  height: 1.15em;
+  flex: none;
+  border: 1.5px solid var(--blora-color-text-subtle);
+  border-radius: 50%;
+  background: var(--blora-color-surface-default);
+  position: relative;
+  transition: all var(--blora-duration-fast) var(--blora-easing-standard);
+}
+
+.blora-radio__dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 0.4em;
+  height: 0.4em;
+  border-radius: 50%;
+  background: var(--blora-color-action-primary-default);
+  transform: scale(0);
+  transition: transform var(--blora-duration-fast) var(--blora-easing-overshoot);
+}
+
+.blora-radio > input:checked + .blora-radio__dot {
+  border-color: var(--blora-color-action-primary-default);
+}
+
+.blora-radio > input:checked + .blora-radio__dot::after {
+  transform: scale(1);
+}
+
+.blora-radio > input:focus-visible + .blora-radio__dot {
+  box-shadow: var(--blora-focus-ring-strong);
+}
+
+.blora-radio > input:disabled + .blora-radio__dot {
+  opacity: 0.4;
+}

@@ -1,0 +1,19 @@
+{
+  "name": "toast",
+  "status": "stable",
+  "kind": "service",
+  "since": "2.0.0",
+  "requiresJavaScript": true,
+  "formAssociated": false,
+  "attributes": {},
+  "properties": {},
+  "methods": {},
+  "events": {},
+  "slots": {
+    "default": "Content"
+  },
+  "parts": [],
+  "cssProperties": [],
+  "accessibilityPattern": "input",
+  "migrationFromV1": "toast.migration.md"
+}

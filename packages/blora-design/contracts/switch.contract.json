@@ -1,0 +1,27 @@
+{
+  "name": "switch",
+  "status": "stable",
+  "kind": "native",
+  "since": "2.0.0",
+  "requiresJavaScript": false,
+  "formAssociated": true,
+  "attributes": {},
+  "properties": {},
+  "methods": {},
+  "events": {},
+  "slots": {
+    "default": "Content"
+  },
+  "parts": [],
+  "cssProperties": [
+    "--blora-switch-w",
+    "--blora-switch-h",
+    "--blora-switch-pad",
+    "--blora-switch-knob",
+    "--blora-button-bg",
+    "--blora-button-fg",
+    "--blora-button-bd"
+  ],
+  "accessibilityPattern": "input",
+  "migrationFromV1": "switch.migration.md"
+}

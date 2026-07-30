@@ -1,0 +1,81 @@
+/* =========================================================================
+   Blora Design 2.0 - Checkbox component
+   Spec §11.1: Native input + visual box, no JS required
+   ========================================================================= */
+
+.blora-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--blora-space-2);
+  cursor: pointer;
+  user-select: none;
+  font-size: var(--blora-text-sm);
+  color: var(--blora-color-text-emphasis);
+}
+
+.blora-checkbox > input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.blora-checkbox__box {
+  width: 1.15em;
+  height: 1.15em;
+  flex: none;
+  border: 1.5px solid var(--blora-color-text-subtle);
+  border-radius: var(--blora-radius-xs);
+  background: var(--blora-color-surface-default);
+  display: grid;
+  place-items: center;
+  transition: all var(--blora-duration-fast) var(--blora-easing-standard);
+  position: relative;
+}
+
+.blora-checkbox__box::after {
+  content: "";
+  width: 0.58em;
+  height: 0.34em;
+  border: solid var(--blora-color-text-on-accent);
+  border-width: 0 0 2px 2px;
+  opacity: 0;
+  transform: rotate(-45deg) scale(0.4);
+  transition: all var(--blora-duration-fast) var(--blora-easing-overshoot);
+}
+
+.blora-checkbox > input:checked + .blora-checkbox__box {
+  background: var(--blora-color-action-primary-default);
+  border-color: var(--blora-color-action-primary-default);
+}
+
+.blora-checkbox > input:checked + .blora-checkbox__box::after {
+  opacity: 1;
+  transform: rotate(-45deg) scale(1);
+}
+
+.blora-checkbox > input:focus-visible + .blora-checkbox__box {
+  box-shadow: var(--blora-focus-ring-strong);
+}
+
+.blora-checkbox > input:disabled + .blora-checkbox__box {
+  opacity: 0.4;
+}
+
+/* Indeterminate */
+.blora-checkbox[data-indeterminate] > input + .blora-checkbox__box {
+  background: var(--blora-color-action-primary-default);
+  border-color: var(--blora-color-action-primary-default);
+}
+
+.blora-checkbox[data-indeterminate] > input + .blora-checkbox__box::after {
+  position: absolute;
+  top: 50%;
+  inset-inline-start: 50%;
+  width: 0.44em;
+  height: 0.44em;
+  border: 0;
+  background: var(--blora-color-text-on-accent);
+  opacity: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 1px;
+}

@@ -1,0 +1,19 @@
+{
+  "name": "textarea",
+  "status": "stable",
+  "kind": "native",
+  "since": "2.0.0",
+  "requiresJavaScript": false,
+  "formAssociated": true,
+  "attributes": {},
+  "properties": {},
+  "methods": {},
+  "events": {},
+  "slots": {
+    "default": "Content"
+  },
+  "parts": [],
+  "cssProperties": [],
+  "accessibilityPattern": "input",
+  "migrationFromV1": "textarea.migration.md"
+}
