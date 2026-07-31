@@ -33,5 +33,14 @@
     "*.min.css",
     "packages/tokens/src/**/*.json",
     "packages/tokens/generated/**"
+  ],
+  "overrides": [
+    {
+      "files": ["addons/**/*.css"],
+      "rules": {
+        "selector-class-pattern": "(^blora-[a-z0-9_-]+$)|(^is-[a-z-]+$)",
+        "custom-property-pattern": "(^blora-[a-z0-9-]+$)|(^fx-[a-z0-9-]+$)|^i$"
+      }
+    }
   ]
 }

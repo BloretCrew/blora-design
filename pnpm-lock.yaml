@@ -93,6 +93,30 @@ importers:
         specifier: ^2.1.8
         version: 2.1.9(@types/node@22.20.1)(jsdom@25.0.1)
 
+  addons/effects:
+    dependencies:
+      '@bloret-crew/blora-design':
+        specifier: workspace:*
+        version: link:../../packages/blora-design
+
+  addons/markdown:
+    dependencies:
+      '@bloret-crew/blora-design':
+        specifier: workspace:*
+        version: link:../../packages/blora-design
+
+  addons/qrcode:
+    dependencies:
+      '@bloret-crew/blora-design':
+        specifier: workspace:*
+        version: link:../../packages/blora-design
+
+  addons/thread:
+    dependencies:
+      '@bloret-crew/blora-design':
+        specifier: workspace:*
+        version: link:../../packages/blora-design
+
   packages/blora-design:
     devDependencies:
       '@bloret-crew/blora-design':

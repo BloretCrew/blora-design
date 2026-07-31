@@ -1,0 +1,21 @@
+{
+  "name": "markdown",
+  "status": "beta",
+  "kind": "service",
+  "since": "2.0.0",
+  "requiresJavaScript": true,
+  "formAssociated": false,
+  "attributes": {},
+  "properties": {},
+  "methods": {
+    "renderMarkdown": {
+      "description": "Render markdown source to HTML string"
+    }
+  },
+  "events": {},
+  "slots": {},
+  "parts": [],
+  "cssProperties": [],
+  "accessibilityPattern": "content",
+  "migrationFromV1": "markdown.migration.md"
+}

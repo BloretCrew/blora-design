@@ -1,0 +1,21 @@
+{
+  "name": "thread",
+  "status": "beta",
+  "kind": "headless",
+  "since": "2.0.0",
+  "requiresJavaScript": true,
+  "formAssociated": false,
+  "attributes": {},
+  "properties": {},
+  "methods": {
+    "createThreadController": {
+      "description": "Create a thread controller for expand/collapse"
+    }
+  },
+  "events": {},
+  "slots": {},
+  "parts": [],
+  "cssProperties": [],
+  "accessibilityPattern": "list",
+  "migrationFromV1": "thread.migration.md"
+}

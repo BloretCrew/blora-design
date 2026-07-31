@@ -216,6 +216,48 @@ Spec §19.5-19.6 要求实现 codemod 和 migrate:check。需要选择实现方�
 - 复杂 DOM（Select、Table controller）只生成 TODO 报告，不做自动重写（Spec §19.6 要求）。
 - mappings.ts 和 codemod.mjs 中的映射规则保持一致，未来可考虑提取为共享 JSON。
 
-- [ ] 视觉回归测试框架的具体截图策略（Playwright snapshot vs 第三方工具）
+---
+
+## ADR-011: Add-on 包作为独立 workspace 包而非核心包子路径
+
+**日期**：2026-07-30
+**状态**：已采纳
+
+### 背景
+
+Spec §9 要求将 Markdown、Thread、QRCode、Effects 从核心包拆出。Spec §5 的目录结构显示 `addons/` 在仓库根目录下。需要决定 add-on 的打包方式。
+
+### 决策
+
+每个 add-on 作为独立的 pnpm workspace 包，发布为独立的 npm 包（`@bloret-crew/blora-design-markdown` 等），而非核心包的子路径。add-on 包以 `@bloret-crew/blora-design` 为 peer dependency。
+
+### 理由
+
+- 独立包让用户按需安装，不增加核心包体积。
+- 独立版本管理：add-on 可以有自己的发布节奏（beta -> stable）。
+- Spec §17.6 要求 Markdown 安全策略独立，独立包让安全决策更明确。
+- 核心包 exports 不被 add-on 污染。
+- pnpm workspace 天然支持多包开发，无需额外配置。
+
+---
+
+## ADR-012: Markdown 解析器使用占位符保护链接和代码
+
+**日期**：2026-07-30
+**状态**：已采纳
+
+### 背景
+
+Markdown 行内解析中，链接替换后的 HTML 包含 `blora-md__a` 等 class 名，其中的 `__` 被斜体正则 `_([^_\n]+)_` 误匹配。类似地，行内代码也需要保护。
+
+### 决策
+
+使用 Unicode 私有区域字符 `\uE000` 作为占位符分隔符，在处理斜体/粗体之前将链接和代码替换为占位符，处理完后再恢复。
+
+### 理由
+
+- `\uE000` 是 Unicode 私用区域字符，不会出现在正常 Markdown 文本中。
+- 不是控制字符，不触发 ESLint `no-control-regex` 规则。
+- 占位符方式比修改斜体正则更可靠，不会影响正常的斜体解析。
 - [ ] Firefox/WebKit CI 矩阵何时启用（Phase 1 暂只跑 Chromium）
 

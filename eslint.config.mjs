@@ -77,4 +77,31 @@ export default tseslint.config(
       "@typescript-eslint/no-floating-promises": "error",
     },
   },
+  // Typed-linting block for addon packages
+  {
+    files: [
+      "addons/markdown/src/**/*.ts",
+      "addons/markdown/tests/**/*.test.ts",
+      "addons/qrcode/src/**/*.ts",
+      "addons/qrcode/tests/**/*.test.ts",
+      "addons/thread/src/**/*.ts",
+      "addons/thread/tests/**/*.test.ts",
+      "addons/effects/src/**/*.ts",
+      "addons/effects/tests/**/*.test.ts",
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: [
+          "addons/markdown/tsconfig.lint.json",
+          "addons/qrcode/tsconfig.lint.json",
+          "addons/thread/tsconfig.lint.json",
+          "addons/effects/tsconfig.lint.json",
+        ],
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+    rules: {
+      "@typescript-eslint/no-floating-promises": "error",
+    },
+  },
 );

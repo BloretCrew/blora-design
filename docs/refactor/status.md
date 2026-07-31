@@ -4,7 +4,7 @@
 
 ## 当前阶段
 
-**Phase 8：兼容层与 Codemod** - ✅ 完成（待提交）
+**Phase 9：Add-ons** - ✅ 完成（待提交）
 
 ## 阶段进度
 
@@ -19,7 +19,7 @@
 | Phase 6：导航与浮层 | ✅ 完成 | Tabs/Breadcrumb/Pagination/Dropdown/Tooltip/Popover/Drawer/Navbar |
 | Phase 7：数据与内容基础 | ✅ 完成 | Card/Table/List/Accordion/Timeline/Empty/Result/Avatar |
 | Phase 8：兼容层与 Codemod | ✅ 完成 | Token/class 映射、event 别名、warning、codemod、migrate:check、fixtures |
-| Phase 9：Add-ons | ⬚ 未开始 | Markdown/Thread/QRCode/Effects 拆出 |
+| Phase 9：Add-ons | ✅ 完成 | Markdown/QRCode/Thread/Effects 拆出为独立包 |
 | Phase 10：预发布 | ⬚ 未开始 | Alpha -> Beta -> RC -> Stable |
 
 ## Phase 0 详细进度
@@ -363,6 +363,65 @@
 - [x] compat 不进入 modern bundle（独立入口 12.8 kB vs 主入口 25 kB）
 - [x] warning 不重复（Set 去重，每规则每页一次）
 - [x] 迁移报告可定位文件与行（migrate-check.mjs 输出 file:line 格式）
+
+## Phase 9 详细进度
+
+### 已完成
+
+#### Markdown add-on（Spec §17.6）
+
+- [x] `@bloret-crew/blora-design-markdown` 独立 workspace 包
+- [x] `renderMarkdown(source, options)` API，要求显式安全策略（`sanitize`、`allowHtml`）
+- [x] 默认转义所有 HTML（`sanitize: true, allowHtml: false`）
+- [x] `renderMarkdownTo(element, source, options)` 便捷函数
+- [x] 支持：标题、加粗/斜体/删除线、行内代码、围栏代码、链接（仅安全协议）、图片、列表、引用、分割线
+- [x] 使用占位符保护链接和代码不被斜体正则误匹配
+- [x] CSS 使用 v2 token，`@layer blora.addons` 隔离
+- [x] 25 个单元测试
+
+#### QRCode add-on
+
+- [x] `@bloret-crew/blora-design-qrcode` 独立 workspace 包
+- [x] `renderQRCode(container, text, options)` + `buildQRMatrix(text)` API
+- [x] 从 v1 迁移 QR 矩阵生成算法（finder patterns + data bits）
+- [x] SSR 安全（`typeof document` 守卫）
+- [x] 10 个单元测试
+
+#### Thread add-on
+
+- [x] `@bloret-crew/blora-design-thread` 独立 workspace 包
+- [x] `createThreadController(root, options)` headless controller（Spec §17.5）
+- [x] `toggle`/`expand`/`collapse`/`destroy` 方法
+- [x] AbortController 管理事件监听器（不使用 dataset bound 标记）
+- [x] `prefers-reduced-motion` 支持
+- [x] `aria-expanded` 无障碍属性
+- [x] CSS 从 v1 迁移全部 Thread/Post/Comment 样式，使用 v2 token 和逻辑属性
+- [x] `.blora-dark` 替换为 `:root[data-blora-color-scheme="dark"]`
+- [x] 9 个单元测试
+
+#### Effects add-on
+
+- [x] `@bloret-crew/blora-design-effects` 独立 workspace 包
+- [x] `textFx(target, name, options)` API
+- [x] 8 种效果：grow、shrink、shake、nod、jitter、explode、ripple、bloom
+- [x] 分字效果（explode/ripple/bloom）自动拆分文本为 span
+- [x] `prefers-reduced-motion` 支持
+- [x] SSR 安全
+- [x] CSS 从 v1 迁移全部 `.blora-text-fx` 样式和 `@keyframes`
+- [x] 16 个单元测试
+
+#### 工程配置
+
+- [x] ESLint 配置：为 add-on 包添加 typed-linting 块
+- [x] Stylelint 配置：为 add-on 包添加 overrides（允许 `.is-*` 状态类和 `--fx-*` 自定义属性）
+- [x] 所有包使用 v2 token，逻辑属性，`@layer blora.addons` 隔离
+- [x] `pnpm verify` 从干净状态全部通过
+
+#### 测试
+
+- [x] 128 个单元测试（50 核心包 + 18 tokens + 25 markdown + 16 effects + 9 thread + 10 qrcode）
+- [x] 114 个浏览器测试
+- [x] `pnpm verify` 从干净状态全部通过
 
 ## 阻塞项
 

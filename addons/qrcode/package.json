@@ -1,0 +1,32 @@
+{
+  "name": "@bloret-crew/blora-design-qrcode",
+  "version": "2.0.0-alpha.0",
+  "description": "QR Code generation add-on for Blora Design 2.0.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "author": "RhedarLiu <rhedarliu@outlook.com>",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./qrcode.css": "./dist/qrcode.css",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist/",
+    "contracts/"
+  ],
+  "scripts": {
+    "lint": "eslint src/ tests/",
+    "lint:css": "stylelint \"src/**/*.css\"",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --config vitest.config.ts",
+    "build": "vite build && tsc --emitDeclarationOnly"
+  },
+  "peerDependencies": {
+    "@bloret-crew/blora-design": "workspace:*"
+  }
+}

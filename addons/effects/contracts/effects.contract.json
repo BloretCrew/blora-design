@@ -1,0 +1,19 @@
+{
+  "name": "effects",
+  "status": "beta",
+  "kind": "service",
+  "since": "2.0.0",
+  "requiresJavaScript": true,
+  "formAssociated": false,
+  "attributes": {},
+  "properties": {},
+  "methods": {
+    "textFx": { "description": "Apply a text effect to a target element" }
+  },
+  "events": {},
+  "slots": {},
+  "parts": [],
+  "cssProperties": ["--blora-fx-dur"],
+  "accessibilityPattern": "content",
+  "migrationFromV1": "effects.migration.md"
+}

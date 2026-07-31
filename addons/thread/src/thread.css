@@ -1,0 +1,427 @@
+/* =========================================================================
+   Blora Design 2.0 - Thread and Post add-on
+   Visual baseline: legacy/v1/blora.css lines 3310-3632
+   ========================================================================= */
+
+@layer blora.addons {
+  /* -- Comment (simpler than Post) -- */
+
+  .blora-comment {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--blora-space-3);
+  }
+
+  .blora-comment + .blora-comment {
+    margin-top: var(--blora-space-5);
+  }
+
+  .blora-comment__main {
+    min-width: 0;
+  }
+
+  .blora-comment__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.35em 0.75em;
+    margin-bottom: 0.25em;
+  }
+
+  .blora-comment__author {
+    font-weight: 600;
+    font-size: var(--blora-text-sm);
+    color: var(--blora-color-text-secondary);
+  }
+
+  .blora-comment__time {
+    font-size: var(--blora-text-xs);
+    color: var(--blora-color-text-subtle);
+    font-family: var(--blora-font-mono);
+  }
+
+  .blora-comment__body {
+    font-size: var(--blora-text-sm);
+    color: var(--blora-color-text-emphasis);
+    line-height: 1.55;
+  }
+
+  .blora-comment__actions {
+    display: flex;
+    gap: var(--blora-space-3);
+    margin-top: 0.45em;
+  }
+
+  .blora-comment__actions button {
+    border: 0;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+    font-size: var(--blora-text-xs);
+    color: var(--blora-color-text-subtle);
+  }
+
+  .blora-comment__actions button:hover {
+    color: var(--blora-color-action-primary-default);
+  }
+
+  .blora-comment__nested {
+    margin-top: var(--blora-space-4);
+    padding-inline-start: var(--blora-space-5);
+    border-inline-start: 2px solid var(--blora-color-border-subtle);
+    display: grid;
+    gap: var(--blora-space-4);
+  }
+
+  /* -- Thread / Post -- */
+
+  .blora-thread {
+    display: flex;
+    flex-direction: column;
+    gap: var(--blora-space-3);
+    max-width: 48rem;
+  }
+
+  .blora-post {
+    position: relative;
+    padding: var(--blora-space-4) var(--blora-space-5);
+    border: var(--blora-border-subtle);
+    border-radius: var(--blora-radius-lg);
+    background: var(--blora-color-surface-default);
+    box-shadow: var(--blora-shadow-1);
+  }
+
+  .blora-post + .blora-post {
+    margin-top: var(--blora-space-3);
+  }
+
+  .blora-post--reply {
+    background: color-mix(
+      in srgb,
+      var(--blora-color-surface-default) 88%,
+      var(--blora-color-surface-raised)
+    );
+    box-shadow: none;
+    border-color: var(--blora-color-border-subtle);
+  }
+
+  :root[data-blora-color-scheme="dark"] .blora-post--reply {
+    background: color-mix(
+      in srgb,
+      var(--blora-color-surface-default) 70%,
+      var(--blora-color-surface-raised)
+    );
+  }
+
+  .blora-post__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: var(--blora-space-3);
+    margin-bottom: var(--blora-space-4);
+  }
+
+  .blora-post__identity {
+    display: flex;
+    align-items: center;
+    gap: var(--blora-space-3);
+    min-width: 0;
+    flex: 1 1 12rem;
+  }
+
+  .blora-post__who {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15em;
+  }
+
+  .blora-post__author-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35em 0.55em;
+  }
+
+  .blora-post__author {
+    font-weight: 600;
+    font-size: var(--blora-text-sm);
+    color: var(--blora-color-text-primary);
+    text-decoration: none;
+  }
+
+  .blora-post__author:hover {
+    color: var(--blora-color-action-primary-default);
+  }
+
+  .blora-post__badge {
+    font-size: var(--blora-text-xs);
+    font-weight: 600;
+    padding: 0.1em 0.45em;
+    border-radius: var(--blora-radius-xs);
+    background: color-mix(
+      in srgb,
+      var(--blora-color-status-warning) 22%,
+      var(--blora-color-surface-default)
+    );
+    color: color-mix(
+      in srgb,
+      var(--blora-color-status-warning) 75%,
+      var(--blora-color-text-primary)
+    );
+    border: 1px solid color-mix(in srgb, var(--blora-color-status-warning) 35%, transparent);
+  }
+
+  .blora-post__reply-to {
+    font-size: var(--blora-text-xs);
+    color: var(--blora-color-text-muted);
+  }
+
+  .blora-post__reply-to a {
+    color: var(--blora-color-action-primary-default);
+    font-weight: 500;
+  }
+
+  .blora-post__sub {
+    font-size: var(--blora-text-xs);
+    color: var(--blora-color-text-subtle);
+  }
+
+  .blora-post__sub time,
+  .blora-post__loc {
+    font-family: var(--blora-font-mono);
+  }
+
+  .blora-post__tools {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.15em 0.1em;
+    margin-inline-start: auto;
+  }
+
+  .blora-post__tools button,
+  .blora-post__tools a {
+    border: 0;
+    background: none;
+    padding: 0.3em 0.55em;
+    border-radius: var(--blora-radius-xs);
+    font-size: var(--blora-text-xs);
+    color: var(--blora-color-text-subtle);
+    cursor: pointer;
+    text-decoration: none;
+    line-height: 1.3;
+    transition:
+      color var(--blora-duration-fast) var(--blora-easing-standard),
+      background var(--blora-duration-fast) var(--blora-easing-standard);
+  }
+
+  .blora-post__tools button:hover,
+  .blora-post__tools a:hover {
+    color: var(--blora-color-action-primary-default);
+    background: var(--blora-color-action-primary-tint);
+  }
+
+  .blora-post__tools .is-danger:hover {
+    color: var(--blora-color-status-danger);
+    background: color-mix(in srgb, var(--blora-color-status-danger) 12%, transparent);
+  }
+
+  .blora-post__more {
+    letter-spacing: 0.05em;
+    font-weight: 700;
+  }
+
+  .blora-post__title {
+    font-family: var(--blora-font-heading);
+    font-size: var(--blora-text-xl);
+    font-weight: 600;
+    color: var(--blora-color-text-primary);
+    line-height: var(--blora-leading-tight);
+    margin: 0 0 var(--blora-space-3);
+  }
+
+  /* -- Post quote -- */
+
+  .blora-post__quote {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.35em 0.65em;
+    margin: 0 0 var(--blora-space-3);
+    padding: 0.15em 0 0.15em 0.9em;
+    background: transparent;
+    font-size: var(--blora-text-sm);
+    color: var(--blora-color-text-muted);
+  }
+
+  .blora-post__quote::before {
+    content: "";
+    position: absolute;
+    inset-inline-start: 0;
+    top: 0.15em;
+    bottom: 0.15em;
+    width: 3px;
+    border-radius: var(--blora-radius-full);
+    background: var(--blora-color-action-primary-default);
+  }
+
+  .blora-post__quote-label {
+    font-weight: 500;
+    color: var(--blora-color-text-emphasis);
+  }
+
+  .blora-post__quote-text {
+    color: var(--blora-color-text-subtle);
+  }
+
+  /* -- Post body -- */
+
+  .blora-post__body {
+    font-size: var(--blora-text-sm);
+    color: var(--blora-color-text-emphasis);
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+  }
+
+  .blora-post__body p {
+    margin: 0 0 0.75em;
+  }
+
+  .blora-post__body p:last-child {
+    margin-bottom: 0;
+  }
+
+  .blora-post__body strong {
+    color: var(--blora-color-text-primary);
+    font-weight: 600;
+  }
+
+  /* -- Post reactions -- */
+
+  .blora-post__react {
+    margin-top: var(--blora-space-4);
+  }
+
+  .blora-post__react-btn {
+    display: inline-grid;
+    place-items: center;
+    width: 2.1rem;
+    height: 2.1rem;
+    border: 1px solid var(--blora-color-border-subtle);
+    border-radius: 50%;
+    background: var(--blora-color-surface-default);
+    color: var(--blora-color-text-muted);
+    cursor: pointer;
+    font-size: 1rem;
+    transition:
+      border-color var(--blora-duration-fast) var(--blora-easing-standard),
+      color var(--blora-duration-fast) var(--blora-easing-standard),
+      background var(--blora-duration-fast) var(--blora-easing-standard),
+      transform var(--blora-duration-fast) var(--blora-easing-standard);
+  }
+
+  .blora-post__react-btn:hover {
+    border-color: var(--blora-color-action-primary-default);
+    color: var(--blora-color-action-primary-default);
+    background: var(--blora-color-action-primary-tint);
+    transform: scale(1.06);
+  }
+
+  .blora-post__react-btn.is-active {
+    border-color: var(--blora-color-action-primary-default);
+    background: var(--blora-color-action-primary-tint);
+    color: var(--blora-color-action-primary-default);
+  }
+
+  /* -- Post replies (collapsible) -- */
+
+  .blora-post__replies {
+    margin-top: var(--blora-space-5);
+    padding-top: var(--blora-space-4);
+    border-top: 1px solid var(--blora-color-border-subtle);
+  }
+
+  .blora-post__replies-body {
+    display: grid;
+    gap: var(--blora-space-3);
+    overflow: hidden;
+    opacity: 1;
+    transform: translateY(0);
+    max-height: none;
+    transition:
+      max-height var(--blora-duration-base) var(--blora-easing-standard),
+      opacity var(--blora-duration-base) var(--blora-easing-standard),
+      transform var(--blora-duration-base) var(--blora-easing-standard),
+      margin var(--blora-duration-base) var(--blora-easing-standard);
+  }
+
+  .blora-post__replies.is-collapsed .blora-post__replies-body {
+    max-height: 0 !important;
+    opacity: 0;
+    transform: translateY(-0.35em);
+    margin-bottom: 0;
+    pointer-events: none;
+  }
+
+  .blora-post__collapse {
+    display: block;
+    width: 100%;
+    margin-top: var(--blora-space-3);
+    padding: 0.65em 1em;
+    border: 1px solid var(--blora-color-border-subtle);
+    border-radius: var(--blora-radius-md);
+    background: var(--blora-color-surface-default);
+    color: var(--blora-color-action-primary-default);
+    font-size: var(--blora-text-sm);
+    font-weight: 500;
+    cursor: pointer;
+    text-align: center;
+    transition:
+      background var(--blora-duration-fast) var(--blora-easing-standard),
+      color var(--blora-duration-fast) var(--blora-easing-standard),
+      border-color var(--blora-duration-fast) var(--blora-easing-standard);
+  }
+
+  .blora-post__replies.is-collapsed .blora-post__collapse {
+    margin-top: 0;
+  }
+
+  .blora-post__collapse:hover {
+    background: var(--blora-color-action-primary-tint);
+    border-color: color-mix(
+      in srgb,
+      var(--blora-color-action-primary-default) 35%,
+      var(--blora-color-border-subtle)
+    );
+  }
+
+  .blora-post--reply .blora-post__replies {
+    margin-top: var(--blora-space-4);
+    padding-top: var(--blora-space-3);
+  }
+
+  /* -- Reduced motion -- */
+
+  @media (prefers-reduced-motion: reduce) {
+    .blora-post__replies-body {
+      transition: none;
+    }
+  }
+
+  /* -- Responsive -- */
+
+  @media (max-width: 560px) {
+    .blora-post {
+      padding: var(--blora-space-3) var(--blora-space-4);
+    }
+
+    .blora-post__tools {
+      width: 100%;
+      justify-content: flex-start;
+      margin-inline-start: 0;
+    }
+  }
+}
