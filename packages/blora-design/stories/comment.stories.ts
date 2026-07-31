@@ -11,27 +11,28 @@ type Story = StoryObj;
 
 export const Default: Story = {
   render: () => html`
-    <div class="blora-comment" style="display: flex; gap: var(--blora-space-3); max-width: 480px;">
+    <div class="blora-comment" style="max-width: 480px;">
       <span
-        style="width: 2.5em; height: 2.5em; border-radius: 50%; background: var(--blora-color-action-primary-default); color: var(--blora-color-text-on-accent); display: grid; place-items: center; font-weight: 600; flex: none;"
+        class="blora-avatar blora-avatar--sm blora-avatar--primary"
+        style="width:2.5em;height:2.5em;border-radius:50%;background:var(--blora-color-action-primary-default);color:var(--blora-color-text-on-accent);display:grid;place-items:center;font-weight:600;flex:none;"
         >R</span
       >
-      <div style="flex: 1; min-width: 0;">
-        <div
-          style="display: flex; align-items: center; gap: var(--blora-space-2); margin-bottom: 4px;"
-        >
-          <span class="blora-text-sm" style="font-weight: 600;">Rhedar</span>
-          <span class="blora-text-xs blora-text-subtle">2 小时前</span>
+      <div class="blora-comment__main">
+        <div class="blora-comment__head">
+          <span class="blora-comment__author">Rhedar</span>
+          <span class="blora-comment__time">2 小时前</span>
         </div>
-        <div class="blora-text-sm" style="margin-bottom: var(--blora-space-2);">
+        <div class="blora-comment__body">
           这个组件库的设计非常统一，token 系统让主题切换变得很方便。
         </div>
-        <div style="display: flex; gap: var(--blora-space-4);">
-          <button class="blora-button" data-variant="ghost" data-size="sm" type="button">
+        <div class="blora-comment__actions">
+          <button type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17l-5-5 5-5"/><path d="M20 18v-2a4 4 0 0 0-4-4H4"/></svg>
             回复
           </button>
-          <button class="blora-button" data-variant="ghost" data-size="sm" type="button">
-            👍 12
+          <button type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H7a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L14 2a3.13 3.13 0 0 1 3 3.88Z"/></svg>
+            12
           </button>
         </div>
       </div>

@@ -47,16 +47,28 @@
 }
 
 .blora-comment__actions button {
-  border: 0;
-  background: none;
-  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  border: 1px solid var(--blora-color-border-subtle);
+  border-radius: var(--blora-radius-full);
+  background: transparent;
+  padding: 0.25em 0.8em;
   cursor: pointer;
   font-size: var(--blora-text-xs);
-  color: var(--blora-color-text-subtle);
+  color: var(--blora-color-text-secondary);
+  transition: all var(--blora-duration-fast) var(--blora-easing-standard);
+}
+
+.blora-comment__actions button svg {
+  width: 0.95em;
+  height: 0.95em;
 }
 
 .blora-comment__actions button:hover {
   color: var(--blora-color-action-primary-default);
+  border-color: var(--blora-color-action-primary-default);
+  background: var(--blora-color-action-primary-tint);
 }
 
 .blora-comment__nested {

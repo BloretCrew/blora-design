@@ -13,9 +13,13 @@ type Story = StoryObj;
 export const Default: Story = {
   render: () => html`
     <nav class="blora-breadcrumb">
-      <a class="blora-breadcrumb__item" href="#">首页</a>
-      <a class="blora-breadcrumb__item" href="#">产品</a>
-      <span class="blora-breadcrumb__item" aria-current="page">详情</span>
+      <a href="#">首页</a>
+      <span class="blora-breadcrumb__sep">/</span>
+      <a href="#">产品</a>
+      <span class="blora-breadcrumb__sep">/</span>
+      <a href="#">详情</a>
+      <span class="blora-breadcrumb__sep">/</span>
+      <span class="blora-breadcrumb__current">当前页</span>
     </nav>
   `,
 };

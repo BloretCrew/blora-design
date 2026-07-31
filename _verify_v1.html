@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Verify v1 baseline - checkbox</title>
+    <link rel="stylesheet" href="legacy/v1/blora.css" />
+    <style>
+      body { padding: 28px; font-size: 15px; }
+      h2 { font-size: 14px; margin: 22px 0 10px; font-weight: 600; }
+    </style>
+  </head>
+  <body>
+    <h2>Checkbox · v1 baseline (frozen)</h2>
+    <div style="display:flex; flex-direction:column; gap:12px;">
+      <label class="blora-checkbox"><input type="checkbox" checked /><span class="blora-checkbox__box"></span>同意条款（checked）</label>
+      <label class="blora-checkbox"><input type="checkbox" /><span class="blora-checkbox__box"></span>接收通知（unchecked）</label>
+      <label class="blora-checkbox blora-checkbox--indeterminate"><input type="checkbox" /><span class="blora-checkbox__box"></span>部分选中（indeterminate）</label>
+      <label class="blora-checkbox"><input type="checkbox" checked disabled /><span class="blora-checkbox__box"></span>禁用选中（disabled）</label>
+    </div>
+    <script>
+      document.querySelectorAll('.blora-checkbox--indeterminate input').forEach((el) => {
+        el.indeterminate = true;
+      });
+    </script>
+  </body>
+</html>

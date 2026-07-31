@@ -41,7 +41,6 @@ export const Default: Story = {
           <path d="M12 5v14M5 12h14" />
         </svg>
       </button>
-      <span class="blora-text-muted blora-text-sm">浮动按钮 · 主色圆形 · hover 放大</span>
     </div>
   `,
 };
