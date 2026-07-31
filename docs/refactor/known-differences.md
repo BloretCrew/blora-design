@@ -29,9 +29,17 @@ Phase 0 阶段不产生视觉差异，所有 2.0 实现尚未开始。差异将�
 
 - **组件**：checkbox
 - **1.x 表现**：对勾（border-based checkmark）在 `display: grid; place-items: center` 下视觉上略微偏下，因 -45deg 旋转后 checkmark 形状的重心偏向底部。
-- **2.0 表现**：在 `::after` 的 transform 中加入 `translateY(-0.08em)`（约 1px @ 14px 字号），使对勾视觉居中。
-- **改变原因**：bug 修复（视觉居中）
-- **审核状态**：pending
+- **2.0 表现**：`::after` transform 使用纯 `rotate(-45deg) scale(n)`（无 translateY 补偿），与 `.blora-transfer__check` 的标准完全一致；`data-variant` 的 transfer 行复选框是基准（issue 28 按 Angular 行标准统一）。
+- **改变原因**：bug 修复（视觉居中，统一各复选框表面）
+- **审核状态**：approved
+
+### Pagination - 上一页/下一页按钮放大 50%
+
+- **组件**：pagination
+- **1.x 表现**：`<` `>` 导航按钮为 2em 尺寸。
+- **2.0 表现**：`.blora-pagination__nav` 为 `min-width: 3em; height: 3em; font-size: var(--blora-text-lg)`，比常规页码项大 50%（issue 35 要求）。
+- **改变原因**：可用性（更大的触控目标）
+- **审核状态**：approved
 
 ### Tabs - Pills 底部裁切修复
 
