@@ -47,37 +47,37 @@ export { createTabsController, type TabsController } from "./components/tabs/ind
 export { createDropdownController, type DropdownController } from "./components/dropdown/index.js";
 
 // Interactive controllers (headless, story/demo wiring)
-export { createSliderController, type SliderController } from "./components/slider/slider.js";
-export { createRangeController, type RangeController } from "./components/range/range.js";
-export { createRateController, type RateController } from "./components/rate/rate.js";
+export { createSliderController, type SliderController } from "./components/slider/index.js";
+export { createRangeController, type RangeController } from "./components/range/index.js";
+export { createRateController, type RateController } from "./components/rate/index.js";
 export {
   createCarouselController,
   type CarouselController,
-} from "./components/carousel/carousel.js";
-export { createTreeController, type TreeController } from "./components/tree/tree.js";
+} from "./components/carousel/index.js";
+export { createTreeController, type TreeController } from "./components/tree/index.js";
 export {
   createAutocompleteController,
   type AutocompleteController,
-} from "./components/autocomplete/autocomplete.js";
+} from "./components/autocomplete/index.js";
 export {
   createMentionsController,
   type MentionsController,
-} from "./components/mentions/mentions.js";
-export { createOtpController, type OtpController } from "./components/otp/otp.js";
+} from "./components/mentions/index.js";
+export { createOtpController, type OtpController } from "./components/otp/index.js";
 export {
   createCascaderController,
   type CascaderController,
-} from "./components/cascader/cascader.js";
+} from "./components/cascader/index.js";
 export {
   createDatepickerController,
   createTimepickerController,
   type DatepickerController,
-} from "./components/datepicker/datepicker.js";
+} from "./components/datepicker/index.js";
 export {
   createSplitterController,
   type SplitterController,
-} from "./components/splitter/splitter.js";
-export { createTourController, type TourController } from "./components/tour/tour.js";
+} from "./components/splitter/index.js";
+export { createTourController, type TourController } from "./components/tour/index.js";
 export {
   createDockController,
   type DockController,
@@ -85,8 +85,8 @@ export {
   type MegamenuController,
   createSpeedDialController,
   type SpeedDialController,
-} from "./components/dock/dock.js";
-export { createSearchController, type SearchController } from "./components/search/search.js";
+} from "./components/dock/index.js";
+export { createSearchController, type SearchController } from "./components/search/index.js";
 export {
   createColorPickerController,
   type ColorPickerController,
@@ -98,4 +98,4 @@ export {
   type TransferController,
   createFieldController,
   type FieldController,
-} from "./components/copy/copy.js";
+} from "./components/copy/index.js";
