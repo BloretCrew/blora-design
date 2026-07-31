@@ -169,6 +169,7 @@ test("fixture 3: v1 table+list+avatar renders same as v2 after compat migration"
 
   await page.setContent(`
     <style>${css}</style>
+    <style>* { transition: none !important; }</style>
     <div class="blora-scope" style="display:flex; gap:2rem;">
       <div id="v1">
         <table class="blora-table blora-table--striped">
@@ -242,11 +243,6 @@ test("fixture 3: v1 table+list+avatar renders same as v2 after compat migration"
   });
 
   // Compare table striped backgrounds (RGB channels should match)
-  // Force style recalculation before reading computed styles
-  await page.evaluate(() => {
-    const table = document.querySelector("#v1 table");
-    if (table) void table.offsetHeight;
-  });
   const v1RowBg = await page
     .locator("#v1 .blora-table tbody tr")
     .first()
