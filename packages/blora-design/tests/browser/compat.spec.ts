@@ -245,7 +245,7 @@ test("fixture 3: v1 table+list+avatar renders same as v2 after compat migration"
   // Force style recalculation before reading computed styles
   await page.evaluate(() => {
     const table = document.querySelector("#v1 table");
-    if (table) table.offsetHeight;
+    if (table) void table.offsetHeight;
   });
   const v1RowBg = await page
     .locator("#v1 .blora-table tbody tr")
