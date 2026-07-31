@@ -57,9 +57,13 @@
   gap: var(--blora-space-2);
 }
 
-/* Buttons inside banner need light colors on the dark background */
+/* Buttons inside banner need light colors on the dark background.
+   Set color directly (not just the custom property) for reliability. */
 .blora-banner .blora-button[data-variant="outline"] {
+  color: var(--blora-color-banner-foreground);
+
   --blora-button-fg: var(--blora-color-banner-foreground);
+  --blora-button-bg: transparent;
   --blora-button-bd: color-mix(in srgb, var(--blora-color-banner-foreground) 35%, transparent);
 }
 
