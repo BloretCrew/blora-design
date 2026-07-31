@@ -57,7 +57,7 @@
   display: grid;
   place-items: center;
   position: relative;
-  z-index: 1;
+  z-index: var(--blora-z-base);
   transition: background var(--blora-duration-fast) var(--blora-easing-standard);
 }
 

@@ -35,6 +35,7 @@
   position: relative;
   height: 24px;
   margin-bottom: 1.5em;
+
   --blora-range-track-size: 6px;
   --blora-range-thumb-size: 18px;
 }

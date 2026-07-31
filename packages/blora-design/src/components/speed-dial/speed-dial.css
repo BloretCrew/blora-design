@@ -32,7 +32,7 @@
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 2;
+  z-index: var(--blora-z-dropdown);
 }
 
 .blora-speed-dial__close,
@@ -136,14 +136,17 @@
 .blora-speed-dial--flower[data-open] .blora-speed-dial__item:nth-child(1) {
   transform: translate(-130%, -50%);
 }
+
 .blora-speed-dial--flower[data-open] .blora-speed-dial__action:nth-child(2),
 .blora-speed-dial--flower[data-open] .blora-speed-dial__item:nth-child(2) {
   transform: translate(-50%, -220%);
 }
+
 .blora-speed-dial--flower[data-open] .blora-speed-dial__action:nth-child(3),
 .blora-speed-dial--flower[data-open] .blora-speed-dial__item:nth-child(3) {
   transform: translate(30%, -50%);
 }
+
 .blora-speed-dial--flower[data-open] .blora-speed-dial__action:nth-child(4),
 .blora-speed-dial--flower[data-open] .blora-speed-dial__item:nth-child(4) {
   transform: translate(-50%, 120%);
