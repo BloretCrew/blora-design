@@ -1,0 +1,32 @@
+{
+  "$schema": "../../schemas/component-contract.schema.json",
+  "name": "notification",
+  "status": "stable",
+  "kind": "css-only",
+  "since": "2.0.0",
+  "requiresJavaScript": false,
+  "formAssociated": false,
+  "attributes": {
+    "data-variant": {
+      "type": "\"info\" | \"success\" | \"warning\" | \"danger\"",
+      "default": "info"
+    }
+  },
+  "properties": {},
+  "methods": {},
+  "events": {},
+  "classes": {
+    "blora-notification": "Root card container.",
+    "blora-notification__icon": "Status icon, colored by variant.",
+    "blora-notification__title": "Notification heading.",
+    "blora-notification__desc": "Description text.",
+    "blora-notification__close": "Close button."
+  },
+  "slots": {
+    "default": "Content"
+  },
+  "parts": [],
+  "cssProperties": [],
+  "accessibilityPattern": "alertdialog",
+  "migrationFromV1": "notification.migration.md"
+}

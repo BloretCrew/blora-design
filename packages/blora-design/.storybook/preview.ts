@@ -43,6 +43,7 @@ import "../src/components/result/result.css";
 import "../src/components/avatar/avatar.css";
 import "../src/components/banner/banner.css";
 import "../src/components/message/message.css";
+import "../src/components/notification/notification.css";
 import "../src/components/sidebar-layout/sidebar-layout.css";
 
 const preview: Preview = {

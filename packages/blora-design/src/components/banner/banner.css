@@ -56,3 +56,14 @@
   display: flex;
   gap: var(--blora-space-2);
 }
+
+/* Buttons inside banner need light colors on the dark background */
+.blora-banner .blora-button[data-variant="outline"] {
+  --blora-button-fg: var(--blora-color-banner-foreground);
+  --blora-button-bd: color-mix(in srgb, var(--blora-color-banner-foreground) 35%, transparent);
+}
+
+.blora-banner .blora-button[data-variant="outline"]:hover {
+  --blora-button-bg: color-mix(in srgb, var(--blora-color-banner-foreground) 10%, transparent);
+  --blora-button-bd: color-mix(in srgb, var(--blora-color-banner-foreground) 55%, transparent);
+}

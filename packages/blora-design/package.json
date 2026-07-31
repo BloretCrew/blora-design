@@ -64,6 +64,7 @@
     "./components/avatar.css": "./dist/components/avatar/avatar.css",
     "./components/banner.css": "./dist/components/banner/banner.css",
     "./components/message.css": "./dist/components/message/message.css",
+    "./components/notification.css": "./dist/components/notification/notification.css",
     "./components/sidebar-layout.css": "./dist/components/sidebar-layout/sidebar-layout.css",
     "./compat/v1": {
       "types": "./dist/compat/v1/index.d.ts",
