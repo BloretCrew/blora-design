@@ -5,14 +5,29 @@
 
 .blora-descriptions {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--blora-color-border-subtle);
+  border-radius: var(--blora-radius-md);
+  overflow: hidden;
   font-size: var(--blora-text-sm);
 }
 
 .blora-descriptions th,
 .blora-descriptions td {
   padding: 0.7em 1em;
-  border: 1px solid var(--blora-color-border-subtle);
+  border-bottom: 1px solid var(--blora-color-border-subtle);
+  border-inline-end: 1px solid var(--blora-color-border-subtle);
+}
+
+.blora-descriptions tr:last-child th,
+.blora-descriptions tr:last-child td {
+  border-bottom: 0;
+}
+
+.blora-descriptions th:last-child,
+.blora-descriptions td:last-child {
+  border-inline-end: 0;
 }
 
 .blora-descriptions th {

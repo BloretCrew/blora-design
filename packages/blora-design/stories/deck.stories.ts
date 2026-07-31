@@ -1,28 +1,34 @@
 import type { Meta, StoryObj } from "@storybook/web-components";
 import { html } from "lit";
 
-const meta = { title: "Layout/Deck", component: ".blora-deck", tags: ["autodocs"] } satisfies Meta;
+const meta = {
+  title: "Layout/Deck",
+  component: ".blora-deck",
+  tags: ["autodocs"],
+} satisfies Meta;
 export default meta;
 type Story = StoryObj;
 
 export const Default: Story = {
   render: () => html`
-    <div class="blora-deck" style="position: relative; width: 320px; height: 200px;">
-      <div
-        class="blora-deck__card"
-        style="position: absolute; inset: 0; background: var(--blora-color-surface-raised); border: var(--blora-border-subtle); border-radius: var(--blora-radius-lg); box-shadow: var(--blora-shadow-2); transform: translateY(12px) scale(0.95); opacity: 0.5; z-index: 1;"
-      ></div>
-      <div
-        class="blora-deck__card"
-        style="position: absolute; inset: 0; background: var(--blora-color-surface-raised); border: var(--blora-border-subtle); border-radius: var(--blora-radius-lg); box-shadow: var(--blora-shadow-3); transform: translateY(6px) scale(0.98); opacity: 0.8; z-index: 2;"
-      ></div>
-      <div
-        class="blora-deck__card"
-        data-front
-        style="position: absolute; inset: 0; background: var(--blora-color-surface-default); border: var(--blora-border-subtle); border-radius: var(--blora-radius-lg); box-shadow: var(--blora-shadow-4); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--blora-space-2); z-index: 3;"
-      >
-        <div style="font-weight: 600; font-size: var(--blora-text-lg);">当前卡片</div>
-        <div class="blora-text-sm blora-text-muted">3 / 3</div>
+    <div style="display: flex; justify-content: center; padding: var(--blora-space-6);">
+      <div class="blora-deck" tabindex="0" aria-label="卡片叠层" style="width: 280px; height: 320px;">
+        <article class="blora-card" data-variant="flat" style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: var(--blora-space-2); padding: var(--blora-space-5);">
+          <strong>设计评审</strong>
+          <p class="blora-text-muted" style="margin: 0;">队列预览 · 第 1 张</p>
+        </article>
+        <article class="blora-card" data-variant="flat" style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: var(--blora-space-2); padding: var(--blora-space-5);">
+          <strong>接口联调</strong>
+          <p class="blora-text-muted" style="margin: 0;">待办卡片 · 第 2 张</p>
+        </article>
+        <article class="blora-card" style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: var(--blora-space-2); padding: var(--blora-space-5);">
+          <strong>当前卡片</strong>
+          <p class="blora-text-muted" style="margin: 0;">相册 / 队列预览 · 第 3 张</p>
+        </article>
+        <article class="blora-card" data-variant="flat" style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: var(--blora-space-2); padding: var(--blora-space-5);">
+          <strong>上线检查</strong>
+          <p class="blora-text-muted" style="margin: 0;">发布清单 · 第 4 张</p>
+        </article>
       </div>
     </div>
   `,

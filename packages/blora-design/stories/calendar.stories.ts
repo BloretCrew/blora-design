@@ -10,35 +10,28 @@ export default meta;
 type Story = StoryObj;
 
 const weekdays = ["日", "一", "二", "三", "四", "五", "六"];
+// July 2026: starts on Wednesday (index 3)
 const days = [
-  [29, 30, 1, 2, 3, 4, 5],
-  [6, 7, 8, 9, 10, 11, 12],
-  [13, 14, 15, 16, 17, 18, 19],
-  [20, 21, 22, 23, 24, 25, 26],
-  [27, 28, 29, 30, 31, 1, 2],
+  { d: 29, other: true }, { d: 30, other: true },
+  ...Array.from({ length: 31 }, (_, i) => ({ d: i + 1, other: false })),
+  { d: 1, other: true }, { d: 2, other: true },
 ];
 
 export const Default: Story = {
   render: () => html`
-    <div class="blora-calendar" style="max-width: 320px;">
-      <div class="blora-calendar__title">2026 年 7 月</div>
+    <div class="blora-calendar" style="max-width: 480px;">
+      <div class="blora-calendar__header">
+        <button class="blora-calendar__nav" type="button" aria-label="上个月">‹</button>
+        <span class="blora-calendar__title">2026年7月</span>
+        <button class="blora-calendar__nav" type="button" aria-label="下个月">›</button>
+      </div>
+      <div class="blora-calendar__weekdays">
+        ${weekdays.map((w) => html`<span class="blora-calendar__weekday">${w}</span>`)}
+      </div>
       <div class="blora-calendar__grid">
-        ${weekdays.map((d) => html`<div class="blora-calendar__dow">${d}</div>`)}
-        ${days.map((week) =>
-          week.map((d, i) => {
-            const isOther = (d > 15 && i < 3) || (d < 10 && i > 4);
-            const isToday = d === 31 && !isOther;
-            const isSelected = d === 15 && !isOther;
-            return html`<div
-              class="blora-calendar__cell"
-              data-other=${isOther ? "" : undefined}
-              data-today=${isToday ? "" : undefined}
-              data-selected=${isSelected ? "" : undefined}
-            >
-              ${d}
-            </div>`;
-          }),
-        )}
+        ${days.map((day) => html`
+          <span class="blora-calendar__day${day.other ? " blora-calendar__day--other" : ""}${day.d === 31 && !day.other ? " blora-calendar__day--today" : ""}${day.d === 15 && !day.other ? " blora-calendar__day--selected" : ""}">${day.d}</span>
+        `)}
       </div>
     </div>
   `,

@@ -1,12 +1,9 @@
-/* Blora Design 2.0 - otp component (beta, migrated from v1) */
+/* Blora Design 2.0 - otp component */
 
 .blora-otp {
   display: inline-flex;
-  gap: var(--blora-space-3);
+  gap: var(--blora-space-2);
   max-width: 100%;
-  overflow-x: auto;
-  overscroll-behavior-inline: contain;
-  scrollbar-width: thin;
 }
 
 .blora-otp__input {
@@ -15,36 +12,20 @@
   text-align: center;
   font-size: var(--blora-text-xl);
   font-family: var(--blora-font-mono);
-  color: var(--blora-color-text-primary);
+  color: var(--blora-color-text-emphasis);
   background: var(--blora-color-surface-default);
   border: 1px solid var(--blora-color-border-subtle);
   border-radius: var(--blora-radius-md);
-  transition: all var(--blora-duration-fast) var(--blora-easing-standard);
+  outline: none;
+  transition: border-color var(--blora-duration-fast) var(--blora-easing-standard),
+              box-shadow var(--blora-duration-fast) var(--blora-easing-standard);
 }
 
 .blora-otp__input:focus {
-  outline: none;
   border-color: var(--blora-color-action-primary-default);
-  box-shadow: var(
-    0 0 0 2px color-mix(in srgb, var(--blora-color-action-primary-default) 20%, transparent)
-  );
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--blora-color-action-primary-default) 20%, transparent);
 }
 
-.blora-otp {
-  display: flex;
-  width: 100%;
-  gap: var(--blora-space-1);
-  overflow: visible;
-  overscroll-behavior-inline: auto;
-  scrollbar-width: auto;
-}
-
-.blora-otp__input {
-  flex: 1 1 0;
-  width: 0;
-  min-width: 0;
-  max-width: 2.5em;
-  height: 2.75em;
-  padding-inline: 0;
-  font-size: var(--blora-text-lg);
+.blora-otp__input::placeholder {
+  color: var(--blora-color-text-subtle);
 }

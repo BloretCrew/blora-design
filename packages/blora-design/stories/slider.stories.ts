@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/web-components";
 import { html } from "lit";
+import { ref } from "lit/directives/ref.js";
+import { createSliderController } from "../src/components/slider";
 
 const meta = {
   title: "Forms/Slider",
@@ -9,17 +11,17 @@ const meta = {
 export default meta;
 type Story = StoryObj;
 
+const init = (el: Element | undefined): void => {
+  if (!(el instanceof HTMLElement)) return;
+  (el as any).__ctrl?.destroy();
+  (el as any).__ctrl = createSliderController(el);
+};
+
 export const Default: Story = {
   render: () => html`
-    <div class="blora-slider">
-      <span class="blora-text-sm blora-text-muted">0</span>
-      <div class="blora-slider__track">
-        <div class="blora-slider__fill" style="width: 60%;"></div>
-        <div class="blora-slider__thumb" style="left: 60%;"></div>
-      </div>
-      <span class="blora-text-sm blora-text-primary" style="min-width: 3ch; text-align: end;"
-        >60</span
-      >
+    <div class="blora-slider" ${ref(init)}>
+      <input class="blora-slider__input" type="range" min="0" max="100" value="42" />
+      <span class="blora-slider__value">42</span>
     </div>
   `,
 };

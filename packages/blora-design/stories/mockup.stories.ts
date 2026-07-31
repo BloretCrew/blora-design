@@ -9,46 +9,69 @@ const meta = {
 export default meta;
 type Story = StoryObj;
 
-export const Browser: Story = {
+export const Default: Story = {
   render: () => html`
-    <div class="blora-mockup blora-mockup--browser" style="max-width: 480px;">
-      <div
-        class="blora-mockup__bar"
-        style="display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: var(--blora-color-surface-sunken); border-radius: var(--blora-radius-lg) var(--blora-radius-lg) 0 0;"
-      >
-        <span style="width: 10px; height: 10px; border-radius: 50%; background: #ff5f57;"></span>
-        <span style="width: 10px; height: 10px; border-radius: 50%; background: #febc2e;"></span>
-        <span style="width: 10px; height: 10px; border-radius: 50%; background: #28c840;"></span>
-        <div
-          style="flex: 1; margin-inline-start: 8px; padding: 2px 8px; background: var(--blora-color-surface-default); border-radius: var(--blora-radius-sm); font-size: var(--blora-text-xs); color: var(--blora-color-text-subtle);"
-        >
-          https://bloret.design
+    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--blora-space-5);">
+      <!-- Browser -->
+      <div class="blora-mockup blora-mockup--browser">
+        <div class="blora-mockup__toolbar">
+          <span class="blora-mockup__dots" aria-hidden="true"><span></span></span>
+          <div class="blora-mockup__address">https://blora.design/components</div>
+        </div>
+        <div class="blora-mockup__body blora-mockup__body--center">
+          <div>
+            <strong>Blora Design</strong>
+            <p class="blora-text-muted" style="margin: 0.35em 0 0;">令牌驱动的 Web UI 框架</p>
+          </div>
         </div>
       </div>
-      <div
-        class="blora-mockup__display"
-        style="padding: var(--blora-space-5); background: var(--blora-color-surface-default); border: var(--blora-border-subtle); border-top: none; border-radius: 0 0 var(--blora-radius-lg) var(--blora-radius-lg); min-height: 120px;"
-      >
-        <p class="blora-text-sm blora-text-muted">浏览器窗口内容区域</p>
-      </div>
-    </div>
-  `,
-};
 
-export const Phone: Story = {
-  render: () => html`
-    <div
-      class="blora-mockup blora-mockup--phone"
-      style="width: 200px; padding: 12px; background: var(--blora-color-surface-sunken); border-radius: 28px; box-shadow: var(--blora-shadow-4);"
-    >
-      <div
-        style="width: 60px; height: 6px; background: var(--blora-color-text-primary); border-radius: 3px; margin: 0 auto 12px; opacity: 0.3;"
-      ></div>
-      <div
-        class="blora-mockup__display"
-        style="background: var(--blora-color-surface-default); border-radius: 16px; min-height: 320px; padding: var(--blora-space-3);"
-      >
-        <p class="blora-text-sm blora-text-muted">手机屏幕内容</p>
+      <!-- Code -->
+      <div class="blora-mockup blora-mockup--code" role="region" aria-label="终端输出示例">
+        <pre class="blora-mockup__line" data-prefix="$"><code>npm install @bloret-crew/blora-design</code></pre>
+        <pre class="blora-mockup__line blora-mockup__line--muted" data-prefix=">"><code>installing packages…</code></pre>
+        <pre class="blora-mockup__line blora-mockup__line--success" data-prefix="✓"><code>added 12 packages in 1.2s</code></pre>
+        <pre class="blora-mockup__line" data-prefix="$"><code>npx blora init</code></pre>
+        <pre class="blora-mockup__line blora-mockup__line--info" data-prefix="✓"><code>project ready</code></pre>
+      </div>
+
+      <!-- Window -->
+      <div class="blora-mockup blora-mockup--window">
+        <div class="blora-mockup__toolbar">
+          <span class="blora-mockup__dots" aria-hidden="true"><span></span></span>
+          <span class="blora-mockup__title">Preferences</span>
+        </div>
+        <div class="blora-mockup__body">
+          <div style="display: grid; gap: var(--blora-space-3); font-size: var(--blora-text-sm);">
+            <label style="display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+              <span>深色模式</span><span class="blora-text-muted">跟随系统</span>
+            </label>
+            <label style="display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+              <span>主色</span><span class="blora-text-muted">Coral</span>
+            </label>
+            <label style="display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+              <span>动效</span><span class="blora-text-muted">标准</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phone -->
+      <div class="blora-mockup blora-mockup--phone" aria-label="手机预览">
+        <div class="blora-mockup__camera" aria-hidden="true"></div>
+        <div class="blora-mockup__display">
+          <div class="blora-mockup__display-body" style="display: flex; flex-direction: column; gap: var(--blora-space-3);">
+            <div>
+              <div class="blora-text-xs blora-text-muted">Good morning</div>
+              <div style="font-size: var(--blora-text-lg); font-weight: 600;">Blora</div>
+            </div>
+            <div style="padding: var(--blora-space-3); border-radius: var(--blora-radius-sm); background: var(--blora-color-surface-raised); border: 1px solid var(--blora-color-border-subtle);">
+              <div style="font-weight: 600; font-size: var(--blora-text-sm);">今日任务</div>
+              <div class="blora-text-muted" style="font-size: var(--blora-text-xs);">3 项待处理</div>
+            </div>
+            <button class="blora-button" data-variant="primary" data-size="sm" type="button" style="width: 100%; margin-top: auto;">继续</button>
+          </div>
+        </div>
       </div>
     </div>
   `,

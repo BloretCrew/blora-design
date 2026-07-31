@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/web-components";
 import { html } from "lit";
+import { ref } from "lit/directives/ref.js";
+import { createSplitterController } from "../src/components/splitter";
 
 const meta = {
   title: "Layout/Splitter",
@@ -9,32 +11,17 @@ const meta = {
 export default meta;
 type Story = StoryObj;
 
+const init = (el: Element | undefined): void => {
+  if (!(el instanceof HTMLElement)) return;
+  (el as any).__ctrl?.destroy();
+  (el as any).__ctrl = createSplitterController(el);
+};
+
 export const Default: Story = {
   render: () => html`
-    <div
-      class="blora-splitter"
-      style="display: flex; height: 200px; border: var(--blora-border-subtle); border-radius: var(--blora-radius-md); overflow: hidden;"
-    >
-      <div
-        class="blora-splitter__panel"
-        style="flex: 1; padding: var(--blora-space-4); overflow: auto;"
-      >
-        <p class="blora-text-sm blora-text-muted">左侧面板内容</p>
-      </div>
-      <div
-        class="blora-splitter__bar"
-        style="width: 6px; background: var(--blora-color-surface-sunken); cursor: col-resize; display: flex; align-items: center; justify-content: center;"
-      >
-        <div
-          style="width: 2px; height: 24px; background: var(--blora-color-text-subtle); border-radius: 1px;"
-        ></div>
-      </div>
-      <div
-        class="blora-splitter__panel"
-        style="flex: 1; padding: var(--blora-space-4); overflow: auto;"
-      >
-        <p class="blora-text-sm blora-text-muted">右侧面板内容</p>
-      </div>
+    <div class="blora-splitter" data-min="100" style="min-height:10rem;" ${ref(init)}>
+      <div class="blora-splitter__pane" style="background: var(--blora-color-surface-raised); display: grid; place-items: center; padding: var(--blora-space-4);">左栏 · 拖拽中间条</div>
+      <div class="blora-splitter__pane" style="display: grid; place-items: center; padding: var(--blora-space-4);">右栏 · 自适应</div>
     </div>
   `,
 };

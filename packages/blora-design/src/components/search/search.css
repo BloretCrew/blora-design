@@ -43,7 +43,7 @@ button.blora-search__icon:hover {
 }
 
 .blora-search__icon:hover {
-  background: var(color-mix(in srgb, var(--blora-color-action-primary-default) 8%, transparent));
+  background: color-mix(in srgb, var(--blora-color-action-primary-default) 8%, transparent);
 }
 
 .blora-search__icon:active {
@@ -98,18 +98,4 @@ button.blora-search__icon:hover {
   color: var(--blora-color-action-primary-default);
   outline: 2px solid var(--blora-color-action-primary-default);
   outline-offset: 1px;
-}
-
-.blora-search .blora-input {
-  padding-inline: 2.4em;
-}
-
-.blora-search__icon {
-  left: auto;
-  right: 0.6em;
-}
-
-.blora-search__clear {
-  right: auto;
-  left: 0.6em;
 }

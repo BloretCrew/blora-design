@@ -21,7 +21,6 @@
 }
 
 .blora-step:last-child {
-  flex: 0;
   padding-inline-end: 0;
 }
 
@@ -95,12 +94,14 @@
   font-size: var(--blora-text-sm);
   font-weight: 500;
   color: var(--blora-color-text-emphasis);
+  white-space: nowrap;
   transition: color var(--blora-duration-fast) var(--blora-easing-standard);
 }
 
 .blora-step__desc {
   font-size: var(--blora-text-xs);
   color: var(--blora-color-text-subtle);
+  white-space: nowrap;
 }
 
 .blora-step[data-state="active"] .blora-step__title {

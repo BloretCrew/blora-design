@@ -57,7 +57,8 @@
   display: none;
 }
 
-.blora-autocomplete[data-open] .blora-autocomplete__menu {
+.blora-autocomplete[data-open] .blora-autocomplete__menu,
+.blora-autocomplete__menu[data-open] {
   display: block;
 }
 

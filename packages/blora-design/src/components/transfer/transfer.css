@@ -1,11 +1,10 @@
-/* Blora Design 2.0 - transfer component (beta, migrated from v1) */
+/* Blora Design 2.0 - transfer component */
 
 .blora-transfer {
   display: flex;
   gap: var(--blora-space-3);
   align-items: center;
   min-width: 0;
-  container-type: inline-size;
 }
 
 .blora-transfer__panel {
@@ -24,12 +23,16 @@
   border-bottom: 1px solid var(--blora-color-border-subtle);
   font-size: var(--blora-text-sm);
   font-weight: 500;
+  color: var(--blora-color-text-emphasis);
 }
 
 .blora-transfer__list {
   flex: 1;
   overflow-y: auto;
   padding: var(--blora-space-2);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .blora-transfer__row {
@@ -89,57 +92,40 @@
 }
 
 .blora-transfer__row input:focus-visible + .blora-transfer__check {
-  box-shadow: var(
-    0 0 0 3px color-mix(in srgb, var(--blora-color-action-primary-default) 30%, transparent)
-  );
-}
-
-.blora-transfer__row input:disabled + .blora-transfer__check {
-  opacity: 0.4;
+  box-shadow: var(--blora-focus-ring-strong);
 }
 
 .blora-transfer__actions {
   display: flex;
   flex-direction: column;
   gap: var(--blora-space-2);
+  flex: none;
 }
 
-.blora-transfer {
-  flex-direction: column;
-  align-items: stretch;
+.blora-transfer__actions .blora-button {
+  font-size: var(--blora-text-lg);
+  line-height: 1;
 }
 
-.blora-transfer__panel {
-  width: 100%;
-  min-height: 10rem;
-  flex-basis: auto;
-}
+/* Responsive: stack vertically on narrow containers */
+@container (max-width: 40rem) {
+  .blora-transfer {
+    flex-direction: column;
+    align-items: stretch;
+  }
 
-.blora-transfer__actions {
-  flex-direction: row;
-  justify-content: center;
-}
+  .blora-transfer__panel {
+    width: 100%;
+    min-height: 8rem;
+    flex-basis: auto;
+  }
 
-.blora-transfer__actions .blora-btn {
-  rotate: 90deg;
-}
+  .blora-transfer__actions {
+    flex-direction: row;
+    justify-content: center;
+  }
 
-.blora-transfer {
-  flex-direction: column;
-  align-items: stretch;
-}
-
-.blora-transfer__panel {
-  width: 100%;
-  min-height: 10rem;
-  flex-basis: auto;
-}
-
-.blora-transfer__actions {
-  flex-direction: row;
-  justify-content: center;
-}
-
-.blora-transfer__actions .blora-btn {
-  rotate: 90deg;
+  .blora-transfer__actions .blora-button {
+    rotate: 90deg;
+  }
 }

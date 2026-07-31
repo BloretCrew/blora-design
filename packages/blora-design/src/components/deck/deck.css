@@ -33,6 +33,29 @@
   will-change: transform, opacity;
 }
 
+/* Show last 3 cards stacked behind the front card */
+.blora-deck > *:nth-last-child(1) {
+  --blora-deck-y: 0;
+  --blora-deck-scale: 1;
+  --blora-deck-opacity: 1;
+  z-index: 3;
+  pointer-events: auto;
+}
+
+.blora-deck > *:nth-last-child(2) {
+  --blora-deck-y: 0.6rem;
+  --blora-deck-scale: 0.95;
+  --blora-deck-opacity: 0.6;
+  z-index: 2;
+}
+
+.blora-deck > *:nth-last-child(3) {
+  --blora-deck-y: 1.2rem;
+  --blora-deck-scale: 0.9;
+  --blora-deck-opacity: 0.3;
+  z-index: 1;
+}
+
 .blora-deck > *[data-front] {
   pointer-events: auto;
   cursor: grab;

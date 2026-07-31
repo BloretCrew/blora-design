@@ -35,6 +35,8 @@
   position: relative;
   height: 24px;
   margin-bottom: 1.5em;
+  --blora-range-track-size: 6px;
+  --blora-range-thumb-size: 18px;
 }
 
 .blora-range__track {
@@ -73,4 +75,15 @@
 .blora-range__thumb:active {
   cursor: grabbing;
   transform: translate(-50%, -50%) scale(1.15);
+}
+
+.blora-range__value {
+  position: absolute;
+  bottom: -1.5em;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--blora-font-mono);
+  font-size: var(--blora-text-xs);
+  color: var(--blora-color-text-subtle);
+  white-space: nowrap;
 }

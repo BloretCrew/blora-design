@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/web-components";
 import { html } from "lit";
+import { ref } from "lit/directives/ref.js";
+import { createMegamenuController } from "../src/components/dock";
 
 const meta = {
   title: "Navigation/Megamenu",
@@ -9,36 +11,32 @@ const meta = {
 export default meta;
 type Story = StoryObj;
 
+const init = (el: Element | undefined): void => {
+  if (!(el instanceof HTMLElement)) return;
+  (el as any).__ctrl?.destroy();
+  (el as any).__ctrl = createMegamenuController(el);
+};
+
 export const Default: Story = {
   render: () => html`
-    <div class="blora-megamenu" style="position: relative; display: inline-block;">
-      <button class="blora-button" data-variant="outline" type="button">产品分类 ▾</button>
-      <div
-        class="blora-megamenu__panel"
-        data-open
-        style="position: absolute; top: calc(100% + 6px); inset-inline-start: 0; background: var(--blora-color-surface-default); border: var(--blora-border-subtle); border-radius: var(--blora-radius-lg); box-shadow: var(--blora-shadow-4); padding: var(--blora-space-5); width: 480px; z-index: var(--blora-z-dropdown);"
-      >
-        <div
-          class="blora-megamenu__grid"
-          style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--blora-space-5);"
-        >
+    <div class="blora-megamenu" ${ref(init)}>
+      <button class="blora-button blora-megamenu__trigger" data-variant="outline" type="button">浏览产品</button>
+      <div class="blora-megamenu__panel">
+        <div class="blora-megamenu__grid">
           <div>
-            <div class="blora-text-caps" style="margin-bottom: var(--blora-space-2);">基础组件</div>
-            <a class="blora-navbar__link" href="#" style="display: block;">按钮</a>
-            <a class="blora-navbar__link" href="#" style="display: block;">输入框</a>
-            <a class="blora-navbar__link" href="#" style="display: block;">选择器</a>
+            <div class="blora-megamenu__title">工作</div>
+            <a class="blora-megamenu__link" href="#buttons">项目管理</a>
+            <a class="blora-megamenu__link" href="#buttons">任务中心</a>
           </div>
           <div>
-            <div class="blora-text-caps" style="margin-bottom: var(--blora-space-2);">导航组件</div>
-            <a class="blora-navbar__link" href="#" style="display: block;">标签页</a>
-            <a class="blora-navbar__link" href="#" style="display: block;">面包屑</a>
-            <a class="blora-navbar__link" href="#" style="display: block;">分页</a>
+            <div class="blora-megamenu__title">数据</div>
+            <a class="blora-megamenu__link" href="#data">分析面板</a>
+            <a class="blora-megamenu__link" href="#data">导出记录</a>
           </div>
           <div>
-            <div class="blora-text-caps" style="margin-bottom: var(--blora-space-2);">反馈组件</div>
-            <a class="blora-navbar__link" href="#" style="display: block;">警告</a>
-            <a class="blora-navbar__link" href="#" style="display: block;">通知</a>
-            <a class="blora-navbar__link" href="#" style="display: block;">对话框</a>
+            <div class="blora-megamenu__title">支持</div>
+            <a class="blora-megamenu__link" href="#feedback">帮助中心</a>
+            <a class="blora-megamenu__link" href="#feedback">服务状态</a>
           </div>
         </div>
       </div>

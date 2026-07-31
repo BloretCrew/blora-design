@@ -14,7 +14,7 @@
   font-size: 1.25em;
 }
 
-.blora-rate__star[data-on] {
+.blora-rate__star[data-active] {
   color: var(--blora-color-action-primary-default);
 }
 

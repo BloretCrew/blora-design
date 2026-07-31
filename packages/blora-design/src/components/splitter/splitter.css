@@ -48,6 +48,41 @@
   );
 }
 
+/* Handle (inserted by controller) */
+.blora-splitter__handle {
+  flex: none;
+  width: 6px;
+  cursor: col-resize;
+  background: var(--blora-color-surface-sunken);
+  display: grid;
+  place-items: center;
+  position: relative;
+  z-index: 1;
+  transition: background var(--blora-duration-fast) var(--blora-easing-standard);
+}
+
+.blora-splitter__handle:hover,
+.blora-splitter__handle[data-dragging] {
+  background: color-mix(
+    in srgb,
+    var(--blora-color-action-primary-default) 35%,
+    var(--blora-color-surface-sunken)
+  );
+}
+
+.blora-splitter__grip {
+  width: 3px;
+  height: 24px;
+  border-radius: var(--blora-radius-full);
+  background: var(--blora-color-text-subtle);
+  opacity: 0.5;
+  transition: opacity var(--blora-duration-fast) var(--blora-easing-standard);
+}
+
+.blora-splitter__handle:hover .blora-splitter__grip {
+  opacity: 1;
+}
+
 .blora-splitter__bar::after {
   content: "";
   position: absolute;

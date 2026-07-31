@@ -136,6 +136,19 @@
   border-inline-start: none;
 }
 
+/* Char counter (created by createFieldController) */
+.blora-field__counter {
+  font-size: var(--blora-text-xs);
+  color: var(--blora-color-text-subtle);
+  font-family: var(--blora-font-mono);
+  transition: color var(--blora-duration-fast) var(--blora-easing-standard);
+}
+
+.blora-field__counter[data-over-limit] {
+  color: var(--blora-color-status-error);
+  font-weight: 600;
+}
+
 /* Search */
 .blora-search {
   position: relative;

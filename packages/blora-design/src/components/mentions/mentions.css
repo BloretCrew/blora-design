@@ -36,7 +36,8 @@
   display: none;
 }
 
-.blora-mentions[data-open] .blora-mentions__menu {
+.blora-mentions[data-open] .blora-mentions__menu,
+.blora-mentions__menu[data-open] {
   display: block;
 }
 
@@ -52,6 +53,6 @@
 
 .blora-mentions__option:hover,
 .blora-mentions__option[data-active] {
-  background: var(color-mix(in srgb, var(--blora-color-action-primary-default) 8%, transparent));
+  background: color-mix(in srgb, var(--blora-color-action-primary-default) 8%, transparent);
   color: var(--blora-color-action-primary-default);
 }

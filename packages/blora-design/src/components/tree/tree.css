@@ -19,7 +19,7 @@
 }
 
 .blora-tree__node[data-selected] {
-  background: var(color-mix(in srgb, var(--blora-color-action-primary-default) 8%, transparent));
+  background: color-mix(in srgb, var(--blora-color-action-primary-default) 8%, transparent);
   color: var(--blora-color-action-primary-default);
 }
 
@@ -127,7 +127,7 @@
 }
 
 .blora-treeselect__node[data-selected] {
-  background: var(color-mix(in srgb, var(--blora-color-action-primary-default) 8%, transparent));
+  background: color-mix(in srgb, var(--blora-color-action-primary-default) 8%, transparent);
   color: var(--blora-color-action-primary-default);
   font-weight: 500;
 }

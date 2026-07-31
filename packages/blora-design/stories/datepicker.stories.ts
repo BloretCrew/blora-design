@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/web-components";
 import { html } from "lit";
+import { ref } from "lit/directives/ref.js";
+import { createDatepickerController } from "../src/components/datepicker";
 
 const meta = {
   title: "Forms/Date Picker",
@@ -9,31 +11,22 @@ const meta = {
 export default meta;
 type Story = StoryObj;
 
+const init = (el: Element | undefined): void => {
+  if (!(el instanceof HTMLElement)) return;
+  (el as any).__ctrl?.destroy();
+  (el as any).__ctrl = createDatepickerController(el);
+};
+
 export const Default: Story = {
   render: () => html`
-    <div class="blora-datepicker">
-      <input
-        class="blora-input"
-        type="text"
-        value="2026-07-31"
-        style="padding-inline-end: 2.4em; cursor: text;"
-      />
-      <span
-        class="blora-datepicker__icon"
-        style="position: absolute; inset-inline-end: 0.8em; top: 50%; transform: translateY(-50%); color: var(--blora-color-text-subtle);"
-      >
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <rect x="3" y="4" width="18" height="18" rx="2" />
-          <path d="M16 2v4M8 2v4M3 10h18" />
-        </svg>
-      </span>
+    <div style="max-width: 20rem;">
+      <label class="blora-label" style="margin-bottom: var(--blora-space-2);">日期选择 · Date Picker</label>
+      <div class="blora-datepicker" ${ref(init)}>
+        <input class="blora-input" type="date" min="1900-01-01" max="2099-12-31" placeholder="YYYY-MM-DD" />
+        <button class="blora-datepicker__btn" type="button" aria-label="选择日期" tabindex="-1">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        </button>
+      </div>
     </div>
   `,
 };

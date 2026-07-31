@@ -31,12 +31,82 @@
   line-height: 1.5;
 }
 
-.blora-tour-pop__foot {
+/* Tour overlay and tooltip (created by createTourController) */
+.blora-tour__overlay {
+  position: fixed;
+  z-index: var(--blora-z-popover);
+  pointer-events: none;
+}
+
+.blora-tour__tooltip {
+  position: fixed;
+  z-index: var(--blora-z-popover);
+  display: none;
+  width: min(20rem, calc(100vw - 2 * var(--blora-space-4)));
+  padding: var(--blora-space-4);
+  border-radius: var(--blora-radius-lg);
+  background: var(--blora-color-surface-default);
+  border: var(--blora-border-subtle);
+  box-shadow: var(--blora-shadow-4);
+}
+
+.blora-tour__tooltip[data-open] {
+  display: block;
+}
+
+.blora-tour__title {
+  font-weight: 600;
+  font-size: var(--blora-text-sm);
+  margin-bottom: 0.35em;
+}
+
+.blora-tour__desc {
+  font-size: var(--blora-text-sm);
+  color: var(--blora-color-text-muted);
+  line-height: 1.5;
+}
+
+.blora-tour__footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--blora-space-2);
   margin-top: var(--blora-space-4);
+}
+
+.blora-tour__counter {
+  font-size: var(--blora-text-xs);
+  color: var(--blora-color-text-subtle);
+}
+
+.blora-tour__buttons {
+  display: flex;
+  gap: var(--blora-space-2);
+}
+
+.blora-tour__buttons button {
+  padding: 0.3em 0.8em;
+  border-radius: var(--blora-radius-sm);
+  font-size: var(--blora-text-xs);
+  cursor: pointer;
+  border: 1px solid var(--blora-color-border-subtle);
+  background: transparent;
+  color: var(--blora-color-text-secondary);
+  transition: all var(--blora-duration-fast) var(--blora-easing-standard);
+}
+
+.blora-tour__buttons button:hover {
+  background: var(--blora-color-surface-raised);
+}
+
+.blora-tour__buttons .blora-tour__next {
+  background: var(--blora-color-action-primary-default);
+  border-color: var(--blora-color-action-primary-default);
+  color: var(--blora-color-text-on-accent);
+}
+
+.blora-tour__buttons .blora-tour__next:hover {
+  background: var(--blora-color-action-primary-hover);
 }
 
 .blora-tour-pop__steps {
