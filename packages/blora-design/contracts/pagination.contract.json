@@ -1,14 +1,29 @@
 {
+  "$schema": "../../schemas/component-contract.schema.json",
   "name": "pagination",
   "status": "stable",
   "kind": "css-only",
   "since": "2.0.0",
   "requiresJavaScript": false,
   "formAssociated": false,
-  "attributes": {},
+  "attributes": {
+    "aria-current": {
+      "type": "\"page\"",
+      "description": "Set on the active page button."
+    },
+    "aria-label": {
+      "type": "string",
+      "description": "Required on prev/next nav buttons (e.g. '上一页', '下一页')."
+    }
+  },
   "properties": {},
   "methods": {},
   "events": {},
+  "classes": {
+    "blora-pagination__item": "Page number or nav button.",
+    "blora-pagination__nav": "Prev/next nav button with larger touch target.",
+    "blora-pagination__ellipsis": "Ellipsis separator."
+  },
   "slots": {
     "default": "Content"
   },

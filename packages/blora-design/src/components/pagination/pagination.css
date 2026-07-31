@@ -45,6 +45,13 @@
   pointer-events: none;
 }
 
+/* Prev/next nav buttons: larger touch target */
+.blora-pagination__nav {
+  min-width: 2.5em;
+  height: 2.5em;
+  font-size: var(--blora-text-base);
+}
+
 .blora-pagination__ellipsis {
   color: var(--blora-color-text-subtle);
   padding: 0 var(--blora-space-1);
