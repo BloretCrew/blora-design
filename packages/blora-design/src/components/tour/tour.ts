@@ -55,7 +55,7 @@ export function createTourController(root: HTMLElement): TourController {
     overlay!.style.left = `${rect.left - 4}px`;
     overlay!.style.width = `${rect.width + 8}px`;
     overlay!.style.height = `${rect.height + 8}px`;
-    overlay!.style.zIndex = "var(--blora-z-popover)";
+    overlay!.style.zIndex = "var(--blora-z-toast)";
 
     tooltip!.querySelector(".blora-tour__title")!.textContent =
       step.dataset.tourTitle ?? "";
@@ -72,7 +72,7 @@ export function createTourController(root: HTMLElement): TourController {
     tooltip!.style.position = "fixed";
     tooltip!.style.top = `${rect.bottom + 12}px`;
     tooltip!.style.left = `${rect.left}px`;
-    tooltip!.style.zIndex = "var(--blora-z-popover)";
+    tooltip!.style.zIndex = "var(--blora-z-toast)";
     tooltip!.setAttribute("data-open", "");
   };
 

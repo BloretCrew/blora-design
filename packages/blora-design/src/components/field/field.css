@@ -145,7 +145,7 @@
 }
 
 .blora-field__counter[data-over-limit] {
-  color: var(--blora-color-status-error);
+  color: var(--blora-color-status-danger);
   font-weight: 600;
 }
 

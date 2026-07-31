@@ -39,7 +39,7 @@
   --blora-deck-scale: 1;
   --blora-deck-opacity: 1;
 
-  z-index: var(--blora-z-popover);
+  z-index: var(--blora-z-dropdown);
   pointer-events: auto;
 }
 

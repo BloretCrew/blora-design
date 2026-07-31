@@ -34,13 +34,13 @@
 /* Tour overlay and tooltip (created by createTourController) */
 .blora-tour__overlay {
   position: fixed;
-  z-index: var(--blora-z-popover);
+  z-index: var(--blora-z-toast);
   pointer-events: none;
 }
 
 .blora-tour__tooltip {
   position: fixed;
-  z-index: var(--blora-z-popover);
+  z-index: var(--blora-z-toast);
   display: none;
   width: min(20rem, calc(100vw - 2 * var(--blora-space-4)));
   padding: var(--blora-space-4);

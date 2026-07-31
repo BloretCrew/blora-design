@@ -14,7 +14,7 @@
     "default": "Content"
   },
   "parts": [],
-  "cssProperties": [],
+  "cssProperties": ["--blora-slider-fill"],
   "accessibilityPattern": "section",
   "migrationFromV1": "slider.migration.md"
 }

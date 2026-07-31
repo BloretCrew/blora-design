@@ -20,7 +20,7 @@
 }
 
 .blora-calendar__title {
-  font-family: var(--blora-font-display);
+  font-family: var(--blora-font-heading);
   font-size: var(--blora-text-lg);
   color: var(--blora-color-text-emphasis);
   font-weight: 600;
