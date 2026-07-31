@@ -18,8 +18,16 @@ const init = (el: Element | undefined): void => {
 };
 
 const colors = [
-  "#e74c3c", "#e67e22", "#f1c40f", "#2ecc71", "#1abc9c",
-  "#3498db", "#9b59b6", "#34495e", "#ecf0f1", "#95a5a6",
+  "#e74c3c",
+  "#e67e22",
+  "#f1c40f",
+  "#2ecc71",
+  "#1abc9c",
+  "#3498db",
+  "#9b59b6",
+  "#34495e",
+  "#ecf0f1",
+  "#95a5a6",
 ];
 
 export const Default: Story = {
@@ -31,7 +39,12 @@ export const Default: Story = {
       <div class="blora-color-panel">
         <div class="blora-color-custom">
           <span class="blora-color-preview" style="background: ${colors[0]};"></span>
-          <input class="blora-input blora-color-hex" type="text" placeholder="#RRGGBB" value=${colors[0]} />
+          <input
+            class="blora-input blora-color-hex"
+            type="text"
+            placeholder="#RRGGBB"
+            value=${colors[0]}
+          />
         </div>
       </div>
     </div>

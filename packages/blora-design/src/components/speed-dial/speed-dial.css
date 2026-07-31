@@ -67,8 +67,9 @@
   opacity: 0;
   pointer-events: none;
   transform: translateX(-50%) translateY(0.5rem);
-  transition: opacity var(--blora-duration-fast) var(--blora-easing-standard),
-              transform var(--blora-duration-fast) var(--blora-easing-standard);
+  transition:
+    opacity var(--blora-duration-fast) var(--blora-easing-standard),
+    transform var(--blora-duration-fast) var(--blora-easing-standard);
 }
 
 .blora-speed-dial[data-open] .blora-speed-dial__actions {

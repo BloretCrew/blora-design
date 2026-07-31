@@ -40,7 +40,9 @@ export function createDatepickerController(root: HTMLElement): DatepickerControl
  */
 export function createTimepickerController(root: HTMLElement): DatepickerController {
   const input = root.querySelector<HTMLInputElement>("input");
-  const btn = root.querySelector<HTMLButtonElement>(".blora-timepicker__btn, .blora-datepicker__btn");
+  const btn = root.querySelector<HTMLButtonElement>(
+    ".blora-timepicker__btn, .blora-datepicker__btn",
+  );
 
   if (!input || !btn) return { destroy: () => {} };
 

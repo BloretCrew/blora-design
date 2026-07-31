@@ -13,8 +13,8 @@ const componentsDir = resolve(pkgDir, "src", "components");
 const newComponents = [];
 for (const dir of readdirSync(componentsDir, { withFileTypes: true })) {
   if (!dir.isDirectory()) continue;
-  const cssFiles = readdirSync(resolve(componentsDir, dir.name)).filter(f => f.endsWith(".css"));
-  const tsFiles = readdirSync(resolve(componentsDir, dir.name)).filter(f => f.endsWith(".ts"));
+  const cssFiles = readdirSync(resolve(componentsDir, dir.name)).filter((f) => f.endsWith(".css"));
+  const tsFiles = readdirSync(resolve(componentsDir, dir.name)).filter((f) => f.endsWith(".ts"));
   if (cssFiles.length > 0 && tsFiles.length === 0) {
     // Check if contract already exists
     const contractPath = resolve(pkgDir, "contracts", `${dir.name}.contract.json`);
@@ -159,7 +159,7 @@ console.log(`✓ Updated package.json exports`);
 const rootPkgPath = resolve(root, "package.json");
 const rootPkg = JSON.parse(readFileSync(rootPkgPath, "utf8"));
 const attwCmd = rootPkg.scripts.attw;
-const newExclusions = newComponents.map(c => `./components/${c}.css`);
+const newExclusions = newComponents.map((c) => `./components/${c}.css`);
 const newAttw = attwCmd.replace("./compat/v1.css", newExclusions.join(" ") + " ./compat/v1.css");
 rootPkg.scripts.attw = newAttw;
 writeFileSync(rootPkgPath, JSON.stringify(rootPkg, null, 2) + "\n");
@@ -168,14 +168,9 @@ console.log(`✓ Updated root package.json attw exclusions`);
 // Update preview.ts imports
 const previewPath = resolve(pkgDir, ".storybook", "preview.ts");
 let preview = readFileSync(previewPath, "utf8");
-const newImports = newComponents
-  .map(c => `import "../src/components/${c}/${c}.css";`)
-  .join("\n");
+const newImports = newComponents.map((c) => `import "../src/components/${c}/${c}.css";`).join("\n");
 // Insert before the blank line before const preview
-preview = preview.replace(
-  /^const preview/m,
-  newImports + "\n\nconst preview",
-);
+preview = preview.replace(/^const preview/m, newImports + "\n\nconst preview");
 writeFileSync(previewPath, preview);
 console.log(`✓ Updated preview.ts imports`);
 

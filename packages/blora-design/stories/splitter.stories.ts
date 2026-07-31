@@ -20,8 +20,18 @@ const init = (el: Element | undefined): void => {
 export const Default: Story = {
   render: () => html`
     <div class="blora-splitter" data-min="100" style="min-height:10rem;" ${ref(init)}>
-      <div class="blora-splitter__pane" style="background: var(--blora-color-surface-raised); display: grid; place-items: center; padding: var(--blora-space-4);">左栏 · 拖拽中间条</div>
-      <div class="blora-splitter__pane" style="display: grid; place-items: center; padding: var(--blora-space-4);">右栏 · 自适应</div>
+      <div
+        class="blora-splitter__pane"
+        style="background: var(--blora-color-surface-raised); display: grid; place-items: center; padding: var(--blora-space-4);"
+      >
+        左栏 · 拖拽中间条
+      </div>
+      <div
+        class="blora-splitter__pane"
+        style="display: grid; place-items: center; padding: var(--blora-space-4);"
+      >
+        右栏 · 自适应
+      </div>
     </div>
   `,
 };

@@ -22,12 +22,24 @@ export const Default: Story = {
     <div style="display: grid; gap: var(--blora-space-5); max-width: 28rem;" ${ref(init)}>
       <div class="blora-field">
         <label class="blora-label" for="f-text">文本输入</label>
-        <input class="blora-input" id="f-text" type="text" placeholder="请输入用户名" data-limit="20" />
+        <input
+          class="blora-input"
+          id="f-text"
+          type="text"
+          placeholder="请输入用户名"
+          data-limit="20"
+        />
         <span class="blora-hint">最长 20 个字符，超出后标红，不会截断输入。</span>
       </div>
       <div class="blora-field">
         <label class="blora-label" for="f-err">错误态</label>
-        <input class="blora-input" id="f-err" type="text" value="invalid input" data-variant="error" />
+        <input
+          class="blora-input"
+          id="f-err"
+          type="text"
+          value="invalid input"
+          data-variant="error"
+        />
         <span class="blora-error">此处输入无效，请重新填写。</span>
       </div>
       <div class="blora-field">

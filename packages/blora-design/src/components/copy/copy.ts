@@ -7,7 +7,9 @@ export interface ColorPickerController {
 }
 
 export function createColorPickerController(root: HTMLElement): ColorPickerController {
-  const swatches = root.querySelectorAll<HTMLElement>(".blora-color-swatch > span, .blora-color-picker__swatch");
+  const swatches = root.querySelectorAll<HTMLElement>(
+    ".blora-color-swatch > span, .blora-color-picker__swatch",
+  );
   const preview = root.querySelector<HTMLElement>(".blora-color-preview");
   const hexInput = root.querySelector<HTMLInputElement>(".blora-color-hex");
 

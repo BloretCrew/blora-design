@@ -57,8 +57,9 @@
   color: var(--blora-color-text-muted);
   font-size: var(--blora-text-sm);
   text-decoration: none;
-  transition: color var(--blora-duration-fast) var(--blora-easing-standard),
-              background var(--blora-duration-fast) var(--blora-easing-standard);
+  transition:
+    color var(--blora-duration-fast) var(--blora-easing-standard),
+    background var(--blora-duration-fast) var(--blora-easing-standard);
 }
 
 .blora-megamenu__link:hover,

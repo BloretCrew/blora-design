@@ -19,32 +19,29 @@ const init = (el: Element | undefined): void => {
 };
 
 const otpInputs = (count: number) =>
-  Array.from({ length: count }, () => '<input class="blora-otp__input" maxlength="1" type="text">').join("");
+  Array.from(
+    { length: count },
+    () => '<input class="blora-otp__input" maxlength="1" type="text">',
+  ).join("");
 
 export const Numeric6: Story = {
   name: "Numeric (6 digits)",
   render: () => html`
-    <div class="blora-otp" data-mode="numeric" ${ref(init)}>
-      ${unsafeHTML(otpInputs(6))}
-    </div>
+    <div class="blora-otp" data-mode="numeric" ${ref(init)}>${unsafeHTML(otpInputs(6))}</div>
   `,
 };
 
 export const Alphanumeric6: Story = {
   name: "Alphanumeric (6 chars)",
   render: () => html`
-    <div class="blora-otp" data-mode="alphanumeric" ${ref(init)}>
-      ${unsafeHTML(otpInputs(6))}
-    </div>
+    <div class="blora-otp" data-mode="alphanumeric" ${ref(init)}>${unsafeHTML(otpInputs(6))}</div>
   `,
 };
 
 export const Any4: Story = {
   name: "Any characters (4 chars)",
   render: () => html`
-    <div class="blora-otp" data-mode="any" ${ref(init)}>
-      ${unsafeHTML(otpInputs(4))}
-    </div>
+    <div class="blora-otp" data-mode="any" ${ref(init)}>${unsafeHTML(otpInputs(4))}</div>
   `,
 };
 

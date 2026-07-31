@@ -57,10 +57,8 @@ export function createTourController(root: HTMLElement): TourController {
     overlay!.style.height = `${rect.height + 8}px`;
     overlay!.style.zIndex = "var(--blora-z-toast)";
 
-    tooltip!.querySelector(".blora-tour__title")!.textContent =
-      step.dataset.tourTitle ?? "";
-    tooltip!.querySelector(".blora-tour__desc")!.textContent =
-      step.dataset.tourDesc ?? "";
+    tooltip!.querySelector(".blora-tour__title")!.textContent = step.dataset.tourTitle ?? "";
+    tooltip!.querySelector(".blora-tour__desc")!.textContent = step.dataset.tourDesc ?? "";
     tooltip!.querySelector(".blora-tour__counter")!.textContent =
       `${current + 1} / ${steps.length}`;
 

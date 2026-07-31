@@ -19,10 +19,7 @@ const init = (el: Element | undefined): void => {
 
 const stars = (active: number) =>
   [0, 1, 2, 3, 4]
-    .map(
-      (i) =>
-        `<span class="blora-rate__star"${i < active ? " data-active" : ""}>★</span>`,
-    )
+    .map((i) => `<span class="blora-rate__star"${i < active ? " data-active" : ""}>★</span>`)
     .join("");
 
 export const Default: Story = {

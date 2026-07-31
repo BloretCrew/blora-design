@@ -14,8 +14,16 @@
         padding: 28px;
         font-size: 15px;
       }
-      h2 { font-size: 14px; margin: 22px 0 10px; color: var(--blora-color-text-secondary); font-weight: 600; }
-      .blora-tabs__panel { font-size: var(--blora-text-sm); color: var(--blora-color-text-secondary); }
+      h2 {
+        font-size: 14px;
+        margin: 22px 0 10px;
+        color: var(--blora-color-text-secondary);
+        font-weight: 600;
+      }
+      .blora-tabs__panel {
+        font-size: var(--blora-text-sm);
+        color: var(--blora-color-text-secondary);
+      }
     </style>
   </head>
   <body>
@@ -40,16 +48,28 @@
     </div>
 
     <h2>Checkbox</h2>
-    <div style="display:flex; flex-direction:column; gap:12px;">
-      <label class="blora-checkbox"><input type="checkbox" checked /><span class="blora-checkbox__box"></span>同意条款（checked）</label>
-      <label class="blora-checkbox"><input type="checkbox" /><span class="blora-checkbox__box"></span>接收通知（unchecked）</label>
-      <label class="blora-checkbox" data-indeterminate><input type="checkbox" /><span class="blora-checkbox__box"></span>部分选中（indeterminate）</label>
-      <label class="blora-checkbox"><input type="checkbox" checked disabled /><span class="blora-checkbox__box"></span>禁用选中（disabled）</label>
+    <div style="display: flex; flex-direction: column; gap: 12px">
+      <label class="blora-checkbox"
+        ><input type="checkbox" checked /><span class="blora-checkbox__box"></span
+        >同意条款（checked）</label
+      >
+      <label class="blora-checkbox"
+        ><input type="checkbox" /><span class="blora-checkbox__box"></span
+        >接收通知（unchecked）</label
+      >
+      <label class="blora-checkbox" data-indeterminate
+        ><input type="checkbox" /><span class="blora-checkbox__box"></span
+        >部分选中（indeterminate）</label
+      >
+      <label class="blora-checkbox"
+        ><input type="checkbox" checked disabled /><span class="blora-checkbox__box"></span
+        >禁用选中（disabled）</label
+      >
     </div>
 
     <script>
       // set native indeterminate for completeness
-      document.querySelectorAll('.blora-checkbox[data-indeterminate] input').forEach((el) => {
+      document.querySelectorAll(".blora-checkbox[data-indeterminate] input").forEach((el) => {
         el.indeterminate = true;
       });
     </script>

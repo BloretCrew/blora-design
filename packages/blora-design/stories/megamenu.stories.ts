@@ -20,7 +20,9 @@ const init = (el: Element | undefined): void => {
 export const Default: Story = {
   render: () => html`
     <div class="blora-megamenu" ${ref(init)}>
-      <button class="blora-button blora-megamenu__trigger" data-variant="outline" type="button">浏览产品</button>
+      <button class="blora-button blora-megamenu__trigger" data-variant="outline" type="button">
+        浏览产品
+      </button>
       <div class="blora-megamenu__panel">
         <div class="blora-megamenu__grid">
           <div>

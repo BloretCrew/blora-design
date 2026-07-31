@@ -16,7 +16,10 @@ const tokenReplacements = [
   [/--blora-surface-2/g, "--blora-color-surface-raised"],
   [/--blora-surface-3/g, "--blora-color-surface-sunken"],
   [/--blora-background/g, "--blora-color-surface-canvas"],
-  [/--blora-primary-tint/g, "color-mix(in srgb, var(--blora-color-action-primary-default) 8%, transparent)"],
+  [
+    /--blora-primary-tint/g,
+    "color-mix(in srgb, var(--blora-color-action-primary-default) 8%, transparent)",
+  ],
   [/--blora-primary-hover/g, "--blora-color-action-primary-hover"],
   [/--blora-primary\b/g, "--blora-color-action-primary-default"],
   [/--blora-on-accent/g, "--blora-color-text-on-accent"],
@@ -44,8 +47,14 @@ const tokenReplacements = [
   [/--blora-overlay-drawer/g, "--blora-color-overlay-drawer"],
   [/--blora-overlay-modal/g, "--blora-color-overlay-modal"],
   [/--blora-tooltip-bg/g, "--blora-color-surface-sunken"],
-  [/--blora-focus-ring-strong/g, "0 0 0 3px color-mix(in srgb, var(--blora-color-action-primary-default) 30%, transparent)"],
-  [/--blora-focus-ring\b/g, "0 0 0 2px color-mix(in srgb, var(--blora-color-action-primary-default) 20%, transparent)"],
+  [
+    /--blora-focus-ring-strong/g,
+    "0 0 0 3px color-mix(in srgb, var(--blora-color-action-primary-default) 30%, transparent)",
+  ],
+  [
+    /--blora-focus-ring\b/g,
+    "0 0 0 2px color-mix(in srgb, var(--blora-color-action-primary-default) 20%, transparent)",
+  ],
   [/--blora-banner-bg/g, "--blora-color-banner-background"],
   [/--blora-banner-fg/g, "--blora-color-banner-foreground"],
   // btn local tokens
@@ -89,8 +98,14 @@ function convertCss(css) {
     result = result.replace(from, to);
   }
   // Fix z-index calc() - replace calc(var(--blora-z-X) - 1) with var(--blora-z-base) or var(--blora-z-dropdown)
-  result = result.replace(/z-index:\s*calc\(var\(--blora-z-drawer\)\s*-\s*1\)/g, "z-index: var(--blora-z-dropdown)");
-  result = result.replace(/z-index:\s*calc\(var\(--blora-z-modal\)\s*-\s*1\)/g, "z-index: var(--blora-z-drawer)");
+  result = result.replace(
+    /z-index:\s*calc\(var\(--blora-z-drawer\)\s*-\s*1\)/g,
+    "z-index: var(--blora-z-dropdown)",
+  );
+  result = result.replace(
+    /z-index:\s*calc\(var\(--blora-z-modal\)\s*-\s*1\)/g,
+    "z-index: var(--blora-z-drawer)",
+  );
   // Remove !important (except for specific cases)
   // Keep !important for now - stylelint will catch it
   return result;
@@ -102,7 +117,7 @@ function extractComponentCss(componentName) {
   const pattern = new RegExp(`((?:\\.blora-${componentName}[^{]*\\{[^}]*\\}\\s*)+)`, "g");
   const matches = [...v1Css.matchAll(pattern)];
   if (matches.length === 0) return null;
-  return matches.map(m => m[1]).join("\n");
+  return matches.map((m) => m[1]).join("\n");
 }
 
 // Component definitions: [v1Prefix, v2Dir, storyTitle, status]
@@ -172,7 +187,9 @@ for (const [v2Dir, { prefixes, storyTitle }] of dirGroups) {
 
   if (cssParts.length === 0) {
     // Component not found in v1 CSS - create minimal CSS
-    cssParts.push(`/* ${v2Dir} - not found in v1, created as placeholder */\n.blora-${v2Dir} { display: block; }`);
+    cssParts.push(
+      `/* ${v2Dir} - not found in v1, created as placeholder */\n.blora-${v2Dir} { display: block; }`,
+    );
     skipped++;
   }
 

@@ -71,13 +71,13 @@ const componentCssProps = {
 
 // Process all CSS files in component directories
 const componentDirs = readdirSync(componentsDir, { withFileTypes: true })
-  .filter(d => d.isDirectory())
-  .map(d => d.name);
+  .filter((d) => d.isDirectory())
+  .map((d) => d.name);
 
 let fixedFiles = 0;
 
 for (const dir of componentDirs) {
-  const cssFiles = readdirSync(resolve(componentsDir, dir)).filter(f => f.endsWith(".css"));
+  const cssFiles = readdirSync(resolve(componentsDir, dir)).filter((f) => f.endsWith(".css"));
   for (const cssFile of cssFiles) {
     const cssPath = resolve(componentsDir, dir, cssFile);
     let css = readFileSync(cssPath, "utf8");
@@ -117,11 +117,13 @@ for (const dir of componentDirs) {
 // Update contracts with component-level CSS properties
 for (const [component, props] of Object.entries(componentCssProps)) {
   // Fix the deck typo
-  const cleanProps = props.map(p => p.replace(/^--+/, "--"));
+  const cleanProps = props.map((p) => p.replace(/^--+/, "--"));
   const contractPath = resolve(contractsDir, `${component}.contract.json`);
   const contract = JSON.parse(readFileSync(contractPath, "utf8"));
   contract.cssProperties = [...new Set([...(contract.cssProperties || []), ...cleanProps])];
   writeFileSync(contractPath, JSON.stringify(contract, null, 2) + "\n");
 }
 
-console.log(`Fixed ${fixedFiles} CSS files and updated ${Object.keys(componentCssProps).length} contracts`);
+console.log(
+  `Fixed ${fixedFiles} CSS files and updated ${Object.keys(componentCssProps).length} contracts`,
+);

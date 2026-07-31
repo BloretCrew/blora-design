@@ -49,7 +49,20 @@ export const Default: Story = {
           style="justify-content: space-between; align-items: center; padding: 0.5em 0.8em; background: var(--blora-color-surface-raised); border-radius: var(--blora-radius-sm);"
         >
           <span class="blora-text-sm" style="display:inline-flex;align-items:center;gap:0.4em;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--blora-color-text-subtle);"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              style="color:var(--blora-color-text-subtle);"
+            >
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <path d="M14 2v6h6" />
+            </svg>
             report.pdf
           </span>
           <span class="blora-text-xs blora-text-muted">2.4 MB</span>
@@ -59,7 +72,21 @@ export const Default: Story = {
           style="justify-content: space-between; align-items: center; padding: 0.5em 0.8em; background: var(--blora-color-surface-raised); border-radius: var(--blora-radius-sm);"
         >
           <span class="blora-text-sm" style="display:inline-flex;align-items:center;gap:0.4em;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--blora-color-text-subtle);"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.5-3.5a2 2 0 0 0-2.8 0L6 20"/></svg>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              style="color:var(--blora-color-text-subtle);"
+            >
+              <rect x="3" y="3" width="18" height="18" rx="2" />
+              <circle cx="9" cy="9" r="2" />
+              <path d="m21 15-3.5-3.5a2 2 0 0 0-2.8 0L6 20" />
+            </svg>
             photo.jpg
           </span>
           <span class="blora-text-xs blora-text-muted">856 KB</span>

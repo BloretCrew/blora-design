@@ -25,9 +25,9 @@ export function createTreeController(root: HTMLElement): TreeController {
       const hasToggle = node.querySelector(".blora-tree__toggle");
       if (!hasToggle) {
         // Select this leaf, deselect others
-        root.querySelectorAll(".blora-tree__node[data-selected]").forEach((n) =>
-          n.removeAttribute("data-selected"),
-        );
+        root
+          .querySelectorAll(".blora-tree__node[data-selected]")
+          .forEach((n) => n.removeAttribute("data-selected"));
         node.setAttribute("data-selected", "");
       }
     }

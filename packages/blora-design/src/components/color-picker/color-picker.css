@@ -19,8 +19,9 @@
   border: 1px solid var(--blora-color-border-subtle);
   border-radius: var(--blora-radius-sm);
   cursor: pointer;
-  transition: transform var(--blora-duration-fast) var(--blora-easing-standard),
-              box-shadow var(--blora-duration-fast) var(--blora-easing-standard);
+  transition:
+    transform var(--blora-duration-fast) var(--blora-easing-standard),
+    box-shadow var(--blora-duration-fast) var(--blora-easing-standard);
 }
 
 .blora-color-picker__swatch:hover {

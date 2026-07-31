@@ -20,10 +20,20 @@ export const Variants: Story = {
       <figure class="blora-image" data-variant="frame" style="width: 200px; margin: 0;">
         <img src="https://picsum.photos/seed/blora-img2/400/280" alt="相框模式" />
       </figure>
-      <figure class="blora-image" data-variant="hover" data-filter="muted" style="width: 200px; margin: 0;">
+      <figure
+        class="blora-image"
+        data-variant="hover"
+        data-filter="muted"
+        style="width: 200px; margin: 0;"
+      >
         <img src="https://picsum.photos/seed/blora-img3/400/280" alt="柔和滤镜" />
       </figure>
-      <figure class="blora-image" data-variant="hover" data-filter="monochrome" style="width: 200px; margin: 0;">
+      <figure
+        class="blora-image"
+        data-variant="hover"
+        data-filter="monochrome"
+        style="width: 200px; margin: 0;"
+      >
         <img src="https://picsum.photos/seed/blora-img4/400/280" alt="单色滤镜" />
       </figure>
     </div>

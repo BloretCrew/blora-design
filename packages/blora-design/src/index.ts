@@ -50,15 +50,52 @@ export { createDropdownController, type DropdownController } from "./components/
 export { createSliderController, type SliderController } from "./components/slider/slider.js";
 export { createRangeController, type RangeController } from "./components/range/range.js";
 export { createRateController, type RateController } from "./components/rate/rate.js";
-export { createCarouselController, type CarouselController } from "./components/carousel/carousel.js";
+export {
+  createCarouselController,
+  type CarouselController,
+} from "./components/carousel/carousel.js";
 export { createTreeController, type TreeController } from "./components/tree/tree.js";
-export { createAutocompleteController, type AutocompleteController } from "./components/autocomplete/autocomplete.js";
-export { createMentionsController, type MentionsController } from "./components/mentions/mentions.js";
+export {
+  createAutocompleteController,
+  type AutocompleteController,
+} from "./components/autocomplete/autocomplete.js";
+export {
+  createMentionsController,
+  type MentionsController,
+} from "./components/mentions/mentions.js";
 export { createOtpController, type OtpController } from "./components/otp/otp.js";
-export { createCascaderController, type CascaderController } from "./components/cascader/cascader.js";
-export { createDatepickerController, createTimepickerController, type DatepickerController } from "./components/datepicker/datepicker.js";
-export { createSplitterController, type SplitterController } from "./components/splitter/splitter.js";
+export {
+  createCascaderController,
+  type CascaderController,
+} from "./components/cascader/cascader.js";
+export {
+  createDatepickerController,
+  createTimepickerController,
+  type DatepickerController,
+} from "./components/datepicker/datepicker.js";
+export {
+  createSplitterController,
+  type SplitterController,
+} from "./components/splitter/splitter.js";
 export { createTourController, type TourController } from "./components/tour/tour.js";
-export { createDockController, type DockController, createMegamenuController, type MegamenuController, createSpeedDialController, type SpeedDialController } from "./components/dock/dock.js";
+export {
+  createDockController,
+  type DockController,
+  createMegamenuController,
+  type MegamenuController,
+  createSpeedDialController,
+  type SpeedDialController,
+} from "./components/dock/dock.js";
 export { createSearchController, type SearchController } from "./components/search/search.js";
-export { createColorPickerController, type ColorPickerController, createTextRotateController, type TextRotateController, createCopyController, type CopyController, createTransferController, type TransferController, createFieldController, type FieldController } from "./components/copy/copy.js";
+export {
+  createColorPickerController,
+  type ColorPickerController,
+  createTextRotateController,
+  type TextRotateController,
+  createCopyController,
+  type CopyController,
+  createTransferController,
+  type TransferController,
+  createFieldController,
+  type FieldController,
+} from "./components/copy/copy.js";

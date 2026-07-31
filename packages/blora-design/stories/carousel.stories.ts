@@ -43,11 +43,37 @@ export const Default: Story = {
           </div>
         </div>
       </div>
-      <button class="blora-carousel__arrow blora-carousel__arrow--prev" type="button" aria-label="上一张">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      <button
+        class="blora-carousel__arrow blora-carousel__arrow--prev"
+        type="button"
+        aria-label="上一张"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
       </button>
-      <button class="blora-carousel__arrow blora-carousel__arrow--next" type="button" aria-label="下一张">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+      <button
+        class="blora-carousel__arrow blora-carousel__arrow--next"
+        type="button"
+        aria-label="下一张"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M9 18l6-6-6-6" />
+        </svg>
       </button>
       <div class="blora-carousel__dots">
         <span class="blora-carousel__dot" data-active></span>
@@ -63,17 +89,59 @@ export const Autoplay: Story = {
     <div class="blora-carousel" data-autoplay ${ref(init)}>
       <div class="blora-carousel__track">
         <div class="blora-carousel__slide">
-          <div style="height: 240px; display: grid; place-items: center; background: var(--blora-color-surface-sunken); border-radius: var(--blora-radius-md); font-family: var(--blora-font-display); font-size: 2rem;">幻灯片 A</div>
+          <div
+            style="height: 240px; display: grid; place-items: center; background: var(--blora-color-surface-sunken); border-radius: var(--blora-radius-md); font-family: var(--blora-font-display); font-size: 2rem;"
+          >
+            幻灯片 A
+          </div>
         </div>
         <div class="blora-carousel__slide">
-          <div style="height: 240px; display: grid; place-items: center; background: var(--blora-color-action-primary-default); color: var(--blora-color-text-on-accent); border-radius: var(--blora-radius-md); font-family: var(--blora-font-display); font-size: 2rem;">幻灯片 B</div>
+          <div
+            style="height: 240px; display: grid; place-items: center; background: var(--blora-color-action-primary-default); color: var(--blora-color-text-on-accent); border-radius: var(--blora-radius-md); font-family: var(--blora-font-display); font-size: 2rem;"
+          >
+            幻灯片 B
+          </div>
         </div>
         <div class="blora-carousel__slide">
-          <div style="height: 240px; display: grid; place-items: center; background: var(--blora-color-status-success); color: var(--blora-color-text-on-accent); border-radius: var(--blora-radius-md); font-family: var(--blora-font-display); font-size: 2rem;">幻灯片 C</div>
+          <div
+            style="height: 240px; display: grid; place-items: center; background: var(--blora-color-status-success); color: var(--blora-color-text-on-accent); border-radius: var(--blora-radius-md); font-family: var(--blora-font-display); font-size: 2rem;"
+          >
+            幻灯片 C
+          </div>
         </div>
       </div>
-      <button class="blora-carousel__arrow blora-carousel__arrow--prev" type="button" aria-label="上一张"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
-      <button class="blora-carousel__arrow blora-carousel__arrow--next" type="button" aria-label="下一张"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+      <button
+        class="blora-carousel__arrow blora-carousel__arrow--prev"
+        type="button"
+        aria-label="上一张"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
+      </button>
+      <button
+        class="blora-carousel__arrow blora-carousel__arrow--next"
+        type="button"
+        aria-label="下一张"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M9 18l6-6-6-6" />
+        </svg>
+      </button>
       <div class="blora-carousel__dots">
         <span class="blora-carousel__dot" data-active></span>
         <span class="blora-carousel__dot"></span>
