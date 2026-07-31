@@ -242,6 +242,11 @@ test("fixture 3: v1 table+list+avatar renders same as v2 after compat migration"
   });
 
   // Compare table striped backgrounds (RGB channels should match)
+  // Force style recalculation before reading computed styles
+  await page.evaluate(() => {
+    const table = document.querySelector("#v1 table");
+    if (table) table.offsetHeight;
+  });
   const v1RowBg = await page
     .locator("#v1 .blora-table tbody tr")
     .first()
