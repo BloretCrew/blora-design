@@ -78,9 +78,10 @@ export class BloraSelect extends BloraElement {
     listbox.setAttribute("part", "listbox");
     popup.appendChild(listbox);
 
-    // Slot for blora-option elements
+    // Slot for blora-option elements (hidden - used only to collect option data)
     const slot = document.createElement("slot");
-    listbox.appendChild(slot);
+    slot.style.display = "none";
+    shadow.appendChild(slot);
 
     shadow.appendChild(trigger);
     shadow.appendChild(popup);

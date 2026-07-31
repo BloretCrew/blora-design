@@ -53,6 +53,42 @@ import "../src/components/segmented/segmented.css";
 import "../src/components/popconfirm/popconfirm.css";
 import "../src/components/collapse/collapse.css";
 
+import "../src/components/affix/affix.css";
+import "../src/components/autocomplete/autocomplete.css";
+import "../src/components/calendar/calendar.css";
+import "../src/components/carousel/carousel.css";
+import "../src/components/cascader/cascader.css";
+import "../src/components/chart-container/chart-container.css";
+import "../src/components/chat/chat.css";
+import "../src/components/color-picker/color-picker.css";
+import "../src/components/command-palette/command-palette.css";
+import "../src/components/comment/comment.css";
+import "../src/components/copy/copy.css";
+import "../src/components/countdown/countdown.css";
+import "../src/components/datepicker/datepicker.css";
+import "../src/components/deck/deck.css";
+import "../src/components/dock/dock.css";
+import "../src/components/fab/fab.css";
+import "../src/components/masonry/masonry.css";
+import "../src/components/megamenu/megamenu.css";
+import "../src/components/mentions/mentions.css";
+import "../src/components/mockup/mockup.css";
+import "../src/components/otp/otp.css";
+import "../src/components/range/range.css";
+import "../src/components/rate/rate.css";
+import "../src/components/search/search.css";
+import "../src/components/slider/slider.css";
+import "../src/components/speed-dial/speed-dial.css";
+import "../src/components/splitter/splitter.css";
+import "../src/components/tags-input/tags-input.css";
+import "../src/components/text-rotate/text-rotate.css";
+import "../src/components/timepicker/timepicker.css";
+import "../src/components/tour/tour.css";
+import "../src/components/transfer/transfer.css";
+import "../src/components/tree/tree.css";
+import "../src/components/upload/upload.css";
+import "../src/components/watermark/watermark.css";
+
 const preview: Preview = {
   parameters: {
     backgrounds: {

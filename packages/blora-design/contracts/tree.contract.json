@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schemas/component-contract.schema.json",
+  "name": "tree",
+  "status": "beta",
+  "kind": "css-only",
+  "since": "2.0.0",
+  "requiresJavaScript": false,
+  "formAssociated": false,
+  "attributes": {},
+  "properties": {},
+  "methods": {},
+  "events": {},
+  "slots": {
+    "default": "Content"
+  },
+  "parts": [],
+  "cssProperties": ["--blora-tree-h"],
+  "accessibilityPattern": "section",
+  "migrationFromV1": "tree.migration.md"
+}

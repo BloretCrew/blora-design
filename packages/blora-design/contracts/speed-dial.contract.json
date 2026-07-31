@@ -1,0 +1,25 @@
+{
+  "$schema": "../../schemas/component-contract.schema.json",
+  "name": "speed-dial",
+  "status": "beta",
+  "kind": "css-only",
+  "since": "2.0.0",
+  "requiresJavaScript": false,
+  "formAssociated": false,
+  "attributes": {},
+  "properties": {},
+  "methods": {},
+  "events": {},
+  "slots": {
+    "default": "Content"
+  },
+  "parts": [],
+  "cssProperties": [
+    "--blora-sd-action-size",
+    "--blora-sd-gap",
+    "--blora-sd-r",
+    "--blora-sd-trigger-size"
+  ],
+  "accessibilityPattern": "section",
+  "migrationFromV1": "speed-dial.migration.md"
+}

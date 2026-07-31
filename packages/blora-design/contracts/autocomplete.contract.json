@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schemas/component-contract.schema.json",
+  "name": "autocomplete",
+  "status": "beta",
+  "kind": "css-only",
+  "since": "2.0.0",
+  "requiresJavaScript": false,
+  "formAssociated": false,
+  "attributes": {},
+  "properties": {},
+  "methods": {},
+  "events": {},
+  "slots": {
+    "default": "Content"
+  },
+  "parts": [],
+  "cssProperties": [],
+  "accessibilityPattern": "section",
+  "migrationFromV1": "autocomplete.migration.md"
+}

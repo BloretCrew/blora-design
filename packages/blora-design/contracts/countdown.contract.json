@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schemas/component-contract.schema.json",
+  "name": "countdown",
+  "status": "beta",
+  "kind": "css-only",
+  "since": "2.0.0",
+  "requiresJavaScript": false,
+  "formAssociated": false,
+  "attributes": {},
+  "properties": {},
+  "methods": {},
+  "events": {},
+  "slots": {
+    "default": "Content"
+  },
+  "parts": [],
+  "cssProperties": [],
+  "accessibilityPattern": "section",
+  "migrationFromV1": "countdown.migration.md"
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schemas/component-contract.schema.json",
+  "name": "megamenu",
+  "status": "beta",
+  "kind": "css-only",
+  "since": "2.0.0",
+  "requiresJavaScript": false,
+  "formAssociated": false,
+  "attributes": {},
+  "properties": {},
+  "methods": {},
+  "events": {},
+  "slots": {
+    "default": "Content"
+  },
+  "parts": [],
+  "cssProperties": ["--blora-megamenu-offset"],
+  "accessibilityPattern": "section",
+  "migrationFromV1": "megamenu.migration.md"
+}

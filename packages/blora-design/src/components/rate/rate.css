@@ -1,0 +1,23 @@
+/* Blora Design 2.0 - rate component (beta, migrated from v1) */
+
+.blora-rate {
+  display: inline-flex;
+  gap: 0.2em;
+  cursor: pointer;
+}
+
+.blora-rate__star {
+  color: var(--blora-color-border-subtle);
+  transition:
+    color var(--blora-duration-fast) var(--blora-easing-standard),
+    transform var(--blora-duration-fast) var(--blora-easing-standard);
+  font-size: 1.25em;
+}
+
+.blora-rate__star[data-on] {
+  color: var(--blora-color-action-primary-default);
+}
+
+.blora-rate__star:hover {
+  transform: scale(1.15);
+}

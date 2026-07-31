@@ -1,0 +1,28 @@
+{
+  "$schema": "../../schemas/component-contract.schema.json",
+  "name": "mockup",
+  "status": "beta",
+  "kind": "css-only",
+  "since": "2.0.0",
+  "requiresJavaScript": false,
+  "formAssociated": false,
+  "attributes": {},
+  "properties": {},
+  "methods": {},
+  "events": {},
+  "slots": {
+    "default": "Content"
+  },
+  "parts": [],
+  "cssProperties": [
+    "--blora-phone-max",
+    "--blora-phone-radius",
+    "--blora-phone-radius-se",
+    "--blora-phone-rim",
+    "--blora-phone-screen-radius",
+    "--blora-phone-screen-radius-se",
+    "--blora-phone-island-radius"
+  ],
+  "accessibilityPattern": "section",
+  "migrationFromV1": "mockup.migration.md"
+}

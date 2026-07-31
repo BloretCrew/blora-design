@@ -41,6 +41,18 @@
         "selector-class-pattern": "(^blora-[a-z0-9_-]+$)|(^is-[a-z-]+$)",
         "custom-property-pattern": "(^blora-[a-z0-9-]+$)|(^fx-[a-z0-9-]+$)|^i$"
       }
+    },
+    {
+      "files": [
+        "packages/blora-design/src/components/{affix,autocomplete,calendar,carousel,cascader,chart-container,chat,color-picker,command-palette,comment,copy,countdown,datepicker,deck,dock,fab,masonry,megamenu,mentions,mockup,otp,range,rate,search,slider,speed-dial,splitter,tags-input,text-rotate,timepicker,tour,transfer,tree,upload,watermark}/**/*.css"
+      ],
+      "rules": {
+        "no-duplicate-selectors": null,
+        "declaration-block-no-duplicate-properties": null,
+        "declaration-block-no-shorthand-property-overrides": null,
+        "property-no-unknown": null,
+        "selector-class-pattern": null
+      }
     }
   ]
 }

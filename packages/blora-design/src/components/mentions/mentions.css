@@ -1,0 +1,57 @@
+/* Blora Design 2.0 - mentions component (beta, migrated from v1) */
+
+.blora-mentions {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-self: start;
+  width: 100%;
+  height: fit-content;
+  min-width: 0;
+}
+
+.blora-mentions {
+  max-width: 28rem;
+}
+
+.blora-mentions > .blora-label {
+  margin-bottom: var(--blora-space-2);
+}
+
+.blora-mentions__menu {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(100% + 4px);
+  z-index: var(--blora-z-dropdown);
+  max-height: 12rem;
+  overflow: auto;
+  margin: 0;
+  padding: var(--blora-space-2);
+  list-style: none;
+  background: var(--blora-color-surface-default);
+  border: var(--blora-border-subtle);
+  border-radius: var(--blora-radius-md);
+  box-shadow: var(--blora-shadow-3);
+  display: none;
+}
+
+.blora-mentions[data-open] .blora-mentions__menu {
+  display: block;
+}
+
+.blora-mentions__option {
+  display: flex;
+  align-items: center;
+  gap: var(--blora-space-2);
+  padding: 0.4em 0.6em;
+  border-radius: var(--blora-radius-sm);
+  cursor: pointer;
+  font-size: var(--blora-text-sm);
+}
+
+.blora-mentions__option:hover,
+.blora-mentions__option[data-active] {
+  background: var(color-mix(in srgb, var(--blora-color-action-primary-default) 8%, transparent));
+  color: var(--blora-color-action-primary-default);
+}

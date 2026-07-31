@@ -1,0 +1,22 @@
+/* Blora Design 2.0 - color-picker component (beta, migrated from v1) */
+
+.blora-color-picker {
+  position: relative;
+  display: inline-block;
+}
+
+.blora-color-swatch {
+  width: 2.5em;
+  height: 2.5em;
+  border: 1px solid var(--blora-color-border-subtle);
+  border-radius: var(--blora-radius-md);
+  cursor: pointer;
+  transition:
+    border-color var(--blora-duration-fast) var(--blora-easing-standard),
+    transform var(--blora-duration-fast) var(--blora-easing-standard);
+}
+
+.blora-color-swatch:hover {
+  border-color: var(--blora-color-text-subtle);
+  transform: scale(1.05);
+}

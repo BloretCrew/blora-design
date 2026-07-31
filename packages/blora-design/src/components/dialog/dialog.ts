@@ -78,7 +78,19 @@ export class BloraDialog extends BloraElement {
     closeButton.setAttribute("part", "close-button");
     closeButton.setAttribute("aria-label", "Close dialog");
     closeButton.type = "button";
-    closeButton.innerHTML = "&times;";
+    // SVG close icon matching v1 visual baseline
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("width", "18");
+    svg.setAttribute("height", "18");
+    svg.setAttribute("viewBox", "0 0 24 24");
+    svg.setAttribute("fill", "none");
+    svg.setAttribute("stroke", "currentColor");
+    svg.setAttribute("stroke-width", "2");
+    svg.setAttribute("stroke-linecap", "round");
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", "M18 6L6 18M6 6l12 12");
+    svg.appendChild(path);
+    closeButton.appendChild(svg);
     header.appendChild(closeButton);
 
     // Body

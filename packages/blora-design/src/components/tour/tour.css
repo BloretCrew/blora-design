@@ -1,0 +1,56 @@
+/* Blora Design 2.0 - tour component (beta, migrated from v1) */
+
+.blora-tour-mask {
+  position: fixed;
+  inset: 0;
+  z-index: var(--blora-z-toast);
+  background: var(--blora-color-overlay-modal);
+  pointer-events: auto;
+}
+
+.blora-tour-pop {
+  position: fixed;
+  z-index: var(--blora-z-toast);
+  width: min(20rem, calc(100vw - 2 * var(--blora-space-4)));
+  padding: var(--blora-space-4);
+  border-radius: var(--blora-radius-lg);
+  background: var(--blora-color-surface-default);
+  border: var(--blora-border-subtle);
+  box-shadow: var(--blora-shadow-4);
+}
+
+.blora-tour-pop__title {
+  font-weight: 600;
+  font-size: var(--blora-text-sm);
+  margin-bottom: 0.35em;
+}
+
+.blora-tour-pop__body {
+  font-size: var(--blora-text-sm);
+  color: var(--blora-color-text-muted);
+  line-height: 1.5;
+}
+
+.blora-tour-pop__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--blora-space-2);
+  margin-top: var(--blora-space-4);
+}
+
+.blora-tour-pop__steps {
+  font-size: var(--blora-text-xs);
+  color: var(--blora-color-text-subtle);
+  font-family: var(--blora-font-mono);
+}
+
+.blora-tour-target-ring {
+  position: fixed;
+  z-index: var(--blora-z-toast);
+  pointer-events: none;
+  border-radius: var(--blora-radius-md);
+  box-shadow:
+    0 0 0 9999px var(--blora-color-overlay-modal),
+    0 0 0 3px var(--blora-color-action-primary-default);
+}

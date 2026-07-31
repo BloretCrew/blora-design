@@ -1,0 +1,145 @@
+/* Blora Design 2.0 - transfer component (beta, migrated from v1) */
+
+.blora-transfer {
+  display: flex;
+  gap: var(--blora-space-3);
+  align-items: center;
+  min-width: 0;
+  container-type: inline-size;
+}
+
+.blora-transfer__panel {
+  flex: 1 1 0;
+  min-width: 0;
+  border: var(--blora-border-subtle);
+  border-radius: var(--blora-radius-md);
+  background: var(--blora-color-surface-default);
+  display: flex;
+  flex-direction: column;
+  max-height: 240px;
+}
+
+.blora-transfer__head {
+  padding: var(--blora-space-3) var(--blora-space-4);
+  border-bottom: 1px solid var(--blora-color-border-subtle);
+  font-size: var(--blora-text-sm);
+  font-weight: 500;
+}
+
+.blora-transfer__list {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--blora-space-2);
+}
+
+.blora-transfer__row {
+  display: flex;
+  align-items: center;
+  gap: var(--blora-space-2);
+  padding: 0.4em 0.5em;
+  font-size: var(--blora-text-sm);
+  color: var(--blora-color-text-emphasis);
+  border-radius: var(--blora-radius-sm);
+  cursor: pointer;
+  user-select: none;
+}
+
+.blora-transfer__row:hover {
+  background: var(--blora-color-surface-raised);
+}
+
+.blora-transfer__row input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.blora-transfer__check {
+  width: 1.15em;
+  height: 1.15em;
+  flex: none;
+  border: 1.5px solid var(--blora-color-text-subtle);
+  border-radius: var(--blora-radius-xs);
+  background: var(--blora-color-surface-default);
+  display: grid;
+  place-items: center;
+  transition: all var(--blora-duration-fast) var(--blora-easing-standard);
+  position: relative;
+}
+
+.blora-transfer__check::after {
+  content: "";
+  width: 0.58em;
+  height: 0.34em;
+  border: solid var(--blora-color-text-on-accent);
+  border-width: 0 0 2px 2px;
+  opacity: 0;
+  transform: rotate(-45deg) scale(0.4);
+  transition: all var(--blora-duration-fast) var(--blora-easing-overshoot);
+}
+
+.blora-transfer__row input:checked + .blora-transfer__check {
+  background: var(--blora-color-action-primary-default);
+  border-color: var(--blora-color-action-primary-default);
+}
+
+.blora-transfer__row input:checked + .blora-transfer__check::after {
+  opacity: 1;
+  transform: rotate(-45deg) scale(1);
+}
+
+.blora-transfer__row input:focus-visible + .blora-transfer__check {
+  box-shadow: var(
+    0 0 0 3px color-mix(in srgb, var(--blora-color-action-primary-default) 30%, transparent)
+  );
+}
+
+.blora-transfer__row input:disabled + .blora-transfer__check {
+  opacity: 0.4;
+}
+
+.blora-transfer__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--blora-space-2);
+}
+
+.blora-transfer {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.blora-transfer__panel {
+  width: 100%;
+  min-height: 10rem;
+  flex-basis: auto;
+}
+
+.blora-transfer__actions {
+  flex-direction: row;
+  justify-content: center;
+}
+
+.blora-transfer__actions .blora-btn {
+  rotate: 90deg;
+}
+
+.blora-transfer {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.blora-transfer__panel {
+  width: 100%;
+  min-height: 10rem;
+  flex-basis: auto;
+}
+
+.blora-transfer__actions {
+  flex-direction: row;
+  justify-content: center;
+}
+
+.blora-transfer__actions .blora-btn {
+  rotate: 90deg;
+}

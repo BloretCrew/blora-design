@@ -99,6 +99,7 @@
   transition: all var(--blora-duration-fast) var(--blora-easing-standard);
 }
 
+.blora-select__option:hover,
 .blora-select__option[data-active] {
   background: var(--blora-color-surface-raised);
   color: var(--blora-color-text-primary);

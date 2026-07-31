@@ -62,6 +62,20 @@
   white-space: nowrap;
 }
 
+/* Brand mark - circular logo background */
+.blora-brand-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 1.8em;
+  height: 1.8em;
+  flex: none;
+  overflow: hidden;
+  color: var(--blora-color-brand-glyph);
+  background: var(--blora-color-action-primary-default);
+  border-radius: 50%;
+  box-shadow: var(--blora-shadow-2);
+}
+
 .blora-navbar__menu {
   display: flex;
   gap: var(--blora-space-2);

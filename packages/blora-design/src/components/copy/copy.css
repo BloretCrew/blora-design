@@ -1,0 +1,32 @@
+/* Blora Design 2.0 - Copy component (beta, click-to-copy interaction) */
+
+.blora-copy {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--blora-space-2);
+  cursor: pointer;
+  transition: opacity var(--blora-duration-fast) var(--blora-easing-standard);
+}
+
+.blora-copy:hover {
+  opacity: 0.8;
+}
+
+.blora-copy[data-copied] {
+  color: var(--blora-color-status-success);
+}
+
+.blora-copy__icon {
+  flex: none;
+  font-size: 0.85em;
+  opacity: 0.6;
+}
+
+.blora-copy__icon svg {
+  display: block;
+}
+
+.blora-copy[data-copied] .blora-copy__icon {
+  opacity: 1;
+}

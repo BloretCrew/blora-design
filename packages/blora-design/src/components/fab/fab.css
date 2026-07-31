@@ -1,0 +1,98 @@
+/* Blora Design 2.0 - fab component (beta, migrated from v1) */
+
+.blora-fab {
+  position: fixed;
+  right: max(var(--blora-space-5), env(safe-area-inset-right, 0px));
+  bottom: max(var(--blora-space-5), env(safe-area-inset-bottom, 0px));
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--blora-color-action-primary-default);
+  color: var(--blora-color-text-on-accent);
+  display: grid;
+  place-items: center;
+  border: none;
+  cursor: pointer;
+  box-shadow: var(--blora-shadow-4), var(--blora-shadow-primary);
+  z-index: var(--blora-z-dropdown);
+  transition:
+    transform var(--blora-duration-base) var(--blora-easing-overshoot),
+    opacity var(--blora-duration-base) var(--blora-easing-standard);
+}
+
+.blora-fab:hover {
+  transform: scale(1.12);
+}
+
+.blora-fab[data-hidden] {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.86);
+}
+
+.blora-fab--static {
+  position: relative;
+  right: auto;
+  bottom: auto;
+  inset: auto;
+  z-index: auto;
+  flex: none;
+}
+
+.blora-fab--static[data-hidden] {
+  opacity: 1;
+  pointer-events: auto;
+  transform: none;
+}
+
+.blora-fab:not(.blora-fab--static) {
+  right: max(var(--blora-space-4), env(safe-area-inset-right, 0px));
+  bottom: max(var(--blora-space-4), env(safe-area-inset-bottom, 0px));
+  width: 3rem;
+  height: 3rem;
+}
+
+.blora-fab) {
+  position: fixed;
+  right: max(var(--blora-space-5), env(safe-area-inset-right, 0px));
+  bottom: max(var(--blora-space-5), env(safe-area-inset-bottom, 0px));
+  z-index: var(--blora-z-dropdown);
+  width: 56px;
+  height: 56px;
+  border: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  color: var(--blora-color-text-on-accent);
+  background: var(--blora-color-action-primary-default);
+  box-shadow: var(--blora-shadow-4), var(--blora-shadow-primary);
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.86);
+  transition:
+    opacity var(--blora-duration-base) var(--blora-easing-standard),
+    transform var(--blora-duration-base) var(--blora-easing-overshoot);
+}
+
+.blora-fab).is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+
+.blora-fab)[data-hidden] {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.86);
+}
+
+.blora-fab:hover {
+  transform: scale(1.12);
+}
+
+.blora-fab:not(.blora-fab--static),
+[dir="rtl"] .blora-backtop:not(.blora-fab) {
+  right: auto;
+  left: max(var(--blora-space-5), env(safe-area-inset-left, 0px));
+}
