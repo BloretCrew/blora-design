@@ -6,14 +6,20 @@ const meta = {
   component: ".blora-slider",
   tags: ["autodocs"],
 } satisfies Meta;
-
 export default meta;
 type Story = StoryObj;
 
 export const Default: Story = {
   render: () => html`
     <div class="blora-slider">
-      <p class="blora-text-muted">slider component (beta)</p>
+      <span class="blora-text-sm blora-text-muted">0</span>
+      <div class="blora-slider__track">
+        <div class="blora-slider__fill" style="width: 60%;"></div>
+        <div class="blora-slider__thumb" style="left: 60%;"></div>
+      </div>
+      <span class="blora-text-sm blora-text-primary" style="min-width: 3ch; text-align: end;"
+        >60</span
+      >
     </div>
   `,
 };
