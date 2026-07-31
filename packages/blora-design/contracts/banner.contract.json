@@ -1,0 +1,27 @@
+{
+  "$schema": "../../schemas/component-contract.schema.json",
+  "name": "banner",
+  "status": "stable",
+  "kind": "css-only",
+  "since": "2.0.0",
+  "requiresJavaScript": false,
+  "formAssociated": false,
+  "attributes": {},
+  "properties": {},
+  "methods": {},
+  "events": {},
+  "classes": {
+    "blora-banner": "Root container.",
+    "blora-banner__body": "Title and description wrapper.",
+    "blora-banner__title": "Banner heading.",
+    "blora-banner__desc": "Banner description text.",
+    "blora-banner__actions": "Action button container."
+  },
+  "slots": {
+    "default": "Banner content"
+  },
+  "parts": [],
+  "cssProperties": [],
+  "accessibilityPattern": "section",
+  "migrationFromV1": "banner.migration.md"
+}

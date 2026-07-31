@@ -1,0 +1,41 @@
+/* =========================================================================
+   Blora Design 2.0 - Message component (inline pill)
+   Visual baseline: legacy/v1/blora.css lines 2194-2199
+   ========================================================================= */
+
+.blora-message {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--blora-space-3);
+  padding: 0.7em 1.2em;
+  background: var(--blora-color-surface-default);
+  border: 1px solid var(--blora-color-border-subtle);
+  border-radius: var(--blora-radius-full);
+  box-shadow: var(--blora-shadow-3);
+  font-size: var(--blora-text-sm);
+}
+
+.blora-message__icon {
+  flex: none;
+  font-size: 1.1em;
+}
+
+.blora-message__icon svg {
+  display: block;
+}
+
+.blora-message[data-variant="success"] .blora-message__icon {
+  color: var(--blora-color-status-success);
+}
+
+.blora-message[data-variant="warning"] .blora-message__icon {
+  color: var(--blora-color-status-warning);
+}
+
+.blora-message[data-variant="danger"] .blora-message__icon {
+  color: var(--blora-color-status-danger);
+}
+
+.blora-message[data-variant="info"] .blora-message__icon {
+  color: var(--blora-color-status-info);
+}

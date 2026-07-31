@@ -1,0 +1,58 @@
+/* =========================================================================
+   Blora Design 2.0 - Banner component
+   Visual baseline: legacy/v1/blora.css lines 2178-2190
+   ========================================================================= */
+
+.blora-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--blora-space-4);
+  min-width: 0;
+  max-width: 100%;
+  padding: var(--blora-space-5) var(--blora-space-6);
+  border-radius: var(--blora-radius-lg);
+  background: var(--blora-color-banner-background);
+  color: var(--blora-color-banner-foreground);
+  position: relative;
+  overflow: hidden;
+  container-type: inline-size;
+}
+
+/* Decorative radial gradient */
+.blora-banner::before {
+  content: "";
+  position: absolute;
+  inset-inline-end: -20%;
+  top: -50%;
+  width: 60%;
+  height: 200%;
+  background: radial-gradient(
+    ellipse,
+    color-mix(in srgb, var(--blora-color-action-primary-default) 25%, transparent) 0%,
+    transparent 70%
+  );
+}
+
+.blora-banner__body {
+  flex: 1;
+  min-width: 0;
+  z-index: var(--blora-z-base);
+}
+
+.blora-banner__title {
+  font-family: var(--blora-font-heading);
+  font-size: var(--blora-text-xl);
+  margin-bottom: var(--blora-space-1);
+  text-wrap: balance;
+}
+
+.blora-banner__desc {
+  font-size: var(--blora-text-sm);
+  opacity: 0.85;
+}
+
+.blora-banner__actions {
+  z-index: var(--blora-z-base);
+  display: flex;
+  gap: var(--blora-space-2);
+}

@@ -1,0 +1,29 @@
+{
+  "$schema": "../../schemas/component-contract.schema.json",
+  "name": "message",
+  "status": "stable",
+  "kind": "css-only",
+  "since": "2.0.0",
+  "requiresJavaScript": false,
+  "formAssociated": false,
+  "attributes": {
+    "data-variant": {
+      "type": "\"info\" | \"success\" | \"warning\" | \"danger\"",
+      "default": "info"
+    }
+  },
+  "properties": {},
+  "methods": {},
+  "events": {},
+  "classes": {
+    "blora-message": "Root inline pill container.",
+    "blora-message__icon": "Status icon, colored by variant."
+  },
+  "slots": {
+    "default": "Message text"
+  },
+  "parts": [],
+  "cssProperties": [],
+  "accessibilityPattern": "status",
+  "migrationFromV1": "message.migration.md"
+}

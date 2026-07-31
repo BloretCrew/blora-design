@@ -62,6 +62,9 @@
     "./components/empty.css": "./dist/components/empty/empty.css",
     "./components/result.css": "./dist/components/result/result.css",
     "./components/avatar.css": "./dist/components/avatar/avatar.css",
+    "./components/banner.css": "./dist/components/banner/banner.css",
+    "./components/message.css": "./dist/components/message/message.css",
+    "./components/sidebar-layout.css": "./dist/components/sidebar-layout/sidebar-layout.css",
     "./compat/v1": {
       "types": "./dist/compat/v1/index.d.ts",
       "import": "./dist/compat/v1/index.js"
