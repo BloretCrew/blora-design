@@ -17,6 +17,10 @@
   font-size: 1.2em;
 }
 
+.blora-alert__icon svg {
+  display: block;
+}
+
 .blora-alert__body {
   flex: 1;
   min-width: 0;
@@ -48,6 +52,10 @@
 
 .blora-alert__close:hover {
   opacity: 1;
+}
+
+.blora-alert__close svg {
+  display: block;
 }
 
 .blora-alert[data-variant="info"] {
