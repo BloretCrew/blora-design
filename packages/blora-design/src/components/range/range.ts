@@ -56,7 +56,7 @@ export function createRangeController(root: HTMLElement): RangeController {
 
       // Prevent thumbs from crossing
       const idx = thumbs.indexOf(thumb);
-      const otherVal = Number(thumbs[1 - idx].dataset.val ?? min);
+      const otherVal = Number(thumbs[1 - idx]!.dataset.val ?? min);
       if (idx === 0 && val > otherVal) return;
       if (idx === 1 && val < otherVal) return;
 

@@ -27,7 +27,7 @@ export function createOtpController(root: HTMLElement): OtpController {
 
     if (input.value) {
       const idx = inputs.indexOf(input);
-      if (idx < inputs.length - 1) inputs[idx + 1].focus();
+      if (idx < inputs.length - 1) inputs[idx + 1]!.focus();
     }
   };
 
@@ -37,14 +37,14 @@ export function createOtpController(root: HTMLElement): OtpController {
 
     if (e.key === "Backspace" && !input.value && idx > 0) {
       e.preventDefault();
-      inputs[idx - 1].focus();
-      inputs[idx - 1].value = "";
+      inputs[idx - 1]!.focus();
+      inputs[idx - 1]!.value = "";
     } else if (e.key === "ArrowLeft" && idx > 0) {
       e.preventDefault();
-      inputs[idx - 1].focus();
+      inputs[idx - 1]!.focus();
     } else if (e.key === "ArrowRight" && idx < inputs.length - 1) {
       e.preventDefault();
-      inputs[idx + 1].focus();
+      inputs[idx + 1]!.focus();
     }
   };
 
@@ -56,12 +56,12 @@ export function createOtpController(root: HTMLElement): OtpController {
 
     chars.forEach((ch, i) => {
       if (idx + i < inputs.length) {
-        inputs[idx + i].value = ch;
+        inputs[idx + i]!.value = ch;
       }
     });
 
     const lastFilled = Math.min(idx + chars.length, inputs.length - 1);
-    inputs[lastFilled].focus();
+    inputs[lastFilled]!.focus();
   };
 
   inputs.forEach((input) => {

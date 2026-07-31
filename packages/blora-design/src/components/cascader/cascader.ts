@@ -20,7 +20,7 @@ export function createCascaderController(root: HTMLElement): CascaderController 
     tree = [];
   }
 
-  let trigger = root.querySelector<HTMLElement>(".blora-cascader__trigger");
+  let trigger = root.querySelector<HTMLButtonElement>(".blora-cascader__trigger");
   let panel = root.querySelector<HTMLElement>(".blora-cascader__panel");
   const result = root.querySelector<HTMLElement>(".blora-cascader__result");
 

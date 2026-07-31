@@ -16,7 +16,7 @@ export function createSplitterController(root: HTMLElement): SplitterController 
     handle = document.createElement("div");
     handle.className = "blora-splitter__handle";
     handle.innerHTML = '<span class="blora-splitter__grip"></span>';
-    root.insertBefore(handle, panes[1]);
+    root.insertBefore(handle, panes[1]!);
   }
 
   const min = Number(root.dataset.min ?? 50);
@@ -36,8 +36,8 @@ export function createSplitterController(root: HTMLElement): SplitterController 
     const minPct = (min / rect.width) * 100;
     pct = Math.max(minPct, Math.min(100 - minPct, pct));
 
-    panes[0].style.flex = `0 0 ${pct}%`;
-    panes[1].style.flex = "1 1 0%";
+    panes[0]!.style.flex = `0 0 ${pct}%`;
+    panes[1]!.style.flex = "1 1 0%";
   };
 
   const onUp = (e: PointerEvent) => {

@@ -24,6 +24,7 @@ export function createAutocompleteController(root: HTMLElement): AutocompleteCon
     menu.className = "blora-autocomplete__menu";
     root.appendChild(menu);
   }
+  const menuEl: HTMLElement = menu;
 
   let activeIndex = -1;
 
@@ -33,13 +34,13 @@ export function createAutocompleteController(root: HTMLElement): AutocompleteCon
       : options;
 
     if (filtered.length === 0 || !filter) {
-      menu!.removeAttribute("data-open");
-      menu!.innerHTML = "";
+      menuEl.removeAttribute("data-open");
+      menuEl.innerHTML = "";
       return;
     }
 
-    menu!.setAttribute("data-open", "");
-    menu!.innerHTML = filtered
+    menuEl.setAttribute("data-open", "");
+    menuEl.innerHTML = filtered
       .map(
         (opt, i) =>
           `<div class="blora-autocomplete__option" data-idx="${i}" role="option">${opt}</div>`,
@@ -50,15 +51,15 @@ export function createAutocompleteController(root: HTMLElement): AutocompleteCon
 
   const select = (val: string) => {
     input.value = val;
-    menu!.removeAttribute("data-open");
-    menu!.innerHTML = "";
+    menuEl.removeAttribute("data-open");
+    menuEl.innerHTML = "";
   };
 
   const onInput = () => render(input.value);
 
   const onKeyDown = (e: KeyboardEvent) => {
-    if (!menu!.hasAttribute("data-open")) return;
-    const opts = Array.from(menu!.querySelectorAll<HTMLElement>(".blora-autocomplete__option"));
+    if (!menuEl.hasAttribute("data-open")) return;
+    const opts = Array.from(menuEl.querySelectorAll<HTMLElement>(".blora-autocomplete__option"));
 
     if (e.key === "ArrowDown") {
       e.preventDefault();
@@ -70,9 +71,10 @@ export function createAutocompleteController(root: HTMLElement): AutocompleteCon
       opts.forEach((o, i) => o.toggleAttribute("data-active", i === activeIndex));
     } else if (e.key === "Enter") {
       e.preventDefault();
-      if (activeIndex >= 0 && opts[activeIndex]) select(opts[activeIndex].textContent ?? "");
+      const opt = opts[activeIndex];
+      if (opt) select(opt.textContent ?? "");
     } else if (e.key === "Escape") {
-      menu!.removeAttribute("data-open");
+      menuEl.removeAttribute("data-open");
     }
   };
 
@@ -83,7 +85,7 @@ export function createAutocompleteController(root: HTMLElement): AutocompleteCon
 
   const onDocClick = (e: MouseEvent) => {
     if (!root.contains(e.target as Node)) {
-      menu!.removeAttribute("data-open");
+      menuEl.removeAttribute("data-open");
     }
   };
 
@@ -96,7 +98,7 @@ export function createAutocompleteController(root: HTMLElement): AutocompleteCon
     destroy() {
       input.removeEventListener("input", onInput);
       input.removeEventListener("keydown", onKeyDown);
-      menu!.removeEventListener("click", onClick);
+      menuEl.removeEventListener("click", onClick);
       document.removeEventListener("click", onDocClick);
     },
   };

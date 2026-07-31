@@ -140,8 +140,8 @@ export function createTransferController(root: HTMLElement): TransferController 
   const buttons = root.querySelectorAll<HTMLElement>(".blora-transfer__action, [data-transfer]");
   if (panels.length < 2 || buttons.length === 0) return { destroy: () => {} };
 
-  const sourcePanel = panels[0];
-  const targetPanel = panels[1];
+  const sourcePanel = panels[0]!;
+  const targetPanel = panels[1]!;
   const sourceList = sourcePanel.querySelector<HTMLElement>(".blora-transfer__list");
   const targetList = targetPanel.querySelector<HTMLElement>(".blora-transfer__list");
 

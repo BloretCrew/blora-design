@@ -45,7 +45,7 @@ export function createTourController(root: HTMLElement): TourController {
 
   const goTo = (idx: number) => {
     current = Math.max(0, Math.min(idx, steps.length - 1));
-    const step = steps[current];
+    const step = steps[current]!;
     const rect = step.getBoundingClientRect();
 
     overlay!.style.position = "fixed";

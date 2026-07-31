@@ -24,6 +24,7 @@ export function createMentionsController(root: HTMLElement): MentionsController 
     menu.className = "blora-mentions__menu";
     root.appendChild(menu);
   }
+  const menuEl: HTMLElement = menu;
 
   let activeIndex = -1;
   let mentionStart = -1;
@@ -34,16 +35,16 @@ export function createMentionsController(root: HTMLElement): MentionsController 
       : options;
 
     if (filtered.length === 0) {
-      menu!.removeAttribute("data-open");
-      menu!.innerHTML = "";
+      menuEl.removeAttribute("data-open");
+      menuEl.innerHTML = "";
       return;
     }
 
-    menu!.setAttribute("data-open", "");
-    menu!.style.position = "fixed";
-    menu!.style.left = `${rect.left}px`;
-    menu!.style.top = `${rect.bottom + 4}px`;
-    menu!.innerHTML = filtered
+    menuEl.setAttribute("data-open", "");
+    menuEl.style.position = "fixed";
+    menuEl.style.left = `${rect.left}px`;
+    menuEl.style.top = `${rect.bottom + 4}px`;
+    menuEl.innerHTML = filtered
       .map(
         (opt, i) =>
           `<div class="blora-mentions__option" data-idx="${i}" role="option">@${opt}</div>`,
@@ -59,7 +60,7 @@ export function createMentionsController(root: HTMLElement): MentionsController 
     const pos = before.length + name.length + 2;
     textarea.setSelectionRange(pos, pos);
     textarea.focus();
-    menu!.removeAttribute("data-open");
+    menuEl.removeAttribute("data-open");
   };
 
   const checkMention = () => {
@@ -67,13 +68,13 @@ export function createMentionsController(root: HTMLElement): MentionsController 
     const text = textarea.value.substring(0, pos);
     const atIdx = text.lastIndexOf("@");
     if (atIdx === -1) {
-      menu!.removeAttribute("data-open");
+      menuEl.removeAttribute("data-open");
       return;
     }
 
     // Check @ is at start or preceded by whitespace
-    if (atIdx > 0 && !/\s/.test(text[atIdx - 1])) {
-      menu!.removeAttribute("data-open");
+    if (atIdx > 0 && !/\s/.test(text[atIdx - 1]!)) {
+      menuEl.removeAttribute("data-open");
       return;
     }
 
@@ -82,7 +83,7 @@ export function createMentionsController(root: HTMLElement): MentionsController 
 
     // Don't trigger if there's a space in the query
     if (query.includes(" ")) {
-      menu!.removeAttribute("data-open");
+      menuEl.removeAttribute("data-open");
       return;
     }
 
@@ -93,8 +94,8 @@ export function createMentionsController(root: HTMLElement): MentionsController 
   const onInput = () => checkMention();
 
   const onKeyDown = (e: KeyboardEvent) => {
-    if (!menu!.hasAttribute("data-open")) return;
-    const opts = Array.from(menu!.querySelectorAll<HTMLElement>(".blora-mentions__option"));
+    if (!menuEl.hasAttribute("data-open")) return;
+    const opts = Array.from(menuEl.querySelectorAll<HTMLElement>(".blora-mentions__option"));
 
     if (e.key === "ArrowDown") {
       e.preventDefault();
@@ -106,12 +107,13 @@ export function createMentionsController(root: HTMLElement): MentionsController 
       opts.forEach((o, i) => o.toggleAttribute("data-active", i === activeIndex));
     } else if (e.key === "Enter") {
       e.preventDefault();
-      if (activeIndex >= 0 && opts[activeIndex]) {
-        const name = opts[activeIndex].textContent?.replace("@", "") ?? "";
+      const opt = opts[activeIndex];
+      if (opt) {
+        const name = opt.textContent?.replace("@", "") ?? "";
         insertMention(name);
       }
     } else if (e.key === "Escape") {
-      menu!.removeAttribute("data-open");
+      menuEl.removeAttribute("data-open");
     }
   };
 
@@ -124,7 +126,7 @@ export function createMentionsController(root: HTMLElement): MentionsController 
   };
 
   const onDocClick = (e: MouseEvent) => {
-    if (!root.contains(e.target as Node)) menu!.removeAttribute("data-open");
+    if (!root.contains(e.target as Node)) menuEl.removeAttribute("data-open");
   };
 
   textarea.addEventListener("input", onInput);
@@ -136,7 +138,7 @@ export function createMentionsController(root: HTMLElement): MentionsController 
     destroy() {
       textarea.removeEventListener("input", onInput);
       textarea.removeEventListener("keydown", onKeyDown);
-      menu!.removeEventListener("click", onClick);
+      menuEl.removeEventListener("click", onClick);
       document.removeEventListener("click", onDocClick);
     },
   };
