@@ -6,6 +6,7 @@ const meta = {
   component: ".blora-chart",
   tags: ["autodocs"],
 } satisfies Meta;
+
 export default meta;
 type Story = StoryObj;
 

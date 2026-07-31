@@ -6,6 +6,7 @@ const meta = {
   component: ".blora-cascader",
   tags: ["autodocs"],
 } satisfies Meta;
+
 export default meta;
 type Story = StoryObj;
 
