@@ -44,12 +44,16 @@ export function createMentionsController(root: HTMLElement): MentionsController 
     menuEl.style.position = "fixed";
     menuEl.style.left = `${rect.left}px`;
     menuEl.style.top = `${rect.bottom + 4}px`;
-    menuEl.innerHTML = filtered
-      .map(
-        (opt, i) =>
-          `<div class="blora-mentions__option" data-idx="${i}" role="option">@${opt}</div>`,
-      )
-      .join("");
+    menuEl.replaceChildren(
+      ...filtered.map((opt, i) => {
+        const div = document.createElement("div");
+        div.className = "blora-mentions__option";
+        div.dataset.idx = String(i);
+        div.setAttribute("role", "option");
+        div.textContent = `@${opt}`;
+        return div;
+      }),
+    );
     activeIndex = -1;
   };
 

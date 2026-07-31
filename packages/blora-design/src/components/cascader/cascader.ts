@@ -41,18 +41,30 @@ export function createCascaderController(root: HTMLElement): CascaderController 
   const selectedPath: string[] = [];
 
   const renderPanel = (levels: CascaderNode[][]) => {
-    panel!.innerHTML = levels
-      .map(
-        (col, colIdx) =>
-          `<div class="blora-cascader__column">${col
-            .map((node) => {
-              const isSelected = selectedPath[colIdx] === node.label;
-              const hasChildren = node.children && node.children.length > 0;
-              return `<div class="blora-cascader__option${isSelected ? " blora-cascader__option--active" : ""}" data-col="${colIdx}" data-label="${node.label}">${node.label}${hasChildren ? '<span class="blora-cascader__arrow">›</span>' : ""}</div>`;
-            })
-            .join("")}</div>`,
-      )
-      .join("");
+    panel!.replaceChildren(
+      ...levels.map((col, colIdx) => {
+        const column = document.createElement("div");
+        column.className = "blora-cascader__column";
+        col.forEach((node) => {
+          const isSelected = selectedPath[colIdx] === node.label;
+          const hasChildren = node.children && node.children.length > 0;
+          const div = document.createElement("div");
+          div.className = "blora-cascader__option";
+          if (isSelected) div.classList.add("blora-cascader__option--active");
+          div.dataset.col = String(colIdx);
+          div.dataset.label = node.label;
+          div.textContent = node.label;
+          if (hasChildren) {
+            const arrow = document.createElement("span");
+            arrow.className = "blora-cascader__arrow";
+            arrow.textContent = "›";
+            div.appendChild(arrow);
+          }
+          column.appendChild(div);
+        });
+        return column;
+      }),
+    );
   };
 
   const updatePath = () => {

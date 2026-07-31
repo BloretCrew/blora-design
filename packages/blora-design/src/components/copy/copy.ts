@@ -87,10 +87,22 @@ export function createCopyController(root: HTMLElement): CopyController {
   const btn = root.querySelector<HTMLElement>(".blora-copy__btn, [data-copy]");
   if (!btn) return { destroy: () => {} };
 
-  const originalHTML = btn.innerHTML;
+  let originalNodes: Node[] = [];
   let restoreTimer: ReturnType<typeof setTimeout> | null = null;
 
-  const checkmarkSVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>`;
+  const createCheckmark = (): SVGElement => {
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", "0 0 24 24");
+    svg.setAttribute("fill", "none");
+    svg.setAttribute("stroke", "currentColor");
+    svg.setAttribute("stroke-width", "2.5");
+    svg.setAttribute("stroke-linecap", "round");
+    svg.setAttribute("stroke-linejoin", "round");
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", "M20 6L9 17l-5-5");
+    svg.appendChild(path);
+    return svg;
+  };
 
   const onClick = async () => {
     const text = root.dataset.copyText ?? btn.dataset.copyText ?? root.textContent?.trim() ?? "";
@@ -110,10 +122,11 @@ export function createCopyController(root: HTMLElement): CopyController {
       ta.remove();
     }
 
-    btn.innerHTML = checkmarkSVG;
+    originalNodes = Array.from(btn.childNodes);
+    btn.replaceChildren(createCheckmark());
     if (restoreTimer) clearTimeout(restoreTimer);
     restoreTimer = setTimeout(() => {
-      btn.innerHTML = originalHTML;
+      btn.replaceChildren(...originalNodes);
     }, 1500);
   };
 
