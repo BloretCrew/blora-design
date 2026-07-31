@@ -1,27 +1,49 @@
 {
+  "$schema": "../../schemas/component-contract.schema.json",
   "name": "tabs",
   "status": "stable",
   "kind": "css-only",
   "since": "2.0.0",
   "requiresJavaScript": false,
   "formAssociated": false,
-  "attributes": {},
+  "attributes": {
+    "data-variant": {
+      "type": "\"default\" | \"pills\"",
+      "default": "default"
+    },
+    "data-orientation": {
+      "type": "\"horizontal\" | \"vertical\"",
+      "default": "horizontal"
+    },
+    "data-tabs-enhanced": {
+      "type": "boolean",
+      "description": "Set automatically by createTabsController to switch from static fallback to animated indicator."
+    }
+  },
   "properties": {},
   "methods": {},
   "events": {},
+  "controller": {
+    "name": "createTabsController",
+    "description": "Optional headless controller that adds a sliding indicator, panel fade-in animation, and keyboard navigation (APG tabs pattern). CSS-only base works without it.",
+    "parameters": [{ "name": "root", "type": "HTMLElement" }],
+    "returns": "TabsController",
+    "methods": {
+      "select": {
+        "parameters": [
+          { "name": "index", "type": "number" },
+          { "name": "focus", "type": "boolean" }
+        ],
+        "returns": "void"
+      },
+      "destroy": { "returns": "void" }
+    }
+  },
   "slots": {
     "default": "Content"
   },
   "parts": [],
-  "cssProperties": [
-    "--blora-tab-w",
-    "--blora-tab-x",
-    "--blora-tab-h",
-    "--blora-tab-y",
-    "--blora-button-bg",
-    "--blora-button-fg",
-    "--blora-button-bd"
-  ],
+  "cssProperties": ["--blora-tab-w", "--blora-tab-x", "--blora-tab-h", "--blora-tab-y"],
   "accessibilityPattern": "navigation",
   "migrationFromV1": "tabs.migration.md"
 }

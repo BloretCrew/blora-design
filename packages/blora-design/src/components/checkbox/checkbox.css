@@ -39,7 +39,10 @@
   border: solid var(--blora-color-text-on-accent);
   border-width: 0 0 2px 2px;
   opacity: 0;
-  transform: rotate(-45deg) scale(0.4);
+
+  /* translateY nudge compensates for the border-checkmark's visual bias
+     toward the bottom after -45deg rotation, keeping it optically centered. */
+  transform: translateY(-0.08em) rotate(-45deg) scale(0.4);
   transition: all var(--blora-duration-fast) var(--blora-easing-overshoot);
 }
 
@@ -50,7 +53,7 @@
 
 .blora-checkbox > input:checked + .blora-checkbox__box::after {
   opacity: 1;
-  transform: rotate(-45deg) scale(1);
+  transform: translateY(-0.08em) rotate(-45deg) scale(1);
 }
 
 .blora-checkbox > input:focus-visible + .blora-checkbox__box {

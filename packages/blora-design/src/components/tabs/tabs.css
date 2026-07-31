@@ -74,8 +74,28 @@
   cursor: not-allowed;
 }
 
+/* Indicator instant mode (no transition for initial positioning) */
+.blora-tabs__indicator[data-instant] {
+  transition: none;
+}
+
 .blora-tabs__panel {
   padding-top: var(--blora-space-5);
+}
+
+/* Panel fade-in animation (Spec §17.3, ported from v1) */
+.blora-tabs__panel[data-entering] {
+  animation: blora-tab-panel-in var(--blora-duration-tabs-fade) var(--blora-easing-standard) both;
+}
+
+@keyframes blora-tab-panel-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 /* Pills variant */
@@ -88,10 +108,28 @@
   border-bottom: none;
   border-radius: var(--blora-radius-full);
   padding: 0.4em 1em;
+  margin-bottom: 0;
 }
 
+/* CSS-only fallback: selected pill gets a static background.
+   When the controller is active (data-tabs-enhanced), the sliding
+   indicator provides the background instead. */
 .blora-tabs[data-variant="pills"] .blora-tabs__tab[aria-selected="true"] {
   color: var(--blora-color-text-on-accent);
+  background: var(--blora-color-action-primary-default);
+}
+
+.blora-tabs[data-variant="pills"][data-tabs-enhanced] .blora-tabs__tab[aria-selected="true"] {
+  background: none;
+}
+
+/* Pills indicator: full-height background pill that slides between tabs */
+.blora-tabs[data-variant="pills"] .blora-tabs__indicator {
+  top: 0;
+  bottom: 0;
+  height: var(--blora-tab-h, 100%);
+  transform: translateX(var(--blora-tab-x, 0));
+  border-radius: var(--blora-radius-full);
 }
 
 /* Vertical variant */
@@ -117,4 +155,28 @@
   padding-top: 0;
   padding-inline-start: var(--blora-space-6);
   flex: 1;
+}
+
+/* Vertical indicator: right-edge bar that slides between tabs */
+.blora-tabs[data-orientation="vertical"] .blora-tabs__indicator {
+  top: 0;
+  inset-inline: auto -1px;
+  bottom: auto;
+  width: 2px;
+  height: var(--blora-tab-h, 0);
+  transform: translateY(var(--blora-tab-y, 0));
+  transition:
+    height var(--blora-duration-base) var(--blora-easing-standard),
+    transform var(--blora-duration-base) var(--blora-easing-standard);
+}
+
+/* Reduced motion: disable indicator transitions and panel animation */
+@media (prefers-reduced-motion: reduce) {
+  .blora-tabs__indicator {
+    transition: none;
+  }
+
+  .blora-tabs__panel[data-entering] {
+    animation: none;
+  }
 }

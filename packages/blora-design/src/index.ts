@@ -39,3 +39,6 @@ export {
   BLORA_SELECT_TAG,
   type BloraOptionData,
 } from "./components/select/index.js";
+
+// Tabs controller
+export { createTabsController, type TabsController } from "./components/tabs/index.js";
