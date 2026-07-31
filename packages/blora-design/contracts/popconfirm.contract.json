@@ -1,0 +1,29 @@
+{
+  "$schema": "../../schemas/component-contract.schema.json",
+  "name": "popconfirm",
+  "status": "stable",
+  "kind": "css-only",
+  "since": "2.0.0",
+  "requiresJavaScript": false,
+  "formAssociated": false,
+  "attributes": {
+    "data-open": {
+      "type": "boolean",
+      "description": "Set on root to show/hide the confirm panel."
+    }
+  },
+  "properties": {},
+  "methods": {},
+  "events": {},
+  "classes": {
+    "blora-popconfirm": "Root container.",
+    "blora-popconfirm__panel": "Floating panel.",
+    "blora-popconfirm__title": "Confirmation question.",
+    "blora-popconfirm__actions": "Confirm/cancel button container."
+  },
+  "slots": { "default": "Trigger and panel" },
+  "parts": [],
+  "cssProperties": [],
+  "accessibilityPattern": "alertdialog",
+  "migrationFromV1": "popconfirm.migration.md"
+}

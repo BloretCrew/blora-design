@@ -45,6 +45,13 @@ import "../src/components/banner/banner.css";
 import "../src/components/message/message.css";
 import "../src/components/notification/notification.css";
 import "../src/components/sidebar-layout/sidebar-layout.css";
+import "../src/components/steps/steps.css";
+import "../src/components/statistic/statistic.css";
+import "../src/components/descriptions/descriptions.css";
+import "../src/components/image/image.css";
+import "../src/components/segmented/segmented.css";
+import "../src/components/popconfirm/popconfirm.css";
+import "../src/components/collapse/collapse.css";
 
 const preview: Preview = {
   parameters: {

@@ -1,0 +1,31 @@
+{
+  "$schema": "../../schemas/component-contract.schema.json",
+  "name": "collapse",
+  "status": "stable",
+  "kind": "css-only",
+  "since": "2.0.0",
+  "requiresJavaScript": false,
+  "formAssociated": false,
+  "attributes": {
+    "data-open": {
+      "type": "boolean",
+      "description": "Set on .blora-collapse__item to toggle. Each item toggles independently (multiple can be open), unlike Accordion which allows only one open at a time."
+    }
+  },
+  "properties": {},
+  "methods": {},
+  "events": {},
+  "classes": {
+    "blora-collapse": "Root container.",
+    "blora-collapse__item": "Single collapsible item.",
+    "blora-collapse__head": "Clickable header.",
+    "blora-collapse__icon": "Expand/collapse icon.",
+    "blora-collapse__body": "Animated body wrapper.",
+    "blora-collapse__content": "Content inside body."
+  },
+  "slots": { "default": "Content" },
+  "parts": [],
+  "cssProperties": ["--blora-collapse-max-height"],
+  "accessibilityPattern": "navigation",
+  "migrationFromV1": "collapse.migration.md"
+}

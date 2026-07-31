@@ -1,0 +1,59 @@
+/* =========================================================================
+   Blora Design 2.0 - Image component
+   Visual baseline: legacy/v1/blora.css lines 2035-2040, 2310-2311
+   ========================================================================= */
+
+.blora-image {
+  position: relative;
+  display: inline-block;
+  border-radius: var(--blora-radius-md);
+  overflow: hidden;
+  background: var(--blora-color-surface-sunken);
+}
+
+.blora-image img {
+  display: block;
+  width: 100%;
+  transition: transform var(--blora-duration-slow) var(--blora-easing-standard);
+}
+
+/* Hover zoom */
+.blora-image[data-variant="hover"]:hover img {
+  transform: scale(1.04);
+}
+
+/* Caption overlay */
+.blora-image__cap {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  padding: var(--blora-space-4);
+  background: linear-gradient(transparent, var(--blora-color-overlay-media-strong));
+  color: var(--blora-color-text-on-media);
+  font-size: var(--blora-text-sm);
+}
+
+/* Frame variant: padded border around image */
+.blora-image[data-variant="frame"] {
+  padding: var(--blora-space-2);
+  background: var(--blora-color-surface-default);
+  border: 1px solid var(--blora-color-border-subtle);
+}
+
+.blora-image[data-variant="frame"] img {
+  border-radius: var(--blora-radius-sm);
+}
+
+/* Filters */
+.blora-image[data-filter="muted"] img {
+  filter: saturate(0.6) contrast(0.96);
+}
+
+.blora-image[data-filter="monochrome"] img {
+  filter: grayscale(1) contrast(1.02);
+}
+
+/* Preview cursor */
+.blora-image[data-variant="preview"] {
+  cursor: zoom-in;
+}

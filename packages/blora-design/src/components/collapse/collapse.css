@@ -1,0 +1,76 @@
+/* =========================================================================
+   Blora Design 2.0 - Collapse component (independent toggle, multiple open)
+   Visual baseline: legacy/v1/blora.css lines 1965-1975
+
+   Difference from Accordion:
+   - Collapse: each item toggles independently (multiple can be open)
+   - Accordion: only one item open at a time (controller enforces)
+   ========================================================================= */
+
+.blora-collapse {
+  border: var(--blora-border-subtle);
+  border-radius: var(--blora-radius-md);
+  background: var(--blora-color-surface-default);
+  overflow: hidden;
+}
+
+.blora-collapse__item {
+  border-bottom: 1px solid var(--blora-color-border-subtle);
+}
+
+.blora-collapse__item:last-child {
+  border-bottom: none;
+}
+
+.blora-collapse__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85em 1.1em;
+  cursor: pointer;
+  font-size: var(--blora-text-sm);
+  font-weight: 500;
+  color: var(--blora-color-text-emphasis);
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: start;
+  transition: background var(--blora-duration-fast) var(--blora-easing-standard);
+}
+
+.blora-collapse__head:hover {
+  background: var(--blora-color-surface-raised);
+}
+
+.blora-collapse__icon {
+  transition: transform var(--blora-duration-base) var(--blora-easing-standard);
+  color: var(--blora-color-text-subtle);
+  display: inline-flex;
+}
+
+.blora-collapse__item[data-open] .blora-collapse__icon {
+  transform: rotate(90deg);
+}
+
+.blora-collapse__body {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition:
+    max-height var(--blora-duration-base) var(--blora-easing-standard),
+    opacity var(--blora-duration-fast) var(--blora-easing-standard),
+    transform var(--blora-duration-base) var(--blora-easing-standard);
+}
+
+.blora-collapse__item[data-open] .blora-collapse__body {
+  max-height: var(--blora-collapse-max-height, 400px);
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.blora-collapse__content {
+  padding: 0 var(--blora-space-6) var(--blora-space-5);
+  color: var(--blora-color-text-emphasis);
+  font-size: var(--blora-text-sm);
+}

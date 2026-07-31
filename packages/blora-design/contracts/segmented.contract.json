@@ -1,0 +1,28 @@
+{
+  "$schema": "../../schemas/component-contract.schema.json",
+  "name": "segmented",
+  "status": "stable",
+  "kind": "css-only",
+  "since": "2.0.0",
+  "requiresJavaScript": false,
+  "formAssociated": false,
+  "attributes": {
+    "data-active": {
+      "type": "boolean",
+      "description": "Set on the active .blora-segmented__item."
+    }
+  },
+  "properties": {},
+  "methods": {},
+  "events": {},
+  "classes": {
+    "blora-segmented": "Root container.",
+    "blora-segmented__indicator": "Sliding background indicator.",
+    "blora-segmented__item": "Selectable item button."
+  },
+  "slots": { "default": "Content" },
+  "parts": [],
+  "cssProperties": ["--blora-segmented-padding"],
+  "accessibilityPattern": "navigation",
+  "migrationFromV1": "segmented.migration.md"
+}

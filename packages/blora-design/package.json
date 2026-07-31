@@ -66,6 +66,13 @@
     "./components/message.css": "./dist/components/message/message.css",
     "./components/notification.css": "./dist/components/notification/notification.css",
     "./components/sidebar-layout.css": "./dist/components/sidebar-layout/sidebar-layout.css",
+    "./components/steps.css": "./dist/components/steps/steps.css",
+    "./components/statistic.css": "./dist/components/statistic/statistic.css",
+    "./components/descriptions.css": "./dist/components/descriptions/descriptions.css",
+    "./components/image.css": "./dist/components/image/image.css",
+    "./components/segmented.css": "./dist/components/segmented/segmented.css",
+    "./components/popconfirm.css": "./dist/components/popconfirm/popconfirm.css",
+    "./components/collapse.css": "./dist/components/collapse/collapse.css",
     "./compat/v1": {
       "types": "./dist/compat/v1/index.d.ts",
       "import": "./dist/compat/v1/index.js"

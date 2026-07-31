@@ -1,0 +1,30 @@
+{
+  "$schema": "../../schemas/component-contract.schema.json",
+  "name": "statistic",
+  "status": "stable",
+  "kind": "css-only",
+  "since": "2.0.0",
+  "requiresJavaScript": false,
+  "formAssociated": false,
+  "attributes": {
+    "data-direction": {
+      "type": "\"up\" | \"down\"",
+      "description": "Set on .blora-stat__trend to color the trend indicator."
+    }
+  },
+  "properties": {},
+  "methods": {},
+  "events": {},
+  "classes": {
+    "blora-stat": "Root container.",
+    "blora-stat__label": "Label text (uppercase, small).",
+    "blora-stat__value": "Large numeric value.",
+    "blora-stat__suffix": "Suffix unit after value.",
+    "blora-stat__trend": "Trend indicator with up/down color."
+  },
+  "slots": { "default": "Content" },
+  "parts": [],
+  "cssProperties": [],
+  "accessibilityPattern": "section",
+  "migrationFromV1": "statistic.migration.md"
+}

@@ -1,0 +1,32 @@
+{
+  "$schema": "../../schemas/component-contract.schema.json",
+  "name": "steps",
+  "status": "stable",
+  "kind": "css-only",
+  "since": "2.0.0",
+  "requiresJavaScript": false,
+  "formAssociated": false,
+  "attributes": {
+    "data-state": {
+      "type": "\"pending\" | \"active\" | \"done\"",
+      "default": "pending"
+    }
+  },
+  "properties": {},
+  "methods": {},
+  "events": {},
+  "classes": {
+    "blora-steps": "Root container.",
+    "blora-step": "Single step item.",
+    "blora-step__head": "Icon wrapper.",
+    "blora-step__icon": "Step number/icon circle.",
+    "blora-step__line": "Connector line between steps.",
+    "blora-step__title": "Step title.",
+    "blora-step__desc": "Step description."
+  },
+  "slots": { "default": "Content" },
+  "parts": [],
+  "cssProperties": [],
+  "accessibilityPattern": "navigation",
+  "migrationFromV1": "steps.migration.md"
+}

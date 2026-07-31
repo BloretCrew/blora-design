@@ -1,0 +1,31 @@
+{
+  "$schema": "../../schemas/component-contract.schema.json",
+  "name": "image",
+  "status": "stable",
+  "kind": "css-only",
+  "since": "2.0.0",
+  "requiresJavaScript": false,
+  "formAssociated": false,
+  "attributes": {
+    "data-variant": {
+      "type": "\"default\" | \"hover\" | \"frame\" | \"preview\"",
+      "default": "default"
+    },
+    "data-filter": {
+      "type": "\"none\" | \"muted\" | \"monochrome\"",
+      "default": "none"
+    }
+  },
+  "properties": {},
+  "methods": {},
+  "events": {},
+  "classes": {
+    "blora-image": "Root figure container.",
+    "blora-image__cap": "Caption overlay at bottom."
+  },
+  "slots": { "default": "img element" },
+  "parts": [],
+  "cssProperties": [],
+  "accessibilityPattern": "figure",
+  "migrationFromV1": "image.migration.md"
+}
