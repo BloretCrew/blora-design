@@ -29,28 +29,20 @@ const otpInputs = (count: number) =>
 export const Numeric6: Story = {
   name: "Numeric (6 digits)",
   render: () => html`
-    <div class="blora-otp" data-mode="numeric" ${ref(init)}>
-      ${otpInputs(6)}
-    </div>
+    <div class="blora-otp" data-mode="numeric" ${ref(init)}>${otpInputs(6)}</div>
   `,
 };
 
 export const Alphanumeric6: Story = {
   name: "Alphanumeric (6 chars)",
   render: () => html`
-    <div class="blora-otp" data-mode="alphanumeric" ${ref(init)}>
-      ${otpInputs(6)}
-    </div>
+    <div class="blora-otp" data-mode="alphanumeric" ${ref(init)}>${otpInputs(6)}</div>
   `,
 };
 
 export const Any4: Story = {
   name: "Any characters (4 chars)",
-  render: () => html`
-    <div class="blora-otp" data-mode="any" ${ref(init)}>
-      ${otpInputs(4)}
-    </div>
-  `,
+  render: () => html` <div class="blora-otp" data-mode="any" ${ref(init)}>${otpInputs(4)}</div> `,
 };
 
 export const UppercaseAlphanumeric8: Story = {

@@ -50,33 +50,21 @@ export { createDropdownController, type DropdownController } from "./components/
 export { createSliderController, type SliderController } from "./components/slider/index.js";
 export { createRangeController, type RangeController } from "./components/range/index.js";
 export { createRateController, type RateController } from "./components/rate/index.js";
-export {
-  createCarouselController,
-  type CarouselController,
-} from "./components/carousel/index.js";
+export { createCarouselController, type CarouselController } from "./components/carousel/index.js";
 export { createTreeController, type TreeController } from "./components/tree/index.js";
 export {
   createAutocompleteController,
   type AutocompleteController,
 } from "./components/autocomplete/index.js";
-export {
-  createMentionsController,
-  type MentionsController,
-} from "./components/mentions/index.js";
+export { createMentionsController, type MentionsController } from "./components/mentions/index.js";
 export { createOtpController, type OtpController } from "./components/otp/index.js";
-export {
-  createCascaderController,
-  type CascaderController,
-} from "./components/cascader/index.js";
+export { createCascaderController, type CascaderController } from "./components/cascader/index.js";
 export {
   createDatepickerController,
   createTimepickerController,
   type DatepickerController,
 } from "./components/datepicker/index.js";
-export {
-  createSplitterController,
-  type SplitterController,
-} from "./components/splitter/index.js";
+export { createSplitterController, type SplitterController } from "./components/splitter/index.js";
 export { createTourController, type TourController } from "./components/tour/index.js";
 export {
   createDockController,
