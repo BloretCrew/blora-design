@@ -42,3 +42,6 @@ export {
 
 // Tabs controller
 export { createTabsController, type TabsController } from "./components/tabs/index.js";
+
+// Dropdown controller
+export { createDropdownController, type DropdownController } from "./components/dropdown/index.js";

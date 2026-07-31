@@ -1,16 +1,34 @@
 {
+  "$schema": "../../schemas/component-contract.schema.json",
   "name": "dropdown",
   "status": "stable",
   "kind": "css-only",
   "since": "2.0.0",
   "requiresJavaScript": false,
   "formAssociated": false,
-  "attributes": {},
+  "attributes": {
+    "data-open": {
+      "type": "boolean",
+      "description": "Set on the root to show/hide the menu."
+    }
+  },
   "properties": {},
   "methods": {},
   "events": {},
+  "controller": {
+    "name": "createDropdownController",
+    "description": "Optional headless controller that handles toggle, outside-click close, Escape close, item-click close, and ARIA synchronization. CSS-only base works without it.",
+    "parameters": [{ "name": "root", "type": "HTMLElement" }],
+    "returns": "DropdownController",
+    "methods": {
+      "open": { "returns": "void" },
+      "close": { "returns": "void" },
+      "toggle": { "returns": "void" },
+      "destroy": { "returns": "void" }
+    }
+  },
   "slots": {
-    "default": "Content"
+    "default": "Trigger and menu content"
   },
   "parts": [],
   "cssProperties": [],

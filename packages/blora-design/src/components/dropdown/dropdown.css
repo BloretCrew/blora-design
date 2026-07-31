@@ -28,7 +28,7 @@
   z-index: var(--blora-z-dropdown);
 }
 
-.blora-dropdown__menu[data-open] {
+.blora-dropdown[data-open] .blora-dropdown__menu {
   opacity: 1;
   pointer-events: auto;
   transform: translateY(0);
