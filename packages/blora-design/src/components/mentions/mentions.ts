@@ -1,6 +1,5 @@
 /**
- * Blora Design 2.0 - Mentions controller
- * Shows suggestion dropdown when user types @ in a textarea/input.
+ * Mentions: suggestion list near the @ caret with viewport flip.
  */
 export interface MentionsController {
   destroy(): void;
@@ -12,7 +11,6 @@ export function createMentionsController(root: HTMLElement): MentionsController 
   const field = root.querySelector<HTMLTextAreaElement | HTMLInputElement>("textarea, input");
   if (!field) return { destroy: () => {} };
 
-  // Lit may put options on attribute; also accept JSON on data-options
   const raw =
     root.getAttribute("data-options") ||
     root.dataset.options ||
@@ -60,7 +58,113 @@ export function createMentionsController(root: HTMLElement): MentionsController 
       menuEl.style.left = "";
       menuEl.style.top = "";
       menuEl.style.maxHeight = "";
+      menuEl.style.minWidth = "";
     }
+  };
+
+  /** Mirror field text to locate the @ caret in viewport coordinates. */
+  const measureCaret = (): { x: number; y: number; lineH: number } => {
+    const fieldRect = field.getBoundingClientRect();
+    const cs = getComputedStyle(field);
+    const lineH = Number.parseFloat(cs.lineHeight) || Number.parseFloat(cs.fontSize) * 1.4 || 20;
+    const padL = Number.parseFloat(cs.paddingLeft) || 0;
+    const padT = Number.parseFloat(cs.paddingTop) || 0;
+    const borderL = Number.parseFloat(cs.borderLeftWidth) || 0;
+    const borderT = Number.parseFloat(cs.borderTopWidth) || 0;
+
+    if (mentionStart < 0) {
+      return {
+        x: fieldRect.left + padL + borderL,
+        y: fieldRect.top + padT + borderT,
+        lineH,
+      };
+    }
+
+    const mirror = document.createElement("div");
+    mirror.setAttribute("aria-hidden", "true");
+    const style = mirror.style;
+    style.position = "fixed";
+    style.left = `${fieldRect.left}px`;
+    style.top = `${fieldRect.top}px`;
+    style.visibility = "hidden";
+    style.pointerEvents = "none";
+    style.whiteSpace = "pre-wrap";
+    style.wordWrap = "break-word";
+    style.overflowWrap = "break-word";
+    style.overflow = "hidden";
+    style.boxSizing = cs.boxSizing;
+    style.width = `${field.clientWidth}px`;
+    style.height = `${field.clientHeight}px`;
+    style.font = cs.font;
+    style.fontSize = cs.fontSize;
+    style.fontFamily = cs.fontFamily;
+    style.fontWeight = cs.fontWeight;
+    style.letterSpacing = cs.letterSpacing;
+    style.lineHeight = cs.lineHeight;
+    style.padding = cs.padding;
+    style.border = cs.border;
+    style.borderColor = "transparent";
+
+    // Text before caret (mentionStart points at @)
+    const before = field.value.slice(0, Math.max(0, mentionStart));
+    const textNode = document.createTextNode(before);
+    const marker = document.createElement("span");
+    marker.textContent = "\u200b"; // zero-width at caret / @ start
+    mirror.appendChild(textNode);
+    mirror.appendChild(marker);
+    document.body.appendChild(mirror);
+
+    // Align mirror scroll with field
+    mirror.scrollTop = field.scrollTop;
+    mirror.scrollLeft = field.scrollLeft;
+
+    const mRect = marker.getBoundingClientRect();
+    document.body.removeChild(mirror);
+
+    return {
+      x: mRect.left,
+      y: mRect.top,
+      lineH,
+    };
+  };
+
+  /**
+   * Place menu next to the typed @ (caret), with flip when near viewport edges.
+   */
+  const positionNearAt = () => {
+    const gap = 4;
+    const pad = 8;
+    const { x: caretX, y: caretY, lineH } = measureCaret();
+
+    menuEl.style.position = "fixed";
+    menuEl.style.right = "auto";
+    menuEl.style.bottom = "auto";
+    menuEl.style.zIndex = "var(--blora-z-dropdown)";
+
+    const menuW = Math.min(menuEl.offsetWidth || 180, window.innerWidth - pad * 2);
+    const menuH = Math.min(menuEl.offsetHeight || 160, window.innerHeight * 0.4);
+
+    const spaceBelow = window.innerHeight - (caretY + lineH) - pad;
+    const spaceAbove = caretY - pad;
+    const placeBelow = spaceBelow >= Math.min(menuH, 100) || spaceBelow >= spaceAbove;
+
+    let top = placeBelow ? caretY + lineH + gap : caretY - gap - menuH;
+    if (top < pad) top = pad;
+    if (top + menuH > window.innerHeight - pad) {
+      top = Math.max(pad, window.innerHeight - pad - menuH);
+    }
+    menuEl.dataset.placement = placeBelow ? "below" : "above";
+
+    let left = caretX;
+    if (left + menuW > window.innerWidth - pad) left = window.innerWidth - pad - menuW;
+    if (left < pad) left = pad;
+
+    menuEl.style.left = `${Math.round(left)}px`;
+    menuEl.style.top = `${Math.round(top)}px`;
+    menuEl.style.minWidth = "10rem";
+    menuEl.style.maxHeight = `${Math.round(
+      Math.max(80, Math.min(menuH, placeBelow ? spaceBelow : spaceAbove) || 160),
+    )}px`;
   };
 
   const render = (query: string) => {
@@ -74,6 +178,7 @@ export function createMentionsController(root: HTMLElement): MentionsController 
       return;
     }
 
+    activeIndex = Math.min(activeIndex, filtered.length - 1);
     menuEl.replaceChildren(
       ...filtered.map((opt, i) => {
         const li = document.createElement("li");
@@ -86,82 +191,11 @@ export function createMentionsController(root: HTMLElement): MentionsController 
       }),
     );
     setOpen(true);
-    // After visible, measure & flip so Storybook / viewport never clips the menu
-    requestAnimationFrame(() => positionNearAt());
-  };
-
-  /**
-   * Place menu near the field (and caret when measurable).
-   * Prefer below the textarea; flip above if not enough room. Clamp to viewport.
-   */
-  const positionNearAt = () => {
-    const gap = 6;
-    const pad = 8;
-    const fieldRect = field.getBoundingClientRect();
-    const cs = getComputedStyle(field);
-
-    // Approximate caret X inside the field for horizontal nudge
-    let caretOffsetX = 12;
-    if (mentionStart >= 0) {
-      try {
-        const mirror = document.createElement("div");
-        mirror.setAttribute("aria-hidden", "true");
-        mirror.style.cssText =
-          "position:absolute;visibility:hidden;white-space:pre-wrap;word-wrap:break-word;top:0;left:-9999px;";
-        mirror.style.width = `${field.clientWidth}px`;
-        mirror.style.font = cs.font;
-        mirror.style.padding = cs.padding;
-        mirror.style.border = cs.border;
-        mirror.style.boxSizing = cs.boxSizing;
-        mirror.textContent = field.value.slice(0, Math.max(0, mentionStart));
-        const marker = document.createElement("span");
-        marker.textContent = "@";
-        mirror.appendChild(marker);
-        document.body.appendChild(mirror);
-        caretOffsetX = Math.min(
-          Math.max(0, marker.offsetLeft - field.scrollLeft),
-          field.clientWidth - 24,
-        );
-        document.body.removeChild(mirror);
-      } catch {
-        caretOffsetX = 12;
-      }
-    }
-
-    menuEl.style.position = "fixed";
-    menuEl.style.right = "auto";
-    menuEl.style.bottom = "auto";
-    menuEl.style.zIndex = "var(--blora-z-dropdown)";
-
-    const menuW = Math.min(
-      Math.max(menuEl.offsetWidth || 180, Math.min(fieldRect.width, 220)),
-      window.innerWidth - pad * 2,
-    );
-    const menuH = Math.min(menuEl.offsetHeight || 160, window.innerHeight * 0.45);
-
-    const spaceBelow = window.innerHeight - fieldRect.bottom - pad;
-    const spaceAbove = fieldRect.top - pad;
-    const placeBelow = spaceBelow >= Math.min(menuH, 120) || spaceBelow >= spaceAbove;
-
-    let top = placeBelow
-      ? fieldRect.bottom + gap
-      : Math.max(pad, fieldRect.top - gap - menuH);
-    if (placeBelow && top + menuH > window.innerHeight - pad) {
-      top = Math.max(pad, window.innerHeight - pad - menuH);
-    }
-    menuEl.dataset.placement = placeBelow ? "below" : "above";
-
-    let left = fieldRect.left + caretOffsetX;
-    // Keep menu visually attached to the field band
-    left = Math.min(left, fieldRect.right - 120);
-    left = Math.max(fieldRect.left, left);
-    if (left + menuW > window.innerWidth - pad) left = window.innerWidth - pad - menuW;
-    if (left < pad) left = pad;
-
-    menuEl.style.left = `${Math.round(left)}px`;
-    menuEl.style.top = `${Math.round(top)}px`;
-    menuEl.style.minWidth = `${Math.min(fieldRect.width, 220)}px`;
-    menuEl.style.maxHeight = `${Math.round(Math.min(menuH, placeBelow ? spaceBelow : spaceAbove) || 160)}px`;
+    requestAnimationFrame(() => {
+      positionNearAt();
+      // Second frame: measure after layout
+      requestAnimationFrame(() => positionNearAt());
+    });
   };
 
   const insertMention = (name: string) => {
@@ -179,7 +213,6 @@ export function createMentionsController(root: HTMLElement): MentionsController 
   const checkMention = () => {
     const pos = field.selectionStart ?? 0;
     const text = field.value.substring(0, pos);
-    // Match @query at end (letters, CJK, . - _)
     const m = text.match(/@([\w\u4e00-\u9fa5.-]*)$/);
     if (!m) {
       mentionStart = -1;
@@ -187,68 +220,59 @@ export function createMentionsController(root: HTMLElement): MentionsController 
       return;
     }
     mentionStart = pos - m[0].length;
+    const query = m[1] || "";
     activeIndex = 0;
-    render(m[1] || "");
+    render(query);
   };
 
   const onInput = () => checkMention();
-  const onKeyUp = () => checkMention();
-
-  const onKeyDown = (e: KeyboardEvent) => {
+  const onKeydown = (e: KeyboardEvent) => {
     if (!root.hasAttribute("data-open")) return;
-    const opts = Array.from(menuEl.querySelectorAll<HTMLElement>(".blora-mentions__option"));
-    if (!opts.length) return;
-
+    const items = menuEl.querySelectorAll<HTMLElement>(".blora-mentions__option");
+    if (!items.length) return;
     if (e.key === "ArrowDown") {
       e.preventDefault();
-      activeIndex = Math.min(opts.length - 1, activeIndex + 1);
-      opts.forEach((o, i) => o.toggleAttribute("data-active", i === activeIndex));
+      activeIndex = (activeIndex + 1) % items.length;
+      items.forEach((li, i) => li.toggleAttribute("data-active", i === activeIndex));
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
-      activeIndex = Math.max(0, activeIndex - 1);
-      opts.forEach((o, i) => o.toggleAttribute("data-active", i === activeIndex));
+      activeIndex = (activeIndex - 1 + items.length) % items.length;
+      items.forEach((li, i) => li.toggleAttribute("data-active", i === activeIndex));
     } else if (e.key === "Enter" || e.key === "Tab") {
-      const opt = opts[activeIndex];
-      if (opt) {
-        e.preventDefault();
-        insertMention(opt.dataset.name || opt.textContent?.replace(/^@/, "") || "");
-      }
+      e.preventDefault();
+      const name = items[activeIndex]?.dataset.name;
+      if (name) insertMention(name);
     } else if (e.key === "Escape") {
+      e.preventDefault();
       setOpen(false);
     }
   };
-
   const onMenuClick = (e: MouseEvent) => {
-    const opt = (e.target as HTMLElement).closest<HTMLElement>(".blora-mentions__option");
-    if (!opt) return;
-    e.preventDefault();
-    insertMention(opt.dataset.name || opt.textContent?.replace(/^@/, "") || "");
+    const li = (e.target as HTMLElement).closest<HTMLElement>(".blora-mentions__option");
+    if (li?.dataset.name) insertMention(li.dataset.name);
   };
-
-  // mousedown preventDefault keeps focus in field
-  const onMenuDown = (e: MouseEvent) => {
-    if ((e.target as HTMLElement).closest(".blora-mentions__option")) e.preventDefault();
-  };
-
-  const onDocClick = (e: MouseEvent) => {
-    if (!root.contains(e.target as Node)) setOpen(false);
+  const onScroll = () => {
+    if (root.hasAttribute("data-open")) positionNearAt();
   };
 
   field.addEventListener("input", onInput);
-  field.addEventListener("keyup", onKeyUp as EventListener);
-  field.addEventListener("keydown", onKeyDown as EventListener);
+  field.addEventListener("keydown", onKeydown);
+  field.addEventListener("click", checkMention);
+  field.addEventListener("keyup", (e) => {
+    if (e.key === "ArrowLeft" || e.key === "ArrowRight") checkMention();
+  });
   menuEl.addEventListener("click", onMenuClick);
-  menuEl.addEventListener("mousedown", onMenuDown);
-  document.addEventListener("click", onDocClick);
+  window.addEventListener("scroll", onScroll, true);
+  window.addEventListener("resize", onScroll);
 
   return {
     destroy() {
       field.removeEventListener("input", onInput);
-      field.removeEventListener("keyup", onKeyUp as EventListener);
-      field.removeEventListener("keydown", onKeyDown as EventListener);
+      field.removeEventListener("keydown", onKeydown);
+      field.removeEventListener("click", checkMention);
       menuEl.removeEventListener("click", onMenuClick);
-      menuEl.removeEventListener("mousedown", onMenuDown);
-      document.removeEventListener("click", onDocClick);
+      window.removeEventListener("scroll", onScroll, true);
+      window.removeEventListener("resize", onScroll);
     },
   };
 }

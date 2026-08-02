@@ -122,11 +122,23 @@ export function createAffixController(root: HTMLElement): AffixController {
     if (!pinned) measure();
     const should = win.scrollY + offset >= originTop;
     if (should && !pinned) {
+      /* Measure while still in flow — never use a collapsed strip width */
       const rect = root.getBoundingClientRect();
-      const w = Math.max(rect.width, inner!.scrollWidth, inner!.offsetWidth, 192);
-      root.style.height = `${Math.max(inner!.offsetHeight, 1)}px`;
-      root.style.width = `${w}px`;
+      const parentW = root.parentElement?.getBoundingClientRect().width ?? 0;
+      const w = Math.max(
+        rect.width,
+        parentW,
+        inner!.getBoundingClientRect().width,
+        inner!.scrollWidth,
+        280,
+      );
+      const h = Math.max(inner!.offsetHeight, inner!.getBoundingClientRect().height, 40);
+      root.style.height = `${h}px`;
+      root.style.width = "100%";
+      inner!.style.boxSizing = "border-box";
       inner!.style.width = `${w}px`;
+      inner!.style.maxWidth = "calc(100vw - 1.5rem)";
+      inner!.style.whiteSpace = "nowrap";
       inner!.style.left = `${rect.left}px`;
       inner!.style.top = `${offset}px`;
       root.classList.add("is-fixed");

@@ -8,13 +8,15 @@
 .blora-popover__panel {
   position: absolute;
   inset-block-start: calc(100% + 0.5em);
-  inset-inline-start: 50%;
+  /* Left-align with trigger (not centered) */
+  inset-inline-start: 0;
+  inset-inline-end: auto;
   width: max-content;
   min-width: min(200px, calc(100vw - 2 * var(--blora-space-3)));
   max-width: min(22rem, calc(100vw - 2 * var(--blora-space-3)));
   max-height: min(24rem, calc(100dvh - 2 * var(--blora-space-3)));
   overflow: auto;
-  transform: translateX(-50%) translateY(4px);
+  transform: translateY(4px);
   padding: var(--blora-space-4);
   background: var(--blora-color-surface-default);
   border: var(--blora-border-subtle);
@@ -28,8 +30,9 @@
   z-index: var(--blora-z-dropdown);
 }
 
-.blora-popover[data-open] .blora-popover__panel {
+.blora-popover[data-open] .blora-popover__panel,
+.blora-popover.is-open .blora-popover__panel {
   opacity: 1;
   pointer-events: auto;
-  transform: translateX(-50%) translateY(0);
+  transform: translateY(0);
 }

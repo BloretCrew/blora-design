@@ -15,43 +15,53 @@ type Story = StoryObj;
 const init = (el: Element | undefined): void => {
   if (!(el instanceof HTMLElement)) return;
   (el as any).__ctrl?.destroy();
-  (el as any).__ctrl = createAffixController(el);
+  // Measure after layout
+  requestAnimationFrame(() => {
+    (el as any).__ctrl = createAffixController(el);
+  });
 };
 
 export const Default: Story = {
   render: () => html`
-    <div style="min-height: 140vh; padding: var(--blora-space-4); max-width: 40rem;">
-      <p class="blora-text-sm" style="color: var(--blora-color-text-muted); margin: 0 0 2rem;">
-        Scroll this page. The bar sticks to the top after it reaches the threshold.
+    <div style="max-width: 36rem; margin: 0 auto; padding: 1rem 0 60vh;">
+      <p style="margin: 0 0 3rem; color: var(--blora-color-text-muted); font-size: var(--blora-text-sm);">
+        Scroll down. The bar sticks to the top after it reaches the threshold.
       </p>
-      <div style="height: 6rem;"></div>
-      <div class="blora-affix" data-offset="12" ${ref(init)}>
+
+      <div style="height: 4rem;"></div>
+
+      <!-- Full-width host so pin width is never a thin strip -->
+      <div class="blora-affix" data-offset="12" style="width: 100%;" ${ref(init)}>
         <div
           class="blora-affix__inner"
           style="
             display: flex;
+            flex-wrap: nowrap;
             align-items: center;
-            gap: var(--blora-space-3);
+            gap: 0.75rem;
             width: 100%;
-            max-width: 40rem;
             box-sizing: border-box;
+            white-space: nowrap;
             background: var(--blora-color-surface-default);
             border: 1px solid var(--blora-color-border-subtle);
             border-radius: var(--blora-radius-md);
-            padding: var(--blora-space-3) var(--blora-space-4);
+            padding: 0.65rem 1rem;
             box-shadow: var(--blora-shadow-2);
           "
         >
-          <strong class="blora-text-sm">Affix bar</strong>
-          <span class="blora-text-xs" style="color: var(--blora-color-text-subtle);"
+          <strong style="font-size: var(--blora-text-sm); color: var(--blora-color-text-primary);"
+            >Affix bar</strong
+          >
+          <span style="font-size: var(--blora-text-xs); color: var(--blora-color-text-subtle);"
             >Stays visible while scrolling</span
           >
         </div>
       </div>
-      <div style="height: 90vh; margin-top: 1rem;">
-        <p class="blora-text-sm" style="color: var(--blora-color-text-muted);">
-          Page content continues below…
-        </p>
+
+      <div style="margin-top: 2rem; color: var(--blora-color-text-muted); font-size: var(--blora-text-sm);">
+        <p>Page content continues below…</p>
+        <p style="margin-top: 40vh;">More content…</p>
+        <p style="margin-top: 40vh;">Bottom</p>
       </div>
     </div>
   `,

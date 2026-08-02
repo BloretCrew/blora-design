@@ -19,13 +19,17 @@ const init = (el: Element | undefined): void => {
 
 export const Default: Story = {
   render: () => html`
-    <div class="blora-popover" ${ref(init)} style="display:inline-block;">
-      <button type="button" class="blora-button" data-variant="outline" data-blora-popover>
-        打开 Popover
-      </button>
-      <div class="blora-popover__panel" style="min-width:12rem;padding:var(--blora-space-3);">
-        <p style="margin:0 0 0.75rem;font-size:var(--blora-text-sm);">面板内容</p>
-        <button type="button" class="blora-button" data-size="sm" data-blora-close>关闭</button>
+    <div style="padding: 2rem;">
+      <div class="blora-popover" ${ref(init)}>
+        <button type="button" class="blora-button" data-variant="outline" data-blora-popover>
+          Open Popover
+        </button>
+        <div class="blora-popover__panel">
+          <p style="margin: 0 0 0.75rem; font-size: var(--blora-text-sm); color: var(--blora-color-text-secondary);">
+            Panel content
+          </p>
+          <button type="button" class="blora-button" data-size="sm" data-blora-close>Close</button>
+        </div>
       </div>
     </div>
   `,

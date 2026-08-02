@@ -61,13 +61,14 @@
   white-space: nowrap;
 }
 
+/* Default: no arrow. Hover: ⇅. Active sort: ▲ / ▼ */
 .blora-table th[data-sort] .blora-table__sort,
 .blora-table th[data-blora-sort] .blora-table__sort {
   display: inline-block;
   margin-inline-start: 0.35em;
-  width: 0.65em;
-  opacity: 0.35;
-  font-size: 0.75em;
+  min-width: 0.75em;
+  opacity: 0;
+  font-size: 0.7em;
   vertical-align: middle;
   transition: opacity var(--blora-duration-fast) var(--blora-easing-standard);
 }
@@ -79,7 +80,7 @@
 
 .blora-table th[data-sort]:hover .blora-table__sort,
 .blora-table th[data-blora-sort]:hover .blora-table__sort {
-  opacity: 0.75;
+  opacity: 0.7;
 }
 
 .blora-table th[data-sort-dir="asc"] .blora-table__sort,

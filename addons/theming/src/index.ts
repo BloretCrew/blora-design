@@ -82,6 +82,15 @@ export function applyColorScheme(
 ): void {
   if (typeof document === "undefined") return;
   el.setAttribute("data-blora-color-scheme", scheme);
+  el.style.colorScheme = scheme;
+  /* Sync body so Storybook / plain pages get dark canvas with light text */
+  const body = el.ownerDocument?.body;
+  if (body) {
+    body.style.backgroundColor = "";
+    body.style.color = "";
+    /* force reflow of CSS vars on body descendants */
+    body.setAttribute("data-blora-color-scheme", scheme);
+  }
   if (options?.persist !== false) {
     try {
       localStorage.setItem(SCHEME_KEY, scheme);

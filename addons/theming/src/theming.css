@@ -1,4 +1,23 @@
-/* Blora Design 2.0 - Theming add-on (palette picker) */
+/* Blora Design 2.0 - Theming add-on (palette picker + scheme helpers) */
+
+/* When dark scheme is explicit, paint document chrome so light Storybook bg can't bleach text */
+html[data-blora-color-scheme="dark"],
+html[data-blora-color-scheme="dark"] body {
+  background-color: var(--blora-color-surface-canvas);
+  color: var(--blora-color-text-secondary);
+}
+
+html[data-blora-color-scheme="dark"] .blora-scope {
+  background-color: var(--blora-color-surface-canvas);
+  color: var(--blora-color-text-secondary);
+  min-height: 100%;
+}
+
+html[data-blora-color-scheme="light"],
+html[data-blora-color-scheme="light"] body {
+  background-color: var(--blora-color-surface-canvas);
+  color: var(--blora-color-text-secondary);
+}
 
 .blora-palette-picker {
   position: relative;
