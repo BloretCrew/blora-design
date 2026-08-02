@@ -1,0 +1,20 @@
+{
+  "name": "tree-select",
+  "status": "beta",
+  "kind": "headless",
+  "since": "2.0.0",
+  "requiresJavaScript": true,
+  "formAssociated": false,
+  "attributes": {
+    "data-options": { "type": "string", "description": "JSON tree options" },
+    "data-open": { "type": "boolean" }
+  },
+  "methods": {},
+  "events": {
+    "blora-treeselect-change": { "detail": "{ value, label, item }" }
+  },
+  "slots": { "default": "input + optional label" },
+  "parts": [],
+  "cssProperties": [],
+  "accessibilityPattern": "combobox"
+}

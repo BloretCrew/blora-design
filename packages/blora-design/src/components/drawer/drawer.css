@@ -7,7 +7,10 @@
   display: none;
 }
 
-.blora-drawer[open] {
+.blora-drawer[open],
+.blora-drawer[data-open],
+.blora-drawer.is-open,
+.blora-drawer.is-leaving {
   display: block;
 }
 
@@ -19,6 +22,10 @@
   animation: blora-drawer-fade-in var(--blora-duration-base) var(--blora-easing-standard);
 }
 
+.blora-drawer__mask.is-leaving {
+  animation: blora-drawer-fade-out var(--blora-duration-base) var(--blora-easing-standard) forwards;
+}
+
 .blora-drawer__panel {
   position: absolute;
   inset-block: 0;
@@ -27,13 +34,21 @@
   box-shadow: var(--blora-shadow-4);
   display: flex;
   flex-direction: column;
-  animation: blora-drawer-slide-in var(--blora-duration-slow) var(--blora-easing-standard);
+  animation: blora-drawer-slide-in-right var(--blora-duration-slow) var(--blora-easing-standard);
 }
 
-.blora-drawer[data-position="right"] .blora-drawer__panel {
+/* Default position = right */
+.blora-drawer[data-position="right"] .blora-drawer__panel,
+.blora-drawer:not([data-position]) .blora-drawer__panel {
   inset-inline-end: 0;
   width: 420px;
   max-width: 90vw;
+  animation-name: blora-drawer-slide-in-right;
+}
+
+.blora-drawer[data-position="right"] .blora-drawer__panel.is-leaving,
+.blora-drawer:not([data-position]) .blora-drawer__panel.is-leaving {
+  animation-name: blora-drawer-slide-out-right;
 }
 
 .blora-drawer[data-position="left"] .blora-drawer__panel {
@@ -43,6 +58,10 @@
   animation-name: blora-drawer-slide-in-left;
 }
 
+.blora-drawer[data-position="left"] .blora-drawer__panel.is-leaving {
+  animation-name: blora-drawer-slide-out-left;
+}
+
 .blora-drawer[data-position="bottom"] .blora-drawer__panel {
   inset-block-start: auto;
   inset-inline: 0;
@@ -50,6 +69,11 @@
   max-width: 100%;
   max-height: 80vh;
   border-radius: var(--blora-radius-lg) var(--blora-radius-lg) 0 0;
+  animation-name: blora-drawer-slide-in-bottom;
+}
+
+.blora-drawer[data-position="bottom"] .blora-drawer__panel.is-leaving {
+  animation-name: blora-drawer-slide-out-bottom;
 }
 
 .blora-drawer[data-position="top"] .blora-drawer__panel {
@@ -59,6 +83,11 @@
   max-width: 100%;
   max-height: 80vh;
   border-radius: 0 0 var(--blora-radius-lg) var(--blora-radius-lg);
+  animation-name: blora-drawer-slide-in-top;
+}
+
+.blora-drawer[data-position="top"] .blora-drawer__panel.is-leaving {
+  animation-name: blora-drawer-slide-out-top;
 }
 
 .blora-drawer__header {
@@ -110,19 +139,35 @@
   from {
     opacity: 0;
   }
-
   to {
     opacity: 1;
   }
 }
 
-@keyframes blora-drawer-slide-in {
+@keyframes blora-drawer-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes blora-drawer-slide-in-right {
   from {
     transform: translateX(100%);
   }
-
   to {
     transform: translateX(0);
+  }
+}
+
+@keyframes blora-drawer-slide-out-right {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
   }
 }
 
@@ -130,9 +175,53 @@
   from {
     transform: translateX(-100%);
   }
-
   to {
     transform: translateX(0);
+  }
+}
+
+@keyframes blora-drawer-slide-out-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes blora-drawer-slide-in-bottom {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes blora-drawer-slide-out-bottom {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes blora-drawer-slide-in-top {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes blora-drawer-slide-out-top {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100%);
   }
 }
 

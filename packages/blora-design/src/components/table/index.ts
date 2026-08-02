@@ -1,1 +1,7 @@
-export { createTableController, type TableController } from "./table.js";
+export {
+  createTableController,
+  type TableController,
+  type TableControllerOptions,
+  type TableColConfig,
+  type TableRowData,
+} from "./table.js";

@@ -102,6 +102,8 @@
     "./components/tour.css": "./dist/components/tour/tour.css",
     "./components/transfer.css": "./dist/components/transfer/transfer.css",
     "./components/tree.css": "./dist/components/tree/tree.css",
+    "./components/tree-select.css": "./dist/components/tree-select/tree-select.css",
+    "./components/backtop.css": "./dist/components/backtop/backtop.css",
     "./components/upload.css": "./dist/components/upload/upload.css",
     "./compat/v1": {
       "types": "./dist/compat/v1/index.d.ts",

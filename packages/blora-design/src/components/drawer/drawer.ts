@@ -1,5 +1,5 @@
 /**
- * Drawer open/close (v1 openDrawer/closeDrawer simplified, data-open + is-open).
+ * Drawer open/close with enter/leave animations.
  */
 export interface DrawerController {
   open(): void;
@@ -13,19 +13,60 @@ export function createDrawerController(root: HTMLElement): DrawerController {
   }
   const doc = root.ownerDocument;
   const panel = root.querySelector<HTMLElement>(".blora-drawer__panel");
+  const mask = root.querySelector<HTMLElement>(".blora-drawer__mask");
+  let closing = false;
+  let closeTimer = 0;
+
+  const clearLeaving = () => {
+    root.classList.remove("is-leaving");
+    mask?.classList.remove("is-leaving");
+    panel?.classList.remove("is-leaving");
+  };
 
   const setOpen = (open: boolean) => {
     if (open) {
+      if (closeTimer) {
+        window.clearTimeout(closeTimer);
+        closeTimer = 0;
+      }
+      closing = false;
+      clearLeaving();
       root.setAttribute("data-open", "");
       root.setAttribute("open", "");
       root.classList.add("is-open");
       panel?.setAttribute("tabindex", "-1");
-      panel?.focus();
-    } else {
+      panel?.focus({ preventScroll: true });
+      return;
+    }
+    if (closing) return;
+    if (!root.hasAttribute("data-open") && !root.classList.contains("is-open") && !root.hasAttribute("open")) {
+      return;
+    }
+    closing = true;
+    root.classList.add("is-leaving");
+    mask?.classList.add("is-leaving");
+    panel?.classList.add("is-leaving");
+
+    const finish = () => {
+      if (!closing) return;
       root.removeAttribute("data-open");
       root.removeAttribute("open");
       root.classList.remove("is-open");
-    }
+      clearLeaving();
+      closing = false;
+      if (closeTimer) {
+        window.clearTimeout(closeTimer);
+        closeTimer = 0;
+      }
+      panel?.removeEventListener("animationend", onEnd);
+    };
+    const onEnd = (e: AnimationEvent) => {
+      if (e.target !== panel && e.target !== mask) return;
+      finish();
+    };
+    panel?.addEventListener("animationend", onEnd);
+    /* Fallback if animation disabled / reduced motion */
+    closeTimer = window.setTimeout(finish, 400);
   };
 
   const onClick = (e: MouseEvent) => {
@@ -35,7 +76,10 @@ export function createDrawerController(root: HTMLElement): DrawerController {
     }
   };
   const onKey = (e: KeyboardEvent) => {
-    if (e.key === "Escape" && (root.hasAttribute("data-open") || root.classList.contains("is-open") || root.hasAttribute("open"))) {
+    if (
+      e.key === "Escape" &&
+      (root.hasAttribute("data-open") || root.classList.contains("is-open") || root.hasAttribute("open"))
+    ) {
       setOpen(false);
     }
   };
@@ -63,9 +107,14 @@ export function bindDrawerTriggers(root: ParentNode = document): () => void {
     const onClick = () => {
       const drawer = document.getElementById(id);
       if (!drawer) return;
-      drawer.setAttribute("data-open", "");
-      drawer.setAttribute("open", "");
-      drawer.classList.add("is-open");
+      /* Prefer existing controller if story attached one */
+      const any = drawer as HTMLElement & { __ctrl?: { open: () => void } };
+      if (any.__ctrl?.open) any.__ctrl.open();
+      else {
+        drawer.setAttribute("data-open", "");
+        drawer.setAttribute("open", "");
+        drawer.classList.add("is-open");
+      }
     };
     btn.addEventListener("click", onClick);
     handlers.push(() => btn.removeEventListener("click", onClick));

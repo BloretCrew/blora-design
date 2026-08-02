@@ -114,17 +114,4 @@ export const ButtonGroup: Story = {
   `,
 };
 
-export const Dark: Story = {
-  render: () => html`
-    <div
-      data-blora-color-scheme="dark"
-      style="background: var(--blora-color-surface-canvas); padding: 1rem; border-radius: 8px;"
-    >
-      <div class="blora-row">
-        <button class="blora-button" type="button" data-variant="primary">Primary</button>
-        <button class="blora-button" type="button" data-variant="secondary">Secondary</button>
-        <button class="blora-button" type="button" data-variant="outline">Outline</button>
-      </div>
-    </div>
-  `,
-};
+/* Dark preview: use global scheme toggle (Add-ons/Theming), not a per-component strip. */

@@ -1,0 +1,20 @@
+{
+  "name": "form",
+  "status": "beta",
+  "kind": "headless",
+  "since": "2.0.0",
+  "requiresJavaScript": true,
+  "formAssociated": false,
+  "attributes": {
+    "data-blora-form": { "type": "boolean" },
+    "data-blora-validate-on": { "type": "string", "description": "submit,blur" }
+  },
+  "methods": {},
+  "events": {
+    "blora-form-submit": { "detail": "{ values, form }" }
+  },
+  "slots": { "default": "fields" },
+  "parts": [],
+  "cssProperties": [],
+  "accessibilityPattern": "form"
+}

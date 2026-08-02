@@ -97,25 +97,44 @@
 /* Affix */
 .blora-affix {
   position: relative;
+  display: block;
   width: 100%;
   max-width: 100%;
+  box-sizing: border-box;
 }
 
 .blora-affix__inner {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.75rem;
   width: 100%;
+  max-width: 100%;
   box-sizing: border-box;
+  white-space: nowrap;
+  word-break: keep-all;
+  overflow-wrap: normal;
+}
+
+.blora-affix__inner > * {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  word-break: keep-all;
 }
 
 .blora-affix.is-fixed > .blora-affix__inner,
 .blora-affix[data-fixed] > .blora-affix__inner {
   position: fixed;
-  z-index: var(--blora-z-sticky);
+  z-index: var(--blora-z-sticky, 100);
   border-radius: var(--blora-radius-lg);
   box-shadow: var(--blora-shadow-2);
-  /* width/left set by controller from measured box — never collapse to a strip */
-  min-width: 12rem;
+  /* width/left set by controller — never collapse to a vertical strip */
+  min-width: min(100%, 20rem);
   max-width: calc(100vw - 2rem);
+  width: var(--blora-affix-width, 100%);
   box-sizing: border-box;
+  white-space: nowrap;
 }
 
 /* Anchor / spy links */

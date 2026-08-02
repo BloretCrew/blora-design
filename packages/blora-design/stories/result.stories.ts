@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/web-components";
 import { html, svg } from "lit";
 
 const meta = {
-  title: "Data/Result",
+  title: "Feedback/Result",
   component: ".blora-result",
   tags: ["autodocs"],
 } satisfies Meta;

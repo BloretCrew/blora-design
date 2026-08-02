@@ -112,71 +112,108 @@ export function createAffixController(root: HTMLElement): AffixController {
     Number(root.getAttribute("data-offset") || root.getAttribute("data-blora-affix") || 0) || 0;
   let pinned = false;
   let originTop = 0;
+  let pinnedWidth = 0;
+  let pinnedLeft = 0;
 
-  const measure = () => {
-    originTop = root.getBoundingClientRect().top + win.scrollY;
+  const measureOrigin = () => {
+    const rect = root.getBoundingClientRect();
+    originTop = rect.top + win.scrollY;
+    /* Capture in-flow geometry before pin so fixed bar never collapses */
+    const parentW = root.parentElement?.getBoundingClientRect().width ?? 0;
+    pinnedWidth = Math.max(
+      rect.width,
+      parentW,
+      inner!.offsetWidth,
+      inner!.scrollWidth,
+      inner!.getBoundingClientRect().width,
+      320,
+    );
+    pinnedLeft = rect.left;
   };
-  measure();
+  measureOrigin();
 
-  const sync = () => {
-    if (!pinned) measure();
-    const should = win.scrollY + offset >= originTop;
-    if (should && !pinned) {
-      /* Measure while still in flow — never use a collapsed strip width */
-      const rect = root.getBoundingClientRect();
-      const parentW = root.parentElement?.getBoundingClientRect().width ?? 0;
-      const w = Math.max(
-        rect.width,
-        parentW,
-        inner!.getBoundingClientRect().width,
-        inner!.scrollWidth,
-        280,
-      );
-      const h = Math.max(inner!.offsetHeight, inner!.getBoundingClientRect().height, 40);
-      root.style.height = `${h}px`;
-      root.style.width = "100%";
-      inner!.style.boxSizing = "border-box";
-      inner!.style.width = `${w}px`;
-      inner!.style.maxWidth = "calc(100vw - 1.5rem)";
-      inner!.style.whiteSpace = "nowrap";
-      inner!.style.left = `${rect.left}px`;
-      inner!.style.top = `${offset}px`;
-      root.classList.add("is-fixed");
-      root.setAttribute("data-fixed", "");
-      pinned = true;
-    } else if (!should && pinned) {
-      root.classList.remove("is-fixed");
-      root.removeAttribute("data-fixed");
-      root.style.height = "";
-      root.style.width = "";
-      inner!.style.width = "";
-      inner!.style.left = "";
-      inner!.style.top = "";
-      pinned = false;
-    }
-  };
-
-  const onResize = () => {
-    pinned = false;
+  const clearPinStyles = () => {
     root.classList.remove("is-fixed");
     root.removeAttribute("data-fixed");
     root.style.height = "";
     root.style.width = "";
+    root.style.removeProperty("--blora-affix-width");
     inner!.style.width = "";
+    inner!.style.minWidth = "";
+    inner!.style.maxWidth = "";
     inner!.style.left = "";
     inner!.style.top = "";
-    measure();
+    inner!.style.right = "";
+  };
+
+  const applyPin = () => {
+    measureOrigin();
+    const h = Math.max(inner!.offsetHeight, inner!.getBoundingClientRect().height, 44);
+    const maxW = Math.max(160, win.innerWidth - pinnedLeft - 12);
+    const w = Math.min(Math.max(pinnedWidth, 320), maxW);
+    root.style.height = `${h}px`;
+    root.style.width = "100%";
+    root.style.setProperty("--blora-affix-width", `${w}px`);
+    inner!.style.boxSizing = "border-box";
+    inner!.style.width = `${w}px`;
+    inner!.style.minWidth = `${Math.min(w, 320)}px`;
+    inner!.style.maxWidth = `calc(100vw - 1.5rem)`;
+    inner!.style.whiteSpace = "nowrap";
+    inner!.style.left = `${Math.max(8, pinnedLeft)}px`;
+    inner!.style.top = `${offset}px`;
+    inner!.style.right = "auto";
+    root.classList.add("is-fixed");
+    root.setAttribute("data-fixed", "");
+    pinned = true;
+  };
+
+  const sync = () => {
+    if (!pinned) measureOrigin();
+    const should = win.scrollY + offset >= originTop;
+    if (should && !pinned) {
+      applyPin();
+    } else if (!should && pinned) {
+      clearPinStyles();
+      pinned = false;
+    } else if (should && pinned) {
+      /* Keep left/width in sync on scroll containers */
+      inner!.style.top = `${offset}px`;
+    }
+  };
+
+  const onResize = () => {
+    clearPinStyles();
+    pinned = false;
+    measureOrigin();
     sync();
   };
 
   win.addEventListener("scroll", sync, { passive: true });
   win.addEventListener("resize", onResize);
+  /* Storybook / docs often scroll a nested scroller, not window */
+  const scrollParents: EventTarget[] = [];
+  let p: HTMLElement | null = root.parentElement;
+  while (p) {
+    const st = win.getComputedStyle(p);
+    if (/(auto|scroll|overlay)/.test(st.overflowY + st.overflow)) {
+      p.addEventListener("scroll", sync, { passive: true });
+      scrollParents.push(p);
+    }
+    p = p.parentElement;
+  }
+  /* Initial layout after fonts/CSS */
+  requestAnimationFrame(() => {
+    measureOrigin();
+    sync();
+  });
   sync();
 
   return {
     destroy() {
       win.removeEventListener("scroll", sync);
       win.removeEventListener("resize", onResize);
+      scrollParents.forEach((el) => el.removeEventListener("scroll", sync));
+      clearPinStyles();
     },
   };
 }

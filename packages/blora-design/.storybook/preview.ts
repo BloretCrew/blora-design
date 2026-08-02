@@ -3,6 +3,8 @@ import { html } from "lit";
 
 // Import Blora Design CSS - full stack from source
 import "../../tokens/generated/tokens.css";
+import "../../tokens/generated/tokens.dark.css";
+import "../../tokens/generated/tokens.themes.css";
 import "../src/foundations/reset.css";
 import "../src/foundations/base.css";
 import "../src/foundations/layout.css";
@@ -82,6 +84,8 @@ import "../src/components/timepicker/timepicker.css";
 import "../src/components/tour/tour.css";
 import "../src/components/transfer/transfer.css";
 import "../src/components/tree/tree.css";
+import "../src/components/tree-select/tree-select.css";
+import "../src/components/backtop/backtop.css";
 import "../src/components/upload/upload.css";
 
 /* Add-ons (not in core package) — Storybook workspace sources */

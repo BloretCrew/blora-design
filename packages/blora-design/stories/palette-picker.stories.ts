@@ -7,7 +7,7 @@ import {
   getColorScheme,
 } from "../../../addons/theming/src/index";
 import "../../../addons/theming/src/theming.css";
-import "../../tokens/generated/tokens.themes.css";
+/* tokens.dark.css + tokens.themes.css loaded globally in .storybook/preview.ts */
 
 const meta = {
   title: "Add-ons/Theming/Palette Picker",

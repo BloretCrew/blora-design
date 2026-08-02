@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { renderQRCode, buildQRMatrix } from "../src/index.js";
+import { renderQRCode, buildQRMatrix, createQRCodeController, initQRCode } from "../src/index.js";
 
 describe("QRCode add-on", () => {
   it("buildQRMatrix returns a 2D boolean array", () => {
@@ -88,5 +88,21 @@ describe("QRCode add-on", () => {
     const longText = "a".repeat(200);
     const container = document.createElement("div");
     expect(() => renderQRCode(container, longText, { size: 100 })).not.toThrow();
+  });
+
+  it("createQRCodeController renders from data-text", () => {
+    const el = document.createElement("div");
+    el.className = "blora-qrcode";
+    el.setAttribute("data-text", "hello-qr");
+    const ctrl = createQRCodeController(el, { size: 80 });
+    expect(el.querySelector("canvas")).toBeTruthy();
+    ctrl.destroy();
+  });
+
+  it("initQRCode finds nodes", () => {
+    document.body.innerHTML = `<div data-blora-qrcode data-text="x"></div>`;
+    const off = initQRCode(document, { size: 64 });
+    expect(document.querySelector("canvas")).toBeTruthy();
+    off();
   });
 });

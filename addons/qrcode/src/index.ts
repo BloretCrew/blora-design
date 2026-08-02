@@ -163,7 +163,10 @@ export function renderQRCode(
   canvas.height = px;
 
   const ctx = canvas.getContext("2d");
-  if (!ctx) return;
+  if (!ctx) {
+    /* jsdom may lack canvas 2d — still leave a canvas node for structure */
+    return;
+  }
 
   ctx.fillStyle = "#ffffff";
   ctx.fillRect(0, 0, px, px);
@@ -175,4 +178,49 @@ export function renderQRCode(
       }
     }
   }
+}
+
+export interface QRCodeController {
+  render(text?: string): void;
+  destroy(): void;
+}
+
+/** Bind QR from data-text / textContent (v1 initQRCode primary path). */
+export function createQRCodeController(
+  container: HTMLElement,
+  options?: QRCodeOptions | number,
+): QRCodeController {
+  const textOf = () =>
+    container.getAttribute("data-text") ||
+    container.getAttribute("data-blora-qrcode") ||
+    container.textContent?.trim() ||
+    "";
+
+  const render = (text?: string) => {
+    renderQRCode(container, text ?? textOf(), options);
+  };
+
+  if (
+    container.hasAttribute("data-blora-qrcode") ||
+    container.hasAttribute("data-text") ||
+    container.classList.contains("blora-qrcode")
+  ) {
+    render();
+  }
+
+  return {
+    render,
+    destroy() {
+      /* canvas left in place */
+    },
+  };
+}
+
+export function initQRCode(root: ParentNode = document, options?: QRCodeOptions | number): () => void {
+  if (typeof document === "undefined") return () => {};
+  const ctrls: QRCodeController[] = [];
+  root.querySelectorAll<HTMLElement>("[data-blora-qrcode], .blora-qrcode[data-text]").forEach((el) => {
+    ctrls.push(createQRCodeController(el, options));
+  });
+  return () => ctrls.forEach((c) => c.destroy());
 }

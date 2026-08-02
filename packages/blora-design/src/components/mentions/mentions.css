@@ -19,7 +19,7 @@
 }
 
 .blora-mentions__menu {
-  /* Position fixed by controller so ancestors cannot clip it */
+  /* Controller portals to body + sets fixed left/top at the @ caret */
   position: fixed;
   z-index: var(--blora-z-dropdown);
   min-width: 10rem;
@@ -34,11 +34,16 @@
   border-radius: var(--blora-radius-md);
   box-shadow: var(--blora-shadow-3);
   display: none;
+  /* Park off-screen until positioned — fixed+no coords = top-left ghost */
+  left: -9999px;
+  top: -9999px;
+  inset: auto;
+  pointer-events: none;
 }
 
-.blora-mentions[data-open] .blora-mentions__menu,
 .blora-mentions__menu[data-open] {
   display: block;
+  pointer-events: auto;
 }
 
 .blora-mentions__option {

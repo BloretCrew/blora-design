@@ -237,19 +237,18 @@ test("accordion item opens and closes with data-open", async ({ page }) => {
     ),
   );
 
-  // Open item body should have max-height > 0
+  // Open body has content height; closed body is hard-zero (v1 tight stack)
   const openBody = page.locator(".blora-accordion__item[data-open] .blora-accordion__body");
-  const openMaxHeight = await openBody.evaluate(
-    (el: HTMLElement) => window.getComputedStyle(el).maxHeight,
-  );
-  expect(openMaxHeight).not.toBe("0px");
+  const openH = await openBody.evaluate((el: HTMLElement) => el.getBoundingClientRect().height);
+  expect(openH).toBeGreaterThan(0);
 
-  // Closed item body should have max-height 0
   const closedBody = page.locator(".blora-accordion__item:not([data-open]) .blora-accordion__body");
-  const closedMaxHeight = await closedBody.evaluate(
-    (el: HTMLElement) => window.getComputedStyle(el).maxHeight,
-  );
-  expect(closedMaxHeight).toBe("0px");
+  const closed = await closedBody.evaluate((el: HTMLElement) => {
+    const cs = window.getComputedStyle(el);
+    return { h: el.getBoundingClientRect().height, max: cs.maxHeight };
+  });
+  expect(closed.h).toBeLessThanOrEqual(1);
+  expect(closed.max).toBe("0px");
 });
 
 test("accordion icon rotates when open", async ({ page }) => {

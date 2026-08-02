@@ -91,17 +91,43 @@
 .blora-calendar__day--today {
   font-weight: 700;
   color: var(--blora-color-action-primary-default);
-  border: 1px solid var(--blora-color-action-primary-default);
+  position: relative;
 }
 
-.blora-calendar__day--selected {
+/* v1: today cue is a small primary dot under the number */
+.blora-calendar__day--today::after {
+  content: "";
+  position: absolute;
+  bottom: 0.2em;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0.3em;
+  height: 0.3em;
+  border-radius: 50%;
   background: var(--blora-color-action-primary-default);
-  color: var(--blora-color-text-on-accent);
-  font-weight: 600;
 }
 
-.blora-calendar__day--selected:hover {
-  background: var(--blora-color-action-primary-default);
+/* v1 selected: hollow outline (not solid fill) — matches legacy inset ring */
+.blora-calendar__day--selected,
+.blora-calendar__day.is-selected {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: var(--blora-color-action-primary-default) !important;
+  font-weight: 700;
+  border: none;
+  box-shadow: inset 0 0 0 2px var(--blora-color-action-primary-default);
+}
+
+.blora-calendar__day--selected:hover,
+.blora-calendar__day.is-selected:hover {
+  background: var(--blora-color-surface-raised) !important;
+  background-color: var(--blora-color-surface-raised) !important;
+  color: var(--blora-color-action-primary-default) !important;
+}
+
+/* Selected wins over today solid cues */
+.blora-calendar__day--selected.blora-calendar__day--today::after {
+  display: none;
 }
 
 /* v1-compatible cell classes used by interactive controller */
@@ -131,10 +157,50 @@
   color: var(--blora-color-action-primary-default);
 }
 
-.blora-calendar__cell[data-selected] {
+.blora-calendar__cell[data-today]::after {
+  content: "";
+  position: absolute;
+  bottom: 0.2em;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0.3em;
+  height: 0.3em;
+  border-radius: 50%;
   background: var(--blora-color-action-primary-default);
-  color: var(--blora-color-text-on-accent);
-  font-weight: 600;
+}
+
+/*
+ * v1 hollow outline: primary text + 2px inset ring, NEVER solid fill.
+ * High specificity + !important so stale/layer rules cannot repaint solid.
+ */
+.blora-calendar .blora-calendar__cell[data-selected],
+.blora-calendar .blora-calendar__cell[data-selected][data-today],
+.blora-calendar .blora-calendar__cell.is-selected,
+.blora-calendar__cell[data-selected],
+.blora-calendar__cell.is-selected {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  color: var(--blora-color-action-primary-default) !important;
+  font-weight: 700;
+  border: none;
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--blora-color-action-primary-default);
+}
+
+.blora-calendar .blora-calendar__cell[data-selected]:hover,
+.blora-calendar__cell[data-selected]:hover,
+.blora-calendar__cell.is-selected:hover {
+  background: var(--blora-color-surface-raised) !important;
+  background-color: var(--blora-color-surface-raised) !important;
+  color: var(--blora-color-action-primary-default) !important;
+  box-shadow: inset 0 0 0 2px var(--blora-color-action-primary-default);
+}
+
+.blora-calendar__cell[data-selected][data-today]::after,
+.blora-calendar__cell.is-selected.is-today::after {
+  display: none !important;
+  content: none !important;
 }
 
 .blora-calendar__cell--month,

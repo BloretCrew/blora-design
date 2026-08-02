@@ -178,7 +178,8 @@ export function createCalendarController(root: HTMLElement): CalendarController 
       render();
       return;
     }
-    if (t.closest("[data-today]")) {
+    /* Only the header "今天" button — day cells also use data-today for styling */
+    if (t.closest("button[data-today], .blora-calendar__head [data-today]")) {
       selected = new Date();
       viewYear = selected.getFullYear();
       viewMonth = selected.getMonth();

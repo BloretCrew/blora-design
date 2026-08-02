@@ -25,7 +25,7 @@
   },
   "slots": { "default": "Content" },
   "parts": [],
-  "cssProperties": ["--blora-collapse-max-height"],
+  "cssProperties": [],
   "accessibilityPattern": "navigation",
   "migrationFromV1": "collapse.migration.md"
 }

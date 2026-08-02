@@ -245,3 +245,50 @@ export function renderMarkdownTo(
   // eslint-disable-next-line no-unsanitized/property
   element.innerHTML = html;
 }
+
+export interface MarkdownController {
+  render(source?: string): void;
+  destroy(): void;
+}
+
+/**
+ * Bind markdown source from element text/data-src (v1 initMarkdown primary path).
+ */
+export function createMarkdownController(
+  element: HTMLElement,
+  options?: MarkdownOptions,
+): MarkdownController {
+  const sourceFrom = () =>
+    element.getAttribute("data-source") ||
+    element.getAttribute("data-blora-markdown") ||
+    element.textContent ||
+    "";
+
+  const render = (source?: string) => {
+    const src = source ?? sourceFrom();
+    element.classList.add("blora-md");
+    renderMarkdownTo(element, src, options);
+  };
+
+  /* Auto-render if data-blora-markdown present with content */
+  if (element.hasAttribute("data-blora-markdown") || element.hasAttribute("data-source")) {
+    render();
+  }
+
+  return {
+    render,
+    destroy() {
+      /* no listeners */
+    },
+  };
+}
+
+/** Initialize all [data-blora-markdown] nodes under root. */
+export function initMarkdown(root: ParentNode = document, options?: MarkdownOptions): () => void {
+  if (typeof document === "undefined") return () => {};
+  const ctrls: MarkdownController[] = [];
+  root.querySelectorAll<HTMLElement>("[data-blora-markdown], .blora-md[data-source]").forEach((el) => {
+    ctrls.push(createMarkdownController(el, options));
+  });
+  return () => ctrls.forEach((c) => c.destroy());
+}

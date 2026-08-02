@@ -48,7 +48,19 @@ export function toast(opts: ToastOptions | string): ToastHandle | null {
   closeBtn.type = "button";
   closeBtn.className = "blora-toast__close";
   closeBtn.setAttribute("aria-label", "关闭");
-  closeBtn.textContent = "×";
+  /* Same stroke X as static toast story — not text glyph (baseline misalign) */
+  const svg = doc.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("width", "16");
+  svg.setAttribute("height", "16");
+  svg.setAttribute("viewBox", "0 0 24 24");
+  svg.setAttribute("fill", "none");
+  svg.setAttribute("stroke", "currentColor");
+  svg.setAttribute("stroke-width", "2");
+  svg.setAttribute("aria-hidden", "true");
+  const path = doc.createElementNS("http://www.w3.org/2000/svg", "path");
+  path.setAttribute("d", "M18 6 6 18M6 6l12 12");
+  svg.appendChild(path);
+  closeBtn.appendChild(svg);
   el.appendChild(closeBtn);
 
   c.appendChild(el);

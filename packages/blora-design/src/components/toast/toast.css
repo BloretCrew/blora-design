@@ -17,6 +17,7 @@
 
 .blora-toast {
   display: flex;
+  align-items: center;
   gap: var(--blora-space-3);
   padding: var(--blora-space-4) var(--blora-space-5);
   background: var(--blora-color-surface-default);
@@ -62,16 +63,30 @@
   color: var(--blora-color-text-subtle);
   cursor: pointer;
   flex: none;
+  align-self: center;
   border: none;
   background: none;
-  padding: 0;
+  padding: 0.2em;
+  width: 1.75em;
+  height: 1.75em;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  border-radius: var(--blora-radius-sm);
+  line-height: 1;
+  font-size: 1.05em;
   transition: color var(--blora-duration-fast) var(--blora-easing-standard);
+}
+
+.blora-toast__close svg {
+  display: block;
+  width: 16px;
+  height: 16px;
 }
 
 .blora-toast__close:hover {
   color: var(--blora-color-text-primary);
+  background: var(--blora-color-surface-raised);
 }
 
 /* Variants */

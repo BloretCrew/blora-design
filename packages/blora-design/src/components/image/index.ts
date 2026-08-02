@@ -1,1 +1,7 @@
-export { createImageController, type ImageController } from "./image.js";
+export {
+  createImageController,
+  openImagePreview,
+  type ImageController,
+  type ImagePreviewHandle,
+  type ImagePreviewItem,
+} from "./image.js";

@@ -124,7 +124,13 @@ export {
   type CheckboxController,
 } from "./components/checkbox/index.js";
 export { toast, message, type ToastOptions, type ToastHandle } from "./components/toast/index.js";
-export { createTableController, type TableController } from "./components/table/index.js";
+export {
+  createTableController,
+  type TableController,
+  type TableControllerOptions,
+  type TableColConfig,
+  type TableRowData,
+} from "./components/table/index.js";
 export {
   createPopconfirmController,
   type PopconfirmController,
@@ -137,4 +143,36 @@ export {
   createAccordionController,
   type AccordionController,
 } from "./components/accordion/index.js";
-export { createImageController, type ImageController } from "./components/image/index.js";
+export {
+  createImageController,
+  openImagePreview,
+  type ImageController,
+  type ImagePreviewHandle,
+  type ImagePreviewItem,
+} from "./components/image/index.js";
+export {
+  createTreeSelectController,
+  type TreeSelectController,
+  type TreeSelectOption,
+} from "./components/tree-select/index.js";
+export {
+  createFormController,
+  getFormValues,
+  type FormController,
+  type FormValidateResult,
+} from "./components/form/index.js";
+export {
+  createBackTopController,
+  initBackTop,
+  BACKTOP_ARROW_SVG,
+  type BackTopController,
+  type BackTopOptions,
+} from "./components/backtop/index.js";
+export {
+  notify,
+  createNotificationController,
+  type NotificationOptions,
+  type NotificationHandle,
+  type NotificationPlacement,
+} from "./components/notification/index.js";
+export { createStepsController, type StepsController } from "./components/steps/index.js";

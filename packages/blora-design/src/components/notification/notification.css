@@ -85,3 +85,48 @@
 .blora-notification[data-variant="info"] .blora-notification__icon {
   color: var(--blora-color-status-info);
 }
+
+.blora-notification__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.blora-notification.is-leaving {
+  opacity: 0;
+  transition: opacity var(--blora-duration-fast) var(--blora-easing-standard);
+}
+
+/* Multi-placement stacks (v1 notify containers) */
+.blora-notify-container {
+  position: fixed;
+  z-index: var(--blora-z-toast, 1100);
+  display: flex;
+  flex-direction: column;
+  gap: var(--blora-space-2);
+  pointer-events: none;
+  max-width: min(360px, calc(100vw - 2 * var(--blora-space-4)));
+}
+
+.blora-notify-container--top-right {
+  top: max(var(--blora-space-5), env(safe-area-inset-top, 0px));
+  right: max(var(--blora-space-4), env(safe-area-inset-right, 0px));
+}
+
+.blora-notify-container--top-left {
+  top: max(var(--blora-space-5), env(safe-area-inset-top, 0px));
+  left: max(var(--blora-space-4), env(safe-area-inset-left, 0px));
+}
+
+.blora-notify-container--bottom-right {
+  bottom: max(var(--blora-space-5), env(safe-area-inset-bottom, 0px));
+  right: max(var(--blora-space-4), env(safe-area-inset-right, 0px));
+}
+
+.blora-notify-container--bottom-left {
+  bottom: max(var(--blora-space-5), env(safe-area-inset-bottom, 0px));
+  left: max(var(--blora-space-4), env(safe-area-inset-left, 0px));
+}
+
+.blora-notify-container > * {
+  pointer-events: auto;
+}

@@ -98,6 +98,110 @@
 }
 
 /* Preview cursor */
-.blora-image[data-variant="preview"] {
+.blora-image[data-variant="preview"],
+.blora-image[data-blora-preview],
+.blora-image--preview {
   cursor: zoom-in;
+}
+
+/* Lightbox overlay (v1 image preview, tokenized) */
+.blora-image-preview {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--blora-z-modal, 1000) + 20);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: var(--blora-space-5);
+  background: var(--blora-color-overlay-modal, rgba(12, 10, 14, 0.82));
+  backdrop-filter: blur(6px);
+}
+
+.blora-image-preview.is-open {
+  display: flex;
+}
+
+.blora-image-preview__stage {
+  position: relative;
+  max-width: min(92vw, 1100px);
+  max-height: min(88dvh, 900px);
+  display: grid;
+  place-items: center;
+}
+
+.blora-image-preview__img {
+  max-width: 100%;
+  max-height: min(82dvh, 860px);
+  object-fit: contain;
+  border-radius: var(--blora-radius-md);
+  box-shadow: var(--blora-shadow-4);
+  user-select: none;
+}
+
+.blora-image-preview__cap {
+  position: absolute;
+  left: 50%;
+  bottom: -2.25rem;
+  transform: translateX(-50%);
+  color: var(--blora-color-text-on-media, rgba(255, 255, 255, 0.82));
+  font-size: var(--blora-text-sm);
+  white-space: nowrap;
+}
+
+.blora-image-preview__btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.blora-image-preview__btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.blora-image-preview__btn--prev {
+  left: max(var(--blora-space-3), env(safe-area-inset-left, 0px));
+}
+
+.blora-image-preview__btn--next {
+  right: max(var(--blora-space-3), env(safe-area-inset-right, 0px));
+}
+
+.blora-image-preview__close {
+  position: absolute;
+  top: max(var(--blora-space-3), env(safe-area-inset-top, 0px));
+  right: max(var(--blora-space-3), env(safe-area-inset-right, 0px));
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  font-size: 1.25rem;
+}
+
+.blora-image-preview__close:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.blora-image-preview__count {
+  position: absolute;
+  top: max(var(--blora-space-4), env(safe-area-inset-top, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.75);
+  font-size: var(--blora-text-sm);
 }

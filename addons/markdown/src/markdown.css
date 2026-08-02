@@ -74,21 +74,24 @@
     color: var(--blora-color-text-muted);
   }
 
+  /* Align with mockup code block: JetBrains Mono stack + 0.875rem / 1.7 */
   .blora-md__pre {
     margin: 0.5em 0 0.75em;
-    padding: var(--blora-space-3);
-    border-radius: var(--blora-radius-md);
+    padding: 1rem 1.25rem;
+    border-radius: var(--blora-radius-lg);
     background: var(--blora-color-code-background);
     color: var(--blora-color-code-foreground);
     overflow-x: auto;
     font-family: var(--blora-font-mono);
-    font-size: 0.88em;
-    line-height: 1.5;
+    font-size: 0.875rem;
+    line-height: 1.7;
+    direction: ltr;
+    white-space: pre;
   }
 
   .blora-md__code {
     font-family: var(--blora-font-mono);
-    font-size: 0.9em;
+    font-size: 0.875em;
     padding: 0.1em 0.35em;
     border-radius: var(--blora-radius-xs);
     background: var(--blora-color-surface-sunken);
@@ -100,7 +103,8 @@
     padding: 0;
     background: transparent;
     color: inherit;
-    font-size: inherit;
+    font: inherit;
+    white-space: inherit;
   }
 
   .blora-md__a {

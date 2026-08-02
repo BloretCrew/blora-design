@@ -1,5 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { renderMarkdown, renderMarkdownTo } from "../src/index.js";
+import {
+  renderMarkdown,
+  renderMarkdownTo,
+  createMarkdownController,
+  initMarkdown,
+} from "../src/index.js";
 
 describe("Markdown add-on", () => {
   it("renders empty source as empty string", () => {
@@ -144,5 +149,21 @@ describe("Markdown add-on", () => {
     const html = renderMarkdown("```\n**not bold**\n```");
     expect(html).not.toContain("<strong>not bold</strong>");
     expect(html).toContain("**not bold**");
+  });
+
+  it("createMarkdownController renders data-source", () => {
+    const el = document.createElement("div");
+    el.setAttribute("data-blora-markdown", "");
+    el.setAttribute("data-source", "**hi**");
+    const ctrl = createMarkdownController(el);
+    expect(el.innerHTML).toContain("<strong>hi</strong>");
+    ctrl.destroy();
+  });
+
+  it("initMarkdown binds nodes", () => {
+    document.body.innerHTML = `<div data-blora-markdown data-source="# T"></div>`;
+    const off = initMarkdown(document);
+    expect(document.querySelector("[data-blora-markdown]")?.innerHTML).toContain("blora-md__h1");
+    off();
   });
 });

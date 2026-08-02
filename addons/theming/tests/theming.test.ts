@@ -4,6 +4,8 @@ import {
   getTheme,
   THEME_PRESETS,
   createPalettePickerController,
+  applyColorScheme,
+  getColorScheme,
 } from "../src/index.js";
 
 describe("theming add-on", () => {
@@ -32,5 +34,12 @@ describe("theming add-on", () => {
     const ctrl = createPalettePickerController(root);
     expect(root.querySelectorAll("[data-blora-palette-option]").length).toBeGreaterThan(3);
     ctrl.destroy();
+  });
+
+  it("applyColorScheme sets dark attribute", () => {
+    applyColorScheme("dark", document.documentElement, { persist: false, emit: false });
+    expect(getColorScheme()).toBe("dark");
+    applyColorScheme("light", document.documentElement, { persist: false, emit: false });
+    expect(getColorScheme()).toBe("light");
   });
 });

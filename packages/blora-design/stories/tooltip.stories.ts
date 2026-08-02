@@ -4,7 +4,7 @@ import { ref } from "lit/directives/ref.js";
 import { createTooltipController } from "../src/components/tooltip";
 
 const meta = {
-  title: "Navigation/Tooltip",
+  title: "Feedback/Tooltip",
   component: ".blora-tooltip",
   tags: ["autodocs"],
 } satisfies Meta;

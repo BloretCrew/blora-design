@@ -4,7 +4,7 @@ import { ref } from "lit/directives/ref.js";
 import { createCollapseController } from "../src/components/collapse";
 
 const meta = {
-  title: "Navigation/Collapse",
+  title: "Data/Collapse",
   component: ".blora-collapse",
   tags: ["autodocs"],
 } satisfies Meta;

@@ -4,7 +4,7 @@ import { ref } from "lit/directives/ref.js";
 import { createPopoverController } from "../src/components/popover";
 
 const meta = {
-  title: "Navigation/Popover",
+  title: "Feedback/Popover",
   component: ".blora-popover",
   tags: ["autodocs"],
 } satisfies Meta;
@@ -19,14 +19,16 @@ const init = (el: Element | undefined): void => {
 
 export const Default: Story = {
   render: () => html`
-    <div style="padding: 2rem;">
+    <div style="padding: 2rem; text-align: start;">
       <div class="blora-popover" ${ref(init)}>
         <button type="button" class="blora-button" data-variant="outline" data-blora-popover>
           Open Popover
         </button>
-        <div class="blora-popover__panel">
-          <p style="margin: 0 0 0.75rem; font-size: var(--blora-text-sm); color: var(--blora-color-text-secondary);">
-            Panel content
+        <div class="blora-popover__panel" role="dialog">
+          <p
+            style="margin: 0 0 0.75rem; font-size: var(--blora-text-sm); color: var(--blora-color-text-secondary); text-align: start;"
+          >
+            Panel left-aligned with the trigger button.
           </p>
           <button type="button" class="blora-button" data-size="sm" data-blora-close>Close</button>
         </div>

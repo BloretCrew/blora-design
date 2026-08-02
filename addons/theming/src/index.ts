@@ -81,15 +81,22 @@ export function applyColorScheme(
   options?: { persist?: boolean; emit?: boolean },
 ): void {
   if (typeof document === "undefined") return;
+  const doc = el.ownerDocument ?? document;
   el.setAttribute("data-blora-color-scheme", scheme);
   el.style.colorScheme = scheme;
-  /* Sync body so Storybook / plain pages get dark canvas with light text */
-  const body = el.ownerDocument?.body;
+  /* Sync body + Storybook roots so canvas/text tokens actually paint */
+  const body = doc.body;
   if (body) {
     body.style.backgroundColor = "";
     body.style.color = "";
-    /* force reflow of CSS vars on body descendants */
     body.setAttribute("data-blora-color-scheme", scheme);
+    body.style.colorScheme = scheme;
+  }
+  for (const sel of ["#storybook-root", ".sb-show-main", ".docs-story"]) {
+    doc.querySelectorAll<HTMLElement>(sel).forEach((node) => {
+      node.setAttribute("data-blora-color-scheme", scheme);
+      node.style.colorScheme = scheme;
+    });
   }
   if (options?.persist !== false) {
     try {

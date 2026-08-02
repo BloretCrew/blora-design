@@ -5,7 +5,7 @@ import { ref } from "lit/directives/ref.js";
 import { createSpeedDialController } from "../src/components/speed-dial";
 
 const meta = {
-  title: "Navigation/Speed Dial",
+  title: "Actions/Speed Dial",
   component: ".blora-speed-dial",
   tags: ["autodocs"],
   parameters: {
