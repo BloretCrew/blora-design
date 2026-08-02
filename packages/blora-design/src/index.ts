@@ -78,8 +78,6 @@ export { createSearchController, type SearchController } from "./components/sear
 export {
   createColorPickerController,
   type ColorPickerController,
-  createTextRotateController,
-  type TextRotateController,
   createCopyController,
   type CopyController,
   createTransferController,
@@ -87,3 +85,15 @@ export {
   createFieldController,
   type FieldController,
 } from "./components/copy/index.js";
+/* TextRotate / countdown / watermark / layout / palette → addons (see docs/refactor/addon-core-gaps.md) */
+export { createCalendarController, type CalendarController } from "./components/calendar/index.js";
+export { createDeckController, type DeckController } from "./components/deck/index.js";
+export {
+  createTagsInputController,
+  type TagsInputController,
+} from "./components/tags-input/index.js";
+export { createUploadController, type UploadController } from "./components/upload/index.js";
+export {
+  createCommandPaletteController,
+  type CommandPaletteController,
+} from "./components/command-palette/index.js";

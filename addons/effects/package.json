@@ -1,7 +1,7 @@
 {
   "name": "@bloret-crew/blora-design-effects",
   "version": "2.0.0-alpha.0",
-  "description": "Text effects add-on for Blora Design 2.0.",
+  "description": "Effects add-on for Blora Design 2.0 (text-fx, rotate, countdown, countup, diff, gallery, watermark, shortcuts).",
   "license": "Apache-2.0",
   "type": "module",
   "author": "RhedarLiu <rhedarliu@outlook.com>",
@@ -30,3 +30,4 @@
     "@bloret-crew/blora-design": "workspace:*"
   }
 }
+

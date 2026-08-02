@@ -68,13 +68,15 @@
   height: auto;
 }
 
-/* 选区 */
+/* 选区：随主题主色（正文用 soft tint；表单控件见 input.css 实色分段） */
 :where(body.blora-page, .blora-scope, .blora-portal)::selection,
 :where(body.blora-page, .blora-scope, .blora-portal) *::selection {
   background: var(--blora-color-action-selection-bg);
+  color: var(--blora-color-text-primary);
 }
 
 :where(body.blora-page, .blora-scope, .blora-portal)::-moz-selection,
 :where(body.blora-page, .blora-scope, .blora-portal) *::-moz-selection {
   background: var(--blora-color-action-selection-bg);
+  color: var(--blora-color-text-primary);
 }

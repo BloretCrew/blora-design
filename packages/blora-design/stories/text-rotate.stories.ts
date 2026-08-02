@@ -1,10 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/web-components";
 import { html } from "lit";
 import { ref } from "lit/directives/ref.js";
-import { createTextRotateController } from "../src/components/copy";
+import { createTextRotateController } from "../../../addons/effects/src/index";
+import "../../../addons/effects/src/effects.css";
 
 const meta = {
-  title: "Typography/Text Rotate",
+  title: "Add-ons/Effects/Text Rotate",
   component: ".blora-text-rotate",
   tags: ["autodocs"],
 } satisfies Meta;

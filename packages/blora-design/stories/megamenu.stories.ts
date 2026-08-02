@@ -19,8 +19,13 @@ const init = (el: Element | undefined): void => {
 
 export const Default: Story = {
   render: () => html`
-    <div class="blora-megamenu" ${ref(init)}>
-      <button class="blora-button blora-megamenu__trigger" data-variant="outline" type="button">
+    <div class="blora-megamenu" data-blora-megamenu ${ref(init)} style="margin-bottom: 14rem;">
+      <button
+        class="blora-button blora-megamenu__trigger"
+        data-variant="outline"
+        type="button"
+        data-blora-megamenu-trigger
+      >
         浏览产品
       </button>
       <div class="blora-megamenu__panel">

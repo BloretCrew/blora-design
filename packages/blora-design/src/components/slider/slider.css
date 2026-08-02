@@ -61,3 +61,28 @@
   min-width: 3ch;
   text-align: end;
 }
+
+.blora-slider {
+  position: relative;
+}
+
+.blora-slider__tip {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  transform: translateX(-50%);
+  padding: 0.2em 0.5em;
+  background: var(--blora-color-text-emphasis);
+  color: var(--blora-color-text-on-accent);
+  font-family: var(--blora-font-mono);
+  font-size: var(--blora-text-xs);
+  border-radius: var(--blora-radius-sm);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--blora-duration-fast) var(--blora-easing-standard);
+  z-index: var(--blora-z-sticky);
+}
+
+.blora-slider__tip[data-show] {
+  opacity: 1;
+}

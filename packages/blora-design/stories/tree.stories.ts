@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/web-components";
 import { html } from "lit";
+import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { ref } from "lit/directives/ref.js";
 import { createTreeController } from "../src/components/tree";
 
@@ -26,11 +27,15 @@ export const Default: Story = {
   render: () => html`
     <div class="blora-tree" style="max-width:300px;" ${ref(init)}>
       <div class="blora-tree__node" data-open data-selected>
-        <span class="blora-tree__toggle">${chevron}</span>${folder}<span>技术部</span>
+        <span class="blora-tree__toggle">${unsafeHTML(chevron)}</span>${unsafeHTML(folder)}<span
+          >技术部</span
+        >
       </div>
       <div class="blora-tree__children">
         <div class="blora-tree__node" data-open>
-          <span class="blora-tree__toggle">${chevron}</span>${folder}<span>前端组</span>
+          <span class="blora-tree__toggle">${unsafeHTML(chevron)}</span>${unsafeHTML(folder)}<span
+            >前端组</span
+          >
         </div>
         <div class="blora-tree__children">
           <div class="blora-tree__node"><span style="width:1em;"></span><span>张三</span></div>
@@ -38,7 +43,9 @@ export const Default: Story = {
           <div class="blora-tree__node"><span style="width:1em;"></span><span>王五</span></div>
         </div>
         <div class="blora-tree__node">
-          <span class="blora-tree__toggle">${chevron}</span>${folder}<span>设计组</span>
+          <span class="blora-tree__toggle">${unsafeHTML(chevron)}</span>${unsafeHTML(folder)}<span
+            >设计组</span
+          >
         </div>
         <div class="blora-tree__children">
           <div class="blora-tree__node"><span style="width:1em;"></span><span>赵六</span></div>

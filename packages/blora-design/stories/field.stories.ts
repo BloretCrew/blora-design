@@ -29,7 +29,7 @@ export const Default: Story = {
           placeholder="请输入用户名"
           data-limit="20"
         />
-        <span class="blora-hint">最长 20 个字符，超出后标红，不会截断输入。</span>
+        <span class="blora-hint">最长 20 个字符，超出部分文字高亮标红，不会截断输入。</span>
       </div>
       <div class="blora-field">
         <label class="blora-label" for="f-err">错误态</label>

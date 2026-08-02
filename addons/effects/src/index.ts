@@ -1,9 +1,29 @@
 /**
- * Blora Design 2.0 - Text Effects add-on.
+ * Blora Design 2.0 - Effects add-on.
  * Spec §9: Add-on package, not bundled into core.
- * Visual baseline: legacy/v1/blora.js lines 3715-3840.
+ * Includes textFx + text-rotate / countdown / countup / diff / hover-gallery /
+ * watermark / shortcut hints (migrated from core 2026-08).
  * @packageDocumentation
  */
+
+export {
+  createTextRotateController,
+  createCountdownController,
+  createCountUpController,
+  createImageDiffController,
+  createHoverGalleryController,
+  createWatermarkController,
+  initShortcutHints,
+  formatShortcut,
+  getShortcutPlatform,
+  type TextRotateController,
+  type CountdownController,
+  type CountUpController,
+  type ImageDiffController,
+  type HoverGalleryController,
+  type WatermarkController,
+} from "./extras.js";
+
 
 export type TextFxName =
   "grow" | "shrink" | "shake" | "nod" | "jitter" | "explode" | "ripple" | "bloom";

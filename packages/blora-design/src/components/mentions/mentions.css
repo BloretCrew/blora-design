@@ -19,11 +19,11 @@
 }
 
 .blora-mentions__menu {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: calc(100% + 4px);
+  /* Position fixed by controller so ancestors cannot clip it */
+  position: fixed;
   z-index: var(--blora-z-dropdown);
+  min-width: 10rem;
+  max-width: min(20rem, calc(100vw - 1rem));
   max-height: 12rem;
   overflow: auto;
   margin: 0;

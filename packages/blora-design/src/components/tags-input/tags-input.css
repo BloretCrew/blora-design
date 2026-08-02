@@ -14,9 +14,8 @@
 
 .blora-tags-input:focus-within {
   border-color: var(--blora-color-action-primary-default);
-  box-shadow: var(
-    0 0 0 2px color-mix(in srgb, var(--blora-color-action-primary-default) 20%, transparent)
-  );
+  box-shadow: 0 0 0 2px
+    color-mix(in srgb, var(--blora-color-action-primary-default) 20%, transparent);
 }
 
 .blora-tags-input input {

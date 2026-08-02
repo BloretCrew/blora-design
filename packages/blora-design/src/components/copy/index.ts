@@ -1,8 +1,4 @@
 export {
-  createColorPickerController,
-  type ColorPickerController,
-  createTextRotateController,
-  type TextRotateController,
   createCopyController,
   type CopyController,
   createTransferController,
@@ -10,3 +6,5 @@ export {
   createFieldController,
   type FieldController,
 } from "./copy.js";
+
+export { createColorPickerController, type ColorPickerController } from "../color-picker/index.js";

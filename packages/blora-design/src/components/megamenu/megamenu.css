@@ -23,17 +23,18 @@
   box-shadow: var(--blora-shadow-3);
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-0.4rem);
+  transform: translateY(-0.4rem) translateX(var(--blora-megamenu-offset, 0px));
   transition:
     opacity var(--blora-duration-fast) var(--blora-easing-standard),
     transform var(--blora-duration-base) var(--blora-easing-standard),
     visibility 0s linear var(--blora-duration-base);
 }
 
-.blora-megamenu[data-open] .blora-megamenu__panel {
+.blora-megamenu[data-open] .blora-megamenu__panel,
+.blora-megamenu.is-open .blora-megamenu__panel {
   opacity: 1;
   visibility: visible;
-  transform: translateY(0);
+  transform: translateY(0) translateX(var(--blora-megamenu-offset, 0px));
   transition-delay: 0s;
 }
 

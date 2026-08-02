@@ -19,11 +19,11 @@ const init = (el: Element | undefined): void => {
 
 export const Default: Story = {
   render: () => html`
-    <div style="max-width: 20rem;">
-      <label class="blora-label" style="margin-bottom: var(--blora-space-2);"
+    <div style="max-width: 16rem; margin-bottom: 18rem;">
+      <label class="blora-label" style="display:block;margin-bottom:var(--blora-space-2);"
         >时间选择 · Time Picker</label
       >
-      <div class="blora-timepicker" ${ref(init)}>
+      <div class="blora-timepicker" data-blora-timepicker ${ref(init)}>
         <input class="blora-input" type="time" value="14:30" placeholder="HH:MM" />
         <button class="blora-timepicker__btn" type="button" aria-label="选择时间" tabindex="-1">
           <svg

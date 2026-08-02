@@ -5,17 +5,69 @@
   "since": "2.0.0",
   "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
+  "attributes": {
+    "data-blora-thread": {
+      "description": "Marks a thread root (optional; class .blora-thread is enough for styling)"
+    },
+    "data-blora-thread-replies": {
+      "description": "Reply list container that can be collapsed"
+    },
+    "data-blora-thread-body": {
+      "description": "Animated body inside the reply list"
+    },
+    "data-blora-thread-toggle": {
+      "description": "Collapse/expand control for the nearest replies box"
+    },
+    "data-blora-post-react": {
+      "description": "Post reaction toggle (is-active + aria-pressed)"
+    },
+    "data-label-expand": {
+      "description": "Per-button expand label (default 展开评论)"
+    },
+    "data-label-collapse": {
+      "description": "Per-button collapse label (default 收起评论)"
+    }
+  },
   "properties": {},
   "methods": {
     "createThreadController": {
-      "description": "Create a thread controller for expand/collapse"
+      "description": "Create a thread controller: expand/collapse replies + post react (v1 initThread parity)"
     }
   },
   "events": {},
   "slots": {},
   "parts": [],
   "cssProperties": [],
+  "classes": [
+    ".blora-thread",
+    ".blora-post",
+    ".blora-post--reply",
+    ".blora-post__head",
+    ".blora-post__identity",
+    ".blora-post__who",
+    ".blora-post__author-row",
+    ".blora-post__author",
+    ".blora-post__badge",
+    ".blora-post__reply-to",
+    ".blora-post__sub",
+    ".blora-post__loc",
+    ".blora-post__tools",
+    ".blora-post__more",
+    ".blora-post__title",
+    ".blora-post__quote",
+    ".blora-post__quote-label",
+    ".blora-post__quote-text",
+    ".blora-post__body",
+    ".blora-post__react",
+    ".blora-post__react-btn",
+    ".blora-post__replies",
+    ".blora-post__replies-body",
+    ".blora-post__collapse",
+    ".blora-comment",
+    ".is-collapsed",
+    ".is-active",
+    ".is-danger"
+  ],
   "accessibilityPattern": "list",
   "migrationFromV1": "thread.migration.md"
 }

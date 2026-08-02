@@ -8,22 +8,24 @@ const meta = {
   title: "Navigation/Speed Dial",
   component: ".blora-speed-dial",
   tags: ["autodocs"],
+  parameters: {
+    layout: "padded",
+  },
 } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 
-const initAll = (el: Element | undefined): void => {
+const init = (el: Element | undefined): void => {
   if (!(el instanceof HTMLElement)) return;
-  el.querySelectorAll(".blora-speed-dial").forEach((d) => {
-    const dial = d as HTMLElement;
-    (dial as any).__ctrl?.destroy();
-    (dial as any).__ctrl = createSpeedDialController(dial);
+  requestAnimationFrame(() => {
+    (el as any).__ctrl?.destroy();
+    (el as any).__ctrl = createSpeedDialController(el);
   });
 };
 
 const plus =
   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>';
-const close =
+const closeIcon =
   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>';
 const camera =
   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>';
@@ -68,6 +70,7 @@ const trig = (icon: string) =>
     data-size="icon"
     data-variant="primary"
     type="button"
+    data-blora-speed-dial-trigger
     aria-label="操作"
   >
     ${unsafeHTML(icon)}
@@ -88,135 +91,182 @@ const labeledAct = (icon: string, label: string) =>
     <span class="blora-speed-dial__label">${label}</span>${act(icon, label)}
   </div>`;
 
-const stage = (label: string, content: unknown) =>
-  html` <div class="blora-speed-dial-stage">
-    <p class="blora-speed-dial-stage__label">${label}</p>
+const shell = (content: unknown) =>
+  html`<div
+    style="min-height: 14rem; display: flex; align-items: flex-end; justify-content: center; padding: 2rem;"
+  >
     ${content}
   </div>`;
 
-export const Default: Story = {
-  render: () => html`
-    <div
-      style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--blora-space-6); padding: var(--blora-space-6);"
-      ${ref(initAll)}
-    >
-      ${stage(
-        "垂直 · 图标",
-        html`<div class="blora-speed-dial">
-          ${trig(plus)}
-          <div class="blora-speed-dial__actions">
-            ${act(camera, "拍照")}${act(gallery, "图库")}${act(mic, "语音")}
-          </div>
-        </div>`,
-      )}
-      ${stage(
-        "垂直 · 标签",
-        html`<div class="blora-speed-dial">
-          ${trig(plus)}
-          <div class="blora-speed-dial__actions">
-            ${labeledAct(doc, "新建文档")}${labeledAct(upload, "上传文件")}${labeledAct(share, "分享")}
-          </div>
-        </div>`,
-      )}
-      ${stage(
-        "垂直 · 矩形按钮",
-        html`<div class="blora-speed-dial">
-          ${trig(plus)}
-          <div class="blora-speed-dial__actions">
-            <button
-              class="blora-button blora-speed-dial__action"
-              data-size="sm"
-              data-variant="secondary"
-              type="button"
-            >
-              新建项目</button
-            ><button
-              class="blora-button blora-speed-dial__action"
-              data-size="sm"
-              data-variant="secondary"
-              type="button"
-            >
-              导入数据</button
-            ><button
-              class="blora-button blora-speed-dial__action"
-              data-size="sm"
-              data-variant="secondary"
-              type="button"
-            >
-              导出报告
-            </button>
-          </div>
-        </div>`,
-      )}
-      ${stage(
-        "标签 · 关闭钮",
-        html`<div class="blora-speed-dial">
-          ${trig(plus)}<button
-            class="blora-button blora-speed-dial__close"
-            data-size="icon"
-            data-variant="danger"
-            type="button"
-            aria-label="关闭"
-          >
-            ${unsafeHTML(close)}
-          </button>
-          <div class="blora-speed-dial__actions">
-            ${labeledAct(edit, "编辑")}${labeledAct(copy, "复制")}${labeledAct(del, "删除")}
-          </div>
-        </div>`,
-      )}
-      ${stage(
-        "标签 · 主操作",
-        html`<div class="blora-speed-dial">
-          ${trig(plus)}<button
-            class="blora-button blora-speed-dial__main"
-            data-size="icon"
+/** Same centering as other variants; extra padding so the arc isn't clipped */
+const flowerShell = (content: unknown) =>
+  html`<div
+    style="min-height: 16rem; display: flex; align-items: flex-end; justify-content: center; padding: 3rem 6rem;"
+  >
+    ${content}
+  </div>`;
+
+/** 垂直 · 图标 */
+export const VerticalIcons: Story = {
+  name: "垂直 · 图标",
+  render: () =>
+    shell(html`
+      <div class="blora-speed-dial" data-blora-speed-dial ${ref(init)}>
+        ${trig(plus)}
+        <div class="blora-speed-dial__actions">
+          ${act(camera, "拍照")}${act(gallery, "图库")}${act(mic, "语音")}
+        </div>
+      </div>
+    `),
+};
+
+/** 垂直 · 标签 */
+export const VerticalLabels: Story = {
+  name: "垂直 · 标签",
+  render: () =>
+    shell(html`
+      <div class="blora-speed-dial" data-blora-speed-dial ${ref(init)}>
+        ${trig(plus)}
+        <div class="blora-speed-dial__actions">
+          ${labeledAct(doc, "新建文档")}${labeledAct(upload, "上传文件")}${labeledAct(share, "分享")}
+        </div>
+      </div>
+    `),
+};
+
+/** 垂直 · 矩形按钮 */
+export const VerticalRectButtons: Story = {
+  name: "垂直 · 矩形按钮",
+  render: () =>
+    shell(html`
+      <div class="blora-speed-dial" data-blora-speed-dial ${ref(init)}>
+        ${trig(plus)}
+        <div class="blora-speed-dial__actions">
+          <button
+            class="blora-button blora-speed-dial__action"
+            data-size="sm"
             data-variant="secondary"
             type="button"
-            aria-label="发布"
           >
-            ${unsafeHTML(send)}
+            新建项目
           </button>
-          <div class="blora-speed-dial__actions">
-            ${labeledAct(doc, "草稿")}${labeledAct(copy, "定时")}${labeledAct(gallery, "预览")}
-          </div>
-        </div>`,
-      )}
-      ${stage(
-        "水平 · 向左",
-        html`<div class="blora-speed-dial blora-speed-dial--left">
-          ${trig(plus)}
-          <div class="blora-speed-dial__actions">
-            ${act(msg, "消息")}${act(mail, "邮件")}${act(phone, "通话")}
-          </div>
-        </div>`,
-      )}
-      ${stage(
-        "花瓣 · 主操作",
-        html`<div class="blora-speed-dial blora-speed-dial--flower">
-          ${trig(plus)}<button
-            class="blora-button blora-speed-dial__main"
-            data-size="icon"
+          <button
+            class="blora-button blora-speed-dial__action"
+            data-size="sm"
             data-variant="secondary"
             type="button"
-            aria-label="写文章"
           >
-            ${unsafeHTML(edit)}
+            导入数据
           </button>
-          <div class="blora-speed-dial__actions">
-            ${act(camera, "拍照")}${act(vote, "投票")}${act(gallery, "图库")}${act(mic, "语音")}
-          </div>
-        </div>`,
-      )}
-      ${stage(
-        "花瓣 · 纯展开",
-        html`<div class="blora-speed-dial blora-speed-dial--flower">
-          ${trig(plus)}
-          <div class="blora-speed-dial__actions">
-            ${act(home, "首页")}${act(search, "搜索")}${act(star, "收藏")}${act(settings, "设置")}
-          </div>
-        </div>`,
-      )}
-    </div>
-  `,
+          <button
+            class="blora-button blora-speed-dial__action"
+            data-size="sm"
+            data-variant="secondary"
+            type="button"
+          >
+            导出报告
+          </button>
+        </div>
+      </div>
+    `),
+};
+
+/** 标签 · 关闭钮 */
+export const LabelsWithClose: Story = {
+  name: "标签 · 关闭钮",
+  render: () =>
+    shell(html`
+      <div class="blora-speed-dial" data-blora-speed-dial ${ref(init)}>
+        ${trig(plus)}
+        <button
+          class="blora-button blora-speed-dial__close"
+          data-size="icon"
+          data-variant="danger"
+          type="button"
+          data-blora-speed-dial-close
+          aria-label="关闭"
+        >
+          ${unsafeHTML(closeIcon)}
+        </button>
+        <div class="blora-speed-dial__actions">
+          ${labeledAct(edit, "编辑")}${labeledAct(copy, "复制")}${labeledAct(del, "删除")}
+        </div>
+      </div>
+    `),
+};
+
+/** 标签 · 主操作 */
+export const LabelsWithMain: Story = {
+  name: "标签 · 主操作",
+  render: () =>
+    shell(html`
+      <div class="blora-speed-dial" data-blora-speed-dial ${ref(init)}>
+        ${trig(plus)}
+        <button
+          class="blora-button blora-speed-dial__main"
+          data-size="icon"
+          data-variant="secondary"
+          type="button"
+          data-blora-speed-dial-main
+          aria-label="发布"
+        >
+          ${unsafeHTML(send)}
+        </button>
+        <div class="blora-speed-dial__actions">
+          ${labeledAct(doc, "草稿")}${labeledAct(copy, "定时")}${labeledAct(gallery, "预览")}
+        </div>
+      </div>
+    `),
+};
+
+/** 水平 · 向左 */
+export const HorizontalLeft: Story = {
+  name: "水平 · 向左",
+  render: () =>
+    shell(html`
+      <div class="blora-speed-dial blora-speed-dial--left" data-blora-speed-dial ${ref(init)}>
+        ${trig(plus)}
+        <div class="blora-speed-dial__actions">
+          ${act(msg, "消息")}${act(mail, "邮件")}${act(phone, "通话")}
+        </div>
+      </div>
+    `),
+};
+
+/** 花瓣 · 主操作 */
+export const FlowerWithMain: Story = {
+  name: "花瓣 · 主操作",
+  render: () =>
+    flowerShell(html`
+      <div class="blora-speed-dial blora-speed-dial--flower" data-blora-speed-dial ${ref(init)}>
+        ${trig(plus)}
+        <button
+          class="blora-button blora-speed-dial__main"
+          data-size="icon"
+          data-variant="secondary"
+          type="button"
+          data-blora-speed-dial-main
+          aria-label="写文章"
+        >
+          ${unsafeHTML(edit)}
+        </button>
+        <div class="blora-speed-dial__actions">
+          ${act(camera, "拍照")}${act(vote, "投票")}${act(gallery, "图库")}${act(mic, "语音")}
+        </div>
+      </div>
+    `),
+};
+
+/** 花瓣 · 纯展开 — + rotates to × when open (v1) */
+export const FlowerExpand: Story = {
+  name: "花瓣 · 纯展开",
+  render: () =>
+    flowerShell(html`
+      <div class="blora-speed-dial blora-speed-dial--flower" data-blora-speed-dial ${ref(init)}>
+        ${trig(plus)}
+        <div class="blora-speed-dial__actions">
+          ${act(home, "首页")}${act(search, "搜索")}${act(star, "收藏")}${act(settings, "设置")}
+        </div>
+      </div>
+    `),
 };

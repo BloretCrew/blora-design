@@ -78,26 +78,26 @@
 
 | 组件 | 1.x 实现 | 2.0 目标包 | 状态 |
 |---|---|---|---|
-| **Markdown** | `Blora.markdown()` / `initMarkdown` | `@bloret-crew/blora-markdown` | ⬚ |
-| **Thread/BBS** | `initThread` | `@bloret-crew/blora-thread` | ⬚ |
-| **QRCode** | `Blora.qrcode()` / `initQRCode` | `@bloret-crew/blora-qrcode` | ⬚ |
-| **Text FX** | `Blora.textFx()` / `initTextFx` | `@bloret-crew/blora-effects` | ⬚ |
-| **Text Rotate** | `initTextRotate` | `@bloret-crew/blora-effects` | ⬚ |
-| **Countdown** | `[data-blora-countdown]` | `@bloret-crew/blora-effects` | ⬚ |
-| **CountUp** | `initCountUp` | `@bloret-crew/blora-effects` | ⬚ |
-| **Image Diff** | `.blora-diff` | `@bloret-crew/blora-effects` | ⬚ |
-| **Hover Gallery** | `.blora-hover-gallery` | `@bloret-crew/blora-effects` | ⬚ |
-| **Deck** | `.blora-deck` | `@bloret-crew/blora-effects` | ⬚ |
-| **Watermark** | `initWatermark` | `@bloret-crew/blora-effects` | ⬚ |
-| **Speed Dial** | `[data-blora-speed-dial]` | `@bloret-crew/blora-effects` | ⬚ |
-| **Mega Menu** | `[data-blora-megamenu]` | `@bloret-crew/blora-effects` | ⬚ |
-| **Sidebar Layout** | `[data-blora-sidebar-layout]` | `@bloret-crew/blora-layout` | ⬚ |
-| **Affix** | `initAffix` | `@bloret-crew/blora-layout` | ⬚ |
-| **Anchor** | `initAnchor` | `@bloret-crew/blora-layout` | ⬚ |
-| **Scroll Spy** | `[data-blora-spy]` | `@bloret-crew/blora-layout` | ⬚ |
-| **Smooth Scroll** | `initSmoothScroll` | `@bloret-crew/blora-layout` | ⬚ |
-| **Palette Picker** | `[data-blora-palette-picker]` | `@bloret-crew/blora-theming` | ⬚ |
-| **Shortcut Hints** | `[data-blora-shortcut]` | `@bloret-crew/blora-effects` | ⬚ |
+| **Markdown** | `Blora.markdown()` / `initMarkdown` | `@bloret-crew/blora-design-markdown` | 🔄 |
+| **Thread/BBS** | `initThread` | `@bloret-crew/blora-design-thread` | 🔄 |
+| **QRCode** | `Blora.qrcode()` / `initQRCode` | `@bloret-crew/blora-design-qrcode` | 🔄 |
+| **Text FX** | `Blora.textFx()` / `initTextFx` | `@bloret-crew/blora-design-effects` | 🔄 |
+| **Text Rotate** | `initTextRotate` | `@bloret-crew/blora-design-effects` | 🔄 |
+| **Countdown** | `[data-blora-countdown]` | `@bloret-crew/blora-design-effects` | 🔄 |
+| **CountUp** | `initCountUp` | `@bloret-crew/blora-design-effects` | 🔄 |
+| **Image Diff** | `.blora-diff` | `@bloret-crew/blora-design-effects` | 🔄 |
+| **Hover Gallery** | `.blora-hover-gallery` | `@bloret-crew/blora-design-effects` | 🔄 |
+| **Deck** | `.blora-deck` | **核心（决策留核）** | 🔄 |
+| **Watermark** | `initWatermark` | `@bloret-crew/blora-design-effects` | 🔄 |
+| **Speed Dial** | `[data-blora-speed-dial]` | **核心（决策留核）** | 🔄 |
+| **Mega Menu** | `[data-blora-megamenu]` | **核心（决策留核）** | 🔄 |
+| **Sidebar Layout** | `[data-blora-sidebar-layout]` | `@bloret-crew/blora-design-layout` | 🔄 |
+| **Affix** | `initAffix` | `@bloret-crew/blora-design-layout` | 🔄 |
+| **Anchor** | `initAnchor` | `@bloret-crew/blora-design-layout` | 🔄 |
+| **Scroll Spy** | `[data-blora-spy]` | `@bloret-crew/blora-design-layout` | 🔄 |
+| **Smooth Scroll** | `initSmoothScroll` | `@bloret-crew/blora-design-layout` | 🔄 |
+| **Palette Picker** | `[data-blora-palette-picker]` | `@bloret-crew/blora-design-theming` | 🔄 |
+| **Shortcut Hints** | `[data-blora-shortcut]` | `@bloret-crew/blora-design-effects` | 🔄 |
 
 ## Foundations（Phase 2-3）
 

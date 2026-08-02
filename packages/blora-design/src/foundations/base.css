@@ -28,6 +28,7 @@ body.blora-page {
 html:has(body.blora-page) {
   overflow-x: clip;
   max-width: 100%;
+  scrollbar-color: var(--blora-color-border-subtle) var(--blora-color-surface-default);
 }
 
 /* -- 标题 -- */
@@ -203,4 +204,55 @@ html:has(body.blora-page) {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* —— Scrollbar (Blora) —— */
+:where(body.blora-page, .blora-scope, .blora-portal),
+:where(body.blora-page, .blora-scope, .blora-portal) * {
+  scrollbar-width: thin;
+  scrollbar-color: var(--blora-color-border-subtle) transparent;
+}
+
+html:has(body.blora-page)::-webkit-scrollbar,
+:where(body.blora-page, .blora-scope, .blora-portal)::-webkit-scrollbar,
+:where(body.blora-page, .blora-scope, .blora-portal) *::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+html:has(body.blora-page)::-webkit-scrollbar-track,
+:where(body.blora-page, .blora-scope, .blora-portal)::-webkit-scrollbar-track,
+:where(body.blora-page, .blora-scope, .blora-portal) *::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+html:has(body.blora-page)::-webkit-scrollbar-thumb,
+:where(body.blora-page, .blora-scope, .blora-portal)::-webkit-scrollbar-thumb,
+:where(body.blora-page, .blora-scope, .blora-portal) *::-webkit-scrollbar-thumb {
+  background: var(--blora-color-border-subtle);
+  background-clip: padding-box;
+  border: 3px solid transparent;
+  border-radius: 999px;
+}
+
+html:has(body.blora-page)::-webkit-scrollbar-thumb:hover,
+:where(body.blora-page, .blora-scope, .blora-portal)::-webkit-scrollbar-thumb:hover,
+:where(body.blora-page, .blora-scope, .blora-portal) *::-webkit-scrollbar-thumb:hover {
+  background: var(--blora-color-text-subtle);
+  background-clip: padding-box;
+  border: 3px solid transparent;
+}
+
+html:has(body.blora-page)::-webkit-scrollbar-button,
+:where(body.blora-page, .blora-scope, .blora-portal)::-webkit-scrollbar-button,
+:where(body.blora-page, .blora-scope, .blora-portal) *::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+html:has(body.blora-page)::-webkit-scrollbar-corner,
+:where(body.blora-page, .blora-scope, .blora-portal)::-webkit-scrollbar-corner,
+:where(body.blora-page, .blora-scope, .blora-portal) *::-webkit-scrollbar-corner {
+  background: transparent;
 }

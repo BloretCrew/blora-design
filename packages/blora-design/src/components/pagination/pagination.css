@@ -1,4 +1,5 @@
-/* Blora Design 2.0 - Pagination */
+/* Blora Design 2.0 - Pagination
+   All page items (numbers + prev/next) share the same hit / highlight box. */
 
 .blora-pagination {
   display: flex;
@@ -10,24 +11,34 @@
   scrollbar-width: thin;
 }
 
+/* Unified control size for every item */
 .blora-pagination__item {
+  box-sizing: border-box;
+  width: 2em;
   min-width: 2em;
+  max-width: 2em;
   height: 2em;
-  padding: 0 0.5em;
+  min-height: 2em;
+  padding: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   font: inherit;
   font-size: var(--blora-text-sm);
+  line-height: 1;
   color: var(--blora-color-text-emphasis);
   border: 1px solid transparent;
   border-radius: var(--blora-radius-md);
   background: transparent;
   cursor: pointer;
-  transition: all var(--blora-duration-fast) var(--blora-easing-standard);
+  flex: none;
+  transition:
+    background var(--blora-duration-fast) var(--blora-easing-standard),
+    color var(--blora-duration-fast) var(--blora-easing-standard),
+    box-shadow var(--blora-duration-fast) var(--blora-easing-standard);
 }
 
-.blora-pagination__item:hover {
+.blora-pagination__item:hover:not([disabled]) {
   background: var(--blora-color-surface-raised);
   color: var(--blora-color-text-primary);
 }
@@ -45,14 +56,32 @@
   pointer-events: none;
 }
 
-/* Prev/next nav buttons: ~50% larger touch target than regular items */
+/* Prev/next: same box as numbers; only the glyph is larger */
 .blora-pagination__nav {
-  min-width: 3em;
-  height: 3em;
-  font-size: var(--blora-text-lg);
+  /* intentionally no size overrides — inherits .blora-pagination__item */
+  font-size: var(--blora-text-sm);
+}
+
+.blora-pagination__nav > * {
+  font-size: 1.35em;
+  line-height: 1;
+  transform: translateY(-0.02em);
+}
+
+.blora-pagination__nav svg {
+  width: 1.15em;
+  height: 1.15em;
+  display: block;
 }
 
 .blora-pagination__ellipsis {
+  box-sizing: border-box;
+  width: 2em;
+  min-width: 2em;
+  height: 2em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   color: var(--blora-color-text-subtle);
-  padding: 0 var(--blora-space-1);
+  font-size: var(--blora-text-sm);
 }

@@ -1,10 +1,12 @@
-/* Blora Design 2.0 - deck component (beta, migrated from v1) */
+/* Blora Design 2.0 - deck (v1 parity: pose driven by controller vars only) */
 
 .blora-deck {
   position: relative;
   display: grid;
   isolation: isolate;
-  padding: calc(var(--blora-space-4) + 1.35rem) var(--blora-space-4) var(--blora-space-4);
+
+  /* Extra top padding so stacked cards above the front stay visible */
+  padding: calc(var(--blora-space-6) + 2rem) var(--blora-space-4) var(--blora-space-4);
   touch-action: pan-x;
   cursor: grab;
   user-select: none;
@@ -31,37 +33,16 @@
     transform var(--blora-duration-base) var(--blora-easing-standard),
     opacity var(--blora-duration-base) var(--blora-easing-standard);
   will-change: transform, opacity;
-}
 
-/* Show last 3 cards stacked behind the front card */
-.blora-deck > *:nth-last-child(1) {
-  --blora-deck-y: 0;
-  --blora-deck-scale: 1;
-  --blora-deck-opacity: 1;
-
-  z-index: var(--blora-z-dropdown);
-  pointer-events: auto;
-}
-
-.blora-deck > *:nth-last-child(2) {
-  --blora-deck-y: 0.6rem;
-  --blora-deck-scale: 0.95;
-  --blora-deck-opacity: 0.6;
-
-  z-index: var(--blora-z-dropdown);
-}
-
-.blora-deck > *:nth-last-child(3) {
-  --blora-deck-y: 1.2rem;
-  --blora-deck-scale: 0.9;
-  --blora-deck-opacity: 0.3;
-
-  z-index: var(--blora-z-base);
+  /* Ensure stacked cards remain legible */
+  background: var(--blora-color-surface-default);
+  box-shadow: var(--blora-shadow-2);
 }
 
 .blora-deck > *[data-front] {
   pointer-events: auto;
   cursor: grab;
+  box-shadow: var(--blora-shadow-3);
 }
 
 .blora-deck > *[data-front]:active {

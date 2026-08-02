@@ -19,11 +19,11 @@ const init = (el: Element | undefined): void => {
 
 export const Default: Story = {
   render: () => html`
-    <div style="max-width: 20rem;">
-      <label class="blora-label" style="margin-bottom: var(--blora-space-2);"
+    <div style="max-width: 20rem; margin-bottom: 20rem;">
+      <label class="blora-label" style="display:block;margin-bottom:var(--blora-space-2);"
         >日期选择 · Date Picker</label
       >
-      <div class="blora-datepicker" ${ref(init)}>
+      <div class="blora-datepicker" data-blora-datepicker ${ref(init)}>
         <input
           class="blora-input"
           type="date"

@@ -16,7 +16,24 @@
   background: color-mix(in srgb, var(--blora-color-surface-default) 88%, transparent);
   box-shadow: var(--blora-shadow-3);
   backdrop-filter: blur(18px) saturate(1.25);
-  backdrop-filter: blur(18px) saturate(1.25);
+}
+
+/* Sliding active pill (segmented-style) */
+.blora-dock__indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: var(--blora-z-base);
+  border-radius: var(--blora-radius-full);
+  background: var(--blora-color-action-primary-default);
+  box-shadow: var(--blora-shadow-primary);
+  pointer-events: none;
+  opacity: 0;
+  transition:
+    transform var(--blora-duration-base) var(--blora-easing-standard),
+    width var(--blora-duration-base) var(--blora-easing-standard),
+    height var(--blora-duration-base) var(--blora-easing-standard),
+    opacity var(--blora-duration-fast) var(--blora-easing-standard);
 }
 
 .blora-dock--static {
@@ -26,10 +43,12 @@
   display: inline-flex;
   transform: none;
   z-index: auto;
+  overflow: visible;
 }
 
 .blora-dock__item {
   position: relative;
+  z-index: var(--blora-z-sticky);
   display: grid;
   place-items: center;
   align-content: center;
@@ -39,9 +58,8 @@
   border-radius: var(--blora-radius-full);
   color: var(--blora-color-text-muted);
   font-size: var(--blora-text-xs);
-  transition:
-    color var(--blora-duration-fast) var(--blora-easing-standard),
-    background var(--blora-duration-fast) var(--blora-easing-standard);
+  background: transparent;
+  transition: color var(--blora-duration-fast) var(--blora-easing-standard);
 }
 
 .blora-dock__item svg {
@@ -51,12 +69,10 @@
 
 .blora-dock__item:hover {
   color: var(--blora-color-text-emphasis);
-  background: var(--blora-color-surface-raised);
 }
 
 .blora-dock__item[data-active] {
   color: var(--blora-color-text-on-accent);
-  background: var(--blora-color-action-primary-default);
 }
 
 .blora-dock {

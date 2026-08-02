@@ -285,3 +285,188 @@
     opacity: 1;
   }
 }
+
+/* ===== Migrated effects extras (no @layer — beat unlayered reset) ===== */
+
+.blora-countdown {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--blora-space-2);
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+}
+.blora-countdown__unit {
+  display: grid;
+  justify-items: center;
+  gap: var(--blora-space-1);
+  min-width: 2.75rem;
+}
+.blora-countdown__value {
+  min-width: 2.2ch;
+  color: var(--blora-color-text-emphasis);
+  font-family: var(--blora-font-mono);
+  font-size: var(--blora-text-2xl);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  text-align: center;
+}
+.blora-countdown__label {
+  color: var(--blora-color-text-subtle);
+  font-size: var(--blora-text-xs);
+}
+
+.blora-text-rotate {
+  display: inline-grid;
+  vertical-align: bottom;
+  overflow: hidden;
+}
+.blora-text-rotate__item {
+  grid-area: 1 / 1;
+  opacity: 0;
+  transform: translateY(0.35em);
+  transition:
+    opacity var(--blora-duration-base) var(--blora-easing-standard),
+    transform var(--blora-duration-base) var(--blora-easing-standard);
+  pointer-events: none;
+}
+.blora-text-rotate__item.is-active,
+.blora-text-rotate__item[data-active] {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.blora-watermark {
+  position: relative;
+  overflow: hidden;
+}
+.blora-watermark__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: var(--blora-z-base);
+  opacity: 0.14;
+}
+
+.blora-diff {
+  --blora-diff-position: 50%;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--blora-radius-lg);
+  border: 1px solid var(--blora-color-border-subtle);
+  aspect-ratio: 16 / 9;
+  background: var(--blora-color-surface-raised);
+}
+.blora-diff__item {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.blora-diff__item > :is(img, video, canvas, div) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.blora-diff__item--before {
+  z-index: 1;
+  clip-path: inset(0 calc(100% - var(--blora-diff-position)) 0 0);
+}
+.blora-diff__divider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--blora-diff-position);
+  z-index: 2;
+  width: 2px;
+  transform: translateX(-50%);
+  background: var(--blora-color-text-on-accent, #fff);
+  box-shadow: var(--blora-shadow-2);
+  pointer-events: none;
+}
+.blora-diff__divider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2rem;
+  height: 2rem;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: var(--blora-color-surface-default);
+  border: 2px solid var(--blora-color-border-subtle);
+  box-shadow: var(--blora-shadow-2);
+}
+.blora-diff__range {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: ew-resize;
+}
+
+.blora-hover-gallery {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: var(--blora-gallery-ratio, 4 / 3);
+  overflow: hidden;
+  border: 1px solid var(--blora-color-border-subtle);
+  border-radius: var(--blora-radius-lg);
+  background: var(--blora-color-surface-raised);
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
+}
+.blora-hover-gallery:active { cursor: grabbing; }
+.blora-hover-gallery:focus-visible {
+  outline: 2px solid var(--blora-color-action-primary-default);
+  outline-offset: 2px;
+}
+.blora-hover-gallery__track {
+  display: flex;
+  height: 100%;
+  will-change: transform;
+  transition: transform var(--blora-duration-slow, 0.35s) var(--blora-easing-standard);
+}
+.blora-hover-gallery__track.is-dragging { transition: none; }
+.blora-hover-gallery__item {
+  flex: 0 0 100%;
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+.blora-hover-gallery--wide { --blora-gallery-ratio: 16 / 9; }
+.blora-hover-gallery__progress {
+  position: absolute;
+  left: var(--blora-space-3);
+  right: var(--blora-space-3);
+  bottom: var(--blora-space-3);
+  z-index: 2;
+  display: grid;
+  grid-auto-flow: column;
+  gap: var(--blora-space-1);
+  pointer-events: none;
+}
+.blora-hover-gallery__progress span {
+  height: 3px;
+  border-radius: var(--blora-radius-full);
+  background: color-mix(in srgb, var(--blora-color-text-on-accent, #fff) 35%, transparent);
+}
+.blora-hover-gallery__progress span.is-active {
+  background: var(--blora-color-text-on-accent, #fff);
+}
+
+[data-blora-shortcut] {
+  font-family: var(--blora-font-mono);
+  font-size: var(--blora-text-xs);
+  color: var(--blora-color-text-subtle);
+}

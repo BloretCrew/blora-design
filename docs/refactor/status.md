@@ -4,7 +4,7 @@
 
 ## 当前阶段
 
-**Phase 9：Add-ons** - ✅ 完成（待提交）
+**Phase 9：Add-ons** - 🔄 扩包中（见 `docs/refactor/addon-core-gaps.md`）
 
 ## 阶段进度
 
@@ -19,7 +19,7 @@
 | Phase 6：导航与浮层 | ✅ 完成 | Tabs/Breadcrumb/Pagination/Dropdown/Tooltip/Popover/Drawer/Navbar |
 | Phase 7：数据与内容基础 | ✅ 完成 | Card/Table/List/Accordion/Timeline/Empty/Result/Avatar |
 | Phase 8：兼容层与 Codemod | ✅ 完成 | Token/class 映射、event 别名、warning、codemod、migrate:check、fixtures |
-| Phase 9：Add-ons | ✅ 完成 | Markdown/QRCode/Thread/Effects 拆出为独立包 |
+| Phase 9：Add-ons | 🔄 进行中 | Thread/Markdown/QRCode/Effects/Layout/Theming；对照 docs/refactor/addon-core-gaps.md |
 | Phase 10：预发布 | ⬚ 未开始 | Alpha -> Beta -> RC -> Stable |
 
 ## Phase 0 详细进度
@@ -391,13 +391,17 @@
 
 - [x] `@bloret-crew/blora-design-thread` 独立 workspace 包
 - [x] `createThreadController(root, options)` headless controller（Spec §17.5）
-- [x] `toggle`/`expand`/`collapse`/`destroy` 方法
+- [x] `toggle`/`expand`/`collapse`/`toggleReact`/`destroy` 方法（v1 `initThread` 对等）
+- [x] 默认中文标签「展开评论 / 收起评论」+ `data-label-expand|collapse` 覆盖
+- [x] 无 body 时自动包一层 `.blora-post__replies-body`（v1 兼容）
+- [x] `[data-blora-post-react]` 切换 `is-active` + `aria-pressed`
 - [x] AbortController 管理事件监听器（不使用 dataset bound 标记）
 - [x] `prefers-reduced-motion` 支持
-- [x] `aria-expanded` 无障碍属性
+- [x] `aria-expanded` 无障碍属性；toggle 文案按 replies box 作用域更新
 - [x] CSS 从 v1 迁移全部 Thread/Post/Comment 样式，使用 v2 token 和逻辑属性
+- [x] 构建产物包含 `dist/thread.css`；Storybook `Add-ons/Thread`
 - [x] `.blora-dark` 替换为 `:root[data-blora-color-scheme="dark"]`
-- [x] 9 个单元测试
+- [x] 13 个单元测试 + `thread.migration.md`
 
 #### Effects add-on
 
@@ -419,7 +423,7 @@
 
 #### 测试
 
-- [x] 128 个单元测试（50 核心包 + 18 tokens + 25 markdown + 16 effects + 9 thread + 10 qrcode）
+- [x] 单元测试含 thread 13 条（expand/collapse/react/body-wrap/label 作用域）
 - [x] 114 个浏览器测试
 - [x] `pnpm verify` 从干净状态全部通过
 

@@ -1,0 +1,14 @@
+{
+  "name": "theming",
+  "status": "beta",
+  "kind": "headless",
+  "since": "2.0.0",
+  "requiresJavaScript": true,
+  "methods": {
+    "applyTheme": {},
+    "getTheme": {},
+    "bootThemeFromStorage": {},
+    "createPalettePickerController": {}
+  },
+  "migrationFromV1": "theming.migration.md"
+}

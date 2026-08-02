@@ -1,92 +1,18 @@
 /**
- * Blora Design 2.0 - Color Picker controller
- * Swatch selection + hex input sync.
- */
-export interface ColorPickerController {
-  destroy(): void;
-}
-
-export function createColorPickerController(root: HTMLElement): ColorPickerController {
-  const swatches = root.querySelectorAll<HTMLElement>(
-    ".blora-color-swatch > span, .blora-color-picker__swatch",
-  );
-  const preview = root.querySelector<HTMLElement>(".blora-color-preview");
-  const hexInput = root.querySelector<HTMLInputElement>(".blora-color-hex");
-
-  const setColor = (color: string) => {
-    if (preview) preview.style.background = color;
-    if (hexInput) hexInput.value = color;
-  };
-
-  const onSwatchClick = (e: MouseEvent) => {
-    const swatch = e.target as HTMLElement;
-    const color = swatch.dataset.color ?? swatch.style.background ?? "";
-    if (color) setColor(color);
-  };
-
-  const onHexInput = () => {
-    const val = hexInput?.value.trim() ?? "";
-    if (/^#[0-9a-fA-F]{6}$/.test(val)) {
-      if (preview) preview.style.background = val;
-    }
-  };
-
-  swatches.forEach((s) => s.addEventListener("click", onSwatchClick));
-  hexInput?.addEventListener("input", onHexInput);
-
-  return {
-    destroy() {
-      swatches.forEach((s) => s.removeEventListener("click", onSwatchClick));
-      hexInput?.removeEventListener("input", onHexInput);
-    },
-  };
-}
-
-/**
- * Blora Design 2.0 - Text Rotate controller
- * Cycles [data-active] through items at an interval.
- */
-export interface TextRotateController {
-  destroy(): void;
-}
-
-export function createTextRotateController(root: HTMLElement): TextRotateController {
-  const items = Array.from(root.querySelectorAll<HTMLElement>(".blora-text-rotate__item"));
-  if (items.length === 0) return { destroy: () => {} };
-
-  const interval = Number(root.dataset.interval ?? 2200);
-  let current = 0;
-
-  const show = (idx: number) => {
-    items.forEach((item, i) => {
-      if (i === idx) item.setAttribute("data-active", "");
-      else item.removeAttribute("data-active");
-    });
-  };
-
-  show(0);
-  const timer = setInterval(() => {
-    current = (current + 1) % items.length;
-    show(current);
-  }, interval);
-
-  return {
-    destroy() {
-      clearInterval(timer);
-    },
-  };
-}
-
-/**
  * Blora Design 2.0 - Copy controller
  * Copies text and briefly swaps icon to checkmark.
+ *
+ * Note: TextRotate moved to @bloret-crew/blora-design-effects
  */
+
 export interface CopyController {
   destroy(): void;
 }
 
 export function createCopyController(root: HTMLElement): CopyController {
-  const btn = root.querySelector<HTMLElement>(".blora-copy__btn, [data-copy]");
+  const btn = root.querySelector<HTMLElement>(
+    ".blora-copy__btn, .blora-typo-copy__btn, [data-copy]",
+  );
   if (!btn) return { destroy: () => {} };
 
   let originalNodes: Node[] = [];
@@ -94,6 +20,8 @@ export function createCopyController(root: HTMLElement): CopyController {
 
   const createCheckmark = (): SVGElement => {
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("width", "14");
+    svg.setAttribute("height", "14");
     svg.setAttribute("viewBox", "0 0 24 24");
     svg.setAttribute("fill", "none");
     svg.setAttribute("stroke", "currentColor");
@@ -106,12 +34,18 @@ export function createCopyController(root: HTMLElement): CopyController {
     return svg;
   };
 
-  const onClick = async () => {
-    const text = root.dataset.copyText ?? btn.dataset.copyText ?? root.textContent?.trim() ?? "";
+  const onClick = async (e: MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const text =
+      root.getAttribute("data-blora-copy") ||
+      root.dataset.copyText ||
+      btn.dataset.copyText ||
+      root.textContent?.trim() ||
+      "";
     try {
       await navigator.clipboard.writeText(text);
     } catch {
-      // Fallback
       const ta = document.createElement("textarea");
       ta.value = text;
       document.body.appendChild(ta);
@@ -126,9 +60,11 @@ export function createCopyController(root: HTMLElement): CopyController {
 
     originalNodes = Array.from(btn.childNodes);
     btn.replaceChildren(createCheckmark());
+    root.setAttribute("data-copied", "");
     if (restoreTimer) clearTimeout(restoreTimer);
     restoreTimer = setTimeout(() => {
       btn.replaceChildren(...originalNodes);
+      root.removeAttribute("data-copied");
     }, 1500);
   };
 
@@ -218,42 +154,95 @@ export function createTransferController(root: HTMLElement): TransferController 
 
 /**
  * Blora Design 2.0 - Field controller
- * Char-count with over-limit red highlighting.
+ * v1 text-limit: overflow characters highlighted red via mirror layer.
  */
 export interface FieldController {
   destroy(): void;
 }
 
 export function createFieldController(root: HTMLElement): FieldController {
-  const inputs = root.querySelectorAll<HTMLInputElement>("[data-limit]");
+  const inputs = root.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>(
+    "[data-limit], [data-blora-limit]",
+  );
   const cleanupFns: (() => void)[] = [];
 
-  inputs.forEach((input) => {
-    const limit = Number(input.dataset.limit ?? 0);
-    if (!limit) return;
+  const splitValue = (value: string, limit: number) => {
+    const chars = Array.from(value || "");
+    return {
+      count: chars.length,
+      normal: chars.slice(0, limit).join(""),
+      overflow: chars.slice(limit).join(""),
+    };
+  };
 
-    const field = input.closest<HTMLElement>(".blora-field");
-    if (!field) return;
+  inputs.forEach((field) => {
+    const limit = Number(field.dataset.limit ?? field.dataset.bloraLimit ?? 0);
+    if (!Number.isFinite(limit) || limit < 1) return;
 
-    // Find or create a counter element
-    let counter = field.querySelector<HTMLElement>(".blora-field__counter");
-    if (!counter) {
+    field.removeAttribute("maxlength");
+    let wrapper = field.closest<HTMLElement>(".blora-limit");
+    if (!wrapper) {
+      wrapper = document.createElement("div");
+      wrapper.className = "blora-limit";
+      field.parentNode?.insertBefore(wrapper, field);
+      wrapper.appendChild(field);
+    }
+    wrapper.classList.toggle("blora-limit--textarea", field.tagName === "TEXTAREA");
+
+    let mirror = wrapper.querySelector<HTMLElement>(".blora-limit__mirror");
+    let normal: HTMLElement;
+    let overflow: HTMLElement;
+    let counter: HTMLElement;
+
+    if (!mirror) {
+      mirror = document.createElement("div");
+      mirror.className = "blora-limit__mirror";
+      mirror.setAttribute("aria-hidden", "true");
+      const mirrorInner = document.createElement("span");
+      mirrorInner.className = "blora-limit__mirror-inner";
+      normal = document.createElement("span");
+      overflow = document.createElement("span");
+      overflow.className = "blora-limit__overflow";
+      mirrorInner.append(normal, overflow);
+      mirror.appendChild(mirrorInner);
       counter = document.createElement("span");
-      counter.className = "blora-field__counter blora-hint";
-      field.appendChild(counter);
+      counter.className = "blora-limit__count";
+      counter.setAttribute("aria-live", "polite");
+      wrapper.append(mirror, counter);
+    } else {
+      normal = mirror.querySelector(
+        ".blora-limit__mirror-inner > span:not(.blora-limit__overflow)",
+      )!;
+      overflow = mirror.querySelector(".blora-limit__overflow")!;
+      counter = wrapper.querySelector(".blora-limit__count")!;
     }
 
-    const update = () => {
-      const len = input.value.length;
-      counter!.textContent = `${len} / ${limit}`;
-      if (len > limit) counter!.setAttribute("data-over-limit", "");
-      else counter!.removeAttribute("data-over-limit");
+    const syncScroll = () => {
+      const inner = mirror!.querySelector<HTMLElement>(".blora-limit__mirror-inner");
+      if (inner) inner.style.transform = `translateX(${-field.scrollLeft}px)`;
+      mirror!.scrollTop = field.scrollTop;
     };
 
-    input.addEventListener("input", update);
-    update();
+    const update = () => {
+      const state = splitValue(field.value, limit);
+      const over = state.count > limit;
+      normal.textContent = state.normal || "";
+      overflow.textContent = state.overflow || "";
+      counter.textContent = `${state.count}/${limit}`;
+      if (over) wrapper!.setAttribute("data-over-limit", "");
+      else wrapper!.removeAttribute("data-over-limit");
+      if (over) field.setAttribute("aria-invalid", "true");
+      else field.removeAttribute("aria-invalid");
+      syncScroll();
+    };
 
-    cleanupFns.push(() => input.removeEventListener("input", update));
+    field.addEventListener("input", update);
+    field.addEventListener("scroll", syncScroll);
+    update();
+    cleanupFns.push(() => {
+      field.removeEventListener("input", update);
+      field.removeEventListener("scroll", syncScroll);
+    });
   });
 
   return {

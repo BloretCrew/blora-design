@@ -48,6 +48,8 @@
   position: absolute;
   top: calc(100% + 6px);
   left: 0;
+
+  /* Above sticky mask used for outside-click */
   z-index: var(--blora-z-dropdown);
   background: var(--blora-color-surface-default);
   border: var(--blora-border-subtle);
@@ -204,22 +206,9 @@
   font-size: var(--blora-text-sm);
 }
 
-.blora-datepicker__panel, .blora-timepicker__panel) {
+.blora-datepicker__panel,
+.blora-timepicker__panel {
   background: color-mix(in srgb, var(--blora-color-surface-default) 84%, transparent);
   backdrop-filter: blur(20px) saturate(1.2);
   backdrop-filter: blur(20px) saturate(1.2);
-}
-
-.blora-datepicker__panel,
-.blora-timepicker__panel {
-  position: fixed;
-  inset: auto var(--blora-space-3) max(var(--blora-space-3), env(safe-area-inset-bottom, 0px))
-    var(--blora-space-3);
-  width: auto;
-  max-height: min(32rem, calc(100dvh - 2 * var(--blora-space-3)));
-}
-
-.blora-datepicker__panel[data-open],
-.blora-timepicker__panel[data-open] {
-  transform: translateY(0);
 }

@@ -1,8 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/web-components";
 import { html } from "lit";
+import { ref } from "lit/directives/ref.js";
+import { createSidebarLayoutController } from "../../../addons/layout/src/index";
+import "../../../addons/layout/src/layout.css";
 
 const meta = {
-  title: "Layout/Sidebar Layout",
+  title: "Add-ons/Layout/Sidebar Layout",
   component: ".blora-sidebar-layout",
   tags: ["autodocs"],
 } satisfies Meta;
@@ -65,9 +68,19 @@ const sidebarNav = html`
   </nav>
 `;
 
+const bindSidebar = (el: Element | undefined): void => {
+  if (!(el instanceof HTMLElement)) return;
+  (el as any).__ctrl?.destroy();
+  (el as any).__ctrl = createSidebarLayoutController(el);
+};
+
 export const Default: Story = {
   render: () => html`
-    <div class="blora-sidebar-layout">
+    <div class="blora-sidebar-layout" data-blora-sidebar-layout ${ref(bindSidebar)}>
+      <button type="button" class="blora-button blora-sidebar-layout__toggle" data-variant="outline" data-blora-sidebar-toggle>
+        菜单
+      </button>
+      <div class="blora-sidebar-layout__mask"></div>
       <aside class="blora-sidebar-layout__aside">${sidebarNav}</aside>
       <main class="blora-sidebar-layout__content">
         <h3 class="blora-h3">设计规范</h3>
@@ -81,7 +94,15 @@ export const Default: Story = {
 
 export const Compact: Story = {
   render: () => html`
-    <div class="blora-sidebar-layout blora-sidebar-layout--compact">
+    <div
+      class="blora-sidebar-layout blora-sidebar-layout--compact"
+      data-blora-sidebar-layout
+      ${ref(bindSidebar)}
+    >
+      <button type="button" class="blora-button blora-sidebar-layout__toggle" data-variant="outline" data-blora-sidebar-toggle>
+        菜单
+      </button>
+      <div class="blora-sidebar-layout__mask"></div>
       <aside class="blora-sidebar-layout__aside">${sidebarNav}</aside>
       <main class="blora-sidebar-layout__content">
         <h3 class="blora-h3">紧凑模式</h3>

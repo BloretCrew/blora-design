@@ -99,6 +99,12 @@ importers:
         specifier: workspace:*
         version: link:../../packages/blora-design
 
+  addons/layout:
+    dependencies:
+      '@bloret-crew/blora-design':
+        specifier: workspace:*
+        version: link:../../packages/blora-design
+
   addons/markdown:
     dependencies:
       '@bloret-crew/blora-design':
@@ -106,6 +112,12 @@ importers:
         version: link:../../packages/blora-design
 
   addons/qrcode:
+    dependencies:
+      '@bloret-crew/blora-design':
+        specifier: workspace:*
+        version: link:../../packages/blora-design
+
+  addons/theming:
     dependencies:
       '@bloret-crew/blora-design':
         specifier: workspace:*

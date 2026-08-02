@@ -196,3 +196,92 @@
 .blora-search__clear:hover {
   color: var(--blora-color-action-primary-default);
 }
+
+/* Char limit overflow highlight (v1 blora-limit) */
+.blora-limit {
+  position: relative;
+  width: 100%;
+}
+
+.blora-limit > .blora-input,
+.blora-limit > .blora-textarea {
+  padding-right: max(4.25rem, 0.85em);
+}
+
+.blora-limit__mirror {
+  position: absolute;
+  inset: 0 4.25rem 0 0;
+  z-index: var(--blora-z-base);
+  display: none;
+  padding: 0.6em 0 0.6em 0.85em;
+  color: var(--blora-color-text-primary);
+  font-family: inherit;
+  font-size: var(--blora-text-sm);
+  line-height: 1.5;
+  white-space: pre;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.blora-limit__mirror-inner {
+  display: inline-block;
+  min-width: 100%;
+}
+
+.blora-limit__overflow {
+  color: var(--blora-color-status-danger);
+  background: color-mix(in srgb, var(--blora-color-status-danger) 10%, transparent);
+  border-radius: var(--blora-radius-sm);
+}
+
+.blora-limit__count {
+  position: absolute;
+  top: 50%;
+  right: 0.85em;
+  z-index: var(--blora-z-dropdown);
+  transform: translateY(-50%);
+  color: var(--blora-color-text-subtle);
+  background: var(--blora-color-surface-default);
+  font-family: var(--blora-font-mono);
+  font-size: var(--blora-text-xs);
+  line-height: 1;
+  padding-left: var(--blora-space-2);
+  pointer-events: none;
+  transition: color var(--blora-duration-fast) var(--blora-easing-standard);
+}
+
+.blora-limit[data-over-limit] > .blora-input,
+.blora-limit[data-over-limit] > .blora-textarea {
+  color: transparent;
+  border-color: var(--blora-color-status-danger);
+  caret-color: var(--blora-color-text-primary);
+  -webkit-text-fill-color: transparent;
+}
+
+.blora-limit[data-over-limit] > .blora-input::placeholder,
+.blora-limit[data-over-limit] > .blora-textarea::placeholder {
+  -webkit-text-fill-color: var(--blora-color-text-disabled);
+}
+
+.blora-limit[data-over-limit] .blora-limit__mirror {
+  display: block;
+}
+
+.blora-limit[data-over-limit] .blora-limit__count {
+  color: var(--blora-color-status-danger);
+}
+
+.blora-limit[data-over-limit] > .blora-input:focus,
+.blora-limit[data-over-limit] > .blora-textarea:focus {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--blora-color-status-danger) 18%, transparent);
+}
+
+.blora-limit--textarea .blora-limit__count {
+  top: 0.85em;
+  transform: none;
+}
+
+.blora-limit--textarea .blora-limit__mirror {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}

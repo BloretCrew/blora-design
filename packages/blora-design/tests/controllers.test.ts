@@ -88,19 +88,20 @@ describe("createTreeController", () => {
     root.remove();
   });
 
-  it("toggles data-open on toggle click", () => {
+  it("toggles data-open on whole-row click (v1 parity)", () => {
     const ctrl = createTreeController(root);
-    const toggle = root.querySelector(".blora-tree__toggle") as HTMLElement;
     const node = root.querySelector(".blora-tree__node") as HTMLElement;
     expect(node.hasAttribute("data-open")).toBe(true);
-    toggle.click();
+    // Click the label text, not just the chevron
+    const label = node.querySelector("span:last-child") as HTMLElement;
+    label.click();
     expect(node.hasAttribute("data-open")).toBe(false);
-    toggle.click();
+    node.click();
     expect(node.hasAttribute("data-open")).toBe(true);
     ctrl.destroy();
   });
 
-  it("selects leaf node on click", () => {
+  it("selects node on click", () => {
     const ctrl = createTreeController(root);
     const leaf = root.querySelectorAll(".blora-tree__node")[1] as HTMLElement;
     leaf.click();
@@ -240,12 +241,11 @@ describe("createMegamenuController", () => {
   it("toggles panel open on trigger click", () => {
     const ctrl = createMegamenuController(root);
     const trigger = root.querySelector(".blora-megamenu__trigger") as HTMLButtonElement;
-    const panel = root.querySelector(".blora-megamenu__panel") as HTMLElement;
-    expect(panel.hasAttribute("data-open")).toBe(false);
+    expect(root.hasAttribute("data-open")).toBe(false);
     trigger.click();
-    expect(panel.hasAttribute("data-open")).toBe(true);
+    expect(root.hasAttribute("data-open")).toBe(true);
     trigger.click();
-    expect(panel.hasAttribute("data-open")).toBe(false);
+    expect(root.hasAttribute("data-open")).toBe(false);
     ctrl.destroy();
   });
 });
@@ -273,6 +273,180 @@ describe("createDockController", () => {
     items[1]!.click();
     expect(items[0]!.hasAttribute("data-active")).toBe(false);
     expect(items[1]!.hasAttribute("data-active")).toBe(true);
+    ctrl.destroy();
+  });
+});
+
+describe("createCalendarController", () => {
+  let root: HTMLElement;
+  beforeEach(() => {
+    root = document.createElement("div");
+    root.className = "blora-calendar";
+    document.body.appendChild(root);
+  });
+  afterEach(() => root.remove());
+
+  it("renders day grid and navigates months", async () => {
+    const { createCalendarController } = await import("../src/components/calendar/calendar.js");
+    const ctrl = createCalendarController(root);
+    expect(root.querySelector(".blora-calendar__grid")).toBeTruthy();
+    expect(root.querySelectorAll(".blora-calendar__cell[data-day]").length).toBeGreaterThan(27);
+    const next = root.querySelector('[data-nav="next"]') as HTMLButtonElement;
+    const titleBefore = root.querySelector(".blora-calendar__title")!.textContent;
+    next.click();
+    const titleAfter = root.querySelector(".blora-calendar__title")!.textContent;
+    expect(titleAfter).not.toBe(titleBefore);
+    ctrl.destroy();
+  });
+
+  it("zooms to months then years", async () => {
+    const { createCalendarController } = await import("../src/components/calendar/calendar.js");
+    const ctrl = createCalendarController(root);
+    (root.querySelector("[data-zoom]") as HTMLElement).click();
+    expect(root.querySelector(".blora-calendar__grid--months")).toBeTruthy();
+    (root.querySelector("[data-zoom]") as HTMLElement).click();
+    expect(root.querySelector(".blora-calendar__grid--years")).toBeTruthy();
+    ctrl.destroy();
+  });
+});
+
+describe("createTagsInputController", () => {
+  let root: HTMLElement;
+  beforeEach(() => {
+    root = document.createElement("div");
+    root.className = "blora-tags-input";
+    root.innerHTML = `<span class="blora-tag" data-variant="primary">A<button class="blora-tag__close" type="button" aria-label="移除"></button></span><input type="text" />`;
+    document.body.appendChild(root);
+  });
+  afterEach(() => root.remove());
+
+  it("adds tag on Enter and removes on close", async () => {
+    const { createTagsInputController } =
+      await import("../src/components/tags-input/tags-input.js");
+    const ctrl = createTagsInputController(root);
+    const input = root.querySelector("input") as HTMLInputElement;
+    input.value = "NewTag";
+    input.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
+    expect(root.textContent).toContain("NewTag");
+    const closes = root.querySelectorAll(".blora-tag__close");
+    expect(closes.length).toBeGreaterThan(1);
+    (closes[0] as HTMLElement).click();
+    expect(root.querySelectorAll(".blora-tag").length).toBeGreaterThan(0);
+    ctrl.destroy();
+  });
+});
+
+describe("createMegamenuController root data-open", () => {
+  let root: HTMLElement;
+  beforeEach(() => {
+    root = document.createElement("div");
+    root.className = "blora-megamenu";
+    root.innerHTML = `<button class="blora-megamenu__trigger">Open</button><div class="blora-megamenu__panel">Panel</div>`;
+    document.body.appendChild(root);
+  });
+  afterEach(() => root.remove());
+
+  it("toggles data-open on root", async () => {
+    const { createMegamenuController } = await import("../src/components/dock/dock.js");
+    const ctrl = createMegamenuController(root);
+    const btn = root.querySelector("button") as HTMLButtonElement;
+    btn.click();
+    expect(root.hasAttribute("data-open")).toBe(true);
+    btn.click();
+    expect(root.hasAttribute("data-open")).toBe(false);
+    ctrl.destroy();
+  });
+});
+
+describe("createFieldController overflow highlight", () => {
+  let root: HTMLElement;
+  beforeEach(() => {
+    root = document.createElement("div");
+    root.innerHTML = `<div class="blora-field"><input class="blora-input" data-limit="5" value="12345678" /></div>`;
+    document.body.appendChild(root);
+  });
+  afterEach(() => root.remove());
+
+  it("marks over-limit and fills overflow mirror text", async () => {
+    const { createFieldController } = await import("../src/components/copy/copy.js");
+    const ctrl = createFieldController(root);
+    const wrap = root.querySelector(".blora-limit") as HTMLElement;
+    expect(wrap).toBeTruthy();
+    expect(wrap.hasAttribute("data-over-limit")).toBe(true);
+    const overflow = wrap.querySelector(".blora-limit__overflow") as HTMLElement;
+    expect(overflow.textContent).toBe("678");
+    ctrl.destroy();
+  });
+});
+
+describe("createDatepickerController custom panel", () => {
+  let root: HTMLElement;
+  beforeEach(() => {
+    root = document.createElement("div");
+    root.className = "blora-datepicker";
+    root.innerHTML = `<input class="blora-input" type="date" min="1900-01-01" max="2099-12-31" /><button class="blora-datepicker__btn" type="button"></button>`;
+    document.body.appendChild(root);
+  });
+  afterEach(() => root.remove());
+
+  it("keeps type=date and opens custom panel on button click", async () => {
+    const { createDatepickerController } =
+      await import("../src/components/datepicker/datepicker.js");
+    const ctrl = createDatepickerController(root);
+    const input = root.querySelector("input") as HTMLInputElement;
+    expect(input.type).toBe("date");
+    const btn = root.querySelector("button") as HTMLButtonElement;
+    btn.click();
+    const panel = root.querySelector(".blora-datepicker__panel") as HTMLElement;
+    expect(panel.hasAttribute("data-open")).toBe(true);
+    expect(panel.querySelector(".blora-datepicker__grid")).toBeTruthy();
+    ctrl.destroy();
+  });
+
+  it("keeps panel open when zooming year/month title", async () => {
+    const { createDatepickerController } =
+      await import("../src/components/datepicker/datepicker.js");
+    const ctrl = createDatepickerController(root);
+    const btn = root.querySelector("button") as HTMLButtonElement;
+    btn.click();
+    const panel = root.querySelector(".blora-datepicker__panel") as HTMLElement;
+    const title = panel.querySelector("[data-zoom]") as HTMLElement;
+    title.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    expect(panel.hasAttribute("data-open")).toBe(true);
+    expect(panel.querySelector(".blora-datepicker__grid--months")).toBeTruthy();
+    // second zoom → years, still open
+    const title2 = panel.querySelector("[data-zoom]") as HTMLElement;
+    title2.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    expect(panel.hasAttribute("data-open")).toBe(true);
+    expect(panel.querySelector(".blora-datepicker__grid--years")).toBeTruthy();
+    ctrl.destroy();
+  });
+});
+
+describe("createCopyController checkmark", () => {
+  let root: HTMLElement;
+  beforeEach(() => {
+    root = document.createElement("div");
+    root.className = "blora-copy";
+    root.dataset.copyText = "hello";
+    root.innerHTML = `<button class="blora-copy__btn" type="button"><span>icon</span></button>`;
+    document.body.appendChild(root);
+    // mock clipboard
+    Object.assign(navigator, {
+      clipboard: { writeText: async () => {} },
+    });
+  });
+  afterEach(() => root.remove());
+
+  it("swaps to check icon and sets data-copied", async () => {
+    const { createCopyController } = await import("../src/components/copy/copy.js");
+    const ctrl = createCopyController(root);
+    const btn = root.querySelector("button") as HTMLButtonElement;
+    await btn.click();
+    // click handler is async
+    await new Promise((r) => setTimeout(r, 20));
+    expect(root.hasAttribute("data-copied")).toBe(true);
+    expect(btn.querySelector("svg")).toBeTruthy();
     ctrl.destroy();
   });
 });

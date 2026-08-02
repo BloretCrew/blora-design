@@ -1,6 +1,6 @@
 /**
- * Blora Design 2.0 - Range controller (dual-thumb range slider)
- * Makes two custom thumb divs draggable along a track.
+ * Blora Design 2.0 - Range controller (dual-thumb)
+ * Optional tooltip-on-drag via data-tooltip attribute (v1 default behavior).
  */
 export interface RangeController {
   destroy(): void;
@@ -16,6 +16,18 @@ export function createRangeController(root: HTMLElement): RangeController {
 
   const min = Number(root.dataset.min ?? 0);
   const max = Number(root.dataset.max ?? 100);
+  // default true like v1; set data-tooltip="false" to disable
+  const showTip = root.dataset.tooltip !== "false";
+
+  const tips = showTip
+    ? thumbs.map(() => {
+        const t = document.createElement("span");
+        t.className = "blora-range__tip";
+        t.setAttribute("aria-hidden", "true");
+        root.appendChild(t);
+        return t;
+      })
+    : [];
 
   const valueToPct = (v: number) => ((v - min) / (max - min)) * 100;
 
@@ -25,9 +37,13 @@ export function createRangeController(root: HTMLElement): RangeController {
     const hi = Math.max(...vals);
     const loPct = valueToPct(lo);
     const hiPct = valueToPct(hi);
-    thumbs.forEach((t) => {
+    thumbs.forEach((t, i) => {
       const v = Number(t.dataset.val ?? min);
       t.style.left = `${valueToPct(v)}%`;
+      if (tips[i]) {
+        tips[i]!.textContent = String(v);
+        tips[i]!.style.left = `${valueToPct(v)}%`;
+      }
     });
     if (fill) {
       fill.style.left = `${loPct}%`;
@@ -38,12 +54,13 @@ export function createRangeController(root: HTMLElement): RangeController {
 
   const cleanupFns: (() => void)[] = [];
 
-  thumbs.forEach((thumb) => {
+  thumbs.forEach((thumb, i) => {
     let dragging = false;
 
     const onPointerDown = (e: PointerEvent) => {
       dragging = true;
       thumb.setPointerCapture(e.pointerId);
+      if (tips[i]) tips[i]!.setAttribute("data-show", "");
       e.preventDefault();
     };
 
@@ -54,7 +71,6 @@ export function createRangeController(root: HTMLElement): RangeController {
       pct = Math.max(0, Math.min(100, pct));
       const val = Math.round(min + (pct / 100) * (max - min));
 
-      // Prevent thumbs from crossing
       const idx = thumbs.indexOf(thumb);
       const otherVal = Number(thumbs[1 - idx]!.dataset.val ?? min);
       if (idx === 0 && val > otherVal) return;
@@ -66,6 +82,7 @@ export function createRangeController(root: HTMLElement): RangeController {
 
     const onPointerUp = (e: PointerEvent) => {
       dragging = false;
+      if (tips[i]) tips[i]!.removeAttribute("data-show");
       try {
         thumb.releasePointerCapture(e.pointerId);
       } catch {
@@ -73,14 +90,21 @@ export function createRangeController(root: HTMLElement): RangeController {
       }
     };
 
+    const onFocus = () => tips[i]?.setAttribute("data-show", "");
+    const onBlur = () => tips[i]?.removeAttribute("data-show");
+
     thumb.addEventListener("pointerdown", onPointerDown);
     thumb.addEventListener("pointermove", onPointerMove);
     thumb.addEventListener("pointerup", onPointerUp);
+    thumb.addEventListener("focus", onFocus);
+    thumb.addEventListener("blur", onBlur);
 
     cleanupFns.push(() => {
       thumb.removeEventListener("pointerdown", onPointerDown);
       thumb.removeEventListener("pointermove", onPointerMove);
       thumb.removeEventListener("pointerup", onPointerUp);
+      thumb.removeEventListener("focus", onFocus);
+      thumb.removeEventListener("blur", onBlur);
     });
   });
 
@@ -89,6 +113,7 @@ export function createRangeController(root: HTMLElement): RangeController {
   return {
     destroy() {
       cleanupFns.forEach((fn) => fn());
+      tips.forEach((t) => t.remove());
     },
   };
 }

@@ -11,18 +11,23 @@ const meta = {
 export default meta;
 type Story = StoryObj;
 
+const OPTIONS = JSON.stringify(["alice", "bob", "carol", "dave", "张三", "李四"]);
+
 const init = (el: Element | undefined): void => {
   if (!(el instanceof HTMLElement)) return;
-  (el as any).__ctrl?.destroy();
-  (el as any).__ctrl = createMentionsController(el);
+  // Defer so Lit finishes attribute hydration
+  requestAnimationFrame(() => {
+    (el as any).__ctrl?.destroy();
+    (el as any).__ctrl = createMentionsController(el);
+  });
 };
 
 export const Default: Story = {
   render: () => html`
     <div
       class="blora-mentions"
-      data-options='["alice","bob","carol","dave"]'
-      style="max-width: 22rem;"
+      data-options=${OPTIONS}
+      style="max-width: 22rem; margin-bottom: 12rem;"
       ${ref(init)}
     >
       <label class="blora-label">Mentions</label>

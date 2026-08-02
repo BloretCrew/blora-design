@@ -1,0 +1,15 @@
+{
+  "name": "layout",
+  "status": "beta",
+  "kind": "headless",
+  "since": "2.0.0",
+  "requiresJavaScript": true,
+  "methods": {
+    "createSidebarLayoutController": {},
+    "createAffixController": {},
+    "createAnchorController": {},
+    "createScrollSpyController": {},
+    "initSmoothScroll": {}
+  },
+  "migrationFromV1": "layout.migration.md"
+}

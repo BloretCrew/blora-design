@@ -1,29 +1,38 @@
 import type { Meta, StoryObj } from "@storybook/web-components";
 import { html } from "lit";
+import { ref } from "lit/directives/ref.js";
+import { createAffixController } from "../../../addons/layout/src/index";
+import "../../../addons/layout/src/layout.css";
 
 const meta = {
-  title: "Layout/Affix",
+  title: "Add-ons/Layout/Affix",
   component: ".blora-affix",
   tags: ["autodocs"],
 } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 
+const init = (el: Element | undefined): void => {
+  if (!(el instanceof HTMLElement)) return;
+  (el as any).__ctrl?.destroy();
+  (el as any).__ctrl = createAffixController(el);
+};
+
 export const Default: Story = {
   render: () => html`
-    <div
-      style="height: 200px; overflow-y: auto; border: var(--blora-border-subtle); border-radius: var(--blora-radius-md); position: relative;"
-    >
-      <div style="padding: var(--blora-space-4); height: 600px;">
-        <p class="blora-text-sm blora-text-muted">滚动此区域查看固钉效果。</p>
+    <div style="padding: var(--blora-space-4); min-height: 120vh;">
+      <p class="blora-text-sm blora-text-muted">向下滚动页面，固钉在到达阈值后吸附顶部。</p>
+      <div style="height: 8rem;"></div>
+      <div class="blora-affix" data-offset="16" ${ref(init)}>
         <div
-          class="blora-affix"
-          style="position: sticky; top: 0; background: var(--blora-color-surface-default); border: var(--blora-border-subtle); border-radius: var(--blora-radius-md); padding: var(--blora-space-3); margin: var(--blora-space-4) 0; box-shadow: var(--blora-shadow-2); z-index: var(--blora-z-sticky);"
+          class="blora-affix__inner"
+          style="background: var(--blora-color-surface-default); border: 1px solid var(--blora-color-border-subtle); border-radius: var(--blora-radius-md); padding: var(--blora-space-3);"
         >
-          <span class="blora-text-sm" style="font-weight: 500;">固钉栏 · 滚动时保持顶部固定</span>
+          <span class="blora-text-sm" style="font-weight: 500;">固钉栏 · Affix</span>
         </div>
-        <p class="blora-text-sm blora-text-muted">下方还有很多内容...</p>
       </div>
+      <div style="height: 80vh;"></div>
+      <p class="blora-text-sm blora-text-muted">页面底部</p>
     </div>
   `,
 };

@@ -103,3 +103,68 @@
 .blora-calendar__day--selected:hover {
   background: var(--blora-color-action-primary-default);
 }
+
+/* v1-compatible cell classes used by interactive controller */
+.blora-calendar__cell {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border-radius: var(--blora-radius-sm);
+  font-size: var(--blora-text-sm);
+  color: var(--blora-color-text-emphasis);
+  cursor: pointer;
+  transition: all var(--blora-duration-fast) var(--blora-easing-standard);
+  user-select: none;
+  position: relative;
+}
+
+.blora-calendar__cell:hover {
+  background: var(--blora-color-surface-raised);
+}
+
+.blora-calendar__cell[data-other] {
+  color: var(--blora-color-text-disabled);
+}
+
+.blora-calendar__cell[data-today] {
+  font-weight: 700;
+  color: var(--blora-color-action-primary-default);
+}
+
+.blora-calendar__cell[data-selected] {
+  background: var(--blora-color-action-primary-default);
+  color: var(--blora-color-text-on-accent);
+  font-weight: 600;
+}
+
+.blora-calendar__cell--month,
+.blora-calendar__cell--year {
+  aspect-ratio: unset;
+  padding: 0.7em 0;
+}
+
+.blora-calendar__grid--months {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.blora-calendar__grid--years {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.blora-calendar__dow {
+  text-align: center;
+  font-size: var(--blora-text-xs);
+  color: var(--blora-color-text-subtle);
+  padding: 0.4em 0;
+}
+
+.blora-calendar__title {
+  cursor: pointer;
+  padding: 0.2em 0.6em;
+  border-radius: var(--blora-radius-sm);
+}
+
+.blora-calendar__title:hover {
+  background: var(--blora-color-surface-raised);
+  color: var(--blora-color-action-primary-default);
+}

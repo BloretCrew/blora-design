@@ -45,15 +45,7 @@ const options = JSON.stringify([
 export const Default: Story = {
   render: () => html`
     <div style="max-width: 28rem;">
-      <label class="blora-label" style="margin-bottom: var(--blora-space-2);"
-        >级联选择 · Cascader</label
-      >
       <div class="blora-cascader" data-options=${options} ${ref(init)}></div>
-      <span
-        class="blora-hint blora-cascader__result"
-        style="margin-top: var(--blora-space-2); display: block;"
-        >请选择</span
-      >
     </div>
   `,
 };
