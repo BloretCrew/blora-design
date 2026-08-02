@@ -21,13 +21,13 @@ body:
     attributes:
       label: Package
       options:
-        - @bloret-crew/blora-design (core)
-        - @bloret-crew/blora-design-markdown
-        - @bloret-crew/blora-design-thread
-        - @bloret-crew/blora-design-qrcode
-        - @bloret-crew/blora-design-effects
-        - @bloret-crew/blora-design-layout
-        - @bloret-crew/blora-design-theming
+        - "@bloret-crew/blora-design (core)"
+        - "@bloret-crew/blora-design-markdown"
+        - "@bloret-crew/blora-design-thread"
+        - "@bloret-crew/blora-design-qrcode"
+        - "@bloret-crew/blora-design-effects"
+        - "@bloret-crew/blora-design-layout"
+        - "@bloret-crew/blora-design-theming"
         - Other / monorepo
     validations:
       required: true
