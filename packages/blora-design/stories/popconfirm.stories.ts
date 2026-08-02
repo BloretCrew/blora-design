@@ -1,67 +1,44 @@
 import type { Meta, StoryObj } from "@storybook/web-components";
 import { html } from "lit";
 import { ref } from "lit/directives/ref.js";
+import { createPopconfirmController } from "../src/components/popconfirm";
 
 const meta = {
   title: "Feedback/Popconfirm",
   component: ".blora-popconfirm",
   tags: ["autodocs"],
 } satisfies Meta;
-
 export default meta;
 type Story = StoryObj;
 
-const initPopconfirm = (el: Element | undefined): void => {
+const init = (el: Element | undefined): void => {
   if (!(el instanceof HTMLElement)) return;
-  const trigger = el.querySelector<HTMLElement>("[data-popconfirm-trigger]");
-  if (!trigger) return;
-
-  trigger.addEventListener("click", (e) => {
-    e.stopPropagation();
-    el.toggleAttribute("data-open");
-  });
-
-  el.addEventListener("click", (e) => {
-    const target = e.target as HTMLElement;
-    if (target.closest("[data-popconfirm-confirm]") || target.closest("[data-popconfirm-cancel]")) {
-      el.removeAttribute("data-open");
-    }
-  });
-
-  document.addEventListener("click", () => {
-    if (el.hasAttribute("data-open")) el.removeAttribute("data-open");
-  });
+  (el as any).__ctrl?.destroy();
+  (el as any).__ctrl = createPopconfirmController(el);
 };
 
 export const Default: Story = {
   render: () => html`
-    <div class="blora-popconfirm" ${ref(initPopconfirm)}>
-      <button class="blora-button" type="button" data-variant="danger" data-popconfirm-trigger>
+    <div class="blora-popconfirm" ${ref(init)} style="display:inline-block;position:relative;">
+      <button type="button" class="blora-button" data-variant="danger" data-blora-popconfirm-trigger>
         删除
       </button>
-      <div class="blora-popconfirm__panel" role="alertdialog">
-        <div class="blora-popconfirm__title">确定要删除这项内容吗？</div>
-        <div class="blora-popconfirm__actions">
-          <button
-            class="blora-button"
-            type="button"
-            data-variant="outline"
-            data-size="sm"
-            data-popconfirm-cancel
-          >
-            取消
-          </button>
-          <button
-            class="blora-button"
-            type="button"
-            data-variant="danger"
-            data-size="sm"
-            data-popconfirm-confirm
-          >
-            确定
-          </button>
+      <div
+        class="blora-popconfirm__panel"
+        style="position:absolute;top:calc(100% + 8px);left:0;z-index:10;padding:var(--blora-space-3);background:var(--blora-color-surface-default);border:1px solid var(--blora-color-border-subtle);border-radius:var(--blora-radius-md);box-shadow:var(--blora-shadow-3);display:none;min-width:12rem;"
+      >
+        <p style="margin:0 0 0.75rem;font-size:var(--blora-text-sm);">确认删除此项？</p>
+        <div style="display:flex;gap:0.5rem;justify-content:flex-end;">
+          <button type="button" class="blora-button" data-size="sm" data-variant="ghost" data-cancel>取消</button>
+          <button type="button" class="blora-button" data-size="sm" data-variant="danger" data-confirm>确定</button>
         </div>
       </div>
     </div>
+    <style>
+      .blora-popconfirm[data-open] .blora-popconfirm__panel,
+      .blora-popconfirm.is-open .blora-popconfirm__panel {
+        display: block !important;
+      }
+    </style>
   `,
 };

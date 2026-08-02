@@ -86,14 +86,25 @@
 |---|---|
 | Palette Picker | ✅ 迁入；应用 `data-blora-theme` + localStorage |
 
-## 三、核心包其它债（非本轮「第二节」范围）
+## 三、核心包行为补齐（2026-08-02 批）
 
-仍可能只有 CSS / 行为不齐（不完全列表）：
+已新增 controller / API（供 Storybook 肉眼验）：
 
-- 浮层：Tooltip、Popover、Drawer、Pagination 等
-- 数据：Table API、Transfer、Tree Select
-- 反馈：Toast / Message / Notification 服务
-- Form validate、BackTop、Image preview 等
+| 组件 | API |
+|------|-----|
+| Collapse / Accordion | `createCollapseController` / `createAccordionController` |
+| Drawer | `createDrawerController` |
+| Tooltip | `createTooltipController` |
+| Popover | `createPopoverController` |
+| Segmented | `createSegmentedController` |
+| Pagination | `createPaginationController` |
+| Checkbox 全选 | `createCheckboxController` |
+| Table 排序 | `createTableController`（子集） |
+| Toast | `toast()` / `message()` |
+| Popconfirm | `createPopconfirmController` |
+| Progress | `createProgressController` |
+
+仍偏薄 / 未做全量 v1：Tree Select、Form validate、BackTop、Image preview、Notification 完整布局、Table 分页/列设置 等。
 
 ## 四、DoD / 文档债
 

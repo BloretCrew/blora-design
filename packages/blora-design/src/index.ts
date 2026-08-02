@@ -101,3 +101,39 @@ export {
   createCommandPaletteController,
   type CommandPaletteController,
 } from "./components/command-palette/index.js";
+
+// Overlays / data / feedback controllers (batch fill)
+export { createCollapseController, type CollapseController } from "./components/collapse/index.js";
+export {
+  createDrawerController,
+  bindDrawerTriggers,
+  type DrawerController,
+} from "./components/drawer/index.js";
+export { createTooltipController, type TooltipController } from "./components/tooltip/index.js";
+export { createPopoverController, type PopoverController } from "./components/popover/index.js";
+export {
+  createSegmentedController,
+  type SegmentedController,
+} from "./components/segmented/index.js";
+export {
+  createPaginationController,
+  type PaginationController,
+} from "./components/pagination/index.js";
+export {
+  createCheckboxController,
+  type CheckboxController,
+} from "./components/checkbox/index.js";
+export { toast, message, type ToastOptions, type ToastHandle } from "./components/toast/index.js";
+export { createTableController, type TableController } from "./components/table/index.js";
+export {
+  createPopconfirmController,
+  type PopconfirmController,
+} from "./components/popconfirm/index.js";
+export {
+  createProgressController,
+  type ProgressController,
+} from "./components/progress/index.js";
+export {
+  createAccordionController,
+  type AccordionController,
+} from "./components/accordion/index.js";

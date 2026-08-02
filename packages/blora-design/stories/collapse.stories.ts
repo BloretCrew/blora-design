@@ -1,24 +1,25 @@
 import type { Meta, StoryObj } from "@storybook/web-components";
 import { html } from "lit";
+import { ref } from "lit/directives/ref.js";
+import { createCollapseController } from "../src/components/collapse";
 
 const meta = {
   title: "Navigation/Collapse",
   component: ".blora-collapse",
   tags: ["autodocs"],
 } satisfies Meta;
-
 export default meta;
 type Story = StoryObj;
 
-const toggle = (e: Event): void => {
-  const head = (e.target as HTMLElement).closest(".blora-collapse__head");
-  const item = head?.closest(".blora-collapse__item");
-  item?.toggleAttribute("data-open");
+const init = (el: Element | undefined): void => {
+  if (!(el instanceof HTMLElement)) return;
+  (el as any).__ctrl?.destroy();
+  (el as any).__ctrl = createCollapseController(el);
 };
 
 export const Default: Story = {
   render: () => html`
-    <div class="blora-collapse" @click=${toggle}>
+    <div class="blora-collapse" ${ref(init)} style="max-width: 28rem;">
       <div class="blora-collapse__item" data-open>
         <button class="blora-collapse__head" type="button">
           <span>什么是 Blora Design？</span>
@@ -26,18 +27,18 @@ export const Default: Story = {
         </button>
         <div class="blora-collapse__body">
           <div class="blora-collapse__content">
-            一套基于 Web 标准的令牌驱动 UI 设计系统，支持纯 HTML、原生 JS 和主流框架。
+            一套基于 Web 标准的令牌驱动 UI 设计系统。
           </div>
         </div>
       </div>
-      <div class="blora-collapse__item" data-open>
+      <div class="blora-collapse__item">
         <button class="blora-collapse__head" type="button">
           <span>如何安装？</span>
           <span class="blora-collapse__icon">▸</span>
         </button>
         <div class="blora-collapse__body">
           <div class="blora-collapse__content">
-            通过 npm 安装：<code class="blora-code">npm i @bloret-crew/blora-design</code>
+            <code class="blora-code">pnpm add @bloret-crew/blora-design</code>
           </div>
         </div>
       </div>
@@ -47,10 +48,24 @@ export const Default: Story = {
           <span class="blora-collapse__icon">▸</span>
         </button>
         <div class="blora-collapse__body">
-          <div class="blora-collapse__content">
-            支持所有现代浏览器（Chrome、Firefox、Safari、Edge 最新版）。
-          </div>
+          <div class="blora-collapse__content">现代 Chromium / Firefox / Safari。</div>
         </div>
+      </div>
+    </div>
+  `,
+};
+
+export const Accordion: Story = {
+  name: "手风琴 · 同时仅一项",
+  render: () => html`
+    <div class="blora-collapse" data-blora-accordion ${ref(init)} style="max-width: 28rem;">
+      <div class="blora-collapse__item" data-open>
+        <button class="blora-collapse__head" type="button"><span>面板 A</span></button>
+        <div class="blora-collapse__body"><div class="blora-collapse__content">内容 A</div></div>
+      </div>
+      <div class="blora-collapse__item">
+        <button class="blora-collapse__head" type="button"><span>面板 B</span></button>
+        <div class="blora-collapse__body"><div class="blora-collapse__content">内容 B</div></div>
       </div>
     </div>
   `,
