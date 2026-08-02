@@ -20,7 +20,7 @@ describe("Phase-9 honesty artifacts", () => {
     expect(body).toMatch(/Phase 10/);
     expect(body).toMatch(/P9-1/);
     expect(body).toMatch(/主跟踪文档|剩余工作总表/);
-    expect(body).toMatch(/createTableController|ADR-009|pnpm verify/);
+    expect(body).toMatch(/createTableController|ADR-013|pnpm verify/);
   });
 
   it("migration stub exists at docs/migration/v1-to-v2.md", () => {

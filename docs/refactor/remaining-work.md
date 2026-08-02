@@ -56,7 +56,7 @@
 | **P9-2** | `docs/framework.md` 正文大量 1.x | 顶部 2.0 入口已有；历史节标题强化「仅迁移对照」；**全文重写 deferred**（Phase 10 文档产品化） | ✅ 已关闭（降权足够） |
 | **P9-3** | `llms.txt` 指向不存在的 `docs/migration/v1-to-v2.md` | 新增最小 stub；llms 链到有效路径 | ✅ 已关闭 |
 | **P9-4** | 包名 / 形态 vs 规格表示例偏差 | 见 §2.1 诚实说明；实现名以 monorepo 为准 | ✅ 已关闭（文档） |
-| **P9-5** | 规格偏 FA WC，实现多为 headless controller | ADR-009 固化默认架构 | ✅ 已关闭（文档） |
+| **P9-5** | 规格偏 FA WC，实现多为 headless controller | ADR-013 固化默认架构 | ✅ 已关闭（文档） |
 | **P9-6** | add-on 无 Playwright / visual 农场；qrcode jsdom canvas 噪音 | **Deferred → Phase 10** 质量农场；非诚实债阻塞 | ✅ 已处置（deferred） |
 | **P9-7** | 全量 `pnpm verify` 未作 Phase 9 硬门 | 本收口以 typecheck + unit 为证；全量 verify **Deferred → Phase 10 / CI**（见 §5） | ✅ 已处置（deferred + 证据） |
 | **P9-8** | 2.0 核心 i18n / locales 对等缺失 | **Deferred → Phase 10**（规格若仍要求再立项）；1.x 见 `legacy/v1/locales` | ✅ 已处置（deferred） |
@@ -67,12 +67,12 @@
 |-------------------|----------|------|
 | `@bloret-crew/blora-markdown` 等 | `@bloret-crew/blora-design-markdown` 等 | 统一 `blora-design-*` 前缀；**以 package.json 为准** |
 | Table 行为「beta controller」 | `createTableController` + contract **stable**（主路径） | 高级路径已交付；**全量 browser DoD 仍属 Phase 10** |
-| 大量 `<blora-tabs>` / FA WC | 多数为 `div` + `createXxxController`；Select/Dialog 为 CE | 见 **ADR-009** |
+| 大量 `<blora-tabs>` / FA WC | 多数为 `div` + `createXxxController`；Select/Dialog 为 CE | 见 **ADR-013** |
 
 ### 2.2 相关文件
 
 - 迁移 stub：`docs/migration/v1-to-v2.md`
-- 架构 ADR：`docs/refactor/decisions.md` → ADR-009
+- 架构 ADR：`docs/refactor/decisions.md` → ADR-013
 - 人眼 / 行为 delta：`docs/refactor/pending-visual-review.md` § Phase-9 honesty closeout
 
 ---
@@ -148,7 +148,7 @@
 - [ ] 2.0 **i18n / locales** 运行时（P9-8）
 - [ ] add-on 独立 Playwright / visual（P9-6）
 - [ ] 全量 `pnpm verify` 作为发布硬门（P9-7）
-- [ ] FA WC 全面化（**不默认**；见 ADR-009）
+- [ ] FA WC 全面化（**不默认**；见 ADR-013）
 - [ ] 删除 `legacy/v1` 或拆除 compat（**禁止**过早）
 
 ---
@@ -180,7 +180,7 @@
 | [`status.md`](./status.md) | 阶段摘要 → 链到本文件 |
 | [`component-matrix.md`](./component-matrix.md) | 组件迁移状态 |
 | [`addon-core-gaps.md`](./addon-core-gaps.md) | Phase 9 缺口对照 |
-| [`decisions.md`](./decisions.md) | ADR（含 ADR-009） |
+| [`decisions.md`](./decisions.md) | ADR（含 ADR-013） |
 | [`pending-visual-review.md`](./pending-visual-review.md) | 视觉签收 |
 | [`docs/guide.md`](../guide.md) | **2.0 推荐用法** |
 | [`docs/migration/v1-to-v2.md`](../migration/v1-to-v2.md) | 迁移入口（stub → 后扩） |

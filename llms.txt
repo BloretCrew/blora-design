@@ -38,7 +38,7 @@ Use `.blora-button[data-variant="primary"]` — not 1.x `.blora-btn--primary` / 
 - Prefer native HTML; Custom Elements only for composite shipped CE (e.g. select, dialog).
 - Most interactive widgets: `createXxxController(root)` + destroy on teardown.
 - Table row selection: `data-blora-selectable` (built-in; do not hand-compose checkbox columns).
-- Form-associated WC for every control is **not** the default (see ADR-009 in `docs/refactor/decisions.md`).
+- Form-associated WC for every control is **not** the default (see ADR-013 in `docs/refactor/decisions.md`).
 
 ## Prohibitions
 

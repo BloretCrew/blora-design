@@ -86,7 +86,7 @@ pnpm add @bloret-crew/blora-design-markdown @bloret-crew/blora-design-theming
 | Headless controller | Composite behavior on real DOM (Table, Tree, Form, Drawer, …) |
 | Custom Element | Shipped CE surface (Select, Dialog, …) |
 
-Full FA-WC-for-everything is **not** the 2.0 default (ADR-009 in `docs/refactor/decisions.md`).
+Full FA-WC-for-everything is **not** the 2.0 default (ADR-013 in `docs/refactor/decisions.md`).
 
 ---
 

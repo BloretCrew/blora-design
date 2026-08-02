@@ -63,6 +63,6 @@
 | Root README → 2.0 | **None** (docs only) |
 | `llms.txt` + `docs/migration/v1-to-v2.md` | **None** |
 | `framework.md` demotion wording | **None** |
-| ADR-009 + `remaining-work.md` | **None** |
+| ADR-013 + `remaining-work.md` | **None** |
 
 **No Storybook eye-check required** for this closeout. Master tracker: [`remaining-work.md`](./remaining-work.md) §4.
