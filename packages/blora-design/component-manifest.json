@@ -688,14 +688,6 @@
       "contract": "contracts/upload.contract.json"
     }
   ],
-  "jsSubpaths": [
-    "./button",
-    "./select",
-    "./dialog",
-    "./table",
-    "./toast",
-    "./auto",
-    "./compat/v1"
-  ],
+  "jsSubpaths": ["./button", "./select", "./dialog", "./table", "./toast", "./auto", "./compat/v1"],
   "notes": "status=stable in contracts is aspirational until Phase 10 DoD; see docs/refactor/contract-stability.md"
 }

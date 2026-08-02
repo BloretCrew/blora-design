@@ -28,3 +28,7 @@ README.md
 
 # Generated token outputs
 packages/tokens/generated/**
+
+packages/blora-design/component-manifest.json
+packages/blora-design/custom-elements.json
+packages/blora-design/dist/**
