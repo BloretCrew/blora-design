@@ -164,12 +164,13 @@ test("table sort headers show direction arrows", async ({ page }) => {
   const ascAfter = await page
     .locator('.blora-table-sort[aria-sort="ascending"]')
     .evaluate((el: HTMLElement) => window.getComputedStyle(el, "::after").content);
-  expect(ascAfter).toContain("↑");
+  // Sorted glyphs: filled triangles (hover unsorted uses ⇅)
+  expect(ascAfter).toMatch(/▲|↑/);
 
   const descAfter = await page
     .locator('.blora-table-sort[aria-sort="descending"]')
     .evaluate((el: HTMLElement) => window.getComputedStyle(el, "::after").content);
-  expect(descAfter).toContain("↓");
+  expect(descAfter).toMatch(/▼|↓/);
 });
 
 /* ------------------------------------------------------------------ List */

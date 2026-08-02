@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Blora Design 2.0 — basic example</title>
+    <!-- After npm install @bloret-crew/blora-design, point these at node_modules paths or your bundler. -->
+    <link rel="stylesheet" href="../../packages/blora-design/dist/tokens.css" />
+    <link rel="stylesheet" href="../../packages/blora-design/dist/foundations.css" />
+    <link rel="stylesheet" href="../../packages/blora-design/dist/components/button/button.css" />
+    <link rel="stylesheet" href="../../packages/blora-design/dist/components/table/table.css" />
+    <style>
+      body {
+        margin: 0;
+        font-family: system-ui, sans-serif;
+        background: var(--blora-color-surface-canvas);
+        color: var(--blora-color-text-secondary);
+        padding: 1.5rem;
+      }
+      main {
+        max-width: 40rem;
+        margin: 0 auto;
+        display: grid;
+        gap: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Blora Design 2.0 (alpha)</h1>
+      <p>Minimal HTML example — ESM controllers, no global <code>Blora</code>.</p>
+      <button type="button" class="blora-button" data-variant="primary" id="toast-btn">Toast</button>
+      <div class="blora-table-wrap" data-blora-selectable id="wrap">
+        <table class="blora-table" id="demo">
+          <thead>
+            <tr>
+              <th data-sort data-col-key="name">Name</th>
+              <th data-sort data-col-key="role">Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-row-key="1">
+              <td>Alice</td>
+              <td>Admin</td>
+            </tr>
+            <tr data-row-key="2">
+              <td>Bob</td>
+              <td>Editor</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p id="out" class="blora-text-muted"></p>
+    </main>
+    <script type="module">
+      import {
+        toast,
+        createTableController,
+      } from "../../packages/blora-design/dist/index.js";
+      import "../../packages/blora-design/dist/components/toast/toast.css";
+
+      const wrap = document.getElementById("wrap");
+      const table = createTableController(wrap);
+      document.getElementById("toast-btn").addEventListener("click", () => {
+        const n = table.getSelectedRows().length;
+        toast(n ? `Selected ${n} row(s)` : "Click row checkboxes, then Toast");
+      });
+      wrap.addEventListener("blora-table-select", (e) => {
+        document.getElementById("out").textContent = `Selected: ${e.detail.selected}`;
+      });
+    </script>
+  </body>
+</html>

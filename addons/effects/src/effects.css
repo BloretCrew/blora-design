@@ -436,6 +436,7 @@
   cursor: grab;
   user-select: none;
 }
+
 .blora-hover-gallery:active {
   cursor: grabbing;
 }
@@ -451,6 +452,7 @@
   will-change: transform;
   transition: transform var(--blora-duration-slow, 0.35s) var(--blora-easing-standard);
 }
+
 .blora-hover-gallery__track.is-dragging {
   transition: none;
 }
@@ -464,6 +466,7 @@
   display: block;
   pointer-events: none;
 }
+
 .blora-hover-gallery--wide {
   --blora-gallery-ratio: 16 / 9;
 }

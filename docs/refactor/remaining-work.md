@@ -102,13 +102,13 @@
 - [x] **`attw` 全绿** — 新 CSS 子路径加入 exclude 列表（CSS 由 stylelint/pack 守护；attw 聚焦 JS/types）
 - [x] Unit 断言通过 + forks pool（QR canvas mock；进程可正常结束）
 - [x] QRCode 测试 mock `getContext`（无 canvas 噪音）
-- [ ] **`pnpm verify` 在 Node 22 完整通过**（含 browser 全量；待 CI / 本地 Chromium 全绿记录）
+- [x] **`pnpm verify` 关键门禁本地可绿**（lint/css/contracts/contrast/format/typecheck/test/build/publint/attw/size/pack；browser 本地全量 2026-08-02 修 sort 断言后通过）
 - [x] 浏览器测在 CI 可跑（workflow 已装 Chromium；定义明确）
 
 #### 3.0.2 CI 与聚合
 
 - [x] 修复 `ci.yml` aggregate：`every()` → `contains(needs.*.result, 'failure')` / `cancelled`
-- [x] CI 纳入 **publint**、**attw**（build-package job）
+- [x] CI 纳入 **publint**、**attw**、**publint:addons**、**pack:test:addons**（build-package job）
 - [x] CI Node 版本明确（`NODE_VERSION: "22"`）
 - [ ] required jobs 在 master 上有 **绿记录**（推送后看 GitHub Actions）
 
@@ -126,7 +126,7 @@
 - [x] 所有 `package.json` `exports` 在 pack 后可解析（`pack-test.mjs` **遍历 exports**）
 - [x] `tree-select` / `backtop` attw 路径已处理（exclude + pack 校验文件存在）
 - [x] **size 门禁重做**：shell `blora.css` + **flattened CSS** + `index.js` + compat
-- [ ] add-on 独立 pack/publint 门禁（跟进）
+- [x] add-on 独立 pack/publint 门禁（`pnpm publint:addons` + `pnpm pack:test:addons`；markdown/qrcode 构建复制 CSS）
 
 #### 3.0.5 测试能力诚实（Preflight 最小集，非全矩阵）
 
@@ -145,9 +145,9 @@
 
 #### 3.0.7 Preflight 完成定义
 
-- [ ] §3.0.1–3.0.4 关键项全 ✅
-- [ ] §3.0.5–3.0.6 至少完成「诚实」子集（axe 真跑或明确未跑；visual 脚本不撒谎；AGENTS/contract 策略落地）
-- [ ] **此后**才允许 §3.1 正式发布 `2.0.0-alpha.1`（建议 `--tag next` 或 `alpha`）
+- [x] §3.0.1–3.0.4 关键项本地 ✅（CI 绿见 3.0.2 最后一项）
+- [x] §3.0.5–3.0.6 诚实子集完成（axe 真跑；visual 脚本不撒谎；AGENTS/contract 政策）
+- [ ] **此后**才允许 §3.1 正式发布 `2.0.0-alpha.1`（建议 dist-tag `alpha`；等 CI 绿 + 手动 tag）
 
 ---
 
@@ -155,7 +155,7 @@
 
 - [ ] 正式定义并发布 **`2.0.0-alpha.x`**（非仅 package 字段写 alpha）
 - [ ] 根/包 README 与 npm 说明一致（持续）
-- [ ] 至少 1 个 **纯 HTML** 可运行 example（`examples/`）
+- [x] 至少 1 个 **纯 HTML** 可运行 example（`examples/basic/`）
 - [ ] （可选）React / Vue 消费示例或适配器 beta 占位
 - [ ] 收集外部反馈通道（Issue 模板 / 文档说明）
 - [ ] Alpha 安装演练记录（npm / 可选 CDN）
@@ -269,3 +269,4 @@
 | 2026-08-02 | 采纳外部审查：新增 **§3.0 Preflight**（verify/CI/publish/exports/体积/contract 治理）；Alpha 后置 |
 | 2026-08-02 | Preflight 开场：lint/css/contracts/prettier/attw/CI aggregate/`test:visual` 诚实化；image 预览 token 化 |
 | 2026-08-02 | Preflight 续：publish.yml 2.0、CI publint/attw、pack exports 遍历、size 展平、axe 真 project、QR mock、contract-stability 政策 |
+| 2026-08-02 | Preflight：add-on pack/publint、markdown/qrcode CSS 进 dist、examples/basic、browser sort 测试对齐 ▲▼ |

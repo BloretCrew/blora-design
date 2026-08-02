@@ -64,8 +64,10 @@ jobs:
       - run: pnpm build
       - run: pnpm size
       - run: pnpm publint
+      - run: pnpm publint:addons
       - run: pnpm attw
       - run: pnpm pack:test
+      - run: pnpm pack:test:addons
 
   browser:
     name: Browser Tests
