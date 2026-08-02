@@ -2,27 +2,13 @@
  * Pack + install fixture for each public add-on package.
  * Ensures CSS subpath exports exist and ESM import works with peer core.
  */
-import {
-  existsSync,
-  mkdtempSync,
-  readFileSync,
-  readdirSync,
-  rmSync,
-  writeFileSync,
-} from "node:fs";
+import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { execSync } from "node:child_process";
 
 const root = resolve(import.meta.dirname, "..");
-const addons = [
-  "markdown",
-  "thread",
-  "qrcode",
-  "effects",
-  "layout",
-  "theming",
-];
+const addons = ["markdown", "thread", "qrcode", "effects", "layout", "theming"];
 
 console.log("[pack:test:addons] Building core + add-ons...");
 execSync("pnpm --filter @bloret-crew/blora-design run build", {
@@ -88,7 +74,10 @@ for (const name of addons) {
       const installed = JSON.parse(readFileSync(join(installRoot, "package.json"), "utf8"));
       for (const [key, target] of Object.entries(installed.exports || {})) {
         if (key === "./package.json") continue;
-        const paths = typeof target === "string" ? [target] : Object.values(target).filter((v) => typeof v === "string");
+        const paths =
+          typeof target === "string"
+            ? [target]
+            : Object.values(target).filter((v) => typeof v === "string");
         for (const rel of paths) {
           const abs = join(installRoot, rel.replace(/^\.\//, ""));
           if (!existsSync(abs)) {
