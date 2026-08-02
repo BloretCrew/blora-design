@@ -110,7 +110,7 @@
 - [x] 修复 `ci.yml` aggregate：`every()` → `contains(needs.*.result, 'failure')` / `cancelled`
 - [x] CI 纳入 **publint**、**attw**、**publint:addons**、**pack:test:addons**（build-package job）
 - [x] CI Node 版本明确（`NODE_VERSION: "22"`）
-- [ ] required jobs 在 master 上有 **绿记录**（推送后看 GitHub Actions）
+- [x] required jobs 在 master 上有 **绿记录**（CI run `c6b8bb8` / Actions #30748903722 全 job success，2026-08-02）
 
 #### 3.0.3 发布工作流（2.0 monorepo）
 
@@ -145,9 +145,9 @@
 
 #### 3.0.7 Preflight 完成定义
 
-- [x] §3.0.1–3.0.4 关键项本地 ✅（CI 绿见 3.0.2 最后一项）
+- [x] §3.0.1–3.0.4 关键项本地 ✅ + **CI 全绿**
 - [x] §3.0.5–3.0.6 诚实子集完成（axe 真跑；visual 脚本不撒谎；AGENTS/contract 政策）
-- [ ] **此后**才允许 §3.1 正式发布 `2.0.0-alpha.1`（建议 dist-tag `alpha`；等 CI 绿 + 手动 tag）
+- [x] Preflight 关键路径完成 → **可进入 §3.1 发 `2.0.0-alpha.1`**（打 tag 触发 publish；dist-tag `alpha`）
 
 ---
 
@@ -270,3 +270,4 @@
 | 2026-08-02 | Preflight 开场：lint/css/contracts/prettier/attw/CI aggregate/`test:visual` 诚实化；image 预览 token 化 |
 | 2026-08-02 | Preflight 续：publish.yml 2.0、CI publint/attw、pack exports 遍历、size 展平、axe 真 project、QR mock、contract-stability 政策 |
 | 2026-08-02 | Preflight：add-on pack/publint、markdown/qrcode CSS 进 dist、examples/basic、browser sort 测试对齐 ▲▼ |
+| 2026-08-02 | CI 根因：`pnpm/action-setup` 秒挂 → corepack；lint:md 收窄 globs；**master CI 全绿** |
