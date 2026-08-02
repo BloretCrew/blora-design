@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/web-components";
 import { html } from "lit";
 import { ref } from "lit/directives/ref.js";
-import { createMegamenuController } from "../src/components/dock";
+import { createMegamenuController } from "../src/components/megamenu";
 
 const meta = {
   title: "Navigation/Megamenu",

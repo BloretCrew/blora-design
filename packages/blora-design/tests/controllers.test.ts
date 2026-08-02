@@ -4,7 +4,7 @@ import { createTreeController } from "../src/components/tree/tree.js";
 import { createRateController } from "../src/components/rate/rate.js";
 import { createOtpController } from "../src/components/otp/otp.js";
 import { createSliderController } from "../src/components/slider/slider.js";
-import { createMegamenuController } from "../src/components/dock/dock.js";
+import { createMegamenuController } from "../src/components/megamenu/megamenu.js";
 import { createDockController } from "../src/components/dock/dock.js";
 
 describe("createCarouselController", () => {
@@ -347,7 +347,7 @@ describe("createMegamenuController root data-open", () => {
   afterEach(() => root.remove());
 
   it("toggles data-open on root", async () => {
-    const { createMegamenuController } = await import("../src/components/dock/dock.js");
+    const { createMegamenuController } = await import("../src/components/megamenu/megamenu.js");
     const ctrl = createMegamenuController(root);
     const btn = root.querySelector("button") as HTMLButtonElement;
     btn.click();

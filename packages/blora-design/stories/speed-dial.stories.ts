@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/web-components";
 import { html } from "lit";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { ref } from "lit/directives/ref.js";
-import { createSpeedDialController } from "../src/components/dock";
+import { createSpeedDialController } from "../src/components/speed-dial";
 
 const meta = {
   title: "Navigation/Speed Dial",

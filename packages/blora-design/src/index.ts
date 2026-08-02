@@ -66,14 +66,15 @@ export {
 } from "./components/datepicker/index.js";
 export { createSplitterController, type SplitterController } from "./components/splitter/index.js";
 export { createTourController, type TourController } from "./components/tour/index.js";
+export { createDockController, type DockController } from "./components/dock/index.js";
 export {
-  createDockController,
-  type DockController,
   createMegamenuController,
   type MegamenuController,
+} from "./components/megamenu/index.js";
+export {
   createSpeedDialController,
   type SpeedDialController,
-} from "./components/dock/index.js";
+} from "./components/speed-dial/index.js";
 export { createSearchController, type SearchController } from "./components/search/index.js";
 export {
   createColorPickerController,
@@ -85,7 +86,7 @@ export {
   createFieldController,
   type FieldController,
 } from "./components/copy/index.js";
-/* TextRotate / countdown / watermark / layout / palette → addons (see docs/refactor/addon-core-gaps.md) */
+/* TextRotate → @bloret-crew/blora-design-effects（不在 copy.ts） */
 export { createCalendarController, type CalendarController } from "./components/calendar/index.js";
 export { createDeckController, type DeckController } from "./components/deck/index.js";
 export {

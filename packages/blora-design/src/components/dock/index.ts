@@ -1,8 +1,1 @@
-export {
-  createDockController,
-  type DockController,
-  createMegamenuController,
-  type MegamenuController,
-  createSpeedDialController,
-  type SpeedDialController,
-} from "./dock.js";
+export { createDockController, type DockController } from "./dock.js";

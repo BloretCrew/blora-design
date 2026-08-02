@@ -1,8 +1,6 @@
 /**
- * Blora Design 2.0 - Copy controller
- * Copies text and briefly swaps icon to checkmark.
- *
- * Note: TextRotate moved to @bloret-crew/blora-design-effects
+ * Blora Design 2.0 - Copy controller (clipboard only).
+ * Text-rotate lives in @bloret-crew/blora-design-effects — not here.
  */
 
 export interface CopyController {

@@ -8,9 +8,10 @@
 
 | 项 | 决策 |
 |---|---|
-| **Deck** | **留在核心包**（已有 controller） |
-| **Speed Dial** | **留在核心包**（补全行为） |
-| **Mega Menu** | **留在核心包**（补全行为） |
+| **Deck** | **留在核心包**（`components/deck/`） |
+| **Speed Dial** | **留在核心包**（`components/speed-dial/`，勿放 dock.ts） |
+| **Mega Menu** | **留在核心包**（`components/megamenu/`，勿放 dock.ts） |
+| **Text Rotate** | **effects 包**（勿放 `copy.ts`） |
 | 其余文档标为 Add-on 的组件 | **迁出核心** → effects / layout / theming 包 |
 
 ## 一、已有 Add-on 包
