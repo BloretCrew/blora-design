@@ -9,46 +9,56 @@ Blora Design 2.0 prefers native HTML semantics, headless controllers, and a smal
 ## Installation
 
 ```bash
-pnpm add @bloret-crew/blora-design
+pnpm add @bloret-crew/blora-design@alpha
 ```
 
 ```js
 import "@bloret-crew/blora-design/tokens.css";
 import "@bloret-crew/blora-design/foundations.css";
 import { createTableController, toast, defineBloraSelect } from "@bloret-crew/blora-design";
+// optional CE auto-register:
+// import "@bloret-crew/blora-design/auto";
+// tree-shake friendly subpaths:
+// import { createTableController } from "@bloret-crew/blora-design/table";
 ```
 
 Use `.blora-button[data-variant="primary"]` — not 1.x `.blora-btn--primary` / global `Blora.init()`.
 
 ## Key entry points
 
-- Package: `@bloret-crew/blora-design` (`2.0.0-alpha.1`)
+- Package: `@bloret-crew/blora-design` (`2.0.0-alpha.1`+)
+- `./auto` — register stable custom elements (select, dialog)
+- `./button` `./select` `./dialog` `./table` `./toast` — JS subpaths
+- `./blora.global.js` — IIFE CDN global `Blora`
+- `./compat/v1` + `./compat/v1.css` — 1.x compatibility
+- `./custom-elements.json` / `./component-manifest.json` / `./api-snapshot.json`
 - Human guide: `docs/guide.md`
 - Contracts: `packages/blora-design/contracts/*.contract.json`
-- Contract schema: `packages/blora-design/schemas/component-contract.schema.json`
+- Contract stability policy: `docs/refactor/contract-stability.md`
 - Component matrix: `docs/refactor/component-matrix.md`
-- **Remaining work (master checklist):** `docs/refactor/remaining-work.md`
+- **Remaining work:** `docs/refactor/remaining-work.md` (stop before Beta until checklist)
 - Migration: `docs/migration/v1-to-v2.md`
 - Token map CSV: `docs/migration/token-map-v1-v2.csv`
+- Alpha install notes: `docs/refactor/alpha-install-notes.md`
 - 1.x freeze: `legacy/v1/`, `legacy/showcase-v1.html`
-- Add-ons: `@bloret-crew/blora-design-{markdown,thread,qrcode,effects,layout,theming}`
+- Add-ons: `@bloret-crew/blora-design-{markdown,thread,qrcode,effects,layout,theming}@alpha`
 
 ## Architecture
 
-- Prefer native HTML; Custom Elements only for composite shipped CE (e.g. select, dialog).
+- Prefer native HTML; Custom Elements only for composite shipped CE (select, dialog).
 - Most interactive widgets: `createXxxController(root)` + destroy on teardown.
-- Table row selection: `data-blora-selectable` (built-in; do not hand-compose checkbox columns).
-- Form-associated WC for every control is **not** the default (see ADR-013 in `docs/refactor/decisions.md`).
+- Table row selection: `data-blora-selectable` (built-in).
+- Form-associated WC for every control is **not** the default (ADR-013).
+- `sideEffects`: CSS files + `dist/auto.js` only (main entry is tree-shake friendly).
 
 ## Prohibitions
 
-- Do not extract visual styles from historical commits, old npm packages, or other UI frameworks as the target look.
+- Do not extract visual styles from historical commits or other UI frameworks.
 - Do not use `innerHTML` with untrusted strings.
-- Do not hardcode colors, spacing, radii, shadows, durations, or z-index in component CSS — use registered tokens.
-- Do not add public APIs without updating the contract.
-- Do not skip tests or fabricate empty tests.
-- Do not delete `legacy/v1` or treat compat as “leftover trash” during 2.0.
+- Do not hardcode colors/spacing/radii/shadows/z-index in component CSS — use tokens.
+- Do not add public APIs without updating the contract and regenerating manifests.
+- Do not delete `legacy/v1` during 2.0.
 
 ## Migration
 
-1.x → 2.0: start at `docs/migration/v1-to-v2.md`. Compat layer and codemod live under the core package (`compat/v1`, migrate tools). Full migration tables expand in Phase 10.
+1.x → 2.0: `docs/migration/v1-to-v2.md`. Compat: `@bloret-crew/blora-design/compat/v1`.

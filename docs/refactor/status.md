@@ -5,10 +5,10 @@
 ## 当前阶段
 
 **Phase 9：Add-ons** - ✅ 完成（2026-08-02 收口；诚实债见总表已关）  
-**Phase 10：预发布** - 🔄 **进行中**（Preflight ✅；**2.0.0-alpha.1** 版本已定，发布见 tag / npm `alpha`）
+**Phase 10：预发布** - 🔄 **进行中**（Preflight ✅ · Alpha.1 已发 · **§3.2–3.4 包面/清单已推进** · **§3.5 Beta 未开始**）
 
 > **主跟踪文档**：[`remaining-work.md`](./remaining-work.md)  
-> 顺序：**§3.0 Preflight → §3.1 Alpha → … → Stable**。本文件只摘要。
+> 顺序：**Preflight → Alpha → 包面加深 → Beta 冻结/发版 → RC → Stable**。
 
 ## 阶段进度
 

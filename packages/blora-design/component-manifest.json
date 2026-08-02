@@ -1,0 +1,701 @@
+{
+  "name": "@bloret-crew/blora-design",
+  "version": "2.0.0-alpha.1",
+  "generatedAt": "2026-08-02T13:30:23.143Z",
+  "components": [
+    {
+      "name": "accordion",
+      "status": "stable",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/accordion.css",
+      "contract": "contracts/accordion.contract.json"
+    },
+    {
+      "name": "alert",
+      "status": "stable",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/alert.css",
+      "contract": "contracts/alert.contract.json"
+    },
+    {
+      "name": "autocomplete",
+      "status": "beta",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/autocomplete.css",
+      "contract": "contracts/autocomplete.contract.json"
+    },
+    {
+      "name": "avatar",
+      "status": "stable",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/avatar.css",
+      "contract": "contracts/avatar.contract.json"
+    },
+    {
+      "name": "backtop",
+      "status": "beta",
+      "kind": "headless",
+      "requiresJavaScript": true,
+      "formAssociated": false,
+      "cssExport": "./components/backtop.css",
+      "contract": "contracts/backtop.contract.json"
+    },
+    {
+      "name": "badge",
+      "status": "stable",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/badge.css",
+      "contract": "contracts/badge.contract.json"
+    },
+    {
+      "name": "banner",
+      "status": "stable",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/banner.css",
+      "contract": "contracts/banner.contract.json"
+    },
+    {
+      "name": "breadcrumb",
+      "status": "stable",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/breadcrumb.css",
+      "contract": "contracts/breadcrumb.contract.json"
+    },
+    {
+      "name": "button",
+      "status": "stable",
+      "kind": "native",
+      "requiresJavaScript": false,
+      "formAssociated": true,
+      "cssExport": "./components/button.css",
+      "contract": "contracts/button.contract.json"
+    },
+    {
+      "name": "calendar",
+      "status": "beta",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/calendar.css",
+      "contract": "contracts/calendar.contract.json"
+    },
+    {
+      "name": "card",
+      "status": "stable",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/card.css",
+      "contract": "contracts/card.contract.json"
+    },
+    {
+      "name": "carousel",
+      "status": "beta",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/carousel.css",
+      "contract": "contracts/carousel.contract.json"
+    },
+    {
+      "name": "cascader",
+      "status": "beta",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/cascader.css",
+      "contract": "contracts/cascader.contract.json"
+    },
+    {
+      "name": "chart-container",
+      "status": "beta",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/chart-container.css",
+      "contract": "contracts/chart-container.contract.json"
+    },
+    {
+      "name": "chat",
+      "status": "beta",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/chat.css",
+      "contract": "contracts/chat.contract.json"
+    },
+    {
+      "name": "checkbox",
+      "status": "stable",
+      "kind": "native",
+      "requiresJavaScript": false,
+      "formAssociated": true,
+      "cssExport": "./components/checkbox.css",
+      "contract": "contracts/checkbox.contract.json"
+    },
+    {
+      "name": "collapse",
+      "status": "stable",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/collapse.css",
+      "contract": "contracts/collapse.contract.json"
+    },
+    {
+      "name": "color-picker",
+      "status": "beta",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/color-picker.css",
+      "contract": "contracts/color-picker.contract.json"
+    },
+    {
+      "name": "command-palette",
+      "status": "beta",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/command-palette.css",
+      "contract": "contracts/command-palette.contract.json"
+    },
+    {
+      "name": "comment",
+      "status": "beta",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/comment.css",
+      "contract": "contracts/comment.contract.json"
+    },
+    {
+      "name": "copy",
+      "status": "beta",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/copy.css",
+      "contract": "contracts/copy.contract.json"
+    },
+    {
+      "name": "datepicker",
+      "status": "beta",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/datepicker.css",
+      "contract": "contracts/datepicker.contract.json"
+    },
+    {
+      "name": "deck",
+      "status": "beta",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/deck.css",
+      "contract": "contracts/deck.contract.json"
+    },
+    {
+      "name": "descriptions",
+      "status": "stable",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/descriptions.css",
+      "contract": "contracts/descriptions.contract.json"
+    },
+    {
+      "name": "dialog",
+      "status": "stable",
+      "kind": "custom-element",
+      "requiresJavaScript": true,
+      "formAssociated": false,
+      "cssExport": "./components/dialog.css",
+      "contract": "contracts/dialog.contract.json"
+    },
+    {
+      "name": "dock",
+      "status": "beta",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/dock.css",
+      "contract": "contracts/dock.contract.json"
+    },
+    {
+      "name": "drawer",
+      "status": "stable",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/drawer.css",
+      "contract": "contracts/drawer.contract.json"
+    },
+    {
+      "name": "dropdown",
+      "status": "stable",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/dropdown.css",
+      "contract": "contracts/dropdown.contract.json"
+    },
+    {
+      "name": "empty",
+      "status": "stable",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/empty.css",
+      "contract": "contracts/empty.contract.json"
+    },
+    {
+      "name": "fab",
+      "status": "beta",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/fab.css",
+      "contract": "contracts/fab.contract.json"
+    },
+    {
+      "name": "field",
+      "status": "stable",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/field.css",
+      "contract": "contracts/field.contract.json"
+    },
+    {
+      "name": "form",
+      "status": "beta",
+      "kind": "headless",
+      "requiresJavaScript": true,
+      "formAssociated": false,
+      "cssExport": "./components/form.css",
+      "contract": "contracts/form.contract.json"
+    },
+    {
+      "name": "image",
+      "status": "stable",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/image.css",
+      "contract": "contracts/image.contract.json"
+    },
+    {
+      "name": "input",
+      "status": "stable",
+      "kind": "native",
+      "requiresJavaScript": false,
+      "formAssociated": true,
+      "cssExport": "./components/input.css",
+      "contract": "contracts/input.contract.json"
+    },
+    {
+      "name": "list",
+      "status": "stable",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/list.css",
+      "contract": "contracts/list.contract.json"
+    },
+    {
+      "name": "masonry",
+      "status": "beta",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/masonry.css",
+      "contract": "contracts/masonry.contract.json"
+    },
+    {
+      "name": "megamenu",
+      "status": "beta",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/megamenu.css",
+      "contract": "contracts/megamenu.contract.json"
+    },
+    {
+      "name": "mentions",
+      "status": "beta",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/mentions.css",
+      "contract": "contracts/mentions.contract.json"
+    },
+    {
+      "name": "message",
+      "status": "stable",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/message.css",
+      "contract": "contracts/message.contract.json"
+    },
+    {
+      "name": "mockup",
+      "status": "beta",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/mockup.css",
+      "contract": "contracts/mockup.contract.json"
+    },
+    {
+      "name": "navbar",
+      "status": "stable",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/navbar.css",
+      "contract": "contracts/navbar.contract.json"
+    },
+    {
+      "name": "notification",
+      "status": "stable",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/notification.css",
+      "contract": "contracts/notification.contract.json"
+    },
+    {
+      "name": "otp",
+      "status": "beta",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/otp.css",
+      "contract": "contracts/otp.contract.json"
+    },
+    {
+      "name": "pagination",
+      "status": "stable",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/pagination.css",
+      "contract": "contracts/pagination.contract.json"
+    },
+    {
+      "name": "popconfirm",
+      "status": "stable",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/popconfirm.css",
+      "contract": "contracts/popconfirm.contract.json"
+    },
+    {
+      "name": "popover",
+      "status": "stable",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/popover.css",
+      "contract": "contracts/popover.contract.json"
+    },
+    {
+      "name": "progress",
+      "status": "stable",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/progress.css",
+      "contract": "contracts/progress.contract.json"
+    },
+    {
+      "name": "radio",
+      "status": "stable",
+      "kind": "native",
+      "requiresJavaScript": false,
+      "formAssociated": true,
+      "cssExport": "./components/radio.css",
+      "contract": "contracts/radio.contract.json"
+    },
+    {
+      "name": "range",
+      "status": "beta",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/range.css",
+      "contract": "contracts/range.contract.json"
+    },
+    {
+      "name": "rate",
+      "status": "beta",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/rate.css",
+      "contract": "contracts/rate.contract.json"
+    },
+    {
+      "name": "result",
+      "status": "stable",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/result.css",
+      "contract": "contracts/result.contract.json"
+    },
+    {
+      "name": "search",
+      "status": "beta",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/search.css",
+      "contract": "contracts/search.contract.json"
+    },
+    {
+      "name": "segmented",
+      "status": "stable",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/segmented.css",
+      "contract": "contracts/segmented.contract.json"
+    },
+    {
+      "name": "select",
+      "status": "stable",
+      "kind": "custom-element",
+      "requiresJavaScript": true,
+      "formAssociated": true,
+      "cssExport": "./components/select.css",
+      "contract": "contracts/select.contract.json"
+    },
+    {
+      "name": "skeleton",
+      "status": "stable",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/skeleton.css",
+      "contract": "contracts/skeleton.contract.json"
+    },
+    {
+      "name": "slider",
+      "status": "beta",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/slider.css",
+      "contract": "contracts/slider.contract.json"
+    },
+    {
+      "name": "speed-dial",
+      "status": "beta",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/speed-dial.css",
+      "contract": "contracts/speed-dial.contract.json"
+    },
+    {
+      "name": "spinner",
+      "status": "stable",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/spinner.css",
+      "contract": "contracts/spinner.contract.json"
+    },
+    {
+      "name": "splitter",
+      "status": "beta",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/splitter.css",
+      "contract": "contracts/splitter.contract.json"
+    },
+    {
+      "name": "statistic",
+      "status": "stable",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/statistic.css",
+      "contract": "contracts/statistic.contract.json"
+    },
+    {
+      "name": "steps",
+      "status": "stable",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/steps.css",
+      "contract": "contracts/steps.contract.json"
+    },
+    {
+      "name": "switch",
+      "status": "stable",
+      "kind": "native",
+      "requiresJavaScript": false,
+      "formAssociated": true,
+      "cssExport": "./components/switch.css",
+      "contract": "contracts/switch.contract.json"
+    },
+    {
+      "name": "table",
+      "status": "stable",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/table.css",
+      "contract": "contracts/table.contract.json"
+    },
+    {
+      "name": "tabs",
+      "status": "stable",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/tabs.css",
+      "contract": "contracts/tabs.contract.json"
+    },
+    {
+      "name": "tag",
+      "status": "stable",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/tag.css",
+      "contract": "contracts/tag.contract.json"
+    },
+    {
+      "name": "tags-input",
+      "status": "beta",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/tags-input.css",
+      "contract": "contracts/tags-input.contract.json"
+    },
+    {
+      "name": "textarea",
+      "status": "stable",
+      "kind": "native",
+      "requiresJavaScript": false,
+      "formAssociated": true,
+      "cssExport": "./components/textarea.css",
+      "contract": "contracts/textarea.contract.json"
+    },
+    {
+      "name": "timeline",
+      "status": "stable",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/timeline.css",
+      "contract": "contracts/timeline.contract.json"
+    },
+    {
+      "name": "timepicker",
+      "status": "beta",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/timepicker.css",
+      "contract": "contracts/timepicker.contract.json"
+    },
+    {
+      "name": "toast",
+      "status": "stable",
+      "kind": "service",
+      "requiresJavaScript": true,
+      "formAssociated": false,
+      "cssExport": "./components/toast.css",
+      "contract": "contracts/toast.contract.json"
+    },
+    {
+      "name": "tooltip",
+      "status": "stable",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/tooltip.css",
+      "contract": "contracts/tooltip.contract.json"
+    },
+    {
+      "name": "tour",
+      "status": "beta",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/tour.css",
+      "contract": "contracts/tour.contract.json"
+    },
+    {
+      "name": "transfer",
+      "status": "beta",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/transfer.css",
+      "contract": "contracts/transfer.contract.json"
+    },
+    {
+      "name": "tree",
+      "status": "beta",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/tree.css",
+      "contract": "contracts/tree.contract.json"
+    },
+    {
+      "name": "tree-select",
+      "status": "beta",
+      "kind": "headless",
+      "requiresJavaScript": true,
+      "formAssociated": false,
+      "cssExport": "./components/tree-select.css",
+      "contract": "contracts/tree-select.contract.json"
+    },
+    {
+      "name": "upload",
+      "status": "beta",
+      "kind": "css-only",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/upload.css",
+      "contract": "contracts/upload.contract.json"
+    }
+  ],
+  "jsSubpaths": [
+    "./button",
+    "./select",
+    "./dialog",
+    "./table",
+    "./toast",
+    "./auto",
+    "./compat/v1"
+  ],
+  "notes": "status=stable in contracts is aspirational until Phase 10 DoD; see docs/refactor/contract-stability.md"
+}

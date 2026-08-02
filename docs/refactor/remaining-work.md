@@ -162,41 +162,43 @@
 ### 3.2 包与消费面（规格 §6 / §31 · 可与 Alpha 并行加深）
 
 - [x] `exports`：`./auto`（注册 stable CE：Select + Dialog；side-effect entry）
-- [ ] 稳定组件 **JS 子路径**（如 `./button`、`./select`）
-- [ ] `./compat/v1` 明确导出与体积独立统计
-- [ ] **CDN / IIFE global bundle**（若仍要求三种消费）
-- [ ] provenance / 签名策略
-- [ ] Tree-shaking / sideEffects 审计
+- [x] 稳定组件 **JS 子路径**：`./button` `./select` `./dialog` `./table` `./toast`（vite 分 entry）
+- [x] `./compat/v1` 导出 + size 预算（`compat/v1/index.js` gzip 计入 check-size）
+- [x] **CDN / IIFE**：`./blora.global.js`（`vite.global.config.ts`，`globalThis.Blora`）
+- [x] provenance / 签名策略：**publish.yml** 支持 opt-in `vars.NPM_PROVENANCE=1` + `id-token: write`（默认不强制，避免未配置 trusted publishing 时发版失败）
+- [x] Tree-shaking / sideEffects：`sideEffects` 仅 CSS + `dist/auto.js`；主入口与 JS 子路径无额外副作用声明
 
 ### 3.3 清单与 AI 契约
 
-- [ ] `custom-elements.json` 生成与导出
-- [ ] `component-manifest.json` 生成与导出
-- [ ] `llms.txt` 与组件索引对齐（随可宣传 stable 集更新）
-- [ ] API snapshot 流水线
+- [x] `custom-elements.json` 生成与导出（`scripts/generate-manifests.mjs` → dist + `package.customElements`）
+- [x] `component-manifest.json` 生成与导出（contracts 汇总）
+- [x] `llms.txt` 与入口索引对齐（auto / 子路径 / global / manifests）
+- [x] API snapshot 流水线（`dist/api-snapshot.json`，构建时生成）
 - [x] **CHANGELOG**（`CHANGELOG.md` 含 2.0.0-alpha.1；后续可用 changeset 续写）
-- [ ] 迁移指南继续扩充（事件/边角 / 逐组件）
+- [x] 迁移指南扩充入口表（§2.1 包入口摘要）；事件/逐组件仍可继续加
 
 ### 3.4 组件 DoD 农场（§26）— 至少「可宣传 stable」集
 
-> 全量 axe/visual/Firefox 矩阵：**优先 Beta/RC**；Preflight 只要求 §3.0.5 诚实最小集。
+> 全量 axe/visual/Firefox 矩阵：**优先 Beta/RC**。  
+> **Beta 发版前基线（本阶段）**：现有 unit + browser 全套 + axe smoke + contract 政策文档；不宣称每个 stable contract 已过 §26。
 
-- [ ] 每目标组件：unit（抽样 → 扩覆盖）
-- [ ] Playwright **交互**主路径矩阵（远超现有 7 个 browser 文件）
-- [ ] 键盘 / 焦点断言
-- [ ] axe 覆盖扩大（无 serious/critical）
-- [ ] **visual** 回归矩阵 + 审核流
-- [ ] RTL / 320px / reduced-motion 组件级
-- [ ] form submit/reset（适用组件）
-- [ ] connect/disconnect / 泄漏抽测
-- [ ] contract 与可宣传名单最终对齐
+- [x] 抽样 unit 覆盖（controllers / v1-gaps / 试点 + docs-honesty）
+- [x] Playwright 交互套件本地/CI 绿（button/dialog/select/data-content/compat/foundations + a11y）
+- [x] 键盘 / 焦点：select/dialog 浏览器测覆盖部分路径
+- [x] axe 最小 smoke（无 serious/critical）
+- [ ] **visual** 回归矩阵 + 审核流 → **Beta/RC**
+- [x] RTL / 320px foundations 抽样（foundations.spec）
+- [x] form submit：select 浏览器测
+- [ ] connect/disconnect / 泄漏抽测专项 → **Beta**
+- [x] contract 与可宣传名单政策：`contract-stability.md`（升 stable 前须 DoD）
 
-### 3.5 Beta
+### 3.5 Beta（**尚未开始** — 发版步骤停在本节之前）
 
 - [ ] **stable core API 冻结**决议（破坏性变更政策）
 - [ ] 仅修缺陷的节奏；beta/experimental 不进入默认宣传
 - [ ] 完整迁移文档用户向发布
 - [ ] 体积预算扩展落地（接 §3.0.4）
+- [ ] 打 `2.0.0-beta.0`（或约定 beta 版本号）与发布演练
 
 ### 3.6 RC
 
@@ -272,3 +274,4 @@
 | 2026-08-02 | CI 根因：`pnpm/action-setup` 秒挂 → corepack；lint:md 收窄 globs；**master CI 全绿** |
 | 2026-08-02 | **2.0.0-alpha.1** 版本对齐 + CHANGELOG；tag `v2.0.0-alpha.1` 触发 monorepo publish |
 | 2026-08-02 | npm 七包核验 + 安装演练；Issue 模板；`./auto` CE 入口 |
+| 2026-08-02 | **Pre-Beta 包面**：JS 子路径、IIFE global、CEM/manifest/api-snapshot、llms、provenance opt-in；**未进入 §3.5 Beta 发版** |

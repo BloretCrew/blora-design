@@ -16,6 +16,8 @@ on:
 
 permissions:
   contents: write
+  # Enable when publishing with npm provenance (OIDC)
+  id-token: write
 
 env:
   PNPM_VERSION: "10.33.0"
@@ -99,7 +101,12 @@ jobs:
           set -euo pipefail
           TAG="${{ steps.ver.outputs.dist_tag }}"
           # Core first, then add-ons (depend on published core for consumers; order is documentation-friendly).
-          pnpm --filter @bloret-crew/blora-design publish --access public --tag "$TAG" --no-git-checks
+          # Provenance is opt-in (set repo var NPM_PROVENANCE=1 + npm trusted publishing).
+          PUBLISH_FLAGS=(--access public --tag "$TAG" --no-git-checks)
+          if [ "${{ vars.NPM_PROVENANCE }}" = "1" ]; then
+            PUBLISH_FLAGS+=(--provenance)
+          fi
+          pnpm --filter @bloret-crew/blora-design publish "${PUBLISH_FLAGS[@]}"
           for filter in \
             @bloret-crew/blora-design-markdown \
             @bloret-crew/blora-design-thread \
@@ -108,7 +115,7 @@ jobs:
             @bloret-crew/blora-design-layout \
             @bloret-crew/blora-design-theming
           do
-            pnpm --filter "$filter" publish --access public --tag "$TAG" --no-git-checks
+            pnpm --filter "$filter" publish "${PUBLISH_FLAGS[@]}"
           done
 
       - name: Create GitHub Release

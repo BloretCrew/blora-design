@@ -48,6 +48,23 @@ describe("Phase-9 honesty artifacts", () => {
     expect(pkg.sideEffects).toEqual(expect.arrayContaining(["./dist/auto.js"]));
   });
 
+  it("declares JS subpaths and manifest exports for pre-beta package surface", () => {
+    const pkg = JSON.parse(read("packages/blora-design/package.json"));
+    for (const key of [
+      "./button",
+      "./select",
+      "./dialog",
+      "./table",
+      "./toast",
+      "./blora.global.js",
+    ]) {
+      expect(pkg.exports[key], key).toBeTruthy();
+    }
+    expect(pkg.exports["./custom-elements.json"]).toBeTruthy();
+    expect(pkg.exports["./component-manifest.json"]).toBeTruthy();
+    expect(pkg.customElements).toMatch(/custom-elements\.json/);
+  });
+
   it("llms.txt points at existing migration path", () => {
     const body = read("llms.txt");
     expect(body).toMatch(/docs\/migration\/v1-to-v2\.md/);

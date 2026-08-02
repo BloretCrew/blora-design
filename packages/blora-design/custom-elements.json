@@ -1,0 +1,86 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "dist/components/select/index.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "BloraSelect",
+          "tagName": "blora-select",
+          "customElement": true,
+          "description": "Form-associated select combobox",
+          "superclass": {
+            "name": "BloraElement",
+            "module": "dist/index.js"
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "BloraSelect",
+          "declaration": {
+            "name": "BloraSelect"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "defineBloraSelect",
+          "declaration": {
+            "name": "defineBloraSelect"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "blora-select",
+          "declaration": {
+            "name": "BloraSelect"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "dist/components/dialog/index.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "BloraDialog",
+          "tagName": "blora-dialog",
+          "customElement": true,
+          "description": "Modal dialog custom element",
+          "superclass": {
+            "name": "BloraElement",
+            "module": "dist/index.js"
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "BloraDialog",
+          "declaration": {
+            "name": "BloraDialog"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "defineBloraDialog",
+          "declaration": {
+            "name": "defineBloraDialog"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "blora-dialog",
+          "declaration": {
+            "name": "BloraDialog"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -27,6 +27,30 @@
       "types": "./dist/auto.d.ts",
       "import": "./dist/auto.js"
     },
+    "./button": {
+      "types": "./dist/components/button/index.d.ts",
+      "import": "./dist/components/button/index.js"
+    },
+    "./select": {
+      "types": "./dist/components/select/index.d.ts",
+      "import": "./dist/components/select/index.js"
+    },
+    "./dialog": {
+      "types": "./dist/components/dialog/index.d.ts",
+      "import": "./dist/components/dialog/index.js"
+    },
+    "./table": {
+      "types": "./dist/components/table/index.d.ts",
+      "import": "./dist/components/table/index.js"
+    },
+    "./toast": {
+      "types": "./dist/components/toast/index.d.ts",
+      "import": "./dist/components/toast/index.js"
+    },
+    "./blora.global.js": "./dist/blora.global.js",
+    "./custom-elements.json": "./dist/custom-elements.json",
+    "./component-manifest.json": "./dist/component-manifest.json",
+    "./api-snapshot.json": "./dist/api-snapshot.json",
     "./tokens.css": "./dist/tokens.css",
     "./tokens.dark.css": "./dist/tokens.dark.css",
     "./tokens.themes.css": "./dist/tokens.themes.css",
@@ -130,15 +154,17 @@
     "typecheck": "tsc --noEmit",
     "test": "pnpm run build && vitest run --config vitest.config.ts",
     "test:browser": "pnpm run build && playwright test --config ../../playwright.config.ts",
-    "build": "node ../tokens/scripts/build-tokens.mjs && vite build && tsc --emitDeclarationOnly && node scripts/copy-tokens.mjs",
+    "build": "node ../tokens/scripts/build-tokens.mjs && vite build && vite build -c vite.global.config.ts && tsc --emitDeclarationOnly && node scripts/copy-tokens.mjs && node scripts/generate-manifests.mjs",
     "build:tokens": "node ../tokens/scripts/build-tokens.mjs",
     "size": "node scripts/check-size.mjs",
     "pack:test": "node scripts/pack-test.mjs",
     "migrate:check": "node scripts/migrate-check.mjs",
     "codemod": "node scripts/codemod.mjs",
+    "generate:manifests": "node scripts/generate-manifests.mjs",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
+  "customElements": "./dist/custom-elements.json",
   "devDependencies": {
     "@bloret-crew/blora-design": "workspace:*"
   }
