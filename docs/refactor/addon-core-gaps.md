@@ -25,9 +25,14 @@
 | Timepicker 塞在 `datepicker.ts` | `timepicker/` |
 | `copy/index` 再导出 ColorPicker | 已去掉；直接 `color-picker/` |
 
-### 仍可能的债务（非 controller 混放）
+### 清理记录（2026-08-02）
 
-- 已迁 addon 的 CSS 可能仍留在核心目录（export 兼容）：countdown、text-rotate、watermark、affix、sidebar-layout 等 — 后续可改为 re-export 或文档标明「样式在 addon」
+- 已迁 addon 的核心 CSS / contract 备份至 **`.trashes/core-migrated-to-addons/`**（countdown、text-rotate、watermark、affix、sidebar-layout）
+- 核心 `package.json` exports 与 Storybook `preview.ts` 已去掉上述路径；Storybook 改为加载 addon CSS
+- 过时草稿/根目录 1.x 残留/阶段脚本 → **`.trashes/`**（见该目录 README）
+
+### 仍可能的债务
+
 - `field` controller 实际是 **字数限制 limit**，与纯 CSS field 叠在同一目录（可接受，或日后改名 limit）
 - 大量组件仍只有 CSS、无 controller（tooltip/drawer/table…）— 缺实现，不是乱放
 

@@ -44,7 +44,6 @@ import "../src/components/avatar/avatar.css";
 import "../src/components/banner/banner.css";
 import "../src/components/message/message.css";
 import "../src/components/notification/notification.css";
-import "../src/components/sidebar-layout/sidebar-layout.css";
 import "../src/components/steps/steps.css";
 import "../src/components/statistic/statistic.css";
 import "../src/components/descriptions/descriptions.css";
@@ -53,7 +52,6 @@ import "../src/components/segmented/segmented.css";
 import "../src/components/popconfirm/popconfirm.css";
 import "../src/components/collapse/collapse.css";
 
-import "../src/components/affix/affix.css";
 import "../src/components/autocomplete/autocomplete.css";
 import "../src/components/calendar/calendar.css";
 import "../src/components/carousel/carousel.css";
@@ -64,7 +62,6 @@ import "../src/components/color-picker/color-picker.css";
 import "../src/components/command-palette/command-palette.css";
 import "../src/components/comment/comment.css";
 import "../src/components/copy/copy.css";
-import "../src/components/countdown/countdown.css";
 import "../src/components/datepicker/datepicker.css";
 import "../src/components/deck/deck.css";
 import "../src/components/dock/dock.css";
@@ -81,13 +78,17 @@ import "../src/components/slider/slider.css";
 import "../src/components/speed-dial/speed-dial.css";
 import "../src/components/splitter/splitter.css";
 import "../src/components/tags-input/tags-input.css";
-import "../src/components/text-rotate/text-rotate.css";
 import "../src/components/timepicker/timepicker.css";
 import "../src/components/tour/tour.css";
 import "../src/components/transfer/transfer.css";
 import "../src/components/tree/tree.css";
 import "../src/components/upload/upload.css";
-import "../src/components/watermark/watermark.css";
+
+/* Add-ons (not in core package) — Storybook workspace sources */
+import "../../../addons/effects/src/effects.css";
+import "../../../addons/layout/src/layout.css";
+import "../../../addons/theming/src/theming.css";
+import "../../../addons/thread/src/thread.css";
 
 const preview: Preview = {
   parameters: {

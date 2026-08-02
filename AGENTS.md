@@ -8,12 +8,14 @@
 
 ## 视觉基线（不可违反）
 
-Blora Design 2.0 的唯一视觉母版是重构开始时仓库当前 HEAD 中 `index.html` 引用 `blora.css`、`blora.js` 后的实际渲染结果。
+Blora Design 2.0 的唯一视觉母版是重构开始时仓库当前 HEAD 中展示页引用 `blora.css`、`blora.js` 后的实际渲染结果。
 
 - **基准 commit**：`a148715d06ee9551cbee262ffae6ad377b564df6`
-- **展示页副本**：`legacy/showcase-v1.html`
+- **展示页副本**：`legacy/showcase-v1.html`（冻结的 1.x 展示页）
+- **1.x 源码冻结**：`legacy/v1/`（`blora.css` / `blora.js` / …）
 - **视觉基线截图**：`legacy/visual-baseline-light.png`、`legacy/visual-baseline-dark.png`
 - **基线元数据**：`docs/refactor/visual-baseline.json`
+- **勿使用** 仓库根目录旧 `blora.*`（若见过，已迁到 `.trashes/root-v1-leftovers/`）
 
 ### 禁止事项
 

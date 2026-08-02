@@ -18,7 +18,7 @@
 
 ## Recipe: Migrate a JS-enhanced Component
 
-1. Read `docs/refactor/v1-js-inventory.md` for the component's 1.x JS API.
+1. Read `docs/refactor/v1-js-inventory.json` (or archived `.trashes/phase-docs/v1-js-inventory.md`) for the component's 1.x JS API.
 2. Read `docs/refactor/v1-public-surface.json` for the component's public API.
 3. Decide: native element + class, or Custom Element.
 4. If Custom Element: extend `BloraElement`, use open Shadow DOM, declare CSS Parts.
