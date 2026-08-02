@@ -58,7 +58,8 @@ import {
 
 defineBloraSelect();
 defineBloraDialog();
-console.log(VERSION); // 例如 2.0.0-alpha.0
+// 或：import "@bloret-crew/blora-design/auto";
+console.log(VERSION); // 例如 2.0.0-alpha.1
 ```
 
 ### 1.4 最小页面
