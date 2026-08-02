@@ -7,77 +7,7 @@
    win over layered rules and break tools font-size + collapse outline.
    ========================================================================= */
 
-/* -- Comment (simpler than Post; also in core comment.css) -- */
-
-.blora-comment {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: var(--blora-space-3);
-}
-
-.blora-comment + .blora-comment {
-  margin-top: var(--blora-space-5);
-}
-
-.blora-comment__main {
-  min-width: 0;
-}
-
-.blora-comment__head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.35em 0.75em;
-  margin-bottom: 0.25em;
-}
-
-.blora-comment__author {
-  font-weight: 600;
-  font-size: var(--blora-text-sm);
-  color: var(--blora-color-text-secondary);
-}
-
-.blora-comment__time {
-  font-size: var(--blora-text-xs);
-  color: var(--blora-color-text-subtle);
-  font-family: var(--blora-font-mono);
-}
-
-.blora-comment__body {
-  font-size: var(--blora-text-sm);
-  color: var(--blora-color-text-emphasis);
-  line-height: 1.55;
-}
-
-.blora-comment__actions {
-  display: flex;
-  gap: var(--blora-space-3);
-  margin-top: 0.45em;
-}
-
-.blora-comment__actions button {
-  border: 0;
-  background: none;
-  padding: 0;
-  cursor: pointer;
-  font-family: var(--blora-font-sans);
-  font-size: var(--blora-text-xs);
-  font-weight: 400;
-  line-height: 1.3;
-  color: var(--blora-color-text-subtle);
-}
-
-.blora-comment__actions button:hover {
-  color: var(--blora-color-action-primary-default);
-}
-
-.blora-comment__nested {
-  margin-top: var(--blora-space-4);
-  padding-inline-start: var(--blora-space-5);
-  border-inline-start: 2px solid var(--blora-color-border-subtle);
-  display: grid;
-  gap: var(--blora-space-4);
-}
+/* Comment styles live in core `comment.css` — do not override here. */
 
 /* -- Thread / Post -- */
 

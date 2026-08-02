@@ -50,14 +50,23 @@
   display: inline-flex;
   align-items: center;
   gap: 0.3em;
-  border: 1px solid var(--blora-color-border-subtle);
+  /* Explicit border properties beat global reset `button { border: none }` */
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--blora-color-border-subtle);
   border-radius: var(--blora-radius-full);
-  background: transparent;
+  background: var(--blora-color-surface-default);
   padding: 0.25em 0.8em;
   cursor: pointer;
+  font-family: var(--blora-font-sans);
   font-size: var(--blora-text-xs);
+  font-weight: 400;
+  line-height: 1.3;
   color: var(--blora-color-text-secondary);
-  transition: all var(--blora-duration-fast) var(--blora-easing-standard);
+  transition:
+    color var(--blora-duration-fast) var(--blora-easing-standard),
+    border-color var(--blora-duration-fast) var(--blora-easing-standard),
+    background var(--blora-duration-fast) var(--blora-easing-standard);
 }
 
 .blora-comment__actions button svg {

@@ -123,8 +123,10 @@ export function createAffixController(root: HTMLElement): AffixController {
     const should = win.scrollY + offset >= originTop;
     if (should && !pinned) {
       const rect = root.getBoundingClientRect();
-      root.style.height = `${inner!.offsetHeight}px`;
-      inner!.style.width = `${rect.width}px`;
+      const w = Math.max(rect.width, inner!.scrollWidth, inner!.offsetWidth, 192);
+      root.style.height = `${Math.max(inner!.offsetHeight, 1)}px`;
+      root.style.width = `${w}px`;
+      inner!.style.width = `${w}px`;
       inner!.style.left = `${rect.left}px`;
       inner!.style.top = `${offset}px`;
       root.classList.add("is-fixed");
@@ -134,6 +136,7 @@ export function createAffixController(root: HTMLElement): AffixController {
       root.classList.remove("is-fixed");
       root.removeAttribute("data-fixed");
       root.style.height = "";
+      root.style.width = "";
       inner!.style.width = "";
       inner!.style.left = "";
       inner!.style.top = "";
@@ -146,6 +149,7 @@ export function createAffixController(root: HTMLElement): AffixController {
     root.classList.remove("is-fixed");
     root.removeAttribute("data-fixed");
     root.style.height = "";
+    root.style.width = "";
     inner!.style.width = "";
     inner!.style.left = "";
     inner!.style.top = "";

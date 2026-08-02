@@ -97,6 +97,13 @@
 /* Affix */
 .blora-affix {
   position: relative;
+  width: 100%;
+  max-width: 100%;
+}
+
+.blora-affix__inner {
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .blora-affix.is-fixed > .blora-affix__inner,
@@ -105,6 +112,10 @@
   z-index: var(--blora-z-sticky);
   border-radius: var(--blora-radius-lg);
   box-shadow: var(--blora-shadow-2);
+  /* width/left set by controller from measured box — never collapse to a strip */
+  min-width: 12rem;
+  max-width: calc(100vw - 2rem);
+  box-sizing: border-box;
 }
 
 /* Anchor / spy links */

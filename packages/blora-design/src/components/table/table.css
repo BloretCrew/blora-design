@@ -53,6 +53,49 @@
   display: none;
 }
 
+/* Sortable header cue */
+.blora-table th[data-sort],
+.blora-table th[data-blora-sort] {
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.blora-table th[data-sort] .blora-table__sort,
+.blora-table th[data-blora-sort] .blora-table__sort {
+  display: inline-block;
+  margin-inline-start: 0.35em;
+  width: 0.65em;
+  opacity: 0.35;
+  font-size: 0.75em;
+  vertical-align: middle;
+  transition: opacity var(--blora-duration-fast) var(--blora-easing-standard);
+}
+
+.blora-table th[data-sort] .blora-table__sort::before,
+.blora-table th[data-blora-sort] .blora-table__sort::before {
+  content: "⇅";
+}
+
+.blora-table th[data-sort]:hover .blora-table__sort,
+.blora-table th[data-blora-sort]:hover .blora-table__sort {
+  opacity: 0.75;
+}
+
+.blora-table th[data-sort-dir="asc"] .blora-table__sort,
+.blora-table th[data-sort-dir="desc"] .blora-table__sort {
+  opacity: 1;
+  color: var(--blora-color-action-primary-default);
+}
+
+.blora-table th[data-sort-dir="asc"] .blora-table__sort::before {
+  content: "▲";
+}
+
+.blora-table th[data-sort-dir="desc"] .blora-table__sort::before {
+  content: "▼";
+}
+
 /* -- Native table -- */
 
 .blora-table {

@@ -137,3 +137,4 @@ export {
   createAccordionController,
   type AccordionController,
 } from "./components/accordion/index.js";
+export { createImageController, type ImageController } from "./components/image/index.js";

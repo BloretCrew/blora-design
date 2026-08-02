@@ -43,7 +43,8 @@ export function createCalendarController(root: HTMLElement): CalendarController 
   let viewYear = today.getFullYear();
   let viewMonth = today.getMonth();
   let viewMode: "days" | "months" | "years" = "days";
-  let selected: Date | null = null;
+  /* Default selection = today (v1 showcase / expected UX) */
+  let selected: Date | null = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
   const el = (tag: string, cls?: string, text?: string): HTMLElement => {
     const node = document.createElement(tag);

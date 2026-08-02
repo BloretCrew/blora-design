@@ -65,6 +65,40 @@ export function getTheme(el: HTMLElement = document.documentElement): string {
   return el.getAttribute("data-blora-theme") || "coral";
 }
 
+const SCHEME_KEY = "blora-color-scheme";
+
+export type ColorScheme = "light" | "dark";
+
+export function getColorScheme(el: HTMLElement = document.documentElement): ColorScheme {
+  const v = el.getAttribute("data-blora-color-scheme");
+  return v === "dark" ? "dark" : "light";
+}
+
+/** Explicit light/dark. Always set attribute so OS prefers-color-scheme cannot fight Storybook. */
+export function applyColorScheme(
+  scheme: ColorScheme,
+  el: HTMLElement = document.documentElement,
+  options?: { persist?: boolean; emit?: boolean },
+): void {
+  if (typeof document === "undefined") return;
+  el.setAttribute("data-blora-color-scheme", scheme);
+  if (options?.persist !== false) {
+    try {
+      localStorage.setItem(SCHEME_KEY, scheme);
+    } catch {
+      /* ignore */
+    }
+  }
+  if (options?.emit !== false) {
+    el.dispatchEvent(
+      new CustomEvent("blora-color-scheme-change", {
+        bubbles: true,
+        detail: { scheme },
+      }),
+    );
+  }
+}
+
 export function applyTheme(
   theme: string,
   el: HTMLElement = document.documentElement,
@@ -73,6 +107,10 @@ export function applyTheme(
   if (typeof document === "undefined") return;
   const key = THEME_PRESETS[theme] ? theme : "coral";
   el.setAttribute("data-blora-theme", key);
+  /* Keep an explicit scheme so theme packs don't half-apply dark text on light canvas */
+  if (!el.hasAttribute("data-blora-color-scheme")) {
+    applyColorScheme("light", el, { persist: false, emit: false });
+  }
   if (options?.persist !== false) {
     try {
       localStorage.setItem(STORAGE_KEY, key);
@@ -95,6 +133,19 @@ export function bootThemeFromStorage(el: HTMLElement = document.documentElement)
     /* ignore */
   }
   if (!THEME_PRESETS[saved]) saved = "coral";
+  /* Prefer existing explicit scheme; otherwise light (avoid OS dark bleaching Storybook) */
+  let scheme: ColorScheme = getColorScheme(el);
+  try {
+    const s = localStorage.getItem(SCHEME_KEY);
+    if (!el.hasAttribute("data-blora-color-scheme") && (s === "dark" || s === "light")) {
+      scheme = s;
+    }
+  } catch {
+    /* ignore */
+  }
+  if (!el.hasAttribute("data-blora-color-scheme")) {
+    applyColorScheme(scheme, el, { persist: false, emit: false });
+  }
   applyTheme(saved, el, { persist: false, emit: false });
   return saved;
 }

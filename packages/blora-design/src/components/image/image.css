@@ -9,12 +9,56 @@
   border-radius: var(--blora-radius-md);
   overflow: hidden;
   background: var(--blora-color-surface-sunken);
+  /* Avoid collapsed thin bar before image dimensions known */
+  min-width: 4rem;
+  min-height: 3rem;
+  aspect-ratio: var(--blora-image-ratio, 4 / 3);
 }
 
 .blora-image img {
   display: block;
   width: 100%;
-  transition: transform var(--blora-duration-slow) var(--blora-easing-standard);
+  height: 100%;
+  object-fit: cover;
+  transition:
+    transform var(--blora-duration-slow) var(--blora-easing-standard),
+    opacity var(--blora-duration-base) var(--blora-easing-standard);
+}
+
+/* Loading skeleton until image fires load */
+.blora-image[data-loading] img {
+  opacity: 0;
+}
+
+.blora-image[data-loading]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    90deg,
+    var(--blora-color-surface-sunken) 0%,
+    var(--blora-color-surface-raised) 50%,
+    var(--blora-color-surface-sunken) 100%
+  );
+  background-size: 200% 100%;
+  animation: blora-image-shimmer 1.2s ease-in-out infinite;
+}
+
+@keyframes blora-image-shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blora-image[data-loading]::before {
+    animation: none;
+  }
 }
 
 /* Hover zoom */

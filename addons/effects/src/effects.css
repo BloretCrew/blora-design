@@ -465,8 +465,24 @@
   background: var(--blora-color-text-on-accent, #fff);
 }
 
-[data-blora-shortcut] {
+/* Keyboard shortcut chip (v1 .blora-kbd) */
+.blora-kbd,
+kbd.blora-kbd,
+kbd[data-blora-shortcut] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.75em;
+  min-height: 1.75em;
+  padding: 0.1em 0.45em;
+  border: 1px solid var(--blora-color-border-subtle);
+  border-bottom-width: 2px;
+  border-radius: var(--blora-radius-xs);
+  background: var(--blora-color-surface-raised);
+  color: var(--blora-color-text-emphasis);
   font-family: var(--blora-font-mono);
-  font-size: var(--blora-text-xs);
-  color: var(--blora-color-text-subtle);
+  font-size: 0.82em;
+  line-height: 1;
+  box-shadow: 0 1px 0 var(--blora-color-surface-sunken);
+  white-space: nowrap;
 }

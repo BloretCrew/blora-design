@@ -14,7 +14,7 @@ const successIcon = svg`<svg width="20" height="20" viewBox="0 0 24 24" fill="no
 const closeIcon = svg`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>`;
 
 export const StaticVariants: Story = {
-  name: "静态样式",
+  name: "Static variants",
   render: () => html`
     <div class="blora-stack" style="max-width: 24rem;">
       <div class="blora-toast" data-variant="success">
@@ -36,7 +36,7 @@ export const StaticVariants: Story = {
 };
 
 export const LiveAPI: Story = {
-  name: "API · toast()",
+  name: "API toast()",
   render: () => html`
     <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
       <button

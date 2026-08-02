@@ -31,7 +31,7 @@ const bindThread = (el: Element | undefined): void => {
 };
 
 export const ForumThread: Story = {
-  name: "论坛跟帖 · v1 复刻",
+  name: "Forum thread",
   render: () => html`
     <div class="blora-thread" data-blora-thread ${ref(bindThread)}>
       <article class="blora-post">
@@ -193,7 +193,7 @@ export const ForumThread: Story = {
 };
 
 export const CollapsedByDefault: Story = {
-  name: "默认收起",
+  name: "Collapsed by default",
   render: () => html`
     <div class="blora-thread" data-blora-thread ${ref(bindThread)}>
       <article class="blora-post">
@@ -239,7 +239,7 @@ export const CollapsedByDefault: Story = {
 };
 
 export const QuoteOnly: Story = {
-  name: "引用条 · post quote",
+  name: "Quote bar",
   render: () => html`
     <div class="blora-thread" style="max-width: 36rem">
       <article class="blora-post blora-post--reply">

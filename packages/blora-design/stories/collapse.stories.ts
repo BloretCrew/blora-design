@@ -55,18 +55,4 @@ export const Default: Story = {
   `,
 };
 
-export const Accordion: Story = {
-  name: "手风琴 · 同时仅一项",
-  render: () => html`
-    <div class="blora-collapse" data-blora-accordion ${ref(init)} style="max-width: 28rem;">
-      <div class="blora-collapse__item" data-open>
-        <button class="blora-collapse__head" type="button"><span>面板 A</span></button>
-        <div class="blora-collapse__body"><div class="blora-collapse__content">内容 A</div></div>
-      </div>
-      <div class="blora-collapse__item">
-        <button class="blora-collapse__head" type="button"><span>面板 B</span></button>
-        <div class="blora-collapse__body"><div class="blora-collapse__content">内容 B</div></div>
-      </div>
-    </div>
-  `,
-};
+/* Accordion is a separate component — do not nest under Collapse stories. */

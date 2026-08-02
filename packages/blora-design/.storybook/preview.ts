@@ -115,7 +115,18 @@ const preview: Preview = {
     },
   },
   // Wrap all stories in .blora-scope so foundations and components apply
-  decorators: [(story) => html`<div class="blora-scope" style="padding: 1rem;">${story()}</div>`],
+  decorators: [
+    (story) => {
+      // Pin light scheme by default so theme packs + OS dark mode don't bleach Storybook canvas
+      if (typeof document !== "undefined") {
+        const root = document.documentElement;
+        if (!root.hasAttribute("data-blora-color-scheme")) {
+          root.setAttribute("data-blora-color-scheme", "light");
+        }
+      }
+      return html`<div class="blora-scope" style="padding: 1rem;">${story()}</div>`;
+    },
+  ],
 };
 
 export default preview;

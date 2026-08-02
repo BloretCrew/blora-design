@@ -108,7 +108,7 @@ const flowerShell = (content: unknown) =>
 
 /** 垂直 · 图标 */
 export const VerticalIcons: Story = {
-  name: "垂直 · 图标",
+  name: "Vertical icons",
   render: () =>
     shell(html`
       <div class="blora-speed-dial" data-blora-speed-dial ${ref(init)}>
@@ -122,7 +122,7 @@ export const VerticalIcons: Story = {
 
 /** 垂直 · 标签 */
 export const VerticalLabels: Story = {
-  name: "垂直 · 标签",
+  name: "Vertical labels",
   render: () =>
     shell(html`
       <div class="blora-speed-dial" data-blora-speed-dial ${ref(init)}>
@@ -136,7 +136,7 @@ export const VerticalLabels: Story = {
 
 /** 垂直 · 矩形按钮 */
 export const VerticalRectButtons: Story = {
-  name: "垂直 · 矩形按钮",
+  name: "Vertical buttons",
   render: () =>
     shell(html`
       <div class="blora-speed-dial" data-blora-speed-dial ${ref(init)}>
@@ -173,7 +173,7 @@ export const VerticalRectButtons: Story = {
 
 /** 标签 · 关闭钮 */
 export const LabelsWithClose: Story = {
-  name: "标签 · 关闭钮",
+  name: "Labels with close",
   render: () =>
     shell(html`
       <div class="blora-speed-dial" data-blora-speed-dial ${ref(init)}>
@@ -197,7 +197,7 @@ export const LabelsWithClose: Story = {
 
 /** 标签 · 主操作 */
 export const LabelsWithMain: Story = {
-  name: "标签 · 主操作",
+  name: "Labels with main",
   render: () =>
     shell(html`
       <div class="blora-speed-dial" data-blora-speed-dial ${ref(init)}>
@@ -221,7 +221,7 @@ export const LabelsWithMain: Story = {
 
 /** 水平 · 向左 */
 export const HorizontalLeft: Story = {
-  name: "水平 · 向左",
+  name: "Horizontal left",
   render: () =>
     shell(html`
       <div class="blora-speed-dial blora-speed-dial--left" data-blora-speed-dial ${ref(init)}>
@@ -235,7 +235,7 @@ export const HorizontalLeft: Story = {
 
 /** 花瓣 · 主操作 */
 export const FlowerWithMain: Story = {
-  name: "花瓣 · 主操作",
+  name: "Flower with main",
   render: () =>
     flowerShell(html`
       <div class="blora-speed-dial blora-speed-dial--flower" data-blora-speed-dial ${ref(init)}>
@@ -259,7 +259,7 @@ export const FlowerWithMain: Story = {
 
 /** 花瓣 · 纯展开 — + rotates to × when open (v1) */
 export const FlowerExpand: Story = {
-  name: "花瓣 · 纯展开",
+  name: "Flower expand",
   render: () =>
     flowerShell(html`
       <div class="blora-speed-dial blora-speed-dial--flower" data-blora-speed-dial ${ref(init)}>

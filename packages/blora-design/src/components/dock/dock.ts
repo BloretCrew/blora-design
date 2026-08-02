@@ -50,7 +50,14 @@ export function createDockController(root: HTMLElement): DockController {
   };
 
   const active = items.find((it) => it.hasAttribute("data-active")) ?? items[0];
-  if (active) setActive(active);
+  // Measure after layout (Storybook/fonts) so indicator is correct without a click
+  if (active) {
+    setActive(active);
+    requestAnimationFrame(() => {
+      moveIndicator(active);
+      requestAnimationFrame(() => moveIndicator(active));
+    });
+  }
 
   root.addEventListener("click", onClick);
   const onResize = () => {
@@ -58,6 +65,8 @@ export function createDockController(root: HTMLElement): DockController {
     if (cur) moveIndicator(cur);
   };
   window.addEventListener("resize", onResize);
+  // Fonts can change item width after first paint
+  void document.fonts?.ready?.then?.(onResize);
 
   return {
     destroy() {

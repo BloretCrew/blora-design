@@ -34,7 +34,7 @@ export const Default: Story = {
 };
 
 export const CheckAll: Story = {
-  name: "全选",
+  name: "Check all",
   render: () => html`
     <div class="blora-stack" ${ref(init)} style="max-width:16rem;">
       <label class="blora-checkbox"

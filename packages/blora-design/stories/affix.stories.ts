@@ -20,19 +20,39 @@ const init = (el: Element | undefined): void => {
 
 export const Default: Story = {
   render: () => html`
-    <div style="padding: var(--blora-space-4); min-height: 120vh;">
-      <p class="blora-text-sm blora-text-muted">向下滚动页面，固钉在到达阈值后吸附顶部。</p>
-      <div style="height: 8rem;"></div>
-      <div class="blora-affix" data-offset="16" ${ref(init)}>
+    <div style="min-height: 140vh; padding: var(--blora-space-4); max-width: 40rem;">
+      <p class="blora-text-sm" style="color: var(--blora-color-text-muted); margin: 0 0 2rem;">
+        Scroll this page. The bar sticks to the top after it reaches the threshold.
+      </p>
+      <div style="height: 6rem;"></div>
+      <div class="blora-affix" data-offset="12" ${ref(init)}>
         <div
           class="blora-affix__inner"
-          style="background: var(--blora-color-surface-default); border: 1px solid var(--blora-color-border-subtle); border-radius: var(--blora-radius-md); padding: var(--blora-space-3);"
+          style="
+            display: flex;
+            align-items: center;
+            gap: var(--blora-space-3);
+            width: 100%;
+            max-width: 40rem;
+            box-sizing: border-box;
+            background: var(--blora-color-surface-default);
+            border: 1px solid var(--blora-color-border-subtle);
+            border-radius: var(--blora-radius-md);
+            padding: var(--blora-space-3) var(--blora-space-4);
+            box-shadow: var(--blora-shadow-2);
+          "
         >
-          <span class="blora-text-sm" style="font-weight: 500;">固钉栏 · Affix</span>
+          <strong class="blora-text-sm">Affix bar</strong>
+          <span class="blora-text-xs" style="color: var(--blora-color-text-subtle);"
+            >Stays visible while scrolling</span
+          >
         </div>
       </div>
-      <div style="height: 80vh;"></div>
-      <p class="blora-text-sm blora-text-muted">页面底部</p>
+      <div style="height: 90vh; margin-top: 1rem;">
+        <p class="blora-text-sm" style="color: var(--blora-color-text-muted);">
+          Page content continues below…
+        </p>
+      </div>
     </div>
   `,
 };

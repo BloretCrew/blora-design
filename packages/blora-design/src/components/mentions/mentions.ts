@@ -91,102 +91,77 @@ export function createMentionsController(root: HTMLElement): MentionsController 
   };
 
   /**
-   * Place menu near the @ caret using fixed coordinates.
-   * Prefer above; if not enough room, flip below. Clamp horizontally.
+   * Place menu near the field (and caret when measurable).
+   * Prefer below the textarea; flip above if not enough room. Clamp to viewport.
    */
   const positionNearAt = () => {
-    const gap = 4;
+    const gap = 6;
     const pad = 8;
-    const cs = getComputedStyle(field);
     const fieldRect = field.getBoundingClientRect();
+    const cs = getComputedStyle(field);
 
-    // Approximate caret offset within the field
-    let caretLeft = 0;
-    let caretTop = 0;
+    // Approximate caret X inside the field for horizontal nudge
+    let caretOffsetX = 12;
     if (mentionStart >= 0) {
-      const mirror = document.createElement("div");
-      mirror.setAttribute("aria-hidden", "true");
-      const props = [
-        "boxSizing",
-        "width",
-        "fontFamily",
-        "fontSize",
-        "fontWeight",
-        "letterSpacing",
-        "lineHeight",
-        "paddingTop",
-        "paddingRight",
-        "paddingBottom",
-        "paddingLeft",
-        "borderTopWidth",
-        "borderRightWidth",
-        "borderBottomWidth",
-        "borderLeftWidth",
-        "whiteSpace",
-        "wordWrap",
-        "overflowWrap",
-      ] as const;
-      mirror.style.position = "absolute";
-      mirror.style.visibility = "hidden";
-      mirror.style.whiteSpace = "pre-wrap";
-      mirror.style.wordWrap = "break-word";
-      mirror.style.overflow = "hidden";
-      mirror.style.top = "0";
-      mirror.style.left = "-9999px";
-      for (const p of props) {
-        mirror.style[p] = cs[p] as string;
+      try {
+        const mirror = document.createElement("div");
+        mirror.setAttribute("aria-hidden", "true");
+        mirror.style.cssText =
+          "position:absolute;visibility:hidden;white-space:pre-wrap;word-wrap:break-word;top:0;left:-9999px;";
+        mirror.style.width = `${field.clientWidth}px`;
+        mirror.style.font = cs.font;
+        mirror.style.padding = cs.padding;
+        mirror.style.border = cs.border;
+        mirror.style.boxSizing = cs.boxSizing;
+        mirror.textContent = field.value.slice(0, Math.max(0, mentionStart));
+        const marker = document.createElement("span");
+        marker.textContent = "@";
+        mirror.appendChild(marker);
+        document.body.appendChild(mirror);
+        caretOffsetX = Math.min(
+          Math.max(0, marker.offsetLeft - field.scrollLeft),
+          field.clientWidth - 24,
+        );
+        document.body.removeChild(mirror);
+      } catch {
+        caretOffsetX = 12;
       }
-      mirror.textContent = field.value.slice(0, mentionStart);
-      const marker = document.createElement("span");
-      marker.textContent = "@";
-      mirror.appendChild(marker);
-      document.body.appendChild(mirror);
-      caretLeft = marker.offsetLeft - field.scrollLeft;
-      caretTop = marker.offsetTop - field.scrollTop;
-      document.body.removeChild(mirror);
     }
 
-    const lineH = Number.parseFloat(cs.lineHeight) || 20;
-    const caretX = fieldRect.left + caretLeft;
-    const caretY = fieldRect.top + caretTop;
-
-    // Use fixed so we escape overflow:hidden ancestors (Storybook decorators)
     menuEl.style.position = "fixed";
     menuEl.style.right = "auto";
     menuEl.style.bottom = "auto";
-    menuEl.style.maxHeight = "";
+    menuEl.style.zIndex = "var(--blora-z-dropdown)";
 
-    // Measure after display:block
-    const menuW = Math.min(menuEl.offsetWidth || 160, window.innerWidth - pad * 2);
-    const menuH = Math.min(menuEl.offsetHeight || 120, window.innerHeight * 0.4);
+    const menuW = Math.min(
+      Math.max(menuEl.offsetWidth || 180, Math.min(fieldRect.width, 220)),
+      window.innerWidth - pad * 2,
+    );
+    const menuH = Math.min(menuEl.offsetHeight || 160, window.innerHeight * 0.45);
 
-    // Prefer above the caret line; flip below if clipped
-    const spaceAbove = caretY - pad;
-    const spaceBelow = window.innerHeight - (caretY + lineH) - pad;
-    const preferAbove = spaceAbove >= menuH || spaceAbove >= spaceBelow;
+    const spaceBelow = window.innerHeight - fieldRect.bottom - pad;
+    const spaceAbove = fieldRect.top - pad;
+    const placeBelow = spaceBelow >= Math.min(menuH, 120) || spaceBelow >= spaceAbove;
 
-    let top: number;
-    if (preferAbove) {
-      top = caretY - gap - menuH;
-      if (top < pad) top = pad;
-      menuEl.dataset.placement = "above";
-    } else {
-      top = caretY + lineH + gap;
-      if (top + menuH > window.innerHeight - pad) {
-        top = Math.max(pad, window.innerHeight - pad - menuH);
-      }
-      menuEl.dataset.placement = "below";
+    let top = placeBelow
+      ? fieldRect.bottom + gap
+      : Math.max(pad, fieldRect.top - gap - menuH);
+    if (placeBelow && top + menuH > window.innerHeight - pad) {
+      top = Math.max(pad, window.innerHeight - pad - menuH);
     }
+    menuEl.dataset.placement = placeBelow ? "below" : "above";
 
-    let left = caretX;
-    if (left + menuW > window.innerWidth - pad) {
-      left = window.innerWidth - pad - menuW;
-    }
+    let left = fieldRect.left + caretOffsetX;
+    // Keep menu visually attached to the field band
+    left = Math.min(left, fieldRect.right - 120);
+    left = Math.max(fieldRect.left, left);
+    if (left + menuW > window.innerWidth - pad) left = window.innerWidth - pad - menuW;
     if (left < pad) left = pad;
 
-    menuEl.style.left = `${left}px`;
-    menuEl.style.top = `${top}px`;
-    menuEl.style.maxHeight = `${Math.min(menuH, preferAbove ? spaceAbove : spaceBelow)}px`;
+    menuEl.style.left = `${Math.round(left)}px`;
+    menuEl.style.top = `${Math.round(top)}px`;
+    menuEl.style.minWidth = `${Math.min(fieldRect.width, 220)}px`;
+    menuEl.style.maxHeight = `${Math.round(Math.min(menuH, placeBelow ? spaceBelow : spaceAbove) || 160)}px`;
   };
 
   const insertMention = (name: string) => {
