@@ -3,8 +3,10 @@
 > Blora Design 是一套令牌驱动的 Web UI 设计规范。  
 > 本文是 **视觉与令牌** 的信源（色彩 / 字体 / 间距 / 动效 / 无障碍）。  
 > **工程接入、组件用法、迁移** → [`guide.md`](./guide.md)  
-> **class / data API 详表** → [`framework.md`](./framework.md)  
-> 默认配色 `coral` 的色值与当前 `blora.css` `:root` 对齐；换肤后以运行时令牌为准。
+> **1.x 迁移表** → [`migration/v1-to-v2.md`](./migration/v1-to-v2.md)  
+> **1.x 历史 API 罗列（仅对照）** → [`framework.md`](./framework.md)  
+> **重构进度** → [`refactor/remaining-work.md`](./refactor/remaining-work.md)  
+> 默认配色 `coral` 的色值与当前 token CSS 对齐；换肤后以运行时令牌为准。
 
 ---
 

@@ -10,6 +10,7 @@
 | `phase-scripts/` | 一次性迁移/生成脚本 |
 | `phase-docs/` | 阶段性文档与 inventory 可读版（JSON 仍在 docs/refactor） |
 | `core-migrated-to-addons/` | 已迁出核心、改从 addon 引入的组件 CSS 与 contract 备份 |
+| `phase10-entry-cleanup/` | 进入 Phase 10 时清理：过期 changesets、空目录说明 |
 
 迁移到 add-on 后请使用：
 
@@ -18,4 +19,4 @@
 - `@bloret-crew/blora-design-theming`（palette）
 - `@bloret-crew/blora-design-thread` 等
 
-详见 `docs/refactor/addon-core-gaps.md`。
+详见 `docs/refactor/addon-core-gaps.md` 与 **`docs/refactor/remaining-work.md`**。

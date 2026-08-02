@@ -11,10 +11,10 @@
 
 | 口径 | 含义 | 当前 |
 |------|------|------|
-| **仓库自限** | 阶段目标可交付（功能迁移 + add-on 拆分 + 文档真值 + 单测 + typecheck） | Phase 0–9 ✅；Phase 10 ⬚ |
-| **规格全书 DoD** | 每组件 §26 全勾 + §31 发布清单 | **未达到**；主体落在 Phase 10 |
+| **仓库自限** | 阶段目标可交付（功能迁移 + add-on 拆分 + 文档真值 + 单测 + typecheck） | Phase 0–9 ✅；**Phase 10 🔄 进行中** |
+| **规格全书 DoD** | 每组件 §26 全勾 + §31 发布清单 | **未达到**；主体落在 Phase 10 §3 清单 |
 
-**真实位置**：功能迁移与 add-on 拆分已按自限完成；可标 stable / 可发 `2.0.0` 的质量与发布面几乎全在 Phase 10。
+**真实位置**（2026-08-02）：Phase 9 自限 + 诚实债已关；**已正式进入 Phase 10**。可标 stable / 可发 `2.0.0` 的工作 = 完成本文件 §3。
 
 ---
 
@@ -32,7 +32,7 @@
 | Phase 7 数据与内容 | ✅ | Card/Table/List…；table controller 后在 Phase 9 补齐高级路径 |
 | Phase 8 兼容与 Codemod | ✅ | compat、codemod、migrate:check、fixtures |
 | Phase 9 Add-ons | ✅ 自限 | 六包 + 核心 v1 缺口；**规格级 DoD 未勾满** |
-| Phase 10 预发布 | ⬚ | Alpha → Beta → RC → Stable |
+| Phase 10 预发布 | 🔄 | **2026-08-02 进入**；见 §3 |
 
 ### Phase 9 已交付（自限）
 
@@ -79,8 +79,10 @@
 
 ## 3. Phase 10 开放清单（做到 Stable 前均对照本表）
 
-> 全部默认 **⬚ 未开始**。完成一项时改为 ✅ 并注日期/PR。  
-> 勿在未更新本表时声称 Phase 10 完成。
+> **Phase 10 状态：🔄 进行中**（进入日期 2026-08-02）。  
+> 下列条目默认 **⬚ 未完成**。完成一项时改为 ✅ 并注日期/PR。  
+> 勿在未更新本表时声称 Phase 10 / Stable 完成。  
+> 清理记录：`.trashes/phase10-entry-cleanup/`（过期 changesets、空目录）。
 
 ### 3.1 Alpha
 
@@ -194,3 +196,4 @@
 |------|------|
 | 2026-08-02 | 初版：审计快照 + P9 诚实债关闭表 + Phase 10 全开清单 |
 | 2026-08-02 | P9-1…P9-8 全部关闭或 deferred；typecheck + unit 证据写入 §5 |
+| 2026-08-02 | **进入 Phase 10**；过期 changesets → `.trashes/phase10-entry-cleanup`；迁移指南升格为 monorepo 正文 |

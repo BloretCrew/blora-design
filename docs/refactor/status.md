@@ -5,10 +5,10 @@
 ## 当前阶段
 
 **Phase 9：Add-ons** - ✅ 完成（2026-08-02 收口；诚实债见总表已关）  
-**Phase 10：预发布** - ⬚ 未开始（Alpha → Beta → RC → Stable）
+**Phase 10：预发布** - 🔄 **进行中**（2026-08-02 进入；Alpha → Beta → RC → Stable）
 
 > **主跟踪文档（直至重构完成）**：[`remaining-work.md`](./remaining-work.md)  
-> 阶段勾选、Phase 9 尾巴处置、Phase 10 开放清单 **只维护那一份**；本文件保持摘要。
+> 阶段勾选与 Phase 10 开放清单 **只维护那一份**；本文件保持摘要。
 
 ## 阶段进度
 
@@ -24,7 +24,7 @@
 | Phase 7：数据与内容基础 | ✅ 完成 | Card/Table/List/Accordion/Timeline/Empty/Result/Avatar |
 | Phase 8：兼容层与 Codemod | ✅ 完成 | Token/class 映射、event 别名、warning、codemod、migrate:check、fixtures |
 | Phase 9：Add-ons | ✅ 完成 | 六包 API + Story + 单测；核心 v1 缺口补齐（见 addon-core-gaps.md） |
-| Phase 10：预发布 | ⬚ 未开始 | 全量 DoD 农场 + 发版通道 |
+| Phase 10：预发布 | 🔄 进行中 | 2026-08-02 开场；清单见 remaining-work.md §3 |
 
 ## Phase 9 收口摘要（2026-08-02）
 
