@@ -39,6 +39,15 @@ describe("Phase-9 honesty artifacts", () => {
     expect(body).not.toMatch(/\*\*Version\*\* `1\.0\.0`/);
   });
 
+  it("ships side-effect auto entry for stable custom elements", () => {
+    const src = read("packages/blora-design/src/auto.ts");
+    expect(src).toMatch(/defineBloraSelect/);
+    expect(src).toMatch(/defineBloraDialog/);
+    const pkg = JSON.parse(read("packages/blora-design/package.json"));
+    expect(pkg.exports["./auto"]).toBeTruthy();
+    expect(pkg.sideEffects).toEqual(expect.arrayContaining(["./dist/auto.js"]));
+  });
+
   it("llms.txt points at existing migration path", () => {
     const body = read("llms.txt");
     expect(body).toMatch(/docs\/migration\/v1-to-v2\.md/);

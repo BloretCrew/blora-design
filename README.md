@@ -47,6 +47,7 @@ import {
 } from "@bloret-crew/blora-design";
 
 defineBloraSelect();
+// or: import "@bloret-crew/blora-design/auto";
 console.log(VERSION); // e.g. 2.0.0-alpha.1
 ```
 

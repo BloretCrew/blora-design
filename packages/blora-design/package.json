@@ -15,12 +15,17 @@
     "url": "https://github.com/BloretCrew/blora-design/issues"
   },
   "sideEffects": [
-    "./dist/*.css"
+    "./dist/*.css",
+    "./dist/auto.js"
   ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
+    },
+    "./auto": {
+      "types": "./dist/auto.d.ts",
+      "import": "./dist/auto.js"
     },
     "./tokens.css": "./dist/tokens.css",
     "./tokens.dark.css": "./dist/tokens.dark.css",

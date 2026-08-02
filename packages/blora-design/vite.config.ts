@@ -12,6 +12,7 @@ export default defineConfig({
     lib: {
       entry: {
         index: resolve(__dirname, "src/index.ts"),
+        auto: resolve(__dirname, "src/auto.ts"),
         "compat/v1/index": resolve(__dirname, "src/compat/v1/index.ts"),
       },
       formats: ["es"],

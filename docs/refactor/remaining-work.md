@@ -156,12 +156,12 @@
 - [x] 根/包 README 与版本说明对齐（持续维护）
 - [x] 至少 1 个 **纯 HTML** 可运行 example（`examples/basic/`）
 - [ ] （可选）React / Vue 消费示例或适配器 beta 占位
-- [ ] 收集外部反馈通道（Issue 模板 / 文档说明）
-- [ ] Alpha 安装演练记录（npm 发布成功后：`pnpm add @bloret-crew/blora-design@alpha`）
+- [x] 收集外部反馈通道（`.github/ISSUE_TEMPLATE` bug + alpha feedback）
+- [x] Alpha 安装演练记录（见 [`alpha-install-notes.md`](./alpha-install-notes.md)；七包均在 npm）
 
 ### 3.2 包与消费面（规格 §6 / §31 · 可与 Alpha 并行加深）
 
-- [ ] `exports`：`./auto`（注册 stable CE）
+- [x] `exports`：`./auto`（注册 stable CE：Select + Dialog；side-effect entry）
 - [ ] 稳定组件 **JS 子路径**（如 `./button`、`./select`）
 - [ ] `./compat/v1` 明确导出与体积独立统计
 - [ ] **CDN / IIFE global bundle**（若仍要求三种消费）
@@ -174,7 +174,7 @@
 - [ ] `component-manifest.json` 生成与导出
 - [ ] `llms.txt` 与组件索引对齐（随可宣传 stable 集更新）
 - [ ] API snapshot 流水线
-- [ ] **CHANGELOG**（changeset 发版叙事；Preflight 后新建 changeset，勿依赖已归档的旧 changeset）
+- [x] **CHANGELOG**（`CHANGELOG.md` 含 2.0.0-alpha.1；后续可用 changeset 续写）
 - [ ] 迁移指南继续扩充（事件/边角 / 逐组件）
 
 ### 3.4 组件 DoD 农场（§26）— 至少「可宣传 stable」集
@@ -271,3 +271,4 @@
 | 2026-08-02 | Preflight：add-on pack/publint、markdown/qrcode CSS 进 dist、examples/basic、browser sort 测试对齐 ▲▼ |
 | 2026-08-02 | CI 根因：`pnpm/action-setup` 秒挂 → corepack；lint:md 收窄 globs；**master CI 全绿** |
 | 2026-08-02 | **2.0.0-alpha.1** 版本对齐 + CHANGELOG；tag `v2.0.0-alpha.1` 触发 monorepo publish |
+| 2026-08-02 | npm 七包核验 + 安装演练；Issue 模板；`./auto` CE 入口 |

@@ -1,0 +1,54 @@
+name: Bug report
+description: Report a problem with Blora Design 2.0 (alpha)
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for testing **2.0 alpha**. Please use English or 中文.
+        Install with `pnpm add @bloret-crew/blora-design@alpha`.
+  - type: input
+    id: version
+    attributes:
+      label: Package version
+      description: e.g. 2.0.0-alpha.1
+      placeholder: 2.0.0-alpha.1
+    validations:
+      required: true
+  - type: dropdown
+    id: package
+    attributes:
+      label: Package
+      options:
+        - @bloret-crew/blora-design (core)
+        - @bloret-crew/blora-design-markdown
+        - @bloret-crew/blora-design-thread
+        - @bloret-crew/blora-design-qrcode
+        - @bloret-crew/blora-design-effects
+        - @bloret-crew/blora-design-layout
+        - @bloret-crew/blora-design-theming
+        - Other / monorepo
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: Actual vs expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Minimal reproduction
+      description: HTML / JS snippet or link
+    validations:
+      required: false
+  - type: textarea
+    id: env
+    attributes:
+      label: Environment
+      description: Browser, OS, bundler (or plain HTML)
+    validations:
+      required: false
