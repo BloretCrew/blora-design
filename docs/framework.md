@@ -1,43 +1,50 @@
 # Blora Design · UI 框架文档
 
-> 面向工程师的 **组件 class / `data-blora-*` / `Blora.*` API** 参考。  
-> **上手、迁移、禁止混用原生** → [`guide.md`](./guide.md)  
-> **视觉令牌与设计原则** → [`standards.md`](./standards.md)  
-> 许可：**Apache-2.0** · 包名：`@bloret-crew/blora-design` · 版本以 `Blora.version` / `package.json` 为准。
+> ⚠️ **2.0 说明（2026-08）**  
+> 本文后半大量内容仍是 **1.x 时代** 的 `blora.css` + `blora.js` + 全局 `Blora.*` 罗列，**不能**当作 2.0 推荐 API。  
+> **2.0 请优先阅读**：[`guide.md`](./guide.md)（安装、controller、表格/表单主路径）、`packages/blora-design/contracts/*.contract.json`、Storybook、包入口 `src/index.ts` 导出。  
+> **视觉令牌** → [`standards.md`](./standards.md)。**1.x 冻结实现** → `legacy/v1/`（迁移对照，非新项目入口）。
 
 ---
 
-## 安装
-
-Blora Design 是 **零依赖** 的 Web UI 框架：纯 CSS（约 4.4k 行 / ~240KB）+ 原生 JS（约 6.2k 行 / ~290KB，未压缩），不绑构建工具。**Blora** 为品牌前缀；产品全称 **Blora Design**；全局 JS 对象与 class 前缀仍为 `Blora` / `blora-*`。
+## 2.0 快速入口（现行）
 
 ```bash
-# 1) npm / pnpm（团队 Web 应用）
-npm install @bloret-crew/blora-design
-
-# 2) 直接拷贝（静态站）
-cp node_modules/@bloret-crew/blora-design/blora.{css,js,d.ts} your-project/
-# 或从仓库根目录拷贝同名文件
-
-# 3) CDN（jsDelivr；@1 跟随 1.x 最新，生产可钉 @1.0.0）
-# <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@bloret-crew/blora-design@1/blora.css">
-# <script src="https://cdn.jsdelivr.net/npm/@bloret-crew/blora-design@1/blora.js"></script>
+pnpm add @bloret-crew/blora-design
 ```
 
-```html
-<link rel="stylesheet" href="blora.css">
-<!-- 推荐与展示页一致：中文 UI + 等宽 -->
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script src="blora.js"></script>
+```js
+import "@bloret-crew/blora-design/tokens.css";
+import "@bloret-crew/blora-design/foundations.css";
+import { createTableController, toast, defineBloraSelect } from "@bloret-crew/blora-design";
+
+defineBloraSelect();
+// 按钮：.blora-button[data-variant="primary"]
+// 表格：.blora-table-wrap + createTableController(wrap)
 ```
 
-**作用域约定**
+完整约定与示例见 [`guide.md`](./guide.md)。下方章节保留供 **1.x 行为对照 / 迁移检索**，新功能请勿再按 `Blora.init` 模型扩展。
 
-- 完整页面：给 `<body>` 添加 `class="blora-page blora-scope"`，启用页面底色、字体、基础元素 reset 与组件样式。
-- 嵌入已有应用：只给 Blora Design 作用域容器添加 `.blora-scope`，避免影响宿主应用的全局标题、链接、按钮和背景。
-- 单独使用组件类时，组件读取 `:root` 中的设计令牌；换肤优先覆写 `--blora-*` 或 `Blora.applyPalette`。
+---
 
-**仓库结构**
+## 安装（历史 1.x 叙述 · 仅迁移对照）
+
+Blora Design **1.x** 曾以整包 `blora.css` + `blora.js` 分发。**2.0** 为 monorepo ESM + 按组件 CSS + headless controller（见上节与 guide）。
+
+```bash
+# 2.0（推荐）
+pnpm add @bloret-crew/blora-design
+
+# 1.x 行为对照请使用仓库 legacy/v1/，不要在新项目复制全局 Blora 单例模式
+```
+
+**作用域约定（2.0）**
+
+- Token 与 foundations 挂到应用根；组件 class 使用 `blora-*`。  
+- 交互节点显式 `createXxxController` 或注册自定义元素。  
+- 换肤 / 明暗：theming 包或 token 主题 CSS，而非依赖 `Blora.applyPalette` 全局对象（1.x）。
+
+**仓库结构（历史描述起点）**
 
 ```
 blora-design/

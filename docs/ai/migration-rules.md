@@ -29,4 +29,5 @@
 | `data-blora-form`       | Native Constraint Validation + `blora-field` | planned |
 | `Blora.init()`          | Custom Elements auto-upgrade                 | planned |
 
-> This file will be fully populated in Phase 8 (Compat & Codemod).
+> Phase 8 compat / codemod 已落地；本表为速查。完整映射见 `packages/blora-design/src/compat/v1/`。  
+> **2.0 新代码**请直接写 `.blora-button[data-variant]` 与 `createXxxController`，见 [`docs/guide.md`](../guide.md)。

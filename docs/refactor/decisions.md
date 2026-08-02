@@ -131,23 +131,27 @@ Primitive 层使用与 1.x token 名称对应的 palette-specific 命名（如 `
 
 ## ADR-007: Table controller 推迟到 beta，Phase 7 只交付 CSS-only table
 
-**日期**：2026-07-30
-**状态**：已采纳
+**日期**：2026-07-30  
+**状态**：**已由后续工作取代**（superseded，2026-08-02）
 
 ### 背景
 
 Spec §17.5 将 Table 拆成两层：CSS-only native table 和可选 headless controller（排序、选择、分页、虚拟化）。Spec 明确虚拟表格、列固定、列设置和拖拽排序属于 advanced，必须单独测试。
 
-### 决策
+### 原决策（Phase 7）
 
-Phase 7 只交付 CSS-only table 样式（含 sortable header `::after` 箭头、sticky column z-index、striped/hover 行样式、loading overlay、bulk bar、virtual scroll 容器）。`createTableController()` headless controller 推迟到 beta 阶段单独实现和测试。
+Phase 7 只交付 CSS-only table 样式。`createTableController()` 曾计划推迟到 beta。
 
-### 理由
+### 取代说明（Phase 9）
 
-- Controller 涉及排序/选择/分页/虚拟化等复杂状态管理，需要完整的交互测试覆盖。
-- CSS-only table 已覆盖所有视觉样式，消费者可自行用原生 JS 或框架实现交互。
-- Spec 要求 advanced 功能必须单独测试，不适合在组件迁移批次中混入。
-- 遵循"每个阶段独立提交，不做巨型提交"的执行纪律。
+已实现 `createTableController` 主路径，并写入契约 / Story / `tests/v1-gaps.test.ts`：
+
+- 排序（三态）、本地分页  
+- 列设置（`data-blora-cols`）  
+- 虚拟滚动（`data-blora-virtual`，轴 y / x / both）  
+- **内置行选**（`data-blora-selectable`，注入 Blora checkbox，非业务拼装）
+
+全量 Playwright 交互与视觉农场仍归 **Phase 10**，不改变「主路径已交付」的事实。
 
 ---
 

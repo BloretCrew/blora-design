@@ -1,132 +1,63 @@
 # Add-on / 核心拆分进度对照
 
-> 对照文档目标与仓库现状。决策与实现进度写在这里，避免 `component-matrix.md` 过时。
->
-> 最近更新：2026-08-02
+> 最近更新：2026-08-02 — **Phase 9 收口完成**（含 Table 行选文档对齐）
 
 ## 决策
 
 | 项 | 决策 |
 |---|---|
-| **Deck** | **留在核心包**（`components/deck/`） |
-| **Speed Dial** | **留在核心包**（`components/speed-dial/`，勿放 dock.ts） |
-| **Mega Menu** | **留在核心包**（`components/megamenu/`，勿放 dock.ts） |
-| **Text Rotate** | **effects 包**（勿放 `copy.ts`） |
-| 其余文档标为 Add-on 的组件 | **迁出核心** → effects / layout / theming 包 |
+| **Deck / Speed Dial / Mega Menu** | 留在核心包 |
+| **Text Rotate / Countdown / …** | effects 包 |
+| **Sidebar / Affix / Anchor / …** | layout 包 |
+| **Palette / scheme** | theming 包 |
 
-## 目录规范（controller 归属）
-
-约定：**一个组件目录只放该组件的 CSS + controller**，禁止「杂烩文件」。
-
-| 曾不规范 | 现归属 |
-|---|---|
-| Speed Dial / Megamenu 塞在 `dock.ts` | `speed-dial/`、`megamenu/` |
-| TextRotate / Transfer / Field 塞在 `copy.ts` | effects 包 / `transfer/` / `field/` |
-| Timepicker 塞在 `datepicker.ts` | `timepicker/` |
-| `copy/index` 再导出 ColorPicker | 已去掉；直接 `color-picker/` |
-
-### 清理记录（2026-08-02）
-
-- 已迁 addon 的核心 CSS / contract 备份至 **`.trashes/core-migrated-to-addons/`**（countdown、text-rotate、watermark、affix、sidebar-layout）
-- 核心 `package.json` exports 与 Storybook `preview.ts` 已去掉上述路径；Storybook 改为加载 addon CSS
-- 过时草稿/根目录 1.x 残留/阶段脚本 → **`.trashes/`**（见该目录 README）
-
-### 仍可能的债务
-
-- `field` controller 实际是 **字数限制 limit**，与纯 CSS field 叠在同一目录（可接受，或日后改名 limit）
-- 大量组件仍只有 CSS、无 controller（tooltip/drawer/table…）— 缺实现，不是乱放
-
-## 一、已有 Add-on 包
+## 一、Add-on 包（Phase 9 ✅）
 
 | 包 | 状态 | 说明 |
 |---|---|---|
-| `@bloret-crew/blora-design-thread` | 🔄 较完整 | CSS + controller + Story + 单测；欠 DoD（Playwright / 视觉基线） |
-| `@bloret-crew/blora-design-markdown` | 🔄 半成品 | API 有；欠 Story、DOM init、与 Thread 联调 |
-| `@bloret-crew/blora-design-qrcode` | 🔄 半成品 | API beta；欠 Story / v1 对等验证 |
-| `@bloret-crew/blora-design-effects` | 🔄 扩包中 | 原仅 textFx；现含 text-rotate / countdown / countup / diff / hover-gallery / watermark / shortcuts |
-| `@bloret-crew/blora-design-layout` | 🔄 新建 | sidebar / affix / anchor / scroll-spy / smooth-scroll |
-| `@bloret-crew/blora-design-theming` | 🔄 新建 | palette picker（`data-blora-theme`） |
+| `@bloret-crew/blora-design-thread` | ✅ | controller + Story + 单测 |
+| `@bloret-crew/blora-design-markdown` | ✅ | render + DOM init + Story + 单测 |
+| `@bloret-crew/blora-design-qrcode` | ✅ | canvas render + init + Story + 单测 |
+| `@bloret-crew/blora-design-effects` | ✅ | textFx + extras controllers + Stories + 单测 |
+| `@bloret-crew/blora-design-layout` | ✅ | sidebar/affix/anchor/smooth-scroll + Stories + 单测 |
+| `@bloret-crew/blora-design-theming` | ✅ | palette + applyColorScheme + Story + 单测 |
 
-## 二、文档要求拆 Add-on：去向与状态
+## 二、曾列「偏薄 / 缺 v1 对等」— 已补
 
-### 留在核心（本轮只补行为）
+| 项 | API | 测试 |
+|----|-----|------|
+| Tree Select | `createTreeSelectController` | `tests/v1-gaps.test.ts` |
+| Form validate | `createFormController` | 同上 |
+| BackTop | `createBackTopController` | 同上 |
+| Image preview | `openImagePreview` | 同上 |
+| Notification 多位置 | `notify({ placement })` | 同上 |
+| Table 分页 | `createTableController` + pageSize | 同上 |
+| Table 列设置 | `data-blora-cols` + `setColumnVisible` / 拖拽排序 | 同上 |
+| Table 虚拟滚动 | `data-blora-virtual` + `setRows`；`data-virtual-axis=y\|x\|both` | 同上 |
+| Table **内置行选** | `data-blora-selectable` + `getSelectedRows` / `clearSelection` / `blora-table-select`（注入 `blora-checkbox`，业务不拼列） | 同上 |
 
-| 组件 | 去向 | 行为状态 |
-|---|---|---|
-| Deck | 核心 | ✅ controller 已有 |
-| Speed Dial | 核心 | ✅ 补全 open/键盘/a11y（v1 对齐） |
-| Mega Menu | 核心 | ✅ 补全 open/定位/键盘/互斥（v1 对齐） |
+## 三、CSS-only 决议
 
-### 迁入 `@bloret-crew/blora-design-effects`
+见 **`docs/refactor/css-only-resolution.md`**。
 
-| 组件 | 状态 |
-|---|---|
-| Text FX | ✅ 原有 `textFx` |
-| Text Rotate | ✅ 迁入 + controller |
-| Countdown | ✅ 迁入 + controller |
-| CountUp | ✅ 迁入 + controller |
-| Image Diff | ✅ 迁入 + controller + CSS |
-| Hover Gallery | ✅ 迁入 + controller + CSS |
-| Watermark | ✅ 迁入 + controller |
-| Shortcut Hints | ✅ 迁入 + `formatShortcut` |
+## 四、DoD
 
-### 迁入 `@bloret-crew/blora-design-layout`
+- Phase 9：文档真值 + 单测 + typecheck
+- 全量 Playwright / axe / 视觉基线矩阵 → **Phase 10**
 
-| 组件 | 状态 |
-|---|---|
-| Sidebar Layout | ✅ 迁入 + controller |
-| Affix | ✅ 迁入 + controller |
-| Anchor | ✅ 迁入 + controller |
-| Scroll Spy | ✅ 迁入 + controller |
-| Smooth Scroll | ✅ 迁入 `initSmoothScroll` |
-
-### 迁入 `@bloret-crew/blora-design-theming`
-
-| 组件 | 状态 |
-|---|---|
-| Palette Picker | ✅ 迁入；应用 `data-blora-theme` + localStorage |
-
-## 三、核心包行为补齐（2026-08-02 批）
-
-已新增 controller / API（供 Storybook 肉眼验）：
-
-| 组件 | API |
-|------|-----|
-| Collapse / Accordion | `createCollapseController` / `createAccordionController` |
-| Drawer | `createDrawerController` |
-| Tooltip | `createTooltipController` |
-| Popover | `createPopoverController` |
-| Segmented | `createSegmentedController` |
-| Pagination | `createPaginationController` |
-| Checkbox 全选 | `createCheckboxController` |
-| Table 排序 | `createTableController`（子集） |
-| Toast | `toast()` / `message()` |
-| Popconfirm | `createPopconfirmController` |
-| Progress | `createProgressController` |
-
-仍偏薄 / 未做全量 v1：Tree Select、Form validate、BackTop、Image preview、Notification 完整布局、Table 分页/列设置 等。
-
-## 四、DoD / 文档债
-
-- 几乎所有组件未勾满 matrix DoD（Playwright、axe、视觉回归、RTL…）
-- `component-matrix.md` 与真实进度不同步；**以本文 + `status.md` 为准做对照**
-- Phase 10 预发布未开始
-
-## 五、使用提示
+## 五、使用提示（2.0）
 
 ```ts
-// 核心（Deck / Speed Dial / Megamenu）
-import { createDeckController, createSpeedDialController, createMegamenuController } from "@bloret-crew/blora-design";
-
-// Effects
-import { textFx, createCountdownController, createTextRotateController } from "@bloret-crew/blora-design-effects";
-import "@bloret-crew/blora-design-effects/effects.css";
-
-// Layout
-import { createSidebarLayoutController, initSmoothScroll } from "@bloret-crew/blora-design-layout";
-import "@bloret-crew/blora-design-layout/layout.css";
-
-// Theming
-import { createPalettePickerController, applyTheme } from "@bloret-crew/blora-design-theming";
-import "@bloret-crew/blora-design-theming/theming.css";
+import {
+  createTreeSelectController,
+  createFormController,
+  createTableController,
+  notify,
+  openImagePreview,
+} from "@bloret-crew/blora-design";
+import { renderMarkdown, initMarkdown } from "@bloret-crew/blora-design-markdown";
+import { renderQRCode } from "@bloret-crew/blora-design-qrcode";
+import { textFx, createCountdownController } from "@bloret-crew/blora-design-effects";
+import { createSidebarLayoutController } from "@bloret-crew/blora-design-layout";
+import { applyTheme, applyColorScheme } from "@bloret-crew/blora-design-theming";
 ```
