@@ -1,13 +1,15 @@
 # Blora Design · UI 框架文档
 
-> ⚠️ **2.0 说明（2026-08）**  
-> 本文后半大量内容仍是 **1.x 时代** 的 `blora.css` + `blora.js` + 全局 `Blora.*` 罗列，**不能**当作 2.0 推荐 API。  
-> **2.0 请优先阅读**：[`guide.md`](./guide.md)（安装、controller、表格/表单主路径）、`packages/blora-design/contracts/*.contract.json`、Storybook、包入口 `src/index.ts` 导出。  
-> **视觉令牌** → [`standards.md`](./standards.md)。**1.x 冻结实现** → `legacy/v1/`（迁移对照，非新项目入口）。
+> ⚠️ **2.0 说明（2026-08）— 请先读这里**  
+> 本文 **§「安装（历史 1.x…）」及以下** 大量内容是 **1.x** 的 `blora.css` + `blora.js` + 全局 `Blora.*` 罗列。  
+> **禁止**把那些段落当作 2.0 推荐 API 或复制进新项目。  
+> **2.0 唯一推荐入口**：[`guide.md`](./guide.md)、[`migration/v1-to-v2.md`](./migration/v1-to-v2.md)、`packages/blora-design/contracts/*.contract.json`、Storybook、包 `src/index.ts` 导出。  
+> **进度 / 未完成项**：[`refactor/remaining-work.md`](./refactor/remaining-work.md)。  
+> **视觉令牌** → [`standards.md`](./standards.md)。**1.x 冻结** → `legacy/v1/`。
 
 ---
 
-## 2.0 快速入口（现行）
+## 2.0 快速入口（现行 · 推荐）
 
 ```bash
 pnpm add @bloret-crew/blora-design

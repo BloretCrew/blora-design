@@ -4,8 +4,11 @@
 
 ## 当前阶段
 
-**Phase 9：Add-ons** - ✅ 完成（2026-08-02 收口）  
+**Phase 9：Add-ons** - ✅ 完成（2026-08-02 收口；诚实债见总表已关）  
 **Phase 10：预发布** - ⬚ 未开始（Alpha → Beta → RC → Stable）
+
+> **主跟踪文档（直至重构完成）**：[`remaining-work.md`](./remaining-work.md)  
+> 阶段勾选、Phase 9 尾巴处置、Phase 10 开放清单 **只维护那一份**；本文件保持摘要。
 
 ## 阶段进度
 

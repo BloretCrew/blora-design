@@ -55,3 +55,14 @@
 
 - Token regeneration without component selector edits  
 - Pure TS controller logic with no CSS touch  
+
+## Phase-9 honesty closeout (2026-08-02)
+
+| Item | Product visual/functional delta? |
+|------|----------------------------------|
+| Root README → 2.0 | **None** (docs only) |
+| `llms.txt` + `docs/migration/v1-to-v2.md` | **None** |
+| `framework.md` demotion wording | **None** |
+| ADR-009 + `remaining-work.md` | **None** |
+
+**No Storybook eye-check required** for this closeout. Master tracker: [`remaining-work.md`](./remaining-work.md) §4.

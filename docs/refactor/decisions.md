@@ -155,6 +155,35 @@ Phase 7 只交付 CSS-only table 样式。`createTableController()` 曾计划推
 
 ---
 
+## ADR-009: 默认 headless controller + 少量 CE，而非全量 form-associated WC
+
+**日期**：2026-08-02  
+**状态**：已采纳
+
+### 背景
+
+`Blora-Design-2.0-Refactor-Spec.md` 组件映射表中大量条目以 `<blora-*>` / form-associated Custom Element 为理想形态。实现与 `Agents.md` 约束为：**优先原生 HTML 语义，仅在复合交互时使用自定义元素**。Phase 4–9 交付以 `div`/`table`/`form` + `createXxxController` 为主；Select / Dialog 等为 CE。
+
+### 决策
+
+1. **2.0 默认公共形态** = 原生（或轻量 markup）+ headless controller + 组件 CSS。  
+2. **CE / form-associated** 仅用于已交付且契约声明的组件（如 `blora-select`、`blora-dialog`），不作为「每个控件必须 FA WC」的门槛。  
+3. 规格表中的 WC 形态视为 **可选未来增强**，不是 Phase 9 未完成项；推进 FA WC 需单独 ADR 与 Phase 10+ 排期。  
+4. Add-on 包名以 monorepo 为准：`@bloret-crew/blora-design-*`（非规格示例中的短名 `@bloret-crew/blora-markdown`）。
+
+### 理由
+
+- 与 1.x 展示页 DOM / 迁移路径更贴近，利于 progressive enhancement 与 SSR 输出真实表格/表单。  
+- 降低 Shadow DOM / form association 全覆盖的实现与测试成本。  
+- 保持 Agents 规则一致，避免文档推荐与实现两套故事。
+
+### 后果
+
+- 文档（`guide.md`、根 README、`remaining-work.md`）以 controller 路径为推荐。  
+- Phase 10 DoD 按 **已交付形态** 写浏览器/a11y 测试，不强制先 CE 化再测。
+
+---
+
 ## ADR-008: Avatar 的 blora-pulse 动画定义在组件 CSS 内
 
 **日期**：2026-07-30
