@@ -211,6 +211,16 @@ Codemod 处理安全子集：class 重命名、modifier → data 属性等。复
 3. 恢复 1.x `<link>` 和 `<script>` 标签。
 4. Git revert 迁移提交。
 
+## 用户向发布检查（Beta 文档基线）
+
+发 beta 前确认：
+
+1. `docs/guide.md` 为 2.0 推荐路径（非 1.x `Blora.*`）。  
+2. 本文件入口表（§2.1）与 npm 包 `exports` 一致。  
+3. `CHANGELOG.md` 记录破坏性/迁移注意。  
+4. Issue 模板可用于反馈（`.github/ISSUE_TEMPLATE`）。  
+5. 兼容：`import "@bloret-crew/blora-design/compat/v1"` + `compat/v1.css`。
+
 ## 兼容层 API {#api}
 
 ```js

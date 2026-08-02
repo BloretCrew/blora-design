@@ -19,11 +19,16 @@ const budgets = [
   { file: "blora.global.js", gzipBytes: 80 * 1024, optional: true, note: "cdn-iife" },
   { file: "components/button/index.js", gzipBytes: 8 * 1024, optional: true },
   { file: "components/select/index.js", gzipBytes: 20 * 1024, optional: true },
+  { file: "components/dialog/index.js", gzipBytes: 16 * 1024, optional: true },
   { file: "components/table/index.js", gzipBytes: 24 * 1024, optional: true },
+  { file: "components/toast/index.js", gzipBytes: 8 * 1024, optional: true },
+  { file: "auto.js", gzipBytes: 2 * 1024, optional: true },
 ];
 
 /** Flattened CSS budget (tokens + foundations + all component CSS under dist/) */
 const FLATTENED_CSS_GZIP_BUDGET = 180 * 1024;
+
+/** Soft report: per-addon CSS not in core dist — documented in beta-api-freeze / size log */
 
 function gzipSize(buf) {
   return gzipSync(buf, { level: 9 }).length;
@@ -122,9 +127,39 @@ if (existsSync(themesPath)) {
   console.log(`[size] tokens.themes.css: ${gzipBytes} B gzip (optional theme bundle)`);
 }
 
+// Report add-on dist sizes from monorepo (informational + soft budgets)
+const repoRoot = resolve(import.meta.dirname, "..", "..", "..");
+const addonNames = ["markdown", "thread", "qrcode", "effects", "layout", "theming"];
+const ADDON_TOTAL_GZIP_BUDGET = 80 * 1024;
+let addonTotal = 0;
+for (const name of addonNames) {
+  const base = resolve(repoRoot, "addons", name, "dist");
+  if (!existsSync(base)) {
+    console.log(`[size] add-on ${name}: dist missing (skip report)`);
+    continue;
+  }
+  let bytes = 0;
+  for (const file of walkCssFiles(base).concat(
+    readdirSync(base)
+      .filter((f) => f.endsWith(".js"))
+      .map((f) => join(base, f)),
+  )) {
+    if (existsSync(file) && !statSync(file).isDirectory()) {
+      bytes += gzipSize(readFileSync(file));
+    }
+  }
+  addonTotal += bytes;
+  console.log(`[size] add-on ${name}: ~${bytes} B gzip (dist css+js)`);
+}
+const addonStatus = addonTotal <= ADDON_TOTAL_GZIP_BUDGET ? "OK" : "OVER";
+console.log(
+  `[size] add-ons total: ${addonTotal} B gzip / ${ADDON_TOTAL_GZIP_BUDGET} B budget (${addonStatus})`,
+);
+if (addonTotal > ADDON_TOTAL_GZIP_BUDGET) failures += 1;
+
 if (failures > 0) {
   console.error(`[size] ${failures} artifact(s) exceeded budget or were missing.`);
   process.exit(1);
 }
 
-console.log("[size] All size budgets passed (shell + flattened CSS + JS).");
+console.log("[size] All size budgets passed (shell + flattened CSS + JS + add-ons).");

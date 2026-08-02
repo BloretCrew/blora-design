@@ -11,6 +11,14 @@ export default defineConfig({
       ? parseInt(process.env.PLAYWRIGHT_WORKERS, 10)
       : undefined,
   reporter: "html",
+  // Platform-agnostic visual baselines (linux CI + local)
+  snapshotPathTemplate: "{testDir}/{testFilePath}-snapshots/{arg}{ext}",
+  expect: {
+    toHaveScreenshot: {
+      maxDiffPixelRatio: 0.03,
+      animations: "disabled",
+    },
+  },
   use: {
     baseURL: "http://localhost:6006",
     trace: "on-first-retry",
@@ -19,12 +27,12 @@ export default defineConfig({
   projects: [
     {
       name: "chromium",
-      testIgnore: /a11y\.spec\.ts/,
+      testIgnore: /a11y\.spec\.ts|visual\.spec\.ts/,
       use: { ...devices["Desktop Chrome"] },
     },
     {
       name: "mobile-chromium",
-      testIgnore: /a11y\.spec\.ts/,
+      testIgnore: /a11y\.spec\.ts|visual\.spec\.ts/,
       use: { ...devices["Pixel 7"] },
     },
     {
@@ -32,9 +40,13 @@ export default defineConfig({
       testMatch: /a11y\.spec\.ts/,
       use: { ...devices["Desktop Chrome"] },
     },
+    {
+      name: "visual",
+      testMatch: /visual\.spec\.ts/,
+      use: { ...devices["Desktop Chrome"] },
+    },
   ],
   webServer: {
-    // Interaction specs use setContent; Storybook still used by smoke.spec.
     command: "pnpm storybook --ci",
     url: "http://localhost:6006",
     reuseExistingServer: !process.env.CI,

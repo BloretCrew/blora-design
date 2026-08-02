@@ -19,7 +19,7 @@
     "test": "pnpm -r run test",
     "test:browser": "pnpm -r run test:browser",
     "test:a11y": "playwright test --project=a11y",
-    "test:visual": "node -e \"console.error('Phase 10: visual project not configured yet (see docs/refactor/remaining-work.md §3.0.5)'); process.exit(1)\"",
+    "test:visual": "pnpm --filter @bloret-crew/blora-design run build && playwright test --project=visual --config playwright.config.ts",
     "build": "pnpm run build:tokens && pnpm -r run build",
     "build:tokens": "node packages/tokens/scripts/build-tokens.mjs",
     "size": "pnpm -r run size",

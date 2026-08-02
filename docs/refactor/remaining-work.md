@@ -186,19 +186,19 @@
 - [x] Playwright 交互套件本地/CI 绿（button/dialog/select/data-content/compat/foundations + a11y）
 - [x] 键盘 / 焦点：select/dialog 浏览器测覆盖部分路径
 - [x] axe 最小 smoke（无 serious/critical）
-- [ ] **visual** 回归矩阵 + 审核流 → **Beta/RC**
+- [x] **visual** 回归 smoke + 审核流（project `visual`；基线 3 张；`docs/refactor/visual-review.md`）— 全矩阵仍可 RC 扩
 - [x] RTL / 320px foundations 抽样（foundations.spec）
 - [x] form submit：select 浏览器测
-- [ ] connect/disconnect / 泄漏抽测专项 → **Beta**
+- [x] connect/disconnect / 泄漏抽测：`tests/lifecycle.test.ts`（table/tree/collapse destroy 幂等与卸载）
 - [x] contract 与可宣传名单政策：`contract-stability.md`（升 stable 前须 DoD）
 
-### 3.5 Beta（**尚未开始** — 发版步骤停在本节之前）
+### 3.5 Beta（**发版前四项完成**；打 tag / npm 未做）
 
-- [ ] **stable core API 冻结**决议（破坏性变更政策）
-- [ ] 仅修缺陷的节奏；beta/experimental 不进入默认宣传
-- [ ] 完整迁移文档用户向发布
-- [ ] 体积预算扩展落地（接 §3.0.4）
-- [ ] 打 `2.0.0-beta.0`（或约定 beta 版本号）与发布演练
+- [x] **stable core API 冻结**决议：`docs/refactor/beta-api-freeze.md` + ADR-014
+- [x] 仅修缺陷的节奏与宣传边界：`docs/refactor/beta-cadence.md`
+- [x] 完整迁移文档用户向基线：`guide.md` + `migration/v1-to-v2.md`（含用户向发布检查）
+- [x] 体积预算扩展落地：`check-size.mjs`（子路径 + global + add-on 合计）
+- [ ] 打 `2.0.0-beta.0`（或约定 beta 版本号）与发布演练 — **下一步手动/单独执行**
 
 ### 3.6 RC
 
@@ -275,3 +275,4 @@
 | 2026-08-02 | **2.0.0-alpha.1** 版本对齐 + CHANGELOG；tag `v2.0.0-alpha.1` 触发 monorepo publish |
 | 2026-08-02 | npm 七包核验 + 安装演练；Issue 模板；`./auto` CE 入口 |
 | 2026-08-02 | **Pre-Beta 包面**：JS 子路径、IIFE global、CEM/manifest/api-snapshot、llms、provenance opt-in；**未进入 §3.5 Beta 发版** |
+| 2026-08-02 | §3.4 visual + lifecycle；§3.5 冻结/节奏/迁移/体积；**停在 beta.0 tag 前** |

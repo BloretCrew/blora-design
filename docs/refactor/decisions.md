@@ -267,6 +267,20 @@ Markdown 行内解析中，链接替换后的 HTML 包含 `blora-md__a` 等 clas
 
 ---
 
+## ADR-014: Beta 前 stable-core API 冻结与发版节奏
+
+**日期**：2026-08-02  
+**状态**：已采纳（文档：`docs/refactor/beta-api-freeze.md`）
+
+### 决策
+
+1. 发布 `2.0.0-beta.*` 起，主包公开 export / 稳定 CE / stable contract 表面进入冻结（见 beta-api-freeze.md）。  
+2. Beta 期间默认只修缺陷与可加性 API；破坏性变更走 major 或明确弃用窗口。  
+3. 宣传不把 experimental / contract `beta` 当作默认「全 stable」。  
+4. 体积预算以 `check-size.mjs` 为准并在 Beta 前扩展关键子路径。
+
+---
+
 ## ADR-013: 默认 headless controller + 少量 CE，而非全量 form-associated WC
 
 **日期**：2026-08-02  
