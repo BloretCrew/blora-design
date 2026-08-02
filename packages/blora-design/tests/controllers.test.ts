@@ -368,7 +368,7 @@ describe("createFieldController overflow highlight", () => {
   afterEach(() => root.remove());
 
   it("marks over-limit and fills overflow mirror text", async () => {
-    const { createFieldController } = await import("../src/components/copy/copy.js");
+    const { createFieldController } = await import("../src/components/field/field.js");
     const ctrl = createFieldController(root);
     const wrap = root.querySelector(".blora-limit") as HTMLElement;
     expect(wrap).toBeTruthy();

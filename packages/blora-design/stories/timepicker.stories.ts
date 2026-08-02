@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/web-components";
 import { html } from "lit";
 import { ref } from "lit/directives/ref.js";
-import { createTimepickerController } from "../src/components/datepicker";
+import { createTimepickerController } from "../src/components/timepicker";
 
 const meta = {
   title: "Forms/Time Picker",

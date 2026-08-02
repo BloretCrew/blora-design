@@ -61,9 +61,12 @@ export { createOtpController, type OtpController } from "./components/otp/index.
 export { createCascaderController, type CascaderController } from "./components/cascader/index.js";
 export {
   createDatepickerController,
-  createTimepickerController,
   type DatepickerController,
 } from "./components/datepicker/index.js";
+export {
+  createTimepickerController,
+  type TimepickerController,
+} from "./components/timepicker/index.js";
 export { createSplitterController, type SplitterController } from "./components/splitter/index.js";
 export { createTourController, type TourController } from "./components/tour/index.js";
 export { createDockController, type DockController } from "./components/dock/index.js";
@@ -79,14 +82,14 @@ export { createSearchController, type SearchController } from "./components/sear
 export {
   createColorPickerController,
   type ColorPickerController,
-  createCopyController,
-  type CopyController,
+} from "./components/color-picker/index.js";
+export { createCopyController, type CopyController } from "./components/copy/index.js";
+export {
   createTransferController,
   type TransferController,
-  createFieldController,
-  type FieldController,
-} from "./components/copy/index.js";
-/* TextRotate → @bloret-crew/blora-design-effects（不在 copy.ts） */
+} from "./components/transfer/index.js";
+export { createFieldController, type FieldController } from "./components/field/index.js";
+/* TextRotate → @bloret-crew/blora-design-effects */
 export { createCalendarController, type CalendarController } from "./components/calendar/index.js";
 export { createDeckController, type DeckController } from "./components/deck/index.js";
 export {

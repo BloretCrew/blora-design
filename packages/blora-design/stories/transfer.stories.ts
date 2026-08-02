@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/web-components";
 import { html } from "lit";
 import { ref } from "lit/directives/ref.js";
-import { createTransferController } from "../src/components/copy";
+import { createTransferController } from "../src/components/transfer";
 
 const meta = {
   title: "Forms/Transfer",

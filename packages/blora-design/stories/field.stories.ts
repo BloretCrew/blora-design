@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/web-components";
 import { html } from "lit";
 import { ref } from "lit/directives/ref.js";
-import { createFieldController } from "../src/components/copy";
+import { createFieldController } from "../src/components/field";
 
 const meta = {
   title: "Forms/Field",

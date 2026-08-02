@@ -14,6 +14,23 @@
 | **Text Rotate** | **effects 包**（勿放 `copy.ts`） |
 | 其余文档标为 Add-on 的组件 | **迁出核心** → effects / layout / theming 包 |
 
+## 目录规范（controller 归属）
+
+约定：**一个组件目录只放该组件的 CSS + controller**，禁止「杂烩文件」。
+
+| 曾不规范 | 现归属 |
+|---|---|
+| Speed Dial / Megamenu 塞在 `dock.ts` | `speed-dial/`、`megamenu/` |
+| TextRotate / Transfer / Field 塞在 `copy.ts` | effects 包 / `transfer/` / `field/` |
+| Timepicker 塞在 `datepicker.ts` | `timepicker/` |
+| `copy/index` 再导出 ColorPicker | 已去掉；直接 `color-picker/` |
+
+### 仍可能的债务（非 controller 混放）
+
+- 已迁 addon 的 CSS 可能仍留在核心目录（export 兼容）：countdown、text-rotate、watermark、affix、sidebar-layout 等 — 后续可改为 re-export 或文档标明「样式在 addon」
+- `field` controller 实际是 **字数限制 limit**，与纯 CSS field 叠在同一目录（可接受，或日后改名 limit）
+- 大量组件仍只有 CSS、无 controller（tooltip/drawer/table…）— 缺实现，不是乱放
+
 ## 一、已有 Add-on 包
 
 | 包 | 状态 | 说明 |
