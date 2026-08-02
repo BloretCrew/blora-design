@@ -1,9 +1,11 @@
-# 推送版本标签 v* 时：
-#   1) 校验版本 → 语法检查 → npm publish
-#   2) 创建 GitHub Release（自动生成变更说明）
+# Push a version tag (e.g. v2.0.0-alpha.1) to publish the monorepo packages.
 #
-# 触发：git push origin v1.2.3
-# 密钥：Settings → Secrets → Actions → NPM_TOKEN
+# Trigger: git push origin v2.0.0-alpha.1
+# Secret: NPM_TOKEN (npm Automation token with publish rights for @bloret-crew)
+#
+# Version source of truth: packages/blora-design/package.json
+# Tag must match that version (v prefix stripped).
+# Prerelease versions (alpha|beta|rc) publish with matching npm dist-tag; stable uses latest.
 
 name: Release
 
@@ -15,6 +17,10 @@ on:
 permissions:
   contents: write
 
+env:
+  PNPM_VERSION: "10"
+  NODE_VERSION: "22"
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -24,39 +30,86 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: ${{ env.NODE_VERSION }}
           registry-url: "https://registry.npmjs.org"
           scope: "@bloret-crew"
+          cache: "pnpm"
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
 
       - name: Resolve version
         id: ver
         shell: bash
         run: |
+          set -euo pipefail
           TAG="${GITHUB_REF_NAME#v}"
-          PKG="$(node -p "require('./package.json').version")"
-          JS="$(node -e "const fs=require('fs');const m=fs.readFileSync('blora.js','utf8').match(/const VERSION = \"([^\"]+)\"/);if(!m)process.exit(2);console.log(m[1])")"
+          CORE="packages/blora-design/package.json"
+          PKG="$(node -p "require('./${CORE}').version")"
           if [ "$TAG" != "$PKG" ]; then
-            echo "::error::Tag v$TAG 与 package.json version ($PKG) 不一致。"
+            echo "::error::Tag v$TAG must match packages/blora-design version ($PKG)."
             exit 1
           fi
-          if [ "$PKG" != "$JS" ]; then
-            echo "::error::package.json ($PKG) 与 blora.js VERSION ($JS) 不一致。"
-            exit 1
+
+          # All publishable workspace packages must share the same version.
+          for pkg in packages/blora-design/package.json addons/*/package.json; do
+            V="$(node -p "require('./${pkg}').version")"
+            PRIV="$(node -p "String(!!require('./${pkg}').private)")"
+            if [ "$PRIV" = "true" ]; then
+              continue
+            fi
+            if [ "$V" != "$PKG" ]; then
+              echo "::error::Version mismatch: $pkg is $V, expected $PKG"
+              exit 1
+            fi
+          done
+
+          DIST_TAG="latest"
+          if [[ "$PKG" == *"-alpha"* ]]; then DIST_TAG="alpha"
+          elif [[ "$PKG" == *"-beta"* ]]; then DIST_TAG="beta"
+          elif [[ "$PKG" == *"-rc"* ]]; then DIST_TAG="rc"
           fi
+
           echo "tag=$GITHUB_REF_NAME" >> "$GITHUB_OUTPUT"
           echo "version=$PKG" >> "$GITHUB_OUTPUT"
-          echo "Publishing @bloret-crew/blora-design@$PKG (tag $GITHUB_REF_NAME)"
+          echo "dist_tag=$DIST_TAG" >> "$GITHUB_OUTPUT"
+          echo "Publishing Blora Design $PKG (git $GITHUB_REF_NAME, npm tag $DIST_TAG)"
 
-      - name: Syntax check
-        run: npm run check
+      - name: Build
+        run: pnpm build
 
-      - name: Publish to npm
-        run: npm publish --access public
+      - name: Package gates (publint + attw)
+        run: |
+          pnpm publint
+          pnpm attw
+
+      - name: Publish packages
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          TAG="${{ steps.ver.outputs.dist_tag }}"
+          # Core first, then add-ons (depend on published core for consumers; order is documentation-friendly).
+          pnpm --filter @bloret-crew/blora-design publish --access public --tag "$TAG" --no-git-checks
+          for filter in \
+            @bloret-crew/blora-design-markdown \
+            @bloret-crew/blora-design-thread \
+            @bloret-crew/blora-design-qrcode \
+            @bloret-crew/blora-design-effects \
+            @bloret-crew/blora-design-layout \
+            @bloret-crew/blora-design-theming
+          do
+            pnpm --filter "$filter" publish --access public --tag "$TAG" --no-git-checks
+          done
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -65,25 +118,32 @@ jobs:
           name: Blora Design ${{ steps.ver.outputs.version }}
           generate_release_notes: true
           body: |
-            ## 安装
+            ## Install (2.0 ESM)
 
             ```bash
-            npm i @bloret-crew/blora-design@${{ steps.ver.outputs.version }}
+            pnpm add @bloret-crew/blora-design@${{ steps.ver.outputs.version }}
+            # or track prereleases:
+            # pnpm add @bloret-crew/blora-design@${{ steps.ver.outputs.dist_tag }}
             ```
 
-            ```html
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@bloret-crew/blora-design@${{ steps.ver.outputs.version }}/blora.css">
-            <script src="https://cdn.jsdelivr.net/npm/@bloret-crew/blora-design@${{ steps.ver.outputs.version }}/blora.js"></script>
+            ```js
+            import "@bloret-crew/blora-design/tokens.css";
+            import "@bloret-crew/blora-design/foundations.css";
+            import { toast, createTableController, defineBloraSelect } from "@bloret-crew/blora-design";
             ```
 
-            - npm: https://www.npmjs.com/package/@bloret-crew/blora-design
-            - 文档: 见仓库 `docs/guide.md`
-            - 许可: Apache-2.0
+            Optional add-ons: `@bloret-crew/blora-design-markdown`, `-thread`, `-qrcode`, `-effects`, `-layout`, `-theming`.
+
+            npm dist-tag for this release: **`${{ steps.ver.outputs.dist_tag }}`**
+
+            - Docs: `docs/guide.md`
+            - Progress: `docs/refactor/remaining-work.md`
+            - License: Apache-2.0
 
             ---
 
-            ### 本版本变更
+            ### Changelog
 
-            （以下由 GitHub 根据 commits / 上一个 tag 自动生成）
+            (GitHub auto-generated notes below)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

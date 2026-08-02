@@ -24,7 +24,7 @@
 | Phase 7：数据与内容基础 | ✅ 完成 | Card/Table/List/Accordion/Timeline/Empty/Result/Avatar |
 | Phase 8：兼容层与 Codemod | ✅ 完成 | Token/class 映射、event 别名、warning、codemod、migrate:check、fixtures |
 | Phase 9：Add-ons | ✅ 完成 | 六包 API + Story + 单测；核心 v1 缺口补齐（见 addon-core-gaps.md） |
-| Phase 10：预发布 | 🔄 进行中 | 2026-08-02 开场；清单见 remaining-work.md §3 |
+| Phase 10：预发布 | 🔄 进行中 | Preflight 推进中（门禁/发布链/axe）；清单 remaining-work.md §3.0 |
 
 ## Phase 9 收口摘要（2026-08-02）
 

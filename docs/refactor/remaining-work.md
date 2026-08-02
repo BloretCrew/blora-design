@@ -97,40 +97,40 @@
 - [x] Token / CSS contract 检查全绿
 - [x] Prettier `format:check` 全绿
 - [x] Typecheck ✅（已具备；保持）
-- [ ] Token 对比度 ✅（已具备；保持）— 复跑确认
-- [ ] Build + publint 主包 ✅（已具备；保持）— 复跑确认
+- [x] Token 对比度 ✅（复跑 2026-08-02）
+- [x] Build + publint 主包 ✅（复跑）
 - [x] **`attw` 全绿** — 新 CSS 子路径加入 exclude 列表（CSS 由 stylelint/pack 守护；attw 聚焦 JS/types）
-- [ ] Unit 断言通过 **且进程正常退出**（Vitest hang / Node 22·24；必要时 CI 矩阵或收窄 engines）
-- [ ] QRCode 等测试无持续 canvas `getContext` 噪音（mock 或 skip 干净）
-- [ ] **`pnpm verify` 在 Node 22 完整通过**（与 CI 同构；记录证据）
-- [ ] 浏览器测在 CI 可跑（Chromium install）；本地缺浏览器不挡 CI 定义
+- [x] Unit 断言通过 + forks pool（QR canvas mock；进程可正常结束）
+- [x] QRCode 测试 mock `getContext`（无 canvas 噪音）
+- [ ] **`pnpm verify` 在 Node 22 完整通过**（含 browser 全量；待 CI / 本地 Chromium 全绿记录）
+- [x] 浏览器测在 CI 可跑（workflow 已装 Chromium；定义明确）
 
 #### 3.0.2 CI 与聚合
 
 - [x] 修复 `ci.yml` aggregate：`every()` → `contains(needs.*.result, 'failure')` / `cancelled`
-- [ ] CI 纳入 **publint**、**attw**（与 verify 对齐的最小集）
-- [ ] CI Node 版本明确（22 为主；可选 24 矩阵若 engines 仍 `>=22`）
-- [ ] required jobs 在 master 上有 **绿记录**（Preflight 完成标志之一）
+- [x] CI 纳入 **publint**、**attw**（build-package job）
+- [x] CI Node 版本明确（`NODE_VERSION: "22"`）
+- [ ] required jobs 在 master 上有 **绿记录**（推送后看 GitHub Actions）
 
 #### 3.0.3 发布工作流（2.0 monorepo）
 
-- [ ] **重写** `.github/workflows/publish.yml`（现仍 1.x：根 `package.json`、根 `blora.js`、根 `npm publish`、private monorepo 根）
-- [ ] pnpm install + workspace 构建
-- [ ] 发布 **主包** + **6 add-on**（或文档声明的发布集）
-- [ ] prerelease **dist-tag** 策略（如 `next` / `alpha`）
-- [ ] Release 说明改为 2.0 ESM 安装，**禁止**仍写 `blora.js` UMD 为主路径
-- [ ] 发版前跑 verify 子集（或依赖 CI 绿）
+- [x] **重写** `.github/workflows/publish.yml`（pnpm monorepo；不再读根 `blora.js`）
+- [x] pnpm install + workspace 构建
+- [x] 发布 **主包** + **6 add-on**（`pnpm --filter … publish`）
+- [x] prerelease **dist-tag** 策略（`alpha` / `beta` / `rc` / `latest`）
+- [x] Release 说明改为 2.0 ESM 安装
+- [x] 发版前跑 publint + attw（workflow 内）
 
 #### 3.0.4 包导出与体积诚实
 
-- [ ] 所有 `package.json` `exports` 在 pack 后可解析（fixture **遍历 exports**，不单测主入口）
-- [ ] 修 `tree-select.css` / `backtop.css` 等 attw 失败路径
-- [ ] **size 门禁重做**：勿用仅含 `@import` 的 `blora.css` 壳当全量体积；统计展平 CSS / 主 JS / 分组件 / compat / add-on
-- [ ] add-on 至少：build + pack 可装（publint/attw 跟进）
+- [x] 所有 `package.json` `exports` 在 pack 后可解析（`pack-test.mjs` **遍历 exports**）
+- [x] `tree-select` / `backtop` attw 路径已处理（exclude + pack 校验文件存在）
+- [x] **size 门禁重做**：shell `blora.css` + **flattened CSS** + `index.js` + compat
+- [ ] add-on 独立 pack/publint 门禁（跟进）
 
 #### 3.0.5 测试能力诚实（Preflight 最小集，非全矩阵）
 
-- [ ] Playwright：`a11y` project **真跑 axe**（或拆独立 project，禁止「只换名重跑」）
+- [x] Playwright：`a11y` project **真跑 axe**（`a11y.spec.ts` + AxeBuilder；与 chromium 分离）
 - [x] 声明 `test:visual`：无 project 时脚本明确失败信息（不再伪报 `Project visual not found`）
 - [ ] （可选 Preflight）首批 visual 快照 1～N 个关键页；**全组件 visual 仍属 §3.4**
 - [x] 文档写明：browser 覆盖 ≠ 全部 stable contract（matrix 脚注 + 本表）
@@ -140,9 +140,7 @@
 - [x] `AGENTS.md` / 贡献入口阶段与 `status.md` 一致（Phase 10 Preflight）
 - [x] `remaining-work` / matrix 措辞：matrix ✅ =「实现可用」≠ §26 DoD stable
 - [x] 迁移指南状态：已有 class/data 主表（非空 stub）；Phase 10 继续扩全表
-- [ ] **contract 状态治理**：现有 ~42 `stable` 与测试覆盖不对齐 → 策略二选一（或组合）  
-  - 降为 `beta` / 引入 `candidate`/`implemented` 后再升 stable；或  
-  - 收紧「可宣传 stable」名单并文档标明  
+- [x] **contract 状态治理**：政策见 [`contract-stability.md`](./contract-stability.md)（暂不批量降档；Alpha 文案诚实）  
 - [x] component-matrix 脚注：避免误读 ✅ 为 DoD stable
 
 #### 3.0.7 Preflight 完成定义
@@ -270,3 +268,4 @@
 | 2026-08-02 | **进入 Phase 10**；过期 changesets → `.trashes/phase10-entry-cleanup`；迁移指南升格为 monorepo 正文 |
 | 2026-08-02 | 采纳外部审查：新增 **§3.0 Preflight**（verify/CI/publish/exports/体积/contract 治理）；Alpha 后置 |
 | 2026-08-02 | Preflight 开场：lint/css/contracts/prettier/attw/CI aggregate/`test:visual` 诚实化；image 预览 token 化 |
+| 2026-08-02 | Preflight 续：publish.yml 2.0、CI publint/attw、pack exports 遍历、size 展平、axe 真 project、QR mock、contract-stability 政策 |

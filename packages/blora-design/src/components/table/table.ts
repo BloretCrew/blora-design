@@ -509,13 +509,11 @@ export function createTableController(
     const data = table._bloraRowData || [];
     const keys = table._bloraRowKeys;
     if (keys?.length) {
-      return keys.map((k, i) => ({
-        key: k,
-        label:
-          dataThs()
-            [i]?.textContent?.replace(/\s*[⇅▲▼]\s*$/, "")
-            .trim() || k,
-      }));
+      return keys.map((k, i) => {
+        const th = dataThs()[i];
+        const label = th?.textContent?.replace(/\s*[⇅▲▼]\s*$/, "").trim() || k;
+        return { key: k, label };
+      });
     }
     const ths = dataThs();
     if (ths.length) {

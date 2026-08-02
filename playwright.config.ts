@@ -19,18 +19,22 @@ export default defineConfig({
   projects: [
     {
       name: "chromium",
+      testIgnore: /a11y\.spec\.ts/,
       use: { ...devices["Desktop Chrome"] },
     },
     {
       name: "mobile-chromium",
+      testIgnore: /a11y\.spec\.ts/,
       use: { ...devices["Pixel 7"] },
     },
     {
       name: "a11y",
+      testMatch: /a11y\.spec\.ts/,
       use: { ...devices["Desktop Chrome"] },
     },
   ],
   webServer: {
+    // Interaction specs use setContent; Storybook still used by smoke.spec.
     command: "pnpm storybook --ci",
     url: "http://localhost:6006",
     reuseExistingServer: !process.env.CI,

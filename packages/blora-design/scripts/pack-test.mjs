@@ -85,6 +85,33 @@ try {
     }
   }
 
+  // Walk package.json exports and ensure each mapped file exists in the installed tree.
+  const installedPkg = JSON.parse(readFileSync(join(packageInstallDir, "package.json"), "utf8"));
+  const exportKeys = Object.keys(installedPkg.exports || {});
+  let exportChecked = 0;
+  for (const key of exportKeys) {
+    if (key === "./package.json") continue;
+    const target = installedPkg.exports[key];
+    const paths = [];
+    if (typeof target === "string") paths.push(target);
+    else if (target && typeof target === "object") {
+      for (const v of Object.values(target)) {
+        if (typeof v === "string") paths.push(v);
+      }
+    }
+    for (const rel of paths) {
+      // exports point at ./dist/... relative to package root
+      const abs = join(packageInstallDir, rel.replace(/^\.\//, ""));
+      if (!existsSync(abs)) {
+        throw new Error(`[pack:test] export ${key} -> ${rel} missing in packed install`);
+      }
+      exportChecked += 1;
+    }
+  }
+  console.log(
+    `[pack:test] Verified ${exportChecked} export path(s) from ${exportKeys.length} export keys`,
+  );
+
   const css = readFileSync(join(packageInstallDir, "dist", "tokens.css"), "utf8");
   if (!css.includes("--blora-color-surface-canvas")) {
     throw new Error("[pack:test] tokens.css is missing semantic tokens");

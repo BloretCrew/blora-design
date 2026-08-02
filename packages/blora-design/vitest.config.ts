@@ -12,6 +12,10 @@ export default defineConfig({
     environment: "jsdom",
     include: ["tests/**/*.test.ts"],
     exclude: ["tests/browser/**", "node_modules/**", "dist/**"],
+    pool: "forks",
+    poolOptions: {
+      forks: { singleFork: true },
+    },
     coverage: {
       provider: "v8",
       include: ["src/**/*.ts"],
