@@ -3,7 +3,7 @@
 > **Blora Design 2.0** — token-driven, dark-friendly, **zero runtime dependency** Web UI design system.  
 > Brand prefix **Blora**; product name **Blora Design** (`blora-*` classes / package scope).
 
-**Package** `@bloret-crew/blora-design` · **Version** `2.0.0-alpha.0` · **License** Apache-2.0  
+**Package** `@bloret-crew/blora-design` · **Version** `2.0.0-alpha.1` · **License** Apache-2.0  
 **Repo** [BloretCrew/blora-design](https://github.com/BloretCrew/blora-design)
 
 **Status:** Phase 9 complete. **Phase 10 (pre-release) in progress** — Alpha → Beta → RC → Stable.  
@@ -47,7 +47,7 @@ import {
 } from "@bloret-crew/blora-design";
 
 defineBloraSelect();
-console.log(VERSION); // e.g. 2.0.0-alpha.0
+console.log(VERSION); // e.g. 2.0.0-alpha.1
 ```
 
 ```html

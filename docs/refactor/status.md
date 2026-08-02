@@ -5,7 +5,7 @@
 ## 当前阶段
 
 **Phase 9：Add-ons** - ✅ 完成（2026-08-02 收口；诚实债见总表已关）  
-**Phase 10：预发布** - 🔄 **进行中**（2026-08-02 进入标签；**实质工作从 Preflight 开始**，Alpha 未发布）
+**Phase 10：预发布** - 🔄 **进行中**（Preflight ✅；**2.0.0-alpha.1** 版本已定，发布见 tag / npm `alpha`）
 
 > **主跟踪文档**：[`remaining-work.md`](./remaining-work.md)  
 > 顺序：**§3.0 Preflight → §3.1 Alpha → … → Stable**。本文件只摘要。

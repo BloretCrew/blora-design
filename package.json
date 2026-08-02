@@ -1,6 +1,6 @@
 {
   "name": "@bloret-crew/blora-design-monorepo",
-  "version": "2.0.0-alpha.0",
+  "version": "2.0.0-alpha.1",
   "private": true,
   "description": "Blora Design 2.0 — token-driven, accessible Web UI design system (monorepo root)",
   "license": "Apache-2.0",

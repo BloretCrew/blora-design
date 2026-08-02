@@ -22,7 +22,7 @@ Use `.blora-button[data-variant="primary"]` — not 1.x `.blora-btn--primary` / 
 
 ## Key entry points
 
-- Package: `@bloret-crew/blora-design` (`2.0.0-alpha.0`)
+- Package: `@bloret-crew/blora-design` (`2.0.0-alpha.1`)
 - Human guide: `docs/guide.md`
 - Contracts: `packages/blora-design/contracts/*.contract.json`
 - Contract schema: `packages/blora-design/schemas/component-contract.schema.json`

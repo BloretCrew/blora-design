@@ -41,8 +41,7 @@
 - 文档：`guide.md` 2.0 主路径；`addon-core-gaps` / matrix / css-only-resolution；人眼 visual review 已确认
 - **未**纳入 Phase 9 自限：全量 Playwright / axe / 视觉农场 → Phase 10
 
-包版本现状：`@bloret-crew/blora-design` 与 add-on 均为 **`2.0.0-alpha.0`**（开发态，非正式 alpha 发布演练）。
-
+包版本现状：`@bloret-crew/blora-design` 与 add-on 目标 **`2.0.0-alpha.1`**（§3.1 正式 prerelease）。
 ---
 
 ## 2. Phase 9 尾巴 / 诚实债（P9-1…P9-8）
@@ -153,12 +152,12 @@
 
 ### 3.1 Alpha（Preflight **之后**）
 
-- [ ] 正式定义并发布 **`2.0.0-alpha.x`**（非仅 package 字段写 alpha）
-- [ ] 根/包 README 与 npm 说明一致（持续）
+- [x] 正式定义 **`2.0.0-alpha.1`**（各包 version + `CHANGELOG.md` + tag `v2.0.0-alpha.1`）
+- [x] 根/包 README 与版本说明对齐（持续维护）
 - [x] 至少 1 个 **纯 HTML** 可运行 example（`examples/basic/`）
 - [ ] （可选）React / Vue 消费示例或适配器 beta 占位
 - [ ] 收集外部反馈通道（Issue 模板 / 文档说明）
-- [ ] Alpha 安装演练记录（npm / 可选 CDN）
+- [ ] Alpha 安装演练记录（npm 发布成功后：`pnpm add @bloret-crew/blora-design@alpha`）
 
 ### 3.2 包与消费面（规格 §6 / §31 · 可与 Alpha 并行加深）
 
@@ -271,3 +270,4 @@
 | 2026-08-02 | Preflight 续：publish.yml 2.0、CI publint/attw、pack exports 遍历、size 展平、axe 真 project、QR mock、contract-stability 政策 |
 | 2026-08-02 | Preflight：add-on pack/publint、markdown/qrcode CSS 进 dist、examples/basic、browser sort 测试对齐 ▲▼ |
 | 2026-08-02 | CI 根因：`pnpm/action-setup` 秒挂 → corepack；lint:md 收窄 globs；**master CI 全绿** |
+| 2026-08-02 | **2.0.0-alpha.1** 版本对齐 + CHANGELOG；tag `v2.0.0-alpha.1` 触发 monorepo publish |
