@@ -5,10 +5,10 @@
 ## 当前阶段
 
 **Phase 9：Add-ons** - ✅ 完成（2026-08-02 收口；诚实债见总表已关）  
-**Phase 10：预发布** - 🔄 **进行中**（2026-08-02 进入；Alpha → Beta → RC → Stable）
+**Phase 10：预发布** - 🔄 **进行中**（2026-08-02 进入标签；**实质工作从 Preflight 开始**，Alpha 未发布）
 
-> **主跟踪文档（直至重构完成）**：[`remaining-work.md`](./remaining-work.md)  
-> 阶段勾选与 Phase 10 开放清单 **只维护那一份**；本文件保持摘要。
+> **主跟踪文档**：[`remaining-work.md`](./remaining-work.md)  
+> 顺序：**§3.0 Preflight → §3.1 Alpha → … → Stable**。本文件只摘要。
 
 ## 阶段进度
 

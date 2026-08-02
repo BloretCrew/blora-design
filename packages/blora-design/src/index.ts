@@ -70,10 +70,7 @@ export {
 export { createSplitterController, type SplitterController } from "./components/splitter/index.js";
 export { createTourController, type TourController } from "./components/tour/index.js";
 export { createDockController, type DockController } from "./components/dock/index.js";
-export {
-  createMegamenuController,
-  type MegamenuController,
-} from "./components/megamenu/index.js";
+export { createMegamenuController, type MegamenuController } from "./components/megamenu/index.js";
 export {
   createSpeedDialController,
   type SpeedDialController,
@@ -84,10 +81,7 @@ export {
   type ColorPickerController,
 } from "./components/color-picker/index.js";
 export { createCopyController, type CopyController } from "./components/copy/index.js";
-export {
-  createTransferController,
-  type TransferController,
-} from "./components/transfer/index.js";
+export { createTransferController, type TransferController } from "./components/transfer/index.js";
 export { createFieldController, type FieldController } from "./components/field/index.js";
 /* TextRotate → @bloret-crew/blora-design-effects */
 export { createCalendarController, type CalendarController } from "./components/calendar/index.js";
@@ -119,10 +113,7 @@ export {
   createPaginationController,
   type PaginationController,
 } from "./components/pagination/index.js";
-export {
-  createCheckboxController,
-  type CheckboxController,
-} from "./components/checkbox/index.js";
+export { createCheckboxController, type CheckboxController } from "./components/checkbox/index.js";
 export { toast, message, type ToastOptions, type ToastHandle } from "./components/toast/index.js";
 export {
   createTableController,
@@ -135,10 +126,7 @@ export {
   createPopconfirmController,
   type PopconfirmController,
 } from "./components/popconfirm/index.js";
-export {
-  createProgressController,
-  type ProgressController,
-} from "./components/progress/index.js";
+export { createProgressController, type ProgressController } from "./components/progress/index.js";
 export {
   createAccordionController,
   type AccordionController,

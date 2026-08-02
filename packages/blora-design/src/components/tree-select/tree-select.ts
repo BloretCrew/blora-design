@@ -28,14 +28,27 @@ function parseOptions(raw: string): TreeSelectOption[] {
 
 export function createTreeSelectController(root: HTMLElement): TreeSelectController {
   if (typeof document === "undefined") {
-    return { open: () => {}, close: () => {}, getValue: () => "", setValue: () => {}, destroy: () => {} };
+    return {
+      open: () => {},
+      close: () => {},
+      getValue: () => "",
+      setValue: () => {},
+      destroy: () => {},
+    };
   }
   root.classList.add("blora-treeselect");
   const doc = root.ownerDocument;
-  const input =
-    root.querySelector<HTMLInputElement>("input.blora-input, .blora-treeselect__input, input");
+  const input = root.querySelector<HTMLInputElement>(
+    "input.blora-input, .blora-treeselect__input, input",
+  );
   if (!input) {
-    return { open: () => {}, close: () => {}, getValue: () => "", setValue: () => {}, destroy: () => {} };
+    return {
+      open: () => {},
+      close: () => {},
+      getValue: () => "",
+      setValue: () => {},
+      destroy: () => {},
+    };
   }
 
   let panel = root.querySelector<HTMLElement>(".blora-treeselect__panel");
@@ -47,9 +60,7 @@ export function createTreeSelectController(root: HTMLElement): TreeSelectControl
   }
   const panelEl = panel;
 
-  const options = parseOptions(
-    root.getAttribute("data-options") || root.dataset.options || "[]",
-  );
+  const options = parseOptions(root.getAttribute("data-options") || root.dataset.options || "[]");
 
   input.readOnly = true;
   input.setAttribute("role", "combobox");

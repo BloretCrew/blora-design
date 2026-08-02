@@ -24,7 +24,6 @@ export {
   type WatermarkController,
 } from "./extras.js";
 
-
 export type TextFxName =
   "grow" | "shrink" | "shake" | "nod" | "jitter" | "explode" | "ripple" | "bloom";
 

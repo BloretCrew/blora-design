@@ -103,9 +103,7 @@
 
 /* Offset so smaller action icons share the trigger center axis */
 .blora-speed-dial__actions {
-  --blora-sd-axis-offset: calc(
-    (var(--blora-sd-trigger-size) - var(--blora-sd-action-size)) / 2
-  );
+  --blora-sd-axis-offset: calc((var(--blora-sd-trigger-size) - var(--blora-sd-action-size)) / 2);
 
   position: absolute;
   right: var(--blora-sd-axis-offset);
@@ -221,7 +219,7 @@
 /* Horizontal left — action centers share trigger vertical midline */
 .blora-speed-dial--left .blora-speed-dial__actions {
   right: calc(100% + var(--blora-sd-gap));
-  bottom: var(--blora-sd-axis-offset, 0px);
+  bottom: var(--blora-sd-axis-offset, 0);
   flex-direction: row-reverse;
   align-items: center;
 }
@@ -277,7 +275,9 @@
 
 /* 4 slots on quarter arc: 90° (up) → 180° (left) */
 .blora-speed-dial--flower[data-open] .blora-speed-dial__item:nth-child(1),
-.blora-speed-dial--flower[data-open] .blora-speed-dial__actions > .blora-speed-dial__action:nth-child(1),
+.blora-speed-dial--flower[data-open]
+  .blora-speed-dial__actions
+  > .blora-speed-dial__action:nth-child(1),
 .blora-speed-dial--radial[data-open] .blora-speed-dial__item:nth-child(1),
 .blora-speed-dial--radial[data-open]
   .blora-speed-dial__actions
@@ -287,35 +287,35 @@
 }
 
 .blora-speed-dial--flower[data-open] .blora-speed-dial__item:nth-child(2),
-.blora-speed-dial--flower[data-open] .blora-speed-dial__actions > .blora-speed-dial__action:nth-child(2),
+.blora-speed-dial--flower[data-open]
+  .blora-speed-dial__actions
+  > .blora-speed-dial__action:nth-child(2),
 .blora-speed-dial--radial[data-open] .blora-speed-dial__item:nth-child(2),
 .blora-speed-dial--radial[data-open]
   .blora-speed-dial__actions
   > .blora-speed-dial__action:nth-child(2) {
-  transform: translate(
-    calc(50% - var(--blora-sd-r) * 0.5),
-    calc(50% - var(--blora-sd-r) * 0.866)
-  )
+  transform: translate(calc(50% - var(--blora-sd-r) * 0.5), calc(50% - var(--blora-sd-r) * 0.866))
     scale(1);
   opacity: 1;
 }
 
 .blora-speed-dial--flower[data-open] .blora-speed-dial__item:nth-child(3),
-.blora-speed-dial--flower[data-open] .blora-speed-dial__actions > .blora-speed-dial__action:nth-child(3),
+.blora-speed-dial--flower[data-open]
+  .blora-speed-dial__actions
+  > .blora-speed-dial__action:nth-child(3),
 .blora-speed-dial--radial[data-open] .blora-speed-dial__item:nth-child(3),
 .blora-speed-dial--radial[data-open]
   .blora-speed-dial__actions
   > .blora-speed-dial__action:nth-child(3) {
-  transform: translate(
-    calc(50% - var(--blora-sd-r) * 0.866),
-    calc(50% - var(--blora-sd-r) * 0.5)
-  )
+  transform: translate(calc(50% - var(--blora-sd-r) * 0.866), calc(50% - var(--blora-sd-r) * 0.5))
     scale(1);
   opacity: 1;
 }
 
 .blora-speed-dial--flower[data-open] .blora-speed-dial__item:nth-child(4),
-.blora-speed-dial--flower[data-open] .blora-speed-dial__actions > .blora-speed-dial__action:nth-child(4),
+.blora-speed-dial--flower[data-open]
+  .blora-speed-dial__actions
+  > .blora-speed-dial__action:nth-child(4),
 .blora-speed-dial--radial[data-open] .blora-speed-dial__item:nth-child(4),
 .blora-speed-dial--radial[data-open]
   .blora-speed-dial__actions
@@ -330,10 +330,7 @@
 .blora-speed-dial--flower:has(.blora-speed-dial__actions > :nth-child(3):last-child)[data-open]
   .blora-speed-dial__actions
   > .blora-speed-dial__action:nth-child(2) {
-  transform: translate(
-    calc(50% - var(--blora-sd-r) * 0.707),
-    calc(50% - var(--blora-sd-r) * 0.707)
-  )
+  transform: translate(calc(50% - var(--blora-sd-r) * 0.707), calc(50% - var(--blora-sd-r) * 0.707))
     scale(1);
 }
 

@@ -22,13 +22,24 @@ export const Default: Story = {
   render: () => html`
     <div class="blora-diff" ${ref(init)} style="max-width: 28rem;">
       <div class="blora-diff__item blora-diff__item--before">
-        <div style="width:100%;height:100%;background:linear-gradient(135deg,#9F5964,#5D6680);"></div>
+        <div
+          style="width:100%;height:100%;background:linear-gradient(135deg,#9F5964,#5D6680);"
+        ></div>
       </div>
       <div class="blora-diff__item">
-        <div style="width:100%;height:100%;background:linear-gradient(135deg,#5B756B,#303143);"></div>
+        <div
+          style="width:100%;height:100%;background:linear-gradient(135deg,#5B756B,#303143);"
+        ></div>
       </div>
       <div class="blora-diff__divider" aria-hidden="true"></div>
-      <input class="blora-diff__range" type="range" min="0" max="100" value="50" aria-label="对比位置" />
+      <input
+        class="blora-diff__range"
+        type="range"
+        min="0"
+        max="100"
+        value="50"
+        aria-label="对比位置"
+      />
     </div>
   `,
 };

@@ -23,8 +23,12 @@ const init = (el: Element | undefined): void => {
 
 export const Default: Story = {
   render: () => html`
-    <div style="max-width: 40rem; width: 100%; margin: 0 auto; padding: 1rem 0 70vh; box-sizing: border-box;">
-      <p style="margin: 0 0 3rem; color: var(--blora-color-text-muted); font-size: var(--blora-text-sm);">
+    <div
+      style="max-width: 40rem; width: 100%; margin: 0 auto; padding: 1rem 0 70vh; box-sizing: border-box;"
+    >
+      <p
+        style="margin: 0 0 3rem; color: var(--blora-color-text-muted); font-size: var(--blora-text-sm);"
+      >
         Scroll down. The bar sticks to the top after it reaches the threshold.
       </p>
 
@@ -41,16 +45,20 @@ export const Default: Story = {
             box-shadow: var(--blora-shadow-2);
           "
         >
-          <strong style="font-size: var(--blora-text-sm); color: var(--blora-color-text-primary); flex: none;"
+          <strong
+            style="font-size: var(--blora-text-sm); color: var(--blora-color-text-primary); flex: none;"
             >Affix bar</strong
           >
-          <span style="font-size: var(--blora-text-xs); color: var(--blora-color-text-subtle); flex: none;"
+          <span
+            style="font-size: var(--blora-text-xs); color: var(--blora-color-text-subtle); flex: none;"
             >Stays visible while scrolling</span
           >
         </div>
       </div>
 
-      <div style="margin-top: 2rem; color: var(--blora-color-text-muted); font-size: var(--blora-text-sm);">
+      <div
+        style="margin-top: 2rem; color: var(--blora-color-text-muted); font-size: var(--blora-text-sm);"
+      >
         <p>Page content continues below…</p>
         <p style="margin-top: 40vh;">More content…</p>
         <p style="margin-top: 40vh;">Bottom</p>

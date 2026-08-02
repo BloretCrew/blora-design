@@ -47,7 +47,9 @@ export function createMegamenuController(root: HTMLElement): MegamenuController 
   const setOpen = (open: boolean, focus = false) => {
     if (open) {
       doc
-        .querySelectorAll<HTMLElement>("[data-blora-megamenu][data-open], .blora-megamenu[data-open]")
+        .querySelectorAll<HTMLElement>(
+          "[data-blora-megamenu][data-open], .blora-megamenu[data-open]",
+        )
         .forEach((other) => {
           if (other === root) return;
           other.removeAttribute("data-open");

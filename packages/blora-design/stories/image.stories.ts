@@ -20,11 +20,21 @@ const init = (el: Element | undefined): void => {
 export const Variants: Story = {
   render: () => html`
     <div class="blora-row" style="flex-wrap: wrap; gap: var(--blora-space-4);" ${ref(init)}>
-      <figure class="blora-image" data-variant="hover" data-loading style="width: 200px; margin: 0;">
+      <figure
+        class="blora-image"
+        data-variant="hover"
+        data-loading
+        style="width: 200px; margin: 0;"
+      >
         <img src="https://picsum.photos/seed/blora-img1/400/280" alt="Hover zoom" />
         <figcaption class="blora-image__cap">Hover zoom</figcaption>
       </figure>
-      <figure class="blora-image" data-variant="frame" data-loading style="width: 200px; margin: 0;">
+      <figure
+        class="blora-image"
+        data-variant="frame"
+        data-loading
+        style="width: 200px; margin: 0;"
+      >
         <img src="https://picsum.photos/seed/blora-img2/400/280" alt="Frame" />
       </figure>
       <figure

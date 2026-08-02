@@ -20,7 +20,12 @@ const init = (el: Element | undefined): void => {
 export const Default: Story = {
   render: () => html`
     <div class="blora-popconfirm" ${ref(init)} style="display:inline-block;position:relative;">
-      <button type="button" class="blora-button" data-variant="danger" data-blora-popconfirm-trigger>
+      <button
+        type="button"
+        class="blora-button"
+        data-variant="danger"
+        data-blora-popconfirm-trigger
+      >
         删除
       </button>
       <div
@@ -29,8 +34,24 @@ export const Default: Story = {
       >
         <p style="margin:0 0 0.75rem;font-size:var(--blora-text-sm);">确认删除此项？</p>
         <div style="display:flex;gap:0.5rem;justify-content:flex-end;">
-          <button type="button" class="blora-button" data-size="sm" data-variant="ghost" data-cancel>取消</button>
-          <button type="button" class="blora-button" data-size="sm" data-variant="danger" data-confirm>确定</button>
+          <button
+            type="button"
+            class="blora-button"
+            data-size="sm"
+            data-variant="ghost"
+            data-cancel
+          >
+            取消
+          </button>
+          <button
+            type="button"
+            class="blora-button"
+            data-size="sm"
+            data-variant="danger"
+            data-confirm
+          >
+            确定
+          </button>
         </div>
       </div>
     </div>

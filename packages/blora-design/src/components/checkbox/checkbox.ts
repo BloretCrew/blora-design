@@ -14,9 +14,7 @@ export function createCheckboxController(root: HTMLElement): CheckboxController 
 
   const items = () =>
     Array.from(
-      root.querySelectorAll<HTMLInputElement>(
-        'input[type="checkbox"]:not([data-blora-checkall])',
-      ),
+      root.querySelectorAll<HTMLInputElement>('input[type="checkbox"]:not([data-blora-checkall])'),
     );
 
   const syncMaster = () => {

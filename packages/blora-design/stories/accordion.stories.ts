@@ -53,7 +53,8 @@ export const Default: Story = {
         </div>
         <div class="blora-accordion__body">
           <div class="blora-accordion__content">
-            Grid 是二维布局模型，同时控制行和列。适用于复杂页面分区和仪表盘等场景。任意长度内容都会按真实高度展开，没有固定上限。
+            Grid
+            是二维布局模型，同时控制行和列。适用于复杂页面分区和仪表盘等场景。任意长度内容都会按真实高度展开，没有固定上限。
           </div>
         </div>
       </div>

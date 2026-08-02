@@ -4,7 +4,7 @@
   position: fixed;
   right: max(var(--blora-space-5), env(safe-area-inset-right, 0px));
   bottom: max(var(--blora-space-5), env(safe-area-inset-bottom, 0px));
-  z-index: calc(var(--blora-z-sticky, 100) + 10);
+  z-index: var(--blora-z-sticky);
   width: 56px;
   height: 56px;
   border: 0;
@@ -14,6 +14,7 @@
   cursor: pointer;
   color: var(--blora-color-text-on-accent);
   background: var(--blora-color-action-primary-default);
+
   /* Match .blora-fab double shadow (surface + primary glow) */
   box-shadow: var(--blora-shadow-4), var(--blora-shadow-primary);
   opacity: 0;

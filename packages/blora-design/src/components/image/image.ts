@@ -19,7 +19,8 @@ export interface ImagePreviewItem {
 }
 
 function collectGroup(el: HTMLElement): { items: ImagePreviewItem[]; start: number } {
-  const group = el.getAttribute("data-preview-group") || el.getAttribute("data-blora-preview-group");
+  const group =
+    el.getAttribute("data-preview-group") || el.getAttribute("data-blora-preview-group");
   const root = group
     ? el.ownerDocument.querySelectorAll<HTMLElement>(
         `[data-preview-group="${group}"], [data-blora-preview-group="${group}"]`,
@@ -58,9 +59,7 @@ export function openImagePreview(
 ): ImagePreviewHandle | null {
   if (typeof document === "undefined" || !items.length) return null;
   const doc = document;
-  const list: ImagePreviewItem[] = items.map((it) =>
-    typeof it === "string" ? { src: it } : it,
-  );
+  const list: ImagePreviewItem[] = items.map((it) => (typeof it === "string" ? { src: it } : it));
   let index = Math.max(0, Math.min(start, list.length - 1));
 
   const overlay = doc.createElement("div");
@@ -172,7 +171,11 @@ export function createImageController(root: HTMLElement): ImageController {
   };
 
   const wirePreview = (el: HTMLElement) => {
-    if (!el.hasAttribute("data-blora-preview") && !el.classList.contains("blora-image--preview") && el.getAttribute("data-variant") !== "preview") {
+    if (
+      !el.hasAttribute("data-blora-preview") &&
+      !el.classList.contains("blora-image--preview") &&
+      el.getAttribute("data-variant") !== "preview"
+    ) {
       return;
     }
     el.setAttribute("tabindex", el.getAttribute("tabindex") || "0");

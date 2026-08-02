@@ -12,11 +12,14 @@ export function createStepsController(root: HTMLElement): StepsController {
     return { setCurrent: () => {}, getCurrent: () => 0, destroy: () => {} };
   }
   root.classList.add("blora-steps");
-  const steps = () => Array.from(root.querySelectorAll<HTMLElement>(".blora-step, [data-blora-step]"));
+  const steps = () =>
+    Array.from(root.querySelectorAll<HTMLElement>(".blora-step, [data-blora-step]"));
 
   const getCurrent = () => {
     const list = steps();
-    const i = list.findIndex((s) => s.hasAttribute("data-current") || s.getAttribute("data-status") === "process");
+    const i = list.findIndex(
+      (s) => s.hasAttribute("data-current") || s.getAttribute("data-status") === "process",
+    );
     return i >= 0 ? i : 0;
   };
 
@@ -31,9 +34,7 @@ export function createStepsController(root: HTMLElement): StepsController {
       } else s.setAttribute("data-status", "wait");
       s.setAttribute("aria-current", i === index ? "step" : "false");
     });
-    root.dispatchEvent(
-      new CustomEvent("blora-steps-change", { bubbles: true, detail: { index } }),
-    );
+    root.dispatchEvent(new CustomEvent("blora-steps-change", { bubbles: true, detail: { index } }));
   };
 
   const onClick = (e: MouseEvent) => {

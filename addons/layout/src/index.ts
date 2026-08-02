@@ -22,7 +22,9 @@ export function createSidebarLayoutController(root: HTMLElement): SidebarLayoutC
   const doc = root.ownerDocument;
   const win = doc.defaultView!;
   const toggles = Array.from(
-    root.querySelectorAll<HTMLElement>("[data-blora-sidebar-toggle], .blora-sidebar-layout__toggle"),
+    root.querySelectorAll<HTMLElement>(
+      "[data-blora-sidebar-toggle], .blora-sidebar-layout__toggle",
+    ),
   );
   const aside = root.querySelector<HTMLElement>(".blora-sidebar-layout__aside");
   const mask = root.querySelector<HTMLElement>(".blora-sidebar-layout__mask");
@@ -60,7 +62,9 @@ export function createSidebarLayoutController(root: HTMLElement): SidebarLayoutC
     syncA11y();
     if (open && focus) {
       aside
-        .querySelector<HTMLElement>("a, button, input, select, textarea, [tabindex]:not([tabindex='-1'])")
+        .querySelector<HTMLElement>(
+          "a, button, input, select, textarea, [tabindex]:not([tabindex='-1'])",
+        )
         ?.focus();
     }
     if (!open && restore) toggles[0]?.focus();
@@ -95,7 +99,7 @@ export function createSidebarLayoutController(root: HTMLElement): SidebarLayoutC
 }
 
 /* —— Affix —— */
-export interface AffixController extends Destroyable {}
+export type AffixController = Destroyable;
 
 export function createAffixController(root: HTMLElement): AffixController {
   if (typeof document === "undefined") return { destroy: () => {} };
@@ -219,7 +223,7 @@ export function createAffixController(root: HTMLElement): AffixController {
 }
 
 /* —— Anchor —— */
-export interface AnchorController extends Destroyable {}
+export type AnchorController = Destroyable;
 
 export function createAnchorController(root: HTMLElement): AnchorController {
   if (typeof document === "undefined") return { destroy: () => {} };
@@ -254,7 +258,7 @@ export function createAnchorController(root: HTMLElement): AnchorController {
 }
 
 /* —— Scroll Spy —— */
-export interface ScrollSpyController extends Destroyable {}
+export type ScrollSpyController = Destroyable;
 
 export function createScrollSpyController(root: HTMLElement): ScrollSpyController {
   if (typeof document === "undefined") return { destroy: () => {} };
@@ -322,8 +326,7 @@ function scrollElementIntoView(el: HTMLElement, behavior?: ScrollBehavior): bool
   const win = el.ownerDocument.defaultView;
   if (!win) return false;
   const motion =
-    behavior ??
-    (win.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth");
+    behavior ?? (win.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth");
   try {
     const rect = el.getBoundingClientRect();
     const styles = win.getComputedStyle(el);
@@ -368,7 +371,9 @@ export function initSmoothScroll(doc: Document = document): () => void {
     if (e.defaultPrevented) return;
     if (e.button != null && e.button !== 0) return;
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-    const a = (e.target as HTMLElement | null)?.closest?.('a[href^="#"]') as HTMLAnchorElement | null;
+    const a = (e.target as HTMLElement | null)?.closest?.(
+      'a[href^="#"]',
+    ) as HTMLAnchorElement | null;
     if (!a || a.getAttribute("download") != null) return;
     const href = a.getAttribute("href") || "";
     if (href === "#" || href.length < 2) return;

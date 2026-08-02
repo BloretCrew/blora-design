@@ -36,9 +36,7 @@ const listItems = html`
 
 /** Bare list (row dividers only — no outer chrome). */
 export const Default: Story = {
-  render: () => html`
-    <div class="blora-list" style="max-width: 24rem;">${listItems}</div>
-  `,
+  render: () => html` <div class="blora-list" style="max-width: 24rem;">${listItems}</div> `,
 };
 
 /**

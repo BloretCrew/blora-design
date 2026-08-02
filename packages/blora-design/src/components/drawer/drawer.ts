@@ -39,7 +39,11 @@ export function createDrawerController(root: HTMLElement): DrawerController {
       return;
     }
     if (closing) return;
-    if (!root.hasAttribute("data-open") && !root.classList.contains("is-open") && !root.hasAttribute("open")) {
+    if (
+      !root.hasAttribute("data-open") &&
+      !root.classList.contains("is-open") &&
+      !root.hasAttribute("open")
+    ) {
       return;
     }
     closing = true;
@@ -78,7 +82,9 @@ export function createDrawerController(root: HTMLElement): DrawerController {
   const onKey = (e: KeyboardEvent) => {
     if (
       e.key === "Escape" &&
-      (root.hasAttribute("data-open") || root.classList.contains("is-open") || root.hasAttribute("open"))
+      (root.hasAttribute("data-open") ||
+        root.classList.contains("is-open") ||
+        root.hasAttribute("open"))
     ) {
       setOpen(false);
     }

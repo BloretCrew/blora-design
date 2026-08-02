@@ -93,7 +93,9 @@ export function createSegmentedController(root: HTMLElement): SegmentedControlle
 
   root.addEventListener("keydown", onKey);
   const onResize = () => {
-    const cur = items.find((i) => i.classList.contains("is-active") || i.hasAttribute("data-active"));
+    const cur = items.find(
+      (i) => i.classList.contains("is-active") || i.hasAttribute("data-active"),
+    );
     if (cur) moveIndicator(cur);
   };
   win.addEventListener("resize", onResize);

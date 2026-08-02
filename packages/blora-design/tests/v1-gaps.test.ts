@@ -28,7 +28,6 @@ describe("v1 gaps — Tree Select", () => {
     const ctrl = createTreeSelectController(root);
     ctrl.open();
     expect(root.classList.contains("is-open")).toBe(true);
-    const leaf = root.querySelectorAll(".blora-treeselect__node")[1] as HTMLElement | undefined;
     // expand first then click leaf if nested
     const first = root.querySelector(".blora-treeselect__node") as HTMLElement;
     first?.click();
@@ -255,7 +254,10 @@ describe("table column settings", () => {
     ctrl.setColumnVisible("b", false);
     const thB = wrap.querySelector<HTMLElement>('th[data-col-key="b"]')!;
     expect(thB.hidden).toBe(true);
-    const cfg = JSON.parse(localStorage.getItem("test-cols") || "[]") as Array<{ key: string; visible: boolean }>;
+    const cfg = JSON.parse(localStorage.getItem("test-cols") || "[]") as Array<{
+      key: string;
+      visible: boolean;
+    }>;
     expect(cfg.find((c) => c.key === "b")?.visible).toBe(false);
     ctrl.resetColumns();
     expect(wrap.querySelector<HTMLElement>('th[data-col-key="b"]')!.hidden).toBe(false);
@@ -316,10 +318,12 @@ describe("table virtual scroll", () => {
        Check attributes after setRows with mocked clientWidth — re-init is cleaner: */
     ctrl.destroy();
     const ctrl2 = createTableController(wrap);
-    const scroller2 = wrap.querySelector<HTMLElement>(".blora-table-virtual") || (() => {
-      ctrl2.setRows(data, keys);
-      return wrap.querySelector<HTMLElement>(".blora-table-virtual")!;
-    })();
+    const scroller2 =
+      wrap.querySelector<HTMLElement>(".blora-table-virtual") ||
+      (() => {
+        ctrl2.setRows(data, keys);
+        return wrap.querySelector<HTMLElement>(".blora-table-virtual")!;
+      })();
     Object.defineProperty(scroller2, "clientWidth", { configurable: true, get: () => 280 });
     Object.defineProperty(scroller2, "clientHeight", { configurable: true, get: () => 200 });
     ctrl2.setRows(data, keys);

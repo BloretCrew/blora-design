@@ -77,7 +77,12 @@ const bindSidebar = (el: Element | undefined): void => {
 export const Default: Story = {
   render: () => html`
     <div class="blora-sidebar-layout" data-blora-sidebar-layout ${ref(bindSidebar)}>
-      <button type="button" class="blora-button blora-sidebar-layout__toggle" data-variant="outline" data-blora-sidebar-toggle>
+      <button
+        type="button"
+        class="blora-button blora-sidebar-layout__toggle"
+        data-variant="outline"
+        data-blora-sidebar-toggle
+      >
         菜单
       </button>
       <div class="blora-sidebar-layout__mask"></div>
@@ -99,7 +104,12 @@ export const Compact: Story = {
       data-blora-sidebar-layout
       ${ref(bindSidebar)}
     >
-      <button type="button" class="blora-button blora-sidebar-layout__toggle" data-variant="outline" data-blora-sidebar-toggle>
+      <button
+        type="button"
+        class="blora-button blora-sidebar-layout__toggle"
+        data-variant="outline"
+        data-blora-sidebar-toggle
+      >
         菜单
       </button>
       <div class="blora-sidebar-layout__mask"></div>

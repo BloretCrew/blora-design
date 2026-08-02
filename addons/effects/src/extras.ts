@@ -12,7 +12,7 @@ function prefersReduced(el: HTMLElement): boolean {
 }
 
 /* —— Text Rotate —— */
-export interface TextRotateController extends Destroyable {}
+export type TextRotateController = Destroyable;
 
 export function createTextRotateController(root: HTMLElement): TextRotateController {
   if (typeof document === "undefined") return { destroy: () => {} };
@@ -30,7 +30,9 @@ export function createTextRotateController(root: HTMLElement): TextRotateControl
   const duration = Math.max(1200, Number(root.dataset.interval) || 3200);
   let active = Math.max(
     0,
-    items.findIndex((item) => item.classList.contains("is-active") || item.hasAttribute("data-active")),
+    items.findIndex(
+      (item) => item.classList.contains("is-active") || item.hasAttribute("data-active"),
+    ),
   );
   let timer: number | null = null;
 
@@ -73,7 +75,7 @@ export function createTextRotateController(root: HTMLElement): TextRotateControl
 }
 
 /* —— Countdown —— */
-export interface CountdownController extends Destroyable {}
+export type CountdownController = Destroyable;
 
 export function createCountdownController(root: HTMLElement): CountdownController {
   if (typeof document === "undefined") return { destroy: () => {} };
@@ -123,12 +125,11 @@ export function createCountdownController(root: HTMLElement): CountdownControlle
 }
 
 /* —— CountUp —— */
-export interface CountUpController extends Destroyable {}
+export type CountUpController = Destroyable;
 
 export function createCountUpController(root: HTMLElement): CountUpController {
   if (typeof document === "undefined") return { destroy: () => {} };
-  const target =
-    Number(root.getAttribute("data-blora-countup") || root.textContent) || 0;
+  const target = Number(root.getAttribute("data-blora-countup") || root.textContent) || 0;
   const duration = Number(root.getAttribute("data-duration")) || 900;
   const decimals = Number(root.getAttribute("data-decimals")) || 0;
   const prefix = root.getAttribute("data-prefix") || "";
@@ -175,7 +176,7 @@ export function createCountUpController(root: HTMLElement): CountUpController {
 }
 
 /* —— Image Diff —— */
-export interface ImageDiffController extends Destroyable {}
+export type ImageDiffController = Destroyable;
 
 export function createImageDiffController(root: HTMLElement): ImageDiffController {
   if (typeof document === "undefined") return { destroy: () => {} };
@@ -186,7 +187,8 @@ export function createImageDiffController(root: HTMLElement): ImageDiffControlle
     const min = Number(input.min || 0);
     const max = Number(input.max || 100);
     const value = Number(input.value || 50);
-    const percent = max === min ? 50 : Math.min(100, Math.max(0, ((value - min) / (max - min)) * 100));
+    const percent =
+      max === min ? 50 : Math.min(100, Math.max(0, ((value - min) / (max - min)) * 100));
     root.style.setProperty("--blora-diff-position", `${percent}%`);
     input.setAttribute("aria-valuetext", `${Math.round(percent)}%`);
   };
@@ -201,7 +203,7 @@ export function createImageDiffController(root: HTMLElement): ImageDiffControlle
 }
 
 /* —— Hover Gallery —— */
-export interface HoverGalleryController extends Destroyable {}
+export type HoverGalleryController = Destroyable;
 
 export function createHoverGalleryController(root: HTMLElement): HoverGalleryController {
   if (typeof document === "undefined") return { destroy: () => {} };
@@ -225,7 +227,9 @@ export function createHoverGalleryController(root: HTMLElement): HoverGalleryCon
     progress = doc.createElement("span");
     progress.className = "blora-hover-gallery__progress";
     progress.setAttribute("aria-hidden", "true");
-    progress.innerHTML = items.map(() => "<span></span>").join("");
+    for (let i = 0; i < items.length; i++) {
+      progress.appendChild(doc.createElement("span"));
+    }
     root.appendChild(progress);
   }
   const indicators = Array.from(progress.querySelectorAll("span"));
@@ -289,7 +293,16 @@ export function createHoverGalleryController(root: HTMLElement): HoverGalleryCon
   const onPointerDown = (e: PointerEvent) => {
     if (e.pointerType === "mouse" && e.button !== 0) return;
     const p = point(e);
-    drag = { x: p.x, y: p.y, dx: 0, locked: null, lx: p.x, lt: Date.now(), vx: 0, pointerId: e.pointerId };
+    drag = {
+      x: p.x,
+      y: p.y,
+      dx: 0,
+      locked: null,
+      lx: p.x,
+      lt: Date.now(),
+      vx: 0,
+      pointerId: e.pointerId,
+    };
     try {
       root.setPointerCapture(e.pointerId);
     } catch {
@@ -388,7 +401,7 @@ export function createHoverGalleryController(root: HTMLElement): HoverGalleryCon
 }
 
 /* —— Watermark —— */
-export interface WatermarkController extends Destroyable {}
+export type WatermarkController = Destroyable;
 
 export function createWatermarkController(root: HTMLElement): WatermarkController {
   if (typeof document === "undefined") return { destroy: () => {} };
@@ -439,8 +452,7 @@ function normalizeShortcutPlatform(platform: string | undefined): "apple" | "oth
 export function getShortcutPlatform(base?: HTMLElement): "apple" | "other" {
   const win = base?.ownerDocument?.defaultView ?? (typeof window !== "undefined" ? window : null);
   const nav = win?.navigator as Navigator & { userAgentData?: { platform?: string } };
-  const platform =
-    nav?.userAgentData?.platform || nav?.platform || nav?.userAgent || "";
+  const platform = nav?.userAgentData?.platform || nav?.platform || nav?.userAgent || "";
   return normalizeShortcutPlatform(platform);
 }
 

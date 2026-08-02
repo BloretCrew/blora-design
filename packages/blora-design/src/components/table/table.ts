@@ -51,7 +51,7 @@ function makeBloraCheckbox(
   if (opts.checked) input.checked = true;
   if (opts.attrs) {
     /* simple attr parse: key="value" pairs */
-    for (const m of opts.attrs.matchAll(/([^\s=]+)(?:=\"([^\"]*)\")?/g)) {
+    for (const m of opts.attrs.matchAll(/([^\s=]+)(?:="([^"]*)")?/g)) {
       const k = m[1];
       const v = m[2];
       if (!k || k === "type") continue;
@@ -211,9 +211,7 @@ export function createTableController(
     /* Reorder header data cells by colOrder */
     const orderedHeads = Array.from(headRow.children)
       .filter((c): c is HTMLElement => !c.hasAttribute("data-blora-select-col"))
-      .sort(
-        (a, b) => Number(a.dataset.colOrder || 0) - Number(b.dataset.colOrder || 0),
-      );
+      .sort((a, b) => Number(a.dataset.colOrder || 0) - Number(b.dataset.colOrder || 0));
     orderedHeads.forEach((cell) => headRow.appendChild(cell));
 
     /* Body rows: hide + reorder cells to match header order */
@@ -432,7 +430,9 @@ export function createTableController(
   const clearSelection = () => {
     selectedKeys.clear();
     table
-      .querySelectorAll<HTMLInputElement>("input[data-blora-row-select], input[data-blora-select-all]")
+      .querySelectorAll<HTMLInputElement>(
+        "input[data-blora-row-select], input[data-blora-select-all]",
+      )
       .forEach((cb) => {
         cb.checked = false;
         cb.indeterminate = false;
@@ -497,8 +497,7 @@ export function createTableController(
         el.appendChild(table);
       }
     }
-    const vh =
-      Number(host.getAttribute("data-viewport-height")) || el.clientHeight || 360;
+    const vh = Number(host.getAttribute("data-viewport-height")) || el.clientHeight || 360;
     el.style.height = `${vh}px`;
     el.style.overflow = "auto";
     scroller = el;
@@ -513,7 +512,9 @@ export function createTableController(
       return keys.map((k, i) => ({
         key: k,
         label:
-          dataThs()[i]?.textContent?.replace(/\s*[⇅▲▼]\s*$/, "").trim() || k,
+          dataThs()
+            [i]?.textContent?.replace(/\s*[⇅▲▼]\s*$/, "")
+            .trim() || k,
       }));
     }
     const ths = dataThs();
@@ -581,7 +582,10 @@ export function createTableController(
     const viewportH =
       scrollEl.clientHeight || Number(host.getAttribute("data-viewport-height")) || 360;
     const viewportW =
-      scrollEl.clientWidth || Number(host.getAttribute("data-viewport-width")) || host.clientWidth || 600;
+      scrollEl.clientWidth ||
+      Number(host.getAttribute("data-viewport-width")) ||
+      host.clientWidth ||
+      600;
 
     const totalRows = data.length;
     const cols = virtualColMeta();
@@ -894,7 +898,9 @@ export function createTableController(
     const item = (e.target as HTMLElement).closest<HTMLElement>(".blora-table-cols__item");
     if (!item || !colsPanel?.contains(item)) return;
     e.preventDefault();
-    colsPanel.querySelectorAll(".is-drag-over").forEach((el) => el.classList.remove("is-drag-over"));
+    colsPanel
+      .querySelectorAll(".is-drag-over")
+      .forEach((el) => el.classList.remove("is-drag-over"));
     item.classList.add("is-drag-over");
   };
 

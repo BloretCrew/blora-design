@@ -18,7 +18,9 @@ function fieldsOf(form: HTMLFormElement): HTMLElement[] {
   return Array.from(form.querySelectorAll<HTMLElement>(".blora-field, [data-blora-field]"));
 }
 
-function controlOf(field: HTMLElement): HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | null {
+function controlOf(
+  field: HTMLElement,
+): HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | null {
   return field.querySelector<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(
     "input:not([type=hidden]):not([type=submit]):not([type=button]), textarea, select",
   );
@@ -157,7 +159,9 @@ export function createFormController(form: HTMLFormElement): FormController {
 
   const onBlur = (e: Event) => {
     if (!triggers.includes("blur")) return;
-    const field = (e.target as HTMLElement).closest<HTMLElement>(".blora-field, [data-blora-field]");
+    const field = (e.target as HTMLElement).closest<HTMLElement>(
+      ".blora-field, [data-blora-field]",
+    );
     if (!field || !form.contains(field)) return;
     const control = controlOf(field);
     if (!control) return;

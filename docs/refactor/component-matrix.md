@@ -1,7 +1,8 @@
 # 组件迁移矩阵
 
-> 与仓库现状对齐（2026-08-02）。状态：⬚ 未开始 | 🔄 进行中 | ✅ 可用（API/CSS/Story，DoD 农场未全勾）| ❌ 不迁移  
-> 完整 DoD（Playwright/axe/视觉回归全矩阵）在 **Phase 10** 推进，不在此表伪装为全部 ✅ 门禁。
+> 与仓库现状对齐（2026-08-02）。状态：⬚ 未开始 | 🔄 进行中 | ✅ 实现可用（API/CSS/Story）| ❌ 不迁移  
+> **✅ ≠ contract `stable` ≠ §26 全 DoD。** 完整门禁 / 可宣传 stable 治理见 [`remaining-work.md`](./remaining-work.md) §3.0–3.4。  
+> Playwright/axe/视觉全矩阵在 Phase 10（Preflight 最小诚实集 + 后续农场）。
 
 ## Stable Core
 

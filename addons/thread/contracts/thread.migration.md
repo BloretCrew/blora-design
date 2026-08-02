@@ -8,15 +8,15 @@
 
 ## 行为对等（v1 `initThread`）
 
-| v1 | 2.0 |
-|---|---|
-| `Blora.init()` / 自动 `initThread` | 显式 `createThreadController(root)` |
-| 收起/展开 `[data-blora-thread-toggle]` | 同 |
-| 默认文案「展开评论 / 收起评论」 | 同；可用 `options` 或 `data-label-expand` / `data-label-collapse` |
-| `[data-blora-post-react]` 切换 `is-active` + `aria-pressed` | 同（`toggleReact` API） |
-| 无 body 时自动包一层 `.blora-post__replies-body` | 同 |
-| `prefers-reduced-motion` | 同 |
-| `destroy` | `controller.destroy()`（AbortController） |
+| v1                                                          | 2.0                                                               |
+| ----------------------------------------------------------- | ----------------------------------------------------------------- |
+| `Blora.init()` / 自动 `initThread`                          | 显式 `createThreadController(root)`                               |
+| 收起/展开 `[data-blora-thread-toggle]`                      | 同                                                                |
+| 默认文案「展开评论 / 收起评论」                             | 同；可用 `options` 或 `data-label-expand` / `data-label-collapse` |
+| `[data-blora-post-react]` 切换 `is-active` + `aria-pressed` | 同（`toggleReact` API）                                           |
+| 无 body 时自动包一层 `.blora-post__replies-body`            | 同                                                                |
+| `prefers-reduced-motion`                                    | 同                                                                |
+| `destroy`                                                   | `controller.destroy()`（AbortController）                         |
 
 ## 样式 class（保持）
 

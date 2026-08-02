@@ -69,8 +69,11 @@ export function createBackTopController(
   btn.classList.add("blora-backtop");
   ensureBackTopIcon(btn);
   if (!btn.getAttribute("aria-label")) btn.setAttribute("aria-label", "回到顶部");
-  const attrAfter = Number(btn.getAttribute("data-show-after") || btn.getAttribute("data-blora-backtop") || "");
-  const showAfter = options?.showAfter ?? (Number.isFinite(attrAfter) && attrAfter > 0 ? attrAfter : 400);
+  const attrAfter = Number(
+    btn.getAttribute("data-show-after") || btn.getAttribute("data-blora-backtop") || "",
+  );
+  const showAfter =
+    options?.showAfter ?? (Number.isFinite(attrAfter) && attrAfter > 0 ? attrAfter : 400);
 
   const targetAttr = btn.getAttribute("data-target");
   let scrollRoot: HTMLElement | Window = window;

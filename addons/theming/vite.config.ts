@@ -20,10 +20,7 @@ export default defineConfig({
       name: "copy-theming-css",
       closeBundle() {
         mkdirSync(resolve(__dirname, "dist"), { recursive: true });
-        copyFileSync(
-          resolve(__dirname, "src/theming.css"),
-          resolve(__dirname, "dist/theming.css"),
-        );
+        copyFileSync(resolve(__dirname, "src/theming.css"), resolve(__dirname, "dist/theming.css"));
       },
     },
   ],

@@ -8,11 +8,17 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
-    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
     "./layout.css": "./dist/layout.css",
     "./package.json": "./package.json"
   },
-  "files": ["dist/", "contracts/"],
+  "files": [
+    "dist/",
+    "contracts/"
+  ],
   "scripts": {
     "lint": "eslint src/ tests/",
     "lint:css": "stylelint \"src/**/*.css\"",

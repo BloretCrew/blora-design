@@ -26,10 +26,7 @@ export default defineConfig({
       name: "copy-thread-css",
       closeBundle() {
         mkdirSync(resolve(__dirname, "dist"), { recursive: true });
-        copyFileSync(
-          resolve(__dirname, "src/thread.css"),
-          resolve(__dirname, "dist/thread.css"),
-        );
+        copyFileSync(resolve(__dirname, "src/thread.css"), resolve(__dirname, "dist/thread.css"));
       },
     },
   ],

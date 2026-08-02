@@ -25,7 +25,7 @@
   },
   "slots": { "default": "img element" },
   "parts": [],
-  "cssProperties": [],
+  "cssProperties": ["--blora-image-ratio"],
   "accessibilityPattern": "figure",
   "migrationFromV1": "image.migration.md"
 }

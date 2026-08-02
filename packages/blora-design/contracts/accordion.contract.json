@@ -18,7 +18,7 @@
     "default": "Accordion content"
   },
   "parts": [],
-  "cssProperties": [],
+  "cssProperties": ["--blora-collapse-h"],
   "accessibilityPattern": "accordion",
   "migrationFromV1": "accordion.migration.md"
 }

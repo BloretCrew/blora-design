@@ -78,7 +78,7 @@
     inset: 0;
     z-index: var(--blora-z-dropdown);
     display: block;
-    background: var(--blora-color-overlay-drawer, rgba(0, 0, 0, 0.4));
+    background: var(--blora-color-overlay-drawer, rgb(0 0 0 / 40%));
     opacity: 0;
     visibility: hidden;
     transition:
@@ -105,8 +105,7 @@
 
 .blora-affix__inner {
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
+  flex-flow: row nowrap;
   align-items: center;
   gap: 0.75rem;
   width: 100%;
@@ -129,6 +128,7 @@
   z-index: var(--blora-z-sticky, 100);
   border-radius: var(--blora-radius-lg);
   box-shadow: var(--blora-shadow-2);
+
   /* width/left set by controller — never collapse to a vertical strip */
   min-width: min(100%, 20rem);
   max-width: calc(100vw - 2rem);

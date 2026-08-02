@@ -31,7 +31,5 @@ const init = (el: Element | undefined): void => {
 };
 
 export const Default: Story = {
-  render: () => html`
-    <div class="blora-md" ${ref(init)} style="max-width: 36rem;"></div>
-  `,
+  render: () => html` <div class="blora-md" ${ref(init)} style="max-width: 36rem;"></div> `,
 };

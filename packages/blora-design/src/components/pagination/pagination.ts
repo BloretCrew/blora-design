@@ -44,7 +44,9 @@ export function createPaginationController(root: HTMLElement): PaginationControl
 
   const onClick = (e: MouseEvent) => {
     const t = e.target as HTMLElement;
-    const pageBtn = t.closest<HTMLButtonElement>(".blora-pagination__item:not(.blora-pagination__nav)");
+    const pageBtn = t.closest<HTMLButtonElement>(
+      ".blora-pagination__item:not(.blora-pagination__nav)",
+    );
     if (pageBtn && root.contains(pageBtn) && pageBtn.tagName === "BUTTON") {
       setPage(pageBtn);
       return;
@@ -54,7 +56,10 @@ export function createPaginationController(root: HTMLElement): PaginationControl
     const pages = items();
     const idx = pages.findIndex((b) => b.getAttribute("aria-current") === "page");
     const label = (nav.getAttribute("aria-label") || "").toLowerCase();
-    const isPrev = label.includes("上") || label.includes("prev") || nav === root.querySelector(".blora-pagination__nav");
+    const isPrev =
+      label.includes("上") ||
+      label.includes("prev") ||
+      nav === root.querySelector(".blora-pagination__nav");
     if (isPrev && idx > 0) setPage(pages[idx - 1]!);
     else if (!isPrev && idx >= 0 && idx < pages.length - 1) setPage(pages[idx + 1]!);
   };

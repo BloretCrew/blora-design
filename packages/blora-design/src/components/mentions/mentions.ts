@@ -212,10 +212,7 @@ export function createMentionsController(root: HTMLElement): MentionsController 
     menuEl.style.visibility = "hidden";
     menuEl.setAttribute("data-open", "");
 
-    const menuW = Math.min(
-      Math.max(menuEl.offsetWidth || 160, 160),
-      window.innerWidth - pad * 2,
-    );
+    const menuW = Math.min(Math.max(menuEl.offsetWidth || 160, 160), window.innerWidth - pad * 2);
     const naturalH = menuEl.offsetHeight || 120;
     const menuH = Math.min(naturalH, window.innerHeight * 0.4, 240);
 
@@ -358,7 +355,10 @@ export function createMentionsController(root: HTMLElement): MentionsController 
     window.removeEventListener("resize", onScroll);
     root.removeAttribute("data-open");
     menuEl.remove();
-    if ((root as unknown as { __bloraMentionsDestroy?: () => void }).__bloraMentionsDestroy === destroy) {
+    if (
+      (root as unknown as { __bloraMentionsDestroy?: () => void }).__bloraMentionsDestroy ===
+      destroy
+    ) {
       delete (root as unknown as { __bloraMentionsDestroy?: () => void }).__bloraMentionsDestroy;
     }
     disconnectObserver.disconnect();

@@ -102,11 +102,7 @@
     var(--blora-color-status-warning) 22%,
     var(--blora-color-surface-default)
   );
-  color: color-mix(
-    in srgb,
-    var(--blora-color-status-warning) 75%,
-    var(--blora-color-text-primary)
-  );
+  color: color-mix(in srgb, var(--blora-color-status-warning) 75%, var(--blora-color-text-primary));
   border: 1px solid color-mix(in srgb, var(--blora-color-status-warning) 35%, transparent);
 }
 

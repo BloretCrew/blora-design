@@ -34,6 +34,7 @@
   border-radius: var(--blora-radius-md);
   box-shadow: var(--blora-shadow-3);
   display: none;
+
   /* Park off-screen until positioned — fixed+no coords = top-left ghost */
   left: -9999px;
   top: -9999px;

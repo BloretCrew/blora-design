@@ -20,7 +20,7 @@
   top: calc(100% + 4px);
   left: 0;
   right: 0;
-  z-index: var(--blora-z-dropdown, 1000);
+  z-index: var(--blora-z-dropdown);
   max-height: 16rem;
   overflow: auto;
   padding: var(--blora-space-2);
@@ -59,7 +59,10 @@
 }
 
 .blora-treeselect__node.is-selected {
-  background: var(--blora-color-action-primary-tint, color-mix(in srgb, var(--blora-color-action-primary-default) 12%, transparent));
+  background: var(
+    --blora-color-action-primary-tint,
+    color-mix(in srgb, var(--blora-color-action-primary-default) 12%, transparent)
+  );
   color: var(--blora-color-action-primary-default);
   font-weight: 500;
 }

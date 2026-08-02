@@ -104,9 +104,7 @@ export const ForumThread: Story = {
               </div>
               <div class="blora-post__body">
                 <p>
-                  这个帖子仅以一个二级标题「妈妈」作为内容，没有正文。在论坛中，<strong
-                    >这种极简发帖通常是为了引发情感共鸣或作为一个开放话题，让网友围绕「母亲」展开讨论</strong
-                  >——比如分享与妈妈的暖心故事、求助与妈妈的矛盾、或者单纯表达思念。
+                  这个帖子仅以一个二级标题「妈妈」作为内容，没有正文。在论坛中，<strong>这种极简发帖通常是为了引发情感共鸣或作为一个开放话题，让网友围绕「母亲」展开讨论</strong>——比如分享与妈妈的暖心故事、求助与妈妈的矛盾、或者单纯表达思念。
                 </p>
                 <p>
                   在网络文化中，「妈妈」一词还有延伸用法：在饭圈（粉丝圈）里，「妈妈」常作为粉丝自称（「妈妈粉」），表示以母亲般的心态爱护偶像；在一些表情包或段子里，「妈妈」也会被用来撒娇或偷懒（如经典的「妈妈，饿饿，饭饭」）。
@@ -248,7 +246,10 @@ export const QuoteOnly: Story = {
           <span class="blora-post__quote-text">被引用的原文摘要…</span>
         </div>
         <div class="blora-post__body">
-          <p>跟帖正文。引用条是 thread 包的一部分（<code>.blora-post__quote</code>），不是 foundations 的 blockquote。</p>
+          <p>
+            跟帖正文。引用条是 thread 包的一部分（<code>.blora-post__quote</code>），不是
+            foundations 的 blockquote。
+          </p>
         </div>
       </article>
     </div>

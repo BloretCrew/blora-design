@@ -19,7 +19,9 @@ const init = (el: Element | undefined): void => {
 
 export const Default: Story = {
   render: () => html`
-    <div style="display:flex;gap:2rem;font-family:var(--blora-font-mono);font-size:var(--blora-text-2xl);">
+    <div
+      style="display:flex;gap:2rem;font-family:var(--blora-font-mono);font-size:var(--blora-text-2xl);"
+    >
       <span data-blora-countup="1280" data-duration="1200" ${ref(init)}>0</span>
       <span data-blora-countup="99.5" data-decimals="1" data-suffix="%" ${ref(init)}>0</span>
     </div>

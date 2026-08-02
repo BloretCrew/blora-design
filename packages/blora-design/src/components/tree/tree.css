@@ -59,6 +59,7 @@
 .blora-tree__node.is-open + .blora-tree__children {
   opacity: 1;
   transform: translateY(0);
+
   /* max-height set inline by controller to measured content height */
 }
 

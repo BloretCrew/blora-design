@@ -26,9 +26,7 @@ export const Default: Story = {
           <span class="blora-collapse__icon">▸</span>
         </button>
         <div class="blora-collapse__body">
-          <div class="blora-collapse__content">
-            一套基于 Web 标准的令牌驱动 UI 设计系统。
-          </div>
+          <div class="blora-collapse__content">一套基于 Web 标准的令牌驱动 UI 设计系统。</div>
         </div>
       </div>
       <div class="blora-collapse__item">

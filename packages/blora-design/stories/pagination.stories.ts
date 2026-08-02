@@ -20,7 +20,11 @@ const init = (el: Element | undefined): void => {
 export const Default: Story = {
   render: () => html`
     <nav class="blora-pagination" aria-label="分页" ${ref(init)}>
-      <button class="blora-pagination__item blora-pagination__nav" type="button" aria-label="上一页">
+      <button
+        class="blora-pagination__item blora-pagination__nav"
+        type="button"
+        aria-label="上一页"
+      >
         <span aria-hidden="true">‹</span>
       </button>
       <button class="blora-pagination__item" type="button" aria-current="page">1</button>
@@ -28,7 +32,11 @@ export const Default: Story = {
       <button class="blora-pagination__item" type="button">3</button>
       <button class="blora-pagination__item" type="button">4</button>
       <button class="blora-pagination__item" type="button">5</button>
-      <button class="blora-pagination__item blora-pagination__nav" type="button" aria-label="下一页">
+      <button
+        class="blora-pagination__item blora-pagination__nav"
+        type="button"
+        aria-label="下一页"
+      >
         <span aria-hidden="true">›</span>
       </button>
     </nav>

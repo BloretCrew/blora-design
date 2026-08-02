@@ -155,8 +155,10 @@ describe("effects extras", () => {
       </span>`;
     const root = document.querySelector<HTMLElement>(".blora-text-rotate")!;
     const ctrl = createTextRotateController(root);
-    expect(root.querySelector(".blora-text-rotate__item")?.hasAttribute("data-active") ||
-      root.querySelector(".blora-text-rotate__item")?.classList.contains("is-active")).toBe(true);
+    expect(
+      root.querySelector(".blora-text-rotate__item")?.hasAttribute("data-active") ||
+        root.querySelector(".blora-text-rotate__item")?.classList.contains("is-active"),
+    ).toBe(true);
     ctrl.destroy();
   });
 

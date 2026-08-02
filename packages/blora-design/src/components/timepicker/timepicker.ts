@@ -59,7 +59,7 @@ export function createTimepickerController(root: HTMLElement): TimepickerControl
 
   const scrollToValue = (scroll: HTMLElement, value: number, max: number, smooth = false) => {
     // With padding-block, scrollTop = index * ITEM_H centers that item
-    const index = MID * max + ((value % max) + max) % max;
+    const index = MID * max + (((value % max) + max) % max);
     const top = index * ITEM_H;
     if (smooth) scroll.scrollTo({ top, behavior: "smooth" });
     else scroll.scrollTop = top;

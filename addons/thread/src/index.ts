@@ -51,9 +51,7 @@ function ownerWin(el: HTMLElement): Window | null {
 
 /** Find or synthesize the animated replies body (v1 compatibility). */
 function ensureReplyBody(box: HTMLElement, toggleBtn: HTMLElement | null): HTMLElement | null {
-  let body = box.querySelector<HTMLElement>(
-    "[data-blora-thread-body], .blora-post__replies-body",
-  );
+  let body = box.querySelector<HTMLElement>("[data-blora-thread-body], .blora-post__replies-body");
   if (body) return body;
 
   /* v1 兼容：无 body 时把帖子包一层再动画 */

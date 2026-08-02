@@ -223,7 +223,9 @@ export const VirtualScrollBoth: Story = {
         <tbody></tbody>
       </table>
     </div>
-    <p style="margin-top:0.75rem;font-size:var(--blora-text-xs);color:var(--blora-color-text-muted);">
+    <p
+      style="margin-top:0.75rem;font-size:var(--blora-text-xs);color:var(--blora-color-text-muted);"
+    >
       容器约 28rem 宽、40 列 × 100px — 横向只渲染视口列；纵向 300 行只渲染视口行。
     </p>
   `,

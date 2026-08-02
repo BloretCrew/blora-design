@@ -10,10 +10,10 @@
 
 ## 图例
 
-| 标记 | 含义 |
-|------|------|
-| `[x]` | 已具备或本轮已落地 |
-| `[ ]` | 待完善（可选） |
+| 标记             | 含义                         |
+| ---------------- | ---------------------------- |
+| `[x]`            | 已具备或本轮已落地           |
+| `[ ]`            | 待完善（可选）               |
 | **P0 / P1 / P2** | 建议优先级（仅供挑选时参考） |
 
 ---
@@ -167,27 +167,27 @@
 
 ## F. 本轮（行为 / 数据）已落地摘要
 
-| 项 | 状态 |
-|----|------|
-| Form：`data-blora-form` + validate API + 事件 | [x] |
-| Form：async 校验 / getValues·setValues / when 联动 / 布局变体 | [x] |
-| Table：本地排序/分页 + remote 事件 + `Blora.table` | [x] |
-| Table：`setRows` / `setLoading` / 空态 / 多选批量 / 固定列 / 虚拟滚动 / 列设置 | [x] |
-| Select：搜索 / remote / 多选折叠标签 / 虚拟列表 | [x] |
-| Pagination：data 驱动渲染 + `blora:page-change` | [x] |
-| Configure：size / validateOn / tablePageSize / messages / classPrefix | [x] |
-| i18n：更多 key + `locales/*` + RTL | [x] |
-| 类型定义 `blora.d.ts` 同步 | [x] |
-| 展示页 Demo（校验表单、可排序分页表） | [x] |
+| 项                                                                             | 状态 |
+| ------------------------------------------------------------------------------ | ---- |
+| Form：`data-blora-form` + validate API + 事件                                  | [x]  |
+| Form：async 校验 / getValues·setValues / when 联动 / 布局变体                  | [x]  |
+| Table：本地排序/分页 + remote 事件 + `Blora.table`                             | [x]  |
+| Table：`setRows` / `setLoading` / 空态 / 多选批量 / 固定列 / 虚拟滚动 / 列设置 | [x]  |
+| Select：搜索 / remote / 多选折叠标签 / 虚拟列表                                | [x]  |
+| Pagination：data 驱动渲染 + `blora:page-change`                                | [x]  |
+| Configure：size / validateOn / tablePageSize / messages / classPrefix          | [x]  |
+| i18n：更多 key + `locales/*` + RTL                                             | [x]  |
+| 类型定义 `blora.d.ts` 同步                                                     | [x]  |
+| 展示页 Demo（校验表单、可排序分页表）                                          | [x]  |
 
 ---
 
 ## 使用方式（给后续挑选任务）
 
-1. 在本文件中找 `[ ]` 条目。  
-2. 直接点名例如：「做 B2 的多选行」或「做 P1 多选 Select 折叠标签」。  
+1. 在本文件中找 `[ ]` 条目。
+2. 直接点名例如：「做 B2 的多选行」或「做 P1 多选 Select 折叠标签」。
 3. 做完后把对应项改为 `[x]`，并在 PR/提交说明里提一句。
 
 ---
 
-*最后更新：B2 / B3 / B4 剩余项已全部落地。*
+_最后更新：B2 / B3 / B4 剩余项已全部落地。_

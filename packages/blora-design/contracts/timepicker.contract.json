@@ -14,7 +14,7 @@
     "default": "Content"
   },
   "parts": [],
-  "cssProperties": [],
+  "cssProperties": ["--blora-tp-item", "--blora-tp-visible"],
   "accessibilityPattern": "section",
   "migrationFromV1": "timepicker.migration.md"
 }

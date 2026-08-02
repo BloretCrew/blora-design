@@ -37,8 +37,7 @@ function ensureContainer(doc: Document, placement: NotificationPlacement): HTMLE
 
 export function notify(opts: NotificationOptions | string): NotificationHandle | null {
   if (typeof document === "undefined") return null;
-  const options: NotificationOptions =
-    typeof opts === "string" ? { title: opts } : opts || {};
+  const options: NotificationOptions = typeof opts === "string" ? { title: opts } : opts || {};
   const placement = options.placement || "top-right";
   const type = options.type || "info";
   const doc = document;

@@ -4,7 +4,8 @@
 
 ## 项目状态
 
-当前处于 **2.0 重构 Phase 0（冻结与基线）**。详细状态见 `docs/refactor/status.md`。
+当前处于 **2.0 重构 Phase 10（预发布）— Preflight / 门禁收口优先，尚未正式发 Alpha**。  
+阶段进度与开放清单见 `docs/refactor/status.md` 与 **`docs/refactor/remaining-work.md`（主跟踪）**。
 
 ## 视觉基线（不可违反）
 

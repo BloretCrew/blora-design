@@ -71,7 +71,7 @@
 
 ### 2.2 相关文件
 
-- 迁移 stub：`docs/migration/v1-to-v2.md`
+- 迁移指南（已有 class/data 主表，Phase 10 继续扩）：`docs/migration/v1-to-v2.md`
 - 架构 ADR：`docs/refactor/decisions.md` → ADR-013
 - 人眼 / 行为 delta：`docs/refactor/pending-visual-review.md` § Phase-9 honesty closeout
 
@@ -80,62 +80,133 @@
 ## 3. Phase 10 开放清单（做到 Stable 前均对照本表）
 
 > **Phase 10 状态：🔄 进行中**（进入日期 2026-08-02）。  
-> 下列条目默认 **⬚ 未完成**。完成一项时改为 ✅ 并注日期/PR。  
-> 勿在未更新本表时声称 Phase 10 / Stable 完成。  
-> 清理记录：`.trashes/phase10-entry-cleanup/`（过期 changesets、空目录）。
+> **含义澄清**：进入 Phase 10 = 已打开预发布阶段标签；**不等于** Preflight/Alpha 工作已完成。  
+> 推荐顺序：**§3.0 Preflight 全绿 → §3.1 Alpha 发布 → §3.2–3.4 加深 → Beta → RC → Stable**。  
+> 完成一项时改为 ✅ 并注日期。勿在未更新本表时声称 Alpha/Stable 完成。  
+> 清理记录：`.trashes/phase10-entry-cleanup/`。
 
-### 3.1 Alpha
+### 3.0 Phase 10 Preflight（Alpha **之前** · 门禁与发布链）
+
+> 外部审查建议采纳：先修真实门禁与 2.0 发布链，再发 `2.0.0-alpha.*`。  
+> **No-Go Alpha** 直到本小节关键项勾完（或显式降级并文档说明）。
+
+#### 3.0.1 `pnpm verify` / 本地门禁
+
+- [x] JS lint（eslint）全绿（2026-08-02 Preflight 开场）
+- [x] CSS lint（stylelint）全绿 — token/z-index/`is-*` 规则与硬编码色已收口
+- [x] Token / CSS contract 检查全绿
+- [x] Prettier `format:check` 全绿
+- [x] Typecheck ✅（已具备；保持）
+- [ ] Token 对比度 ✅（已具备；保持）— 复跑确认
+- [ ] Build + publint 主包 ✅（已具备；保持）— 复跑确认
+- [x] **`attw` 全绿** — 新 CSS 子路径加入 exclude 列表（CSS 由 stylelint/pack 守护；attw 聚焦 JS/types）
+- [ ] Unit 断言通过 **且进程正常退出**（Vitest hang / Node 22·24；必要时 CI 矩阵或收窄 engines）
+- [ ] QRCode 等测试无持续 canvas `getContext` 噪音（mock 或 skip 干净）
+- [ ] **`pnpm verify` 在 Node 22 完整通过**（与 CI 同构；记录证据）
+- [ ] 浏览器测在 CI 可跑（Chromium install）；本地缺浏览器不挡 CI 定义
+
+#### 3.0.2 CI 与聚合
+
+- [x] 修复 `ci.yml` aggregate：`every()` → `contains(needs.*.result, 'failure')` / `cancelled`
+- [ ] CI 纳入 **publint**、**attw**（与 verify 对齐的最小集）
+- [ ] CI Node 版本明确（22 为主；可选 24 矩阵若 engines 仍 `>=22`）
+- [ ] required jobs 在 master 上有 **绿记录**（Preflight 完成标志之一）
+
+#### 3.0.3 发布工作流（2.0 monorepo）
+
+- [ ] **重写** `.github/workflows/publish.yml`（现仍 1.x：根 `package.json`、根 `blora.js`、根 `npm publish`、private monorepo 根）
+- [ ] pnpm install + workspace 构建
+- [ ] 发布 **主包** + **6 add-on**（或文档声明的发布集）
+- [ ] prerelease **dist-tag** 策略（如 `next` / `alpha`）
+- [ ] Release 说明改为 2.0 ESM 安装，**禁止**仍写 `blora.js` UMD 为主路径
+- [ ] 发版前跑 verify 子集（或依赖 CI 绿）
+
+#### 3.0.4 包导出与体积诚实
+
+- [ ] 所有 `package.json` `exports` 在 pack 后可解析（fixture **遍历 exports**，不单测主入口）
+- [ ] 修 `tree-select.css` / `backtop.css` 等 attw 失败路径
+- [ ] **size 门禁重做**：勿用仅含 `@import` 的 `blora.css` 壳当全量体积；统计展平 CSS / 主 JS / 分组件 / compat / add-on
+- [ ] add-on 至少：build + pack 可装（publint/attw 跟进）
+
+#### 3.0.5 测试能力诚实（Preflight 最小集，非全矩阵）
+
+- [ ] Playwright：`a11y` project **真跑 axe**（或拆独立 project，禁止「只换名重跑」）
+- [x] 声明 `test:visual`：无 project 时脚本明确失败信息（不再伪报 `Project visual not found`）
+- [ ] （可选 Preflight）首批 visual 快照 1～N 个关键页；**全组件 visual 仍属 §3.4**
+- [x] 文档写明：browser 覆盖 ≠ 全部 stable contract（matrix 脚注 + 本表）
+
+#### 3.0.6 文档与 contract 治理（Preflight）
+
+- [x] `AGENTS.md` / 贡献入口阶段与 `status.md` 一致（Phase 10 Preflight）
+- [x] `remaining-work` / matrix 措辞：matrix ✅ =「实现可用」≠ §26 DoD stable
+- [x] 迁移指南状态：已有 class/data 主表（非空 stub）；Phase 10 继续扩全表
+- [ ] **contract 状态治理**：现有 ~42 `stable` 与测试覆盖不对齐 → 策略二选一（或组合）  
+  - 降为 `beta` / 引入 `candidate`/`implemented` 后再升 stable；或  
+  - 收紧「可宣传 stable」名单并文档标明  
+- [x] component-matrix 脚注：避免误读 ✅ 为 DoD stable
+
+#### 3.0.7 Preflight 完成定义
+
+- [ ] §3.0.1–3.0.4 关键项全 ✅
+- [ ] §3.0.5–3.0.6 至少完成「诚实」子集（axe 真跑或明确未跑；visual 脚本不撒谎；AGENTS/contract 策略落地）
+- [ ] **此后**才允许 §3.1 正式发布 `2.0.0-alpha.1`（建议 `--tag next` 或 `alpha`）
+
+---
+
+### 3.1 Alpha（Preflight **之后**）
 
 - [ ] 正式定义并发布 **`2.0.0-alpha.x`**（非仅 package 字段写 alpha）
 - [ ] 根/包 README 与 npm 说明一致（持续）
-- [ ] 至少 1 个 **纯 HTML** 可运行 example（`examples/` 或等价）
+- [ ] 至少 1 个 **纯 HTML** 可运行 example（`examples/`）
 - [ ] （可选）React / Vue 消费示例或适配器 beta 占位
 - [ ] 收集外部反馈通道（Issue 模板 / 文档说明）
-- [ ] CI 本分支 / 主分支 **required jobs 绿** 有记录
+- [ ] Alpha 安装演练记录（npm / 可选 CDN）
 
-### 3.2 包与消费面（规格 §6 / §31）
+### 3.2 包与消费面（规格 §6 / §31 · 可与 Alpha 并行加深）
 
 - [ ] `exports`：`./auto`（注册 stable CE）
-- [ ] 稳定组件 **JS 子路径**（如 `./button`、`./select`）按规格补齐策略
+- [ ] 稳定组件 **JS 子路径**（如 `./button`、`./select`）
 - [ ] `./compat/v1` 明确导出与体积独立统计
 - [ ] **CDN / IIFE global bundle**（若仍要求三种消费）
-- [ ] `npm pack` / pack:test 与 provenance 策略
+- [ ] provenance / 签名策略
 - [ ] Tree-shaking / sideEffects 审计
 
 ### 3.3 清单与 AI 契约
 
 - [ ] `custom-elements.json` 生成与导出
 - [ ] `component-manifest.json` 生成与导出
-- [ ] `llms.txt` 与组件索引对齐（随 stable 集更新）
+- [ ] `llms.txt` 与组件索引对齐（随可宣传 stable 集更新）
 - [ ] API snapshot 流水线
-- [ ] **CHANGELOG**（changeset 发版叙事）
-- [ ] 完整 `docs/migration/v1-to-v2.md`（超 stub：class/data/event 全表 + 步骤）
+- [ ] **CHANGELOG**（changeset 发版叙事；Preflight 后新建 changeset，勿依赖已归档的旧 changeset）
+- [ ] 迁移指南继续扩充（事件/边角 / 逐组件）
 
-### 3.4 组件 DoD 农场（§26）— 至少 stable 宣传集
+### 3.4 组件 DoD 农场（§26）— 至少「可宣传 stable」集
 
-- [ ] 每目标组件：unit（已有抽样 → 扩覆盖）
-- [ ] Playwright **交互**主路径矩阵
+> 全量 axe/visual/Firefox 矩阵：**优先 Beta/RC**；Preflight 只要求 §3.0.5 诚实最小集。
+
+- [ ] 每目标组件：unit（抽样 → 扩覆盖）
+- [ ] Playwright **交互**主路径矩阵（远超现有 7 个 browser 文件）
 - [ ] 键盘 / 焦点断言
-- [ ] axe a11y（`test:a11y` 真跑 + 无 serious/critical）
-- [ ] **visual** 回归项目 + 审核流（非仅 legacy 全页基线）
-- [ ] RTL / 320px / reduced-motion 组件级抽样→矩阵
+- [ ] axe 覆盖扩大（无 serious/critical）
+- [ ] **visual** 回归矩阵 + 审核流
+- [ ] RTL / 320px / reduced-motion 组件级
 - [ ] form submit/reset（适用组件）
 - [ ] connect/disconnect / 泄漏抽测
-- [ ] contract status 与「可宣传 stable」对齐（当前约 42 stable / 34 beta — 需治理）
+- [ ] contract 与可宣传名单最终对齐
 
 ### 3.5 Beta
 
 - [ ] **stable core API 冻结**决议（破坏性变更政策）
-- [ ] 仅修缺陷的节奏；beta 组件不进入默认宣传
+- [ ] 仅修缺陷的节奏；beta/experimental 不进入默认宣传
 - [ ] 完整迁移文档用户向发布
-- [ ] 体积预算扩展（CSS/JS 策略，非仅 tokens/foundations）
+- [ ] 体积预算扩展落地（接 §3.0.4）
 
 ### 3.6 RC
 
 - [ ] 冻结新增组件
-- [ ] 全浏览器回归记录
+- [ ] 全浏览器回归记录（含 Firefox/WebKit 策略）
 - [ ] 人工 a11y 抽测记录
-- [ ] npm 安装演练 + CDN 演练 + 回滚方案
+- [ ] npm 安装 + CDN + 回滚演练
 - [ ] CSP / SSR import 专项证明
 
 ### 3.7 Stable `2.0.0`
@@ -145,13 +216,13 @@
 - [ ] 1.x 安全修复策略
 - [ ] §31 发布清单全部勾选
 
-### 3.8 明确非本阶段偷渡（保持打开直到有主）
+### 3.8 明确非默认 / 后置
 
 - [ ] 2.0 **i18n / locales** 运行时（P9-8）
-- [ ] add-on 独立 Playwright / visual（P9-6）
-- [ ] 全量 `pnpm verify` 作为发布硬门（P9-7）
-- [ ] FA WC 全面化（**不默认**；见 ADR-013）
+- [ ] add-on 独立 Playwright / visual 深矩阵（P9-6）
+- [ ] FA WC 全面化（**不默认**；ADR-013）
 - [ ] 删除 `legacy/v1` 或拆除 compat（**禁止**过早）
+- [ ] 全量 `pnpm verify` 作为发布硬门 — **已升入 §3.0.1**（完成后在此勾选归档）
 
 ---
 
@@ -185,7 +256,7 @@
 | [`decisions.md`](./decisions.md) | ADR（含 ADR-013） |
 | [`pending-visual-review.md`](./pending-visual-review.md) | 视觉签收 |
 | [`docs/guide.md`](../guide.md) | **2.0 推荐用法** |
-| [`docs/migration/v1-to-v2.md`](../migration/v1-to-v2.md) | 迁移入口（stub → 后扩） |
+| [`docs/migration/v1-to-v2.md`](../migration/v1-to-v2.md) | 迁移指南（主表已有；继续扩充） |
 | `Blora-Design-2.0-Refactor-Spec.md` | 完整规格 |
 
 ---
@@ -197,3 +268,5 @@
 | 2026-08-02 | 初版：审计快照 + P9 诚实债关闭表 + Phase 10 全开清单 |
 | 2026-08-02 | P9-1…P9-8 全部关闭或 deferred；typecheck + unit 证据写入 §5 |
 | 2026-08-02 | **进入 Phase 10**；过期 changesets → `.trashes/phase10-entry-cleanup`；迁移指南升格为 monorepo 正文 |
+| 2026-08-02 | 采纳外部审查：新增 **§3.0 Preflight**（verify/CI/publish/exports/体积/contract 治理）；Alpha 后置 |
+| 2026-08-02 | Preflight 开场：lint/css/contracts/prettier/attw/CI aggregate/`test:visual` 诚实化；image 预览 token 化 |

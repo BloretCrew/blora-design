@@ -19,7 +19,5 @@ const init = (el: Element | undefined): void => {
 };
 
 export const Default: Story = {
-  render: () => html`
-    <div class="blora-qrcode" ${ref(init)} aria-label="二维码"></div>
-  `,
+  render: () => html` <div class="blora-qrcode" ${ref(init)} aria-label="二维码"></div> `,
 };

@@ -44,7 +44,9 @@
   transform: none;
   z-index: auto;
   overflow: visible;
+
   /* Indicator is absolute; host needs a positioning context */
+
   /* (relative already set above via position: relative) */
 }
 

@@ -25,7 +25,7 @@
   },
   "slots": { "default": "Content" },
   "parts": [],
-  "cssProperties": [],
+  "cssProperties": ["--blora-collapse-h"],
   "accessibilityPattern": "navigation",
   "migrationFromV1": "collapse.migration.md"
 }

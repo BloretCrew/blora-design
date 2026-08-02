@@ -287,8 +287,10 @@ export function createMarkdownController(
 export function initMarkdown(root: ParentNode = document, options?: MarkdownOptions): () => void {
   if (typeof document === "undefined") return () => {};
   const ctrls: MarkdownController[] = [];
-  root.querySelectorAll<HTMLElement>("[data-blora-markdown], .blora-md[data-source]").forEach((el) => {
-    ctrls.push(createMarkdownController(el, options));
-  });
+  root
+    .querySelectorAll<HTMLElement>("[data-blora-markdown], .blora-md[data-source]")
+    .forEach((el) => {
+      ctrls.push(createMarkdownController(el, options));
+    });
   return () => ctrls.forEach((c) => c.destroy());
 }

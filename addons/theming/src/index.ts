@@ -170,14 +170,6 @@ export interface PalettePickerController {
   destroy(): void;
 }
 
-function escapeHTML(s: string): string {
-  return s
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
-
 /** Build menu cards if empty; wire open/close and theme apply. */
 export function createPalettePickerController(root: HTMLElement): PalettePickerController {
   if (typeof document === "undefined") return { destroy: () => {} };
@@ -202,29 +194,45 @@ export function createPalettePickerController(root: HTMLElement): PalettePickerC
   menu.setAttribute("aria-label", "主题配色");
 
   if (!menu.querySelector("[data-blora-palette-option]")) {
-    menu.innerHTML =
-      `<div class="blora-palette-picker__head">` +
-      `<span class="blora-palette-picker__title">主题配色</span>` +
-      `<span class="blora-palette-picker__hint">选择一套调色板</span>` +
-      `</div><div class="blora-palette-picker__list">` +
-      Object.entries(THEME_PRESETS)
-        .map(
-          ([key, preset]) =>
-            `<button class="blora-palette-card" type="button" role="option" data-blora-palette-option="${key}">` +
-            `<span class="blora-palette-card__copy">` +
-            `<span class="blora-palette-card__name">${escapeHTML(preset.name)}</span>` +
-            `<span class="blora-palette-card__desc">${escapeHTML(preset.description)}</span>` +
-            `</span><span class="blora-palette-card__colors" aria-hidden="true">` +
-            preset.colors
-              .map(
-                (color) =>
-                  `<span class="blora-palette-card__color" style="background:${color}"></span>`,
-              )
-              .join("") +
-            `</span></button>`,
-        )
-        .join("") +
-      `</div>`;
+    const head = doc.createElement("div");
+    head.className = "blora-palette-picker__head";
+    const title = doc.createElement("span");
+    title.className = "blora-palette-picker__title";
+    title.textContent = "主题配色";
+    const hint = doc.createElement("span");
+    hint.className = "blora-palette-picker__hint";
+    hint.textContent = "选择一套调色板";
+    head.append(title, hint);
+    const list = doc.createElement("div");
+    list.className = "blora-palette-picker__list";
+    for (const [key, preset] of Object.entries(THEME_PRESETS)) {
+      const btn = doc.createElement("button");
+      btn.className = "blora-palette-card";
+      btn.type = "button";
+      btn.setAttribute("role", "option");
+      btn.setAttribute("data-blora-palette-option", key);
+      const copy = doc.createElement("span");
+      copy.className = "blora-palette-card__copy";
+      const name = doc.createElement("span");
+      name.className = "blora-palette-card__name";
+      name.textContent = preset.name;
+      const desc = doc.createElement("span");
+      desc.className = "blora-palette-card__desc";
+      desc.textContent = preset.description;
+      copy.append(name, desc);
+      const colors = doc.createElement("span");
+      colors.className = "blora-palette-card__colors";
+      colors.setAttribute("aria-hidden", "true");
+      for (const color of preset.colors) {
+        const swatch = doc.createElement("span");
+        swatch.className = "blora-palette-card__color";
+        swatch.style.background = color;
+        colors.append(swatch);
+      }
+      btn.append(copy, colors);
+      list.append(btn);
+    }
+    menu.replaceChildren(head, list);
   }
 
   const options = () =>
@@ -243,15 +251,17 @@ export function createPalettePickerController(root: HTMLElement): PalettePickerC
   };
 
   const open = (focus = false) => {
-    doc.querySelectorAll<HTMLElement>("[data-blora-palette-picker].is-open, .blora-palette-picker.is-open").forEach(
-      (other) => {
+    doc
+      .querySelectorAll<HTMLElement>(
+        "[data-blora-palette-picker].is-open, .blora-palette-picker.is-open",
+      )
+      .forEach((other) => {
         if (other === root) return;
         other.classList.remove("is-open");
         other
           .querySelector("[data-blora-palette-trigger], .blora-palette-picker__trigger")
           ?.setAttribute("aria-expanded", "false");
-      },
-    );
+      });
     root.classList.add("is-open");
     trigger.setAttribute("aria-expanded", "true");
     if (focus) {
@@ -268,7 +278,8 @@ export function createPalettePickerController(root: HTMLElement): PalettePickerC
 
   const onTrigger = (e: MouseEvent) => {
     e.stopPropagation();
-    root.classList.contains("is-open") ? close() : open();
+    if (root.classList.contains("is-open")) close();
+    else open();
   };
   const onTriggerKey = (e: KeyboardEvent) => {
     if (e.key === "ArrowDown") {

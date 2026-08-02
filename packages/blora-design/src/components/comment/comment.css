@@ -50,6 +50,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.3em;
+
   /* Explicit border properties beat global reset `button { border: none }` */
   border-width: 1px;
   border-style: solid;

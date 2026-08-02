@@ -8,8 +8,9 @@ export interface PopconfirmController {
 export function createPopconfirmController(root: HTMLElement): PopconfirmController {
   if (typeof document === "undefined") return { destroy: () => {} };
   const trigger =
-    root.querySelector<HTMLElement>("[data-blora-popconfirm-trigger], .blora-popconfirm__trigger") ||
-    root.querySelector<HTMLElement>("button");
+    root.querySelector<HTMLElement>(
+      "[data-blora-popconfirm-trigger], .blora-popconfirm__trigger",
+    ) || root.querySelector<HTMLElement>("button");
   const panel = root.querySelector<HTMLElement>(".blora-popconfirm__panel");
   if (!trigger || !panel) return { destroy: () => {} };
 

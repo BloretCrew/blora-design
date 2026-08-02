@@ -216,11 +216,16 @@ export function createQRCodeController(
   };
 }
 
-export function initQRCode(root: ParentNode = document, options?: QRCodeOptions | number): () => void {
+export function initQRCode(
+  root: ParentNode = document,
+  options?: QRCodeOptions | number,
+): () => void {
   if (typeof document === "undefined") return () => {};
   const ctrls: QRCodeController[] = [];
-  root.querySelectorAll<HTMLElement>("[data-blora-qrcode], .blora-qrcode[data-text]").forEach((el) => {
-    ctrls.push(createQRCodeController(el, options));
-  });
+  root
+    .querySelectorAll<HTMLElement>("[data-blora-qrcode], .blora-qrcode[data-text]")
+    .forEach((el) => {
+      ctrls.push(createQRCodeController(el, options));
+    });
   return () => ctrls.forEach((c) => c.destroy());
 }

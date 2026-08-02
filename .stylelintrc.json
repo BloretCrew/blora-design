@@ -3,7 +3,7 @@
   "rules": {
     "no-descending-specificity": null,
     "custom-property-pattern": "^blora-[a-z0-9-]+$",
-    "selector-class-pattern": "^blora-[a-z0-9_-]+$",
+    "selector-class-pattern": "(^blora-[a-z0-9_-]+$)|(^is-[a-z0-9-]+$)",
     "at-rule-no-unknown": [
       true,
       {
@@ -22,7 +22,12 @@
       }
     ],
     "declaration-property-value-allowed-list": {
-      "z-index": ["/^var\\(--blora-z-[a-z0-9-]+\\)$/", "auto"]
+      "z-index": [
+        "/^var\\(--blora-z-[a-z0-9-]+\\)$/",
+        "/^var\\(--blora-z-[a-z0-9-]+,\\s*[^)]+\\)$/",
+        "/^calc\\(var\\(--blora-z-[a-z0-9-]+(?:,\\s*[^)]+)?\\).+\\)$/",
+        "auto"
+      ]
     }
   },
   "ignoreFiles": [
@@ -38,7 +43,7 @@
     {
       "files": ["addons/**/*.css"],
       "rules": {
-        "selector-class-pattern": "(^blora-[a-z0-9_-]+$)|(^is-[a-z-]+$)",
+        "selector-class-pattern": "(^blora-[a-z0-9_-]+$)|(^is-[a-z-]+$)|(^sb-)|(^docs-)",
         "custom-property-pattern": "(^blora-[a-z0-9-]+$)|(^fx-[a-z0-9-]+$)|^i$"
       }
     },

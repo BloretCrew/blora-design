@@ -16,6 +16,7 @@
   "parts": [],
   "cssProperties": [
     "--blora-sd-action-size",
+    "--blora-sd-axis-offset",
     "--blora-sd-gap",
     "--blora-sd-r",
     "--blora-sd-trigger-size"

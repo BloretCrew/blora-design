@@ -20,12 +20,7 @@ const init = (el: Element | undefined): void => {
 
 export const Default: Story = {
   render: () => html`
-    <div
-      class="blora-countdown"
-      data-blora-countdown
-      data-seconds="3661"
-      ${ref(init)}
-    >
+    <div class="blora-countdown" data-blora-countdown data-seconds="3661" ${ref(init)}>
       <div class="blora-countdown__unit">
         <span class="blora-countdown__value" data-unit="days">0</span
         ><span class="blora-countdown__label">天</span>
