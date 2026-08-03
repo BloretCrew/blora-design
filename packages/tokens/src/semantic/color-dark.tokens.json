@@ -52,7 +52,16 @@
       "foreground": { "$type": "color", "$value": "#FFFFFF" }
     },
     "tooltip": {
-      "background": { "$type": "color", "$value": "#0E0D12" }
+      "background": {
+        "$type": "color",
+        "$value": "#2C2931",
+        "$description": "Slightly above canvas (#17161C) so the bubble edge reads; pair with border-subtle"
+      },
+      "foreground": {
+        "$type": "color",
+        "$value": "#F8F2F4",
+        "$description": "Tooltip bubble text; must contrast with dark tooltip.background (not text.onAccent, which is for light accent fills)"
+      }
     }
   },
   "shadow": {

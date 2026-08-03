@@ -186,6 +186,23 @@ html:has(body.blora-page) {
   margin-bottom: 0;
 }
 
+/*
+ * Kill the default mobile tap flash (Chrome/Android = semi-transparent blue
+ * rectangle; Safari grey flash). Most product UIs set this transparent and rely
+ * on :active / our own states. Shows in desktop DevTools device mode too —
+ * not a "debug-only" feature, just easier to notice there.
+ */
+:where(body.blora-page, .blora-scope, .blora-portal),
+:where(body.blora-page, .blora-scope, .blora-portal) a,
+:where(body.blora-page, .blora-scope, .blora-portal) button,
+:where(body.blora-page, .blora-scope, .blora-portal) [role="button"],
+:where(body.blora-page, .blora-scope, .blora-portal) input,
+:where(body.blora-page, .blora-scope, .blora-portal) label,
+[class^="blora-"],
+[class*=" blora-"] {
+  -webkit-tap-highlight-color: transparent;
+}
+
 /* -- 焦点环 -- §8.3: 状态优先用原生属性 -- */
 :where(body.blora-page, .blora-scope, .blora-portal) :focus-visible,
 [class^="blora-"]:focus-visible,

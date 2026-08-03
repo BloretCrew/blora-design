@@ -13,7 +13,10 @@
   color: var(--blora-color-text-emphasis);
   border: 1px solid var(--blora-color-border-subtle);
   border-radius: var(--blora-radius-full);
-  line-height: 1.6;
+  /* Pin leading — inherited 1.6 + CJK fonts drift vertical metrics cross-device */
+  line-height: 1.25;
+  box-sizing: border-box;
+  vertical-align: middle;
 }
 
 .blora-tag[data-variant="primary"] {

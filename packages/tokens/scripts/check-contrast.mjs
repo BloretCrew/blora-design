@@ -43,6 +43,13 @@ export function checkThemeContrast() {
         ["secondary text / canvas", values("foreground"), values("background"), 4.5],
         ["on-accent text / primary", values("onAccent"), values("primary"), 4.5],
         ["code text / code background", values("codeFg"), values("codeBg"), 4.5],
+        // tooltipFg is optional on themes; fall back to light onAccent / dark codeFg pairing intent
+        [
+          "tooltip text / tooltip background",
+          values("tooltipFg") ?? (mode === "dark" ? values("codeFg") : values("onAccent")),
+          values("tooltipBg"),
+          4.5,
+        ],
       ];
 
       for (const [label, foreground, background, minimum] of checks) {

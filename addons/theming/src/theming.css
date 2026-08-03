@@ -34,10 +34,22 @@ html[data-blora-color-scheme="light"] .blora-scope {
 
 .blora-palette-picker__trigger {
   white-space: nowrap;
+  /* Keep label readable at any canvas width (do not collapse to empty pill) */
+  max-width: min(12rem, 100%);
+  overflow: hidden;
 }
 
 .blora-palette-picker__trigger svg {
   flex: none;
+}
+
+.blora-palette-picker__label {
+  display: inline-block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: inherit;
 }
 
 .blora-palette-picker__menu {
@@ -160,14 +172,17 @@ html[data-blora-color-scheme="light"] .blora-scope {
 }
 
 @media (max-width: 560px) {
+  /* Keep label visible — hiding left an empty outline pill with no icon */
   .blora-palette-picker__label {
-    display: none;
+    display: inline-block;
+    max-width: 8rem;
   }
 
   .blora-palette-picker__menu {
     position: fixed;
-    top: 4.25rem;
+    top: max(4.25rem, env(safe-area-inset-top, 0px) + 3.5rem);
     inset-inline: var(--blora-space-3);
     width: auto;
+    max-height: min(70dvh, 28rem);
   }
 }

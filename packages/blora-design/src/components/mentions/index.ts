@@ -1,1 +1,5 @@
-export { createMentionsController, type MentionsController } from "./mentions.js";
+export {
+  createMentionsController,
+  type MentionsController,
+  type MentionOption,
+} from "./mentions.js";

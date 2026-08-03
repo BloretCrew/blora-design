@@ -58,6 +58,7 @@ const THEME_PRIMITIVE_VARIABLES = {
   textStrong: "--blora-color-coral-text-strong",
   textSubtle: "--blora-color-coral-text-subtle",
   tooltipBg: "--blora-color-tooltip-background",
+  tooltipFg: "--blora-color-tooltip-foreground",
   warning: "--blora-color-coral-warning",
 };
 
@@ -245,6 +246,7 @@ const THEME_SEMANTIC_VARIABLES = {
   textStrong: "--blora-color-text-primary",
   textSubtle: "--blora-color-text-subtle",
   tooltipBg: "--blora-color-tooltip-background",
+  tooltipFg: "--blora-color-tooltip-foreground",
   warning: "--blora-color-status-warning",
 };
 

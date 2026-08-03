@@ -7,16 +7,42 @@
   --blora-button-bg: var(--blora-color-surface-default);
   --blora-button-fg: var(--blora-color-text-secondary);
   --blora-button-bd: var(--blora-color-border-subtle);
+  /* Vertical size lives entirely in padding; line-height stays 1 so flex
+     centers the glyph box (not a tall line-box with ink stuck near the top —
+     the usual mobile CJK “text too high” failure mode).
+     pad-y = 0.75em keeps total height ≈ old 0.55em + line-height 1.4. */
+  --blora-button-pad-y: 0.75em;
+  --blora-button-pad-x: 1.1em;
 
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--blora-space-2);
-  padding: 0.55em 1.1em;
+  box-sizing: border-box;
+  /* Never stretch to fill a grid/flex track — that produced "exploded" tall
+     pills (e.g. sidebar toggle in a min-height layout). Grow only when the
+     consumer sets width/flex explicitly (dialog footer full-width). */
+  width: max-content;
+  max-width: 100%;
+  height: auto;
+  min-height: 0;
+  align-self: flex-start;
+  flex: 0 0 auto;
+  padding: var(--blora-button-pad-y) var(--blora-button-pad-x);
   font-family: var(--blora-font-sans);
   font-size: var(--blora-text-sm);
   font-weight: 500;
-  line-height: 1.4;
+  line-height: 1;
+  /*
+   * Standard CSS (not UA-sniff): trim half-leading so flex centers ink metrics,
+   * not the full em-box. Fixes real-device system fonts (PingFang / Noto / SF)
+   * sitting high while desktop emulation (often different fonts) looks fine.
+   * Chrome 133+, Safari 18.2+, Edge 133+ — ignored elsewhere, flex+lh1 remains.
+   */
+  text-box: trim-both cap alphabetic;
+  text-box-trim: trim-both;
+  text-box-edge: cap alphabetic;
+  writing-mode: horizontal-tb;
   color: var(--blora-button-fg);
   background: var(--blora-button-bg);
   border: 1px solid var(--blora-button-bd);
@@ -30,6 +56,15 @@
     transform var(--blora-duration-fast) var(--blora-easing-standard);
   position: relative;
   user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Opt-in block / full-row button */
+.blora-button[data-block],
+.blora-button[data-full-width] {
+  width: 100%;
+  align-self: stretch;
 }
 
 .blora-button:hover {
@@ -129,9 +164,10 @@
 .blora-button[data-variant="text"] {
   --blora-button-bg: transparent;
   --blora-button-bd: transparent;
+  --blora-button-pad-x: 0.4em;
 
   color: var(--blora-color-action-primary-default);
-  padding-inline: 0.4em;
+  padding: var(--blora-button-pad-y) var(--blora-button-pad-x);
 }
 
 .blora-button[data-variant="text"]:hover {
@@ -143,42 +179,63 @@
   text-underline-offset: 4px;
 }
 
-/* -- Sizes -- */
+/* -- Sizes (pad-y compensated for line-height: 1 vs legacy 1.4) -- */
 .blora-button[data-size="xs"] {
+  --blora-button-pad-y: 0.5em;
+  --blora-button-pad-x: 0.7em;
+
   font-size: var(--blora-text-xs);
-  padding: 0.3em 0.7em;
+  padding: var(--blora-button-pad-y) var(--blora-button-pad-x);
 }
 
 .blora-button[data-size="sm"] {
+  --blora-button-pad-y: 0.6em;
+  --blora-button-pad-x: 0.9em;
+
   font-size: var(--blora-text-sm);
-  padding: 0.4em 0.9em;
+  padding: var(--blora-button-pad-y) var(--blora-button-pad-x);
 }
 
 .blora-button[data-size="md"] {
+  --blora-button-pad-y: 0.75em;
+  --blora-button-pad-x: 1.1em;
+
   font-size: var(--blora-text-sm);
-  padding: 0.55em 1.1em;
+  padding: var(--blora-button-pad-y) var(--blora-button-pad-x);
 }
 
 .blora-button[data-size="lg"] {
+  --blora-button-pad-y: 0.9em;
+  --blora-button-pad-x: 1.4em;
+
   font-size: var(--blora-text-lg);
-  padding: 0.7em 1.4em;
+  padding: var(--blora-button-pad-y) var(--blora-button-pad-x);
 }
 
 .blora-button[data-size="xl"] {
+  --blora-button-pad-y: 1em;
+  --blora-button-pad-x: 1.6em;
+
   font-size: var(--blora-text-xl);
-  padding: 0.8em 1.6em;
+  padding: var(--blora-button-pad-y) var(--blora-button-pad-x);
   font-family: var(--blora-font-heading);
 }
 
 /* -- Icon-only button -- */
 .blora-button[data-size="icon"] {
-  padding: 0.55em;
+  --blora-button-pad-y: 0.75em;
+  --blora-button-pad-x: 0.75em;
+
+  padding: var(--blora-button-pad-y);
   aspect-ratio: 1;
   flex: none;
 }
 
 .blora-button[data-size="icon"][data-size="sm"] {
-  padding: 0.4em;
+  --blora-button-pad-y: 0.6em;
+  --blora-button-pad-x: 0.6em;
+
+  padding: var(--blora-button-pad-y);
 }
 
 /* -- Button group -- */

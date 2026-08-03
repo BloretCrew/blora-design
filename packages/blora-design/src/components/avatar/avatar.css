@@ -46,9 +46,8 @@
 /* -- Avatar -- */
 
 .blora-avatar {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  display: inline-grid;
+  place-items: center;
   width: 2.5em;
   height: 2.5em;
   border-radius: 50%;
@@ -57,10 +56,12 @@
   font-family: var(--blora-font-heading);
   font-weight: 600;
   font-size: 1em;
+  line-height: 1;
   overflow: hidden;
   flex: none;
   user-select: none;
   box-shadow: var(--blora-shadow-1);
+  box-sizing: border-box;
 }
 
 .blora-avatar img {

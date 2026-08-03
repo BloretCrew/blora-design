@@ -414,30 +414,57 @@ export function createWatermarkController(root: HTMLElement): WatermarkControlle
   if (!layer) {
     layer = doc.createElement("div");
     layer.className = "blora-watermark__canvas";
+    layer.setAttribute("aria-hidden", "true");
     root.appendChild(layer);
   }
-  const ratio = win.devicePixelRatio || 1;
-  const w = 200;
-  const h = 140;
-  const canvas = doc.createElement("canvas");
-  canvas.width = w * ratio;
-  canvas.height = h * ratio;
-  const ctx = canvas.getContext("2d");
-  if (ctx) {
-    ctx.scale(ratio, ratio);
+
+  const paint = () => {
+    const ratio = Math.min(win.devicePixelRatio || 1, 2);
+    /* Tile size scales with host so small canvases still show multiple stamps */
+    const hostW = Math.max(root.clientWidth || 0, 120);
+    const hostH = Math.max(root.clientHeight || 0, 80);
+    const w = Math.round(Math.min(180, Math.max(100, hostW / 2.2)));
+    const h = Math.round(Math.min(130, Math.max(72, hostH / 2.2)));
+    const canvas = doc.createElement("canvas");
+    canvas.width = Math.max(1, Math.floor(w * ratio));
+    canvas.height = Math.max(1, Math.floor(h * ratio));
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
     ctx.clearRect(0, 0, w, h);
     ctx.translate(w / 2, h / 2);
     ctx.rotate((-22 * Math.PI) / 180);
     ctx.fillStyle = "rgba(80,70,90,0.9)";
-    const font =
-      win.getComputedStyle(root).getPropertyValue("--blora-font-sans").trim() || "sans-serif";
-    ctx.font = `600 14px ${font}`;
+    const fontFamily =
+      win.getComputedStyle(root).getPropertyValue("--blora-font-sans").trim() ||
+      "system-ui, sans-serif";
+    const fontSize = Math.max(11, Math.min(15, Math.round(w * 0.09)));
+    ctx.font = `600 ${fontSize}px ${fontFamily}`;
     ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
     ctx.fillText(text, 0, 0);
-    layer.style.backgroundImage = `url(${canvas.toDataURL()})`;
-    layer.style.backgroundSize = `${w}px ${h}px`;
+    layer!.style.backgroundImage = `url(${canvas.toDataURL()})`;
+    layer!.style.backgroundSize = `${w}px ${h}px`;
+    layer!.style.backgroundRepeat = "repeat";
+    layer!.style.backgroundPosition = "center center";
+  };
+
+  paint();
+  let ro: ResizeObserver | null = null;
+  if (typeof ResizeObserver !== "undefined") {
+    let raf = 0;
+    ro = new ResizeObserver(() => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(paint);
+    });
+    ro.observe(root);
   }
-  return { destroy: () => {} };
+
+  return {
+    destroy() {
+      ro?.disconnect();
+    },
+  };
 }
 
 /* —— Shortcut Hints —— */

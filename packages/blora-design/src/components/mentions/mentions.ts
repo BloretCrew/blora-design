@@ -1,14 +1,94 @@
 /**
  * Mentions: suggestion list next to the typed @ (caret), with viewport flip / clamp.
  * Menu is portaled to document.body so Storybook transforms cannot trap fixed coords.
+ *
+ * Options may be plain strings or rich objects (avatar + name + secondary tag),
+ * composed with `.blora-avatar` / muted meta — no extra packages required.
  */
 export interface MentionsController {
   destroy(): void;
 }
 
-const DEFAULT_USERS = ["alice", "bob", "carol", "dave"];
+/** Rich option for @ menus (avatar + label + optional secondary tag). */
+export interface MentionOption {
+  /** Inserted after @ (required). */
+  value: string;
+  /** Primary display name; defaults to value. */
+  label?: string;
+  /** Initials or short text inside `.blora-avatar` when no image. */
+  initials?: string;
+  /** Image URL for avatar (preferred over initials). */
+  avatar?: string;
+  /** Avatar color variant: primary | neutral | info | success | contrast */
+  avatarVariant?: "primary" | "neutral" | "info" | "success" | "contrast";
+  /** Secondary line / trailing tag (role, org, note…). */
+  tag?: string;
+  /** Extra search tokens (not shown). */
+  keywords?: string;
+}
+
+const DEFAULT_USERS: MentionOption[] = [
+  { value: "alice", label: "alice" },
+  { value: "bob", label: "bob" },
+  { value: "carol", label: "carol" },
+  { value: "dave", label: "dave" },
+];
 const OWNER_ATTR = "data-blora-mentions-owner";
 let ownerSeq = 0;
+
+function parseOptions(raw: string): MentionOption[] {
+  try {
+    const parsed = JSON.parse(raw) as unknown;
+    if (!Array.isArray(parsed)) return [];
+    return parsed
+      .map((o): MentionOption | null => {
+        if (typeof o === "string") {
+          return { value: o, label: o };
+        }
+        if (o && typeof o === "object") {
+          const rec = o as Record<string, unknown>;
+          const value = String(rec.value ?? rec.name ?? rec.id ?? rec.label ?? "").trim();
+          if (!value) return null;
+          const opt: MentionOption = {
+            value,
+            label: String(rec.label ?? rec.name ?? value),
+          };
+          if (rec.initials != null) opt.initials = String(rec.initials);
+          if (rec.avatar != null) opt.avatar = String(rec.avatar);
+          if (
+            rec.avatarVariant === "primary" ||
+            rec.avatarVariant === "neutral" ||
+            rec.avatarVariant === "info" ||
+            rec.avatarVariant === "success" ||
+            rec.avatarVariant === "contrast"
+          ) {
+            opt.avatarVariant = rec.avatarVariant;
+          }
+          if (rec.tag != null) opt.tag = String(rec.tag);
+          else if (rec.description != null) opt.tag = String(rec.description);
+          if (rec.keywords != null) opt.keywords = String(rec.keywords);
+          return opt;
+        }
+        return null;
+      })
+      .filter((o): o is MentionOption => !!o);
+  } catch {
+    return [];
+  }
+}
+
+function optionSearchText(o: MentionOption): string {
+  return [o.value, o.label, o.tag, o.keywords, o.initials].filter(Boolean).join(" ");
+}
+
+function defaultInitials(o: MentionOption): string {
+  if (o.initials) return o.initials.slice(0, 2);
+  const src = (o.label || o.value).trim();
+  if (!src) return "?";
+  /* ASCII: first 2 alnum chars; CJK: first 1–2 chars */
+  if (/^[\w.-]+$/.test(src)) return src.slice(0, 2).toUpperCase();
+  return src.slice(0, 2);
+}
 
 /** Remove orphan portaled menus (Storybook remounts / navigation leave them on body). */
 function purgeOrphanMenus(doc: Document, keepOwner?: string): void {
@@ -30,24 +110,8 @@ export function createMentionsController(root: HTMLElement): MentionsController 
     root.dataset.options ||
     field.getAttribute("data-options") ||
     "[]";
-  let options: string[] = [];
-  try {
-    const parsed = JSON.parse(raw) as unknown;
-    if (Array.isArray(parsed)) {
-      options = parsed.map((o) =>
-        typeof o === "string"
-          ? o
-          : String(
-              (o as { label?: string; value?: string }).label ||
-                (o as { value?: string }).value ||
-                "",
-            ),
-      );
-    }
-  } catch {
-    options = [];
-  }
-  if (options.length === 0) options = [...DEFAULT_USERS];
+  let options = parseOptions(raw);
+  if (options.length === 0) options = DEFAULT_USERS.map((o) => ({ ...o }));
 
   /* Stable owner id on root — reuse so remounts replace the same portal menu */
   let ownerId = root.getAttribute("data-blora-mentions-id");
@@ -236,18 +300,68 @@ export function createMentionsController(root: HTMLElement): MentionsController 
     menuEl.dataset.placement = placeBelow ? "below" : "above";
     menuEl.style.left = `${Math.round(left)}px`;
     menuEl.style.top = `${Math.round(top)}px`;
-    menuEl.style.minWidth = "10rem";
+    const rich = menuEl.classList.contains("blora-mentions__menu--rich");
+    /* Width follows content so short names aren't force-ellipsized */
+    menuEl.style.minWidth = rich ? "16rem" : "10rem";
     menuEl.style.width = "max-content";
+    menuEl.style.maxWidth = rich
+      ? `${Math.min(24 * 16, window.innerWidth - pad * 2)}px`
+      : `${Math.min(20 * 16, window.innerWidth - pad * 2)}px`;
     menuEl.style.maxHeight = `${Math.round(
       Math.max(80, placeBelow ? Math.min(menuH, spaceBelow) : Math.min(menuH, spaceAbove)),
     )}px`;
     menuEl.style.visibility = "visible";
   };
 
+  const buildOptionEl = (opt: MentionOption, active: boolean): HTMLElement => {
+    const li = doc.createElement("li");
+    li.className = "blora-mentions__option";
+    if (active) li.setAttribute("data-active", "");
+    li.setAttribute("role", "option");
+    li.dataset.name = opt.value;
+
+    const avatar = doc.createElement("span");
+    avatar.className = "blora-avatar";
+    avatar.setAttribute("data-size", "sm");
+    avatar.setAttribute("data-variant", opt.avatarVariant || "info");
+    avatar.setAttribute("aria-hidden", "true");
+    if (opt.avatar) {
+      const img = doc.createElement("img");
+      img.src = opt.avatar;
+      img.alt = "";
+      avatar.appendChild(img);
+    } else {
+      avatar.textContent = defaultInitials(opt);
+    }
+
+    const meta = doc.createElement("span");
+    meta.className = "blora-mentions__meta";
+
+    const name = doc.createElement("span");
+    name.className = "blora-mentions__name";
+    name.textContent = opt.label || opt.value;
+
+    meta.appendChild(name);
+
+    li.append(avatar, meta);
+
+    if (opt.tag) {
+      /* Use framework .blora-tag (bordered pill), right-aligned in the row */
+      const tag = doc.createElement("span");
+      tag.className = "blora-tag blora-mentions__tag";
+      tag.setAttribute("data-variant", "neutral");
+      tag.textContent = opt.tag;
+      li.append(tag);
+    }
+
+    return li;
+  };
+
   const render = (query: string) => {
     if (destroyed) return;
+    const q = query.toLowerCase();
     const filtered = options
-      .filter((o) => !query || o.toLowerCase().includes(query.toLowerCase()))
+      .filter((o) => !q || optionSearchText(o).toLowerCase().includes(q))
       .slice(0, 8);
 
     if (filtered.length === 0) {
@@ -257,17 +371,9 @@ export function createMentionsController(root: HTMLElement): MentionsController 
     }
 
     activeIndex = Math.min(activeIndex, filtered.length - 1);
-    menuEl.replaceChildren(
-      ...filtered.map((opt, i) => {
-        const li = doc.createElement("li");
-        li.className = "blora-mentions__option";
-        if (i === activeIndex) li.setAttribute("data-active", "");
-        li.setAttribute("role", "option");
-        li.dataset.name = opt;
-        li.textContent = `@${opt}`;
-        return li;
-      }),
-    );
+    const rich = filtered.some((o) => o.avatar || o.initials || o.tag || o.label !== o.value);
+    menuEl.classList.toggle("blora-mentions__menu--rich", rich);
+    menuEl.replaceChildren(...filtered.map((opt, i) => buildOptionEl(opt, i === activeIndex)));
     setOpen(true);
     requestAnimationFrame(() => {
       positionNearAt();

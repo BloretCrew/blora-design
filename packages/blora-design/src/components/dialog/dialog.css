@@ -110,17 +110,21 @@
   animation: blora-dialog-pop-out var(--blora-duration-base) var(--blora-easing-standard) forwards;
 }
 
-/* -- Responsive: bottom sheet on small screens -- */
+/* -- Responsive: stay centered; tighten padding on small viewports -- */
 @media (max-width: 560px) {
   .blora-dialog__backdrop {
-    align-items: flex-end;
-    padding: var(--blora-space-3);
-    padding-bottom: max(var(--blora-space-3), env(safe-area-inset-bottom, 0px));
+    align-items: center;
+    justify-content: center;
+    padding: max(var(--blora-space-4), env(safe-area-inset-top, 0px))
+      max(var(--blora-space-3), env(safe-area-inset-inline-end, 0px))
+      max(var(--blora-space-4), env(safe-area-inset-bottom, 0px))
+      max(var(--blora-space-3), env(safe-area-inset-inline-start, 0px));
   }
 
   .blora-dialog__panel {
-    max-height: calc(100dvh - var(--blora-space-6));
-    border-radius: var(--blora-radius-lg) var(--blora-radius-lg) 0 0;
+    max-height: min(calc(100dvh - 2 * var(--blora-space-5)), 90dvh);
+    border-radius: var(--blora-radius-xl);
+    margin-inline: auto;
   }
 
   .blora-dialog__header,
@@ -135,6 +139,9 @@
 
   .blora-dialog__footer .blora-button {
     flex: 1 1 auto;
+    width: auto;
+    min-width: 0;
+    max-width: 100%;
   }
 }
 

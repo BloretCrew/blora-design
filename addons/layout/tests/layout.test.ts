@@ -11,19 +11,52 @@ describe("layout add-on", () => {
     document.body.innerHTML = "";
   });
 
-  it("sidebar opens and closes", () => {
+  it("sidebar opens and closes in drawer width", () => {
     document.body.innerHTML = `
-      <div class="blora-sidebar-layout" data-blora-sidebar-layout>
+      <div class="blora-sidebar-layout" data-blora-sidebar-layout style="width:360px">
+        <button type="button" data-blora-sidebar-toggle>菜单</button>
+        <aside class="blora-sidebar-layout__aside"><a href="#x">链接</a></aside>
+        <div class="blora-sidebar-layout__mask"></div>
+        <div class="blora-sidebar-layout__content"></div>
+      </div>`;
+    const root = document.querySelector<HTMLElement>(".blora-sidebar-layout")!;
+    /* jsdom getBoundingClientRect often returns 0 — force drawer metrics */
+    Object.defineProperty(root, "clientWidth", { configurable: true, get: () => 360 });
+    root.getBoundingClientRect = () =>
+      ({ width: 360, height: 400, top: 0, left: 0, bottom: 400, right: 360, x: 0, y: 0, toJSON: () => ({}) }) as DOMRect;
+
+    const ctrl = createSidebarLayoutController(root);
+    expect(root.hasAttribute("data-drawer") || root.classList.contains("blora-sidebar-layout--drawer")).toBe(
+      true,
+    );
+    ctrl.open();
+    expect(root.classList.contains("is-open")).toBe(true);
+
+    const mask = root.querySelector<HTMLElement>(".blora-sidebar-layout__mask")!;
+    mask.click();
+    expect(root.classList.contains("is-open")).toBe(false);
+
+    ctrl.open();
+    root.querySelector("a")!.click();
+    expect(root.classList.contains("is-open")).toBe(false);
+
+    ctrl.destroy();
+  });
+
+  it("sidebar ignores open when wide (desktop columns)", () => {
+    document.body.innerHTML = `
+      <div class="blora-sidebar-layout" style="width:1100px">
         <button type="button" data-blora-sidebar-toggle>菜单</button>
         <aside class="blora-sidebar-layout__aside"></aside>
         <div class="blora-sidebar-layout__mask"></div>
         <div class="blora-sidebar-layout__content"></div>
       </div>`;
     const root = document.querySelector<HTMLElement>(".blora-sidebar-layout")!;
+    Object.defineProperty(root, "clientWidth", { configurable: true, get: () => 1100 });
+    root.getBoundingClientRect = () =>
+      ({ width: 1100, height: 400, top: 0, left: 0, bottom: 400, right: 1100, x: 0, y: 0, toJSON: () => ({}) }) as DOMRect;
     const ctrl = createSidebarLayoutController(root);
     ctrl.open();
-    expect(root.classList.contains("is-open")).toBe(true);
-    ctrl.close();
     expect(root.classList.contains("is-open")).toBe(false);
     ctrl.destroy();
   });

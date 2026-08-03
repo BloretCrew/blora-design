@@ -18,22 +18,22 @@ export const THEME_PRESETS: Record<string, ThemePreset> = {
     colors: ["#FAF7F8", "#303143", "#9F5964", "#5D6680", "#5B756B"],
   },
   cinnabar: {
-    name: "丹砂",
+    name: "Cinnabar",
     description: "暖白基底与低饱和红",
     colors: ["#F8F4EC", "#A0392E", "#3D4A5C", "#5A7B6B", "#B89968"],
   },
   indigo: {
-    name: "靛青",
+    name: "Indigo",
     description: "冷灰基底与沉静蓝",
     colors: ["#F4F5F8", "#405D87", "#55756F", "#A74B52", "#AF8A55"],
   },
   lotus: {
-    name: "藕荷",
+    name: "Lotus",
     description: "柔和粉紫与低饱和绿",
     colors: ["#F8F4F6", "#9A466A", "#55786B", "#526078", "#B28A59"],
   },
   ocean: {
-    name: "海盐",
+    name: "Ocean",
     description: "清爽青蓝与低饱和绿",
     colors: ["#F1F7F6", "#176B78", "#39745F", "#365D78", "#B08A55"],
   },

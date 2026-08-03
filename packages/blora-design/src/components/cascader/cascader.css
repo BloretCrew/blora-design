@@ -28,9 +28,16 @@
   border: var(--blora-border-subtle);
   border-radius: var(--blora-radius-md);
   box-shadow: var(--blora-shadow-3);
-  overflow: auto hidden;
-  max-height: 280px;
-  max-width: 100%;
+  overflow: auto;
+  max-height: min(280px, 70dvh);
+  max-width: min(100%, calc(100vw - 2rem));
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 560px) {
+  .blora-cascader__column {
+    min-width: min(140px, 42vw);
+  }
 }
 
 .blora-cascader__panel[data-open] {

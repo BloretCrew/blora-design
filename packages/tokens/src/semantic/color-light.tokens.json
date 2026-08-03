@@ -135,7 +135,12 @@
       "foreground": { "$type": "color", "$value": "{color.coral.onMedia}" }
     },
     "tooltip": {
-      "background": { "$type": "color", "$value": "{color.coral.textStrong}" }
+      "background": { "$type": "color", "$value": "{color.coral.textStrong}" },
+      "foreground": {
+        "$type": "color",
+        "$value": "{color.coral.onAccent}",
+        "$description": "Tooltip bubble text on dark tooltip background"
+      }
     },
     "brand": {
       "glyph": {

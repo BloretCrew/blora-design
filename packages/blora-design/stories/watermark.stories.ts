@@ -25,7 +25,7 @@ export const Default: Story = {
       data-blora-watermark
       data-text="Blora"
       ${ref(init)}
-      style="min-height: 12rem; padding: var(--blora-space-6); border: 1px solid var(--blora-color-border-subtle); border-radius: var(--blora-radius-lg);"
+      style="min-height: 16rem; min-width: 100%; padding: var(--blora-space-6); border: 1px solid var(--blora-color-border-subtle); border-radius: var(--blora-radius-lg); box-sizing: border-box;"
     >
       <p style="position: relative; z-index: 1; margin: 0;">带水印的内容区域</p>
     </div>

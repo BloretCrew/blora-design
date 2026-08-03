@@ -3,8 +3,27 @@
 .blora-transfer {
   display: flex;
   gap: var(--blora-space-3);
-  align-items: center;
+  align-items: stretch;
   min-width: 0;
+  max-width: 100%;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 560px) {
+  .blora-transfer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .blora-transfer__actions {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .blora-transfer__panel {
+    max-height: 12rem;
+    width: 100%;
+  }
 }
 
 .blora-transfer__panel {
@@ -64,20 +83,27 @@
   border: 1.5px solid var(--blora-color-text-subtle);
   border-radius: var(--blora-radius-xs);
   background: var(--blora-color-surface-default);
-  display: grid;
-  place-items: center;
+  display: inline-block;
   transition: all var(--blora-duration-fast) var(--blora-easing-standard);
   position: relative;
+  box-sizing: border-box;
+  flex-shrink: 0;
 }
 
+/* Same optical-center recipe as .blora-checkbox__box — see checkbox.css */
 .blora-transfer__check::after {
   content: "";
-  width: 0.58em;
-  height: 0.34em;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  box-sizing: border-box;
+  width: 0.3em;
+  height: 0.52em;
   border: solid var(--blora-color-text-on-accent);
-  border-width: 0 0 2px 2px;
+  border-width: 0 0.15em 0.15em 0;
   opacity: 0;
-  transform: rotate(-45deg) scale(0.4);
+  transform: translate(-50%, -60%) rotate(45deg) scale(0.4);
+  transform-origin: center center;
   transition: all var(--blora-duration-fast) var(--blora-easing-overshoot);
 }
 
@@ -88,7 +114,7 @@
 
 .blora-transfer__row input:checked + .blora-transfer__check::after {
   opacity: 1;
-  transform: rotate(-45deg) scale(1);
+  transform: translate(-50%, -60%) rotate(45deg) scale(1);
 }
 
 .blora-transfer__row input:focus-visible + .blora-transfer__check {

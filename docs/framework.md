@@ -152,7 +152,7 @@ Blora.cls / classPrefix / version   // "1.0.0"
 
 **暗色模式**：`<html class="blora-dark">` 即可，所有颜色 token 自动重映射，无需改组件。暗色模式可与任意配色组合。
 
-视觉形态不随配色改变。Coral、Dusk、丹砂、靛青、藕荷、海盐、Graphite、Mono、Circuit 都只负责颜色映射，其中 **Coral 是默认配色**。
+视觉形态不随配色改变。Coral、Dusk、Cinnabar、Indigo、Lotus、Ocean、Graphite、Mono、Circuit 都只负责颜色映射，其中 **Coral 是默认配色**。
 
 ---
 

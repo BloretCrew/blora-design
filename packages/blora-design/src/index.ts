@@ -56,7 +56,11 @@ export {
   createAutocompleteController,
   type AutocompleteController,
 } from "./components/autocomplete/index.js";
-export { createMentionsController, type MentionsController } from "./components/mentions/index.js";
+export {
+  createMentionsController,
+  type MentionsController,
+  type MentionOption,
+} from "./components/mentions/index.js";
 export { createOtpController, type OtpController } from "./components/otp/index.js";
 export { createCascaderController, type CascaderController } from "./components/cascader/index.js";
 export {

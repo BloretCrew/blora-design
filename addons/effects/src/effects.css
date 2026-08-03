@@ -345,6 +345,7 @@
 .blora-watermark {
   position: relative;
   overflow: hidden;
+  isolation: isolate;
 }
 
 .blora-watermark__canvas {
@@ -353,8 +354,12 @@
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: var(--blora-z-base);
+  z-index: 0;
   opacity: 0.14;
+  background-repeat: repeat;
+  background-position: center center;
+  /* Never stretch a single stamp to fill the box */
+  background-size: auto;
 }
 
 .blora-diff {

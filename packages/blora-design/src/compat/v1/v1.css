@@ -75,6 +75,7 @@
     --blora-banner-bg: var(--blora-color-banner-background);
     --blora-banner-fg: var(--blora-color-banner-foreground);
     --blora-tooltip-bg: var(--blora-color-tooltip-background);
+    --blora-tooltip-fg: var(--blora-color-tooltip-foreground);
     --blora-brand-glyph: var(--blora-color-brand-glyph);
 
     /* Focus ring */

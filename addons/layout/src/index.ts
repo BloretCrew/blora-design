@@ -15,6 +15,9 @@ export interface SidebarLayoutController extends Destroyable {
   close(): void;
 }
 
+/** Matches CSS drawer breakpoint (component width, not viewport). */
+const SIDEBAR_DRAWER_MAX = 900;
+
 export function createSidebarLayoutController(root: HTMLElement): SidebarLayoutController {
   if (typeof document === "undefined") {
     return { open: () => {}, close: () => {}, destroy: () => {} };
@@ -27,34 +30,44 @@ export function createSidebarLayoutController(root: HTMLElement): SidebarLayoutC
     ),
   );
   const aside = root.querySelector<HTMLElement>(".blora-sidebar-layout__aside");
-  const mask = root.querySelector<HTMLElement>(".blora-sidebar-layout__mask");
   if (!aside || !toggles.length) {
     return { open: () => {}, close: () => {}, destroy: () => {} };
   }
 
-  const mobile =
-    typeof win.matchMedia === "function"
-      ? win.matchMedia("(max-width: 900px)")
-      : ({
-          matches: false,
-          addEventListener: () => {},
-          removeEventListener: () => {},
-        } as unknown as MediaQueryList);
+  /* Ensure mask exists so close-on-backdrop always works */
+  let mask = root.querySelector<HTMLElement>(".blora-sidebar-layout__mask");
+  if (!mask) {
+    mask = doc.createElement("div");
+    mask.className = "blora-sidebar-layout__mask";
+    mask.setAttribute("aria-hidden", "true");
+    root.insertBefore(mask, aside);
+  }
+
   if (!aside.id) aside.id = `blora-sidebar-${Math.random().toString(36).slice(2, 9)}`;
   toggles.forEach((toggle) => {
     toggle.setAttribute("aria-controls", aside.id);
     toggle.setAttribute("aria-expanded", "false");
   });
 
+  let drawerMode = false;
+
+  const isDrawerWidth = () => {
+    const w = root.getBoundingClientRect().width || root.clientWidth || win.innerWidth;
+    return w <= SIDEBAR_DRAWER_MAX;
+  };
+
   const syncA11y = () => {
     const unavailable =
-      mobile.matches && !root.classList.contains("is-open") && !root.hasAttribute("data-open");
+      drawerMode && !root.classList.contains("is-open") && !root.hasAttribute("data-open");
     aside.setAttribute("aria-hidden", String(unavailable));
     if (unavailable) aside.setAttribute("inert", "");
     else aside.removeAttribute("inert");
+    mask!.setAttribute("aria-hidden", String(!root.classList.contains("is-open")));
   };
 
   const setOpen = (open: boolean, restore = false, focus = false) => {
+    /* Ignore open in desktop two-column mode */
+    if (open && !drawerMode) return;
     root.classList.toggle("is-open", open);
     if (open) root.setAttribute("data-open", "");
     else root.removeAttribute("data-open");
@@ -70,30 +83,74 @@ export function createSidebarLayoutController(root: HTMLElement): SidebarLayoutC
     if (!open && restore) toggles[0]?.focus();
   };
 
-  const onToggle = () => setOpen(!root.classList.contains("is-open"), false, true);
-  const onMask = () => setOpen(false, true);
-  const onKey = (e: KeyboardEvent) => {
-    if (e.key === "Escape" && root.classList.contains("is-open")) setOpen(false, true);
-  };
-  const onMobile = () => {
-    if (!mobile.matches) setOpen(false);
+  const syncDrawerMode = () => {
+    const next = isDrawerWidth();
+    if (next === drawerMode) {
+      syncA11y();
+      return;
+    }
+    drawerMode = next;
+    root.classList.toggle("blora-sidebar-layout--drawer", drawerMode);
+    if (drawerMode) root.setAttribute("data-drawer", "");
+    else root.removeAttribute("data-drawer");
+    /* Leaving drawer mode always closes overlay */
+    if (!drawerMode) setOpen(false, false);
     else syncA11y();
   };
 
+  const onToggle = (e: Event) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!drawerMode) return;
+    setOpen(!root.classList.contains("is-open"), false, true);
+  };
+  const onMask = (e: Event) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setOpen(false, true);
+  };
+  const onKey = (e: KeyboardEvent) => {
+    if (e.key === "Escape" && root.classList.contains("is-open")) {
+      e.preventDefault();
+      setOpen(false, true);
+    }
+  };
+  /* Mobile UX: choosing a nav item closes the drawer */
+  const onAsideClick = (e: Event) => {
+    if (!drawerMode || !root.classList.contains("is-open")) return;
+    const t = e.target as Element | null;
+    if (t?.closest?.("a[href], button:not([data-blora-sidebar-toggle])")) {
+      setOpen(false, true);
+    }
+  };
+
+  let ro: ResizeObserver | null = null;
+  if (typeof ResizeObserver !== "undefined") {
+    ro = new ResizeObserver(() => syncDrawerMode());
+    ro.observe(root);
+  } else {
+    win.addEventListener("resize", syncDrawerMode);
+  }
+
   toggles.forEach((t) => t.addEventListener("click", onToggle));
-  mask?.addEventListener("click", onMask);
+  mask.addEventListener("click", onMask);
+  aside.addEventListener("click", onAsideClick);
   doc.addEventListener("keydown", onKey);
-  mobile.addEventListener("change", onMobile);
-  syncA11y();
+  syncDrawerMode();
 
   return {
     open: () => setOpen(true, false, true),
     close: () => setOpen(false, true),
     destroy() {
       toggles.forEach((t) => t.removeEventListener("click", onToggle));
-      mask?.removeEventListener("click", onMask);
+      mask!.removeEventListener("click", onMask);
+      aside.removeEventListener("click", onAsideClick);
       doc.removeEventListener("keydown", onKey);
-      mobile.removeEventListener("change", onMobile);
+      ro?.disconnect();
+      win.removeEventListener("resize", syncDrawerMode);
+      root.classList.remove("is-open", "blora-sidebar-layout--drawer");
+      root.removeAttribute("data-open");
+      root.removeAttribute("data-drawer");
     },
   };
 }

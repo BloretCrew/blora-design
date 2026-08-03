@@ -134,9 +134,10 @@ export class BloraDialog extends BloraElement {
       this.close("close-button");
     });
 
-    // Listen for outside click on backdrop (not panel)
+    // Outside click on backdrop/mask — honor close-on-outside-click="false"
     if (this._backdrop) {
       this.listen(this._backdrop, "pointerdown", (e: Event) => {
+        if (!this.allowsOutsideClickClose()) return;
         if (
           e.target === this._backdrop ||
           (e.target as HTMLElement)?.classList?.contains("blora-dialog__mask")
@@ -146,9 +147,15 @@ export class BloraDialog extends BloraElement {
       });
     }
 
+    /* Escape (and other stack requests) — OverlayController already gates Escape */
     this.listen(this, "blora-close-request", () => {
-      this.close("outside-click");
+      this.close("request");
     });
+  }
+
+  /** `close-on-outside-click="false"` (string) must not close; bare attr still true. */
+  private allowsOutsideClickClose(): boolean {
+    return this.getAttribute("close-on-outside-click") !== "false";
   }
 
   show(): void {

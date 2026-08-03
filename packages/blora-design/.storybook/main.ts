@@ -10,6 +10,16 @@ const config: StorybookConfig = {
   docs: {
     autodocs: "tag",
   },
+  /* Bind for LAN / arbitrary Host header access (pair with storybook -h 0.0.0.0) */
+  async viteFinal(config) {
+    config.server = {
+      ...config.server,
+      host: true,
+      // Vite 5+: allow any Host (IP, tunnel, custom DNS)
+      allowedHosts: true,
+    };
+    return config;
+  },
 };
 
 export default config;

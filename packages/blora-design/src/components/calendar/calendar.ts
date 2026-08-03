@@ -56,9 +56,7 @@ export function createCalendarController(root: HTMLElement): CalendarController 
   const render = () => {
     root.replaceChildren();
     const head = el("div", "blora-calendar__head");
-    const navRow = el("div");
-    navRow.style.display = "flex";
-    navRow.style.gap = "0.25rem";
+    const navRow = el("div", "blora-calendar__navs");
     const prev = el("button", "blora-calendar__nav");
     prev.setAttribute("type", "button");
     prev.setAttribute("data-nav", "prev");
@@ -74,7 +72,8 @@ export function createCalendarController(root: HTMLElement): CalendarController 
     let titleText = "";
     let zoom: string | null = null;
     if (viewMode === "days") {
-      titleText = `${viewYear}年 ${MONTHS[viewMonth]}`;
+      /* No space — avoids "2026年 8 / 月" wrap on narrow hosts */
+      titleText = `${viewYear}年${MONTHS[viewMonth]}`;
       zoom = "months";
     } else if (viewMode === "months") {
       titleText = `${viewYear}年`;
@@ -86,7 +85,7 @@ export function createCalendarController(root: HTMLElement): CalendarController 
     const title = el("div", "blora-calendar__title", titleText);
     if (zoom) title.setAttribute("data-zoom", zoom);
 
-    const todayBtn = el("button", "blora-button");
+    const todayBtn = el("button", "blora-button blora-calendar__today");
     todayBtn.setAttribute("type", "button");
     todayBtn.setAttribute("data-variant", "outline");
     todayBtn.setAttribute("data-size", "sm");

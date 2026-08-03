@@ -37,6 +37,7 @@ v1_token,v2_token,status,reason,removal_version
 --blora-banner-bg,--blora-color-banner-background,mapped,Moved to banner namespace,2.0.0
 --blora-banner-fg,--blora-color-banner-foreground,mapped,Moved to banner namespace,2.0.0
 --blora-tooltip-bg,--blora-color-tooltip-background,mapped,Moved to tooltip namespace,2.0.0
+(n/a · v1 used --blora-on-accent),--blora-color-tooltip-foreground,new,"Dedicated tooltip text color; dark mode must not reuse text-on-accent (on-accent is dark for light primary fills)",2.0.0
 --blora-brand-glyph,--blora-color-brand-glyph,mapped,Moved to brand namespace,2.0.0
 --blora-font-heading,--blora-font-heading,mapped,Same name (already in font namespace),2.0.0
 --blora-font-sans,--blora-font-sans,mapped,Same name (already in font namespace),2.0.0

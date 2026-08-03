@@ -106,6 +106,36 @@ test("dialog closes on outside click", async ({ page }) => {
   await expect(page.locator("#dialog")).not.toHaveAttribute("open", "");
 });
 
+test("dialog with close-on-outside-click=false stays open on backdrop click", async ({ page }) => {
+  await page.setContent(
+    htmlPage(
+      `<blora-dialog id="dialog" close-on-outside-click="false"><span slot="title">Persistent</span><p>Content</p></blora-dialog>`,
+    ),
+  );
+
+  await page.waitForFunction(
+    () => !!(document.querySelector("blora-dialog") as unknown as { show?: () => void })?.show,
+  );
+
+  await page
+    .locator("#dialog")
+    .evaluate((el: HTMLElement) => (el as unknown as { show: () => void }).show());
+  await page.waitForTimeout(50);
+  await expect(page.locator("#dialog")).toHaveAttribute("open", "");
+
+  await page.locator("#dialog").evaluate((el: HTMLElement) => {
+    const shadow = el.shadowRoot;
+    const mask = shadow?.querySelector(".blora-dialog__mask") as HTMLElement | null;
+    mask?.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true, composed: true }));
+  });
+  await page.waitForTimeout(300);
+  await expect(page.locator("#dialog")).toHaveAttribute("open", "");
+
+  await page.keyboard.press("Escape");
+  await page.waitForTimeout(300);
+  await expect(page.locator("#dialog")).not.toHaveAttribute("open", "");
+});
+
 test("dialog locks body scroll when open", async ({ page }) => {
   await page.setContent(
     htmlPage(

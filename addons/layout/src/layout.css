@@ -1,7 +1,16 @@
 /* Blora Design 2.0 - Layout add-on CSS */
 
-/* Sidebar layout */
+/* Sidebar layout
+ * Drawer mode is driven by the **component width** (container query) with a
+ * viewport @media fallback. Storybook docs often keep a wide window while the
+ * canvas is narrow — viewport-only media left a crushed two-column grid that
+ * could not close cleanly. Overlay uses absolute (not fixed) so it stays
+ * inside transformed ancestors (Storybook, scaled previews).
+ */
 .blora-sidebar-layout {
+  --blora-sidebar-drawer-at: 900px;
+
+  position: relative;
   display: grid;
   grid-template-columns: minmax(12rem, var(--blora-sidebar-width, 17rem)) minmax(0, 1fr);
   min-height: var(--blora-sidebar-min-height, 28rem);
@@ -9,6 +18,9 @@
   border-radius: var(--blora-radius-xl);
   overflow: hidden;
   background: var(--blora-color-surface-canvas);
+  isolation: isolate;
+  container-type: inline-size;
+  container-name: blora-sidebar;
 }
 
 .blora-sidebar-layout__aside {
@@ -16,12 +28,14 @@
   padding: var(--blora-space-5);
   border-inline-end: 1px solid var(--blora-color-border-subtle);
   background: var(--blora-color-surface-default);
+  box-sizing: border-box;
 }
 
 .blora-sidebar-layout__content {
   grid-column: 2;
   min-width: 0;
   padding: var(--blora-space-6);
+  box-sizing: border-box;
 }
 
 .blora-sidebar-layout__toggle {
@@ -36,63 +50,104 @@
   --blora-sidebar-min-height: 20rem;
 }
 
-@media (max-width: 900px) {
+/* Shared drawer rules — applied via @container and @media fallback */
+.blora-sidebar-layout--drawer,
+.blora-sidebar-layout[data-drawer] {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.blora-sidebar-layout--drawer .blora-sidebar-layout__toggle,
+.blora-sidebar-layout[data-drawer] .blora-sidebar-layout__toggle {
+  display: inline-flex;
+  justify-self: start;
+  align-self: start;
+  width: max-content;
+  max-width: calc(100% - 2 * var(--blora-space-4));
+  height: auto;
+  margin: var(--blora-space-4) var(--blora-space-4) 0;
+  position: relative;
+  z-index: 5;
+}
+
+.blora-sidebar-layout--drawer .blora-sidebar-layout__content,
+.blora-sidebar-layout[data-drawer] .blora-sidebar-layout__content {
+  grid-column: 1;
+}
+
+.blora-sidebar-layout--drawer .blora-sidebar-layout__aside,
+.blora-sidebar-layout[data-drawer] .blora-sidebar-layout__aside {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  inset-inline-start: 0;
+  z-index: 30;
+  width: min(20rem, 86%);
+  max-width: 20rem;
+  height: 100%;
+  max-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  border-inline-end: 1px solid var(--blora-color-border-subtle);
+  box-shadow: var(--blora-shadow-4);
+  transform: translateX(-105%);
+  transition: transform var(--blora-duration-slow, 0.35s) var(--blora-easing-standard);
+  /* Keep above mask; always paint as a solid sheet */
+  background: var(--blora-color-surface-default);
+}
+
+[dir="rtl"] .blora-sidebar-layout--drawer .blora-sidebar-layout__aside,
+[dir="rtl"] .blora-sidebar-layout[data-drawer] .blora-sidebar-layout__aside {
+  transform: translateX(105%);
+}
+
+.blora-sidebar-layout--drawer.is-open .blora-sidebar-layout__aside,
+.blora-sidebar-layout--drawer[data-open] .blora-sidebar-layout__aside,
+.blora-sidebar-layout[data-drawer].is-open .blora-sidebar-layout__aside,
+.blora-sidebar-layout[data-drawer][data-open] .blora-sidebar-layout__aside {
+  transform: translateX(0);
+}
+
+.blora-sidebar-layout--drawer .blora-sidebar-layout__mask,
+.blora-sidebar-layout[data-drawer] .blora-sidebar-layout__mask {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: var(--blora-color-overlay-drawer, rgba(7, 6, 10, 0.55));
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  cursor: pointer;
+  transition:
+    opacity var(--blora-duration-base, 0.26s) var(--blora-easing-standard),
+    visibility 0s linear var(--blora-duration-base, 0.26s);
+}
+
+.blora-sidebar-layout--drawer.is-open .blora-sidebar-layout__mask,
+.blora-sidebar-layout--drawer[data-open] .blora-sidebar-layout__mask,
+.blora-sidebar-layout[data-drawer].is-open .blora-sidebar-layout__mask,
+.blora-sidebar-layout[data-drawer][data-open] .blora-sidebar-layout__mask {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition-delay: 0s;
+}
+
+/* Component-width driven (Storybook canvas, nested layouts) */
+@container blora-sidebar (max-width: 900px) {
   .blora-sidebar-layout {
-    grid-template-columns: minmax(0, 1fr);
-    overflow: visible;
-  }
-
-  .blora-sidebar-layout__aside {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    inset-inline-start: 0;
-    z-index: var(--blora-z-drawer);
-    width: min(20rem, 86vw);
-    transform: translateX(-102%);
-    transition: transform var(--blora-duration-slow, 0.35s) var(--blora-easing-standard);
-    box-shadow: var(--blora-shadow-4);
-  }
-
-  [dir="rtl"] .blora-sidebar-layout__aside {
-    transform: translateX(102%);
-  }
-
-  .blora-sidebar-layout.is-open .blora-sidebar-layout__aside,
-  .blora-sidebar-layout[data-open] .blora-sidebar-layout__aside {
-    transform: translateX(0);
-  }
-
-  .blora-sidebar-layout__content {
-    grid-column: 1;
-  }
-
-  .blora-sidebar-layout__toggle {
-    display: inline-flex;
-    justify-self: start;
-    margin: var(--blora-space-4) var(--blora-space-4) 0;
-  }
-
-  .blora-sidebar-layout__mask {
-    position: fixed;
-    inset: 0;
-    z-index: var(--blora-z-dropdown);
-    display: block;
-    background: var(--blora-color-overlay-drawer, rgb(0 0 0 / 40%));
-    opacity: 0;
-    visibility: hidden;
-    transition:
-      opacity var(--blora-duration-base) var(--blora-easing-standard),
-      visibility 0s linear var(--blora-duration-base);
-  }
-
-  .blora-sidebar-layout.is-open .blora-sidebar-layout__mask,
-  .blora-sidebar-layout[data-open] .blora-sidebar-layout__mask {
-    opacity: 1;
-    visibility: visible;
-    transition-delay: 0s;
+    /* class toggled by JS; container alone cannot set host class.
+       Host uses [data-drawer] from controller. */
   }
 }
+
+/* Viewport fallback when container queries unavailable — controller still
+   sets [data-drawer] from ResizeObserver so styles apply either way. */
 
 /* Affix */
 .blora-affix {
