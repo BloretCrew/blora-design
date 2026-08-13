@@ -1,11 +1,43 @@
 {
   "name": "layout",
+  "category": "layout",
   "status": "beta",
-  "kind": "headless",
+  "kind": "custom-element-and-headless",
   "since": "2.0.0",
   "requiresJavaScript": true,
+  "customElements": {
+    "blora-sidebar-layout": {
+      "attributes": [
+        "compact",
+        "label",
+        "sticky",
+        "toggle-label",
+        "variant"
+      ],
+      "definitions": [
+        "blora-sidebar-layout-sidebar",
+        "blora-sidebar-layout-content"
+      ],
+      "methods": [
+        "open",
+        "close"
+      ],
+      "cssProperties": [
+        "--blora-sidebar-width",
+        "--blora-sidebar-min-height",
+        "--blora-sidebar-aside-padding",
+        "--blora-sidebar-aside-background",
+        "--blora-sidebar-content-padding",
+        "--blora-sidebar-sticky-offset",
+        "--blora-sidebar-sticky-height",
+        "--blora-sidebar-drawer-aside-padding",
+        "--blora-sidebar-drawer-aside-background",
+        "--blora-sidebar-drawer-content-padding",
+        "--blora-sidebar-toggle-min-height"
+      ]
+    }
+  },
   "methods": {
-    "createSidebarLayoutController": {},
     "createAffixController": {},
     "createAnchorController": {},
     "createScrollSpyController": {},

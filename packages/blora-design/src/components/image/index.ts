@@ -1,5 +1,7 @@
 export {
-  createImageController,
+  BLORA_IMAGE_TAG,
+  BloraImage,
+  defineBloraImage,
   openImagePreview,
   type ImageController,
   type ImagePreviewHandle,

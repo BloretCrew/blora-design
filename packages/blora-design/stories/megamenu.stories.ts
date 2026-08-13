@@ -1,52 +1,28 @@
 import type { Meta, StoryObj } from "@storybook/web-components";
 import { html } from "lit";
-import { ref } from "lit/directives/ref.js";
-import { createMegamenuController } from "../src/components/megamenu";
 
 const meta = {
   title: "Navigation/Megamenu",
-  component: ".blora-megamenu",
+  component: "blora-megamenu",
   tags: ["autodocs"],
 } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 
-const init = (el: Element | undefined): void => {
-  if (!(el instanceof HTMLElement)) return;
-  (el as any).__ctrl?.destroy();
-  (el as any).__ctrl = createMegamenuController(el);
-};
-
 export const Default: Story = {
   render: () => html`
-    <div class="blora-megamenu" data-blora-megamenu ${ref(init)} style="margin-bottom: 14rem;">
-      <button
-        class="blora-button blora-megamenu__trigger"
-        data-variant="outline"
-        type="button"
-        data-blora-megamenu-trigger
-      >
-        浏览产品
-      </button>
-      <div class="blora-megamenu__panel">
-        <div class="blora-megamenu__grid">
-          <div>
-            <div class="blora-megamenu__title">工作</div>
-            <a class="blora-megamenu__link" href="#buttons">项目管理</a>
-            <a class="blora-megamenu__link" href="#buttons">任务中心</a>
-          </div>
-          <div>
-            <div class="blora-megamenu__title">数据</div>
-            <a class="blora-megamenu__link" href="#data">分析面板</a>
-            <a class="blora-megamenu__link" href="#data">导出记录</a>
-          </div>
-          <div>
-            <div class="blora-megamenu__title">支持</div>
-            <a class="blora-megamenu__link" href="#feedback">帮助中心</a>
-            <a class="blora-megamenu__link" href="#feedback">服务状态</a>
-          </div>
-        </div>
-      </div>
+    <div style="margin-bottom: 14rem;">
+      <blora-megamenu label="浏览产品">
+        <blora-megamenu-section title="工作"
+          ><a href="#projects">项目管理</a><a href="#tasks">任务中心</a></blora-megamenu-section
+        >
+        <blora-megamenu-section title="数据"
+          ><a href="#analytics">分析面板</a><a href="#exports">导出记录</a></blora-megamenu-section
+        >
+        <blora-megamenu-section title="支持"
+          ><a href="#help">帮助中心</a><a href="#status">服务状态</a></blora-megamenu-section
+        >
+      </blora-megamenu>
     </div>
   `,
 };

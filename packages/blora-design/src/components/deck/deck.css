@@ -1,5 +1,9 @@
 /* Blora Design 2.0 - deck (v1 parity: pose driven by controller vars only) */
 
+blora-deck {
+  display: block;
+}
+
 .blora-deck {
   position: relative;
   display: grid;

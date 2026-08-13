@@ -1,20 +1,51 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "autocomplete",
+  "category": "data-input",
   "status": "beta",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-autocomplete",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
-  "properties": {},
+  "attributes": {
+    "options": {
+      "type": "string",
+      "description": "JSON string array; declarative options are preferred."
+    },
+    "label": {
+      "type": "string"
+    },
+    "placeholder": {
+      "type": "string"
+    },
+    "value": {
+      "type": "string",
+      "default": ""
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "properties": {
+    "value": {
+      "type": "string"
+    }
+  },
   "methods": {},
-  "events": {},
+  "events": {
+    "blora-autocomplete-change": {
+      "detail": "{ value: string }",
+      "bubbles": true,
+      "composed": false
+    }
+  },
   "slots": {
-    "default": "Content"
+    "default": "Declarative <blora-autocomplete-option value label disabled> definitions; consumed into the official autocomplete tree."
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "section",
+  "accessibilityPattern": "combobox",
   "migrationFromV1": "autocomplete.migration.md"
 }

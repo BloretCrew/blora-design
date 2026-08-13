@@ -221,7 +221,7 @@ Blora Design 采用 12 级非线性间距，组件与布局必须优先使用对
 |-------|------|------|
 | `--blora-ease` | `cubic-bezier(.25,.8,.25,1)` | **默认** — 柔和快速收束 |
 | `--blora-ease-soft` | `cubic-bezier(.4,0,.2,1)` | 柔和 |
-| `--blora-ease-overshoot` | `cubic-bezier(.34,1.56,.64,1)` | 微弹 — 仅 FAB/Toast |
+| `--blora-ease-overshoot` | `cubic-bezier(.34,1.56,.64,1)` | 微弹 — 仅 FAB/Message 等 |
 
 ### 7.2 时长 · Duration
 

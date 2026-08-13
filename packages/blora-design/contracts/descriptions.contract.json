@@ -1,6 +1,7 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "descriptions",
+  "category": "data-display",
   "status": "stable",
   "kind": "css-only",
   "since": "2.0.0",
@@ -13,7 +14,9 @@
   "classes": {
     "blora-descriptions": "Root table element."
   },
-  "slots": { "default": "Table rows with th/td pairs" },
+  "slots": {
+    "default": "Table rows with th/td pairs"
+  },
   "parts": [],
   "cssProperties": [],
   "accessibilityPattern": "table",

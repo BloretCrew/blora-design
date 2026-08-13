@@ -4,6 +4,13 @@
  * Open height = measured content (px), written to --blora-collapse-h.
  * Closed height = 0 via CSS. No hard-coded caps (400px etc.).
  */
+import { BloraElement } from "../../core/blora-element.js";
+import { createBloraIcon } from "../../core/icons.js";
+
+export const BLORA_COLLAPSE_TAG = "blora-collapse";
+
+let collapseInstanceId = 0;
+
 export interface CollapseController {
   destroy(): void;
 }
@@ -51,6 +58,7 @@ function openItem(item: HTMLElement): void {
   item.setAttribute("data-open", "");
   item.classList.add("is-open");
   head?.setAttribute("aria-expanded", "true");
+  body.setAttribute("aria-hidden", "false");
 
   /* After transition, drop fixed max so dynamic content can grow */
   const onEnd = (ev: TransitionEvent) => {
@@ -80,6 +88,7 @@ function closeItem(item: HTMLElement): void {
   item.removeAttribute("data-open");
   item.classList.remove("is-open");
   head?.setAttribute("aria-expanded", "false");
+  body.setAttribute("aria-hidden", "true");
 
   /* Next frame: clear inline maxHeight so CSS max-height:0 applies with transition */
   requestAnimationFrame(() => {
@@ -98,9 +107,11 @@ export function createCollapseController(root: HTMLElement): CollapseController 
       const h = measureContentHeight(body);
       applyMeasuredHeight(body, h);
       body.style.maxHeight = "none";
+      body.setAttribute("aria-hidden", "false");
     } else {
       body.style.removeProperty("--blora-collapse-h");
       clearInlineHeight(body);
+      body.setAttribute("aria-hidden", "true");
     }
   });
 
@@ -139,4 +150,81 @@ export function createCollapseController(root: HTMLElement): CollapseController 
       root.removeEventListener("click", onClick);
     },
   };
+}
+
+interface CollapseItemDefinition {
+  content: Node[];
+  disabled: boolean;
+  heading: string;
+  open: boolean;
+}
+
+/** Composite CE. Child `<blora-collapse-item>` definitions become official disclosure markup. */
+export class BloraCollapse extends BloraElement {
+  private controller: CollapseController | null = null;
+  private definitions: CollapseItemDefinition[] | null = null;
+  private readonly instanceId = ++collapseInstanceId;
+
+  protected render(): void {
+    if (!this.definitions) {
+      this.definitions = Array.from(this.children)
+        .filter((item) => item.localName === "blora-collapse-item")
+        .map((item) => ({
+          content: Array.from(item.childNodes),
+          disabled: item.hasAttribute("disabled"),
+          heading: item.getAttribute("heading") ?? item.getAttribute("label") ?? "",
+          open: item.hasAttribute("open"),
+        }));
+    }
+
+    const root = document.createElement("div");
+    root.className = "blora-collapse";
+    root.dataset.bloraGenerated = "";
+    for (const [index, definition] of this.definitions.entries()) {
+      const item = document.createElement("div");
+      item.className = "blora-collapse__item";
+      if (definition.open) item.dataset.open = "";
+      const head = document.createElement("button");
+      head.className = "blora-collapse__head";
+      head.type = "button";
+      head.disabled = definition.disabled;
+      head.id = `blora-collapse-head-${this.instanceId}-${index}`;
+      head.setAttribute("aria-expanded", String(definition.open));
+      const heading = document.createElement("span");
+      heading.textContent = definition.heading;
+      const icon = document.createElement("span");
+      icon.className = "blora-collapse__icon";
+      icon.appendChild(createBloraIcon("chevron-right", 14));
+      head.append(heading, icon);
+      const body = document.createElement("div");
+      body.className = "blora-collapse__body";
+      body.id = `blora-collapse-panel-${this.instanceId}-${index}`;
+      body.setAttribute("role", "region");
+      body.setAttribute("aria-labelledby", head.id);
+      body.setAttribute("aria-hidden", String(!definition.open));
+      head.setAttribute("aria-controls", body.id);
+      const content = document.createElement("div");
+      content.className = "blora-collapse__content";
+      content.append(...definition.content);
+      body.appendChild(content);
+      item.append(head, body);
+      root.appendChild(item);
+    }
+    this.replaceChildren(root);
+  }
+
+  protected bindEvents(): void {
+    const root = this.querySelector<HTMLElement>(".blora-collapse");
+    if (root) this.controller = createCollapseController(root);
+  }
+
+  protected onDisconnect(): void {
+    this.controller?.destroy();
+    this.controller = null;
+  }
+}
+
+export function defineBloraCollapse(registry: CustomElementRegistry = customElements): void {
+  if (!registry || registry.get(BLORA_COLLAPSE_TAG)) return;
+  registry.define(BLORA_COLLAPSE_TAG, BloraCollapse);
 }

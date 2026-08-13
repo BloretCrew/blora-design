@@ -1,0 +1,30 @@
+{
+  "$schema": "../../schemas/component-contract.schema.json",
+  "name": "media",
+  "category": "data-display",
+  "status": "stable",
+  "kind": "css-only",
+  "since": "2.0.0",
+  "requiresJavaScript": false,
+  "formAssociated": false,
+  "attributes": {
+    "data-ratio": {
+      "type": "\"square\" | \"video\" | \"wide\" | \"portrait\"",
+      "default": "video"
+    },
+    "data-fit": {
+      "type": "\"cover\" | \"contain\"",
+      "default": "cover"
+    }
+  },
+  "properties": {},
+  "methods": {},
+  "events": {},
+  "slots": {
+    "default": "An img, video, iframe, or other media element."
+  },
+  "parts": [],
+  "cssProperties": [],
+  "accessibilityPattern": "section",
+  "migrationFromV1": "media.migration.md"
+}

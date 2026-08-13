@@ -27,3 +27,7 @@
   color: var(--blora-color-text-secondary);
   font-weight: 500;
 }
+
+blora-breadcrumb {
+  display: block;
+}

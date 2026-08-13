@@ -1,15 +1,46 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "tags-input",
+  "category": "data-input",
   "status": "beta",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-tags-input",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
-  "properties": {},
-  "methods": {},
-  "events": {},
+  "attributes": {
+    "values": {
+      "type": "string",
+      "description": "Comma-separated initial tag values."
+    },
+    "placeholder": {
+      "type": "string"
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "label": {
+      "type": "string"
+    }
+  },
+  "properties": {
+    "values": {
+      "type": "string[]"
+    }
+  },
+  "methods": {
+    "focus": {
+      "signature": "(options?: FocusOptions) => void"
+    }
+  },
+  "events": {
+    "blora-change": {
+      "detail": "{ values: string[] }",
+      "bubbles": true,
+      "composed": true
+    }
+  },
   "slots": {
     "default": "Content"
   },

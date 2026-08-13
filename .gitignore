@@ -5,18 +5,36 @@ node_modules/
 dist/
 build/
 .storybook-static/
+.storybook-runtime/
 .out/
 
 # Test output
 test-results/
 playwright-report/
+blob-report/
 coverage/
 *.lcov
+
+# Test suites and visual snapshots (kept locally, not published)
+**/tests/
+**/*.test.ts
+**/*.spec.ts
+**/*-snapshots/
+**/*-win32.png
+
+# Discarded / unused local scratch
+.trashes/
+docs/refactor/showcase-postmortem/
 
 # Temporary files
 _verify_tmp/
 *.tmp
 *.zip
+*.orig
+*.rej
+*.tsbuildinfo
+.cache/
+.turbo/
 
 # Local agent tooling and private working documents
 .agents/

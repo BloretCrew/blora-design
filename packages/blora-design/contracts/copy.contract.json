@@ -1,14 +1,27 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "copy",
+  "category": "actions",
   "status": "beta",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-copy",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
+  "attributes": {
+    "text": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string"
+    }
+  },
   "properties": {},
-  "methods": {},
+  "methods": {
+    "copy": {
+      "signature": "() => void"
+    }
+  },
   "events": {},
   "slots": {
     "default": "Content"

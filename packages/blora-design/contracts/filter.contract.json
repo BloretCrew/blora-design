@@ -1,0 +1,21 @@
+{
+  "$schema": "../../schemas/component-contract.schema.json",
+  "name": "filter",
+  "category": "data-input",
+  "status": "stable",
+  "kind": "css-only",
+  "since": "2.0.0",
+  "requiresJavaScript": false,
+  "formAssociated": true,
+  "attributes": {},
+  "properties": {},
+  "methods": {},
+  "events": {},
+  "slots": {
+    "default": "Native radio inputs and an optional reset button."
+  },
+  "parts": [],
+  "cssProperties": [],
+  "accessibilityPattern": "radiogroup",
+  "migrationFromV1": "filter.migration.md"
+}

@@ -19,10 +19,10 @@ Interactive demos: **Storybook** (`pnpm storybook`). Frozen 1.x reference: `lega
 |-------|------|
 | **Design tokens + foundations CSS** | DTCG → generated CSS; themes / dark |
 | **Per-component CSS** | Import only what you need (or `blora.css` aggregate) |
-| **ESM API** | Headless `createXxxController`, services (`toast`, `notify`), a few Web Components (`blora-select`, `blora-dialog`) |
+| **ESM API** | Composite Custom Elements, explicit Table/Form headless APIs, services (`message`, `notify`) |
 | **Contracts** | `packages/blora-design/contracts/*.contract.json` |
 
-Not a React/Vue component library by default. Use native HTML + CSS + controllers (or light framework wrappers you own).
+Not a React/Vue runtime library. Use native HTML + CSS for primitives and Composite Custom Elements for structure-sensitive controls.
 
 **Does not include:** business APIs, WebSockets, full WYSIWYG, mandatory React runtime.
 
@@ -35,25 +35,23 @@ pnpm add @bloret-crew/blora-design
 ```
 
 ```js
-import "@bloret-crew/blora-design/tokens.css";
-import "@bloret-crew/blora-design/foundations.css";
-import "@bloret-crew/blora-design/components/button.css";
+import "@bloret-crew/blora-design/blora.css";
+import "@bloret-crew/blora-design/auto";
 import {
   VERSION,
   setButtonLoading,
   createTableController,
-  toast,
-  defineBloraSelect,
+  message,
 } from "@bloret-crew/blora-design";
 
-defineBloraSelect();
-// or: import "@bloret-crew/blora-design/auto";
 console.log(VERSION); // e.g. 2.0.0-alpha.1
 ```
 
 ```html
 <button type="button" class="blora-button" data-variant="primary">主操作</button>
 <button type="button" class="blora-button" data-variant="outline">次操作</button>
+<blora-range min="0" max="100" values="25,70"></blora-range>
+<blora-search placeholder="搜索项目…"></blora-search>
 
 <div class="blora-table-wrap" data-blora-selectable>
   <table class="blora-table" id="demo">
@@ -64,7 +62,7 @@ console.log(VERSION); // e.g. 2.0.0-alpha.1
 
 ```js
 createTableController(document.querySelector(".blora-table-wrap"));
-toast("已保存");
+message.success("已保存");
 ```
 
 > **Not recommended for new 2.0 apps:** global `Blora.init()`, `blora.js` UMD, or `blora-btn blora-btn--primary`.  
@@ -84,10 +82,10 @@ pnpm add @bloret-crew/blora-design-markdown @bloret-crew/blora-design-theming
 | Pattern | When |
 |---------|------|
 | Native HTML + CSS | Presentational (Alert, Tag, List, …) |
-| Headless controller | Composite behavior on real DOM (Table, Tree, Form, Drawer, …) |
-| Custom Element | Shipped CE surface (Select, Dialog, …) |
+| Composite Custom Element | Structure-sensitive controls (Range, Pickers, Search, Transfer, Tabs, …) |
+| Headless controller (advanced/compat) | Open data DOM or migration paths (Table, Tree, Form, Drawer, …) |
 
-Full FA-WC-for-everything is **not** the 2.0 default (ADR-013 in `docs/refactor/decisions.md`).
+Composite CE is the default for complex structure (ADR-015, superseding ADR-013). Full FA-WC-for-everything is still staged per form contract.
 
 ---
 
@@ -105,9 +103,9 @@ Human usage guide: [`docs/guide.md`](./docs/guide.md). Tokens: [`docs/standards.
 | Area | 2.0 notes |
 |------|-----------|
 | Primitives | Button (`.blora-button` + `data-variant`), Field, Input, Checkbox, … |
-| Overlays | Dialog CE, Drawer controller, Popover, Tooltip, Toast / Notify |
+| Overlays | Dialog CE, Drawer controller, Popover, Tooltip, Message / Notify |
 | Data | Table controller: sort, page, columns, virtual Y/X, **built-in row select** |
-| Forms | `createFormController`, Tree Select, Mentions, … (many paths still **beta** in contracts) |
+| Forms | Range/Datepicker/Timepicker/Search/Transfer CE; advanced Form, Tree Select, Mentions controllers |
 | Add-ons | Markdown, Thread, QRCode, Effects, Layout, Theming |
 
 Component migration status: [`docs/refactor/component-matrix.md`](./docs/refactor/component-matrix.md).

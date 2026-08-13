@@ -1,5 +1,15 @@
 /* Blora Design 2.0 - Popover */
 
+blora-popover {
+  display: inline-block;
+}
+
+.blora-popover__content {
+  margin: 0 0 var(--blora-space-3);
+  color: var(--blora-color-text-secondary);
+  font-size: var(--blora-text-sm);
+}
+
 .blora-popover {
   position: relative;
   display: inline-flex;

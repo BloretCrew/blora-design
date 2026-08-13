@@ -4,7 +4,7 @@ import { ref } from "lit/directives/ref.js";
 import { createFormController } from "../src/components/form";
 
 const meta = {
-  title: "Forms/Form Validate",
+  title: "Data input/Form",
   component: "form.blora-form",
   tags: ["autodocs"],
 } satisfies Meta;
@@ -20,16 +20,8 @@ const init = (el: Element | undefined): void => {
 export const Default: Story = {
   render: () => html`
     <form class="blora-form" data-blora-form ${ref(init)} style="max-width: 22rem;">
-      <div class="blora-field">
-        <label class="blora-field__label" data-required>邮箱</label>
-        <input class="blora-input" name="email" type="email" required data-blora-validate="email" />
-        <div class="blora-field__error" hidden></div>
-      </div>
-      <div class="blora-field">
-        <label class="blora-field__label" data-required>名称</label>
-        <input class="blora-input" name="name" type="text" required minlength="2" />
-        <div class="blora-field__error" hidden></div>
-      </div>
+      <blora-field label="邮箱" name="email" type="email" validate="email" required></blora-field>
+      <blora-field label="名称" name="name" minlength="2" required></blora-field>
       <button class="blora-button" type="submit" data-variant="primary">提交</button>
     </form>
   `,

@@ -3,6 +3,10 @@
    Children expand with measured --blora-tree-h (no hard-coded 500px).
    ========================================================================= */
 
+blora-tree {
+  display: block;
+}
+
 .blora-tree {
   font-size: var(--blora-text-sm);
   color: var(--blora-color-text-secondary);

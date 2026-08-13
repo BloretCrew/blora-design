@@ -2,6 +2,10 @@
    Single-frame dual wheel, center selection, infinite loop,
    progressive edge fade (stronger toward top/bottom). */
 
+blora-timepicker {
+  display: block;
+}
+
 .blora-timepicker {
   --blora-tp-item: 36px;
 

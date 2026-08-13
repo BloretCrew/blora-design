@@ -2,6 +2,12 @@
  * Blora Design 2.0 - Command Palette controller
  * Filter items, keyboard nav, adaptive ⌘/Ctrl shortcuts.
  */
+import { BloraElement } from "../../core/blora-element.js";
+import { createBloraIcon, type BloraIconName } from "../../core/icons.js";
+import { createSearchController, type SearchController } from "../search/search.js";
+
+export const BLORA_COMMAND_TAG = "blora-command";
+
 export interface CommandPaletteController {
   destroy(): void;
 }
@@ -99,4 +105,129 @@ export function createCommandPaletteController(root: HTMLElement): CommandPalett
       input?.removeEventListener("keydown", onKey);
     },
   };
+}
+
+interface CommandItemDefinition {
+  disabled: boolean;
+  icon: BloraIconName;
+  label: string;
+  shortcut: string;
+  value: string;
+}
+
+const COMMAND_ICONS = new Set<BloraIconName>(["document", "folder", "search", "settings"]);
+
+/** Composite CE that owns the command search and official result item tree. */
+export class BloraCommand extends BloraElement {
+  private controller: CommandPaletteController | null = null;
+  private searchController: SearchController | null = null;
+  private definitions: CommandItemDefinition[] | null = null;
+
+  static get observedAttributes(): string[] {
+    return ["placeholder"];
+  }
+
+  attributeChangedCallback(): void {
+    if (!this.isConnectedInternal) return;
+    this.sync();
+  }
+
+  protected render(): void {
+    if (!this.definitions) {
+      this.definitions = Array.from(this.children)
+        .filter((item) => item.localName === "blora-command-item")
+        .map((item) => {
+          const requested = (item.getAttribute("icon") ?? "document") as BloraIconName;
+          const label = item.getAttribute("label") ?? item.textContent?.trim() ?? "";
+          return {
+            disabled: item.hasAttribute("disabled"),
+            icon: COMMAND_ICONS.has(requested) ? requested : "document",
+            label,
+            shortcut: item.getAttribute("shortcut") ?? "",
+            value: item.getAttribute("value") ?? label,
+          };
+        });
+    }
+
+    const root = document.createElement("div");
+    root.className = "blora-command";
+    root.dataset.bloraGenerated = "";
+    const searchWrap = document.createElement("div");
+    searchWrap.className = "blora-command__search";
+    const search = document.createElement("div");
+    search.className = "blora-search";
+    const icon = document.createElement("span");
+    icon.className = "blora-search__icon";
+    icon.setAttribute("aria-hidden", "true");
+    icon.appendChild(createBloraIcon("search"));
+    const input = document.createElement("input");
+    input.className = "blora-input";
+    input.type = "search";
+    input.placeholder = this.getAttribute("placeholder") ?? "输入命令或搜索...";
+    const clear = document.createElement("button");
+    clear.className = "blora-search__clear";
+    clear.type = "button";
+    clear.hidden = true;
+    clear.setAttribute("aria-label", "清除");
+    clear.appendChild(createBloraIcon("close"));
+    search.append(icon, input, clear);
+    searchWrap.appendChild(search);
+
+    const results = document.createElement("div");
+    results.className = "blora-cmdk-results blora-command__results";
+    this.definitions.forEach((definition, index) => {
+      const item = document.createElement("div");
+      item.className = "blora-cmdk-item blora-command__item";
+      item.dataset.value = definition.value;
+      if (index === 0) item.dataset.active = "";
+      if (definition.disabled) {
+        item.dataset.disabled = "";
+        item.setAttribute("aria-disabled", "true");
+      }
+      const itemIcon = document.createElement("span");
+      itemIcon.appendChild(createBloraIcon(definition.icon));
+      const text = document.createElement("span");
+      text.className = "blora-text-sm";
+      text.textContent = definition.label;
+      item.append(itemIcon, text);
+      if (definition.shortcut) {
+        const kbd = document.createElement("kbd");
+        kbd.className = "blora-command__kbd";
+        kbd.dataset.keys = definition.shortcut;
+        kbd.textContent = definition.shortcut;
+        item.appendChild(kbd);
+      }
+      results.appendChild(item);
+    });
+
+    root.append(searchWrap, results);
+    this.replaceChildren(root);
+  }
+
+  protected override sync(): void {
+    const input = this.querySelector<HTMLInputElement>(".blora-search .blora-input, .blora-input");
+    if (input) input.placeholder = this.getAttribute("placeholder") ?? input.placeholder;
+  }
+
+  protected bindEvents(): void {
+    const root = this.querySelector<HTMLElement>(".blora-command");
+    const search = root?.querySelector<HTMLElement>(".blora-search");
+    if (!root) return;
+    this.controller?.destroy();
+    this.searchController?.destroy();
+    this.controller = createCommandPaletteController(root);
+    if (search) this.searchController = createSearchController(search);
+  }
+
+  protected onDisconnect(): void {
+    this.controller?.destroy();
+    this.searchController?.destroy();
+    this.controller = null;
+    this.searchController = null;
+  }
+}
+
+export function defineBloraCommand(registry: CustomElementRegistry = customElements): void {
+  if (!registry || registry.get(BLORA_COMMAND_TAG)) return;
+  registry.define(BLORA_COMMAND_TAG, BloraCommand);
 }

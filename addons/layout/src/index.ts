@@ -18,7 +18,7 @@ export interface SidebarLayoutController extends Destroyable {
 /** Matches CSS drawer breakpoint (component width, not viewport). */
 const SIDEBAR_DRAWER_MAX = 900;
 
-export function createSidebarLayoutController(root: HTMLElement): SidebarLayoutController {
+function mountSidebarLayout(root: HTMLElement): SidebarLayoutController {
   if (typeof document === "undefined") {
     return { open: () => {}, close: () => {}, destroy: () => {} };
   }
@@ -137,6 +137,8 @@ export function createSidebarLayoutController(root: HTMLElement): SidebarLayoutC
   aside.addEventListener("click", onAsideClick);
   doc.addEventListener("keydown", onKey);
   syncDrawerMode();
+  /* Hydration often connects while the host is `hidden`; resync after layout. */
+  requestAnimationFrame(() => syncDrawerMode());
 
   return {
     open: () => setOpen(true, false, true),
@@ -154,6 +156,138 @@ export function createSidebarLayoutController(root: HTMLElement): SidebarLayoutC
     },
   };
 }
+
+export const BLORA_SIDEBAR_LAYOUT_TAG = "blora-sidebar-layout";
+
+const LayoutBase: typeof HTMLElement =
+  typeof HTMLElement !== "undefined" ? HTMLElement : (class {} as typeof HTMLElement);
+
+interface SidebarLayoutDefinitions {
+  contentId: string;
+  contentNodes: Node[];
+  sidebarId: string;
+  sidebarLabel: string;
+  sidebarNodes: Node[];
+}
+
+/** Responsive sidebar shell that owns its toggle, mask, aside and content tree. */
+export class BloraSidebarLayout extends LayoutBase {
+  private controller: SidebarLayoutController | null = null;
+  private definitions: SidebarLayoutDefinitions | null = null;
+  private observer: MutationObserver | null = null;
+  private connectScheduled = false;
+
+  static get observedAttributes(): string[] {
+    return ["compact", "label", "sticky", "toggle-label", "variant"];
+  }
+
+  connectedCallback(): void {
+    if (this.ownerDocument?.readyState === "loading") {
+      if (this.connectScheduled) return;
+      this.connectScheduled = true;
+      setTimeout(() => {
+        this.connectScheduled = false;
+        if (this.isConnected) this.mount();
+      }, 0);
+      return;
+    }
+    this.mount();
+  }
+
+  disconnectedCallback(): void {
+    this.controller?.destroy();
+    this.controller = null;
+    this.observer?.disconnect();
+    this.observer = null;
+  }
+
+  attributeChangedCallback(): void {
+    if (this.isConnected && this.definitions) this.mount();
+  }
+
+  open(): void {
+    this.controller?.open();
+  }
+
+  close(): void {
+    this.controller?.close();
+  }
+
+  private captureDefinitions(): SidebarLayoutDefinitions {
+    const sidebar = Array.from(this.children).find(
+      (child) => child.localName === "blora-sidebar-layout-sidebar",
+    );
+    const content = Array.from(this.children).find(
+      (child) => child.localName === "blora-sidebar-layout-content",
+    );
+    return {
+      contentId: content?.id ?? "",
+      contentNodes: Array.from(content?.childNodes ?? []),
+      sidebarId: sidebar?.id ?? "",
+      sidebarLabel: sidebar?.getAttribute("label") ?? this.getAttribute("label") ?? "Sidebar",
+      sidebarNodes: Array.from(sidebar?.childNodes ?? []),
+    };
+  }
+
+  private mount(): void {
+    this.controller?.destroy();
+    this.observer?.disconnect();
+    if (!this.definitions) this.definitions = this.captureDefinitions();
+    const root = this.ownerDocument.createElement("div");
+    root.className = "blora-sidebar-layout";
+    root.dataset.bloraGenerated = "";
+    root.dataset.initializing = "";
+    root.dataset.variant = this.getAttribute("variant") ?? "default";
+    if (this.hasAttribute("compact")) root.classList.add("blora-sidebar-layout--compact");
+    if (this.hasAttribute("sticky")) root.dataset.sticky = "";
+
+    const toggle = this.ownerDocument.createElement("button");
+    toggle.type = "button";
+    toggle.className = "blora-button blora-sidebar-layout__toggle";
+    toggle.dataset.variant = "outline";
+    toggle.dataset.size = "sm";
+    toggle.dataset.bloraSidebarToggle = "";
+    toggle.textContent = this.getAttribute("toggle-label") ?? "Menu";
+
+    const mask = this.ownerDocument.createElement("div");
+    mask.className = "blora-sidebar-layout__mask";
+    mask.setAttribute("aria-hidden", "true");
+
+    const aside = this.ownerDocument.createElement("aside");
+    aside.className = "blora-sidebar-layout__aside";
+    aside.setAttribute("aria-label", this.definitions.sidebarLabel);
+    if (this.definitions.sidebarId) aside.id = this.definitions.sidebarId;
+    aside.append(...this.definitions.sidebarNodes);
+
+    const content = this.ownerDocument.createElement("main");
+    content.className = "blora-sidebar-layout__content";
+    if (this.definitions.contentId) content.id = this.definitions.contentId;
+    content.append(...this.definitions.contentNodes);
+    root.append(toggle, mask, aside, content);
+    this.replaceChildren(root);
+    this.controller = mountSidebarLayout(root);
+    requestAnimationFrame(() => root.removeAttribute("data-initializing"));
+
+    const syncState = () => {
+      for (const name of ["data-drawer", "data-open"] as const) {
+        this.toggleAttribute(name, root.hasAttribute(name));
+      }
+    };
+    syncState();
+    this.observer = new MutationObserver(syncState);
+    this.observer.observe(root, {
+      attributes: true,
+      attributeFilter: ["data-drawer", "data-open"],
+    });
+  }
+}
+
+export function defineBloraSidebarLayout(registry: CustomElementRegistry = customElements): void {
+  if (!registry || registry.get(BLORA_SIDEBAR_LAYOUT_TAG)) return;
+  registry.define(BLORA_SIDEBAR_LAYOUT_TAG, BloraSidebarLayout);
+}
+
+if (typeof customElements !== "undefined") defineBloraSidebarLayout(customElements);
 
 /* —— Affix —— */
 export type AffixController = Destroyable;

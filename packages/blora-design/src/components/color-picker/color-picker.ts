@@ -1,6 +1,9 @@
 /**
  * Blora Design 2.0 - Color Picker (HSV spectrum + hex sync, v1 parity)
  */
+import { BloraElement } from "../../core/blora-element.js";
+
+export const BLORA_COLOR_PICKER_TAG = "blora-color-picker";
 export interface ColorPickerController {
   destroy(): void;
 }
@@ -237,4 +240,119 @@ export function createColorPickerController(root: HTMLElement): ColorPickerContr
       document.removeEventListener("keydown", onKey);
     },
   };
+}
+
+/** HSV color picker CE that owns swatch, spectrum, hue and hex controls. */
+export class BloraColorPicker extends BloraElement {
+  private controller: ColorPickerController | null = null;
+  private reflecting = false;
+
+  static get observedAttributes(): string[] {
+    return ["value", "label", "disabled"];
+  }
+
+  attributeChangedCallback(): void {
+    if (!this.isConnectedInternal || this.reflecting) return;
+    this.sync();
+  }
+
+  get value(): string {
+    return this.querySelector<HTMLElement>(".blora-color-swatch")?.dataset.color ?? "";
+  }
+
+  set value(value: string) {
+    this.setAttribute("value", value);
+  }
+
+  open(): void {
+    if (!this.hasAttribute("disabled"))
+      this.querySelector<HTMLElement>(".blora-color-swatch")?.click();
+  }
+
+  close(): void {
+    const panel = this.querySelector<HTMLElement>(".blora-color-panel");
+    const swatch = this.querySelector<HTMLElement>(".blora-color-swatch");
+    panel?.removeAttribute("data-open");
+    swatch?.setAttribute("aria-expanded", "false");
+  }
+
+  protected render(): void {
+    const value = normalizeHex(this.getAttribute("value") ?? "") ?? "#3B82F6";
+    const root = this.ownerDocument.createElement("div");
+    root.className = "blora-color-picker";
+    root.dataset.bloraGenerated = "";
+    const swatch = this.ownerDocument.createElement("div");
+    swatch.className = "blora-color-swatch";
+    swatch.dataset.color = value;
+    swatch.style.background = value;
+    swatch.setAttribute("aria-label", this.getAttribute("label") ?? `选择颜色，当前 ${value}`);
+    if (this.hasAttribute("disabled")) swatch.setAttribute("aria-disabled", "true");
+    const panel = this.ownerDocument.createElement("div");
+    panel.className = "blora-color-panel";
+    panel.setAttribute("role", "dialog");
+    const spectrum = this.ownerDocument.createElement("div");
+    spectrum.className = "blora-color-spectrum";
+    spectrum.tabIndex = 0;
+    spectrum.setAttribute("role", "slider");
+    spectrum.setAttribute("aria-label", "颜色饱和度与明度");
+    const cursor = this.ownerDocument.createElement("span");
+    cursor.className = "blora-color-spectrum__cursor";
+    cursor.setAttribute("aria-hidden", "true");
+    spectrum.appendChild(cursor);
+    const hue = this.ownerDocument.createElement("input");
+    hue.className = "blora-color-hue";
+    hue.type = "range";
+    hue.min = "0";
+    hue.max = "359";
+    hue.step = "1";
+    hue.setAttribute("aria-label", "色相");
+    const custom = this.ownerDocument.createElement("div");
+    custom.className = "blora-color-custom";
+    const preview = this.ownerDocument.createElement("span");
+    preview.className = "blora-color-preview";
+    preview.style.background = value;
+    const hex = this.ownerDocument.createElement("input");
+    hex.className = "blora-input blora-color-hex";
+    hex.type = "text";
+    hex.value = value;
+    hex.placeholder = "#RRGGBB";
+    custom.append(preview, hex);
+    panel.append(spectrum, hue, custom);
+    root.append(swatch, panel);
+    this.replaceChildren(root);
+  }
+
+  protected override sync(): void {
+    const field = this.querySelector<HTMLInputElement | HTMLTextAreaElement>("input, textarea");
+    if (field) {
+      field.disabled = this.hasAttribute("disabled");
+      if (this.hasAttribute("placeholder")) field.placeholder = this.getAttribute("placeholder") ?? "";
+      if (this.hasAttribute("value") && this.ownerDocument.activeElement !== field) {
+        field.value = this.getAttribute("value") ?? field.value;
+      }
+    }
+    this.rebind();
+  }
+
+  protected bindEvents(): void {
+    const root = this.querySelector<HTMLElement>(".blora-color-picker");
+    if (!root || this.hasAttribute("disabled")) return;
+    this.controller = createColorPickerController(root);
+    this.listen(root, "blora:change", (event) => {
+      const value = (event as CustomEvent<{ value: string }>).detail.value;
+      this.reflecting = true;
+      this.setAttribute("value", value);
+      this.reflecting = false;
+    });
+  }
+
+  protected onDisconnect(): void {
+    this.controller?.destroy();
+    this.controller = null;
+  }
+}
+
+export function defineBloraColorPicker(registry: CustomElementRegistry = customElements): void {
+  if (!registry || registry.get(BLORA_COLOR_PICKER_TAG)) return;
+  registry.define(BLORA_COLOR_PICKER_TAG, BloraColorPicker);
 }

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/web-components";
 import { html } from "lit";
 
 const meta = {
-  title: "Data/Avatar",
+  title: "Data display/Avatar",
   component: ".blora-avatar",
   tags: ["autodocs"],
 } satisfies Meta;
@@ -72,4 +72,8 @@ export const StatusDot: Story = {
       <span class="blora-dot" data-variant="warning"></span> 警告
     </div>
   `,
+};
+
+export const PulseStatus: Story = {
+  render: () => html\`<div class="blora-avatar-wrap"><div class="blora-avatar" data-size="lg" data-variant="primary">AB</div><span class="blora-dot" data-variant="success" data-pulse aria-label="在线"></span></div>\`,
 };

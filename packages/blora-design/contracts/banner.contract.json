@@ -1,15 +1,30 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "banner",
+  "category": "feedback",
   "status": "stable",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-banner",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    }
+  },
   "properties": {},
   "methods": {},
-  "events": {},
+  "events": {
+    "blora-banner-action": {
+      "detail": "{ value: string }",
+      "bubbles": true,
+      "composed": true
+    }
+  },
   "classes": {
     "blora-banner": "Root container.",
     "blora-banner__body": "Title and description wrapper.",
@@ -18,7 +33,7 @@
     "blora-banner__actions": "Action button container."
   },
   "slots": {
-    "default": "Banner content"
+    "default": "Declarative <blora-banner-action label value variant> definitions; consumed into the official banner tree."
   },
   "parts": [],
   "cssProperties": [],

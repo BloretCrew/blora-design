@@ -1,6 +1,11 @@
 /**
  * Image: skeleton loading + optional lightbox preview (v1 initImagePreview).
  */
+import { BloraElement } from "../../core/blora-element.js";
+import { createBloraIcon } from "../../core/icons.js";
+
+export const BLORA_IMAGE_TAG = "blora-image";
+
 export interface ImageController {
   destroy(): void;
 }
@@ -84,19 +89,19 @@ export function openImagePreview(
   closeBtn.type = "button";
   closeBtn.className = "blora-image-preview__close";
   closeBtn.setAttribute("aria-label", "关闭");
-  closeBtn.textContent = "×";
+  closeBtn.appendChild(createBloraIcon("close", 18));
 
   const prevBtn = doc.createElement("button");
   prevBtn.type = "button";
   prevBtn.className = "blora-image-preview__btn blora-image-preview__btn--prev";
   prevBtn.setAttribute("aria-label", "上一张");
-  prevBtn.textContent = "‹";
+  prevBtn.appendChild(createBloraIcon("chevron-left", 20));
 
   const nextBtn = doc.createElement("button");
   nextBtn.type = "button";
   nextBtn.className = "blora-image-preview__btn blora-image-preview__btn--next";
   nextBtn.setAttribute("aria-label", "下一张");
-  nextBtn.textContent = "›";
+  nextBtn.appendChild(createBloraIcon("chevron-right", 20));
 
   stage.append(img, cap);
   overlay.append(count, closeBtn, prevBtn, nextBtn, stage);
@@ -223,4 +228,104 @@ export function createImageController(root: HTMLElement): ImageController {
       cleanups.forEach((fn) => fn());
     },
   };
+}
+
+/** Image CE that owns figure, image, caption, loading and preview structure. */
+export class BloraImage extends BloraElement {
+  private controller: ImageController | null = null;
+  private previewHandle: ImagePreviewHandle | null = null;
+
+  static get observedAttributes(): string[] {
+    return ["src", "alt", "caption", "variant", "filter", "preview", "preview-group"];
+  }
+
+  attributeChangedCallback(): void {
+    if (!this.isConnectedInternal) return;
+    this.sync();
+  }
+
+  open(): void {
+    const figure = this.querySelector<HTMLElement>(".blora-image");
+    if (!figure) return;
+    const { items, start } = collectGroup(figure);
+    this.previewHandle = openImagePreview(items, start);
+  }
+
+  close(): void {
+    this.previewHandle?.close();
+    this.previewHandle = null;
+  }
+
+  protected render(): void {
+    const figure = this.ownerDocument.createElement("figure");
+    figure.className = "blora-image";
+    figure.dataset.bloraGenerated = "";
+    figure.dataset.variant = this.getAttribute("variant") ?? "default";
+    figure.dataset.filter = this.getAttribute("filter") ?? "none";
+    if (this.hasAttribute("preview") || figure.dataset.variant === "preview")
+      figure.dataset.bloraPreview = "";
+    const group = this.getAttribute("preview-group");
+    if (group) figure.dataset.previewGroup = group;
+    const img = this.ownerDocument.createElement("img");
+    img.src = this.getAttribute("src") ?? "";
+    img.alt = this.getAttribute("alt") ?? "";
+    img.decoding = "async";
+    figure.appendChild(img);
+    const captionText = this.getAttribute("caption");
+    if (captionText) {
+      const caption = this.ownerDocument.createElement("figcaption");
+      caption.className = "blora-image__cap";
+      caption.textContent = captionText;
+      figure.dataset.caption = captionText;
+      figure.appendChild(caption);
+    }
+    this.replaceChildren(figure);
+  }
+
+  protected override sync(): void {
+    const figure = this.querySelector<HTMLElement>(".blora-image");
+    const img = figure?.querySelector("img");
+    if (!figure || !img) return;
+    figure.dataset.variant = this.getAttribute("variant") ?? "default";
+    figure.dataset.filter = this.getAttribute("filter") ?? "none";
+    figure.toggleAttribute(
+      "data-blora-preview",
+      this.hasAttribute("preview") || figure.dataset.variant === "preview",
+    );
+    const group = this.getAttribute("preview-group");
+    if (group) figure.dataset.previewGroup = group;
+    else delete figure.dataset.previewGroup;
+    img.src = this.getAttribute("src") ?? "";
+    img.alt = this.getAttribute("alt") ?? "";
+    const captionText = this.getAttribute("caption");
+    let caption = figure.querySelector("figcaption");
+    if (captionText) {
+      if (!caption) {
+        caption = this.ownerDocument.createElement("figcaption");
+        caption.className = "blora-image__cap";
+        figure.appendChild(caption);
+      }
+      caption.textContent = captionText;
+      figure.dataset.caption = captionText;
+    } else {
+      caption?.remove();
+      delete figure.dataset.caption;
+    }
+  }
+
+  protected bindEvents(): void {
+    const figure = this.querySelector<HTMLElement>(".blora-image");
+    if (figure) this.controller = createImageController(figure);
+  }
+
+  protected onDisconnect(): void {
+    this.controller?.destroy();
+    this.controller = null;
+    this.close();
+  }
+}
+
+export function defineBloraImage(registry: CustomElementRegistry = customElements): void {
+  if (!registry || registry.get(BLORA_IMAGE_TAG)) return;
+  registry.define(BLORA_IMAGE_TAG, BloraImage);
 }

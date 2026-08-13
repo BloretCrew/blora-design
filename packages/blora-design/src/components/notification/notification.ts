@@ -1,12 +1,18 @@
 /**
- * Notification service with multi-placement stacks (v1 notify containers).
+ * Notification service with multi-placement stacks.
+ * Visual must match Feedback/Notification Storybook (SVG icons + close stroke).
  */
+import { createBloraIcon } from "../../core/icons.js";
+import { createStatusIcon } from "../../core/status-icon.js";
+
 export type NotificationPlacement = "top-right" | "top-left" | "bottom-right" | "bottom-left";
+
+export type NotificationType = "success" | "warning" | "danger" | "info";
 
 export interface NotificationOptions {
   title?: string;
   description?: string;
-  type?: "success" | "warning" | "danger" | "info";
+  type?: NotificationType | "error";
   duration?: number;
   placement?: NotificationPlacement;
 }
@@ -23,6 +29,12 @@ const PLACEMENT_CLASS: Record<NotificationPlacement, string> = {
   "bottom-left": "blora-notify-container--bottom-left",
 };
 
+function normalizeType(type?: NotificationOptions["type"]): NotificationType {
+  if (type === "error" || type === "danger") return "danger";
+  if (type === "success" || type === "warning" || type === "info") return type;
+  return "info";
+}
+
 function ensureContainer(doc: Document, placement: NotificationPlacement): HTMLElement {
   const cls = PLACEMENT_CLASS[placement];
   let c = doc.querySelector<HTMLElement>(`.blora-notify-container.${cls}`);
@@ -35,24 +47,37 @@ function ensureContainer(doc: Document, placement: NotificationPlacement): HTMLE
   return c;
 }
 
-export function notify(opts: NotificationOptions | string): NotificationHandle | null {
-  if (typeof document === "undefined") return null;
-  const options: NotificationOptions = typeof opts === "string" ? { title: opts } : opts || {};
-  const placement = options.placement || "top-right";
-  const type = options.type || "info";
-  const doc = document;
-  const container = ensureContainer(doc, placement);
+function appendStatusIcon(doc: Document, host: HTMLElement, type: NotificationType): void {
+  const wrap = doc.createElement("span");
+  wrap.className = "blora-notification__icon";
+  wrap.setAttribute("aria-hidden", "true");
 
+  wrap.appendChild(createStatusIcon(doc, type, 22));
+  host.appendChild(wrap);
+}
+
+function appendCloseButton(doc: Document, host: HTMLElement): HTMLButtonElement {
+  const closeBtn = doc.createElement("button");
+  closeBtn.type = "button";
+  closeBtn.className = "blora-notification__close";
+  closeBtn.setAttribute("aria-label", "关闭");
+  closeBtn.appendChild(createBloraIcon("close", 16, doc));
+  host.appendChild(closeBtn);
+  return closeBtn;
+}
+
+/** Build the exact notification card used by notify(). */
+export function createNotificationElement(
+  opts: NotificationOptions | string,
+  doc: Document = document,
+): HTMLElement {
+  const options: NotificationOptions = typeof opts === "string" ? { title: opts } : opts || {};
+  const type = normalizeType(options.type);
   const el = doc.createElement("div");
   el.className = "blora-notification";
   el.setAttribute("data-variant", type);
   el.setAttribute("role", "status");
-
-  const icon = doc.createElement("div");
-  icon.className = "blora-notification__icon";
-  icon.setAttribute("aria-hidden", "true");
-  icon.textContent =
-    type === "success" ? "✓" : type === "warning" ? "!" : type === "danger" ? "×" : "i";
+  appendStatusIcon(doc, el, type);
 
   const body = doc.createElement("div");
   body.className = "blora-notification__body";
@@ -66,21 +91,31 @@ export function notify(opts: NotificationOptions | string): NotificationHandle |
     desc.textContent = options.description;
     body.appendChild(desc);
   }
+  el.appendChild(body);
+  appendCloseButton(doc, el);
+  return el;
+}
 
-  const closeBtn = doc.createElement("button");
-  closeBtn.type = "button";
-  closeBtn.className = "blora-notification__close";
-  closeBtn.setAttribute("aria-label", "关闭");
-  closeBtn.textContent = "×";
-
-  el.append(icon, body, closeBtn);
-  container.appendChild(el);
+export function notify(opts: NotificationOptions | string): NotificationHandle | null {
+  if (typeof document === "undefined") return null;
+  const options: NotificationOptions = typeof opts === "string" ? { title: opts } : opts || {};
+  /* Normalize invalid placements (e.g. "bottom-end") so a typo doesn't leave
+     the container without a positioning class (invisible notification). */
+  const placement = (
+    options.placement && PLACEMENT_CLASS[options.placement] ? options.placement : "top-right"
+  ) as NotificationPlacement;
+  const doc = document;
+  const container = ensureContainer(doc, placement);
+  const el = createNotificationElement(options, doc);
 
   const close = () => {
     el.classList.add("is-leaving");
-    setTimeout(() => el.remove(), 200);
+    /* Match --blora-duration-fast leave animation (~160ms) + buffer */
+    setTimeout(() => el.remove(), 220);
   };
-  closeBtn.addEventListener("click", close);
+  el.querySelector(".blora-notification__close")?.addEventListener("click", close);
+  container.appendChild(el);
+
   const ms = options.duration == null ? 4500 : options.duration;
   if (ms > 0) setTimeout(close, ms);
 
@@ -94,7 +129,7 @@ export function createNotificationController(root: HTMLElement): { destroy(): vo
   const onClose = () => {
     root.classList.add("is-leaving");
     root.dispatchEvent(new CustomEvent("blora-notification-close", { bubbles: true }));
-    setTimeout(() => root.remove(), 200);
+    setTimeout(() => root.remove(), 220);
   };
   btn.addEventListener("click", onClose);
   return {

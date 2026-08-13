@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/web-components";
 import { html } from "lit";
 
 const meta = {
-  title: "Data/Tag",
+  title: "Data display/Tag",
   component: ".blora-tag",
   tags: ["autodocs"],
 } satisfies Meta;

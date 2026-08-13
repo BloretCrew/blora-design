@@ -1,6 +1,10 @@
 /**
  * Segmented control with sliding indicator (v1 initSegmented).
  */
+import { BloraElement } from "../../core/blora-element.js";
+
+export const BLORA_SEGMENTED_TAG = "blora-segmented";
+
 export interface SegmentedController {
   destroy(): void;
 }
@@ -114,4 +118,105 @@ export function createSegmentedController(root: HTMLElement): SegmentedControlle
       win.removeEventListener("resize", onResize);
     },
   };
+}
+
+interface SegmentDefinition {
+  disabled: boolean;
+  label: string;
+  selected: boolean;
+  value: string;
+}
+
+/** Composite CE. Child `<blora-segment>` definitions become official buttons. */
+export class BloraSegmented extends BloraElement {
+  private controller: SegmentedController | null = null;
+  private definitions: SegmentDefinition[] | null = null;
+
+  static get observedAttributes(): string[] {
+    return ["value", "disabled"];
+  }
+
+  attributeChangedCallback(): void {
+    if (!this.isConnectedInternal) return;
+    this.sync();
+  }
+
+  get value(): string {
+    return this.querySelector<HTMLElement>(".blora-segmented")?.dataset.value ?? "";
+  }
+
+  set value(value: string) {
+    this.setAttribute("value", value);
+  }
+
+  protected render(): void {
+    if (!this.definitions) {
+      this.definitions = Array.from(this.children)
+        .filter((item) => item.localName === "blora-segment")
+        .map((item) => {
+          const label = item.getAttribute("label") ?? item.textContent?.trim() ?? "";
+          return {
+            disabled: item.hasAttribute("disabled"),
+            label,
+            selected: item.hasAttribute("selected"),
+            value: item.getAttribute("value") ?? label,
+          };
+        });
+    }
+
+    const selectedValue =
+      this.getAttribute("value") ??
+      this.definitions.find((definition) => definition.selected)?.value ??
+      this.definitions.find((definition) => !definition.disabled)?.value;
+    const root = document.createElement("div");
+    root.className = "blora-segmented";
+    root.dataset.bloraGenerated = "";
+    const indicator = document.createElement("span");
+    indicator.className = "blora-segmented__indicator";
+    indicator.setAttribute("aria-hidden", "true");
+    root.appendChild(indicator);
+
+    for (const definition of this.definitions) {
+      const item = document.createElement("button");
+      item.type = "button";
+      item.className = "blora-segmented__item";
+      item.dataset.value = definition.value;
+      item.textContent = definition.label;
+      item.disabled = definition.disabled || this.hasAttribute("disabled");
+      if (item.disabled) item.setAttribute("aria-disabled", "true");
+      if (definition.value === selectedValue) {
+        item.classList.add("is-active");
+        item.dataset.active = "";
+      }
+      root.appendChild(item);
+    }
+    this.replaceChildren(root);
+  }
+
+  protected override sync(): void {
+    const field = this.querySelector<HTMLInputElement | HTMLTextAreaElement>("input, textarea");
+    if (field) {
+      field.disabled = this.hasAttribute("disabled");
+      if (this.hasAttribute("placeholder")) field.placeholder = this.getAttribute("placeholder") ?? "";
+      if (this.hasAttribute("value") && this.ownerDocument.activeElement !== field) {
+        field.value = this.getAttribute("value") ?? field.value;
+      }
+    }
+    this.rebind();
+  }
+
+  protected bindEvents(): void {
+    const root = this.querySelector<HTMLElement>(".blora-segmented");
+    if (root) this.controller = createSegmentedController(root);
+  }
+
+  protected onDisconnect(): void {
+    this.controller?.destroy();
+    this.controller = null;
+  }
+}
+
+export function defineBloraSegmented(registry: CustomElementRegistry = customElements): void {
+  if (!registry || registry.get(BLORA_SEGMENTED_TAG)) return;
+  registry.define(BLORA_SEGMENTED_TAG, BloraSegmented);
 }

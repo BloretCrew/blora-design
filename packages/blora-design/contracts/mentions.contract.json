@@ -1,20 +1,53 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "mentions",
+  "category": "data-input",
   "status": "beta",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-mentions",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
-  "properties": {},
-  "methods": {},
+  "attributes": {
+    "options": {
+      "type": "string",
+      "description": "JSON mention options; declarative definitions are preferred."
+    },
+    "label": {
+      "type": "string"
+    },
+    "placeholder": {
+      "type": "string"
+    },
+    "rows": {
+      "type": "number",
+      "default": 4
+    },
+    "value": {
+      "type": "string",
+      "default": ""
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "properties": {
+    "value": {
+      "type": "string"
+    }
+  },
+  "methods": {
+    "focus": {
+      "signature": "() => void"
+    }
+  },
   "events": {},
   "slots": {
-    "default": "Content"
+    "default": "Declarative <blora-mention value label initials avatar avatar-variant tag keywords> definitions; consumed into the official mentions tree."
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "section",
+  "accessibilityPattern": "combobox",
   "migrationFromV1": "mentions.migration.md"
 }

@@ -5,6 +5,7 @@
 import { BloraElement } from "../../core/blora-element.js";
 import { OverlayController } from "../../controllers/overlay-controller.js";
 
+import tagStyles from "../tag/tag.css?inline";
 import selectStyles from "./select.css?inline";
 
 export const BLORA_SELECT_TAG = "blora-select";
@@ -19,7 +20,7 @@ export class BloraSelect extends BloraElement {
   static formAssociated = true;
 
   static get observedAttributes(): string[] {
-    return ["value", "disabled", "required", "placeholder"];
+    return ["value", "disabled", "required", "placeholder", "multiple", "max-tag-count"];
   }
 
   private _internals: ElementInternals | null = null;
@@ -28,29 +29,63 @@ export class BloraSelect extends BloraElement {
   private _activeIndex = -1;
   private _options: BloraOptionData[] = [];
   private _value = "";
+  private _values: string[] = [];
 
   // Shadow DOM refs
   private _trigger: HTMLButtonElement | null = null;
   private _popup: HTMLElement | null = null;
   private _listbox: HTMLElement | null = null;
+  private _optionObserver: MutationObserver | null = null;
 
   attributeChangedCallback(name: string, _old: string, value: string): void {
     if (!this.isConnectedInternal) return;
 
     if (name === "value") {
       this._value = value;
+      this._values = this.multiple
+        ? value
+            .split(",")
+            .map((item) => item.trim())
+            .filter(Boolean)
+        : value
+          ? [value]
+          : [];
       this._updateDisplay();
       if (typeof this._internals?.setFormValue === "function") {
         this._internals.setFormValue(value);
       }
+      this._renderOptions();
+    } else if (name === "multiple" || name === "max-tag-count") {
+      if (name === "multiple") {
+        this._values = this.multiple
+          ? this._value
+              .split(",")
+              .map((item) => item.trim())
+              .filter(Boolean)
+          : this._value
+            ? [this._value]
+            : [];
+      }
+      this._renderOptions();
+      this._updateDisplay();
     }
   }
 
   protected render(): void {
+    this._value = this.getAttribute("value") ?? "";
+    this._values = this.multiple
+      ? this._value
+          .split(",")
+          .map((item) => item.trim())
+          .filter(Boolean)
+      : this._value
+        ? [this._value]
+        : [];
+    if (this.shadowRoot) return;
     const shadow = this.attachShadow({ mode: "open" });
 
     const style = document.createElement("style");
-    style.textContent = selectStyles;
+    style.textContent = `${tagStyles}\n${selectStyles}`;
     shadow.appendChild(style);
 
     // Trigger button
@@ -72,6 +107,7 @@ export class BloraSelect extends BloraElement {
     popup.className = "blora-select__popup";
     popup.setAttribute("part", "popup");
     popup.setAttribute("role", "listbox");
+    if (this.multiple) popup.setAttribute("aria-multiselectable", "true");
 
     const listbox = document.createElement("div");
     listbox.className = "blora-select__listbox";
@@ -120,7 +156,7 @@ export class BloraSelect extends BloraElement {
       if (option && !option.hasAttribute("data-disabled")) {
         const index = Number((option as HTMLElement).dataset.index);
         this._selectIndex(index);
-        this.close("option-click");
+        if (!this.multiple) this.close("option-click");
       }
     });
   }
@@ -135,9 +171,16 @@ export class BloraSelect extends BloraElement {
     this.setAttribute("value", v);
   }
 
+  get multiple(): boolean {
+    return this.hasAttribute("multiple");
+  }
+
+  get values(): readonly string[] {
+    return [...this._values];
+  }
+
   get selectedOptions(): readonly BloraOptionData[] {
-    const selected = this._options.find((o) => o.value === this._value);
-    return selected ? [selected] : [];
+    return this._options.filter((option) => this._values.includes(option.value));
   }
 
   get options(): readonly BloraOptionData[] {
@@ -157,7 +200,7 @@ export class BloraSelect extends BloraElement {
     this._isOpen = true;
     this._trigger?.setAttribute("aria-expanded", "true");
     this._popup?.setAttribute("data-open", "");
-    this._activeIndex = this._options.findIndex((o) => o.value === this._value);
+    this._activeIndex = this._options.findIndex((option) => this._values.includes(option.value));
     this._updateActiveOption();
 
     if (this._popup) {
@@ -260,7 +303,7 @@ export class BloraSelect extends BloraElement {
         div.setAttribute("data-disabled", "");
         div.setAttribute("aria-disabled", "true");
       }
-      if (opt.value === this._value) {
+      if (this._values.includes(opt.value)) {
         div.setAttribute("data-selected", "");
         div.setAttribute("aria-selected", "true");
       }
@@ -274,15 +317,54 @@ export class BloraSelect extends BloraElement {
     const valueSpan = this._trigger.querySelector(".blora-select__value");
     if (!valueSpan) return;
 
-    const selected = this._options.find((o) => o.value === this._value);
-    if (selected) {
-      valueSpan.textContent = selected.label;
+    const selected = this.selectedOptions;
+    valueSpan.replaceChildren();
+    if (selected.length > 0 && this.multiple) {
+      valueSpan.classList.add("blora-select__tags");
+      const configuredMax = Number(this.getAttribute("max-tag-count") ?? "2");
+      const maxTagCount = Number.isFinite(configuredMax) ? Math.max(0, configuredMax) : 2;
+      selected.slice(0, maxTagCount).forEach((option) => {
+        const tag = document.createElement("span");
+        tag.className = "blora-tag blora-tag--removable";
+        tag.dataset.variant = "primary";
+        tag.setAttribute("part", "tag");
+        tag.appendChild(document.createTextNode(option.label));
+        const remove = document.createElement("button");
+        remove.type = "button";
+        remove.className = "blora-tag__close";
+        remove.setAttribute("part", "tag-remove");
+        remove.setAttribute("aria-label", `Remove ${option.label}`);
+        remove.addEventListener("pointerdown", (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          this._toggleValue(option.value);
+        });
+        tag.appendChild(remove);
+        valueSpan.appendChild(tag);
+      });
+      if (selected.length > maxTagCount) {
+        const overflow = document.createElement("span");
+        overflow.className = "blora-tag";
+        overflow.dataset.variant = "primary";
+        overflow.textContent = `+${selected.length - maxTagCount}`;
+        valueSpan.appendChild(overflow);
+      }
+      this._trigger.removeAttribute("data-placeholder");
+    } else if (selected[0]) {
+      valueSpan.classList.remove("blora-select__tags");
+      valueSpan.textContent = selected[0].label;
       this._trigger.removeAttribute("data-placeholder");
     } else {
+      valueSpan.classList.remove("blora-select__tags");
       const placeholder = this.getAttribute("placeholder") ?? "";
-      valueSpan.textContent = placeholder;
+      /* NBSP keeps the trigger at full height even with no placeholder —
+         an empty inline span can collapse to zero width/height in some
+         engines, making the combobox look broken before a value is picked. */
+      valueSpan.textContent = placeholder || "\u00A0";
       if (placeholder) {
         this._trigger.setAttribute("data-placeholder", "");
+      } else {
+        this._trigger.removeAttribute("data-placeholder");
       }
     }
   }
@@ -291,6 +373,10 @@ export class BloraSelect extends BloraElement {
     const option = this._options[index];
     if (!option || option.disabled) return;
 
+    if (this.multiple) {
+      this._toggleValue(option.value);
+      return;
+    }
     const oldValue = this._value;
     this._value = option.value;
     this.setAttribute("value", option.value);
@@ -306,6 +392,22 @@ export class BloraSelect extends BloraElement {
       this.dispatchEvent(new Event("input", { bubbles: true, composed: true }));
       this.dispatchEvent(new Event("change", { bubbles: true, composed: true }));
     }
+  }
+
+  private _toggleValue(value: string): void {
+    const next = this._values.includes(value)
+      ? this._values.filter((item) => item !== value)
+      : [...this._values, value];
+    const serialized = next.join(",");
+    if (serialized === this._value) return;
+    this._values = next;
+    this._value = serialized;
+    this.setAttribute("value", serialized);
+    this._internals?.setFormValue(serialized);
+    this._renderOptions();
+    this._updateDisplay();
+    this.dispatchEvent(new Event("input", { bubbles: true, composed: true }));
+    this.dispatchEvent(new Event("change", { bubbles: true, composed: true }));
   }
 
   private _updateActiveOption(): void {
@@ -368,7 +470,7 @@ export class BloraSelect extends BloraElement {
         if (this._isOpen && this._activeIndex >= 0) {
           e.preventDefault();
           this._selectIndex(this._activeIndex);
-          this.close("enter");
+          if (!this.multiple) this.close("enter");
         }
         break;
       case "Escape":
@@ -406,15 +508,16 @@ export class BloraSelect extends BloraElement {
   // Called by connectedCallback to collect initial options
   private _initOptions(): void {
     this._collectOptions();
-
-    // Watch for slot content changes
-    if (this._listbox) {
-      const slot = this._listbox.querySelector("slot");
-      if (slot) {
-        const observer = new MutationObserver(() => this._collectOptions());
-        observer.observe(this, { childList: true, subtree: true, attributes: true });
-      }
-    }
+    const slot = this.shadowRoot?.querySelector("slot");
+    slot?.addEventListener("slotchange", () => this._collectOptions());
+    if (this._optionObserver) return;
+    this._optionObserver = new MutationObserver(() => this._collectOptions());
+    this._optionObserver.observe(this, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["value", "disabled"],
+    });
   }
 }
 

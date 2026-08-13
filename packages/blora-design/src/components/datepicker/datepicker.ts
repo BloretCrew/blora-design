@@ -3,6 +3,11 @@
  * v1 parity: native type=date field (segmented locale UI)
  * + custom Blora panel opened by the trailing icon button.
  */
+import { BloraElement } from "../../core/blora-element.js";
+import { createBloraIcon } from "../../core/icons.js";
+
+export const BLORA_DATEPICKER_TAG = "blora-datepicker";
+
 export interface DatepickerController {
   destroy(): void;
 }
@@ -24,19 +29,9 @@ const MONTHS = [
 const DOW = ["日", "一", "二", "三", "四", "五", "六"];
 
 const setChevron = (el: HTMLElement, dir: "prev" | "next") => {
-  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  svg.setAttribute("width", "14");
-  svg.setAttribute("height", "14");
-  svg.setAttribute("viewBox", "0 0 24 24");
-  svg.setAttribute("fill", "none");
-  svg.setAttribute("stroke", "currentColor");
-  svg.setAttribute("stroke-width", "2");
-  svg.setAttribute("stroke-linecap", "round");
-  svg.setAttribute("stroke-linejoin", "round");
-  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-  path.setAttribute("d", dir === "prev" ? "m15 18-6-6 6-6" : "m9 18 6-6-6-6");
-  svg.appendChild(path);
-  el.replaceChildren(svg);
+  el.replaceChildren(
+    createBloraIcon(dir === "prev" ? "chevron-left" : "chevron-right", 14, el.ownerDocument),
+  );
 };
 
 function fmt(d: Date): string {
@@ -342,4 +337,89 @@ export function createDatepickerController(root: HTMLElement): DatepickerControl
       input.removeEventListener("click", onInputClick);
     },
   };
+}
+
+/** Composite CE that generates the supported date field and calendar trigger. */
+export class BloraDatepicker extends BloraElement {
+  private controller: DatepickerController | null = null;
+
+  static get observedAttributes(): string[] {
+    return ["value", "min", "max", "placeholder", "name", "disabled", "required"];
+  }
+
+  attributeChangedCallback(): void {
+    if (!this.isConnectedInternal) return;
+    this.sync();
+  }
+
+  get value(): string {
+    return this.querySelector<HTMLInputElement>(".blora-input")?.value ?? "";
+  }
+
+  set value(value: string) {
+    this.setAttribute("value", value);
+  }
+
+  focus(options?: FocusOptions): void {
+    this.querySelector<HTMLInputElement>(".blora-input")?.focus(options);
+  }
+
+  protected render(): void {
+    const root = document.createElement("div");
+    root.className = "blora-datepicker";
+    root.dataset.bloraDatepicker = "";
+    root.dataset.bloraGenerated = "";
+
+    const input = document.createElement("input");
+    input.className = "blora-input";
+    input.type = "date";
+    input.value = this.getAttribute("value") ?? "";
+    input.min = this.getAttribute("min") ?? "1900-01-01";
+    input.max = this.getAttribute("max") ?? "2099-12-31";
+    input.placeholder = this.getAttribute("placeholder") ?? "YYYY-MM-DD";
+    input.disabled = this.hasAttribute("disabled");
+    input.required = this.hasAttribute("required");
+    if (this.hasAttribute("name")) input.name = this.getAttribute("name") ?? "";
+
+    const button = document.createElement("button");
+    button.className = "blora-datepicker__btn";
+    button.type = "button";
+    button.tabIndex = -1;
+    button.disabled = input.disabled;
+    button.setAttribute("aria-label", "选择日期");
+    button.appendChild(createBloraIcon("calendar"));
+
+    root.append(input, button);
+    this.replaceChildren(root);
+  }
+
+  protected override sync(): void {
+    const input = this.querySelector<HTMLInputElement>(".blora-input");
+    if (!input) return;
+    if (document.activeElement !== input) input.value = this.getAttribute("value") ?? input.value;
+    input.min = this.getAttribute("min") ?? "1900-01-01";
+    input.max = this.getAttribute("max") ?? "2099-12-31";
+    input.placeholder = this.getAttribute("placeholder") ?? "YYYY-MM-DD";
+    input.disabled = this.hasAttribute("disabled");
+    input.required = this.hasAttribute("required");
+    if (this.hasAttribute("name")) input.name = this.getAttribute("name") ?? "";
+    const button = this.querySelector<HTMLButtonElement>(".blora-datepicker__btn");
+    if (button) button.disabled = input.disabled;
+  }
+
+  protected bindEvents(): void {
+    const root = this.querySelector<HTMLElement>(".blora-datepicker");
+    this.controller?.destroy();
+    this.controller = root ? createDatepickerController(root) : null;
+  }
+
+  protected onDisconnect(): void {
+    this.controller?.destroy();
+    this.controller = null;
+  }
+}
+
+export function defineBloraDatepicker(registry: CustomElementRegistry = customElements): void {
+  if (!registry || registry.get(BLORA_DATEPICKER_TAG)) return;
+  registry.define(BLORA_DATEPICKER_TAG, BloraDatepicker);
 }

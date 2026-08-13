@@ -12,6 +12,7 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./thread.global.js": "./dist/thread.global.js",
     "./thread.css": "./dist/thread.css",
     "./package.json": "./package.json"
   },

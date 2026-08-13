@@ -1,0 +1,16 @@
+blora-number-input { display: block; }
+
+.blora-number-input { display: grid; gap: var(--blora-space-2); }
+.blora-number-input__label { color: var(--blora-color-text-secondary); font-size: var(--blora-text-sm); }
+.blora-number-input__control { display: flex; max-width: 16rem; }
+.blora-number-input__field { border-radius: var(--blora-radius-md) 0 0 var(--blora-radius-md); }
+.blora-number-input__actions { display: grid; grid-template-columns: repeat(2, 2.25rem); }
+.blora-number-input__button {
+  display: grid; place-items: center; padding: 0; color: var(--blora-color-text-secondary);
+  background: var(--blora-color-surface-raised); border: 1px solid var(--blora-color-border-subtle);
+  border-left: 0; cursor: pointer;
+}
+.blora-number-input__button:last-child { border-radius: 0 var(--blora-radius-md) var(--blora-radius-md) 0; }
+.blora-number-input__button:hover:not(:disabled) { background: var(--blora-color-surface-sunken); }
+.blora-number-input__button:focus-visible { position: relative; z-index: 1; outline: 2px solid var(--blora-color-action-primary-default); outline-offset: -2px; }
+.blora-number-input__button:disabled { color: var(--blora-color-text-disabled); cursor: not-allowed; }

@@ -19,7 +19,7 @@
 | Empty | Empty state illustration/text |
 | Input | Native enhanced by Field/Form |
 | List | Row dividers; compose with Card for chrome |
-| Message | Static pill (service uses toast/notify) |
+| Message | Static pill + `message()` top-center service |
 | Mockup | Decorative device frame |
 | Navbar | Structural header CSS |
 | Radio | Native + CSS (group via form) |
@@ -32,33 +32,33 @@
 | Textarea | Native + Field/Form |
 | Timeline | Static vertical list |
 
-## Controller / API present (v1 had JS or interactive path)
+## Composite CE / Controller API present (v1 had JS or interactive path)
 
 | Component | API | Notes |
 |-----------|-----|--------|
-| Accordion | `createAccordionController` | Alias of collapse single-open |
-| Collapse | `createCollapseController` | Measured height expand |
-| Checkbox | `createCheckboxController` | Check-all |
+| Accordion | `<blora-accordion>` | Alias of collapse single-open |
+| Collapse | `<blora-collapse>` | Measured height expand |
+| Checkbox | `<blora-checkbox>` | Check-all |
 | Dialog | `BloraDialog` WC | Full dialog |
-| Drawer | `createDrawerController` | Open/close |
+| Drawer | `<blora-drawer>` | Open/close |
 | Dropdown | `createDropdownController` | Menu |
-| Field | `createFieldController` | Limit counter |
+| Field | `<blora-field>` | Limit counter |
 | Form | `createFormController` | **New** validate |
-| Image | `createImageController` + `openImagePreview` | Loading + lightbox |
+| Image | `<blora-image>` + `openImagePreview` | Loading + lightbox |
 | Notification | `notify` + `createNotificationController` | Multi-placement |
-| Pagination | `createPaginationController` | |
+| Pagination | `<blora-pagination>` | |
 | Popconfirm | `createPopconfirmController` | |
-| Popover | `createPopoverController` | |
+| Popover | `<blora-popover>` | |
 | Progress | `createProgressController` | |
-| Segmented | `createSegmentedController` | |
+| Segmented | `<blora-segmented>` | |
 | Select | `BloraSelect` WC | |
-| Steps | `createStepsController` | **New** interactive current |
+| Steps | `<blora-steps>` | **New** interactive current |
 | Table | `createTableController` | Sort + page + cols + virtual + **selectable** |
-| Tabs | `createTabsController` | |
-| Tooltip | `createTooltipController` | |
-| Toast | `toast` / `message` | |
-| BackTop | `createBackTopController` | **New** |
-| Tree Select | `createTreeSelectController` | **New** |
+| Tabs | `<blora-tabs>` | |
+| Tooltip | `<blora-tooltip>` | |
+| Message (service) | `message` | |
+| BackTop | `<blora-backtop>` + `initBackTop` | **New** |
+| Tree Select | `<blora-tree-select>` | **New** |
 | FAB | CSS + optional BackTop class | BackTop owns scroll show |
 | Masonry | CSS-only columns | v1 had no dedicated JS controller |
 

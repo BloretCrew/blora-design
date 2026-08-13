@@ -3,6 +3,10 @@
    Visual baseline: legacy/v1/blora.css lines 1747-1760, 4152-4167
    ========================================================================= */
 
+blora-steps {
+  display: block;
+}
+
 .blora-steps {
   display: flex;
   align-items: flex-start;

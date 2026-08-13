@@ -14,11 +14,54 @@ import { readFileSync, readdirSync, existsSync, statSync } from "node:fs";
 import { resolve, join, extname, relative } from "node:path";
 
 const DOC_BASE = "/docs/migration/v1-to-v2";
+const CONTRACTS_DIR = resolve(import.meta.dirname, "../contracts");
+
+const CE_NAMES = readdirSync(CONTRACTS_DIR)
+  .filter((name) => name.endsWith(".contract.json"))
+  .map((name) => JSON.parse(readFileSync(join(CONTRACTS_DIR, name), "utf8")))
+  .filter((contract) => contract.kind === "custom-element")
+  .map((contract) => contract.name);
+
+const CE_RULES = CE_NAMES.flatMap((name) => {
+  const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const pascal = name
+    .split("-")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join("");
+  return [
+    {
+      id: `composite-ce:${name}:internal-markup`,
+      pattern: new RegExp(`\\bblora-${escaped}__[a-z0-9_-]+\\b`, "gi"),
+      message: (match) => `Accessing Composite CE internal class ${match} is not supported`,
+      suggestion: `Use <blora-${name}> declarative markup`,
+      anchor: "composite-custom-elements",
+      fixable: false,
+    },
+    {
+      id: `composite-ce:${name}:legacy-markup`,
+      pattern: new RegExp(`(?:class\\s*=\\s*["'][^"']*\\b|\\.)blora-${escaped}\\b`, "g"),
+      message: () => `Legacy .blora-${name} markup is not supported after Composite CE migration`,
+      suggestion: `Use <blora-${name}> declarative markup`,
+      anchor: "composite-custom-elements",
+      fixable: false,
+    },
+    {
+      id: `composite-ce:${name}:legacy-controller`,
+      pattern: new RegExp(`create${pascal}Controller\\s*\\(`, "g"),
+      message: () =>
+        `Direct ${name} controller mounting is not supported after Composite CE migration`,
+      suggestion: `Use <blora-${name}> declarative markup`,
+      anchor: "composite-custom-elements",
+      fixable: false,
+    },
+  ];
+});
 
 // --- Rule definitions ---
 
 /** @type {Array<{id: string, pattern: RegExp, message: (m: string) => string, suggestion: string, anchor: string, fixable: boolean}>} */
 const RULES = [
+  ...CE_RULES,
   // Deprecated classes
   {
     id: "deprecated-class:blora-btn",
@@ -196,16 +239,6 @@ const RULES = [
     message: () => `Button without type attribute`,
     suggestion: `Add type="button" (or type="submit")`,
     anchor: "a11y",
-    fixable: false,
-  },
-
-  // Internal class access (__ prefix)
-  {
-    id: "internal-class-access",
-    pattern: /blora-[a-z]+__[^"'\s]*__/g,
-    message: (m) => `Accessing internal class ${m} is not supported`,
-    suggestion: `Use public API only`,
-    anchor: "internals",
     fixable: false,
   },
 

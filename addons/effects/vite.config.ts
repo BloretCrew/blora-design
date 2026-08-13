@@ -9,8 +9,9 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
-      formats: ["es"],
-      fileName: "index",
+      name: "BloraEffects",
+      formats: ["es", "iife"],
+      fileName: (format) => (format === "es" ? "index.js" : "effects.global.js"),
     },
     outDir: "dist",
     emptyOutDir: true,

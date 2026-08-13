@@ -1,1 +1,6 @@
-export { createPopconfirmController, type PopconfirmController } from "./popconfirm.js";
+export {
+  BLORA_POPCONFIRM_TAG,
+  BloraPopconfirm,
+  defineBloraPopconfirm,
+  type PopconfirmController,
+} from "./popconfirm.js";

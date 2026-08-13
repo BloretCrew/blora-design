@@ -1,16 +1,18 @@
 {
   "name": "breadcrumb",
+  "category": "navigation",
   "status": "stable",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-breadcrumb",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
   "attributes": {},
   "properties": {},
   "methods": {},
   "events": {},
   "slots": {
-    "default": "Content"
+    "default": "Declarative <blora-breadcrumb-item label href current> definitions; consumed into the official navigation tree."
   },
   "parts": [],
   "cssProperties": [],

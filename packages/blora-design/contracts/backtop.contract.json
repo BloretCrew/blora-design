@@ -1,15 +1,32 @@
 {
   "name": "backtop",
+  "category": "navigation",
   "status": "beta",
-  "kind": "headless",
+  "kind": "custom-element",
+  "tagName": "blora-backtop",
   "since": "2.0.0",
   "requiresJavaScript": true,
   "formAssociated": false,
   "attributes": {
-    "data-show-after": { "type": "number" },
-    "data-blora-backtop": { "type": "boolean" }
+    "show-after": {
+      "type": "number",
+      "default": 400
+    },
+    "target": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string"
+    }
   },
-  "methods": {},
+  "methods": {
+    "show": {
+      "signature": "() => void"
+    },
+    "hide": {
+      "signature": "() => void"
+    }
+  },
   "events": {},
   "slots": {},
   "parts": [],

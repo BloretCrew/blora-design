@@ -1,21 +1,29 @@
 {
   "name": "result",
+  "category": "feedback",
   "status": "stable",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-result",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
   "attributes": {
-    "data-variant": {
+    "variant": {
       "type": "\"success\" | \"warning\" | \"error\" | \"info\"",
       "default": null
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
     }
   },
   "properties": {},
   "methods": {},
   "events": {},
   "slots": {
-    "default": "Result content"
+    "default": "No child structure; attributes generate the official result tree."
   },
   "parts": [],
   "cssProperties": [],

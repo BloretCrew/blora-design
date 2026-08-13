@@ -15,8 +15,12 @@
 
 .blora-select__trigger {
   width: 100%;
+
+  /* Height never collapses when value+placeholder are both empty */
+  min-height: calc(0.6em * 2 + var(--blora-text-sm, 0.875rem) * 1.4);
   padding: 0.6em 2.4em 0.6em 0.85em;
   font-size: var(--blora-text-sm);
+  line-height: 1.4;
   color: var(--blora-color-text-secondary);
   background: var(--blora-color-surface-default);
   border: 1px solid var(--blora-color-border-subtle);
@@ -27,6 +31,41 @@
   overflow: hidden;
   text-overflow: ellipsis;
   transition: all var(--blora-duration-fast) var(--blora-easing-standard);
+}
+
+.blora-select__value {
+  display: inline-block;
+  vertical-align: middle;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:host([multiple]) .blora-select__trigger {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  height: auto;
+  overflow: visible;
+  white-space: normal;
+  text-overflow: unset;
+  padding-block: 0.35em;
+}
+
+.blora-select__tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--blora-space-2);
+  max-width: calc(100% - 1.5em);
+  overflow: visible;
+  text-overflow: unset;
+  white-space: normal;
+}
+
+.blora-select__tags .blora-tag {
+  max-width: 100%;
 }
 
 .blora-select__trigger:hover {

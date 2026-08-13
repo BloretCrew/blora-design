@@ -1,5 +1,9 @@
 /* Blora Design 2.0 - megamenu component */
 
+blora-megamenu {
+  display: inline-block;
+}
+
 .blora-megamenu {
   position: relative;
 }

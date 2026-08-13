@@ -1,5 +1,6 @@
 {
   "name": "effects",
+  "category": "data-display",
   "status": "beta",
   "kind": "service",
   "since": "2.0.0",
@@ -8,12 +9,18 @@
   "attributes": {},
   "properties": {},
   "methods": {
-    "textFx": { "description": "Apply a text effect to a target element" }
+    "textFx": {
+      "description": "Apply a text effect to a target element"
+    }
   },
   "events": {},
   "slots": {},
   "parts": [],
-  "cssProperties": ["--blora-fx-dur"],
+  "cssProperties": [
+    "--blora-fx-dur",
+    "--blora-diff-position",
+    "--blora-diff-ratio"
+  ],
   "accessibilityPattern": "content",
   "migrationFromV1": "effects.migration.md"
 }

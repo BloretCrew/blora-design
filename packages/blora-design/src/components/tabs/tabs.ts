@@ -10,6 +10,10 @@
  * CSS switches to the animated indicator.
  */
 
+import { BloraElement } from "../../core/blora-element.js";
+
+export const BLORA_TABS_TAG = "blora-tabs";
+
 export interface TabsController {
   /** Activate a specific tab by index. */
   select(index: number, focus?: boolean): void;
@@ -22,6 +26,7 @@ export interface TabsController {
  */
 const HORIZONTAL_KEYS = new Set(["ArrowLeft", "ArrowRight", "Home", "End"]);
 const VERTICAL_KEYS = new Set(["ArrowUp", "ArrowDown", "Home", "End"]);
+let tabsInstanceId = 0;
 
 /**
  * Create a tabs controller on a `.blora-tabs` root element.
@@ -76,11 +81,13 @@ export function createTabsController(root: HTMLElement): TabsController {
     }
     // Link tab to panel if panel exists
     if (panels[i]) {
+      const tabId = tab.id || `blora-tabs-tab-${i}`;
       const panelId = panels[i]!.id || `blora-tabs-panel-${i}`;
+      if (!tab.id) tab.id = tabId;
       if (!panels[i]!.id) panels[i]!.id = panelId;
       tab.setAttribute("aria-controls", panelId);
       panels[i]!.setAttribute("role", "tabpanel");
-      panels[i]!.setAttribute("aria-labelledby", panelId);
+      panels[i]!.setAttribute("aria-labelledby", tabId);
     }
   });
 
@@ -222,4 +229,162 @@ export function createTabsController(root: HTMLElement): TabsController {
       root.removeAttribute("data-tabs-enhanced");
     },
   };
+}
+
+interface TabDefinition {
+  content: Node[];
+  disabled: boolean;
+  label: string;
+  selected: boolean;
+  value: string;
+}
+
+/** Composite CE. Child `<blora-tab>` definitions become the supported tablist/panel tree. */
+export class BloraTabs extends BloraElement {
+  private controller: TabsController | null = null;
+  private definitions: TabDefinition[] | null = null;
+  private reflecting = false;
+  private readonly instanceId = ++tabsInstanceId;
+
+  static get observedAttributes(): string[] {
+    return ["flush", "value", "variant", "orientation"];
+  }
+
+  attributeChangedCallback(name: string): void {
+    if (!this.isConnectedInternal) return;
+    if (name === "value") {
+      if (!this.reflecting) this.activateFromValue();
+      return;
+    }
+    this.sync();
+  }
+
+  select(index: number, focus = false): void {
+    this.controller?.select(index, focus);
+    this.reflectValueFromIndex(index);
+  }
+
+  protected render(): void {
+    if (!this.definitions) this.definitions = this.readDefinitions();
+    if (!this.definitions.length && this.querySelector(".blora-tabs")) return;
+
+    const selectedValue =
+      this.getAttribute("value") ??
+      this.definitions.find((definition) => definition.selected)?.value ??
+      this.definitions.find((definition) => !definition.disabled)?.value;
+    const root = document.createElement("div");
+    root.className = "blora-tabs";
+    root.dataset.bloraGenerated = "";
+    const nav = document.createElement("div");
+    nav.className = "blora-tabs__nav";
+    root.appendChild(nav);
+
+    this.definitions.forEach((definition, index) => {
+      const tab = document.createElement("button");
+      tab.className = "blora-tabs__tab";
+      tab.type = "button";
+      tab.id = `blora-tabs-tab-${this.instanceId}-${index}`;
+      tab.dataset.value = definition.value;
+      tab.disabled = definition.disabled;
+      tab.textContent = definition.label;
+      tab.setAttribute("aria-selected", String(definition.value === selectedValue));
+      nav.appendChild(tab);
+    });
+
+    this.definitions.forEach((definition, index) => {
+      const panel = document.createElement("div");
+      panel.className = "blora-tabs__panel";
+      panel.id = `blora-tabs-panel-${this.instanceId}-${index}`;
+      panel.append(...definition.content);
+      root.appendChild(panel);
+    });
+    this.replaceChildren(root);
+    this.syncChrome(root);
+  }
+
+  protected bindEvents(): void {
+    const root = this.querySelector<HTMLElement>(".blora-tabs");
+    if (!root) return;
+    this.controller?.destroy();
+    this.controller = createTabsController(root);
+    this.listen(root, "click", (event) => {
+      const tab = (event.target as HTMLElement | null)?.closest<HTMLButtonElement>(".blora-tabs__tab");
+      if (!tab || !root.contains(tab) || tab.disabled) return;
+      this.reflectValue(tab.dataset.value ?? "");
+    });
+  }
+
+  protected override sync(): void {
+    const root = this.querySelector<HTMLElement>(".blora-tabs");
+    if (!root) return;
+    this.syncChrome(root);
+    this.controller?.destroy();
+    this.controller = createTabsController(root);
+  }
+
+  protected onDisconnect(): void {
+    this.controller?.destroy();
+    this.controller = null;
+  }
+
+  private readDefinitions(): TabDefinition[] {
+    const items = Array.from(this.children).filter((item) => item.localName === "blora-tab");
+    if (items.length) {
+      return items.map((item) => {
+        const label = item.getAttribute("label") ?? "";
+        return {
+          content: Array.from(item.childNodes),
+          disabled: item.hasAttribute("disabled"),
+          label,
+          selected: item.hasAttribute("selected"),
+          value: item.getAttribute("value") ?? label,
+        };
+      });
+    }
+    const tabs = Array.from(this.querySelectorAll<HTMLButtonElement>(".blora-tabs__tab"));
+    const panels = Array.from(this.querySelectorAll<HTMLElement>(".blora-tabs__panel"));
+    return tabs.map((tab, index) => ({
+      content: Array.from(panels[index]?.childNodes ?? []),
+      disabled: tab.disabled,
+      label: tab.textContent ?? "",
+      selected: tab.getAttribute("aria-selected") === "true",
+      value: tab.dataset.value ?? tab.textContent ?? "",
+    }));
+  }
+
+  private syncChrome(root: HTMLElement): void {
+    const variant = this.getAttribute("variant");
+    const orientation = this.getAttribute("orientation");
+    if (variant) root.dataset.variant = variant;
+    else delete root.dataset.variant;
+    if (orientation) root.dataset.orientation = orientation;
+    else delete root.dataset.orientation;
+    root.toggleAttribute("data-flush", this.hasAttribute("flush"));
+  }
+
+  private activateFromValue(): void {
+    const value = this.getAttribute("value") ?? "";
+    const tabs = Array.from(this.querySelectorAll<HTMLElement>(".blora-tabs__tab"));
+    const index = tabs.findIndex((tab) => (tab.dataset.value ?? "") === value);
+    if (index >= 0) this.controller?.select(index);
+  }
+
+  private reflectValueFromIndex(index: number): void {
+    const tab = this.querySelectorAll<HTMLElement>(".blora-tabs__tab")[index];
+    if (tab) this.reflectValue(tab.dataset.value ?? "");
+  }
+
+  private reflectValue(value: string): void {
+    if ((this.getAttribute("value") ?? "") === value) return;
+    this.reflecting = true;
+    if (value) this.setAttribute("value", value);
+    else this.removeAttribute("value");
+    this.reflecting = false;
+    this.emit("blora-change", { value });
+  }
+}
+
+export function defineBloraTabs(registry: CustomElementRegistry = customElements): void {
+  if (!registry || registry.get(BLORA_TABS_TAG)) return;
+  registry.define(BLORA_TABS_TAG, BloraTabs);
 }

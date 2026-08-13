@@ -3,6 +3,10 @@
    Spec §11.1: Native input + visual dot, no JS required
    ========================================================================= */
 
+blora-radio {
+  display: inline-block;
+}
+
 .blora-radio {
   display: inline-flex;
   align-items: center;

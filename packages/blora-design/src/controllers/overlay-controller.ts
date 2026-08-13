@@ -26,25 +26,56 @@ export const defaultOverlayOptions: OverlayOptions = {
 
 interface StackEntry {
   overlay: HTMLElement;
+  document: Document;
   options: OverlayOptions;
   previousFocus: Element | null;
   scrollLockCount: number;
 }
 
-const stack: StackEntry[] = [];
-let scrollLockCount = 0;
+const stacks = new WeakMap<Document, StackEntry[]>();
+const scrollLockCounts = new WeakMap<Document, number>();
+const modalCounts = new WeakMap<Document, number>();
 
-function lockScroll(): void {
-  scrollLockCount++;
-  if (scrollLockCount === 1) {
+function markModalOpen(document: Document): void {
+  const count = (modalCounts.get(document) ?? 0) + 1;
+  modalCounts.set(document, count);
+  document.documentElement.setAttribute("data-blora-modal-open", "");
+}
+
+function markModalClosed(document: Document): void {
+  const count = Math.max(0, (modalCounts.get(document) ?? 0) - 1);
+  if (count === 0) {
+    modalCounts.delete(document);
+    document.documentElement.removeAttribute("data-blora-modal-open");
+  } else {
+    modalCounts.set(document, count);
+  }
+}
+
+function getStack(document: Document): StackEntry[] {
+  let stack = stacks.get(document);
+  if (!stack) {
+    stack = [];
+    stacks.set(document, stack);
+  }
+  return stack;
+}
+
+function lockScroll(document: Document): void {
+  const count = (scrollLockCounts.get(document) ?? 0) + 1;
+  scrollLockCounts.set(document, count);
+  if (count === 1) {
     document.body.style.overflow = "hidden";
   }
 }
 
-function unlockScroll(): void {
-  scrollLockCount = Math.max(0, scrollLockCount - 1);
-  if (scrollLockCount === 0) {
+function unlockScroll(document: Document): void {
+  const count = Math.max(0, (scrollLockCounts.get(document) ?? 0) - 1);
+  if (count === 0) {
+    scrollLockCounts.delete(document);
     document.body.style.overflow = "";
+  } else {
+    scrollLockCounts.set(document, count);
   }
 }
 
@@ -60,7 +91,7 @@ function getFocusableElements(root: HTMLElement): HTMLElement[] {
   ].join(", ");
 
   return Array.from(root.querySelectorAll<HTMLElement>(selector)).filter(
-    (el) => el.offsetParent !== null || el === document.activeElement,
+    (el) => el.offsetParent !== null || el === root.ownerDocument.activeElement,
   );
 }
 
@@ -72,7 +103,7 @@ function trapTabKey(e: KeyboardEvent, overlay: HTMLElement): void {
 
   const first = focusable[0]!;
   const last = focusable[focusable.length - 1]!;
-  const active = document.activeElement;
+  const active = overlay.ownerDocument.activeElement;
 
   if (e.shiftKey) {
     if (active === first || !overlay.contains(active)) {
@@ -100,26 +131,32 @@ export class OverlayController {
   open(): void {
     if (this.entry) return;
 
+    const document = this.overlay.ownerDocument;
     const previousFocus = document.activeElement;
 
     this.entry = {
       overlay: this.overlay,
+      document,
       options: this.options,
       previousFocus,
       scrollLockCount: 0,
     };
 
-    stack.push(this.entry);
+    getStack(document).push(this.entry);
+
+    if (this.options.modal) {
+      markModalOpen(document);
+    }
 
     if (this.options.lockScroll) {
-      lockScroll();
+      lockScroll(document);
       this.entry.scrollLockCount = 1;
     }
 
     // Focus management
     if (this.options.trapFocus || this.options.restoreFocus) {
       // Move focus into the overlay
-      requestAnimationFrame(() => {
+      document.defaultView?.requestAnimationFrame(() => {
         const focusable = getFocusableElements(this.overlay);
         if (focusable.length > 0) {
           focusable[0]!.focus();
@@ -144,22 +181,27 @@ export class OverlayController {
   close(): void {
     if (!this.entry) return;
 
+    const stack = getStack(this.entry.document);
     const index = stack.indexOf(this.entry);
     if (index >= 0) {
       stack.splice(index, 1);
     }
 
     if (this.entry.scrollLockCount > 0) {
-      unlockScroll();
+      unlockScroll(this.entry.document);
     }
 
-    document.removeEventListener("keydown", this.onKeyDown);
+    if (this.options.modal) {
+      markModalClosed(this.entry.document);
+    }
+
+    this.entry.document.removeEventListener("keydown", this.onKeyDown);
     this.overlay.removeEventListener("pointerdown", this.onPointerDown);
 
     // Restore focus
     if (this.options.restoreFocus && this.entry.previousFocus instanceof HTMLElement) {
       const focusTarget = this.entry.previousFocus;
-      requestAnimationFrame(() => {
+      this.entry.document.defaultView?.requestAnimationFrame(() => {
         focusTarget.dispatchEvent(new Event("focus"));
         focusTarget.focus();
       });
@@ -172,6 +214,7 @@ export class OverlayController {
     if (!this.entry) return;
 
     // Only handle if this is the topmost overlay
+    const stack = getStack(this.entry.document);
     const topEntry = stack[stack.length - 1];
     if (topEntry !== this.entry) return;
 

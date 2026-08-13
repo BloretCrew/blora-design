@@ -18,7 +18,7 @@ pnpm add @bloret-crew/blora-design
 ```js
 import "@bloret-crew/blora-design/tokens.css";
 import "@bloret-crew/blora-design/foundations.css";
-import { createTableController, toast, defineBloraSelect } from "@bloret-crew/blora-design";
+import { createTableController, message, defineBloraSelect } from "@bloret-crew/blora-design";
 
 defineBloraSelect();
 // 按钮：.blora-button[data-variant="primary"]
@@ -31,7 +31,7 @@ defineBloraSelect();
 
 ## 安装（历史 1.x 叙述 · 仅迁移对照）
 
-Blora Design **1.x** 曾以整包 `blora.css` + `blora.js` 分发。**2.0** 为 monorepo ESM + 按组件 CSS + headless controller（见上节与 guide）。
+Blora Design **1.x** 曾以整包 `blora.css` + `blora.js` 分发。**2.0** 为 monorepo ESM + 按组件 CSS + Composite CE；仅 Table / Form 等开放数据能力保留 headless API（见上节与 guide）。
 
 ```bash
 # 2.0（推荐）
@@ -43,7 +43,7 @@ pnpm add @bloret-crew/blora-design
 **作用域约定（2.0）**
 
 - Token 与 foundations 挂到应用根；组件 class 使用 `blora-*`。  
-- 交互节点显式 `createXxxController` 或注册自定义元素。  
+- 结构敏感组件使用注册后的 Custom Element；只有 contract 标记为 headless 的能力显式创建 controller。
 - 换肤 / 明暗：theming 包或 token 主题 CSS，而非依赖 `Blora.applyPalette` 全局对象（1.x）。
 
 **仓库结构（历史描述起点）**
@@ -109,7 +109,7 @@ Blora.init(root);                    // 幂等；动态子树可重复调用
 Blora.configure({ /* size, locale, portalRoot, validateOn, … */ });
 Blora.getConfig();
 
-Blora.toast / message / notify / confirm
+Blora.message / notify / confirm（1.x 另有 toast，2.0 已移除）
 Blora.openModal / closeModal / openDrawer / closeDrawer
 Blora.applyPalette('ocean');         // coral（默认）| dusk | ocean | indigo | lotus | cinnabar | graphite | mono | circuit | …
 Blora.applyColorMode('system');      // system | light | dark
@@ -573,6 +573,7 @@ Tabs 初始化后会自动注入滑动指示器；内容面板切换时只做渐
   <span class="blora-diff__divider"></span>
   <input class="blora-diff__range" type="range" min="0" max="100" value="50" aria-label="比较位置">
 </div>
+<!-- 两侧不限于图片：任意子节点（文案、卡片、组件）都会铺满对应面板。比例令牌 --blora-diff-ratio -->
 
 <div class="blora-hover-gallery" aria-label="产品图库">
   <img class="blora-hover-gallery__item is-active" src="front.jpg" alt="产品正面">
@@ -706,15 +707,19 @@ Tabs 初始化后会自动注入滑动指示器；内容面板切换时只做渐
 
 **快捷键**：`Ctrl/⌘ + K` 唤起，`Esc` 关闭（由 blora.js 自动绑定）。
 
-### 13. Toast
+### 13. Message（2.0；取代 1.x Toast）
 
 ```js
-Blora.toast('一条消息');
-Blora.toast({ type: 'success', message: '操作已完成', duration: 3000 });
-// type: info | success | warning | danger
+import { message } from "@bloret-crew/blora-design";
+
+message("一条消息");
+message.success("操作已完成");
+message({ content: "失败", type: "danger", duration: 3000 });
+// type: info | success | warning | danger（error → danger）
 ```
 
-容器 `.blora-toast-container` 由 JS 自动注入。
+容器 `.blora-message-container` 由 JS 自动注入（顶部居中）。
+1.x 的 `Blora.toast` **不在 2.0 中保留**。
 
 ### 14. 动作与表单扩展
 

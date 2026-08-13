@@ -7,6 +7,18 @@
     }
   },
   "focusRing": {
+    "width": {
+      "$type": "dimension",
+      "$value": "2px"
+    },
+    "widthStrong": {
+      "$type": "dimension",
+      "$value": "3px"
+    },
+    "offset": {
+      "$type": "dimension",
+      "$value": "2px"
+    },
     "default": {
       "$type": "shadow",
       "$value": "0 0 0 3px color-mix(in srgb, {color.action.primary.default} 12%, transparent)"

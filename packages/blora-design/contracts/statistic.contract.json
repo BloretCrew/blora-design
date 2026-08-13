@@ -1,18 +1,36 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "statistic",
+  "category": "data-display",
   "status": "stable",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-statistic",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
   "attributes": {
-    "data-direction": {
+    "label": {
+      "type": "string"
+    },
+    "value": {
+      "type": "string"
+    },
+    "suffix": {
+      "type": "string"
+    },
+    "trend": {
+      "type": "string"
+    },
+    "direction": {
       "type": "\"up\" | \"down\"",
-      "description": "Set on .blora-stat__trend to color the trend indicator."
+      "description": "Colors the generated trend indicator."
     }
   },
-  "properties": {},
+  "properties": {
+    "value": {
+      "type": "string"
+    }
+  },
   "methods": {},
   "events": {},
   "classes": {
@@ -22,7 +40,9 @@
     "blora-stat__suffix": "Suffix unit after value.",
     "blora-stat__trend": "Trend indicator with up/down color."
   },
-  "slots": { "default": "Content" },
+  "slots": {
+    "default": "Fallback value text, consumed into the official statistic tree."
+  },
   "parts": [],
   "cssProperties": [],
   "accessibilityPattern": "section",

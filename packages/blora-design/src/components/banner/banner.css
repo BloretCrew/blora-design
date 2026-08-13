@@ -125,3 +125,7 @@
   --blora-button-bg: color-mix(in srgb, var(--blora-color-banner-foreground) 10%, transparent);
   --blora-button-bd: color-mix(in srgb, var(--blora-color-banner-foreground) 55%, transparent);
 }
+
+blora-banner {
+  display: block;
+}

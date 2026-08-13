@@ -5,7 +5,7 @@ import { createWatermarkController } from "../../../addons/effects/src/index";
 import "../../../addons/effects/src/effects.css";
 
 const meta = {
-  title: "Add-ons/Effects/Watermark",
+  title: "Data display/Watermark",
   component: ".blora-watermark",
   tags: ["autodocs"],
 } satisfies Meta;

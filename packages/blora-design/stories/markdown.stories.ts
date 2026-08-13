@@ -5,7 +5,7 @@ import { renderMarkdownTo } from "../../../addons/markdown/src/index";
 import "../../../addons/markdown/src/markdown.css";
 
 const meta = {
-  title: "Add-ons/Markdown",
+  title: "Data display/Markdown",
   component: ".blora-md",
   tags: ["autodocs"],
 } satisfies Meta;

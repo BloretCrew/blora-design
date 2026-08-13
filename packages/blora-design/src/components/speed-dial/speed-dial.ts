@@ -2,6 +2,19 @@
  * Blora Design 2.0 - Speed Dial controller
  * Stays in core (product decision). Baseline: v1 initSpeedDial.
  */
+import { BloraElement } from "../../core/blora-element.js";
+import { createBloraIcon, type BloraIconName } from "../../core/icons.js";
+
+export const BLORA_SPEED_DIAL_TAG = "blora-speed-dial";
+
+function createNamedIcon(
+  doc: Document,
+  name: string | null,
+  fallback: BloraIconName,
+): SVGSVGElement {
+  const icon = createBloraIcon((name ?? fallback) as BloraIconName, 18, doc);
+  return icon.childElementCount ? icon : createBloraIcon(fallback, 18, doc);
+}
 
 export interface SpeedDialController {
   open(): void;
@@ -74,6 +87,9 @@ export function createSpeedDialController(root: HTMLElement): SpeedDialControlle
     if (!open) {
       actionItems.forEach((action) => action.setAttribute("tabindex", "-1"));
     }
+    root.dispatchEvent(
+      new CustomEvent("blora-speed-dial-toggle", { bubbles: true, detail: { open } }),
+    );
   };
 
   const onTriggerClick = (e: MouseEvent) => {
@@ -123,7 +139,16 @@ export function createSpeedDialController(root: HTMLElement): SpeedDialControlle
   };
 
   const onActionsClick = (e: MouseEvent) => {
-    if ((e.target as HTMLElement).closest(".blora-speed-dial__action")) setOpen(false);
+    const action = (e.target as HTMLElement).closest<HTMLElement>(".blora-speed-dial__action");
+    if (action) {
+      root.dispatchEvent(
+        new CustomEvent("blora-speed-dial-select", {
+          bubbles: true,
+          detail: { value: action.dataset.value ?? "" },
+        }),
+      );
+      setOpen(false);
+    }
   };
 
   const onDocClick = (e: MouseEvent) => {
@@ -157,4 +182,161 @@ export function createSpeedDialController(root: HTMLElement): SpeedDialControlle
       doc.removeEventListener("click", onDocClick);
     },
   };
+}
+
+interface SpeedDialActionDefinition {
+  icon: string | null;
+  label: string;
+  nodes: Node[];
+  variant: string;
+  value: string;
+}
+
+/** Speed Dial CE that consumes declarative actions and owns trigger/menu controls. */
+export class BloraSpeedDial extends BloraElement {
+  private controller: SpeedDialController | null = null;
+  private definitions: SpeedDialActionDefinition[] | null = null;
+  private reflecting = false;
+
+  static get observedAttributes(): string[] {
+    return [
+      "label",
+      "mode",
+      "action-appearance",
+      "open",
+      "close-button",
+      "main-label",
+      "main-icon",
+    ];
+  }
+
+  attributeChangedCallback(): void {
+    if (!this.isConnectedInternal || this.reflecting) return;
+    this.sync();
+  }
+
+  open(): void {
+    this.controller?.open();
+  }
+
+  close(): void {
+    this.controller?.close();
+  }
+
+  protected render(): void {
+    if (!this.definitions) {
+      this.definitions = Array.from(this.children)
+        .filter((item) => item.localName === "blora-speed-dial-action")
+        .map((item) => ({
+          icon: item.getAttribute("icon"),
+          label: item.getAttribute("label") ?? item.textContent?.trim() ?? "",
+          nodes: Array.from(item.childNodes).map((node) => node.cloneNode(true)),
+          variant: item.getAttribute("variant") ?? "secondary",
+          value: item.getAttribute("value") ?? "",
+        }));
+    }
+    const root = this.ownerDocument.createElement("div");
+    root.className = "blora-speed-dial";
+    const mode = this.getAttribute("mode");
+    if (mode === "left" || mode === "flower") root.classList.add(`blora-speed-dial--${mode}`);
+    root.dataset.bloraGenerated = "";
+    root.dataset.bloraSpeedDial = "";
+    const trigger = this.ownerDocument.createElement("button");
+    trigger.className = "blora-button blora-speed-dial__trigger";
+    trigger.dataset.size = "icon";
+    trigger.dataset.variant = "primary";
+    trigger.dataset.bloraSpeedDialTrigger = "";
+    trigger.type = "button";
+    trigger.setAttribute("aria-label", this.getAttribute("label") ?? "操作");
+    trigger.appendChild(createNamedIcon(this.ownerDocument, "plus", "plus"));
+    root.appendChild(trigger);
+    if (this.hasAttribute("close-button")) {
+      const close = this.ownerDocument.createElement("button");
+      close.className = "blora-button blora-speed-dial__close";
+      close.dataset.size = "icon";
+      close.dataset.variant = "danger";
+      close.dataset.bloraSpeedDialClose = "";
+      close.type = "button";
+      close.setAttribute("aria-label", "关闭");
+      close.appendChild(createNamedIcon(this.ownerDocument, "close", "close"));
+      root.appendChild(close);
+    }
+    const mainLabel = this.getAttribute("main-label");
+    if (mainLabel) {
+      const main = this.ownerDocument.createElement("button");
+      main.className = "blora-button blora-speed-dial__main";
+      main.dataset.size = "icon";
+      main.dataset.variant = "secondary";
+      main.dataset.bloraSpeedDialMain = "";
+      main.type = "button";
+      main.setAttribute("aria-label", mainLabel);
+      main.appendChild(createNamedIcon(this.ownerDocument, this.getAttribute("main-icon"), "plus"));
+      root.appendChild(main);
+    }
+    const actions = this.ownerDocument.createElement("div");
+    actions.className = "blora-speed-dial__actions";
+    const appearance = this.getAttribute("action-appearance") ?? "icon";
+    this.definitions.forEach((definition) => {
+      const action = this.ownerDocument.createElement("button");
+      action.className = "blora-button blora-speed-dial__action";
+      action.dataset.size = appearance === "button" ? "sm" : "icon";
+      action.dataset.variant = definition.variant;
+      action.dataset.value = definition.value;
+      action.type = "button";
+      action.setAttribute("aria-label", definition.label);
+      action.title = definition.label;
+      if (appearance === "button") action.textContent = definition.label;
+      else if (definition.icon)
+        action.appendChild(createNamedIcon(this.ownerDocument, definition.icon, "document"));
+      else if (definition.nodes.length)
+        action.append(...definition.nodes.map((node) => node.cloneNode(true)));
+      else action.appendChild(createNamedIcon(this.ownerDocument, null, "document"));
+      if (appearance === "label") {
+        const item = this.ownerDocument.createElement("div");
+        item.className = "blora-speed-dial__item";
+        const label = this.ownerDocument.createElement("span");
+        label.className = "blora-speed-dial__label";
+        label.textContent = definition.label;
+        item.append(label, action);
+        actions.appendChild(item);
+      } else actions.appendChild(action);
+    });
+    root.appendChild(actions);
+    this.replaceChildren(root);
+  }
+
+  protected override sync(): void {
+    const field = this.querySelector<HTMLInputElement | HTMLTextAreaElement>("input, textarea");
+    if (field) {
+      field.disabled = this.hasAttribute("disabled");
+      if (this.hasAttribute("placeholder")) field.placeholder = this.getAttribute("placeholder") ?? "";
+      if (this.hasAttribute("value") && this.ownerDocument.activeElement !== field) {
+        field.value = this.getAttribute("value") ?? field.value;
+      }
+    }
+    this.rebind();
+  }
+
+  protected bindEvents(): void {
+    const root = this.querySelector<HTMLElement>(".blora-speed-dial");
+    if (!root) return;
+    this.controller = createSpeedDialController(root);
+    this.listen(root, "blora-speed-dial-toggle", (event) => {
+      const open = (event as CustomEvent<{ open: boolean }>).detail.open;
+      this.reflecting = true;
+      this.toggleAttribute("open", open);
+      this.reflecting = false;
+    });
+    if (this.hasAttribute("open")) this.controller.open();
+  }
+
+  protected onDisconnect(): void {
+    this.controller?.destroy();
+    this.controller = null;
+  }
+}
+
+export function defineBloraSpeedDial(registry: CustomElementRegistry = customElements): void {
+  if (!registry || registry.get(BLORA_SPEED_DIAL_TAG)) return;
+  registry.define(BLORA_SPEED_DIAL_TAG, BloraSpeedDial);
 }

@@ -113,6 +113,9 @@
   background: var(--blora-color-surface-raised);
   border-bottom: 1px solid var(--blora-color-border-subtle);
   white-space: nowrap;
+
+  /* Match body cells — default baseline lifts selection checkboxes above text */
+  vertical-align: middle;
 }
 
 .blora-table tbody td {
@@ -120,6 +123,7 @@
   color: var(--blora-color-text-emphasis);
   border-bottom: 1px solid var(--blora-color-border-subtle);
   white-space: nowrap;
+  vertical-align: middle;
 }
 
 .blora-table tbody tr:last-child td {
@@ -165,7 +169,7 @@ th[data-blora-sort]:hover {
 .blora-table-sort:focus-visible,
 th[data-blora-sort]:focus-visible {
   outline: 2px solid var(--blora-color-action-primary-default);
-  outline-offset: 2px;
+  outline-offset: -4px;
 }
 
 /* Default: no glyph. Hover (unsorted): ⇅. Sorted: ↑ / ↓ */
@@ -263,16 +267,47 @@ th[data-blora-sort]:has(.blora-table__sort)::after {
   background: var(--blora-color-surface-sunken);
 }
 
-/* -- Selection column -- */
+/* -- Selection column --
+ * Table cells inherit a tall line-height (~1.6). That creates an anonymous
+ * line-box strut in the select col; the checkbox (inline-flex ~1.15em) then
+ * sits ~1–2px below the adjacent text ink mid — reads as "偏下" in both
+ * Storybook and showcase. Kill the strut on the col only; restore font-size
+ * on the label so em-based box sizing still works. No host-specific translate. */
 
 .blora-table-select-col {
   width: 2.75rem;
   text-align: center;
+  vertical-align: middle;
+  position: relative;
+  line-height: 0;
 }
 
 .blora-table-check {
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
   margin: 0;
+
+  /* Parent col uses line-height:0; re-assert control metrics */
+  font-size: var(--blora-text-sm);
+  line-height: 1;
+  vertical-align: middle;
+
+  /* Absolute input under the visual box; z-index keeps hit-testing above
+     th/td background paints. */
+  position: relative;
+  z-index: var(--blora-z-base);
+}
+
+.blora-table-check > input {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.blora-table-check > .blora-checkbox__box {
+  flex: none;
 }
 
 /* -- Bulk action bar -- */

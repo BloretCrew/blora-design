@@ -1,9 +1,10 @@
 {
   "name": "table",
+  "category": "data-display",
   "status": "stable",
-  "kind": "css-only",
+  "kind": "headless",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
   "attributes": {
     "data-striped": {

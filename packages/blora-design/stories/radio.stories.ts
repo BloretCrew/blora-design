@@ -1,9 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/web-components";
 import { html } from "lit";
+import { defineBloraRadio } from "../src/components/radio";
+
+defineBloraRadio();
 
 const meta = {
-  title: "Forms/Radio",
-  component: ".blora-radio",
+  title: "Data input/Radio",
+  component: "blora-radio",
   tags: ["autodocs"],
 } satisfies Meta;
 
@@ -13,16 +16,9 @@ type Story = StoryObj;
 export const Default: Story = {
   render: () => html`
     <div class="blora-stack">
-      <label class="blora-radio"
-        ><input type="radio" name="r1" checked /><span class="blora-radio__dot"></span>选项 A</label
-      >
-      <label class="blora-radio"
-        ><input type="radio" name="r1" /><span class="blora-radio__dot"></span>选项 B</label
-      >
-      <label class="blora-radio"
-        ><input type="radio" name="r1" disabled /><span class="blora-radio__dot"></span>选项 C
-        (禁用)</label
-      >
+      <blora-radio name="r1" value="a" checked>选项 A</blora-radio>
+      <blora-radio name="r1" value="b">选项 B</blora-radio>
+      <blora-radio name="r1" value="c" disabled>选项 C (禁用)</blora-radio>
     </div>
   `,
 };

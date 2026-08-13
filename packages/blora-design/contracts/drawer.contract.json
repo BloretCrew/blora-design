@@ -1,19 +1,43 @@
 {
   "name": "drawer",
+  "category": "layout",
   "status": "stable",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-drawer",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "position": {
+      "type": "\"right\" | \"left\" | \"top\" | \"bottom\"",
+      "default": "right"
+    },
+    "open": {
+      "type": "boolean",
+      "default": false
+    },
+    "close-label": {
+      "type": "string"
+    }
+  },
   "properties": {},
-  "methods": {},
+  "methods": {
+    "open": {
+      "signature": "() => void"
+    },
+    "close": {
+      "signature": "() => void"
+    }
+  },
   "events": {},
   "slots": {
     "default": "Content"
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "navigation",
+  "accessibilityPattern": "dialog",
   "migrationFromV1": "drawer.migration.md"
 }

@@ -1,15 +1,43 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "rate",
+  "category": "data-input",
   "status": "beta",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-rate",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
-  "properties": {},
+  "attributes": {
+    "value": {
+      "type": "number",
+      "default": 0
+    },
+    "max": {
+      "type": "number",
+      "default": 5
+    },
+    "readonly": {
+      "type": "boolean",
+      "default": false
+    },
+    "label": {
+      "type": "string"
+    }
+  },
+  "properties": {
+    "value": {
+      "type": "number"
+    }
+  },
   "methods": {},
-  "events": {},
+  "events": {
+    "blora-change": {
+      "detail": "{ value: number }",
+      "bubbles": true,
+      "composed": true
+    }
+  },
   "slots": {
     "default": "Content"
   },

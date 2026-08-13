@@ -1,5 +1,11 @@
 /* Blora Design 2.0 - autocomplete component (beta, migrated from v1) */
 
+blora-autocomplete {
+  display: block;
+  width: 100%;
+  max-width: 22rem;
+}
+
 .blora-autocomplete .blora-input::-webkit-search-cancel-button {
   display: none;
 }

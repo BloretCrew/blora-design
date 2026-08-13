@@ -1,5 +1,9 @@
 /* Blora Design 2.0 - Tooltip */
 
+blora-tooltip {
+  display: inline-block;
+}
+
 .blora-tooltip {
   position: relative;
   display: inline-flex;
@@ -24,6 +28,7 @@
   pointer-events: none;
   transition: all var(--blora-duration-fast) var(--blora-easing-standard);
   z-index: var(--blora-z-dropdown);
+
   /* Shadow alone disappears on dark canvas; ring keeps the frame readable */
   box-shadow: var(--blora-shadow-3);
 }
@@ -47,6 +52,7 @@
 .blora-tooltip__bubble::after {
   border-width: 5px;
   border-block-start-color: var(--blora-color-tooltip-background);
+
   /* Sit over the border triangle so only a 1px rim shows */
   margin-block-start: -1px;
 }

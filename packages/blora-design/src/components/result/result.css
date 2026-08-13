@@ -48,3 +48,7 @@
     padding: var(--blora-space-7) var(--blora-space-4);
   }
 }
+
+blora-result {
+  display: block;
+}

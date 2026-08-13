@@ -282,6 +282,13 @@
   margin-top: var(--blora-space-4);
 }
 
+.blora-post__react-btn svg,
+.blora-post__more svg {
+  display: block;
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
 .blora-post__react-btn {
   display: inline-grid;
   place-items: center;

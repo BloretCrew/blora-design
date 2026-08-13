@@ -348,22 +348,20 @@
 .blora-mockup--phone,
 .blora-phone-mockup {
   --blora-phone-rim: var(--blora-color-text-subtle);
-
-  /* Reference width for scaling daisy’s 462px geometry */
-  --blora-phone-max: 18.75rem;
-  --blora-phone-radius: calc(65 * 18.75rem / 462);
-  --blora-phone-screen-radius: calc(54 * 18.75rem / 462);
-  --blora-phone-island-radius: calc(17 * 18.75rem / 462);
-  --blora-phone-radius-se: calc(90 * 18.75rem / 462);
-  --blora-phone-screen-radius-se: calc(101 * 18.75rem / 462);
+  --blora-phone-max: 15.5rem;
+  --blora-phone-radius: calc(65 * var(--blora-phone-max) / 462);
+  --blora-phone-screen-radius: calc(54 * var(--blora-phone-max) / 462);
+  --blora-phone-island-radius: calc(17 * var(--blora-phone-max) / 462);
+  --blora-phone-radius-se: calc(90 * var(--blora-phone-max) / 462);
+  --blora-phone-screen-radius-se: calc(101 * var(--blora-phone-max) / 462);
 
   display: inline-grid;
   justify-items: center;
   width: 100%;
   max-width: min(100%, var(--blora-phone-max));
   aspect-ratio: 462 / 978;
-  padding: 6px;
-  border: 5px solid var(--blora-phone-rim);
+  padding: var(--blora-space-1);
+  border: 2px solid var(--blora-phone-rim);
   border-radius: var(--blora-phone-radius);
   background: var(--blora-color-text-primary);
   box-shadow: none;
@@ -372,10 +370,12 @@
   color: var(--blora-color-text-emphasis);
 }
 
-.blora-mockup--phone,
-.blora-phone-mockup {
-  corner-shape: superellipse(1.45);
-  border-radius: var(--blora-phone-radius-se);
+@supports (corner-shape: superellipse(1.45)) {
+  .blora-mockup--phone,
+  .blora-phone-mockup {
+    corner-shape: superellipse(1.45);
+    border-radius: var(--blora-phone-radius-se);
+  }
 }
 
 .blora-mockup--phone::before,
@@ -412,10 +412,12 @@
   color: var(--blora-color-text-emphasis);
 }
 
-.blora-mockup__display,
-.blora-phone-mockup__screen {
-  corner-shape: superellipse(1.87);
-  border-radius: var(--blora-phone-screen-radius-se);
+@supports (corner-shape: superellipse(1.87)) {
+  .blora-mockup__display,
+  .blora-phone-mockup__screen {
+    corner-shape: superellipse(1.87);
+    border-radius: var(--blora-phone-screen-radius-se);
+  }
 }
 
 .blora-mockup__display > img,
@@ -479,12 +481,6 @@
   box-shadow: var(--blora-shadow-2);
 }
 
-.blora-mockup--phone,
-.blora-phone-mockup {
-  --blora-phone-max: 15.5rem;
-  --blora-phone-radius: calc(65 * 15.5rem / 462);
-  --blora-phone-screen-radius: calc(54 * 15.5rem / 462);
-  --blora-phone-island-radius: calc(17 * 15.5rem / 462);
-  --blora-phone-radius-se: calc(90 * 15.5rem / 462);
-  --blora-phone-screen-radius-se: calc(101 * 15.5rem / 462);
+blora-mockup {
+  display: block;
 }

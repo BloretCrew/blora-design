@@ -1,0 +1,61 @@
+{
+  "$schema": "../../schemas/component-contract.schema.json",
+  "name": "number-input",
+  "category": "data-input",
+  "status": "stable",
+  "kind": "custom-element",
+  "tagName": "blora-number-input",
+  "since": "2.0.0",
+  "requiresJavaScript": true,
+  "formAssociated": false,
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "value": {
+      "type": "number",
+      "default": 0
+    },
+    "min": {
+      "type": "number"
+    },
+    "max": {
+      "type": "number"
+    },
+    "step": {
+      "type": "number",
+      "default": 1
+    },
+    "label": {
+      "type": "string"
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "properties": {
+    "value": {
+      "type": "number"
+    }
+  },
+  "methods": {
+    "focus": {
+      "signature": "(options?: FocusOptions) => void"
+    }
+  },
+  "events": {
+    "change": {
+      "detail": "Event",
+      "bubbles": true,
+      "composed": false
+    }
+  },
+  "slots": {
+    "default": "No authored structure; native numeric input and Lucide controls are generated."
+  },
+  "parts": [],
+  "cssProperties": [],
+  "accessibilityPattern": "input",
+  "migrationFromV1": "number-input.migration.md"
+}

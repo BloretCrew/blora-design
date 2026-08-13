@@ -1,13 +1,33 @@
 {
   "name": "tooltip",
+  "category": "feedback",
   "status": "stable",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-tooltip",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
+  "attributes": {
+    "text": {
+      "type": "string"
+    },
+    "trigger": {
+      "type": "string"
+    },
+    "placement": {
+      "type": "\"top\" | \"bottom\""
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false
+    }
+  },
   "properties": {},
-  "methods": {},
+  "methods": {
+    "focus": {
+      "signature": "(options?: FocusOptions) => void"
+    }
+  },
   "events": {},
   "slots": {
     "default": "Content"

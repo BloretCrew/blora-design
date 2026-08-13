@@ -175,7 +175,7 @@ export function createCountUpController(root: HTMLElement): CountUpController {
   };
 }
 
-/* —— Image Diff —— */
+/* —— Diff (images, text, or any component panes) —— */
 export type ImageDiffController = Destroyable;
 
 export function createImageDiffController(root: HTMLElement): ImageDiffController {

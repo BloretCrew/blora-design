@@ -1,8 +1,9 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "message",
+  "category": "feedback",
   "status": "stable",
-  "kind": "css-only",
+  "kind": "css-and-service",
   "since": "2.0.0",
   "requiresJavaScript": false,
   "formAssociated": false,
@@ -13,11 +14,21 @@
     }
   },
   "properties": {},
-  "methods": {},
+  "methods": {
+    "createMessageElement": "Build the exact static pill used by message().",
+    "message": "Open floating pill (Ant-style top-center). Also message.success/info/warning/danger/error/open.",
+    "message.success": "Shorthand success type.",
+    "message.info": "Shorthand info type.",
+    "message.warning": "Shorthand warning type.",
+    "message.danger": "Shorthand danger type.",
+    "message.error": "Ant alias for danger."
+  },
   "events": {},
   "classes": {
-    "blora-message": "Root inline pill container.",
-    "blora-message__icon": "Status icon, colored by variant."
+    "blora-message": "Root pill container (static or floating).",
+    "blora-message__icon": "Status icon, colored by variant.",
+    "blora-message__content": "Text node wrapper used by the service.",
+    "blora-message-container": "Fixed top-center stack for message() service."
   },
   "slots": {
     "default": "Message text"
@@ -25,5 +36,6 @@
   "parts": [],
   "cssProperties": [],
   "accessibilityPattern": "status",
-  "migrationFromV1": "message.migration.md"
+  "migrationFromV1": "message.migration.md",
+  "notes": "Product pair is Message (pill) + Notification (card). No Toast API."
 }

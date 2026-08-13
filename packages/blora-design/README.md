@@ -4,13 +4,13 @@ Blora Design 2.0 — token-driven, accessible, zero-dependency Web UI design sys
 
 **Status: 2.0.0-alpha.1** (Phase 10 Alpha; pre-Beta package surface — see monorepo `CHANGELOG.md`)
 
-### Entry points
+## Entry points
 
 | Import | Notes |
 |--------|--------|
 | `@bloret-crew/blora-design` | Main ESM (tree-shake friendly) |
-| `@bloret-crew/blora-design/auto` | Side-effect: define `blora-select` + `blora-dialog` |
-| `@bloret-crew/blora-design/button` (also select/dialog/table/toast) | JS subpaths |
+| `@bloret-crew/blora-design/auto` | Side-effect: define the complete default Composite CE surface |
+| `@bloret-crew/blora-design/button` (also select/dialog/table) | JS subpaths |
 | `@bloret-crew/blora-design/blora.global.js` | IIFE CDN → `globalThis.Blora` |
 | `@bloret-crew/blora-design/compat/v1` | 1.x compatibility |
 | `@bloret-crew/blora-design/custom-elements.json` | CEM |
@@ -30,14 +30,17 @@ pnpm add @bloret-crew/blora-design
 import "@bloret-crew/blora-design/tokens.css";
 import "@bloret-crew/blora-design/foundations.css";
 import "@bloret-crew/blora-design/components/button.css";
-import { setButtonLoading, createTableController, toast } from "@bloret-crew/blora-design";
+import "@bloret-crew/blora-design/auto";
+import { setButtonLoading, createTableController, message } from "@bloret-crew/blora-design";
 ```
 
 ```html
 <button type="button" class="blora-button" data-variant="primary">OK</button>
+<blora-range values="25,70"></blora-range>
+<blora-search placeholder="Search…"></blora-search>
 ```
 
-- Prefer **native HTML + CSS** or **headless controllers**; use Web Components where shipped (`blora-select`, `blora-dialog`).
+- Prefer **native HTML + CSS** for primitives and **Composite Custom Elements** for structure-sensitive controls. Headless controllers remain advanced/compat APIs.
 - Do **not** treat 1.x global `Blora.*` as the 2.0 API. Migration: `compat/v1`, `legacy/v1/`, monorepo codemod.
 - Human guide (Chinese): [`docs/guide.md`](../../docs/guide.md)
 

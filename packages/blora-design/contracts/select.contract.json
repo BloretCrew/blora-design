@@ -1,6 +1,7 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "select",
+  "category": "data-input",
   "status": "stable",
   "kind": "custom-element",
   "tagName": "blora-select",
@@ -8,24 +9,60 @@
   "requiresJavaScript": true,
   "formAssociated": true,
   "attributes": {
-    "name": { "type": "string" },
-    "value": { "type": "string", "reflects": true },
-    "disabled": { "type": "boolean", "reflects": true },
-    "required": { "type": "boolean", "reflects": true },
-    "placeholder": { "type": "string" }
+    "name": {
+      "type": "string"
+    },
+    "value": {
+      "type": "string",
+      "reflects": true
+    },
+    "disabled": {
+      "type": "boolean",
+      "reflects": true
+    },
+    "required": {
+      "type": "boolean",
+      "reflects": true
+    },
+    "placeholder": {
+      "type": "string"
+    },
+    "multiple": {
+      "type": "boolean",
+      "reflects": true
+    },
+    "max-tag-count": {
+      "type": "number",
+      "default": 2
+    }
   },
   "properties": {
     "selectedOptions": {
       "type": "readonly BloraOptionData[]",
       "readonly": true
+    },
+    "values": {
+      "type": "readonly string[]",
+      "readonly": true
     }
   },
   "methods": {
-    "focus": { "returns": "void" },
-    "checkValidity": { "returns": "boolean" },
-    "reportValidity": { "returns": "boolean" },
+    "focus": {
+      "returns": "void"
+    },
+    "checkValidity": {
+      "returns": "boolean"
+    },
+    "reportValidity": {
+      "returns": "boolean"
+    },
     "setCustomValidity": {
-      "parameters": [{ "name": "message", "type": "string" }],
+      "parameters": [
+        {
+          "name": "message",
+          "type": "string"
+        }
+      ],
       "returns": "void"
     }
   },
@@ -40,7 +77,18 @@
       "bubbles": true,
       "composed": true
     },
+    "blora-before-open": {
+      "detail": "{ source: string; reason: string }",
+      "bubbles": true,
+      "composed": true,
+      "cancelable": true
+    },
     "blora-open": {
+      "detail": "{ source: string; reason: string }",
+      "bubbles": true,
+      "composed": true
+    },
+    "blora-before-close": {
       "detail": "{ source: string; reason: string }",
       "bubbles": true,
       "composed": true,
@@ -55,7 +103,15 @@
   "slots": {
     "default": "blora-option elements"
   },
-  "parts": ["trigger", "value", "popup", "listbox", "option"],
+  "parts": [
+    "trigger",
+    "value",
+    "tag",
+    "tag-remove",
+    "popup",
+    "listbox",
+    "option"
+  ],
   "cssProperties": [
     "--blora-select-popup-max-height",
     "--blora-button-bg",

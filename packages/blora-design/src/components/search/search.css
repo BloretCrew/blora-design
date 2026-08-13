@@ -1,5 +1,9 @@
 /* Blora Design 2.0 - search component (beta, migrated from v1) */
 
+blora-search {
+  display: block;
+}
+
 .blora-search {
   position: relative;
 }
@@ -53,7 +57,7 @@ button.blora-search__icon:hover {
 .blora-search__icon:focus-visible {
   color: var(--blora-color-action-primary-default);
   outline: 2px solid var(--blora-color-action-primary-default);
-  outline-offset: 1px;
+  outline-offset: -4px;
 }
 
 .blora-search__clear {
@@ -97,5 +101,5 @@ button.blora-search__icon:hover {
 .blora-search__clear:focus-visible {
   color: var(--blora-color-action-primary-default);
   outline: 2px solid var(--blora-color-action-primary-default);
-  outline-offset: 1px;
+  outline-offset: -4px;
 }

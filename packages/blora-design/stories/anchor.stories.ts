@@ -5,7 +5,7 @@ import { createAnchorController, initSmoothScroll } from "../../../addons/layout
 import "../../../addons/layout/src/layout.css";
 
 const meta = {
-  title: "Add-ons/Layout/Anchor",
+  title: "Layout/Anchor",
   component: ".blora-anchor",
   tags: ["autodocs"],
 } satisfies Meta;

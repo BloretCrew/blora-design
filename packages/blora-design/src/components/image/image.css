@@ -3,6 +3,10 @@
    Visual baseline: legacy/v1/blora.css lines 2035-2040, 2310-2311
    ========================================================================= */
 
+blora-image {
+  display: inline-block;
+}
+
 .blora-image {
   position: relative;
   display: inline-block;
@@ -166,6 +170,13 @@
   line-height: 1;
 }
 
+.blora-image-preview__btn svg,
+.blora-image-preview__close svg {
+  display: block;
+  flex: none;
+  margin: 0;
+}
+
 .blora-image-preview__btn:hover {
   background: color-mix(in srgb, var(--blora-color-text-on-media) 22%, transparent);
 }
@@ -192,6 +203,7 @@
   color: var(--blora-color-text-on-media);
   background: color-mix(in srgb, var(--blora-color-text-on-media) 12%, transparent);
   font-size: 1.25rem;
+  line-height: 1;
 }
 
 .blora-image-preview__close:hover {

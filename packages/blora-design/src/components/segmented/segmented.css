@@ -3,6 +3,11 @@
    Visual baseline: legacy/v1/blora.css lines 1139-1144
    ========================================================================= */
 
+blora-segmented {
+  display: inline-block;
+  max-width: 100%;
+}
+
 .blora-segmented {
   --blora-segmented-padding: 3px;
 

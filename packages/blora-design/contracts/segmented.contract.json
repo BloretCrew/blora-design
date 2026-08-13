@@ -1,28 +1,42 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "segmented",
+  "category": "navigation",
   "status": "stable",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-segmented",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
   "attributes": {
-    "data-active": {
+    "value": {
+      "type": "string"
+    },
+    "disabled": {
       "type": "boolean",
-      "description": "Set on the active .blora-segmented__item."
+      "default": false
     }
   },
-  "properties": {},
-  "methods": {},
-  "events": {},
-  "classes": {
-    "blora-segmented": "Root container.",
-    "blora-segmented__indicator": "Sliding background indicator.",
-    "blora-segmented__item": "Selectable item button."
+  "properties": {
+    "value": {
+      "type": "string"
+    }
   },
-  "slots": { "default": "Content" },
+  "methods": {},
+  "events": {
+    "blora-change": {
+      "detail": "{ value: string, item: HTMLElement }",
+      "bubbles": true,
+      "composed": false
+    }
+  },
+  "slots": {
+    "default": "Declarative <blora-segment value selected disabled> definitions; consumed into official radio buttons."
+  },
   "parts": [],
-  "cssProperties": ["--blora-segmented-padding"],
-  "accessibilityPattern": "navigation",
+  "cssProperties": [
+    "--blora-segmented-padding"
+  ],
+  "accessibilityPattern": "radiogroup",
   "migrationFromV1": "segmented.migration.md"
 }

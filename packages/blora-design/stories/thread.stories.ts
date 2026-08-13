@@ -6,7 +6,7 @@ import { createThreadController } from "../../../addons/thread/src/index";
 import "../../../addons/thread/src/thread.css";
 
 const meta = {
-  title: "Add-ons/Thread",
+  title: "Data display/Thread",
   component: ".blora-thread",
   tags: ["autodocs"],
   parameters: {

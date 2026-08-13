@@ -22,16 +22,16 @@ pnpm add @bloret-crew/blora-design@alpha
 
 ### 2.1 2.0 包入口（摘要）
 
-| 入口                                                | 用途                                                                       |
-| --------------------------------------------------- | -------------------------------------------------------------------------- |
-| `@bloret-crew/blora-design`                         | 主 ESM（无 side-effect）；`createXxxController` / `toast` / `defineBlora*` |
-| `@bloret-crew/blora-design/auto`                    | **有副作用**：注册稳定 CE（`blora-select`、`blora-dialog`）                |
-| `@bloret-crew/blora-design/button` 等               | JS 子路径（button / select / dialog / table / toast）                      |
-| `@bloret-crew/blora-design/components/*.css`        | 按需样式                                                                   |
-| `@bloret-crew/blora-design/compat/v1`               | 1.x class/token 兼容                                                       |
-| `@bloret-crew/blora-design/blora.global.js`         | CDN / IIFE 全局 `Blora`（经典 script）                                     |
-| `@bloret-crew/blora-design/custom-elements.json`    | CEM                                                                        |
-| `@bloret-crew/blora-design/component-manifest.json` | 组件清单                                                                   |
+| 入口                                                | 用途                                                                                       |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `@bloret-crew/blora-design`                         | 主 ESM（无 side-effect）；Composite CE 定义、Table/Form headless API、`message` / `notify` |
+| `@bloret-crew/blora-design/auto`                    | **有副作用**：注册稳定 CE（`blora-select`、`blora-dialog`）                                |
+| `@bloret-crew/blora-design/button` 等               | JS 子路径（button / select / dialog / table）                                              |
+| `@bloret-crew/blora-design/components/*.css`        | 按需样式                                                                                   |
+| `@bloret-crew/blora-design/compat/v1`               | 1.x class/token 兼容                                                                       |
+| `@bloret-crew/blora-design/blora.global.js`         | CDN / IIFE 全局 `Blora`（经典 script）                                                     |
+| `@bloret-crew/blora-design/custom-elements.json`    | CEM                                                                                        |
+| `@bloret-crew/blora-design/component-manifest.json` | 组件清单                                                                                   |
 
 ## 3. CSS 入口变化
 
@@ -195,7 +195,7 @@ Codemod 处理安全子集：class 重命名、modifier → data 属性等。复
 - `Blora.init()` → 按需导入 `define*()` 函数
 - `Blora.configure()` → 逐组件配置
 - `Blora.validate()` → `createFormController` / 原生约束验证
-- `Blora.toast()` → `import { toast, message } from "@bloret-crew/blora-design"`
+- `Blora.toast()` / `Blora.message()` → `import { message } from "@bloret-crew/blora-design"`（Ant 味顶部胶囊；无 toast API）
 - 复杂 DOM（Select / Table）→ Storybook + `createTableController` / `defineBloraSelect`
 
 ## 11. 常见错误
@@ -215,10 +215,10 @@ Codemod 处理安全子集：class 重命名、modifier → data 属性等。复
 
 发 beta 前确认：
 
-1. `docs/guide.md` 为 2.0 推荐路径（非 1.x `Blora.*`）。  
-2. 本文件入口表（§2.1）与 npm 包 `exports` 一致。  
-3. `CHANGELOG.md` 记录破坏性/迁移注意。  
-4. Issue 模板可用于反馈（`.github/ISSUE_TEMPLATE`）。  
+1. `docs/guide.md` 为 2.0 推荐路径（非 1.x `Blora.*`）。
+2. 本文件入口表（§2.1）与 npm 包 `exports` 一致。
+3. `CHANGELOG.md` 记录破坏性/迁移注意。
+4. Issue 模板可用于反馈（`.github/ISSUE_TEMPLATE`）。
 5. 兼容：`import "@bloret-crew/blora-design/compat/v1"` + `compat/v1.css`。
 
 ## 兼容层 API {#api}

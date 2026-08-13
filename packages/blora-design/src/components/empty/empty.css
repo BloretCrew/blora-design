@@ -30,8 +30,16 @@
   font-size: var(--blora-text-sm);
 }
 
+.blora-empty > .blora-button {
+  align-self: center;
+}
+
 @media (max-width: 560px) {
   .blora-empty {
     padding: var(--blora-space-7) var(--blora-space-4);
   }
+}
+
+blora-empty {
+  display: block;
 }

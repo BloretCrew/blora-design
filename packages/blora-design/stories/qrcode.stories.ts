@@ -5,7 +5,7 @@ import { renderQRCode } from "../../../addons/qrcode/src/index";
 import "../../../addons/qrcode/src/qrcode.css";
 
 const meta = {
-  title: "Add-ons/QRCode",
+  title: "Data display/QR Code",
   component: ".blora-qrcode",
   tags: ["autodocs"],
 } satisfies Meta;

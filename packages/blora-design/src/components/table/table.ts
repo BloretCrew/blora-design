@@ -288,9 +288,11 @@ export function createTableController(
       }),
     );
     applyColumnLayout();
+    /* Ensure the selection column exists on the (new) page, but do NOT call
+       syncTableSelection here — it would clobber a just-made select-all click
+       (the click path re-enters applyPage and resets the header checkbox). */
     if (selectable) {
       ensureSelectionColumn();
-      syncTableSelection();
     }
   };
 

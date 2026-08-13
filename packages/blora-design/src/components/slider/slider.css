@@ -1,5 +1,9 @@
 /* Blora Design 2.0 - slider component */
 
+blora-slider {
+  display: block;
+}
+
 .blora-slider {
   display: flex;
   align-items: center;

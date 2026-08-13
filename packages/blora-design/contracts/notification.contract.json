@@ -1,8 +1,9 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "notification",
+  "category": "feedback",
   "status": "stable",
-  "kind": "css-only",
+  "kind": "css-and-service",
   "since": "2.0.0",
   "requiresJavaScript": false,
   "formAssociated": false,
@@ -13,7 +14,11 @@
     }
   },
   "properties": {},
-  "methods": {},
+  "methods": {
+    "createNotificationElement": "Build the exact static card used by notify().",
+    "notify": "Open a notification card in a placement stack.",
+    "createNotificationController": "Wire close behavior for a static card returned by createNotificationElement()."
+  },
   "events": {},
   "classes": {
     "blora-notification": "Root card container.",

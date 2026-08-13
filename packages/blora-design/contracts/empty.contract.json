@@ -1,16 +1,35 @@
 {
   "name": "empty",
+  "category": "data-display",
   "status": "stable",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-empty",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": "暂无数据"
+    },
+    "description": {
+      "type": "string"
+    },
+    "action-label": {
+      "type": "string"
+    }
+  },
   "properties": {},
   "methods": {},
-  "events": {},
+  "events": {
+    "blora-empty-action": {
+      "detail": "void",
+      "bubbles": true,
+      "composed": true
+    }
+  },
   "slots": {
-    "default": "Empty state content"
+    "default": "No child structure; attributes generate the official empty state tree."
   },
   "parts": [],
   "cssProperties": [],

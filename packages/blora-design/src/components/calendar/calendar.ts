@@ -2,6 +2,11 @@
  * Blora Design 2.0 - Calendar controller
  * Month/year navigation, day selection, zoom levels (days → months → years).
  */
+import { BloraElement } from "../../core/blora-element.js";
+import { createBloraIcon } from "../../core/icons.js";
+
+export const BLORA_CALENDAR_TAG = "blora-calendar";
+
 export interface CalendarController {
   destroy(): void;
 }
@@ -23,31 +28,26 @@ const MONTHS = [
 const DOW = ["日", "一", "二", "三", "四", "五", "六"];
 
 const setChevron = (el: HTMLElement, dir: "prev" | "next") => {
-  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  svg.setAttribute("width", "14");
-  svg.setAttribute("height", "14");
-  svg.setAttribute("viewBox", "0 0 24 24");
-  svg.setAttribute("fill", "none");
-  svg.setAttribute("stroke", "currentColor");
-  svg.setAttribute("stroke-width", "2");
-  svg.setAttribute("stroke-linecap", "round");
-  svg.setAttribute("stroke-linejoin", "round");
-  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-  path.setAttribute("d", dir === "prev" ? "m15 18-6-6 6-6" : "m9 18 6-6-6-6");
-  svg.appendChild(path);
-  el.replaceChildren(svg);
+  el.replaceChildren(
+    createBloraIcon(dir === "prev" ? "chevron-left" : "chevron-right", 14, el.ownerDocument),
+  );
 };
 
 export function createCalendarController(root: HTMLElement): CalendarController {
+  const doc = root.ownerDocument;
   const today = new Date();
-  let viewYear = today.getFullYear();
-  let viewMonth = today.getMonth();
+  const initial = root.getAttribute("data-value");
+  const initialDate = initial ? new Date(`${initial}T00:00:00`) : null;
+  const validInitial = initialDate && !Number.isNaN(initialDate.getTime()) ? initialDate : null;
+  let viewYear = validInitial?.getFullYear() ?? today.getFullYear();
+  let viewMonth = validInitial?.getMonth() ?? today.getMonth();
   let viewMode: "days" | "months" | "years" = "days";
   /* Default selection = today (v1 showcase / expected UX) */
-  let selected: Date | null = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  let selected: Date | null =
+    validInitial ?? new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
   const el = (tag: string, cls?: string, text?: string): HTMLElement => {
-    const node = document.createElement(tag);
+    const node = doc.createElement(tag);
     if (cls) node.className = cls;
     if (text != null) node.textContent = text;
     return node;
@@ -184,12 +184,14 @@ export function createCalendarController(root: HTMLElement): CalendarController 
       viewMonth = selected.getMonth();
       viewMode = "days";
       render();
+      emitSelection();
       return;
     }
     const dayCell = t.closest<HTMLElement>(".blora-calendar__cell[data-day]");
     if (dayCell) {
       selected = new Date(viewYear, viewMonth, Number(dayCell.dataset.day));
       render();
+      emitSelection();
       return;
     }
     const monthCell = t.closest<HTMLElement>(".blora-calendar__cell--month[data-month]");
@@ -207,6 +209,17 @@ export function createCalendarController(root: HTMLElement): CalendarController 
     }
   };
 
+  const emitSelection = () => {
+    if (!selected) return;
+    const value = `${selected.getFullYear()}-${String(selected.getMonth() + 1).padStart(2, "0")}-${String(selected.getDate()).padStart(2, "0")}`;
+    root.dispatchEvent(
+      new CustomEvent("blora-calendar-change", {
+        bubbles: true,
+        detail: { value, date: new Date(selected) },
+      }),
+    );
+  };
+
   root.addEventListener("click", onClick);
   render();
 
@@ -215,4 +228,67 @@ export function createCalendarController(root: HTMLElement): CalendarController 
       root.removeEventListener("click", onClick);
     },
   };
+}
+
+/** Calendar CE that owns the complete navigation and date grid. */
+export class BloraCalendar extends BloraElement {
+  private controller: CalendarController | null = null;
+  private reflecting = false;
+
+  static get observedAttributes(): string[] {
+    return ["value"];
+  }
+
+  attributeChangedCallback(): void {
+    if (!this.isConnectedInternal || this.reflecting) return;
+    this.sync();
+  }
+
+  get value(): string {
+    return this.getAttribute("value") ?? "";
+  }
+
+  set value(value: string) {
+    this.setAttribute("value", value);
+  }
+
+  protected render(): void {
+    const root = this.ownerDocument.createElement("div");
+    root.className = "blora-calendar";
+    root.dataset.bloraGenerated = "";
+    const value = this.getAttribute("value");
+    if (value) root.dataset.value = value;
+    this.replaceChildren(root);
+  }
+
+  protected override sync(): void {
+    const root = this.querySelector<HTMLElement>(".blora-calendar");
+    if (!root) return;
+    const value = this.getAttribute("value");
+    if (value) root.dataset.value = value;
+    else delete root.dataset.value;
+    this.rebind();
+  }
+
+  protected bindEvents(): void {
+    const root = this.querySelector<HTMLElement>(".blora-calendar");
+    if (!root) return;
+    this.controller = createCalendarController(root);
+    this.listen(root, "blora-calendar-change", (event) => {
+      const value = (event as CustomEvent<{ value: string }>).detail.value;
+      this.reflecting = true;
+      this.setAttribute("value", value);
+      this.reflecting = false;
+    });
+  }
+
+  protected onDisconnect(): void {
+    this.controller?.destroy();
+    this.controller = null;
+  }
+}
+
+export function defineBloraCalendar(registry: CustomElementRegistry = customElements): void {
+  if (!registry || registry.get(BLORA_CALENDAR_TAG)) return;
+  registry.define(BLORA_CALENDAR_TAG, BloraCalendar);
 }

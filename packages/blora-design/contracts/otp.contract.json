@@ -1,15 +1,54 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "otp",
+  "category": "data-input",
   "status": "beta",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-otp",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
-  "properties": {},
-  "methods": {},
-  "events": {},
+  "attributes": {
+    "length": {
+      "type": "number",
+      "default": 6
+    },
+    "mode": {
+      "type": "\"numeric\" | \"alphanumeric\" | \"any\"",
+      "default": "numeric"
+    },
+    "uppercase": {
+      "type": "boolean",
+      "default": false
+    },
+    "value": {
+      "type": "string"
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "label": {
+      "type": "string"
+    }
+  },
+  "properties": {
+    "value": {
+      "type": "string"
+    }
+  },
+  "methods": {
+    "focus": {
+      "signature": "(options?: FocusOptions) => void"
+    }
+  },
+  "events": {
+    "blora-change": {
+      "detail": "{ value: string, complete: boolean }",
+      "bubbles": true,
+      "composed": true
+    }
+  },
   "slots": {
     "default": "Content"
   },

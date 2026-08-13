@@ -1,17 +1,33 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "mockup",
+  "category": "mockup",
   "status": "beta",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-mockup",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
+  "attributes": {
+    "variant": {
+      "type": "\"browser\" | \"code\" | \"window\" | \"phone\"",
+      "default": "browser"
+    },
+    "address": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string"
+    }
+  },
   "properties": {},
   "methods": {},
   "events": {},
   "slots": {
-    "default": "Content"
+    "default": "Content consumed into the official variant-specific mockup frame. Code variants accept declarative <blora-mockup-line prefix tone> definitions."
   },
   "parts": [],
   "cssProperties": [

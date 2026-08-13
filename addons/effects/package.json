@@ -12,6 +12,7 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./effects.global.js": "./dist/effects.global.js",
     "./effects.css": "./dist/effects.css",
     "./package.json": "./package.json"
   },

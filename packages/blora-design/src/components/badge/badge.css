@@ -4,7 +4,10 @@
 
 .blora-badge {
   /* Same contract as buttons: line-height 1 + flex center = glyph-centered
-     on every engine (desktop + mobile). Fixed height supplies the hit target. */
+     on every engine (desktop + mobile). Fixed height supplies the hit target.
+     Padding stays at the 1.x 0.4em so a single digit remains a circle
+     (0.4em × 2 + glyph ≤ 1.5em). Larger 2.0 padding made "3"/"9" into ovals
+     and the digit looked off-center in different hosts. */
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -15,7 +18,10 @@
   padding: 0 0.4em;
   font-size: var(--blora-text-xs);
   font-weight: 700;
+  font-variant-numeric: tabular-nums;
   line-height: 1;
+  text-align: center;
+
   /* Same as .blora-button — metric trim, not platform hacks */
   text-box: trim-both cap alphabetic;
   text-box-trim: trim-both;
@@ -33,6 +39,7 @@
   width: 0.5em;
   height: 0.5em;
   padding: 0;
+
   /* Empty dots must stay square on every font-size / zoom */
   line-height: 0;
   overflow: hidden;
@@ -65,5 +72,15 @@
 
 .blora-badge[data-variant="info"] {
   background: var(--blora-color-status-info);
+  box-shadow: none;
+}
+
+.blora-badge[data-variant="warning"] {
+  background: var(--blora-color-status-warning);
+  box-shadow: none;
+}
+
+.blora-badge[data-variant="danger"] {
+  background: var(--blora-color-status-danger);
   box-shadow: none;
 }

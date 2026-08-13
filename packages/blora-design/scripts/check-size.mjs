@@ -21,7 +21,6 @@ const budgets = [
   { file: "components/select/index.js", gzipBytes: 20 * 1024, optional: true },
   { file: "components/dialog/index.js", gzipBytes: 16 * 1024, optional: true },
   { file: "components/table/index.js", gzipBytes: 24 * 1024, optional: true },
-  { file: "components/toast/index.js", gzipBytes: 8 * 1024, optional: true },
   { file: "auto.js", gzipBytes: 2 * 1024, optional: true },
 ];
 

@@ -1,5 +1,6 @@
 {
   "name": "skeleton",
+  "category": "feedback",
   "status": "stable",
   "kind": "css-only",
   "since": "2.0.0",

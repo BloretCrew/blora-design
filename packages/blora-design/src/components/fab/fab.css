@@ -45,11 +45,13 @@
   transform: none;
 }
 
-.blora-fab:not(.blora-fab--static) {
-  right: max(var(--blora-space-4), env(safe-area-inset-right, 0px));
-  bottom: max(var(--blora-space-4), env(safe-area-inset-bottom, 0px));
-  width: 3rem;
-  height: 3rem;
+@media (max-width: 560px) {
+  .blora-fab:not(.blora-fab--static) {
+    right: max(var(--blora-space-4), env(safe-area-inset-right, 0px));
+    bottom: max(var(--blora-space-4), env(safe-area-inset-bottom, 0px));
+    width: 3rem;
+    height: 3rem;
+  }
 }
 
 /* broken selector removed — BackTop styles live in backtop/backtop.css */

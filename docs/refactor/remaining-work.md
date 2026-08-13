@@ -28,7 +28,7 @@
 | Phase 3 Foundations | ✅ | reset/base/layout/utilities、RTL、reduced-motion |
 | Phase 4 试点 | ✅ | Button → Dialog → Select |
 | Phase 5 表单与反馈 | ✅ | Field…Toast 等 |
-| Phase 6 导航与浮层 | ✅ | Tabs…Drawer/Navbar |
+| Phase 6 导航与浮层 | ✅ | Tabs…Drawer/Navbar/Sidebar Navigation |
 | Phase 7 数据与内容 | ✅ | Card/Table/List…；table controller 后在 Phase 9 补齐高级路径 |
 | Phase 8 兼容与 Codemod | ✅ | compat、codemod、migrate:check、fixtures |
 | Phase 9 Add-ons | ✅ 自限 | 六包 + 核心 v1 缺口；**规格级 DoD 未勾满** |
@@ -55,7 +55,7 @@
 | **P9-2** | `docs/framework.md` 正文大量 1.x | 顶部 2.0 入口已有；历史节标题强化「仅迁移对照」；**全文重写 deferred**（Phase 10 文档产品化） | ✅ 已关闭（降权足够） |
 | **P9-3** | `llms.txt` 指向不存在的 `docs/migration/v1-to-v2.md` | 新增最小 stub；llms 链到有效路径 | ✅ 已关闭 |
 | **P9-4** | 包名 / 形态 vs 规格表示例偏差 | 见 §2.1 诚实说明；实现名以 monorepo 为准 | ✅ 已关闭（文档） |
-| **P9-5** | 规格偏 FA WC，实现多为 headless controller | ADR-013 固化默认架构 | ✅ 已关闭（文档） |
+| **P9-5** | 规格偏 FA WC，实现多为 headless controller | 历史由 ADR-013 关闭；2026-08-08 ADR-015 改为 Composite CE 默认、FA 分阶段 | ✅ 已由新 ADR 更新 |
 | **P9-6** | add-on 无 Playwright / visual 农场；qrcode jsdom canvas 噪音 | **Deferred → Phase 10** 质量农场；非诚实债阻塞 | ✅ 已处置（deferred） |
 | **P9-7** | 全量 `pnpm verify` 未作 Phase 9 硬门 | 本收口以 typecheck + unit 为证；全量 verify **Deferred → Phase 10 / CI**（见 §5） | ✅ 已处置（deferred + 证据） |
 | **P9-8** | 2.0 核心 i18n / locales 对等缺失 | **Deferred → Phase 10**（规格若仍要求再立项）；1.x 见 `legacy/v1/locales` | ✅ 已处置（deferred） |
@@ -66,7 +66,7 @@
 |-------------------|----------|------|
 | `@bloret-crew/blora-markdown` 等 | `@bloret-crew/blora-design-markdown` 等 | 统一 `blora-design-*` 前缀；**以 package.json 为准** |
 | Table 行为「beta controller」 | `createTableController` + contract **stable**（主路径） | 高级路径已交付；**全量 browser DoD 仍属 Phase 10** |
-| 大量 `<blora-tabs>` / FA WC | 多数为 `div` + `createXxxController`；Select/Dialog 为 CE | 见 **ADR-013** |
+| 大量 `<blora-tabs>` / FA WC | 结构敏感控件已进入 Composite CE 默认面；FA 仍按表单合同分阶段 | 见 **ADR-015**（supersedes ADR-013） |
 
 ### 2.2 相关文件
 
@@ -131,7 +131,7 @@
 
 - [x] Playwright：`a11y` project **真跑 axe**（`a11y.spec.ts` + AxeBuilder；与 chromium 分离）
 - [x] 声明 `test:visual`：无 project 时脚本明确失败信息（不再伪报 `Project visual not found`）
-- [ ] （可选 Preflight）首批 visual 快照 1～N 个关键页；**全组件 visual 仍属 §3.4**
+- [x] （可选 Preflight）首批 visual 快照 1～N 个关键页 — **明确不做**：§3.4 已有 visual smoke（3 张基线 + 审核流）；全矩阵推迟到 RC（2026-08-03）
 - [x] 文档写明：browser 覆盖 ≠ 全部 stable contract（matrix 脚注 + 本表）
 
 #### 3.0.6 文档与 contract 治理（Preflight）
@@ -155,14 +155,14 @@
 - [x] 正式定义 **`2.0.0-alpha.1`**（各包 version + `CHANGELOG.md` + tag `v2.0.0-alpha.1`）
 - [x] 根/包 README 与版本说明对齐（持续维护）
 - [x] 至少 1 个 **纯 HTML** 可运行 example（`examples/basic/`）
-- [ ] （可选）React / Vue 消费示例或适配器 beta 占位
+- [x] （可选）React / Vue 消费示例或适配器 beta 占位 — **明确不做大型示例**：改为在 `docs/guide.md` / `docs/framework.md` 写清框架集成方式（挂载子树 + controller + CSS import）（2026-08-03）
 - [x] 收集外部反馈通道（`.github/ISSUE_TEMPLATE` bug + alpha feedback）
 - [x] Alpha 安装演练记录（见 [`alpha-install-notes.md`](./alpha-install-notes.md)；七包均在 npm）
 
 ### 3.2 包与消费面（规格 §6 / §31 · 可与 Alpha 并行加深）
 
-- [x] `exports`：`./auto`（注册 stable CE：Select + Dialog；side-effect entry）
-- [x] 稳定组件 **JS 子路径**：`./button` `./select` `./dialog` `./table` `./toast`（vite 分 entry）
+- [x] `exports`：`./auto`（注册完整默认 Composite CE 面，当前 61 个；side-effect entry；数量由 manifest 构建校验）
+- [x] 稳定组件 **JS 子路径**：`./button` `./select` `./dialog` `./table`（vite 分 entry；toast 已删除，用 `message`）
 - [x] `./compat/v1` 导出 + size 预算（`compat/v1/index.js` gzip 计入 check-size）
 - [x] **CDN / IIFE**：`./blora.global.js`（`vite.global.config.ts`，`globalThis.Blora`）
 - [x] provenance / 签名策略：**publish.yml** 支持 opt-in `vars.NPM_PROVENANCE=1` + `id-token: write`（默认不强制，避免未配置 trusted publishing 时发版失败）
@@ -217,11 +217,12 @@
 
 ### 3.8 明确非默认 / 后置
 
+- [x] Showcase 核心组件目录：已按 `component-manifest.json` 扩展为 81/81；单视图懒挂载，Preview / HTML 同源生成，并由结构门禁防止清单漂移
 - [ ] 2.0 **i18n / locales** 运行时（P9-8）
 - [ ] add-on 独立 Playwright / visual 深矩阵（P9-6）
-- [ ] FA WC 全面化（**不默认**；ADR-013）
+- [ ] FA WC 全面化（结构 CE 已默认；form association 仍按 ADR-015 分阶段）
 - [ ] 删除 `legacy/v1` 或拆除 compat（**禁止**过早）
-- [ ] 全量 `pnpm verify` 作为发布硬门 — **已升入 §3.0.1**（完成后在此勾选归档）
+- [x] 全量 `pnpm verify` 作为发布硬门 — 2026-08-09 单次完整 exit 0，见 §5
 
 ---
 
@@ -230,6 +231,9 @@
 | 日期 | 变更 | Story / 路径 | 需人眼？ |
 |------|------|--------------|----------|
 | 2026-08-02 | **无**。Phase 9 诚实债收口仅文档/ADR/llms/README/migration stub | — | **否** |
+| 2026-08-09 | 结构敏感组件统一为 Composite CE；保持冻结视觉基线，修复 Statistic 展示页结构漂移 | 全部迁移 Story + `showcase-v2` | **已截图复核并通过 visual suite** |
+| 2026-08-09 | `showcase-v2` 由全量长页改为浮动 Navbar + 单视图组件目录原型 | 当前仅 Accordion / Collapse；侧栏、Preview/HTML、桌面/移动路由 | **Agent 已截图复核；待用户确认后扩展** |
+| 2026-08-11 | `showcase-v2` 组件目录扩展为 76/76 核心组件；当前页懒挂载、导航活动项自动定位、Preview / HTML 同源 | `examples/showcase-v2/`；manifest 对齐门禁；桌面/移动全目录浏览器巡检 | **Agent 已审查 Accordion、Statistic、Table、Dialog、Select、代码面板、主题面板及移动侧栏快照** |
 
 若后续为修死链或假声明而改 `packages/**/src` 且影响渲染或交互，必须在此表追加行，并更新 `pending-visual-review.md`。
 
@@ -241,7 +245,7 @@
 |------|------|------|------|
 | typecheck | `pnpm --filter @bloret-crew/blora-design run typecheck` | ✅ exit 0（2026-08-02） | implementer scratch `phase9-honesty-typecheck.log` |
 | unit | `pnpm --filter @bloret-crew/blora-design exec vitest run` | ✅ 91 tests passed（含 `docs-honesty.test.ts`） | implementer scratch `phase9-honesty-unit.log` |
-| full `pnpm verify` | — | **未作为本收口硬门**；Deferred → Phase 10 / CI（时间与浏览器矩阵成本） | **不宣称全绿** |
+| full `pnpm verify` | `pnpm verify` | ✅ exit 0（2026-08-09）；核心 121 tests、全 workspace 219 tests、Playwright 106 tests；build/publint/attw/size/pack 全通过 | 本地单次完整门禁输出 |
 
 ---
 
@@ -268,6 +272,9 @@
 | 2026-08-02 | P9-1…P9-8 全部关闭或 deferred；typecheck + unit 证据写入 §5 |
 | 2026-08-02 | **进入 Phase 10**；过期 changesets → `.trashes/phase10-entry-cleanup`；迁移指南升格为 monorepo 正文 |
 | 2026-08-02 | 采纳外部审查：新增 **§3.0 Preflight**（verify/CI/publish/exports/体积/contract 治理）；Alpha 后置 |
+| 2026-08-09 | 75 组件完成 58 CE / 17 intentional non-CE 收口；完整 `pnpm verify` 首次单次全绿 |
+| 2026-08-09 | Showcase 组件目录重构：先交付 Accordion / Collapse 双组件原型，待用户确认后再扩展全量 |
+| 2026-08-11 | Showcase 核心组件目录扩展完成：76/76 manifest 对齐，加入逐页运行时巡检与代表性视觉快照 |
 | 2026-08-02 | Preflight 开场：lint/css/contracts/prettier/attw/CI aggregate/`test:visual` 诚实化；image 预览 token 化 |
 | 2026-08-02 | Preflight 续：publish.yml 2.0、CI publint/attw、pack exports 遍历、size 展平、axe 真 project、QR mock、contract-stability 政策 |
 | 2026-08-02 | Preflight：add-on pack/publint、markdown/qrcode CSS 进 dist、examples/basic、browser sort 测试对齐 ▲▼ |

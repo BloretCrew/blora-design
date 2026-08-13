@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/web-components";
 import { html } from "lit";
 
 const meta = {
-  title: "Data/Card",
+  title: "Data display/Card",
   component: ".blora-card",
   tags: ["autodocs"],
 } satisfies Meta;
@@ -55,6 +55,16 @@ export const Panel: Story = {
         <button class="blora-button" type="button" data-variant="text" data-size="sm">更多</button>
       </div>
       <p>面板内容区域，比卡片更宽松的容器。</p>
+    </div>
+  `,
+};
+
+export const PositionedBadge: Story = {
+  render: () => html`
+    <div class="blora-card" data-positioned data-with-badge style="max-width: 24rem;">
+      <span class="blora-badge blora-card__badge" data-variant="circle">3</span>
+      <div class="blora-card__title">待处理项目</div>
+      <div class="blora-card__body">卡片角标由正式定位契约管理。</div>
     </div>
   `,
 };

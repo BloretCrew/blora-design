@@ -1,6 +1,7 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "fab",
+  "category": "actions",
   "status": "beta",
   "kind": "css-only",
   "since": "2.0.0",

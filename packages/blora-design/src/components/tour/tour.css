@@ -1,5 +1,19 @@
 /* Blora Design 2.0 - tour component (beta, migrated from v1) */
 
+blora-tour,
+.blora-tour {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--blora-space-4);
+}
+
+.blora-tour__steps {
+  display: flex;
+  align-items: center;
+  gap: var(--blora-space-3);
+}
+
 .blora-tour-mask {
   position: fixed;
   inset: 0;

@@ -63,3 +63,7 @@
   border-color: var(--blora-color-action-primary-default);
   color: var(--blora-color-text-on-accent);
 }
+
+blora-chat {
+  display: block;
+}

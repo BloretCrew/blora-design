@@ -1,20 +1,65 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "datepicker",
+  "category": "data-input",
   "status": "beta",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-datepicker",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
-  "properties": {},
-  "methods": {},
-  "events": {},
+  "attributes": {
+    "value": {
+      "type": "YYYY-MM-DD string",
+      "default": ""
+    },
+    "min": {
+      "type": "YYYY-MM-DD string",
+      "default": "1900-01-01"
+    },
+    "max": {
+      "type": "YYYY-MM-DD string",
+      "default": "2099-12-31"
+    },
+    "placeholder": {
+      "type": "string",
+      "default": "YYYY-MM-DD"
+    },
+    "name": {
+      "type": "string"
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "required": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "properties": {
+    "value": {
+      "type": "string"
+    }
+  },
+  "methods": {
+    "focus": {
+      "parameters": [],
+      "returns": "void"
+    }
+  },
+  "events": {
+    "change": {
+      "native": true,
+      "bubbles": true,
+      "composed": false
+    }
+  },
   "slots": {
-    "default": "Content"
+    "default": "No authored internal DOM; the CE generates the official field and panel."
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "section",
+  "accessibilityPattern": "date picker",
   "migrationFromV1": "datepicker.migration.md"
 }

@@ -1,16 +1,61 @@
 {
   "name": "switch",
+  "category": "data-input",
   "status": "stable",
-  "kind": "native",
+  "kind": "custom-element",
+  "tagName": "blora-switch",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": true,
-  "attributes": {},
-  "properties": {},
-  "methods": {},
-  "events": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "value": {
+      "type": "string",
+      "default": "on"
+    },
+    "checked": {
+      "type": "boolean",
+      "default": false
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "required": {
+      "type": "boolean",
+      "default": false
+    },
+    "label": {
+      "type": "string"
+    },
+    "size": {
+      "type": "\"sm\" | \"lg\""
+    }
+  },
+  "properties": {
+    "checked": {
+      "type": "boolean"
+    },
+    "value": {
+      "type": "string"
+    }
+  },
+  "methods": {
+    "focus": {
+      "signature": "(options?: FocusOptions) => void"
+    }
+  },
+  "events": {
+    "change": {
+      "detail": "Event",
+      "bubbles": true,
+      "composed": false
+    }
+  },
   "slots": {
-    "default": "Content"
+    "default": "Fallback label text, consumed next to the native checkbox."
   },
   "parts": [],
   "cssProperties": [

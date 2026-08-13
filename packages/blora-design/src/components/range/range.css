@@ -1,5 +1,9 @@
 /* Blora Design 2.0 - range component (beta, migrated from v1) */
 
+blora-range {
+  display: block;
+}
+
 .blora-range__tip {
   position: absolute;
   bottom: calc(100% + 6px);

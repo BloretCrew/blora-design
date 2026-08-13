@@ -1,20 +1,55 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "tour",
+  "category": "navigation",
   "status": "beta",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-tour",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "default": "开始漫游"
+    },
+    "open": {
+      "type": "boolean",
+      "default": false
+    }
+  },
   "properties": {},
-  "methods": {},
-  "events": {},
+  "methods": {
+    "start": {
+      "signature": "() => void"
+    },
+    "end": {
+      "signature": "() => void"
+    },
+    "next": {
+      "signature": "() => void"
+    },
+    "prev": {
+      "signature": "() => void"
+    }
+  },
+  "events": {
+    "blora-tour-change": {
+      "detail": "{ index: number, total: number }",
+      "bubbles": true,
+      "composed": false
+    },
+    "blora-tour-end": {
+      "detail": "void",
+      "bubbles": true,
+      "composed": false
+    }
+  },
   "slots": {
-    "default": "Content"
+    "default": "Declarative <blora-tour-step title description> definitions wrapping highlighted content; consumed into the official tour tree."
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "section",
+  "accessibilityPattern": "dialog",
   "migrationFromV1": "tour.migration.md"
 }

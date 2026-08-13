@@ -1,20 +1,55 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "carousel",
+  "category": "data-display",
   "status": "beta",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-carousel",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
-  "properties": {},
-  "methods": {},
-  "events": {},
+  "attributes": {
+    "current": {
+      "type": "number",
+      "default": 0
+    },
+    "autoplay": {
+      "type": "boolean",
+      "default": false
+    },
+    "label": {
+      "type": "string",
+      "default": "轮播图"
+    }
+  },
+  "properties": {
+    "current": {
+      "type": "number"
+    }
+  },
+  "methods": {
+    "next": {
+      "signature": "() => void"
+    },
+    "prev": {
+      "signature": "() => void"
+    },
+    "goTo": {
+      "signature": "(index: number) => void"
+    }
+  },
+  "events": {
+    "blora-carousel-change": {
+      "detail": "{ index: number }",
+      "bubbles": true,
+      "composed": false
+    }
+  },
   "slots": {
-    "default": "Content"
+    "default": "Declarative <blora-carousel-slide label> definitions; consumed into the official carousel tree."
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "section",
+  "accessibilityPattern": "carousel",
   "migrationFromV1": "carousel.migration.md"
 }

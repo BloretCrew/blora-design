@@ -1,27 +1,60 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "popconfirm",
+  "category": "feedback",
   "status": "stable",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-popconfirm",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
   "attributes": {
-    "data-open": {
+    "trigger": {
+      "type": "string"
+    },
+    "message": {
+      "type": "string"
+    },
+    "confirm-label": {
+      "type": "string"
+    },
+    "cancel-label": {
+      "type": "string"
+    },
+    "open": {
       "type": "boolean",
-      "description": "Set on root to show/hide the confirm panel."
+      "default": false
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false
     }
   },
   "properties": {},
-  "methods": {},
-  "events": {},
+  "methods": {
+    "open": {
+      "signature": "() => void"
+    },
+    "close": {
+      "signature": "() => void"
+    }
+  },
+  "events": {
+    "blora-confirm": {
+      "detail": "Event",
+      "bubbles": true,
+      "composed": false
+    }
+  },
   "classes": {
     "blora-popconfirm": "Root container.",
     "blora-popconfirm__panel": "Floating panel.",
     "blora-popconfirm__title": "Confirmation question.",
     "blora-popconfirm__actions": "Confirm/cancel button container."
   },
-  "slots": { "default": "Trigger and panel" },
+  "slots": {
+    "default": "Trigger and panel"
+  },
   "parts": [],
   "cssProperties": [],
   "accessibilityPattern": "alertdialog",

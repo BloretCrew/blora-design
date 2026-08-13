@@ -1,20 +1,75 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "slider",
+  "category": "data-input",
   "status": "beta",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-slider",
   "since": "2.0.0",
-  "requiresJavaScript": false,
-  "formAssociated": false,
-  "attributes": {},
-  "properties": {},
-  "methods": {},
-  "events": {},
+  "requiresJavaScript": true,
+  "formAssociated": true,
+  "attributes": {
+    "min": {
+      "type": "number",
+      "default": 0
+    },
+    "max": {
+      "type": "number",
+      "default": 100
+    },
+    "step": {
+      "type": "number",
+      "default": 1
+    },
+    "value": {
+      "type": "number",
+      "default": 0
+    },
+    "name": {
+      "type": "string"
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "tooltip": {
+      "type": "boolean",
+      "default": false
+    },
+    "hide-value": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "properties": {
+    "value": {
+      "type": "number"
+    }
+  },
+  "methods": {
+    "focus": {
+      "signature": "(options?: FocusOptions) => void"
+    }
+  },
+  "events": {
+    "input": {
+      "detail": "Event",
+      "bubbles": true,
+      "composed": false
+    },
+    "change": {
+      "detail": "Event",
+      "bubbles": true,
+      "composed": false
+    }
+  },
   "slots": {
     "default": "Content"
   },
   "parts": [],
-  "cssProperties": ["--blora-slider-fill"],
+  "cssProperties": [
+    "--blora-slider-fill"
+  ],
   "accessibilityPattern": "section",
   "migrationFromV1": "slider.migration.md"
 }

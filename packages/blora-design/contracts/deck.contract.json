@@ -1,20 +1,55 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "deck",
+  "category": "layout",
   "status": "beta",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-deck",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
-  "properties": {},
-  "methods": {},
-  "events": {},
+  "attributes": {
+    "current": {
+      "type": "number",
+      "default": 0
+    },
+    "label": {
+      "type": "string",
+      "default": "卡片叠层"
+    }
+  },
+  "properties": {
+    "current": {
+      "type": "number"
+    }
+  },
+  "methods": {
+    "next": {
+      "signature": "() => void"
+    },
+    "prev": {
+      "signature": "() => void"
+    },
+    "goTo": {
+      "signature": "(index: number) => void"
+    }
+  },
+  "events": {
+    "blora-deck-change": {
+      "detail": "{ index: number }",
+      "bubbles": true,
+      "composed": false
+    }
+  },
   "slots": {
-    "default": "Content"
+    "default": "Declarative <blora-deck-card variant front> definitions; consumed into the official deck tree."
   },
   "parts": [],
-  "cssProperties": ["--blora-deck-y", "--blora-deck-scale", "--blora-deck-opacity"],
-  "accessibilityPattern": "section",
+  "cssProperties": [
+    "--blora-deck-y",
+    "--blora-deck-scale",
+    "--blora-deck-opacity"
+  ],
+  "accessibilityPattern": "listbox",
   "migrationFromV1": "deck.migration.md"
 }

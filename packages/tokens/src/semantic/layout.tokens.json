@@ -27,6 +27,14 @@
     "padX": { "$type": "dimension", "$value": "{primitive.control.padX}" },
     "radius": { "$type": "dimension", "$value": "{primitive.control.radius}" }
   },
+  "button": {
+    "padY": { "$type": "dimension", "$value": "0.75em" },
+    "padX": { "$type": "dimension", "$value": "1.1em" }
+  },
+  "tabs": {
+    "indicatorSize": { "$type": "dimension", "$value": "3px" },
+    "focusInset": { "$type": "dimension", "$value": "6px" }
+  },
   "range": {
     "trackSize": { "$type": "dimension", "$value": "{primitive.range.trackSize}" },
     "thumbSize": { "$type": "dimension", "$value": "{primitive.range.thumbSize}" }

@@ -1,1 +1,6 @@
-export { createCheckboxController, type CheckboxController } from "./checkbox.js";
+export {
+  BLORA_CHECKBOX_TAG,
+  BloraCheckbox,
+  defineBloraCheckbox,
+  type CheckboxController,
+} from "./checkbox.js";

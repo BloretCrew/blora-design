@@ -1,0 +1,52 @@
+{
+  "$schema": "../schemas/component-contract.schema.json",
+  "name": "sidebar-nav",
+  "category": "navigation",
+  "status": "stable",
+  "kind": "custom-element",
+  "tagName": "blora-sidebar-nav",
+  "since": "2.0.0",
+  "requiresJavaScript": true,
+  "formAssociated": false,
+  "attributes": {
+    "label": {
+      "type": "string",
+      "default": "Sidebar navigation"
+    },
+    "value": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "properties": {
+    "value": {
+      "type": "string"
+    }
+  },
+  "methods": {
+    "select": {
+      "parameters": [
+        {
+          "name": "value",
+          "type": "string"
+        }
+      ],
+      "returns": "void"
+    }
+  },
+  "events": {
+    "blora-change": {
+      "detail": "{ value: string; href: string }",
+      "bubbles": true,
+      "composed": true,
+      "cancelable": false
+    }
+  },
+  "slots": {
+    "default": "Declarative <blora-sidebar-nav-group label> containing <blora-sidebar-nav-link label href value current> definitions; consumed into the official navigation tree."
+  },
+  "parts": [],
+  "cssProperties": [],
+  "accessibilityPattern": "navigation",
+  "migrationFromV1": "sidebar-nav.migration.md"
+}

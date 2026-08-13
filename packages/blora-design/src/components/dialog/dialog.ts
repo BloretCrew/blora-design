@@ -4,6 +4,7 @@
  */
 import { BloraElement } from "../../core/blora-element.js";
 import { OverlayController, type OverlayOptions } from "../../controllers/overlay-controller.js";
+import { createBloraIcon } from "../../core/icons.js";
 
 import dialogStyles from "./dialog.css?inline";
 
@@ -23,6 +24,7 @@ export interface BloraDialogCloseDetail {
 export class BloraDialog extends BloraElement {
   private overlay: OverlayController | null = null;
   private closeAnimationTimer: ReturnType<typeof setTimeout> | null = null;
+  private visible = false;
 
   static get observedAttributes(): string[] {
     return ["open", "size", "close-on-escape", "close-on-outside-click"];
@@ -39,6 +41,7 @@ export class BloraDialog extends BloraElement {
   }
 
   protected render(): void {
+    if (this.shadowRoot) return;
     const shadow = this.attachShadow({ mode: "open" });
 
     const style = document.createElement("style");
@@ -48,6 +51,7 @@ export class BloraDialog extends BloraElement {
     const backdrop = document.createElement("div");
     backdrop.className = "blora-dialog__backdrop";
     backdrop.setAttribute("part", "backdrop");
+    backdrop.setAttribute("popover", "manual");
 
     const mask = document.createElement("div");
     mask.className = "blora-dialog__mask";
@@ -78,19 +82,7 @@ export class BloraDialog extends BloraElement {
     closeButton.setAttribute("part", "close-button");
     closeButton.setAttribute("aria-label", "Close dialog");
     closeButton.type = "button";
-    // SVG close icon matching v1 visual baseline
-    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.setAttribute("width", "18");
-    svg.setAttribute("height", "18");
-    svg.setAttribute("viewBox", "0 0 24 24");
-    svg.setAttribute("fill", "none");
-    svg.setAttribute("stroke", "currentColor");
-    svg.setAttribute("stroke-width", "2");
-    svg.setAttribute("stroke-linecap", "round");
-    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    path.setAttribute("d", "M18 6L6 18M6 6l12 12");
-    svg.appendChild(path);
-    closeButton.appendChild(svg);
+    closeButton.appendChild(createBloraIcon("close", 18, this.ownerDocument));
     header.appendChild(closeButton);
 
     // Body
@@ -120,15 +112,25 @@ export class BloraDialog extends BloraElement {
     this._panel = panel;
     this._backdrop = backdrop;
     this._closeButton = closeButton;
+    this._footer = footer;
+    this._footerSlot = footerSlot;
   }
 
   private _shadow: ShadowRoot | null = null;
   private _panel: HTMLElement | null = null;
   private _backdrop: HTMLElement | null = null;
   private _closeButton: HTMLButtonElement | null = null;
+  private _footer: HTMLElement | null = null;
+  private _footerSlot: HTMLSlotElement | null = null;
+  private _backdropInTopLayer = false;
 
   protected bindEvents(): void {
     if (!this._closeButton) return;
+
+    this.syncFooterVisibility();
+    if (this._footerSlot) {
+      this.listen(this._footerSlot, "slotchange", () => this.syncFooterVisibility());
+    }
 
     this.listen(this._closeButton, "click", () => {
       this.close("close-button");
@@ -151,6 +153,21 @@ export class BloraDialog extends BloraElement {
     this.listen(this, "blora-close-request", () => {
       this.close("request");
     });
+
+    if (this.hasAttribute("open")) {
+      this.visible = false;
+      this.show();
+    }
+  }
+
+  private syncFooterVisibility(): void {
+    if (!this._footer || !this._footerSlot) return;
+    const hasContent = this._footerSlot
+      .assignedNodes({ flatten: true })
+      .some(
+        (node) => node.nodeType === Node.ELEMENT_NODE || (node.textContent?.trim().length ?? 0) > 0,
+      );
+    this._footer.hidden = !hasContent;
   }
 
   /** `close-on-outside-click="false"` (string) must not close; bare attr still true. */
@@ -159,7 +176,7 @@ export class BloraDialog extends BloraElement {
   }
 
   show(): void {
-    if (this.hasAttribute("open")) return;
+    if (this.visible) return;
 
     const beforeOpen = this.emit<BloraDialogOpenDetail>(
       "blora-before-open",
@@ -172,7 +189,12 @@ export class BloraDialog extends BloraElement {
 
     if (!beforeOpen) return;
 
+    this.visible = true;
     this.setAttribute("open", "");
+    if (this._backdrop && typeof this._backdrop.showPopover === "function") {
+      this._backdrop.showPopover();
+      this._backdropInTopLayer = true;
+    }
 
     const options: Partial<OverlayOptions> = {
       modal: true,
@@ -204,7 +226,7 @@ export class BloraDialog extends BloraElement {
   }
 
   close(reason: string = "api"): void {
-    if (!this.hasAttribute("open")) return;
+    if (!this.visible) return;
 
     const beforeClose = this.emit<BloraDialogCloseDetail>(
       "blora-before-close",
@@ -217,6 +239,7 @@ export class BloraDialog extends BloraElement {
 
     if (!beforeClose) return;
 
+    this.visible = false;
     // Release overlay immediately (scroll lock, focus, listeners)
     this.overlay?.close();
     this.overlay = null;
@@ -227,6 +250,10 @@ export class BloraDialog extends BloraElement {
     const animationDuration = 260;
 
     this.closeAnimationTimer = setTimeout(() => {
+      if (this._backdropInTopLayer && typeof this._backdrop?.hidePopover === "function") {
+        this._backdrop.hidePopover();
+        this._backdropInTopLayer = false;
+      }
       this.removeAttribute("open");
       this.removeAttribute("data-closing");
       this.closeAnimationTimer = null;
@@ -245,6 +272,10 @@ export class BloraDialog extends BloraElement {
     }
     this.overlay?.destroy();
     this.overlay = null;
+    if (this._backdropInTopLayer && typeof this._backdrop?.hidePopover === "function") {
+      this._backdrop.hidePopover();
+      this._backdropInTopLayer = false;
+    }
   }
 }
 

@@ -6,6 +6,10 @@
    controller (real content px). No hard-coded 400px / 80rem caps.
    ========================================================================= */
 
+blora-collapse {
+  display: block;
+}
+
 .blora-collapse {
   border: var(--blora-border-subtle);
   border-radius: var(--blora-radius-md);
@@ -35,18 +39,24 @@
   border: none;
   width: 100%;
   text-align: start;
-  transition: background var(--blora-duration-fast) var(--blora-easing-standard);
+  transition: color var(--blora-duration-fast) var(--blora-easing-standard);
 }
 
-.blora-collapse__head:hover {
-  background: var(--blora-color-surface-raised);
+.blora-collapse__head:not(:disabled):hover {
+  color: var(--blora-color-action-primary-default);
 }
 
 .blora-collapse__icon {
   flex: none;
-  transition: transform var(--blora-duration-base) var(--blora-easing-standard);
+  transition:
+    color var(--blora-duration-fast) var(--blora-easing-standard),
+    transform var(--blora-duration-base) var(--blora-easing-standard);
   color: var(--blora-color-text-subtle);
   display: inline-flex;
+}
+
+.blora-collapse__head:not(:disabled):hover .blora-collapse__icon {
+  color: var(--blora-color-action-primary-default);
 }
 
 .blora-collapse__item[data-open] .blora-collapse__icon,

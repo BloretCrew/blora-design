@@ -1,5 +1,11 @@
 /* Blora Design 2.0 - cascader component */
 
+blora-cascader {
+  display: block;
+  width: 100%;
+  max-width: 28rem;
+}
+
 .blora-cascader {
   position: relative;
   display: inline-block;

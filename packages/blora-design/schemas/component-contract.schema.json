@@ -3,11 +3,24 @@
   "title": "Blora Component Contract",
   "description": "Machine-readable contract for Blora Design 2.0 components",
   "type": "object",
-  "required": ["name", "status", "kind", "since"],
+  "required": ["name", "status", "kind", "since", "category"],
   "properties": {
     "name": {
       "type": "string",
       "description": "Component name in kebab-case"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "actions",
+        "data-display",
+        "navigation",
+        "feedback",
+        "data-input",
+        "layout",
+        "mockup"
+      ],
+      "description": "Catalog category aligned with industry (daisyUI-style) grouping"
     },
     "status": {
       "type": "string",

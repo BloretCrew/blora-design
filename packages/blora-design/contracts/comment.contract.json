@@ -1,17 +1,42 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "comment",
+  "category": "data-display",
   "status": "beta",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-comment",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
+  "attributes": {
+    "author": {
+      "type": "string"
+    },
+    "time": {
+      "type": "string"
+    },
+    "avatar": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string"
+    },
+    "likes": {
+      "type": "string",
+      "default": "赞"
+    }
+  },
   "properties": {},
   "methods": {},
-  "events": {},
+  "events": {
+    "blora-comment-action": {
+      "detail": "{ value: string }",
+      "bubbles": true,
+      "composed": true
+    }
+  },
   "slots": {
-    "default": "Content"
+    "default": "No child structure; attributes generate the official comment tree."
   },
   "parts": [],
   "cssProperties": [],

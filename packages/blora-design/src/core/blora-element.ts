@@ -11,17 +11,47 @@ const DOMBaseClass: typeof HTMLElement =
 export abstract class BloraElement extends DOMBaseClass {
   protected abortController: AbortController = new AbortController();
   private _isConnected = false;
+  private _connectScheduled = false;
+  private _mounted = false;
 
   protected get isConnectedInternal(): boolean {
     return this._isConnected;
   }
 
+  protected get hasMounted(): boolean {
+    return this._mounted;
+  }
+
   connectedCallback(): void {
     if (this._isConnected) return;
+    /* A classic script can define/upgrade an element while the HTML parser is
+       still positioned at its start tag. Defer one parser task so declarative
+       child definitions (<blora-tab>, <blora-transfer-item>, …) exist before
+       a composite CE consumes them into the official light-DOM tree. */
+    if (this.ownerDocument?.readyState === "loading") {
+      if (this._connectScheduled) return;
+      this._connectScheduled = true;
+      /* A microtask still runs before the HTML parser advances past this start
+         tag. Use the next task so declarative children have actually parsed. */
+      setTimeout(() => {
+        this._connectScheduled = false;
+        if (this.isConnected && !this._isConnected) this.connectNow();
+      }, 0);
+      return;
+    }
+    this.connectNow();
+  }
+
+  private connectNow(): void {
     this._isConnected = true;
     this.abortController = new AbortController();
     this.upgradeProperties();
-    this.render();
+    if (!this._mounted) {
+      this.render();
+      this._mounted = true;
+    } else {
+      this.sync();
+    }
     this.bindEvents();
   }
 
@@ -56,7 +86,17 @@ export abstract class BloraElement extends DOMBaseClass {
 
   protected abstract render(): void;
   protected abstract bindEvents(): void;
+  /** Patch the existing official tree after reconnect or a non-structural attribute change. */
+  protected sync(): void {}
   protected onDisconnect(): void {}
+
+  /** Re-attach listeners/controllers without rebuilding the official tree. */
+  protected rebind(): void {
+    this.onDisconnect();
+    this.abortController.abort();
+    this.abortController = new AbortController();
+    this.bindEvents();
+  }
 
   private upgradeProperties(): void {
     // Subclasses can override to handle pre-upgrade properties

@@ -1,16 +1,98 @@
 {
   "name": "field",
+  "category": "data-input",
   "status": "stable",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-field",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
-  "properties": {},
-  "methods": {},
-  "events": {},
+  "attributes": {
+    "label": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "default": "text"
+    },
+    "value": {
+      "type": "string"
+    },
+    "placeholder": {
+      "type": "string"
+    },
+    "hint": {
+      "type": "string"
+    },
+    "error": {
+      "type": "string"
+    },
+    "state": {
+      "type": "\"valid\" | \"invalid\""
+    },
+    "limit": {
+      "type": "number"
+    },
+    "minlength": {
+      "type": "number"
+    },
+    "maxlength": {
+      "type": "number"
+    },
+    "pattern": {
+      "type": "string"
+    },
+    "validate": {
+      "type": "string",
+      "description": "Named Form validator, for example email."
+    },
+    "textarea": {
+      "type": "boolean",
+      "default": false
+    },
+    "required": {
+      "type": "boolean",
+      "default": false
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "readonly": {
+      "type": "boolean",
+      "default": false
+    },
+    "layout": {
+      "type": "\"horizontal\""
+    }
+  },
+  "properties": {
+    "value": {
+      "type": "string"
+    }
+  },
+  "methods": {
+    "focus": {
+      "signature": "(options?: FocusOptions) => void"
+    }
+  },
+  "events": {
+    "input": {
+      "detail": "Event",
+      "bubbles": true,
+      "composed": false
+    },
+    "change": {
+      "detail": "Event",
+      "bubbles": true,
+      "composed": false
+    }
+  },
   "slots": {
-    "default": "Content"
+    "default": "No authored structure; label, native control and feedback are generated from attributes."
   },
   "parts": [],
   "cssProperties": [],

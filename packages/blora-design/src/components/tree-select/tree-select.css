@@ -1,5 +1,11 @@
 /* Tree Select — v1 panel styles with v2 tokens (new surface; see pending-visual-review) */
 
+blora-tree-select {
+  display: block;
+  width: 100%;
+  max-width: 22rem;
+}
+
 .blora-treeselect {
   position: relative;
   display: flex;

@@ -354,10 +354,11 @@
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 0;
+  z-index: var(--blora-z-base);
   opacity: 0.14;
   background-repeat: repeat;
   background-position: center center;
+
   /* Never stretch a single stamp to fill the box */
   background-size: auto;
 }
@@ -369,7 +370,7 @@
   overflow: hidden;
   border-radius: var(--blora-radius-lg);
   border: 1px solid var(--blora-color-border-subtle);
-  aspect-ratio: 16 / 9;
+  aspect-ratio: var(--blora-diff-ratio, 16 / 9);
   background: var(--blora-color-surface-raised);
 }
 
@@ -379,10 +380,20 @@
   overflow: hidden;
 }
 
-.blora-diff__item > :is(img, video, canvas, div) {
+/* Any pane content fills the frame: images, text, or components. */
+.blora-diff__item > * {
+  box-sizing: border-box;
   width: 100%;
   height: 100%;
+}
+
+.blora-diff__item > :is(img, video, canvas) {
+  display: block;
   object-fit: cover;
+}
+
+.blora-diff__item > :not(:is(img, video, canvas)) {
+  overflow: auto;
 }
 
 .blora-diff__item--before {

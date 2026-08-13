@@ -1,16 +1,58 @@
 {
   "name": "checkbox",
+  "category": "data-input",
   "status": "stable",
-  "kind": "native",
+  "kind": "custom-element",
+  "tagName": "blora-checkbox",
   "since": "2.0.0",
-  "requiresJavaScript": false,
-  "formAssociated": true,
-  "attributes": {},
-  "properties": {},
-  "methods": {},
-  "events": {},
+  "requiresJavaScript": true,
+  "formAssociated": false,
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "value": {
+      "type": "string",
+      "default": "on"
+    },
+    "checked": {
+      "type": "boolean",
+      "default": false
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "required": {
+      "type": "boolean",
+      "default": false
+    },
+    "label": {
+      "type": "string"
+    }
+  },
+  "properties": {
+    "checked": {
+      "type": "boolean"
+    },
+    "values": {
+      "type": "string[]"
+    }
+  },
+  "methods": {
+    "focus": {
+      "signature": "(options?: FocusOptions) => void"
+    }
+  },
+  "events": {
+    "change": {
+      "detail": "Event",
+      "bubbles": true,
+      "composed": false
+    }
+  },
   "slots": {
-    "default": "Content"
+    "default": "Fallback label text or declarative <blora-checkbox-option> group definitions."
   },
   "parts": [],
   "cssProperties": [],

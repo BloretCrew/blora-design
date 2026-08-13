@@ -1,5 +1,9 @@
 /* Blora Design 2.0 - otp component */
 
+blora-otp {
+  display: inline-block;
+}
+
 .blora-otp {
   display: inline-flex;
   gap: var(--blora-space-2);

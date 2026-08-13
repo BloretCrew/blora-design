@@ -1,17 +1,16 @@
 import type { Meta, StoryObj } from "@storybook/web-components";
 import { html } from "lit";
-import { ref } from "lit/directives/ref.js";
-import { createMentionsController, type MentionOption } from "../src/components/mentions";
+import type { MentionOption } from "../src/components/mentions";
 
 const meta = {
-  title: "Forms/Mentions",
-  component: ".blora-mentions",
+  title: "Data input/Mentions",
+  component: "blora-mentions",
   tags: ["autodocs"],
 } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 
-const OPTIONS = JSON.stringify(["alice", "bob", "carol", "dave", "张三", "李四"]);
+const OPTIONS = ["alice", "bob", "carol", "dave", "张三", "李四"];
 
 /** Chat-style roster: avatar + name + secondary tag (uses .blora-avatar in menu). */
 const RICH_OPTIONS: MentionOption[] = [
@@ -64,37 +63,12 @@ const RICH_OPTIONS: MentionOption[] = [
   },
 ];
 
-const init = (el: Element | undefined): void => {
-  if (!(el instanceof HTMLElement)) return;
-  // Defer so Lit finishes attribute hydration
-  requestAnimationFrame(() => {
-    (el as any).__ctrl?.destroy?.();
-    /* Sweep any stray portaled menus left by prior story visits */
-    document.querySelectorAll(".blora-mentions__menu").forEach((m) => {
-      if (
-        !document.querySelector(
-          `[data-blora-mentions-id="${m.getAttribute("data-blora-mentions-owner")}"]`,
-        )
-      ) {
-        m.remove();
-      }
-    });
-    (el as any).__ctrl = createMentionsController(el);
-    // Do not auto-open: user types @ to open (avoids ghost menus on navigation)
-  });
-};
-
 export const Default: Story = {
   render: () => html`
     <div style="max-width: 28rem; padding-bottom: 14rem;">
-      <div class="blora-mentions" data-options=${OPTIONS} ${ref(init)}>
-        <label class="blora-label">Mentions</label>
-        <textarea
-          class="blora-textarea"
-          rows="4"
-          placeholder="输入 @ 提及同事 — 菜单贴在 @ 字符旁"
-        ></textarea>
-      </div>
+      <blora-mentions label="Mentions" placeholder="输入 @ 提及同事 — 菜单贴在 @ 字符旁">
+        ${OPTIONS.map((value) => html`<blora-mention value=${value}></blora-mention>`)}
+      </blora-mentions>
       <p
         style="margin-top: 0.75rem; font-size: var(--blora-text-xs); color: var(--blora-color-text-muted);"
       >
@@ -114,25 +88,29 @@ export const RichWithAvatar: Story = {
   name: "Rich (avatar + tag)",
   render: () => html`
     <div style="max-width: 28rem; padding-bottom: 16rem;">
-      <div
-        class="blora-mentions"
-        data-options=${JSON.stringify(RICH_OPTIONS)}
-        ${ref(init)}
+      <blora-mentions
+        label="@ 提及（带头像与标签）"
+        placeholder="输入 @ 试试 — 列表含头像、名称、副标签"
       >
-        <label class="blora-label">@ 提及（带头像与标签）</label>
-        <textarea
-          class="blora-textarea"
-          rows="4"
-          placeholder="输入 @ 试试 — 列表含头像、名称、副标签"
-        ></textarea>
-      </div>
+        ${RICH_OPTIONS.map(
+          (option) => html`
+            <blora-mention
+              value=${option.value}
+              label=${option.label ?? option.value}
+              initials=${option.initials ?? ""}
+              avatar-variant=${option.avatarVariant ?? "info"}
+              tag=${option.tag ?? ""}
+              keywords=${option.keywords ?? ""}
+            ></blora-mention>
+          `,
+        )}
+      </blora-mentions>
       <p
         style="margin-top: 0.75rem; font-size: var(--blora-text-xs); color: var(--blora-color-text-muted);"
       >
-        <code>data-options</code> 支持对象：
-        <code>value</code> / <code>label</code> / <code>initials</code> /
-        <code>avatar</code> / <code>avatarVariant</code> / <code>tag</code>。 插入文本仍是
-        <code>@value</code>。
+        <code>data-options</code> 支持对象： <code>value</code> / <code>label</code> /
+        <code>initials</code> / <code>avatar</code> / <code>avatarVariant</code> /
+        <code>tag</code>。 插入文本仍是 <code>@value</code>。
       </p>
     </div>
   `,

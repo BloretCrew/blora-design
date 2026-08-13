@@ -2,6 +2,9 @@
  * Blora Design 2.0 - OTP controller
  * Auto-advance, backspace, paste, mode filtering, uppercase.
  */
+import { BloraElement } from "../../core/blora-element.js";
+
+export const BLORA_OTP_TAG = "blora-otp";
 export interface OtpController {
   destroy(): void;
 }
@@ -79,4 +82,102 @@ export function createOtpController(root: HTMLElement): OtpController {
       });
     },
   };
+}
+
+/** One-time-password CE with generated native text inputs. */
+export class BloraOtp extends BloraElement {
+  private controller: OtpController | null = null;
+  private reflecting = false;
+
+  static get observedAttributes(): string[] {
+    return ["length", "mode", "uppercase", "value", "disabled", "label"];
+  }
+
+  attributeChangedCallback(): void {
+    if (!this.isConnectedInternal || this.reflecting) return;
+    this.sync();
+  }
+
+  get value(): string {
+    return Array.from(this.querySelectorAll<HTMLInputElement>(".blora-otp__input"))
+      .map((input) => input.value)
+      .join("");
+  }
+
+  set value(value: string) {
+    this.setAttribute("value", value);
+  }
+
+  override focus(options?: FocusOptions): void {
+    this.querySelector<HTMLInputElement>(".blora-otp__input")?.focus(options);
+  }
+
+  protected render(): void {
+    const length = Math.max(1, Number(this.getAttribute("length") ?? 6));
+    const value = Array.from(this.getAttribute("value") ?? "");
+    const root = this.ownerDocument.createElement("div");
+    root.className = "blora-otp";
+    root.dataset.bloraGenerated = "";
+    root.dataset.mode = this.getAttribute("mode") ?? "numeric";
+    root.setAttribute("role", "group");
+    root.setAttribute("aria-label", this.getAttribute("label") ?? "One-time password");
+    if (this.hasAttribute("uppercase")) root.dataset.uppercase = "";
+    for (let index = 0; index < length; index += 1) {
+      const input = this.ownerDocument.createElement("input");
+      input.className = "blora-otp__input";
+      input.type = "text";
+      input.maxLength = 1;
+      input.inputMode = root.dataset.mode === "numeric" ? "numeric" : "text";
+      input.autocomplete = index === 0 ? "one-time-code" : "off";
+      input.disabled = this.hasAttribute("disabled");
+      input.value = value[index] ?? "";
+      input.setAttribute("aria-label", `Character ${index + 1} of ${length}`);
+      root.appendChild(input);
+    }
+    this.replaceChildren(root);
+  }
+
+  protected override sync(): void {
+    const root = this.querySelector<HTMLElement>(".blora-otp");
+    const inputs = [...this.querySelectorAll<HTMLInputElement>(".blora-otp__input")];
+    const length = Math.max(1, Number(this.getAttribute("length") ?? 6));
+    if (!root || inputs.length !== length) {
+      this.render();
+      this.rebind();
+      return;
+    }
+    root.dataset.mode = this.getAttribute("mode") ?? "numeric";
+    root.toggleAttribute("data-uppercase", this.hasAttribute("uppercase"));
+    root.setAttribute("aria-label", this.getAttribute("label") ?? "One-time password");
+    const chars = Array.from(this.getAttribute("value") ?? "");
+    inputs.forEach((input, index) => {
+      input.disabled = this.hasAttribute("disabled");
+      if (this.ownerDocument.activeElement !== input) input.value = chars[index] ?? "";
+    });
+  }
+
+  protected bindEvents(): void {
+    const root = this.querySelector<HTMLElement>(".blora-otp");
+    if (!root) return;
+    this.controller = createOtpController(root);
+    this.listen(root, "input", () => {
+      this.reflecting = true;
+      this.setAttribute("value", this.value);
+      this.reflecting = false;
+      this.emit("blora-change", {
+        value: this.value,
+        complete: this.value.length === root.children.length,
+      });
+    });
+  }
+
+  protected onDisconnect(): void {
+    this.controller?.destroy();
+    this.controller = null;
+  }
+}
+
+export function defineBloraOtp(registry: CustomElementRegistry = customElements): void {
+  if (!registry || registry.get(BLORA_OTP_TAG)) return;
+  registry.define(BLORA_OTP_TAG, BloraOtp);
 }

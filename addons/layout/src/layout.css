@@ -23,18 +23,58 @@
   container-name: blora-sidebar;
 }
 
+blora-sidebar-layout {
+  display: block;
+  min-width: 0;
+  width: 100%;
+
+  /* Re-establish defaults on every host. Nested shells (page chrome + a demo,
+     or an app with two layouts) must not inherit ancestor --blora-sidebar-*
+     tokens — otherwise a 100dvh / transparent page shell explodes the inner
+     card. Authors still override on the host they own. */
+  --blora-sidebar-width: 17rem;
+  --blora-sidebar-min-height: 28rem;
+  --blora-sidebar-aside-padding: var(--blora-space-5);
+  --blora-sidebar-aside-background: var(--blora-color-surface-default);
+  --blora-sidebar-content-padding: var(--blora-space-6);
+  --blora-sidebar-sticky-offset: var(--blora-space-5);
+  --blora-sidebar-sticky-height: auto;
+  --blora-sidebar-drawer-aside-padding: var(--blora-space-5);
+  --blora-sidebar-drawer-aside-background: var(--blora-color-surface-default);
+  --blora-sidebar-drawer-content-padding: var(--blora-space-6);
+  --blora-sidebar-toggle-min-height: auto;
+}
+
+blora-sidebar-layout[compact] {
+  --blora-sidebar-min-height: 20rem;
+}
+
+.blora-sidebar-layout[data-variant="seamless"] {
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+  background: transparent;
+}
+
+.blora-sidebar-layout[data-variant="seamless"][data-drawer] {
+  overflow: hidden;
+  border: 1px solid var(--blora-color-border-subtle);
+  border-radius: var(--blora-radius-xl);
+  background: var(--blora-color-surface-canvas);
+}
+
 .blora-sidebar-layout__aside {
   min-width: 0;
-  padding: var(--blora-space-5);
+  padding: var(--blora-sidebar-aside-padding, var(--blora-space-5));
   border-inline-end: 1px solid var(--blora-color-border-subtle);
-  background: var(--blora-color-surface-default);
+  background: var(--blora-sidebar-aside-background, var(--blora-color-surface-default));
   box-sizing: border-box;
 }
 
 .blora-sidebar-layout__content {
   grid-column: 2;
   min-width: 0;
-  padding: var(--blora-space-6);
+  padding: var(--blora-sidebar-content-padding, var(--blora-space-6));
   box-sizing: border-box;
 }
 
@@ -50,6 +90,15 @@
   --blora-sidebar-min-height: 20rem;
 }
 
+.blora-sidebar-layout[data-sticky] .blora-sidebar-layout__aside {
+  position: sticky;
+  inset-block-start: var(--blora-sidebar-sticky-offset, var(--blora-space-5));
+  align-self: start;
+  height: var(--blora-sidebar-sticky-height, auto);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
 /* Shared drawer rules — applied via @container and @media fallback */
 .blora-sidebar-layout--drawer,
 .blora-sidebar-layout[data-drawer] {
@@ -59,19 +108,23 @@
 .blora-sidebar-layout--drawer .blora-sidebar-layout__toggle,
 .blora-sidebar-layout[data-drawer] .blora-sidebar-layout__toggle {
   display: inline-flex;
-  justify-self: start;
-  align-self: start;
+  place-self: start start;
   width: max-content;
   max-width: calc(100% - 2 * var(--blora-space-4));
   height: auto;
+  min-height: var(--blora-sidebar-toggle-min-height, auto);
   margin: var(--blora-space-4) var(--blora-space-4) 0;
   position: relative;
-  z-index: 5;
+  z-index: var(--blora-z-base);
 }
 
 .blora-sidebar-layout--drawer .blora-sidebar-layout__content,
 .blora-sidebar-layout[data-drawer] .blora-sidebar-layout__content {
   grid-column: 1;
+  padding: var(
+    --blora-sidebar-drawer-content-padding,
+    var(--blora-sidebar-content-padding, var(--blora-space-6))
+  );
 }
 
 .blora-sidebar-layout--drawer .blora-sidebar-layout__aside,
@@ -80,21 +133,26 @@
   top: 0;
   bottom: 0;
   inset-inline-start: 0;
-  z-index: 30;
+  z-index: var(--blora-z-dropdown);
   width: min(20rem, 86%);
   max-width: 20rem;
   height: 100%;
   max-height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: hidden auto;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
   border-inline-end: 1px solid var(--blora-color-border-subtle);
   box-shadow: var(--blora-shadow-4);
   transform: translateX(-105%);
   transition: transform var(--blora-duration-slow, 0.35s) var(--blora-easing-standard);
+
   /* Keep above mask; always paint as a solid sheet */
-  background: var(--blora-color-surface-default);
+  padding: var(--blora-sidebar-drawer-aside-padding, var(--blora-space-5));
+  background: var(--blora-sidebar-drawer-aside-background, var(--blora-color-surface-default));
+}
+
+.blora-sidebar-layout[data-initializing] .blora-sidebar-layout__aside {
+  transition: none;
 }
 
 [dir="rtl"] .blora-sidebar-layout--drawer .blora-sidebar-layout__aside,
@@ -113,12 +171,12 @@
 .blora-sidebar-layout[data-drawer] .blora-sidebar-layout__mask {
   position: absolute;
   inset: 0;
-  z-index: 20;
+  z-index: var(--blora-z-sticky);
   display: block;
   margin: 0;
   padding: 0;
   border: 0;
-  background: var(--blora-color-overlay-drawer, rgba(7, 6, 10, 0.55));
+  background: var(--blora-color-overlay-drawer, rgb(7 6 10 / 55%));
   opacity: 0;
   visibility: hidden;
   pointer-events: none;

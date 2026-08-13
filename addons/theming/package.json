@@ -12,6 +12,7 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./theming.global.js": "./dist/theming.global.js",
     "./theming.css": "./dist/theming.css",
     "./package.json": "./package.json"
   },

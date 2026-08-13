@@ -1,20 +1,37 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "calendar",
+  "category": "data-input",
   "status": "beta",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-calendar",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
-  "properties": {},
+  "attributes": {
+    "value": {
+      "type": "string",
+      "description": "Selected YYYY-MM-DD date."
+    }
+  },
+  "properties": {
+    "value": {
+      "type": "string"
+    }
+  },
   "methods": {},
-  "events": {},
+  "events": {
+    "blora-calendar-change": {
+      "detail": "{ value: string, date: Date }",
+      "bubbles": true,
+      "composed": false
+    }
+  },
   "slots": {
-    "default": "Content"
+    "default": "No child structure; the calendar owns its navigation and grids."
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "section",
+  "accessibilityPattern": "grid",
   "migrationFromV1": "calendar.migration.md"
 }

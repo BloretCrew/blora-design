@@ -1,14 +1,35 @@
 {
   "name": "theming",
+  "category": "actions",
   "status": "beta",
-  "kind": "headless",
+  "kind": "custom-element-and-headless",
   "since": "2.0.0",
   "requiresJavaScript": true,
+  "customElements": {
+    "blora-palette-picker": {
+      "attributes": [
+        "button-variant",
+        "size"
+      ],
+      "methods": [
+        "open",
+        "close"
+      ]
+    },
+    "blora-color-scheme-toggle": {
+      "attributes": [
+        "button-variant",
+        "size"
+      ],
+      "events": [
+        "blora-color-scheme-change"
+      ]
+    }
+  },
   "methods": {
     "applyTheme": {},
     "getTheme": {},
-    "bootThemeFromStorage": {},
-    "createPalettePickerController": {}
+    "bootThemeFromStorage": {}
   },
   "migrationFromV1": "theming.migration.md"
 }

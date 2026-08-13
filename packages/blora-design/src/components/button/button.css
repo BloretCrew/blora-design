@@ -7,6 +7,7 @@
   --blora-button-bg: var(--blora-color-surface-default);
   --blora-button-fg: var(--blora-color-text-secondary);
   --blora-button-bd: var(--blora-color-border-subtle);
+
   /* Vertical size lives entirely in padding; line-height stays 1 so flex
      centers the glyph box (not a tall line-box with ink stuck near the top —
      the usual mobile CJK “text too high” failure mode).
@@ -19,6 +20,7 @@
   justify-content: center;
   gap: var(--blora-space-2);
   box-sizing: border-box;
+
   /* Never stretch to fill a grid/flex track — that produced "exploded" tall
      pills (e.g. sidebar toggle in a min-height layout). Grow only when the
      consumer sets width/flex explicitly (dialog footer full-width). */
@@ -33,6 +35,7 @@
   font-size: var(--blora-text-sm);
   font-weight: 500;
   line-height: 1;
+
   /*
    * Standard CSS (not UA-sniff): trim half-leading so flex centers ink metrics,
    * not the full em-box. Fixes real-device system fonts (PingFang / Noto / SF)
@@ -58,6 +61,13 @@
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
+}
+
+/* Buttons keep the v1 external focus treatment. They are not clipped
+   navigation items and must not inherit the foundation's inset fallback. */
+.blora-button:focus-visible {
+  outline: var(--blora-focus-ring-width) solid var(--blora-color-action-primary-default);
+  outline-offset: var(--blora-focus-ring-offset);
 }
 
 /* Opt-in block / full-row button */
@@ -242,6 +252,8 @@
 .blora-button-group {
   display: inline-flex;
   max-width: 100%;
+  padding: calc(var(--blora-focus-ring-width) + var(--blora-focus-ring-offset));
+  margin: calc(-1 * (var(--blora-focus-ring-width) + var(--blora-focus-ring-offset)));
   overflow-x: auto;
   overscroll-behavior-inline: contain;
 }
@@ -262,6 +274,16 @@
 
 .blora-button-group .blora-button:only-child {
   border-radius: var(--blora-radius-md);
+}
+
+.blora-button-group .blora-button:hover,
+.blora-button-group .blora-button:active {
+  transform: none;
+  box-shadow: none;
+}
+
+.blora-button-group .blora-button:focus-visible {
+  z-index: var(--blora-z-sticky);
 }
 
 /* -- Loading state (§17.1: aria-busy + data-loading) -- */

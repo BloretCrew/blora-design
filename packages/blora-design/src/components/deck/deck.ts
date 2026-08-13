@@ -2,14 +2,29 @@
  * Blora Design 2.0 - Deck controller
  * Stacked cards with drag/wheel navigation (v1 parity).
  */
+import { BloraElement } from "../../core/blora-element.js";
+
+export const BLORA_DECK_TAG = "blora-deck";
+
 export interface DeckController {
   destroy(): void;
+  next(): void;
+  prev(): void;
+  goTo(index: number): void;
+  getCurrent(): number;
 }
 
 export function createDeckController(root: HTMLElement): DeckController {
   const cards = () =>
     Array.from(root.children).filter((el): el is HTMLElement => el.nodeType === 1);
-  if (!cards().length) return { destroy: () => {} };
+  if (!cards().length)
+    return {
+      destroy: () => {},
+      next: () => {},
+      prev: () => {},
+      goTo: () => {},
+      getCurrent: () => 0,
+    };
   if (!root.hasAttribute("tabindex")) root.tabIndex = 0;
 
   // Slightly larger gap than v1 min so mid cards read clearly in demos
@@ -88,12 +103,19 @@ export function createDeckController(root: HTMLElement): DeckController {
     offset = Math.round(offset);
     offset = ((offset % n) + n) % n;
     paint(false);
+    root.dispatchEvent(
+      new CustomEvent("blora-deck-change", { bubbles: true, detail: { index: offset } }),
+    );
   };
 
   const go = (delta: number) => {
     const n = cards().length;
     if (!n) return;
     offset = Math.round(offset) + delta;
+    snap();
+  };
+  const goTo = (index: number) => {
+    offset = index;
     snap();
   };
 
@@ -194,5 +216,114 @@ export function createDeckController(root: HTMLElement): DeckController {
       root.removeEventListener("wheel", onWheel);
       root.removeEventListener("keydown", onKey);
     },
+    next: () => go(1),
+    prev: () => go(-1),
+    goTo,
+    getCurrent: () => Math.round(offset),
   };
+}
+
+interface DeckCardDefinition {
+  front: boolean;
+  nodes: Node[];
+  variant: string;
+}
+
+/** Deck CE that consumes declarative cards and owns drag/wheel/keyboard navigation. */
+export class BloraDeck extends BloraElement {
+  private controller: DeckController | null = null;
+  private definitions: DeckCardDefinition[] | null = null;
+  private reflecting = false;
+
+  static get observedAttributes(): string[] {
+    return ["current", "label"];
+  }
+
+  attributeChangedCallback(): void {
+    if (!this.isConnectedInternal || this.reflecting) return;
+    this.sync();
+  }
+
+  get current(): number {
+    return this.controller?.getCurrent() ?? Number(this.getAttribute("current") ?? 0);
+  }
+
+  set current(index: number) {
+    this.setAttribute("current", String(index));
+  }
+
+  next(): void {
+    this.controller?.next();
+  }
+
+  prev(): void {
+    this.controller?.prev();
+  }
+
+  goTo(index: number): void {
+    this.controller?.goTo(index);
+  }
+
+  protected render(): void {
+    if (!this.definitions) {
+      this.definitions = Array.from(this.children)
+        .filter((item) => item.localName === "blora-deck-card")
+        .map((item) => ({
+          front: item.hasAttribute("front"),
+          nodes: Array.from(item.childNodes).map((node) => node.cloneNode(true)),
+          variant: item.getAttribute("variant") ?? "flat",
+        }));
+    }
+    const current = Number(this.getAttribute("current") ?? 0);
+    const root = this.ownerDocument.createElement("div");
+    root.className = "blora-deck";
+    root.dataset.bloraGenerated = "";
+    root.tabIndex = 0;
+    root.setAttribute("aria-label", this.getAttribute("label") ?? "卡片叠层");
+    this.definitions.forEach((definition, index) => {
+      const card = this.ownerDocument.createElement("article");
+      card.className = "blora-card";
+      card.dataset.variant = definition.variant;
+      if (definition.front || index === current) card.dataset.front = "";
+      card.append(...definition.nodes.map((node) => node.cloneNode(true)));
+      root.appendChild(card);
+    });
+    this.replaceChildren(root);
+  }
+
+  protected override sync(): void {
+    const field = this.querySelector<HTMLInputElement | HTMLTextAreaElement>("input, textarea");
+    if (field) {
+      field.disabled = this.hasAttribute("disabled");
+      if (this.hasAttribute("placeholder")) field.placeholder = this.getAttribute("placeholder") ?? "";
+      if (this.hasAttribute("value") && this.ownerDocument.activeElement !== field) {
+        field.value = this.getAttribute("value") ?? field.value;
+      }
+    }
+    this.rebind();
+  }
+
+  protected bindEvents(): void {
+    const root = this.querySelector<HTMLElement>(".blora-deck");
+    if (!root) return;
+    this.controller = createDeckController(root);
+    const current = Number(this.getAttribute("current") ?? 0);
+    if (current) this.controller.goTo(current);
+    this.listen(root, "blora-deck-change", (event) => {
+      const index = (event as CustomEvent<{ index: number }>).detail.index;
+      this.reflecting = true;
+      this.setAttribute("current", String(index));
+      this.reflecting = false;
+    });
+  }
+
+  protected onDisconnect(): void {
+    this.controller?.destroy();
+    this.controller = null;
+  }
+}
+
+export function defineBloraDeck(registry: CustomElementRegistry = customElements): void {
+  if (!registry || registry.get(BLORA_DECK_TAG)) return;
+  registry.define(BLORA_DECK_TAG, BloraDeck);
 }

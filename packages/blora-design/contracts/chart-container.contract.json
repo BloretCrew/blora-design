@@ -1,20 +1,38 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "chart-container",
+  "category": "data-display",
   "status": "beta",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-chart-container",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "subtitle": {
+      "type": "string"
+    },
+    "trend": {
+      "type": "string"
+    },
+    "trend-variant": {
+      "type": "string",
+      "default": "success"
+    }
+  },
   "properties": {},
   "methods": {},
   "events": {},
   "slots": {
-    "default": "Content"
+    "default": "Chart markup consumed into the official chart body."
   },
   "parts": [],
-  "cssProperties": ["--blora-chart-min-h"],
+  "cssProperties": [
+    "--blora-chart-min-h"
+  ],
   "accessibilityPattern": "section",
   "migrationFromV1": "chart-container.migration.md"
 }

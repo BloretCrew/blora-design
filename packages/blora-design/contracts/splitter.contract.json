@@ -1,20 +1,45 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "splitter",
+  "category": "layout",
   "status": "beta",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-splitter",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
-  "properties": {},
-  "methods": {},
-  "events": {},
+  "attributes": {
+    "position": {
+      "type": "number",
+      "default": 50
+    },
+    "min": {
+      "type": "number",
+      "default": 50
+    }
+  },
+  "properties": {
+    "position": {
+      "type": "number"
+    }
+  },
+  "methods": {
+    "setPosition": {
+      "signature": "(percent: number) => void"
+    }
+  },
+  "events": {
+    "blora-splitter-change": {
+      "detail": "{ position: number }",
+      "bubbles": true,
+      "composed": false
+    }
+  },
   "slots": {
-    "default": "Content"
+    "default": "Exactly two declarative <blora-splitter-pane> definitions; consumed into the official splitter tree."
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "section",
+  "accessibilityPattern": "separator",
   "migrationFromV1": "splitter.migration.md"
 }

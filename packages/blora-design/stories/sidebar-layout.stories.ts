@@ -1,123 +1,111 @@
 import type { Meta, StoryObj } from "@storybook/web-components";
 import { html } from "lit";
-import { ref } from "lit/directives/ref.js";
-import { createSidebarLayoutController } from "../../../addons/layout/src/index";
+import "../../../addons/layout/src/index";
 import "../../../addons/layout/src/layout.css";
 
 const meta = {
-  title: "Add-ons/Layout/Sidebar Layout",
-  component: ".blora-sidebar-layout",
+  title: "Layout/Sidebar Layout",
+  component: "blora-sidebar-layout",
   tags: ["autodocs"],
 } satisfies Meta;
 
 export default meta;
 type Story = StoryObj;
 
-/** Sidebar nav with grouped links, replicating v1 showcase sidebar */
+/** Shared official Sidebar Navigation inside the responsive layout shell. */
 const sidebarNav = html`
-  <nav style="font-size: var(--blora-text-sm);">
-    <div
-      style="font-size: var(--blora-text-xs); text-transform: uppercase; letter-spacing: 0.05em; color: var(--blora-color-text-disabled); padding: var(--blora-space-3) 0.7em var(--blora-space-1);"
-    >
-      规范
-    </div>
-    <a class="blora-navbar__link" href="#" aria-current="page" style="display: block;">概述</a>
-    <a class="blora-navbar__link" href="#" style="display: block;">色彩</a>
-    <a class="blora-navbar__link" href="#" style="display: block;">字体</a>
-    <a class="blora-navbar__link" href="#" style="display: block;">间距</a>
-    <a class="blora-navbar__link" href="#" style="display: block;">阴影与纹理</a>
-    <a class="blora-navbar__link" href="#" style="display: block;">图标</a>
-
-    <div
-      style="font-size: var(--blora-text-xs); text-transform: uppercase; letter-spacing: 0.05em; color: var(--blora-color-text-disabled); padding: var(--blora-space-3) 0.7em var(--blora-space-1);"
-    >
-      基础
-    </div>
-    <a class="blora-navbar__link" href="#" style="display: block;">按钮</a>
-    <a class="blora-navbar__link" href="#" style="display: block;">表单输入</a>
-    <a class="blora-navbar__link" href="#" style="display: block;">选择器</a>
-    <a class="blora-navbar__link" href="#" style="display: block;">标签徽章</a>
-    <a class="blora-navbar__link" href="#" style="display: block;">头像</a>
-    <a class="blora-navbar__link" href="#" style="display: block;">进度与加载</a>
-
-    <div
-      style="font-size: var(--blora-text-xs); text-transform: uppercase; letter-spacing: 0.05em; color: var(--blora-color-text-disabled); padding: var(--blora-space-3) 0.7em var(--blora-space-1);"
-    >
-      导航
-    </div>
-    <a class="blora-navbar__link" href="#" style="display: block;">导航组件</a>
-    <a class="blora-navbar__link" href="#" style="display: block;">数据展示</a>
-
-    <div
-      style="font-size: var(--blora-text-xs); text-transform: uppercase; letter-spacing: 0.05em; color: var(--blora-color-text-disabled); padding: var(--blora-space-3) 0.7em var(--blora-space-1);"
-    >
-      反馈
-    </div>
-    <a class="blora-navbar__link" href="#" style="display: block;">反馈与提示</a>
-    <a class="blora-navbar__link" href="#" style="display: block;">模态与抽屉</a>
-    <a class="blora-navbar__link" href="#" style="display: block;">命令面板</a>
-
-    <div
-      style="font-size: var(--blora-text-xs); text-transform: uppercase; letter-spacing: 0.05em; color: var(--blora-color-text-disabled); padding: var(--blora-space-3) 0.7em var(--blora-space-1);"
-    >
-      布局
-    </div>
-    <a class="blora-navbar__link" href="#" style="display: block;">布局</a>
-    <a class="blora-navbar__link" href="#" style="display: block;">进阶组件</a>
-    <a class="blora-navbar__link" href="#" style="display: block;">模型</a>
-  </nav>
+  <blora-sidebar-nav label="设计系统导航" value="overview">
+    <blora-sidebar-nav-group label="规范">
+      <blora-sidebar-nav-link
+        label="概述"
+        href="#overview"
+        value="overview"
+      ></blora-sidebar-nav-link>
+      <blora-sidebar-nav-link label="色彩" href="#colors" value="colors"></blora-sidebar-nav-link>
+      <blora-sidebar-nav-link
+        label="字体"
+        href="#typography"
+        value="typography"
+      ></blora-sidebar-nav-link>
+      <blora-sidebar-nav-link label="间距" href="#spacing" value="spacing"></blora-sidebar-nav-link>
+      <blora-sidebar-nav-link
+        label="阴影与纹理"
+        href="#shadows"
+        value="shadows"
+      ></blora-sidebar-nav-link>
+      <blora-sidebar-nav-link label="图标" href="#icons" value="icons"></blora-sidebar-nav-link>
+    </blora-sidebar-nav-group>
+    <blora-sidebar-nav-group label="基础">
+      <blora-sidebar-nav-link label="按钮" href="#button" value="button"></blora-sidebar-nav-link>
+      <blora-sidebar-nav-link label="表单输入" href="#input" value="input"></blora-sidebar-nav-link>
+      <blora-sidebar-nav-link label="选择器" href="#select" value="select"></blora-sidebar-nav-link>
+      <blora-sidebar-nav-link label="标签徽章" href="#tag" value="tag"></blora-sidebar-nav-link>
+      <blora-sidebar-nav-link label="头像" href="#avatar" value="avatar"></blora-sidebar-nav-link>
+      <blora-sidebar-nav-link
+        label="进度与加载"
+        href="#progress"
+        value="progress"
+      ></blora-sidebar-nav-link>
+    </blora-sidebar-nav-group>
+    <blora-sidebar-nav-group label="导航">
+      <blora-sidebar-nav-link
+        label="导航组件"
+        href="#navigation"
+        value="navigation"
+      ></blora-sidebar-nav-link>
+      <blora-sidebar-nav-link label="数据展示" href="#data" value="data"></blora-sidebar-nav-link>
+    </blora-sidebar-nav-group>
+    <blora-sidebar-nav-group label="反馈">
+      <blora-sidebar-nav-link
+        label="反馈与提示"
+        href="#feedback"
+        value="feedback"
+      ></blora-sidebar-nav-link>
+      <blora-sidebar-nav-link
+        label="模态与抽屉"
+        href="#overlay"
+        value="overlay"
+      ></blora-sidebar-nav-link>
+      <blora-sidebar-nav-link
+        label="命令面板"
+        href="#command"
+        value="command"
+      ></blora-sidebar-nav-link>
+    </blora-sidebar-nav-group>
+    <blora-sidebar-nav-group label="布局">
+      <blora-sidebar-nav-link label="布局" href="#layout" value="layout"></blora-sidebar-nav-link>
+      <blora-sidebar-nav-link
+        label="进阶组件"
+        href="#advanced"
+        value="advanced"
+      ></blora-sidebar-nav-link>
+      <blora-sidebar-nav-link label="模型" href="#model" value="model"></blora-sidebar-nav-link>
+    </blora-sidebar-nav-group>
+  </blora-sidebar-nav>
 `;
-
-const bindSidebar = (el: Element | undefined): void => {
-  if (!(el instanceof HTMLElement)) return;
-  (el as any).__ctrl?.destroy();
-  (el as any).__ctrl = createSidebarLayoutController(el);
-};
 
 export const Default: Story = {
   render: () => html`
-    <div class="blora-sidebar-layout" data-blora-sidebar-layout ${ref(bindSidebar)}>
-      <button
-        type="button"
-        class="blora-button blora-sidebar-layout__toggle"
-        data-variant="outline"
-        data-blora-sidebar-toggle
-      >
-        菜单
-      </button>
-      <div class="blora-sidebar-layout__mask"></div>
-      <aside class="blora-sidebar-layout__aside">${sidebarNav}</aside>
-      <main class="blora-sidebar-layout__content">
+    <blora-sidebar-layout toggle-label="菜单" label="设计系统导航">
+      <blora-sidebar-layout-sidebar>${sidebarNav}</blora-sidebar-layout-sidebar>
+      <blora-sidebar-layout-content>
         <h3 class="blora-h3">设计规范</h3>
         <p class="blora-text-muted">
           左侧导航按组分块，复刻 v1 展示页侧边栏结构。窄屏（≤900px）下折叠为抽屉。
         </p>
-      </main>
-    </div>
+      </blora-sidebar-layout-content>
+    </blora-sidebar-layout>
   `,
 };
 
 export const Compact: Story = {
   render: () => html`
-    <div
-      class="blora-sidebar-layout blora-sidebar-layout--compact"
-      data-blora-sidebar-layout
-      ${ref(bindSidebar)}
-    >
-      <button
-        type="button"
-        class="blora-button blora-sidebar-layout__toggle"
-        data-variant="outline"
-        data-blora-sidebar-toggle
-      >
-        菜单
-      </button>
-      <div class="blora-sidebar-layout__mask"></div>
-      <aside class="blora-sidebar-layout__aside">${sidebarNav}</aside>
-      <main class="blora-sidebar-layout__content">
+    <blora-sidebar-layout toggle-label="菜单" label="设计系统导航" compact>
+      <blora-sidebar-layout-sidebar>${sidebarNav}</blora-sidebar-layout-sidebar>
+      <blora-sidebar-layout-content>
         <h3 class="blora-h3">紧凑模式</h3>
         <p class="blora-text-muted">min-height: 20rem（默认 28rem）</p>
-      </main>
-    </div>
+      </blora-sidebar-layout-content>
+    </blora-sidebar-layout>
   `,
 };

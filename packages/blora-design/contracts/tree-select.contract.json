@@ -1,19 +1,53 @@
 {
   "name": "tree-select",
+  "category": "data-input",
   "status": "beta",
-  "kind": "headless",
+  "kind": "custom-element",
+  "tagName": "blora-tree-select",
   "since": "2.0.0",
   "requiresJavaScript": true,
   "formAssociated": false,
   "attributes": {
-    "data-options": { "type": "string", "description": "JSON tree options" },
-    "data-open": { "type": "boolean" }
+    "options": {
+      "type": "string",
+      "description": "JSON tree options; declarative definitions are preferred."
+    },
+    "label": {
+      "type": "string"
+    },
+    "placeholder": {
+      "type": "string"
+    },
+    "value": {
+      "type": "string",
+      "default": ""
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false
+    }
   },
-  "methods": {},
+  "properties": {
+    "value": {
+      "type": "string"
+    }
+  },
+  "methods": {
+    "open": {
+      "signature": "() => void"
+    },
+    "close": {
+      "signature": "() => void"
+    }
+  },
   "events": {
-    "blora-treeselect-change": { "detail": "{ value, label, item }" }
+    "blora-treeselect-change": {
+      "detail": "{ value, label, item }"
+    }
   },
-  "slots": { "default": "input + optional label" },
+  "slots": {
+    "default": "Nested declarative <blora-tree-select-option value label disabled selectable> definitions; consumed into the official combobox tree."
+  },
   "parts": [],
   "cssProperties": [],
   "accessibilityPattern": "combobox"

@@ -14,7 +14,12 @@
   position: absolute;
   top: -0.2em;
   inset-inline-end: -0.2em;
-  border: 2px solid var(--blora-color-surface-canvas);
+  /* Ring via box-shadow so a 2px canvas halo cannot squash the
+     border-box height into an oval (that shifted the digit). */
+  border: 0;
+  box-shadow:
+    0 0 0 2px var(--blora-color-surface-canvas),
+    var(--blora-shadow-primary);
 }
 
 /* -- Status dot -- */

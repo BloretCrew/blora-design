@@ -284,7 +284,7 @@ Markdown 行内解析中，链接替换后的 HTML 包含 `blora-md__a` 等 clas
 ## ADR-013: 默认 headless controller + 少量 CE，而非全量 form-associated WC
 
 **日期**：2026-08-02  
-**状态**：已采纳
+**状态**：已由 ADR-015 取代（superseded，2026-08-08）
 
 ### 背景
 
@@ -308,3 +308,35 @@ Markdown 行内解析中，链接替换后的 HTML 包含 `blora-md__a` 等 clas
 - 文档（`guide.md`、根 README、`remaining-work.md`）以 controller 路径为推荐。  
 - Phase 10 DoD 按 **已交付形态** 写浏览器/a11y 测试，不强制先 CE 化再测。
 
+---
+
+## ADR-015: 复合控件默认使用 light-DOM Custom Element 封装官方结构
+
+**日期**：2026-08-08
+**状态**：已采纳；取代 ADR-013 的默认公共形态
+
+### 背景
+
+ADR-013 将「CSS + 业务手写 BEM 内部树 + headless controller」作为默认路径。实践证明，这会让 Storybook、Showcase、业务项目和 AI 生成代码分别复制复合 DOM；任何缺失节点或虚构 class 都会静默退化为原生皮肤或裸布局，形成同一套 CSS 下的“两套脸”。结构测试和文档提醒只能发现部分错误，不能消除业务侧重复拼树的根因。
+
+### 决策
+
+1. **复合控件的默认公共形态改为 Custom Element**。CE 使用 light DOM 生成仓库维护的官方 BEM class 树，再绑定既有 `createXxxController`；组件 CSS、token 和 controller 仍为唯一视觉/行为实现。
+2. 首批默认 CE 为：`blora-range`、`blora-datepicker`、`blora-timepicker`、`blora-search`、`blora-transfer`、`blora-accordion`、`blora-collapse`、`blora-command`、`blora-segmented`、`blora-tabs`，并与既有 `blora-select`、`blora-dialog` 一起由 `@bloret-crew/blora-design/auto` 注册。
+3. Storybook 主故事、Showcase 和用户文档只走 CE API；已迁 CE 的 `createXxxController(root)` 不再由主包导出，直接手写复合 BEM 树由 contract 驱动门禁禁止。内部 controller 仅作为 CE 实现细节；1.x 迁移只能走显式 compat 包。
+4. CE 只负责官方结构、属性映射、生命周期和 controller 绑定；禁止复制第二套组件样式，禁止通过 `innerHTML` 注入用户内容。
+5. Form-associated Custom Element 分阶段推进。表单类 light-DOM CE 可依赖内部原生表单控件参与提交；是否升级为 `ElementInternals`/FA-WC 由后续逐组件合同与测试决定，不作为本次结构根治的前置条件。
+6. 展示型或原生语义已足够的简单组件继续使用 HTML + CSS；本决策不要求全库每个 class 都变成 CE。
+
+### 理由
+
+- 开发者只需使用标签和声明式子项，不再复制 Story 的内部节点树。
+- Story、Showcase 与业务项目复用同一个结构生成器，错误结构无法静默成为默认路径。
+- light DOM 保持 token/主题继承、SSR 外壳和现有 CSS 选择器兼容，且能直接复用 controller，控制迁移成本。
+- 未迁为 CE 的 Table / Form 等开放数据能力继续保留明确的 headless 出口；已迁组件不再暴露双重公共入口。
+
+### 后果
+
+- 新增 CE 属性、事件或子项语法必须更新对应 contract、API snapshot/CEM、Story 与浏览器测试。
+- `auto` 与 `blora.global.js` 的 `autoDefine()` 必须注册完整默认 CE 集合。
+- 文档中 ADR-013 的 headless-first 表述应删除或标为历史；已迁 CE 的旧手写树从一方消费面移除并由自动门禁阻止回归。

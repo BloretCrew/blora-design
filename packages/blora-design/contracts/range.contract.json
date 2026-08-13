@@ -1,20 +1,43 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "range",
+  "category": "data-input",
   "status": "beta",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-range",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
-  "properties": {},
+  "attributes": {
+    "min": {
+      "type": "number",
+      "default": 0
+    },
+    "max": {
+      "type": "number",
+      "default": 100
+    },
+    "values": {
+      "type": "comma-separated number pair",
+      "default": "20,75"
+    },
+    "tooltip": {
+      "type": "boolean | 'false'",
+      "default": true
+    }
+  },
+  "properties": {
+    "values": {
+      "type": "[number, number]"
+    }
+  },
   "methods": {},
   "events": {},
   "slots": {
-    "default": "Content"
+    "default": "No authored internal DOM; the CE generates the official range tree."
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "section",
+  "accessibilityPattern": "multi-thumb slider",
   "migrationFromV1": "range.migration.md"
 }

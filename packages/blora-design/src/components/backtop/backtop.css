@@ -1,5 +1,9 @@
 /* BackTop — aligned with v1 FAB-style fixed control (tokenized) */
 
+blora-backtop {
+  display: contents;
+}
+
 .blora-backtop:not(.blora-fab) {
   position: fixed;
   right: max(var(--blora-space-5), env(safe-area-inset-right, 0px));

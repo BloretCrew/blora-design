@@ -1,1 +1,1 @@
-export { createOtpController, type OtpController } from "./otp.js";
+export { BLORA_OTP_TAG, BloraOtp, defineBloraOtp, type OtpController } from "./otp.js";

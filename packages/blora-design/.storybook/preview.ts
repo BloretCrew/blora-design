@@ -1,6 +1,11 @@
 import type { Preview } from "@storybook/web-components";
 import { html } from "lit";
 
+// Story markup uses the public declarative CE surface. Register it once for
+// both Canvas and Autodocs; importing component CSS alone leaves label-only
+// definition elements visually empty and exposes raw fallback text.
+import "../src/auto.js";
+
 // Import Blora Design CSS - full stack from source
 import "../../tokens/generated/tokens.css";
 import "../../tokens/generated/tokens.dark.css";
@@ -26,7 +31,6 @@ import "../src/components/badge/badge.css";
 import "../src/components/progress/progress.css";
 import "../src/components/spinner/spinner.css";
 import "../src/components/skeleton/skeleton.css";
-import "../src/components/toast/toast.css";
 import "../src/components/tabs/tabs.css";
 import "../src/components/breadcrumb/breadcrumb.css";
 import "../src/components/pagination/pagination.css";
@@ -35,6 +39,7 @@ import "../src/components/tooltip/tooltip.css";
 import "../src/components/popover/popover.css";
 import "../src/components/drawer/drawer.css";
 import "../src/components/navbar/navbar.css";
+import "../src/components/sidebar-nav/sidebar-nav.css";
 import "../src/components/card/card.css";
 import "../src/components/table/table.css";
 import "../src/components/list/list.css";

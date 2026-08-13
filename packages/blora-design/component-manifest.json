@@ -1,13 +1,15 @@
 {
   "name": "@bloret-crew/blora-design",
   "version": "2.0.0-alpha.1",
-  "generatedAt": "2026-08-03T03:29:02.054Z",
+  "generatedAt": "2026-08-13T05:50:54.083Z",
   "components": [
     {
       "name": "accordion",
       "status": "stable",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "data-display",
+      "tagName": "blora-accordion",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/accordion.css",
       "contract": "contracts/accordion.contract.json"
@@ -15,8 +17,10 @@
     {
       "name": "alert",
       "status": "stable",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "feedback",
+      "tagName": "blora-alert",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/alert.css",
       "contract": "contracts/alert.contract.json"
@@ -24,8 +28,10 @@
     {
       "name": "autocomplete",
       "status": "beta",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "data-input",
+      "tagName": "blora-autocomplete",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/autocomplete.css",
       "contract": "contracts/autocomplete.contract.json"
@@ -34,6 +40,7 @@
       "name": "avatar",
       "status": "stable",
       "kind": "css-only",
+      "category": "data-display",
       "requiresJavaScript": false,
       "formAssociated": false,
       "cssExport": "./components/avatar.css",
@@ -42,7 +49,9 @@
     {
       "name": "backtop",
       "status": "beta",
-      "kind": "headless",
+      "kind": "custom-element",
+      "category": "navigation",
+      "tagName": "blora-backtop",
       "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/backtop.css",
@@ -52,6 +61,7 @@
       "name": "badge",
       "status": "stable",
       "kind": "css-only",
+      "category": "data-display",
       "requiresJavaScript": false,
       "formAssociated": false,
       "cssExport": "./components/badge.css",
@@ -60,8 +70,10 @@
     {
       "name": "banner",
       "status": "stable",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "feedback",
+      "tagName": "blora-banner",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/banner.css",
       "contract": "contracts/banner.contract.json"
@@ -69,8 +81,10 @@
     {
       "name": "breadcrumb",
       "status": "stable",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "navigation",
+      "tagName": "blora-breadcrumb",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/breadcrumb.css",
       "contract": "contracts/breadcrumb.contract.json"
@@ -79,6 +93,7 @@
       "name": "button",
       "status": "stable",
       "kind": "native",
+      "category": "actions",
       "requiresJavaScript": false,
       "formAssociated": true,
       "cssExport": "./components/button.css",
@@ -87,8 +102,10 @@
     {
       "name": "calendar",
       "status": "beta",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "data-input",
+      "tagName": "blora-calendar",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/calendar.css",
       "contract": "contracts/calendar.contract.json"
@@ -97,6 +114,7 @@
       "name": "card",
       "status": "stable",
       "kind": "css-only",
+      "category": "data-display",
       "requiresJavaScript": false,
       "formAssociated": false,
       "cssExport": "./components/card.css",
@@ -105,8 +123,10 @@
     {
       "name": "carousel",
       "status": "beta",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "data-display",
+      "tagName": "blora-carousel",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/carousel.css",
       "contract": "contracts/carousel.contract.json"
@@ -114,8 +134,10 @@
     {
       "name": "cascader",
       "status": "beta",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "data-input",
+      "tagName": "blora-cascader",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/cascader.css",
       "contract": "contracts/cascader.contract.json"
@@ -123,8 +145,10 @@
     {
       "name": "chart-container",
       "status": "beta",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "data-display",
+      "tagName": "blora-chart-container",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/chart-container.css",
       "contract": "contracts/chart-container.contract.json"
@@ -132,8 +156,10 @@
     {
       "name": "chat",
       "status": "beta",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "data-display",
+      "tagName": "blora-chat",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/chat.css",
       "contract": "contracts/chat.contract.json"
@@ -141,17 +167,21 @@
     {
       "name": "checkbox",
       "status": "stable",
-      "kind": "native",
-      "requiresJavaScript": false,
-      "formAssociated": true,
+      "kind": "custom-element",
+      "category": "data-input",
+      "tagName": "blora-checkbox",
+      "requiresJavaScript": true,
+      "formAssociated": false,
       "cssExport": "./components/checkbox.css",
       "contract": "contracts/checkbox.contract.json"
     },
     {
       "name": "collapse",
       "status": "stable",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "data-display",
+      "tagName": "blora-collapse",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/collapse.css",
       "contract": "contracts/collapse.contract.json"
@@ -159,8 +189,10 @@
     {
       "name": "color-picker",
       "status": "beta",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "data-input",
+      "tagName": "blora-color-picker",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/color-picker.css",
       "contract": "contracts/color-picker.contract.json"
@@ -168,8 +200,10 @@
     {
       "name": "command-palette",
       "status": "beta",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "navigation",
+      "tagName": "blora-command",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/command-palette.css",
       "contract": "contracts/command-palette.contract.json"
@@ -177,8 +211,10 @@
     {
       "name": "comment",
       "status": "beta",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "data-display",
+      "tagName": "blora-comment",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/comment.css",
       "contract": "contracts/comment.contract.json"
@@ -186,8 +222,10 @@
     {
       "name": "copy",
       "status": "beta",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "actions",
+      "tagName": "blora-copy",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/copy.css",
       "contract": "contracts/copy.contract.json"
@@ -195,8 +233,10 @@
     {
       "name": "datepicker",
       "status": "beta",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "data-input",
+      "tagName": "blora-datepicker",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/datepicker.css",
       "contract": "contracts/datepicker.contract.json"
@@ -204,8 +244,10 @@
     {
       "name": "deck",
       "status": "beta",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "layout",
+      "tagName": "blora-deck",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/deck.css",
       "contract": "contracts/deck.contract.json"
@@ -214,6 +256,7 @@
       "name": "descriptions",
       "status": "stable",
       "kind": "css-only",
+      "category": "data-display",
       "requiresJavaScript": false,
       "formAssociated": false,
       "cssExport": "./components/descriptions.css",
@@ -223,6 +266,8 @@
       "name": "dialog",
       "status": "stable",
       "kind": "custom-element",
+      "category": "actions",
+      "tagName": "blora-dialog",
       "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/dialog.css",
@@ -231,8 +276,10 @@
     {
       "name": "dock",
       "status": "beta",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "navigation",
+      "tagName": "blora-dock",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/dock.css",
       "contract": "contracts/dock.contract.json"
@@ -240,8 +287,10 @@
     {
       "name": "drawer",
       "status": "stable",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "layout",
+      "tagName": "blora-drawer",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/drawer.css",
       "contract": "contracts/drawer.contract.json"
@@ -249,8 +298,10 @@
     {
       "name": "dropdown",
       "status": "stable",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "actions",
+      "tagName": "blora-dropdown",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/dropdown.css",
       "contract": "contracts/dropdown.contract.json"
@@ -258,8 +309,10 @@
     {
       "name": "empty",
       "status": "stable",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "data-display",
+      "tagName": "blora-empty",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/empty.css",
       "contract": "contracts/empty.contract.json"
@@ -268,6 +321,7 @@
       "name": "fab",
       "status": "beta",
       "kind": "css-only",
+      "category": "actions",
       "requiresJavaScript": false,
       "formAssociated": false,
       "cssExport": "./components/fab.css",
@@ -276,16 +330,39 @@
     {
       "name": "field",
       "status": "stable",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "data-input",
+      "tagName": "blora-field",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/field.css",
       "contract": "contracts/field.contract.json"
     },
     {
+      "name": "fieldset",
+      "status": "stable",
+      "kind": "css-only",
+      "category": "data-input",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/fieldset.css",
+      "contract": "contracts/fieldset.contract.json"
+    },
+    {
+      "name": "filter",
+      "status": "stable",
+      "kind": "css-only",
+      "category": "data-input",
+      "requiresJavaScript": false,
+      "formAssociated": true,
+      "cssExport": "./components/filter.css",
+      "contract": "contracts/filter.contract.json"
+    },
+    {
       "name": "form",
       "status": "beta",
       "kind": "headless",
+      "category": "data-input",
       "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/form.css",
@@ -294,8 +371,10 @@
     {
       "name": "image",
       "status": "stable",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "data-display",
+      "tagName": "blora-image",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/image.css",
       "contract": "contracts/image.contract.json"
@@ -304,6 +383,7 @@
       "name": "input",
       "status": "stable",
       "kind": "native",
+      "category": "data-input",
       "requiresJavaScript": false,
       "formAssociated": true,
       "cssExport": "./components/input.css",
@@ -313,6 +393,7 @@
       "name": "list",
       "status": "stable",
       "kind": "css-only",
+      "category": "data-display",
       "requiresJavaScript": false,
       "formAssociated": false,
       "cssExport": "./components/list.css",
@@ -322,16 +403,29 @@
       "name": "masonry",
       "status": "beta",
       "kind": "css-only",
+      "category": "layout",
       "requiresJavaScript": false,
       "formAssociated": false,
       "cssExport": "./components/masonry.css",
       "contract": "contracts/masonry.contract.json"
     },
     {
+      "name": "media",
+      "status": "stable",
+      "kind": "css-only",
+      "category": "data-display",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/media.css",
+      "contract": "contracts/media.contract.json"
+    },
+    {
       "name": "megamenu",
       "status": "beta",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "navigation",
+      "tagName": "blora-megamenu",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/megamenu.css",
       "contract": "contracts/megamenu.contract.json"
@@ -339,8 +433,10 @@
     {
       "name": "mentions",
       "status": "beta",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "data-input",
+      "tagName": "blora-mentions",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/mentions.css",
       "contract": "contracts/mentions.contract.json"
@@ -348,7 +444,8 @@
     {
       "name": "message",
       "status": "stable",
-      "kind": "css-only",
+      "kind": "css-and-service",
+      "category": "feedback",
       "requiresJavaScript": false,
       "formAssociated": false,
       "cssExport": "./components/message.css",
@@ -357,8 +454,10 @@
     {
       "name": "mockup",
       "status": "beta",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "mockup",
+      "tagName": "blora-mockup",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/mockup.css",
       "contract": "contracts/mockup.contract.json"
@@ -366,8 +465,10 @@
     {
       "name": "navbar",
       "status": "stable",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "navigation",
+      "tagName": "blora-navbar",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/navbar.css",
       "contract": "contracts/navbar.contract.json"
@@ -375,17 +476,31 @@
     {
       "name": "notification",
       "status": "stable",
-      "kind": "css-only",
+      "kind": "css-and-service",
+      "category": "feedback",
       "requiresJavaScript": false,
       "formAssociated": false,
       "cssExport": "./components/notification.css",
       "contract": "contracts/notification.contract.json"
     },
     {
+      "name": "number-input",
+      "status": "stable",
+      "kind": "custom-element",
+      "category": "data-input",
+      "tagName": "blora-number-input",
+      "requiresJavaScript": true,
+      "formAssociated": false,
+      "cssExport": "./components/number-input.css",
+      "contract": "contracts/number-input.contract.json"
+    },
+    {
       "name": "otp",
       "status": "beta",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "data-input",
+      "tagName": "blora-otp",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/otp.css",
       "contract": "contracts/otp.contract.json"
@@ -393,8 +508,10 @@
     {
       "name": "pagination",
       "status": "stable",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "navigation",
+      "tagName": "blora-pagination",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/pagination.css",
       "contract": "contracts/pagination.contract.json"
@@ -402,8 +519,10 @@
     {
       "name": "popconfirm",
       "status": "stable",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "feedback",
+      "tagName": "blora-popconfirm",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/popconfirm.css",
       "contract": "contracts/popconfirm.contract.json"
@@ -411,8 +530,10 @@
     {
       "name": "popover",
       "status": "stable",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "feedback",
+      "tagName": "blora-popover",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/popover.css",
       "contract": "contracts/popover.contract.json"
@@ -420,8 +541,10 @@
     {
       "name": "progress",
       "status": "stable",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "feedback",
+      "tagName": "blora-progress",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/progress.css",
       "contract": "contracts/progress.contract.json"
@@ -429,8 +552,10 @@
     {
       "name": "radio",
       "status": "stable",
-      "kind": "native",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "data-input",
+      "tagName": "blora-radio",
+      "requiresJavaScript": true,
       "formAssociated": true,
       "cssExport": "./components/radio.css",
       "contract": "contracts/radio.contract.json"
@@ -438,8 +563,10 @@
     {
       "name": "range",
       "status": "beta",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "data-input",
+      "tagName": "blora-range",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/range.css",
       "contract": "contracts/range.contract.json"
@@ -447,8 +574,10 @@
     {
       "name": "rate",
       "status": "beta",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "data-input",
+      "tagName": "blora-rate",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/rate.css",
       "contract": "contracts/rate.contract.json"
@@ -456,8 +585,10 @@
     {
       "name": "result",
       "status": "stable",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "feedback",
+      "tagName": "blora-result",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/result.css",
       "contract": "contracts/result.contract.json"
@@ -465,8 +596,10 @@
     {
       "name": "search",
       "status": "beta",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "data-input",
+      "tagName": "blora-search",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/search.css",
       "contract": "contracts/search.contract.json"
@@ -474,8 +607,10 @@
     {
       "name": "segmented",
       "status": "stable",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "navigation",
+      "tagName": "blora-segmented",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/segmented.css",
       "contract": "contracts/segmented.contract.json"
@@ -484,15 +619,29 @@
       "name": "select",
       "status": "stable",
       "kind": "custom-element",
+      "category": "data-input",
+      "tagName": "blora-select",
       "requiresJavaScript": true,
       "formAssociated": true,
       "cssExport": "./components/select.css",
       "contract": "contracts/select.contract.json"
     },
     {
+      "name": "sidebar-nav",
+      "status": "stable",
+      "kind": "custom-element",
+      "category": "navigation",
+      "tagName": "blora-sidebar-nav",
+      "requiresJavaScript": true,
+      "formAssociated": false,
+      "cssExport": "./components/sidebar-nav.css",
+      "contract": "contracts/sidebar-nav.contract.json"
+    },
+    {
       "name": "skeleton",
       "status": "stable",
       "kind": "css-only",
+      "category": "feedback",
       "requiresJavaScript": false,
       "formAssociated": false,
       "cssExport": "./components/skeleton.css",
@@ -501,17 +650,21 @@
     {
       "name": "slider",
       "status": "beta",
-      "kind": "css-only",
-      "requiresJavaScript": false,
-      "formAssociated": false,
+      "kind": "custom-element",
+      "category": "data-input",
+      "tagName": "blora-slider",
+      "requiresJavaScript": true,
+      "formAssociated": true,
       "cssExport": "./components/slider.css",
       "contract": "contracts/slider.contract.json"
     },
     {
       "name": "speed-dial",
       "status": "beta",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "actions",
+      "tagName": "blora-speed-dial",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/speed-dial.css",
       "contract": "contracts/speed-dial.contract.json"
@@ -520,6 +673,7 @@
       "name": "spinner",
       "status": "stable",
       "kind": "css-only",
+      "category": "feedback",
       "requiresJavaScript": false,
       "formAssociated": false,
       "cssExport": "./components/spinner.css",
@@ -528,8 +682,10 @@
     {
       "name": "splitter",
       "status": "beta",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "layout",
+      "tagName": "blora-splitter",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/splitter.css",
       "contract": "contracts/splitter.contract.json"
@@ -537,8 +693,10 @@
     {
       "name": "statistic",
       "status": "stable",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "data-display",
+      "tagName": "blora-statistic",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/statistic.css",
       "contract": "contracts/statistic.contract.json"
@@ -546,17 +704,32 @@
     {
       "name": "steps",
       "status": "stable",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "navigation",
+      "tagName": "blora-steps",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/steps.css",
       "contract": "contracts/steps.contract.json"
     },
     {
+      "name": "swap",
+      "status": "stable",
+      "kind": "custom-element",
+      "category": "actions",
+      "tagName": "blora-swap",
+      "requiresJavaScript": true,
+      "formAssociated": false,
+      "cssExport": "./components/swap.css",
+      "contract": "contracts/swap.contract.json"
+    },
+    {
       "name": "switch",
       "status": "stable",
-      "kind": "native",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "data-input",
+      "tagName": "blora-switch",
+      "requiresJavaScript": true,
       "formAssociated": true,
       "cssExport": "./components/switch.css",
       "contract": "contracts/switch.contract.json"
@@ -564,8 +737,9 @@
     {
       "name": "table",
       "status": "stable",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "headless",
+      "category": "data-display",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/table.css",
       "contract": "contracts/table.contract.json"
@@ -573,8 +747,10 @@
     {
       "name": "tabs",
       "status": "stable",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "navigation",
+      "tagName": "blora-tabs",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/tabs.css",
       "contract": "contracts/tabs.contract.json"
@@ -583,6 +759,7 @@
       "name": "tag",
       "status": "stable",
       "kind": "css-only",
+      "category": "data-display",
       "requiresJavaScript": false,
       "formAssociated": false,
       "cssExport": "./components/tag.css",
@@ -591,8 +768,10 @@
     {
       "name": "tags-input",
       "status": "beta",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "data-input",
+      "tagName": "blora-tags-input",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/tags-input.css",
       "contract": "contracts/tags-input.contract.json"
@@ -601,6 +780,7 @@
       "name": "textarea",
       "status": "stable",
       "kind": "native",
+      "category": "data-input",
       "requiresJavaScript": false,
       "formAssociated": true,
       "cssExport": "./components/textarea.css",
@@ -609,8 +789,10 @@
     {
       "name": "timeline",
       "status": "stable",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "data-display",
+      "tagName": "blora-timeline",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/timeline.css",
       "contract": "contracts/timeline.contract.json"
@@ -618,26 +800,21 @@
     {
       "name": "timepicker",
       "status": "beta",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "data-input",
+      "tagName": "blora-timepicker",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/timepicker.css",
       "contract": "contracts/timepicker.contract.json"
     },
     {
-      "name": "toast",
-      "status": "stable",
-      "kind": "service",
-      "requiresJavaScript": true,
-      "formAssociated": false,
-      "cssExport": "./components/toast.css",
-      "contract": "contracts/toast.contract.json"
-    },
-    {
       "name": "tooltip",
       "status": "stable",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "feedback",
+      "tagName": "blora-tooltip",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/tooltip.css",
       "contract": "contracts/tooltip.contract.json"
@@ -645,8 +822,10 @@
     {
       "name": "tour",
       "status": "beta",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "navigation",
+      "tagName": "blora-tour",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/tour.css",
       "contract": "contracts/tour.contract.json"
@@ -654,8 +833,10 @@
     {
       "name": "transfer",
       "status": "beta",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "data-input",
+      "tagName": "blora-transfer",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/transfer.css",
       "contract": "contracts/transfer.contract.json"
@@ -663,8 +844,10 @@
     {
       "name": "tree",
       "status": "beta",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "data-display",
+      "tagName": "blora-tree",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/tree.css",
       "contract": "contracts/tree.contract.json"
@@ -672,7 +855,9 @@
     {
       "name": "tree-select",
       "status": "beta",
-      "kind": "headless",
+      "kind": "custom-element",
+      "category": "data-input",
+      "tagName": "blora-tree-select",
       "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/tree-select.css",
@@ -681,8 +866,10 @@
     {
       "name": "upload",
       "status": "beta",
-      "kind": "css-only",
-      "requiresJavaScript": false,
+      "kind": "custom-element",
+      "category": "data-input",
+      "tagName": "blora-upload",
+      "requiresJavaScript": true,
       "formAssociated": false,
       "cssExport": "./components/upload.css",
       "contract": "contracts/upload.contract.json"
@@ -693,7 +880,6 @@
     "./select",
     "./dialog",
     "./table",
-    "./toast",
     "./auto",
     "./compat/v1"
   ],

@@ -6,6 +6,10 @@
    No hard-coded max-height caps.
    ========================================================================= */
 
+blora-accordion {
+  display: block;
+}
+
 .blora-accordion {
   border: var(--blora-border-subtle);
   border-radius: var(--blora-radius-md);
@@ -31,18 +35,28 @@
   font-size: var(--blora-text-sm);
   font-weight: 500;
   color: var(--blora-color-text-secondary);
-  transition: background var(--blora-duration-fast) var(--blora-easing-standard);
+  transition: color var(--blora-duration-fast) var(--blora-easing-standard);
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: start;
 }
 
-.blora-accordion__head:hover {
-  background: var(--blora-color-surface-raised);
+.blora-accordion__head:not(:disabled):hover {
+  color: var(--blora-color-action-primary-default);
 }
 
 .blora-accordion__icon {
   flex: none;
-  transition: transform var(--blora-duration-base) var(--blora-easing-standard);
+  transition:
+    color var(--blora-duration-fast) var(--blora-easing-standard),
+    transform var(--blora-duration-base) var(--blora-easing-standard);
   color: var(--blora-color-text-subtle);
   display: inline-flex;
+}
+
+.blora-accordion__head:not(:disabled):hover .blora-accordion__icon {
+  color: var(--blora-color-action-primary-default);
 }
 
 .blora-accordion__item[data-open] .blora-accordion__icon,

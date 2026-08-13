@@ -5,7 +5,7 @@ import { createCountdownController } from "../../../addons/effects/src/index";
 import "../../../addons/effects/src/effects.css";
 
 const meta = {
-  title: "Add-ons/Effects/Countdown",
+  title: "Data display/Countdown",
   component: ".blora-countdown",
   tags: ["autodocs"],
 } satisfies Meta;

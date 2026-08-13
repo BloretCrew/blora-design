@@ -1,6 +1,7 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "masonry",
+  "category": "layout",
   "status": "beta",
   "kind": "css-only",
   "since": "2.0.0",
@@ -14,7 +15,9 @@
     "default": "Content"
   },
   "parts": [],
-  "cssProperties": ["--blora-masonry-cols"],
+  "cssProperties": [
+    "--blora-masonry-cols"
+  ],
   "accessibilityPattern": "section",
   "migrationFromV1": "masonry.migration.md"
 }

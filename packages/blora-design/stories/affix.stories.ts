@@ -5,7 +5,7 @@ import { createAffixController } from "../../../addons/layout/src/index";
 import "../../../addons/layout/src/layout.css";
 
 const meta = {
-  title: "Add-ons/Layout/Affix",
+  title: "Layout/Affix",
   component: ".blora-affix",
   tags: ["autodocs"],
 } satisfies Meta;

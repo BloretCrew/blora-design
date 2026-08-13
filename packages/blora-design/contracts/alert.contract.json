@@ -1,19 +1,46 @@
 {
   "name": "alert",
+  "category": "feedback",
   "status": "stable",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-alert",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
+  "attributes": {
+    "variant": {
+      "type": "\"info\" | \"success\" | \"warning\" | \"danger\"",
+      "default": "info"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "dismissible": {
+      "type": "boolean",
+      "default": false
+    }
+  },
   "properties": {},
-  "methods": {},
-  "events": {},
+  "methods": {
+    "close": {
+      "signature": "() => void"
+    }
+  },
+  "events": {
+    "blora-alert-close": {
+      "detail": "void",
+      "bubbles": true,
+      "composed": true
+    }
+  },
   "slots": {
-    "default": "Content"
+    "default": "No child structure; attributes generate the official alert tree."
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "input",
+  "accessibilityPattern": "alert",
   "migrationFromV1": "alert.migration.md"
 }

@@ -22,68 +22,65 @@ const manifest = {
     name: c.name,
     status: c.status ?? "beta",
     kind: c.kind ?? "unknown",
+    ...(c.category ? { category: c.category } : {}),
+    ...(c.tagName ? { tagName: c.tagName } : {}),
     requiresJavaScript: !!c.requiresJavaScript,
     formAssociated: !!c.formAssociated,
     cssExport: `./components/${c.name}.css`,
     contract: `contracts/${c.name}.contract.json`,
   })),
-  jsSubpaths: ["./button", "./select", "./dialog", "./table", "./toast", "./auto", "./compat/v1"],
+  jsSubpaths: ["./button", "./select", "./dialog", "./table", "./auto", "./compat/v1"],
   notes:
     "status=stable in contracts is aspirational until Phase 10 DoD; see docs/refactor/contract-stability.md",
 };
 
-/** Minimal Custom Elements Manifest for shipped CE */
+const CE_CLASS_NAME_OVERRIDES = {
+  "command-palette": "BloraCommand",
+};
+
+const ceClassName = (componentName) =>
+  CE_CLASS_NAME_OVERRIDES[componentName] ??
+  `Blora${componentName
+    .split("-")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join("")}`;
+
+const ceContracts = contracts.filter(
+  (contract) => contract.kind === "custom-element" && contract.tagName,
+);
+
+/** Minimal Custom Elements Manifest generated from custom-element contracts. */
 const cem = {
   schemaVersion: "1.0.0",
   readme: "",
-  modules: [
-    {
+  modules: ceContracts.map((contract) => {
+    const className = ceClassName(contract.name);
+    const defineName = `define${className}`;
+    const dedicatedEntry = contract.name === "select" || contract.name === "dialog";
+    return {
       kind: "javascript-module",
-      path: "dist/components/select/index.js",
+      path: dedicatedEntry ? `dist/components/${contract.name}/index.js` : "dist/index.js",
       declarations: [
         {
           kind: "class",
-          name: "BloraSelect",
-          tagName: "blora-select",
+          name: className,
+          tagName: contract.tagName,
           customElement: true,
-          description: "Form-associated select combobox",
+          description: `${contract.name} custom element`,
           superclass: { name: "BloraElement", module: "dist/index.js" },
         },
       ],
       exports: [
-        { kind: "js", name: "BloraSelect", declaration: { name: "BloraSelect" } },
-        { kind: "js", name: "defineBloraSelect", declaration: { name: "defineBloraSelect" } },
+        { kind: "js", name: className, declaration: { name: className } },
+        { kind: "js", name: defineName, declaration: { name: defineName } },
         {
           kind: "custom-element-definition",
-          name: "blora-select",
-          declaration: { name: "BloraSelect" },
+          name: contract.tagName,
+          declaration: { name: className },
         },
       ],
-    },
-    {
-      kind: "javascript-module",
-      path: "dist/components/dialog/index.js",
-      declarations: [
-        {
-          kind: "class",
-          name: "BloraDialog",
-          tagName: "blora-dialog",
-          customElement: true,
-          description: "Modal dialog custom element",
-          superclass: { name: "BloraElement", module: "dist/index.js" },
-        },
-      ],
-      exports: [
-        { kind: "js", name: "BloraDialog", declaration: { name: "BloraDialog" } },
-        { kind: "js", name: "defineBloraDialog", declaration: { name: "defineBloraDialog" } },
-        {
-          kind: "custom-element-definition",
-          name: "blora-dialog",
-          declaration: { name: "BloraDialog" },
-        },
-      ],
-    },
-  ],
+    };
+  }),
 };
 
 /** Public API snapshot from package exports + main named re-exports (static) */
@@ -107,7 +104,7 @@ const apiSnapshot = {
   generatedAt: new Date().toISOString(),
   packageExports: Object.keys(packageJson.exports || {}).sort(),
   mainNamedExports: [...new Set(namedExports)].sort(),
-  customElements: ["blora-select", "blora-dialog"],
+  customElements: ceContracts.map((contract) => contract.tagName),
 };
 
 if (!existsSync(distDir)) mkdirSync(distDir, { recursive: true });

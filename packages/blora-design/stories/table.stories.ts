@@ -4,7 +4,7 @@ import { ref } from "lit/directives/ref.js";
 import { createTableController } from "../src/components/table";
 
 const meta = {
-  title: "Data/Table",
+  title: "Data display/Table",
   component: ".blora-table",
   tags: ["autodocs"],
 } satisfies Meta;
@@ -229,4 +229,8 @@ export const VirtualScrollBoth: Story = {
       容器约 28rem 宽、40 列 × 100px — 横向只渲染视口列；纵向 300 行只渲染视口行。
     </p>
   `,
+};
+
+export const Striped: Story = {
+  render: () => html\`<div class="blora-table-wrap"><table class="blora-table" data-striped><thead><tr><th>成员</th><th>状态</th></tr></thead><tbody><tr><td>Alice</td><td>Active</td></tr><tr><td>Bob</td><td>Offline</td></tr><tr><td>Carol</td><td>Pending</td></tr></tbody></table></div>\`,
 };

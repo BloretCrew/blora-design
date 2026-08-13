@@ -1,49 +1,66 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "tabs",
+  "category": "navigation",
   "status": "stable",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-tabs",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
   "attributes": {
-    "data-variant": {
-      "type": "\"default\" | \"pills\"",
+    "flush": {
+      "type": "boolean",
+      "default": false,
+      "description": "Remove component-owned panel inset for full-bleed content."
+    },
+    "value": {
+      "type": "string"
+    },
+    "variant": {
+      "type": "'default' | 'pills'",
       "default": "default"
     },
-    "data-orientation": {
-      "type": "\"horizontal\" | \"vertical\"",
+    "orientation": {
+      "type": "'horizontal' | 'vertical'",
       "default": "horizontal"
-    },
-    "data-tabs-enhanced": {
-      "type": "boolean",
-      "description": "Set automatically by createTabsController to switch from static fallback to animated indicator."
     }
   },
   "properties": {},
-  "methods": {},
-  "events": {},
-  "controller": {
-    "name": "createTabsController",
-    "description": "Optional headless controller that adds a sliding indicator, panel fade-in animation, and keyboard navigation (APG tabs pattern). CSS-only base works without it.",
-    "parameters": [{ "name": "root", "type": "HTMLElement" }],
-    "returns": "TabsController",
-    "methods": {
-      "select": {
-        "parameters": [
-          { "name": "index", "type": "number" },
-          { "name": "focus", "type": "boolean" }
-        ],
-        "returns": "void"
-      },
-      "destroy": { "returns": "void" }
+  "methods": {
+    "select": {
+      "parameters": [
+        {
+          "name": "index",
+          "type": "number"
+        },
+        {
+          "name": "focus",
+          "type": "boolean"
+        }
+      ],
+      "returns": "void"
+    }
+  },
+  "events": {
+    "blora-change": {
+      "detail": "{ value: string }",
+      "bubbles": true,
+      "composed": true
     }
   },
   "slots": {
-    "default": "Content"
+    "default": "Declarative <blora-tab label value selected disabled> panel definitions; consumed into the official tablist/panels tree."
   },
   "parts": [],
-  "cssProperties": ["--blora-tab-w", "--blora-tab-x", "--blora-tab-h", "--blora-tab-y"],
-  "accessibilityPattern": "navigation",
+  "cssProperties": [
+    "--blora-tab-w",
+    "--blora-tab-x",
+    "--blora-tab-h",
+    "--blora-tab-y",
+    "--blora-tabs-indicator-size",
+    "--blora-tabs-focus-inset"
+  ],
+  "accessibilityPattern": "tabs",
   "migrationFromV1": "tabs.migration.md"
 }

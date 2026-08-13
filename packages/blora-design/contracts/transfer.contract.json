@@ -1,20 +1,40 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "transfer",
+  "category": "data-input",
   "status": "beta",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-transfer",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
-  "properties": {},
+  "attributes": {
+    "source-label": {
+      "type": "string",
+      "default": "候选"
+    },
+    "target-label": {
+      "type": "string",
+      "default": "已选"
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "properties": {
+    "selectedValues": {
+      "type": "string[]",
+      "readonly": true
+    }
+  },
   "methods": {},
   "events": {},
   "slots": {
-    "default": "Content"
+    "default": "Declarative <blora-transfer-item value target checked disabled> definitions; consumed into official rows."
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "section",
+  "accessibilityPattern": "dual listbox transfer",
   "migrationFromV1": "transfer.migration.md"
 }

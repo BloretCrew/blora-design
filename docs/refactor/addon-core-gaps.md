@@ -26,9 +26,9 @@
 
 | 项 | API | 测试 |
 |----|-----|------|
-| Tree Select | `createTreeSelectController` | `tests/v1-gaps.test.ts` |
+| Tree Select | `<blora-tree-select>` Composite CE | `tests/composite-elements.test.ts` |
 | Form validate | `createFormController` | 同上 |
-| BackTop | `createBackTopController` | 同上 |
+| BackTop | `<blora-backtop>` + `initBackTop` | 同上 |
 | Image preview | `openImagePreview` | 同上 |
 | Notification 多位置 | `notify({ placement })` | 同上 |
 | Table 分页 | `createTableController` + pageSize | 同上 |
@@ -49,7 +49,6 @@
 
 ```ts
 import {
-  createTreeSelectController,
   createFormController,
   createTableController,
   notify,
@@ -58,6 +57,9 @@ import {
 import { renderMarkdown, initMarkdown } from "@bloret-crew/blora-design-markdown";
 import { renderQRCode } from "@bloret-crew/blora-design-qrcode";
 import { textFx, createCountdownController } from "@bloret-crew/blora-design-effects";
-import { createSidebarLayoutController } from "@bloret-crew/blora-design-layout";
+import "@bloret-crew/blora-design-layout";
+import "@bloret-crew/blora-design-theming";
 import { applyTheme, applyColorScheme } from "@bloret-crew/blora-design-theming";
 ```
+
+Sidebar Layout、Palette Picker 与明暗切换使用对应包自动注册的 Composite CE；旧的手写内部树与直接 controller 挂载不再是公共消费面。

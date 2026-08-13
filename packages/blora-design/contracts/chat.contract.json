@@ -1,17 +1,40 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "chat",
+  "category": "data-display",
   "status": "beta",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-chat",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
+  "attributes": {
+    "author": {
+      "type": "string"
+    },
+    "time": {
+      "type": "string"
+    },
+    "avatar": {
+      "type": "string"
+    },
+    "avatar-variant": {
+      "type": "string",
+      "default": "info"
+    },
+    "message": {
+      "type": "string"
+    },
+    "side": {
+      "type": "\"start\" | \"end\"",
+      "default": "start"
+    }
+  },
   "properties": {},
   "methods": {},
   "events": {},
   "slots": {
-    "default": "Content"
+    "default": "No child structure; attributes generate the official chat message tree."
   },
   "parts": [],
   "cssProperties": [],

@@ -5,7 +5,7 @@ import { initShortcutHints } from "../../../addons/effects/src/index";
 import "../../../addons/effects/src/effects.css";
 
 const meta = {
-  title: "Add-ons/Effects/Shortcut Hints",
+  title: "Data display/Kbd",
   component: "[data-blora-shortcut]",
   tags: ["autodocs"],
 } satisfies Meta;

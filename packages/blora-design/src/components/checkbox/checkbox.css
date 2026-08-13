@@ -3,6 +3,14 @@
    Spec §11.1: Native input + visual box, no JS required
    ========================================================================= */
 
+blora-checkbox {
+  display: inline-block;
+}
+
+blora-checkbox[data-group] {
+  display: block;
+}
+
 .blora-checkbox {
   display: inline-flex;
   align-items: center;
@@ -29,6 +37,7 @@
   display: inline-block;
   transition: all var(--blora-duration-fast) var(--blora-easing-standard);
   position: relative;
+
   /* Keep box geometry independent of line-height / flex stretch */
   box-sizing: border-box;
   flex-shrink: 0;

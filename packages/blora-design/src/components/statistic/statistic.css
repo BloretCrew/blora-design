@@ -3,6 +3,10 @@
    Visual baseline: legacy/v1/blora.css lines 2001-2007
    ========================================================================= */
 
+blora-statistic {
+  display: block;
+}
+
 .blora-stat {
   display: flex;
   flex-direction: column;

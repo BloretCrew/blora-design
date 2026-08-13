@@ -28,7 +28,7 @@ export const Default: Story = {
           <path d="M12 19V5" />
         </svg>
       </button>
-      <button class="blora-fab" data-variant="static" type="button" aria-label="添加">
+      <button class="blora-fab blora-fab--static" type="button" aria-label="添加">
         <svg
           width="22"
           height="22"

@@ -1,13 +1,38 @@
 {
   "name": "progress",
+  "category": "feedback",
   "status": "stable",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-progress",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
-  "properties": {},
-  "methods": {},
+  "attributes": {
+    "value": {
+      "type": "number",
+      "default": 0
+    },
+    "label": {
+      "type": "string"
+    },
+    "variant": {
+      "type": "\"neutral\" | \"success\" | \"info\" | \"striped\""
+    },
+    "shape": {
+      "type": "\"linear\" | \"circular\"",
+      "default": "linear"
+    }
+  },
+  "properties": {
+    "value": {
+      "type": "number"
+    }
+  },
+  "methods": {
+    "setValue": {
+      "signature": "(value: number) => void"
+    }
+  },
   "events": {},
   "slots": {
     "default": "Content"

@@ -23,3 +23,25 @@
   font-size: var(--blora-text-sm);
   text-align: center;
 }
+
+blora-chart-container {
+  display: block;
+}
+
+.blora-chart__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--blora-space-3) var(--blora-space-4);
+  border-bottom: 1px solid var(--blora-color-border-subtle);
+}
+
+.blora-chart__title {
+  font-size: var(--blora-text-sm);
+  font-weight: 600;
+}
+
+.blora-chart__body {
+  min-height: var(--blora-chart-min-h, 10rem);
+  padding: var(--blora-space-4);
+}

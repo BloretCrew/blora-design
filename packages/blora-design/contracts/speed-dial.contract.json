@@ -1,17 +1,65 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "speed-dial",
+  "category": "actions",
   "status": "beta",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-speed-dial",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "default": "操作"
+    },
+    "mode": {
+      "type": "\"vertical\" | \"left\" | \"flower\"",
+      "default": "vertical"
+    },
+    "action-appearance": {
+      "type": "\"icon\" | \"label\" | \"button\"",
+      "default": "icon"
+    },
+    "open": {
+      "type": "boolean",
+      "default": false
+    },
+    "close-button": {
+      "type": "boolean",
+      "default": false
+    },
+    "main-label": {
+      "type": "string"
+    },
+    "main-icon": {
+      "type": "string",
+      "default": "plus"
+    }
+  },
   "properties": {},
-  "methods": {},
-  "events": {},
+  "methods": {
+    "open": {
+      "signature": "() => void"
+    },
+    "close": {
+      "signature": "() => void"
+    }
+  },
+  "events": {
+    "blora-speed-dial-toggle": {
+      "detail": "{ open: boolean }",
+      "bubbles": true,
+      "composed": false
+    },
+    "blora-speed-dial-select": {
+      "detail": "{ value: string }",
+      "bubbles": true,
+      "composed": false
+    }
+  },
   "slots": {
-    "default": "Content"
+    "default": "Declarative <blora-speed-dial-action value label icon variant> definitions; consumed into the official action menu."
   },
   "parts": [],
   "cssProperties": [
@@ -21,6 +69,6 @@
     "--blora-sd-r",
     "--blora-sd-trigger-size"
   ],
-  "accessibilityPattern": "section",
+  "accessibilityPattern": "menu",
   "migrationFromV1": "speed-dial.migration.md"
 }

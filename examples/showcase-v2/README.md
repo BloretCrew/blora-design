@@ -1,0 +1,25 @@
+# Showcase v2
+
+Full-page demo mirroring **section inventory** of `legacy/showcase-v1.html`, implemented with **Blora Design 2.0 only**.
+
+## Run
+
+```bash
+# from monorepo root — always full build so dist CSS exists
+pnpm --filter @bloret-crew/blora-design build
+
+# serve (file:// may break CSS @import in some browsers)
+python -m http.server 8765
+# open http://127.0.0.1:8765/examples/showcase-v2/
+```
+
+Assets:
+
+- `../../packages/blora-design/dist/blora.css`
+- `../../packages/blora-design/dist/blora.global.js`
+
+## Structure tests
+
+```bash
+pnpm --filter @bloret-crew/blora-design exec vitest run tests/showcase-v2-structure.test.ts
+```

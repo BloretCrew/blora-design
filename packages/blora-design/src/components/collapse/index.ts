@@ -1,1 +1,6 @@
-export { createCollapseController, type CollapseController } from "./collapse.js";
+export {
+  BLORA_COLLAPSE_TAG,
+  BloraCollapse,
+  defineBloraCollapse,
+  type CollapseController,
+} from "./collapse.js";

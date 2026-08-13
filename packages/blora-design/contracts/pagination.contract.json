@@ -1,28 +1,54 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "pagination",
+  "category": "navigation",
   "status": "stable",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-pagination",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
   "attributes": {
-    "aria-current": {
-      "type": "\"page\"",
-      "description": "Set on the active page button."
+    "page": {
+      "type": "number",
+      "default": 1
     },
-    "aria-label": {
-      "type": "string",
-      "description": "Required on prev/next nav buttons (e.g. '上一页', '下一页')."
+    "total": {
+      "type": "number",
+      "default": 1
+    },
+    "max-visible": {
+      "type": "number",
+      "default": 7,
+      "description": "Maximum number of numeric page buttons before ellipses are inserted."
+    },
+    "label": {
+      "type": "string"
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false
     }
   },
-  "properties": {},
+  "properties": {
+    "page": {
+      "type": "number"
+    }
+  },
   "methods": {},
-  "events": {},
+  "events": {
+    "blora-change": {
+      "detail": "{ page: number }",
+      "bubbles": true,
+      "composed": false
+    }
+  },
   "classes": {
     "blora-pagination__item": "Page number or nav button.",
     "blora-pagination__nav": "Prev/next nav button with larger touch target.",
-    "blora-pagination__ellipsis": "Ellipsis separator."
+    "blora-pagination__ellipsis": "Ellipsis separator.",
+    "blora-pagination__window": "Clipped viewport for the sliding numeric window.",
+    "blora-pagination__track": "Track of inner page buttons translated on page change."
   },
   "slots": {
     "default": "Content"

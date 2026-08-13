@@ -1,1 +1,6 @@
-export { createSliderController, type SliderController } from "./slider.js";
+export {
+  BLORA_SLIDER_TAG,
+  BloraSlider,
+  defineBloraSlider,
+  type SliderController,
+} from "./slider.js";

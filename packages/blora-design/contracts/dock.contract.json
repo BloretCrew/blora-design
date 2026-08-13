@@ -1,20 +1,49 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "dock",
+  "category": "navigation",
   "status": "beta",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-dock",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
-  "properties": {},
-  "methods": {},
-  "events": {},
+  "attributes": {
+    "current": {
+      "type": "number",
+      "default": 0
+    },
+    "label": {
+      "type": "string",
+      "default": "底部导航"
+    },
+    "static": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "properties": {
+    "current": {
+      "type": "number"
+    }
+  },
+  "methods": {
+    "select": {
+      "signature": "(index: number) => void"
+    }
+  },
+  "events": {
+    "blora-dock-change": {
+      "detail": "{ index: number, value: string }",
+      "bubbles": true,
+      "composed": false
+    }
+  },
   "slots": {
-    "default": "Content"
+    "default": "Declarative <blora-dock-item value href icon active> definitions; consumed into the official dock tree."
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "section",
+  "accessibilityPattern": "navigation",
   "migrationFromV1": "dock.migration.md"
 }

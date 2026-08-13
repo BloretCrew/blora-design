@@ -12,6 +12,7 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./markdown.global.js": "./dist/markdown.global.js",
     "./markdown.css": "./dist/markdown.css",
     "./package.json": "./package.json"
   },

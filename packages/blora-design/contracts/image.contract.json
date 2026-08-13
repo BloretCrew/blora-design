@@ -1,31 +1,61 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "image",
+  "category": "data-display",
   "status": "stable",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-image",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
   "attributes": {
-    "data-variant": {
+    "src": {
+      "type": "string"
+    },
+    "alt": {
+      "type": "string",
+      "default": ""
+    },
+    "caption": {
+      "type": "string"
+    },
+    "variant": {
       "type": "\"default\" | \"hover\" | \"frame\" | \"preview\"",
       "default": "default"
     },
-    "data-filter": {
+    "filter": {
       "type": "\"none\" | \"muted\" | \"monochrome\"",
       "default": "none"
+    },
+    "preview": {
+      "type": "boolean",
+      "default": false
+    },
+    "preview-group": {
+      "type": "string"
     }
   },
   "properties": {},
-  "methods": {},
+  "methods": {
+    "open": {
+      "signature": "() => void"
+    },
+    "close": {
+      "signature": "() => void"
+    }
+  },
   "events": {},
   "classes": {
     "blora-image": "Root figure container.",
     "blora-image__cap": "Caption overlay at bottom."
   },
-  "slots": { "default": "img element" },
+  "slots": {
+    "default": "No child structure; src, alt and caption attributes generate the official figure."
+  },
   "parts": [],
-  "cssProperties": ["--blora-image-ratio"],
+  "cssProperties": [
+    "--blora-image-ratio"
+  ],
   "accessibilityPattern": "figure",
   "migrationFromV1": "image.migration.md"
 }

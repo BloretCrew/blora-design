@@ -26,6 +26,19 @@ pnpm test:visual
 3. Failures: open the HTML report / `-snapshots` diff; fix CSS or accept with review note.
 4. Scope today: **smoke set** (button row, table chrome, invalid field) — expand matrix in RC.
 
+## 2026-08-11 Showcase full catalog review
+
+- `examples/showcase-v2/` now covers all 76 core manifest components.
+- Reviewed actual headless-Chrome renders for the desktop catalog, mobile sidebar, Accordion,
+  Collapse HTML panel, palette picker, FAB, Statistic, Table, Dialog, and Select.
+- FAB review confirms the official static docs modifier keeps the control 56×56, circular, centered,
+  and contained by the Preview; the default floating variant remains 56×56 on desktop and 48×48
+  below the 560px breakpoint.
+- The catalog routes and mounts every component in both desktop and mobile Chromium without page
+  errors; the active sidebar item is kept visible when routing and when opening the mobile drawer.
+- Accepted snapshot changes are limited to the expanded catalog shell plus the representative
+  component panels listed above.
+
 ## CI
 
 `pnpm test:visual` runs project `visual` only (not the full interaction suite).

@@ -19,6 +19,8 @@
 | `.blora-select-option.is-selected` | `data-selected` + `aria-selected="true"` |                               |
 | `.blora-select-option.is-active`   | `data-active`                            | Keyboard navigation highlight |
 | `.blora-select-option.is-disabled` | `data-disabled` + `aria-disabled="true"` |                               |
+| `data-blora-multiple`              | `multiple`                               | 正式多选模式                  |
+| `data-blora-max-tag-count`         | `max-tag-count`                          | 超出数量折叠为 `+n`           |
 
 ## Events
 
@@ -56,6 +58,8 @@
 
 2.0 uses `ElementInternals` API for form association (Spec §11.2).
 The `name` attribute and `value` property work with native `<form>` submission.
+In multiple mode, `value` is a comma-separated serialization and the readonly `values`
+property exposes the selected value list.
 
 ## Keyboard Navigation
 

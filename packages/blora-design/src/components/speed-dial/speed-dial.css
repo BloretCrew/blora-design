@@ -1,5 +1,9 @@
 /* Blora Design 2.0 - speed-dial (v1 parity, data-open) */
 
+blora-speed-dial {
+  display: inline-block;
+}
+
 .blora-speed-dial {
   --blora-sd-gap: var(--blora-space-3);
   --blora-sd-r: 7rem;
@@ -381,10 +385,11 @@
   font-size: var(--blora-text-xs);
   color: var(--blora-color-text-subtle);
   font-weight: 500;
+  letter-spacing: 0.02em;
   pointer-events: none;
 }
 
-.blora-speed-dial-stage > .blora-speed-dial {
+.blora-speed-dial-stage > blora-speed-dial {
   position: absolute;
   right: var(--blora-space-4);
   bottom: var(--blora-space-4);
@@ -392,6 +397,7 @@
 
 .blora-speed-dial-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
-  gap: var(--blora-space-6);
+  grid-template-columns: repeat(auto-fill, minmax(17.5rem, 1fr));
+  gap: var(--blora-space-5);
+  overflow: visible;
 }

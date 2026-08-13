@@ -88,3 +88,7 @@
   display: grid;
   gap: var(--blora-space-4);
 }
+
+blora-comment {
+  display: block;
+}

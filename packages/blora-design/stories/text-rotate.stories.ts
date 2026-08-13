@@ -5,7 +5,7 @@ import { createTextRotateController } from "../../../addons/effects/src/index";
 import "../../../addons/effects/src/effects.css";
 
 const meta = {
-  title: "Add-ons/Effects/Text Rotate",
+  title: "Data display/Text Rotate",
   component: ".blora-text-rotate",
   tags: ["autodocs"],
 } satisfies Meta;

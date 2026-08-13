@@ -1,5 +1,6 @@
 {
   "name": "markdown",
+  "category": "data-display",
   "status": "beta",
   "kind": "service",
   "since": "2.0.0",

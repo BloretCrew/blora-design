@@ -9,8 +9,9 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
-      formats: ["es"],
-      fileName: "index",
+      name: "BloraLayout",
+      formats: ["es", "iife"],
+      fileName: (format) => (format === "es" ? "index.js" : "layout.global.js"),
     },
     outDir: "dist",
     emptyOutDir: true,

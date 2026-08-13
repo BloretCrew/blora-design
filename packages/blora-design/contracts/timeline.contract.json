@@ -1,16 +1,18 @@
 {
   "name": "timeline",
+  "category": "data-display",
   "status": "stable",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-timeline",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
   "attributes": {},
   "properties": {},
   "methods": {},
   "events": {},
   "slots": {
-    "default": "Timeline items"
+    "default": "Declarative <blora-timeline-item time title description variant> definitions; consumed into the official list tree."
   },
   "parts": [],
   "cssProperties": [],

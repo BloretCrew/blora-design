@@ -2,6 +2,10 @@
  * BackTop: show after scroll threshold; click scrolls to top (v1 initBackTop / backTop).
  * Icon: v1 lucide-style arrow-up SVG (same path as legacy ensureGlobalBackTopFab).
  */
+import { BloraElement } from "../../core/blora-element.js";
+import { createBloraIcon } from "../../core/icons.js";
+
+export const BLORA_BACKTOP_TAG = "blora-backtop";
 export interface BackTopController {
   show(): void;
   hide(): void;
@@ -24,23 +28,8 @@ export const BACKTOP_ARROW_SVG =
 function ensureBackTopIcon(btn: HTMLElement): void {
   if (btn.querySelector("svg")) return;
 
-  const doc = btn.ownerDocument;
-  const svg = doc.createElementNS("http://www.w3.org/2000/svg", "svg");
-  svg.setAttribute("width", "22");
-  svg.setAttribute("height", "22");
-  svg.setAttribute("viewBox", "0 0 24 24");
-  svg.setAttribute("fill", "none");
-  svg.setAttribute("stroke", "currentColor");
+  const svg = createBloraIcon("arrow-up", 22, btn.ownerDocument);
   svg.setAttribute("stroke-width", "2.5");
-  svg.setAttribute("stroke-linecap", "round");
-  svg.setAttribute("stroke-linejoin", "round");
-  svg.setAttribute("aria-hidden", "true");
-
-  const p1 = doc.createElementNS("http://www.w3.org/2000/svg", "path");
-  p1.setAttribute("d", "m5 12 7-7 7 7");
-  const p2 = doc.createElementNS("http://www.w3.org/2000/svg", "path");
-  p2.setAttribute("d", "M12 19V5");
-  svg.append(p1, p2);
 
   /* Drop plain-text glyphs only; leave alone if author put custom nodes (no svg yet). */
   const onlyText =
@@ -135,4 +124,68 @@ export function initBackTop(root: ParentNode = document): () => void {
     ctrls.push(createBackTopController(btn));
   });
   return () => ctrls.forEach((c) => c.destroy());
+}
+
+/** Back-to-top CE backed by the existing scroll controller. */
+export class BloraBacktop extends BloraElement {
+  private controller: BackTopController | null = null;
+
+  static get observedAttributes(): string[] {
+    return ["show-after", "target", "label"];
+  }
+
+  attributeChangedCallback(): void {
+    if (!this.isConnectedInternal) return;
+    this.sync();
+  }
+
+  show(): void {
+    this.controller?.show();
+  }
+
+  hide(): void {
+    this.controller?.hide();
+  }
+
+  protected render(): void {
+    const button = this.ownerDocument.createElement("button");
+    button.type = "button";
+    button.className = "blora-backtop";
+    button.dataset.bloraGenerated = "";
+    button.setAttribute("aria-label", this.getAttribute("label") ?? "回到顶部");
+    const showAfter = this.getAttribute("show-after");
+    if (showAfter) button.dataset.showAfter = showAfter;
+    const target = this.getAttribute("target");
+    if (target) button.dataset.target = target;
+    this.replaceChildren(button);
+  }
+
+  protected override sync(): void {
+    const button = this.querySelector<HTMLElement>(".blora-backtop");
+    if (!button) return;
+    button.setAttribute("aria-label", this.getAttribute("label") ?? "回到顶部");
+    const showAfter = this.getAttribute("show-after");
+    if (showAfter) button.dataset.showAfter = showAfter;
+    else delete button.dataset.showAfter;
+    const target = this.getAttribute("target");
+    if (target) button.dataset.target = target;
+    else delete button.dataset.target;
+    this.rebind();
+  }
+
+  protected bindEvents(): void {
+    const button = this.querySelector<HTMLElement>(".blora-backtop");
+    this.controller?.destroy();
+    this.controller = button ? createBackTopController(button) : null;
+  }
+
+  protected onDisconnect(): void {
+    this.controller?.destroy();
+    this.controller = null;
+  }
+}
+
+export function defineBloraBacktop(registry: CustomElementRegistry = customElements): void {
+  if (!registry || registry.get(BLORA_BACKTOP_TAG)) return;
+  registry.define(BLORA_BACKTOP_TAG, BloraBacktop);
 }

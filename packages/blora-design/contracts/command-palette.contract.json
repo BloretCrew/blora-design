@@ -1,20 +1,33 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "command-palette",
+  "category": "navigation",
   "status": "beta",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-command",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
+  "attributes": {
+    "placeholder": {
+      "type": "string",
+      "default": "输入命令或搜索..."
+    }
+  },
   "properties": {},
   "methods": {},
-  "events": {},
+  "events": {
+    "blora:command": {
+      "detail": "{ label: string }",
+      "bubbles": true,
+      "composed": false
+    }
+  },
   "slots": {
-    "default": "Content"
+    "default": "Declarative <blora-command-item value icon shortcut disabled> definitions; consumed into official result rows."
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "section",
+  "accessibilityPattern": "command palette",
   "migrationFromV1": "command-palette.migration.md"
 }

@@ -1,9 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/web-components";
 import { html } from "lit";
+import { defineBloraProgress } from "../src/components/progress";
+
+defineBloraProgress();
 
 const meta = {
   title: "Feedback/Progress",
-  component: ".blora-progress",
+  component: "blora-progress",
   tags: ["autodocs"],
 } satisfies Meta;
 
@@ -13,30 +16,19 @@ type Story = StoryObj;
 export const Default: Story = {
   render: () => html`
     <div class="blora-stack">
-      <div class="blora-progress">
-        <div class="blora-progress__label"><span>上传中</span><span>30%</span></div>
-        <div class="blora-progress__bar">
-          <div class="blora-progress__fill" style="width: 30%;"></div>
-        </div>
-      </div>
-      <div class="blora-progress">
-        <div class="blora-progress__label"><span>处理中</span><span>60%</span></div>
-        <div class="blora-progress__bar">
-          <div class="blora-progress__fill" data-variant="success" style="width: 60%;"></div>
-        </div>
-      </div>
-      <div class="blora-progress">
-        <div class="blora-progress__label"><span>下载中</span><span>90%</span></div>
-        <div class="blora-progress__bar">
-          <div class="blora-progress__fill" data-variant="info" style="width: 90%;"></div>
-        </div>
-      </div>
-      <div class="blora-progress">
-        <div class="blora-progress__label"><span>不确定</span><span>—</span></div>
-        <div class="blora-progress__bar">
-          <div class="blora-progress__fill" data-variant="striped" style="width: 100%;"></div>
-        </div>
-      </div>
+      <blora-progress label="上传中" value="30"></blora-progress>
+      <blora-progress label="处理中" value="60" variant="success"></blora-progress>
+      <blora-progress label="下载中" value="90" variant="info"></blora-progress>
+      <blora-progress label="不确定" value="100" variant="striped"></blora-progress>
     </div>
   `,
+};
+
+export const Circular: Story = {
+  render: () => html\`
+    <div class="blora-row">
+      <blora-progress shape="circular" label="完成度" value="70"></blora-progress>
+      <blora-progress shape="circular" label="同步中" value="40" variant="success"></blora-progress>
+    </div>
+  \`,
 };

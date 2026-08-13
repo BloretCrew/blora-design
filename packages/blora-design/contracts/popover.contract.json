@@ -1,19 +1,46 @@
 {
   "name": "popover",
+  "category": "feedback",
   "status": "stable",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-popover",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
+  "attributes": {
+    "trigger": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string"
+    },
+    "close-label": {
+      "type": "string"
+    },
+    "open": {
+      "type": "boolean",
+      "default": false
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false
+    }
+  },
   "properties": {},
-  "methods": {},
+  "methods": {
+    "open": {
+      "signature": "() => void"
+    },
+    "close": {
+      "signature": "() => void"
+    }
+  },
   "events": {},
   "slots": {
     "default": "Content"
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "navigation",
+  "accessibilityPattern": "dialog",
   "migrationFromV1": "popover.migration.md"
 }

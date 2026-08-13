@@ -29,6 +29,8 @@
 | E10 | FAB / BackTop split | **Actions / FAB**, **BackTop** | Invalid selectors removed; dedicated CSS | ✅ |
 | E11 | Image | **Data / Image** | Loading + preview cursor + lightbox | ✅ |
 | E12 | Notification | **Feedback / Notification** | Multi-placement CSS | ✅ |
+| E13 | Accordion / Collapse | **Data / Accordion**, **Data / Collapse** | Hover highlights heading text + chevron without painting the full trigger row | ✅ User-requested; light/dark Chrome screenshots inspected 2026-08-09 |
+| E14 | Showcase component catalog | `examples/showcase-v2` | Floating navbar, single-view sidebar routing, Preview/HTML surface; Accordion + Collapse prototype only | ⏳ Agent inspected desktop/light/dark + Pixel 7; awaiting user approval before full expansion |
 
 ## List / Button
 
@@ -66,3 +68,14 @@
 | ADR-013 + `remaining-work.md` | **None** |
 
 **No Storybook eye-check required** for this closeout. Master tracker: [`remaining-work.md`](./remaining-work.md) §4.
+
+## Composite CE closeout (2026-08-09)
+
+| Item | Scope | Review |
+|------|-------|--------|
+| Structure-sensitive components | 58 default light-DOM Composite CEs | ✅ Headless Chrome screenshots inspected |
+| Fixed display composites | Alert / Banner / Breadcrumb / Chart Container / Chat / Comment / Empty / Mockup / Navbar / Result / Timeline | ✅ baseline details corrected and re-shot |
+| Responsive interaction | Desktop + Pixel 7 projects | ✅ Playwright 102 interaction tests |
+| Accessibility and visual smoke | axe + 3 visual baselines | ✅ Playwright 4 tests |
+
+No intentional visual redesign was introduced. The migration owns the official BEM tree inside each CE so showcase consumers cannot silently drift from Storybook markup.

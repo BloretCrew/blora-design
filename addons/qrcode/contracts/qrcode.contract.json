@@ -1,5 +1,6 @@
 {
   "name": "qrcode",
+  "category": "data-display",
   "status": "beta",
   "kind": "service",
   "since": "2.0.0",
@@ -8,12 +9,16 @@
   "attributes": {},
   "properties": {},
   "methods": {
-    "renderQRCode": { "description": "Render a QR code into a container element" }
+    "renderQRCode": {
+      "description": "Render a QR code into a container element"
+    }
   },
   "events": {},
   "slots": {},
   "parts": [],
-  "cssProperties": ["--blora-qr-size"],
+  "cssProperties": [
+    "--blora-qr-size"
+  ],
   "accessibilityPattern": "image",
   "migrationFromV1": "qrcode.migration.md"
 }

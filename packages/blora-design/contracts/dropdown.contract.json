@@ -1,30 +1,68 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "dropdown",
+  "category": "actions",
   "status": "stable",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-dropdown",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
   "attributes": {
-    "data-open": {
+    "label": {
+      "type": "string"
+    },
+    "open": {
       "type": "boolean",
-      "description": "Set on the root to show/hide the menu."
+      "default": false
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false
     }
   },
   "properties": {},
-  "methods": {},
-  "events": {},
+  "methods": {
+    "open": {
+      "signature": "() => void"
+    },
+    "close": {
+      "signature": "() => void"
+    },
+    "toggle": {
+      "signature": "() => void"
+    }
+  },
+  "events": {
+    "blora-select": {
+      "detail": "{ value: string }",
+      "bubbles": true,
+      "composed": true
+    }
+  },
   "controller": {
     "name": "createDropdownController",
     "description": "Optional headless controller that handles toggle, outside-click close, Escape close, item-click close, and ARIA synchronization. CSS-only base works without it.",
-    "parameters": [{ "name": "root", "type": "HTMLElement" }],
+    "parameters": [
+      {
+        "name": "root",
+        "type": "HTMLElement"
+      }
+    ],
     "returns": "DropdownController",
     "methods": {
-      "open": { "returns": "void" },
-      "close": { "returns": "void" },
-      "toggle": { "returns": "void" },
-      "destroy": { "returns": "void" }
+      "open": {
+        "returns": "void"
+      },
+      "close": {
+        "returns": "void"
+      },
+      "toggle": {
+        "returns": "void"
+      },
+      "destroy": {
+        "returns": "void"
+      }
     }
   },
   "slots": {

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/web-components";
 import { html } from "lit";
 
 const meta = {
-  title: "Data/Badge",
+  title: "Data display/Badge",
   component: ".blora-badge",
   tags: ["autodocs"],
 } satisfies Meta;
@@ -20,6 +20,8 @@ export const Variants: Story = {
       <span class="blora-badge" data-variant="neutral">5</span>
       <span class="blora-badge" data-variant="success">3</span>
       <span class="blora-badge" data-variant="info">i</span>
+      <span class="blora-badge" data-variant="warning">!</span>
+      <span class="blora-badge" data-variant="danger">!</span>
     </div>
   `,
 };

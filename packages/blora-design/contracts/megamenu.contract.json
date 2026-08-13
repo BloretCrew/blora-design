@@ -1,20 +1,46 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "megamenu",
+  "category": "navigation",
   "status": "beta",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-megamenu",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "default": "浏览产品"
+    },
+    "open": {
+      "type": "boolean",
+      "default": false
+    }
+  },
   "properties": {},
-  "methods": {},
-  "events": {},
+  "methods": {
+    "open": {
+      "signature": "() => void"
+    },
+    "close": {
+      "signature": "() => void"
+    }
+  },
+  "events": {
+    "blora-megamenu-toggle": {
+      "detail": "{ open: boolean }",
+      "bubbles": true,
+      "composed": false
+    }
+  },
   "slots": {
-    "default": "Content"
+    "default": "Declarative <blora-megamenu-section title> definitions containing links; consumed into the official menu grid."
   },
   "parts": [],
-  "cssProperties": ["--blora-megamenu-offset"],
-  "accessibilityPattern": "section",
+  "cssProperties": [
+    "--blora-megamenu-offset"
+  ],
+  "accessibilityPattern": "menu",
   "migrationFromV1": "megamenu.migration.md"
 }

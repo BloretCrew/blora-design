@@ -3,6 +3,7 @@
    Spec §11.1: Checkbox-based switch, no JS required
    ========================================================================= */
 
+blora-switch,
 .blora-switch {
   display: inline-flex;
   align-items: center;

@@ -30,4 +30,4 @@
 | `Blora.init()`          | Custom Elements auto-upgrade                 | planned |
 
 > Phase 8 compat / codemod 已落地；本表为速查。完整映射见 `packages/blora-design/src/compat/v1/`。  
-> **2.0 新代码**请直接写 `.blora-button[data-variant]` 与 `createXxxController`，见 [`docs/guide.md`](../guide.md)。
+> **2.0 新代码**请直接写 `.blora-button[data-variant]` 与 contract 指定的 Composite CE；只有 Table / Form 等 headless contract 才创建 controller，见 [`docs/guide.md`](../guide.md)。

@@ -1,20 +1,60 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "cascader",
+  "category": "data-input",
   "status": "beta",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-cascader",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
-  "properties": {},
-  "methods": {},
-  "events": {},
+  "attributes": {
+    "options": {
+      "type": "string",
+      "description": "JSON cascader options; declarative definitions are preferred."
+    },
+    "placeholder": {
+      "type": "string",
+      "default": "请选择"
+    },
+    "value": {
+      "type": "string",
+      "default": ""
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "show-result": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "properties": {
+    "value": {
+      "type": "string"
+    }
+  },
+  "methods": {
+    "open": {
+      "signature": "() => void"
+    },
+    "close": {
+      "signature": "() => void"
+    }
+  },
+  "events": {
+    "blora-cascader-change": {
+      "detail": "{ value: string, path: string[] }",
+      "bubbles": true,
+      "composed": false
+    }
+  },
   "slots": {
-    "default": "Content"
+    "default": "Nested declarative <blora-cascader-option label> definitions; consumed into the official cascader tree."
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "section",
+  "accessibilityPattern": "combobox",
   "migrationFromV1": "cascader.migration.md"
 }

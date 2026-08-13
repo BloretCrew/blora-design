@@ -1,20 +1,63 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "timepicker",
+  "category": "data-input",
   "status": "beta",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-timepicker",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
-  "properties": {},
-  "methods": {},
-  "events": {},
+  "attributes": {
+    "value": {
+      "type": "HH:MM string",
+      "default": ""
+    },
+    "placeholder": {
+      "type": "string",
+      "default": "HH:MM"
+    },
+    "name": {
+      "type": "string"
+    },
+    "step": {
+      "type": "number"
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "required": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "properties": {
+    "value": {
+      "type": "string"
+    }
+  },
+  "methods": {
+    "focus": {
+      "parameters": [],
+      "returns": "void"
+    }
+  },
+  "events": {
+    "change": {
+      "native": true,
+      "bubbles": true,
+      "composed": false
+    }
+  },
   "slots": {
-    "default": "Content"
+    "default": "No authored internal DOM; the CE generates the official field and wheel panel."
   },
   "parts": [],
-  "cssProperties": ["--blora-tp-item", "--blora-tp-visible"],
-  "accessibilityPattern": "section",
+  "cssProperties": [
+    "--blora-tp-item",
+    "--blora-tp-visible"
+  ],
+  "accessibilityPattern": "time picker",
   "migrationFromV1": "timepicker.migration.md"
 }

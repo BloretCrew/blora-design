@@ -1,5 +1,6 @@
 {
   "name": "thread",
+  "category": "data-display",
   "status": "beta",
   "kind": "headless",
   "since": "2.0.0",

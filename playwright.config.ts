@@ -1,5 +1,8 @@
 import { defineConfig, devices } from "@playwright/test";
 
+const storybookPort = process.env.BLORA_PLAYWRIGHT_PORT ?? "6106";
+const storybookUrl = `http://localhost:${storybookPort}`;
+
 export default defineConfig({
   testDir: "./packages/blora-design/tests/browser",
   fullyParallel: true,
@@ -20,7 +23,7 @@ export default defineConfig({
     },
   },
   use: {
-    baseURL: "http://localhost:6006",
+    baseURL: storybookUrl,
     trace: "on-first-retry",
     screenshot: "only-on-failure",
   },
@@ -47,8 +50,8 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "pnpm storybook --ci",
-    url: "http://localhost:6006",
+    command: `pnpm --filter @bloret-crew/blora-design exec storybook dev -p ${storybookPort} -h 0.0.0.0 --ci`,
+    url: storybookUrl,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
   },

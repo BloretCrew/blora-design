@@ -68,15 +68,14 @@
   height: auto;
 }
 
-/* 选区：随主题主色（正文用 soft tint；表单控件见 input.css 实色分段） */
+/* 选区只铺半透明主色底，不改字色。强制 color 会让强调底上的白字（分页当前页、
+   主按钮等）被选中后变成正文黑。 */
 :where(body.blora-page, .blora-scope, .blora-portal)::selection,
 :where(body.blora-page, .blora-scope, .blora-portal) *::selection {
   background: var(--blora-color-action-selection-bg);
-  color: var(--blora-color-text-primary);
 }
 
 :where(body.blora-page, .blora-scope, .blora-portal)::-moz-selection,
 :where(body.blora-page, .blora-scope, .blora-portal) *::-moz-selection {
   background: var(--blora-color-action-selection-bg);
-  color: var(--blora-color-text-primary);
 }

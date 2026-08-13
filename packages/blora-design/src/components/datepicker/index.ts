@@ -1,1 +1,6 @@
-export { createDatepickerController, type DatepickerController } from "./datepicker.js";
+export {
+  BLORA_DATEPICKER_TAG,
+  BloraDatepicker,
+  defineBloraDatepicker,
+  type DatepickerController,
+} from "./datepicker.js";

@@ -208,7 +208,9 @@ html:has(body.blora-page) {
 [class^="blora-"]:focus-visible,
 [class*=" blora-"]:focus-visible {
   outline: 2px solid var(--blora-color-action-primary-default);
-  outline-offset: 2px;
+  /* Keep the ring inside the focus target so scroll, rounded and clipped
+     component containers cannot cut off any side of the indicator. */
+  outline-offset: -4px;
 }
 
 /* -- reduced-motion -- §8.6 */

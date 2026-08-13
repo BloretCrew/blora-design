@@ -1,17 +1,62 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "upload",
+  "category": "data-input",
   "status": "beta",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-upload",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
-  "properties": {},
-  "methods": {},
-  "events": {},
+  "attributes": {
+    "prompt": {
+      "type": "string"
+    },
+    "hint": {
+      "type": "string"
+    },
+    "accept": {
+      "type": "string"
+    },
+    "multiple": {
+      "type": "boolean",
+      "default": false
+    },
+    "name": {
+      "type": "string"
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "variant": {
+      "type": "\"dropzone\" | \"compact\"",
+      "default": "dropzone"
+    }
+  },
+  "properties": {
+    "files": {
+      "type": "FileList | null",
+      "readonly": true
+    }
+  },
+  "methods": {
+    "focus": {
+      "signature": "(options?: FocusOptions) => void"
+    },
+    "open": {
+      "signature": "() => void"
+    }
+  },
+  "events": {
+    "change": {
+      "detail": "Event",
+      "bubbles": true,
+      "composed": false
+    }
+  },
   "slots": {
-    "default": "Content"
+    "default": "No authored structure; dropzone, native file input and file list are generated."
   },
   "parts": [],
   "cssProperties": [],

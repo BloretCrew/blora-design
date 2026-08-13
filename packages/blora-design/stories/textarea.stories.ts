@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/web-components";
 import { html } from "lit";
 
 const meta = {
-  title: "Forms/Textarea",
+  title: "Data input/Textarea",
   component: ".blora-textarea",
   tags: ["autodocs"],
 } satisfies Meta;

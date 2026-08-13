@@ -16,6 +16,11 @@ export function isBrowser(): boolean {
 
 // Core
 export { BloraElement } from "./core/blora-element.js";
+export {
+  createBloraIcon,
+  isBloraIconName,
+  type BloraIconName,
+} from "./core/icons.js";
 
 // Controllers
 export { OverlayController, type OverlayOptions } from "./controllers/overlay-controller.js";
@@ -40,85 +45,135 @@ export {
   type BloraOptionData,
 } from "./components/select/index.js";
 
-// Tabs controller
-export { createTabsController, type TabsController } from "./components/tabs/index.js";
+// Tabs composite CE + advanced controller
+export { BLORA_TABS_TAG, BloraTabs, defineBloraTabs } from "./components/tabs/index.js";
 
 // Dropdown controller
-export { createDropdownController, type DropdownController } from "./components/dropdown/index.js";
+export {
+  BLORA_DROPDOWN_TAG,
+  BloraDropdown,
+  defineBloraDropdown,
+} from "./components/dropdown/index.js";
 
 // Interactive controllers (headless, story/demo wiring)
-export { createSliderController, type SliderController } from "./components/slider/index.js";
-export { createRangeController, type RangeController } from "./components/range/index.js";
-export { createRateController, type RateController } from "./components/rate/index.js";
-export { createCarouselController, type CarouselController } from "./components/carousel/index.js";
-export { createTreeController, type TreeController } from "./components/tree/index.js";
+export { BLORA_SLIDER_TAG, BloraSlider, defineBloraSlider } from "./components/slider/index.js";
+export { BLORA_RANGE_TAG, BloraRange, defineBloraRange } from "./components/range/index.js";
+export { BLORA_RATE_TAG, BloraRate, defineBloraRate } from "./components/rate/index.js";
 export {
-  createAutocompleteController,
-  type AutocompleteController,
+  BLORA_CAROUSEL_TAG,
+  BloraCarousel,
+  defineBloraCarousel,
+} from "./components/carousel/index.js";
+export { BLORA_TREE_TAG, BloraTree, defineBloraTree } from "./components/tree/index.js";
+export {
+  BLORA_AUTOCOMPLETE_TAG,
+  BloraAutocomplete,
+  defineBloraAutocomplete,
 } from "./components/autocomplete/index.js";
 export {
-  createMentionsController,
-  type MentionsController,
+  BLORA_MENTIONS_TAG,
+  BloraMentions,
+  defineBloraMentions,
   type MentionOption,
 } from "./components/mentions/index.js";
-export { createOtpController, type OtpController } from "./components/otp/index.js";
-export { createCascaderController, type CascaderController } from "./components/cascader/index.js";
+export { BLORA_OTP_TAG, BloraOtp, defineBloraOtp } from "./components/otp/index.js";
 export {
-  createDatepickerController,
-  type DatepickerController,
+  BLORA_CASCADER_TAG,
+  BloraCascader,
+  defineBloraCascader,
+  type CascaderNode,
+} from "./components/cascader/index.js";
+export {
+  BLORA_DATEPICKER_TAG,
+  BloraDatepicker,
+  defineBloraDatepicker,
 } from "./components/datepicker/index.js";
 export {
-  createTimepickerController,
-  type TimepickerController,
+  BLORA_TIMEPICKER_TAG,
+  BloraTimepicker,
+  defineBloraTimepicker,
 } from "./components/timepicker/index.js";
-export { createSplitterController, type SplitterController } from "./components/splitter/index.js";
-export { createTourController, type TourController } from "./components/tour/index.js";
-export { createDockController, type DockController } from "./components/dock/index.js";
-export { createMegamenuController, type MegamenuController } from "./components/megamenu/index.js";
 export {
-  createSpeedDialController,
-  type SpeedDialController,
+  BLORA_SPLITTER_TAG,
+  BloraSplitter,
+  defineBloraSplitter,
+} from "./components/splitter/index.js";
+export { BLORA_TOUR_TAG, BloraTour, defineBloraTour } from "./components/tour/index.js";
+export { BLORA_DOCK_TAG, BloraDock, defineBloraDock } from "./components/dock/index.js";
+export {
+  BLORA_MEGAMENU_TAG,
+  BloraMegamenu,
+  defineBloraMegamenu,
+} from "./components/megamenu/index.js";
+export {
+  BLORA_SPEED_DIAL_TAG,
+  BloraSpeedDial,
+  defineBloraSpeedDial,
 } from "./components/speed-dial/index.js";
-export { createSearchController, type SearchController } from "./components/search/index.js";
+export { BLORA_SEARCH_TAG, BloraSearch, defineBloraSearch } from "./components/search/index.js";
 export {
-  createColorPickerController,
-  type ColorPickerController,
+  BLORA_COLOR_PICKER_TAG,
+  BloraColorPicker,
+  defineBloraColorPicker,
 } from "./components/color-picker/index.js";
-export { createCopyController, type CopyController } from "./components/copy/index.js";
-export { createTransferController, type TransferController } from "./components/transfer/index.js";
-export { createFieldController, type FieldController } from "./components/field/index.js";
+export { BLORA_COPY_TAG, BloraCopy, defineBloraCopy } from "./components/copy/index.js";
+export {
+  BLORA_TRANSFER_TAG,
+  BloraTransfer,
+  defineBloraTransfer,
+} from "./components/transfer/index.js";
+export { BLORA_FIELD_TAG, BloraField, defineBloraField } from "./components/field/index.js";
 /* TextRotate → @bloret-crew/blora-design-effects */
-export { createCalendarController, type CalendarController } from "./components/calendar/index.js";
-export { createDeckController, type DeckController } from "./components/deck/index.js";
 export {
-  createTagsInputController,
-  type TagsInputController,
+  BLORA_CALENDAR_TAG,
+  BloraCalendar,
+  defineBloraCalendar,
+} from "./components/calendar/index.js";
+export { BLORA_DECK_TAG, BloraDeck, defineBloraDeck } from "./components/deck/index.js";
+export {
+  BLORA_TAGS_INPUT_TAG,
+  BloraTagsInput,
+  defineBloraTagsInput,
 } from "./components/tags-input/index.js";
-export { createUploadController, type UploadController } from "./components/upload/index.js";
+export { BLORA_UPLOAD_TAG, BloraUpload, defineBloraUpload } from "./components/upload/index.js";
 export {
-  createCommandPaletteController,
-  type CommandPaletteController,
+  BLORA_COMMAND_TAG,
+  BloraCommand,
+  defineBloraCommand,
 } from "./components/command-palette/index.js";
 
 // Overlays / data / feedback controllers (batch fill)
-export { createCollapseController, type CollapseController } from "./components/collapse/index.js";
 export {
-  createDrawerController,
-  bindDrawerTriggers,
-  type DrawerController,
-} from "./components/drawer/index.js";
-export { createTooltipController, type TooltipController } from "./components/tooltip/index.js";
-export { createPopoverController, type PopoverController } from "./components/popover/index.js";
+  BLORA_COLLAPSE_TAG,
+  BloraCollapse,
+  defineBloraCollapse,
+} from "./components/collapse/index.js";
+export { BLORA_DRAWER_TAG, BloraDrawer, defineBloraDrawer } from "./components/drawer/index.js";
+export { BLORA_TOOLTIP_TAG, BloraTooltip, defineBloraTooltip } from "./components/tooltip/index.js";
+export { BLORA_POPOVER_TAG, BloraPopover, defineBloraPopover } from "./components/popover/index.js";
 export {
-  createSegmentedController,
-  type SegmentedController,
+  BLORA_SEGMENTED_TAG,
+  BloraSegmented,
+  defineBloraSegmented,
 } from "./components/segmented/index.js";
 export {
-  createPaginationController,
-  type PaginationController,
+  BLORA_PAGINATION_TAG,
+  BloraPagination,
+  defineBloraPagination,
 } from "./components/pagination/index.js";
-export { createCheckboxController, type CheckboxController } from "./components/checkbox/index.js";
-export { toast, message, type ToastOptions, type ToastHandle } from "./components/toast/index.js";
+export {
+  BLORA_CHECKBOX_TAG,
+  BloraCheckbox,
+  defineBloraCheckbox,
+} from "./components/checkbox/index.js";
+export {
+  createMessageElement,
+  message,
+  type MessageApi,
+  type MessageHandle,
+  type MessageOptions,
+  type MessageType,
+} from "./components/message/index.js";
 export {
   createTableController,
   type TableController,
@@ -127,26 +182,69 @@ export {
   type TableRowData,
 } from "./components/table/index.js";
 export {
-  createPopconfirmController,
-  type PopconfirmController,
+  BLORA_POPCONFIRM_TAG,
+  BloraPopconfirm,
+  defineBloraPopconfirm,
 } from "./components/popconfirm/index.js";
-export { createProgressController, type ProgressController } from "./components/progress/index.js";
 export {
-  createAccordionController,
-  type AccordionController,
+  BLORA_PROGRESS_TAG,
+  BloraProgress,
+  defineBloraProgress,
+} from "./components/progress/index.js";
+export {
+  BLORA_NUMBER_INPUT_TAG,
+  BloraNumberInput,
+  defineBloraNumberInput,
+} from "./components/number-input/index.js";
+export { BLORA_SWAP_TAG, BloraSwap, defineBloraSwap } from "./components/swap/index.js";
+export {
+  BLORA_ACCORDION_TAG,
+  BloraAccordion,
+  defineBloraAccordion,
 } from "./components/accordion/index.js";
 export {
-  createImageController,
+  BLORA_IMAGE_TAG,
+  BloraImage,
+  defineBloraImage,
   openImagePreview,
-  type ImageController,
   type ImagePreviewHandle,
   type ImagePreviewItem,
 } from "./components/image/index.js";
 export {
-  createTreeSelectController,
-  type TreeSelectController,
+  BLORA_TREE_SELECT_TAG,
+  BloraTreeSelect,
+  defineBloraTreeSelect,
   type TreeSelectOption,
 } from "./components/tree-select/index.js";
+export { BLORA_ALERT_TAG, BloraAlert, defineBloraAlert } from "./components/alert/index.js";
+export { BLORA_BANNER_TAG, BloraBanner, defineBloraBanner } from "./components/banner/index.js";
+export {
+  BLORA_BREADCRUMB_TAG,
+  BloraBreadcrumb,
+  defineBloraBreadcrumb,
+} from "./components/breadcrumb/index.js";
+export {
+  BLORA_CHART_CONTAINER_TAG,
+  BloraChartContainer,
+  defineBloraChartContainer,
+} from "./components/chart-container/index.js";
+export { BLORA_CHAT_TAG, BloraChat, defineBloraChat } from "./components/chat/index.js";
+export { BLORA_COMMENT_TAG, BloraComment, defineBloraComment } from "./components/comment/index.js";
+export { BLORA_EMPTY_TAG, BloraEmpty, defineBloraEmpty } from "./components/empty/index.js";
+export { BLORA_MOCKUP_TAG, BloraMockup, defineBloraMockup } from "./components/mockup/index.js";
+export { BLORA_NAVBAR_TAG, BloraNavbar, defineBloraNavbar } from "./components/navbar/index.js";
+export {
+  BLORA_SIDEBAR_NAV_TAG,
+  BloraSidebarNav,
+  defineBloraSidebarNav,
+  type BloraSidebarNavChangeDetail,
+} from "./components/sidebar-nav/index.js";
+export { BLORA_RESULT_TAG, BloraResult, defineBloraResult } from "./components/result/index.js";
+export {
+  BLORA_TIMELINE_TAG,
+  BloraTimeline,
+  defineBloraTimeline,
+} from "./components/timeline/index.js";
 export {
   createFormController,
   getFormValues,
@@ -154,17 +252,26 @@ export {
   type FormValidateResult,
 } from "./components/form/index.js";
 export {
-  createBackTopController,
+  BLORA_BACKTOP_TAG,
+  BloraBacktop,
+  defineBloraBacktop,
   initBackTop,
   BACKTOP_ARROW_SVG,
-  type BackTopController,
   type BackTopOptions,
 } from "./components/backtop/index.js";
 export {
+  createNotificationElement,
   notify,
   createNotificationController,
   type NotificationOptions,
   type NotificationHandle,
   type NotificationPlacement,
 } from "./components/notification/index.js";
-export { createStepsController, type StepsController } from "./components/steps/index.js";
+export { BLORA_STEPS_TAG, BloraSteps, defineBloraSteps } from "./components/steps/index.js";
+export {
+  BLORA_STATISTIC_TAG,
+  BloraStatistic,
+  defineBloraStatistic,
+} from "./components/statistic/index.js";
+export { BLORA_RADIO_TAG, BloraRadio, defineBloraRadio } from "./components/radio/index.js";
+export { BLORA_SWITCH_TAG, BloraSwitch, defineBloraSwitch } from "./components/switch/index.js";

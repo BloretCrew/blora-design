@@ -1,6 +1,10 @@
 /* Blora Design 2.0 - color-picker (v1 HSV spectrum)
    Spectrum/hue gradients are applied by the controller (raw hues are not design tokens). */
 
+blora-color-picker {
+  display: inline-block;
+}
+
 .blora-color-picker {
   position: relative;
   display: inline-block;
@@ -68,7 +72,7 @@
 
 .blora-color-spectrum:focus-visible {
   outline: 2px solid var(--blora-color-action-primary-default);
-  outline-offset: 2px;
+  outline-offset: -4px;
 }
 
 .blora-color-spectrum__cursor {

@@ -1,16 +1,30 @@
 {
   "name": "navbar",
+  "category": "navigation",
   "status": "stable",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-navbar",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
+  "attributes": {
+    "brand-href": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string",
+      "default": "Blora Design"
+    },
+    "variant": {
+      "type": "\"floating\" | \"full\"",
+      "default": "floating"
+    }
+  },
   "properties": {},
   "methods": {},
   "events": {},
   "slots": {
-    "default": "Content"
+    "default": "Declarative <blora-navbar-link>, <blora-navbar-action> and <blora-navbar-tool> definitions; consumed into the official navbar tree. Tool definitions may contain another official custom element."
   },
   "parts": [],
   "cssProperties": [],

@@ -1,24 +1,24 @@
 {
+  "$schema": "../../schemas/component-contract.schema.json",
   "name": "accordion",
+  "category": "data-display",
   "status": "stable",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-accordion",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {
-    "data-open": {
-      "type": "boolean",
-      "default": null
-    }
-  },
+  "attributes": {},
   "properties": {},
   "methods": {},
   "events": {},
   "slots": {
-    "default": "Accordion content"
+    "default": "Declarative <blora-accordion-item heading open disabled> definitions; consumed into the official single-open tree."
   },
   "parts": [],
-  "cssProperties": ["--blora-collapse-h"],
+  "cssProperties": [
+    "--blora-collapse-h"
+  ],
   "accessibilityPattern": "accordion",
   "migrationFromV1": "accordion.migration.md"
 }

@@ -1,5 +1,10 @@
 /* Blora Design 2.0 - transfer component */
 
+blora-transfer {
+  display: block;
+  container-type: inline-size;
+}
+
 .blora-transfer {
   display: flex;
   gap: var(--blora-space-3);
@@ -129,8 +134,14 @@
 }
 
 .blora-transfer__actions .blora-button {
-  font-size: var(--blora-text-lg);
-  line-height: 1;
+  display: inline-grid;
+  place-items: center;
+}
+
+.blora-transfer__actions .blora-button svg {
+  display: block;
+  width: 1.125rem;
+  height: 1.125rem;
 }
 
 /* Responsive: stack vertically on narrow containers */

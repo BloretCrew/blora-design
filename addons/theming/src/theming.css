@@ -32,8 +32,21 @@ html[data-blora-color-scheme="light"] .blora-scope {
   position: relative;
 }
 
+blora-palette-picker,
+blora-color-scheme-toggle {
+  display: inline-block;
+  line-height: var(--blora-leading-normal);
+  vertical-align: middle;
+}
+
+.blora-color-scheme-toggle__button {
+  width: var(--blora-space-6);
+  padding-inline: 0;
+}
+
 .blora-palette-picker__trigger {
   white-space: nowrap;
+
   /* Keep label readable at any canvas width (do not collapse to empty pill) */
   max-width: min(12rem, 100%);
   overflow: hidden;
@@ -63,6 +76,7 @@ html[data-blora-color-scheme="light"] .blora-scope {
   border-radius: var(--blora-radius-lg);
   background: var(--blora-color-surface-default);
   box-shadow: var(--blora-shadow-3);
+  line-height: var(--blora-leading-normal);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -95,7 +109,7 @@ html[data-blora-color-scheme="light"] .blora-scope {
 .blora-palette-picker__hint {
   display: block;
   margin-top: 0.15rem;
-  color: var(--blora-color-text-subtle);
+  color: var(--blora-color-text-emphasis);
   font-size: var(--blora-text-xs);
 }
 
@@ -147,7 +161,7 @@ html[data-blora-color-scheme="light"] .blora-scope {
   display: block;
   margin-top: 0.1rem;
   overflow: hidden;
-  color: var(--blora-color-text-subtle);
+  color: var(--blora-color-text-emphasis);
   font-size: var(--blora-text-xs);
   text-overflow: ellipsis;
   white-space: nowrap;

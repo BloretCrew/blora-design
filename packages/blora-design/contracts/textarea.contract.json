@@ -1,5 +1,6 @@
 {
   "name": "textarea",
+  "category": "data-input",
   "status": "stable",
   "kind": "native",
   "since": "2.0.0",

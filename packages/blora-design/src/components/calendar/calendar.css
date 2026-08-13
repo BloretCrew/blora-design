@@ -1,5 +1,11 @@
 /* Blora Design 2.0 - calendar component */
 
+blora-calendar {
+  display: block;
+  width: 100%;
+  max-width: 30rem;
+}
+
 .blora-calendar {
   min-width: 0;
   max-width: 100%;
@@ -45,8 +51,8 @@
 }
 
 .blora-calendar__today.blora-button {
-  justify-self: end;
-  align-self: center;
+  place-self: center end;
+
   /* Align with 2em nav hits without overriding global button metrics hard */
   min-height: 2em;
   box-sizing: border-box;

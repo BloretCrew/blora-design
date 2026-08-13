@@ -5,6 +5,10 @@
  * Options may be plain strings or rich objects (avatar + name + secondary tag),
  * composed with `.blora-avatar` / muted meta — no extra packages required.
  */
+import { BloraElement } from "../../core/blora-element.js";
+
+export const BLORA_MENTIONS_TAG = "blora-mentions";
+
 export interface MentionsController {
   destroy(): void;
 }
@@ -487,4 +491,125 @@ export function createMentionsController(root: HTMLElement): MentionsController 
   (root as unknown as { __bloraMentionsDestroy?: () => void }).__bloraMentionsDestroy = destroy;
 
   return { destroy };
+}
+
+/** Mentions CE that owns its field and consumes declarative mention definitions. */
+export class BloraMentions extends BloraElement {
+  private controller: MentionsController | null = null;
+  private options: MentionOption[] | null = null;
+  private reflecting = false;
+
+  static get observedAttributes(): string[] {
+    return ["options", "label", "placeholder", "rows", "value", "disabled"];
+  }
+
+  attributeChangedCallback(): void {
+    if (!this.isConnectedInternal || this.reflecting) return;
+    this.sync();
+  }
+
+  get value(): string {
+    return (
+      this.querySelector<HTMLTextAreaElement>("textarea")?.value ?? this.getAttribute("value") ?? ""
+    );
+  }
+
+  set value(value: string) {
+    const field = this.querySelector<HTMLTextAreaElement>("textarea");
+    if (field) field.value = value;
+    this.reflecting = true;
+    this.setAttribute("value", value);
+    this.reflecting = false;
+  }
+
+  focus(): void {
+    this.querySelector<HTMLTextAreaElement>("textarea")?.focus();
+  }
+
+  protected render(): void {
+    if (!this.options) {
+      this.options = Array.from(this.children)
+        .filter((item) => item.localName === "blora-mention")
+        .map((item) => {
+          const value = item.getAttribute("value") ?? item.textContent?.trim() ?? "";
+          const option: MentionOption = {
+            value,
+            label: item.getAttribute("label") ?? item.textContent?.trim() ?? value,
+          };
+          const initials = item.getAttribute("initials");
+          const avatar = item.getAttribute("avatar");
+          const avatarVariant = item.getAttribute(
+            "avatar-variant",
+          ) as MentionOption["avatarVariant"];
+          const tag = item.getAttribute("tag");
+          const keywords = item.getAttribute("keywords");
+          if (initials !== null) option.initials = initials;
+          if (avatar !== null) option.avatar = avatar;
+          if (avatarVariant) option.avatarVariant = avatarVariant;
+          if (tag !== null) option.tag = tag;
+          if (keywords !== null) option.keywords = keywords;
+          return option;
+        })
+        .filter((item) => item.value);
+    }
+    const attributeOptions = this.getAttribute("options") ?? this.getAttribute("data-options");
+    let options = this.options;
+    if (attributeOptions) {
+      const parsed = parseOptions(attributeOptions);
+      options = parsed.length ? parsed : [];
+    }
+    const root = this.ownerDocument.createElement("div");
+    root.className = "blora-mentions";
+    root.dataset.bloraGenerated = "";
+    root.dataset.options = JSON.stringify(options);
+    const labelText = this.getAttribute("label");
+    if (labelText) {
+      const label = this.ownerDocument.createElement("label");
+      label.className = "blora-label";
+      label.textContent = labelText;
+      root.appendChild(label);
+    }
+    const field = this.ownerDocument.createElement("textarea");
+    field.className = "blora-textarea";
+    field.rows = Math.max(1, Number(this.getAttribute("rows") ?? 4) || 4);
+    field.placeholder = this.getAttribute("placeholder") ?? "";
+    field.value = this.getAttribute("value") ?? "";
+    field.disabled = this.hasAttribute("disabled");
+    root.appendChild(field);
+    this.replaceChildren(root);
+  }
+
+  protected override sync(): void {
+    const field = this.querySelector<HTMLInputElement | HTMLTextAreaElement>("input, textarea");
+    if (field) {
+      field.disabled = this.hasAttribute("disabled");
+      if (this.hasAttribute("placeholder")) field.placeholder = this.getAttribute("placeholder") ?? "";
+      if (this.hasAttribute("value") && this.ownerDocument.activeElement !== field) {
+        field.value = this.getAttribute("value") ?? field.value;
+      }
+    }
+    this.rebind();
+  }
+
+  protected bindEvents(): void {
+    const root = this.querySelector<HTMLElement>(".blora-mentions");
+    const field = root?.querySelector<HTMLTextAreaElement>("textarea");
+    if (!root || !field || this.hasAttribute("disabled")) return;
+    this.controller = createMentionsController(root);
+    this.listen(field, "input", () => {
+      this.reflecting = true;
+      this.setAttribute("value", field.value);
+      this.reflecting = false;
+    });
+  }
+
+  protected onDisconnect(): void {
+    this.controller?.destroy();
+    this.controller = null;
+  }
+}
+
+export function defineBloraMentions(registry: CustomElementRegistry = customElements): void {
+  if (!registry || registry.get(BLORA_MENTIONS_TAG)) return;
+  registry.define(BLORA_MENTIONS_TAG, BloraMentions);
 }

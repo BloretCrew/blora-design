@@ -18,7 +18,6 @@ export default defineConfig({
         "components/select/index": resolve(__dirname, "src/entries/select.ts"),
         "components/dialog/index": resolve(__dirname, "src/entries/dialog.ts"),
         "components/table/index": resolve(__dirname, "src/entries/table.ts"),
-        "components/toast/index": resolve(__dirname, "src/entries/toast.ts"),
       },
       formats: ["es"],
       fileName: (_format, entryName) => `${entryName}.js`,

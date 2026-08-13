@@ -1,5 +1,9 @@
 /* Blora Design 2.0 - Tabs */
 
+blora-tabs {
+  display: block;
+}
+
 .blora-tabs {
   display: flex;
   flex-direction: column;
@@ -28,7 +32,7 @@
   inset-inline-start: 0;
   bottom: -1px;
   width: var(--blora-tab-w, 0);
-  height: 2px;
+  height: var(--blora-tabs-indicator-size);
   transform: translateX(var(--blora-tab-x, 0));
   background: var(--blora-color-action-primary-default);
   border-radius: var(--blora-radius-full);
@@ -59,6 +63,21 @@
   border-inline-start: none;
   border-inline-end: none;
   border-block-start: none;
+  border-radius: var(--blora-radius-sm);
+}
+
+.blora-tabs__tab:focus-visible {
+  /* Tabs often sit flush against a clipped card edge. A component-owned
+     radius keeps the inset focus indicator complete at every corner. */
+  border-radius: var(--blora-radius-sm);
+  outline-offset: calc(-1 * var(--blora-tabs-focus-inset));
+}
+
+/* A flush tab strip is designed to meet its containing surface edge. Reuse
+   the standard surface curvature so the inset focus path remains concentric
+   with an lg-radius card instead of introducing a second, tighter curve. */
+.blora-tabs[data-flush] > .blora-tabs__nav > .blora-tabs__tab {
+  border-radius: var(--blora-radius-lg);
 }
 
 .blora-tabs__tab:hover {
@@ -157,12 +176,18 @@
   flex: 1;
 }
 
+/* Full-bleed panels own their complete surface and spacing. */
+.blora-tabs[data-flush] > .blora-tabs__panel {
+  padding-block-start: 0;
+  padding-inline-start: 0;
+}
+
 /* Vertical indicator: right-edge bar that slides between tabs */
 .blora-tabs[data-orientation="vertical"] .blora-tabs__indicator {
   top: 0;
   inset-inline: auto -1px;
   bottom: auto;
-  width: 2px;
+  width: var(--blora-tabs-indicator-size);
   height: var(--blora-tab-h, 0);
   transform: translateY(var(--blora-tab-y, 0));
   transition:

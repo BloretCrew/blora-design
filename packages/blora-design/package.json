@@ -43,10 +43,6 @@
       "types": "./dist/components/table/index.d.ts",
       "import": "./dist/components/table/index.js"
     },
-    "./toast": {
-      "types": "./dist/components/toast/index.d.ts",
-      "import": "./dist/components/toast/index.js"
-    },
     "./blora.global.js": "./dist/blora.global.js",
     "./custom-elements.json": "./dist/custom-elements.json",
     "./component-manifest.json": "./dist/component-manifest.json",
@@ -74,7 +70,6 @@
     "./components/progress.css": "./dist/components/progress/progress.css",
     "./components/spinner.css": "./dist/components/spinner/spinner.css",
     "./components/skeleton.css": "./dist/components/skeleton/skeleton.css",
-    "./components/toast.css": "./dist/components/toast/toast.css",
     "./components/tabs.css": "./dist/components/tabs/tabs.css",
     "./components/breadcrumb.css": "./dist/components/breadcrumb/breadcrumb.css",
     "./components/pagination.css": "./dist/components/pagination/pagination.css",
@@ -83,6 +78,7 @@
     "./components/popover.css": "./dist/components/popover/popover.css",
     "./components/drawer.css": "./dist/components/drawer/drawer.css",
     "./components/navbar.css": "./dist/components/navbar/navbar.css",
+    "./components/sidebar-nav.css": "./dist/components/sidebar-nav/sidebar-nav.css",
     "./components/card.css": "./dist/components/card/card.css",
     "./components/table.css": "./dist/components/table/table.css",
     "./components/list.css": "./dist/components/list/list.css",
@@ -134,6 +130,11 @@
     "./components/tree-select.css": "./dist/components/tree-select/tree-select.css",
     "./components/backtop.css": "./dist/components/backtop/backtop.css",
     "./components/upload.css": "./dist/components/upload/upload.css",
+    "./components/number-input.css": "./dist/components/number-input/number-input.css",
+    "./components/swap.css": "./dist/components/swap/swap.css",
+    "./components/media.css": "./dist/components/media/media.css",
+    "./components/fieldset.css": "./dist/components/fieldset/fieldset.css",
+    "./components/filter.css": "./dist/components/filter/filter.css",
     "./compat/v1": {
       "types": "./dist/compat/v1/index.d.ts",
       "import": "./dist/compat/v1/index.js"

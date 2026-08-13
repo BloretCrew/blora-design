@@ -12,6 +12,7 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./qrcode.global.js": "./dist/qrcode.global.js",
     "./qrcode.css": "./dist/qrcode.css",
     "./package.json": "./package.json"
   },

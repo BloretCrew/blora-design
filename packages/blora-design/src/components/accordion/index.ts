@@ -1,5 +1,1 @@
-/** Accordion = collapse with data-blora-accordion on root. */
-export {
-  createCollapseController as createAccordionController,
-  type CollapseController as AccordionController,
-} from "../collapse/index.js";
+export { BLORA_ACCORDION_TAG, BloraAccordion, defineBloraAccordion } from "./accordion.js";

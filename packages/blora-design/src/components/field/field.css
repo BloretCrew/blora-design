@@ -3,12 +3,18 @@
    Spec §11.4: Field is a composition pattern, not a custom element
    ========================================================================= */
 
+blora-field {
+  display: block;
+  min-width: 0;
+}
+
 .blora-field {
   display: flex;
   flex-direction: column;
   gap: var(--blora-space-2);
   margin-bottom: var(--blora-space-5);
   position: relative;
+  min-width: 0;
 }
 
 .blora-field__label {
@@ -201,6 +207,8 @@
 .blora-limit {
   position: relative;
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .blora-limit > .blora-input,

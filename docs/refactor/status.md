@@ -10,6 +10,8 @@
 > **主跟踪文档**：[`remaining-work.md`](./remaining-work.md)  
 > 顺序：**Preflight → Alpha → 包面加深 → Beta 政策 → beta tag 发版 → RC → Stable**。
 
+Showcase v2 已完成 81/81 核心组件目录：正式 API/CE 示例、单视图懒挂载、同源 Preview/HTML，以及 manifest、桌面/移动浏览器和代表性视觉门禁。
+
 ## 阶段进度
 
 | 阶段 | 状态 | 说明 |
@@ -20,7 +22,7 @@
 | Phase 3：Foundations | ✅ 完成 | reset、base、layout、utilities、@layer、RTL、reduced-motion |
 | Phase 4：三个试点组件 | ✅ 完成 | Button -> Dialog -> Select |
 | Phase 5：核心表单和反馈 | ✅ 完成 | Field/Input/Checkbox/Radio/Switch/Tag/Alert/Badge/Progress/Spinner/Skeleton/Toast |
-| Phase 6：导航与浮层 | ✅ 完成 | Tabs/Breadcrumb/Pagination/Dropdown/Tooltip/Popover/Drawer/Navbar |
+| Phase 6：导航与浮层 | ✅ 完成 | Tabs/Breadcrumb/Pagination/Dropdown/Tooltip/Popover/Drawer/Navbar/Sidebar Navigation |
 | Phase 7：数据与内容基础 | ✅ 完成 | Card/Table/List/Accordion/Timeline/Empty/Result/Avatar |
 | Phase 8：兼容层与 Codemod | ✅ 完成 | Token/class 映射、event 别名、warning、codemod、migrate:check、fixtures |
 | Phase 9：Add-ons | ✅ 完成 | 六包 API + Story + 单测；核心 v1 缺口补齐（见 addon-core-gaps.md） |
@@ -32,18 +34,18 @@
 
 | 包 | API | Story | 单测 |
 |----|-----|-------|------|
-| thread | `createThreadController` | Add-ons/Thread | ✅ |
-| markdown | `renderMarkdown` / `createMarkdownController` / `initMarkdown` | Add-ons/Markdown | ✅ |
-| qrcode | `renderQRCode` / `createQRCodeController` / `initQRCode` | Add-ons/QRCode | ✅ |
-| effects | textFx + extras controllers | Add-ons/Effects/* | ✅ |
-| layout | sidebar/affix/anchor/smooth-scroll | Add-ons/Layout/* | ✅ |
-| theming | palette + `applyColorScheme` | Add-ons/Theming/* | ✅ |
+| thread | `createThreadController` | Data display/Thread | ✅ |
+| markdown | `renderMarkdown` / `createMarkdownController` / `initMarkdown` | Data display/Markdown | ✅ |
+| qrcode | `renderQRCode` / `createQRCodeController` / `initQRCode` | Data display/QR Code | ✅ |
+| effects | textFx + extras controllers | Data display/* | ✅ |
+| layout | sidebar/affix/anchor/smooth-scroll | Layout/* | ✅ |
+| theming | palette + `applyColorScheme` | Actions/Theme Controller | ✅ |
 
 ### 核心 v1 缺口补齐
 
-- Tree Select：`createTreeSelectController`
+- Tree Select：`<blora-tree-select>` Composite CE
 - Form validate：`createFormController` / `getFormValues`
-- BackTop：`createBackTopController` / `initBackTop`
+- BackTop：`<blora-backtop>` / `initBackTop`
 - Image preview：`openImagePreview` + image controller preview wiring
 - Notification multi-placement：`notify({ placement })`
 - Table：`createTableController` — 分页、列设置、虚拟滚动（Y/X）、**内置行选**（`data-blora-selectable`）

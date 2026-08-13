@@ -1,0 +1,64 @@
+{
+  "$schema": "../../schemas/component-contract.schema.json",
+  "name": "swap",
+  "category": "actions",
+  "status": "stable",
+  "kind": "custom-element",
+  "tagName": "blora-swap",
+  "since": "2.0.0",
+  "requiresJavaScript": true,
+  "formAssociated": false,
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "checked": {
+      "type": "boolean",
+      "default": false
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "on-label": {
+      "type": "string",
+      "default": "已开启"
+    },
+    "off-label": {
+      "type": "string",
+      "default": "已关闭"
+    },
+    "on-icon": {
+      "type": "\"sun\" | \"plus\"",
+      "default": "sun"
+    },
+    "off-icon": {
+      "type": "\"moon\" | \"close\"",
+      "default": "moon"
+    }
+  },
+  "properties": {
+    "checked": {
+      "type": "boolean"
+    }
+  },
+  "methods": {
+    "focus": {
+      "signature": "(options?: FocusOptions) => void"
+    }
+  },
+  "events": {
+    "change": {
+      "detail": "Event",
+      "bubbles": true,
+      "composed": false
+    }
+  },
+  "slots": {
+    "default": "No authored structure; the native checkbox and Lucide state icon are generated."
+  },
+  "parts": [],
+  "cssProperties": [],
+  "accessibilityPattern": "input",
+  "migrationFromV1": "swap.migration.md"
+}

@@ -4,7 +4,7 @@ import { ref } from "lit/directives/ref.js";
 import { createCountUpController } from "../../../addons/effects/src/index";
 
 const meta = {
-  title: "Add-ons/Effects/CountUp",
+  title: "Data display/CountUp",
   component: "[data-blora-countup]",
   tags: ["autodocs"],
 } satisfies Meta;

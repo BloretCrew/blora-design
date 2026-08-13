@@ -5,13 +5,13 @@ import { defineBloraSelect } from "../src/components/select/index.js";
 defineBloraSelect();
 
 const meta = {
-  title: "Forms/Select",
+  title: "Data input/Select",
   component: "blora-select",
   tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
-        component: "Form-associated combobox with keyboard navigation, single-select.",
+        component: "Form-associated combobox with keyboard navigation and single or multiple selection.",
       },
     },
   },
@@ -44,6 +44,17 @@ export const Disabled: Story = {
   render: () => html`
     <blora-select placeholder="Disabled" disabled>
       <blora-option value="a">Option A</blora-option>
+    </blora-select>
+  `,
+};
+
+export const Multiple: Story = {
+  render: () => html`
+    <blora-select multiple max-tag-count="2" value="design,frontend,product" placeholder="Choose teams">
+      <blora-option value="design">Design</blora-option>
+      <blora-option value="frontend">Frontend</blora-option>
+      <blora-option value="product">Product</blora-option>
+      <blora-option value="research">Research</blora-option>
     </blora-select>
   `,
 };

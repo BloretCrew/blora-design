@@ -5,7 +5,7 @@ import { createHoverGalleryController } from "../../../addons/effects/src/index"
 import "../../../addons/effects/src/effects.css";
 
 const meta = {
-  title: "Add-ons/Effects/Hover Gallery",
+  title: "Data display/Hover Gallery",
   component: ".blora-hover-gallery",
   tags: ["autodocs"],
 } satisfies Meta;

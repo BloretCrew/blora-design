@@ -5,7 +5,7 @@ import { defineBloraDialog } from "../src/components/dialog/index.js";
 defineBloraDialog();
 
 const meta = {
-  title: "Feedback/Dialog",
+  title: "Actions/Dialog",
   component: "blora-dialog",
   tags: ["autodocs"],
   parameters: {

@@ -1,20 +1,40 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "steps",
+  "category": "navigation",
   "status": "stable",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-steps",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
   "attributes": {
-    "data-state": {
-      "type": "\"pending\" | \"active\" | \"done\"",
-      "default": "pending"
+    "current": {
+      "type": "number",
+      "default": 0
+    },
+    "clickable": {
+      "type": "boolean",
+      "default": true
     }
   },
-  "properties": {},
-  "methods": {},
-  "events": {},
+  "properties": {
+    "current": {
+      "type": "number"
+    }
+  },
+  "methods": {
+    "setCurrent": {
+      "signature": "(index: number) => void"
+    }
+  },
+  "events": {
+    "blora-steps-change": {
+      "detail": "{ index: number }",
+      "bubbles": true,
+      "composed": false
+    }
+  },
   "classes": {
     "blora-steps": "Root container.",
     "blora-step": "Single step item.",
@@ -24,7 +44,9 @@
     "blora-step__title": "Step title.",
     "blora-step__desc": "Step description."
   },
-  "slots": { "default": "Content" },
+  "slots": {
+    "default": "Declarative <blora-step title description icon state> definitions; consumed into the official steps tree."
+  },
   "parts": [],
   "cssProperties": [],
   "accessibilityPattern": "navigation",

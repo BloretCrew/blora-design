@@ -1,4 +1,5 @@
 export {
+  createNotificationElement,
   notify,
   createNotificationController,
   type NotificationOptions,

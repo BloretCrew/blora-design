@@ -1,6 +1,6 @@
 # Blora Design 2.0 · 使用与迁移指南
 
-> **面向 2.0（当前 `2.0.0-alpha`）**。推荐写法是 **CSS class + headless `createXxxController` / 少量 Web Component**，**不是** 1.x 的全局 `Blora.init()` / `Blora.toast` 单体 API。  
+> **面向 2.0（当前 `2.0.0-alpha`）**。推荐写法是：简单组件使用原生 HTML + CSS，结构敏感的复合控件只使用 **Composite Custom Element**；`createXxxController` 仅用于尚未迁为 CE 的 Table / Form 等 headless 能力。不是 1.x 的全局 `Blora.init()` / `Blora.toast`（2.0 已改为 `message`）单体 API。
 > 设计令牌见 [`standards.md`](./standards.md)。组件契约见 `packages/blora-design/contracts/*.contract.json`。交互示例见 **Storybook**。  
 > 1.x 冻结参考：`legacy/showcase-v1.html`、`legacy/v1/`（仅迁移对照，**不是** 2.0 推荐入口）。
 
@@ -44,21 +44,17 @@ import "@bloret-crew/blora-design/components/table.css";
 ### 1.3 逻辑（ESM，无全局 `Blora` 单例）
 
 ```js
+import "@bloret-crew/blora-design/auto";
 import {
   VERSION,
   setButtonLoading,
   createTableController,
   createFormController,
-  toast,
+  message,
   notify,
   openImagePreview,
-  defineBloraSelect,
-  defineBloraDialog,
 } from "@bloret-crew/blora-design";
 
-defineBloraSelect();
-defineBloraDialog();
-// 或：import "@bloret-crew/blora-design/auto";
 console.log(VERSION); // 例如 2.0.0-alpha.1
 ```
 
@@ -75,13 +71,16 @@ console.log(VERSION); // 例如 2.0.0-alpha.1
   <body>
     <main class="blora-container blora-stack">
       <button type="button" class="blora-button" data-variant="primary">确定</button>
+      <blora-search placeholder="搜索项目…"></blora-search>
+      <blora-range values="25,70"></blora-range>
     </main>
   </body>
 </html>
 ```
 
 - **2.0 不依赖** 页面加载后自动 `Blora.init(document)`。  
-- 需要行为的根节点：挂好 markup 后调用对应 **`createXxxController(root)`**（或使用已 `define` 的自定义元素）。  
+- 结构敏感的复合控件直接使用 `auto` 注册后的标签；无需手写其内部 BEM 树。
+- Table / Form 等尚未迁为 CE 的开放数据 DOM，才在挂载后调用 **`createXxxController(root)`**。
 - 嵌入宿主站点时，把样式与控制器限制在你的挂载子树即可。
 
 ### 1.5 明暗与主题（theming add-on）
@@ -102,7 +101,7 @@ applyTheme("ocean"); // 多主题名见 theming 包 / Storybook
 1. **class 前缀** `blora-*`。  
 2. **变体 / 尺寸** 优先 **`data-variant` / `data-size`**，不要用 1.x 的 `blora-btn--primary` 当作 2.0 主写法（兼容层另见 §5）。  
 3. **按钮** 使用 `.blora-button`（不是 `.blora-btn`）。  
-4. **行为** 由 **controller** 或 **Web Component** 绑定；不要假设存在全局 `Blora.table.*`。  
+4. **行为**：结构敏感控件优先使用 Composite CE；controller 仅用于 contract 明确的 advanced/compat 路径。不要假设存在全局 `Blora.table.*`。
 5. **浮层** 注意 stacking / portal（Mentions、部分菜单会挂到 `document.body`）。  
 6. **颜色 / 间距 / 圆角 / 阴影** 用 token（`--blora-*`），组件 CSS 内不写死业务色。  
 7. **用户内容** 不要用 `innerHTML` 直接塞不可信字符串。  
@@ -113,10 +112,10 @@ applyTheme("ocean"); // 多主题名见 theming 包 / Storybook
 | 形态 | 何时用 | 示例 |
 |------|--------|------|
 | **原生 HTML + CSS** | 展示型、无复杂状态 | Alert、Tag、List、Card |
-| **Headless controller** | 复合交互、增强原生表 | Table、Tree、Form、Drawer |
-| **Web Component** | 高度封装且需自定义元素边界 | `<blora-select>`、`<blora-dialog>` |
+| **Composite Custom Element** | 内部 class 树复杂、容易拼错 | Range、Date/Time、Search、Transfer、Accordion、Command、Segmented、Tabs、Select、Dialog |
+| **Headless controller（advanced/compat）** | 业务必须拥有开放数据 DOM | Table、Tree、Form、Drawer |
 
-早期「全部 form-associated WC」**不是**当前 2.0 默认交付；Select/Dialog 等少数组件已是 CE。
+ADR-015 已用 Composite CE 取代 ADR-013 的默认 headless 推荐。结构封装不等于一次性全员 FA-WC；表单关联能力仍按组件 contract 分阶段补强。
 
 ---
 
@@ -143,20 +142,16 @@ setButtonLoading(btn, true);
 ### 3.2 表单字段
 
 ```html
-<label class="blora-field">
-  <span class="blora-field__label">用户名</span>
-  <input class="blora-input" name="username" type="text" />
-  <span class="blora-field__help">辅助说明</span>
-</label>
+<blora-field
+  label="用户名"
+  name="username"
+  hint="辅助说明"
+  limit="20"
+  required
+></blora-field>
 
-<label class="blora-checkbox">
-  <input type="checkbox" name="agree" />
-  <span class="blora-checkbox__box"></span>
-  <span>同意条款</span>
-</label>
+<blora-checkbox name="agree" label="同意条款" required></blora-checkbox>
 ```
-
-字数限制等用 `createFieldController`（见 Field Story / contract）。
 
 ### 3.3 Select（Web Component）
 
@@ -171,7 +166,43 @@ defineBloraSelect();
 
 具体属性 / 选项 API 以 Select contract 与 Storybook 为准（支持原生 form 关联路径）。
 
-### 3.4 表单校验
+### 3.4 结构敏感的 Composite CE
+
+```html
+<blora-range min="0" max="100" values="25,70"></blora-range>
+<blora-datepicker name="date"></blora-datepicker>
+<blora-search name="query" placeholder="搜索…"></blora-search>
+<blora-tabs><blora-tab label="概览" selected>内容</blora-tab></blora-tabs>
+```
+
+面板内容需要自行铺满背景时使用 `<blora-tabs flush>`；普通文字面板仍保留默认的顶部间距。
+
+Range、Datepicker、Timepicker、Search、Transfer、Accordion/Collapse、Command、Segmented、Tabs 等组件的内部 BEM 树均由 CE 生成。主包不再导出这些已迁组件的旧 controller，消费侧不得手写内部树。
+
+#### Sidebar Navigation
+
+侧栏布局仍由 `@bloret-crew/blora-design-layout` 提供；其中的分组导航统一使用核心包的 Composite CE，不要再混用 Navbar link 或 Anchor link：
+
+```html
+<blora-sidebar-nav label="组件导航" value="accordion">
+  <blora-sidebar-nav-group label="数据展示">
+    <blora-sidebar-nav-link
+      label="Accordion"
+      href="#accordion"
+      value="accordion"
+    ></blora-sidebar-nav-link>
+    <blora-sidebar-nav-link
+      label="Collapse"
+      href="#collapse"
+      value="collapse"
+    ></blora-sidebar-nav-link>
+  </blora-sidebar-nav-group>
+</blora-sidebar-nav>
+```
+
+`value` / `select(value)` 控制当前项；用户点击链接时派发 `blora-change`。当前项只高亮文字，浅色背景仅用于 hover。按需 CSS 入口为 `@bloret-crew/blora-design/components/sidebar-nav.css`。
+
+### 3.5 表单校验
 
 ```html
 <form id="demo-form" class="blora-form blora-stack">
@@ -195,7 +226,7 @@ form.addEventListener("submit", (e) => {
 });
 ```
 
-### 3.5 表格（内置排序 / 分页 / 列设置 / 虚拟滚动 / 行选）
+### 3.6 表格（内置排序 / 分页 / 列设置 / 虚拟滚动 / 行选）
 
 **不要**让业务手写选择列 checkbox；使用 `data-blora-selectable`，由 `createTableController` 注入 Blora checkbox 与批量条。
 
@@ -238,48 +269,50 @@ const table = createTableController(wrap);
 | 虚拟滚动 | `data-blora-virtual`、`data-virtual-axis`、`setRows` |
 | 行选择 | `data-blora-selectable`（内置，非业务拼装） |
 
-### 3.6 反馈
+### 3.7 反馈
+
+产品面按 **Ant 味** 只有两套：
+
+| | Message | Notification |
+|--|---------|----------------|
+| 形态 | 轻量胶囊（顶部居中弹出，或页面内静态） | 带标题/描述的卡片（四角 placement） |
+| API | `message()` / `message.success()` … | `notify({ title, description, placement })` |
+| CSS | `.blora-message` | `.blora-notification` |
 
 ```js
-import { toast, message, notify } from "@bloret-crew/blora-design";
+import { message, notify } from "@bloret-crew/blora-design";
 
-toast("已保存");
+message("已保存");
 message.success("成功");
+message.error("失败"); // Ant 别名 → danger
 notify({ title: "通知", description: "详情", placement: "top-right" });
 ```
 
 Dialog / Drawer：
 
-```js
-import { defineBloraDialog, createDrawerController } from "@bloret-crew/blora-design";
-defineBloraDialog();
-// <blora-dialog>…</blora-dialog>
-// Drawer：markup + createDrawerController(root)
+```html
+<blora-dialog>…</blora-dialog>
+<blora-drawer>…</blora-drawer>
 ```
 
-### 3.7 图片预览 / 回到顶部
+### 3.8 图片预览 / 回到顶部
 
 ```js
-import { openImagePreview, createBackTopController, initBackTop } from "@bloret-crew/blora-design";
+import { openImagePreview, initBackTop } from "@bloret-crew/blora-design";
 
 openImagePreview({ src: "/a.png", alt: "图" });
-// 或 image 节点 data-blora-preview + createImageController
-
-initBackTop(); // 或 createBackTopController(buttonEl, options)
+initBackTop(); // 自动管理 <blora-backtop>
 ```
 
-### 3.8 Tree Select / Tree / Collapse 等
+### 3.9 Tree Select / Tree
 
-```js
-import {
-  createTreeSelectController,
-  createTreeController,
-  createCollapseController,
-} from "@bloret-crew/blora-design";
-// markup 见对应 Storybook 与 contract
+```html
+<blora-tree><!-- blora-tree-node definitions --></blora-tree>
+<blora-tree-select><!-- blora-tree-select-option definitions --></blora-tree-select>
+<blora-collapse><!-- blora-collapse-item definitions --></blora-collapse>
 ```
 
-Calendar / Cascader / Transfer 等为 **headless 子集**：保证主路径可用，并非每个 1.x 边角行为都已对齐；以 contract 与单测为准。
+Calendar / Cascader / Tree 等结构敏感组件均已进入 **Composite CE 唯一公共消费面**。边角行为以 contract 与单测为准。
 
 ---
 
@@ -297,8 +330,23 @@ Calendar / Cascader / Transfer 等为 **headless 子集**：保证主路径可�
 ```js
 import { renderMarkdown, initMarkdown } from "@bloret-crew/blora-design-markdown";
 import { renderQRCode } from "@bloret-crew/blora-design-qrcode";
-import { createSidebarLayoutController } from "@bloret-crew/blora-design-layout";
+import "@bloret-crew/blora-design-layout";
+import "@bloret-crew/blora-design-theming";
 ```
+
+```html
+<blora-sidebar-layout toggle-label="菜单" sticky>
+  <blora-sidebar-layout-sidebar>
+    <blora-sidebar-nav><!-- groups + links --></blora-sidebar-nav>
+  </blora-sidebar-layout-sidebar>
+  <blora-sidebar-layout-content>页面内容</blora-sidebar-layout-content>
+</blora-sidebar-layout>
+
+<blora-palette-picker></blora-palette-picker>
+<blora-color-scheme-toggle></blora-color-scheme-toggle>
+```
+
+Sidebar Layout 与 Palette Picker 已迁为 Composite CE；不要再手写其 `blora-*__*` 内部树或直接挂载旧 controller。
 
 Markdown 为零依赖子集（标题、列表、代码块等）；**不要**把不可信 HTML 当 Markdown 源直接当安全 HTML 用。
 
@@ -310,10 +358,10 @@ Markdown 为零依赖子集（标题、列表、代码块等）；**不要**把�
 
 | 1.x | 2.0 |
 |-----|-----|
-| `blora.css` + `blora.js` + `Blora.init()` | ESM 入口 + 按组件 CSS + `createXxxController` / `defineBlora*` |
-| `Blora.toast` / `Blora.table.*` | 具名导出 `toast` / `createTableController` |
+| `blora.css` + `blora.js` + `Blora.init()` | ESM 入口 + 按组件 CSS + Composite CE；仅无 CE 的 advanced 能力使用 controller |
+| `Blora.toast` / `Blora.table.*` | 具名导出 `message` / `createTableController`（无 toast API） |
 | `.blora-btn.blora-btn--primary` | `.blora-button[data-variant="primary"]` |
-| 全局自动扫描 `data-blora-*` | 显式初始化控制器（兼容层可辅助，见下） |
+| 全局自动扫描 `data-blora-*` | `./auto` 注册 Composite CE；兼容层仅用于迁移期（见下） |
 
 ### 5.2 兼容层（有意保留，不是「残留未删」）
 
@@ -333,12 +381,69 @@ Markdown 为零依赖子集（标题、列表、代码块等）；**不要**把�
 
 ### 5.4 框架（React / Vue 等）
 
-Blora Design **不提供** 官方 JSX 封装为唯一路径。常见做法：
+Blora Design **不要求** React/Vue 运行时。ADR-015 下优先直接渲染标准 Custom Element；只有 Table 等开放数据 DOM 使用 controller。接入要点：
 
 - 框架只负责数据与事件；  
-- 渲染 **2.0 DOM 结构**；  
-- `mounted` / `onMounted` 里 `createXxxController(el)`，卸载时 `destroy()`；  
-- 或封装一层很薄的 framework wrapper（业务自建即可）。
+- 复合控件渲染 `<blora-*>` 标签与声明式子项，不复制内部 BEM 树；
+- advanced controller 在组件生命周期里初始化，卸载时 `destroy()`（避免重复初始化 / 泄漏）；
+- 浮层类（Mentions、部分菜单、Message / Notification 容器）会挂到 `document.body`，交给框架卸载即可。
+
+**React advanced 示例（Table 开放 DOM）**：
+
+```tsx
+import { useEffect, useRef } from "react";
+import { createTableController } from "@bloret-crew/blora-design";
+import "@bloret-crew/blora-design/tokens.css";
+import "@bloret-crew/blora-design/foundations.css";
+import "@bloret-crew/blora-design/components/table.css";
+
+export function Members() {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!ref.current) return;
+    const ctrl = createTableController(ref.current);
+    return () => ctrl.destroy();
+  }, []);
+  return (
+    <div className="blora-table-wrap" data-blora-selectable ref={ref}>
+      <table className="blora-table">
+        <thead><tr><th data-sort data-col-key="name">成员</th></tr></thead>
+        <tbody>
+          <tr data-row-key="u1"><td>张三</td></tr>
+        </tbody>
+      </table>
+    </div>
+  );
+}
+```
+
+**Vue 示例**（`<script setup>`）：
+
+```vue
+<script setup>
+import { onMounted, onBeforeUnmount, ref } from "vue";
+import { createTableController } from "@bloret-crew/blora-design";
+import "@bloret-crew/blora-design/tokens.css";
+import "@bloret-crew/blora-design/foundations.css";
+import "@bloret-crew/blora-design/components/table.css";
+
+const wrap = ref(null);
+let ctrl = null;
+onMounted(() => { ctrl = createTableController(wrap.value); });
+onBeforeUnmount(() => ctrl?.destroy());
+</script>
+
+<template>
+  <div class="blora-table-wrap" data-blora-selectable ref="wrap">
+    <table class="blora-table">
+      <thead><tr><th data-sort data-col-key="name">成员</th></tr></thead>
+      <tbody><tr data-row-key="u1"><td>张三</td></tr></tbody>
+    </table>
+  </div>
+</template>
+```
+
+相同 advanced 模式适用于任意框架（Svelte `onMount`、Angular `ngAfterViewInit` + `OnDestroy` 等）。Composite CE 不需要这层手工 controller 生命周期；导入 `@bloret-crew/blora-design/auto` 后直接渲染标签即可。
 
 ---
 
@@ -346,7 +451,8 @@ Blora Design **不提供** 官方 JSX 封装为唯一路径。常见做法：
 
 - [ ] 引入的是 **2.0 包导出**，不是照抄 1.x `Blora.*` 全局 API 文档。  
 - [ ] 按钮 / 变体使用 `.blora-button` + `data-*`。  
-- [ ] 需要交互的根节点已 `createXxxController` 或 CE `define`。  
+- [ ] Composite CE 已由 `@bloret-crew/blora-design/auto` 注册，且没有复制内部 BEM 树。
+- [ ] 仅 Table / Form 等 contract 明确标为 headless 的能力手工初始化 controller，并在卸载时 `destroy()`。
 - [ ] 表格行选使用 **内置** `data-blora-selectable`。  
 - [ ] 动态插入的 checkbox 使用完整 `label.blora-checkbox` 结构。  
 - [ ] 颜色与间距走 token；暗色下可读。  

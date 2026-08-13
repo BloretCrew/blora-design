@@ -1,11 +1,16 @@
 {
   "name": "badge",
+  "category": "data-display",
   "status": "stable",
   "kind": "css-only",
   "since": "2.0.0",
   "requiresJavaScript": false,
   "formAssociated": false,
-  "attributes": {},
+  "attributes": {
+    "data-variant": {
+      "type": "\"dot\" | \"circle\" | \"pill\" | \"neutral\" | \"success\" | \"info\" | \"warning\" | \"danger\""
+    }
+  },
   "properties": {},
   "methods": {},
   "events": {},

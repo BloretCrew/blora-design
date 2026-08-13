@@ -3,6 +3,11 @@
  * Baseline: v1 initTimePicker + custom wheel panel.
  */
 
+import { BloraElement } from "../../core/blora-element.js";
+import { createBloraIcon } from "../../core/icons.js";
+
+export const BLORA_TIMEPICKER_TAG = "blora-timepicker";
+
 export interface TimepickerController {
   destroy(): void;
 }
@@ -370,4 +375,87 @@ export function createTimepickerController(root: HTMLElement): TimepickerControl
       while (wheelCleans.length) wheelCleans.pop()?.();
     },
   };
+}
+
+/** Composite CE that generates the supported time field and wheel trigger. */
+export class BloraTimepicker extends BloraElement {
+  private controller: TimepickerController | null = null;
+
+  static get observedAttributes(): string[] {
+    return ["value", "placeholder", "name", "disabled", "required", "step"];
+  }
+
+  attributeChangedCallback(): void {
+    if (!this.isConnectedInternal) return;
+    this.sync();
+  }
+
+  get value(): string {
+    return this.querySelector<HTMLInputElement>(".blora-input")?.value ?? "";
+  }
+
+  set value(value: string) {
+    this.setAttribute("value", value);
+  }
+
+  focus(options?: FocusOptions): void {
+    this.querySelector<HTMLInputElement>(".blora-input")?.focus(options);
+  }
+
+  protected render(): void {
+    const root = document.createElement("div");
+    root.className = "blora-timepicker";
+    root.dataset.bloraTimepicker = "";
+    root.dataset.bloraGenerated = "";
+
+    const input = document.createElement("input");
+    input.className = "blora-input";
+    input.type = "time";
+    input.value = this.getAttribute("value") ?? "";
+    input.placeholder = this.getAttribute("placeholder") ?? "HH:MM";
+    input.disabled = this.hasAttribute("disabled");
+    input.required = this.hasAttribute("required");
+    if (this.hasAttribute("name")) input.name = this.getAttribute("name") ?? "";
+    if (this.hasAttribute("step")) input.step = this.getAttribute("step") ?? "60";
+
+    const button = document.createElement("button");
+    button.className = "blora-timepicker__btn";
+    button.type = "button";
+    button.tabIndex = -1;
+    button.disabled = input.disabled;
+    button.setAttribute("aria-label", "选择时间");
+    button.appendChild(createBloraIcon("clock"));
+
+    root.append(input, button);
+    this.replaceChildren(root);
+  }
+
+  protected override sync(): void {
+    const input = this.querySelector<HTMLInputElement>(".blora-input");
+    if (!input) return;
+    if (document.activeElement !== input) input.value = this.getAttribute("value") ?? input.value;
+    input.placeholder = this.getAttribute("placeholder") ?? "HH:MM";
+    input.disabled = this.hasAttribute("disabled");
+    input.required = this.hasAttribute("required");
+    if (this.hasAttribute("name")) input.name = this.getAttribute("name") ?? "";
+    if (this.hasAttribute("step")) input.step = this.getAttribute("step") ?? "60";
+    const button = this.querySelector<HTMLButtonElement>(".blora-timepicker__btn");
+    if (button) button.disabled = input.disabled;
+  }
+
+  protected bindEvents(): void {
+    const root = this.querySelector<HTMLElement>(".blora-timepicker");
+    this.controller?.destroy();
+    this.controller = root ? createTimepickerController(root) : null;
+  }
+
+  protected onDisconnect(): void {
+    this.controller?.destroy();
+    this.controller = null;
+  }
+}
+
+export function defineBloraTimepicker(registry: CustomElementRegistry = customElements): void {
+  if (!registry || registry.get(BLORA_TIMEPICKER_TAG)) return;
+  registry.define(BLORA_TIMEPICKER_TAG, BloraTimepicker);
 }

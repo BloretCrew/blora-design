@@ -1,20 +1,39 @@
 {
   "$schema": "../../schemas/component-contract.schema.json",
   "name": "tree",
+  "category": "data-display",
   "status": "beta",
-  "kind": "css-only",
+  "kind": "custom-element",
+  "tagName": "blora-tree",
   "since": "2.0.0",
-  "requiresJavaScript": false,
+  "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
-  "properties": {},
+  "attributes": {
+    "value": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "properties": {
+    "value": {
+      "type": "string"
+    }
+  },
   "methods": {},
-  "events": {},
+  "events": {
+    "blora-tree-change": {
+      "detail": "{ value: string, label: string, selected: boolean }",
+      "bubbles": true,
+      "composed": false
+    }
+  },
   "slots": {
-    "default": "Content"
+    "default": "Nested declarative <blora-tree-node value label open selected> definitions; consumed into the official tree."
   },
   "parts": [],
-  "cssProperties": ["--blora-tree-h"],
-  "accessibilityPattern": "section",
+  "cssProperties": [
+    "--blora-tree-h"
+  ],
+  "accessibilityPattern": "tree",
   "migrationFromV1": "tree.migration.md"
 }

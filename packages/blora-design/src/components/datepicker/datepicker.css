@@ -1,5 +1,9 @@
 /* Blora Design 2.0 - datepicker component (beta, migrated from v1) */
 
+blora-datepicker {
+  display: block;
+}
+
 .blora-datepicker {
   position: relative;
 }

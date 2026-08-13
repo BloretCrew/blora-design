@@ -1,6 +1,10 @@
 /**
  * Drawer open/close with enter/leave animations.
  */
+import { BloraElement } from "../../core/blora-element.js";
+import { createBloraIcon } from "../../core/icons.js";
+
+export const BLORA_DRAWER_TAG = "blora-drawer";
 export interface DrawerController {
   open(): void;
   close(): void;
@@ -126,4 +130,101 @@ export function bindDrawerTriggers(root: ParentNode = document): () => void {
     handlers.push(() => btn.removeEventListener("click", onClick));
   });
   return () => handlers.forEach((h) => h());
+}
+
+/** Drawer CE that owns mask, panel, header and body structure. */
+export class BloraDrawer extends BloraElement {
+  private controller: DrawerController | null = null;
+  private contentNodes: Node[] | null = null;
+
+  static get observedAttributes(): string[] {
+    return ["title", "position", "open", "close-label"];
+  }
+
+  attributeChangedCallback(name: string): void {
+    if (!this.isConnectedInternal) return;
+    if (name === "open") {
+      if (this.hasAttribute("open")) this.controller?.open();
+      else this.controller?.close();
+      return;
+    }
+    this.sync();
+  }
+
+  open(): void {
+    this.controller?.open();
+  }
+
+  close(): void {
+    this.controller?.close();
+  }
+
+  protected render(): void {
+    if (!this.contentNodes) {
+      const existing = this.querySelector(".blora-drawer__body");
+      this.contentNodes = existing ? Array.from(existing.childNodes) : Array.from(this.childNodes);
+    }
+    const root = this.ownerDocument.createElement("div");
+    root.className = "blora-drawer";
+    root.dataset.bloraGenerated = "";
+    root.dataset.position = this.getAttribute("position") ?? "right";
+    if (this.hasAttribute("open")) {
+      root.dataset.open = "";
+      root.setAttribute("open", "");
+      root.classList.add("is-open");
+    }
+    const mask = this.ownerDocument.createElement("div");
+    mask.className = "blora-drawer__mask";
+    const panel = this.ownerDocument.createElement("div");
+    panel.className = "blora-drawer__panel";
+    panel.setAttribute("role", "dialog");
+    panel.setAttribute("aria-modal", "true");
+    const header = this.ownerDocument.createElement("div");
+    header.className = "blora-drawer__header";
+    const title = this.ownerDocument.createElement("h3");
+    title.className = "blora-drawer__title";
+    title.textContent = this.getAttribute("title") ?? "Drawer";
+    const close = this.ownerDocument.createElement("button");
+    close.type = "button";
+    close.className = "blora-drawer__close";
+    close.dataset.bloraClose = "";
+    close.setAttribute("aria-label", this.getAttribute("close-label") ?? "Close");
+    close.appendChild(createBloraIcon("close", 18, this.ownerDocument));
+    header.append(title, close);
+    const body = this.ownerDocument.createElement("div");
+    body.className = "blora-drawer__body";
+    const content = this.ownerDocument.createElement("div");
+    content.className = "blora-drawer__content";
+    content.append(...this.contentNodes);
+    body.appendChild(content);
+    panel.append(header, body);
+    root.append(mask, panel);
+    this.replaceChildren(root);
+  }
+
+  protected override sync(): void {
+    const root = this.querySelector<HTMLElement>(".blora-drawer");
+    if (!root) return;
+    root.dataset.position = this.getAttribute("position") ?? "right";
+    const title = root.querySelector<HTMLElement>(".blora-drawer__title");
+    if (title) title.textContent = this.getAttribute("title") ?? "Drawer";
+    const close = root.querySelector<HTMLElement>(".blora-drawer__close");
+    if (close) close.setAttribute("aria-label", this.getAttribute("close-label") ?? "Close");
+  }
+
+  protected bindEvents(): void {
+    const root = this.querySelector<HTMLElement>(".blora-drawer");
+    this.controller?.destroy();
+    this.controller = root ? createDrawerController(root) : null;
+  }
+
+  protected onDisconnect(): void {
+    this.controller?.destroy();
+    this.controller = null;
+  }
+}
+
+export function defineBloraDrawer(registry: CustomElementRegistry = customElements): void {
+  if (!registry || registry.get(BLORA_DRAWER_TAG)) return;
+  registry.define(BLORA_DRAWER_TAG, BloraDrawer);
 }

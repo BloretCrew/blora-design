@@ -1,5 +1,9 @@
 /* Blora Design 2.0 - command palette (v1 cmdk + search input) */
 
+blora-command {
+  display: block;
+}
+
 .blora-command,
 .blora-cmdk {
   max-width: 480px;

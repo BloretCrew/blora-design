@@ -1,152 +1,47 @@
 import type { Meta, StoryObj } from "@storybook/web-components";
 import { html } from "lit";
-import { ref } from "lit/directives/ref.js";
-import { createCarouselController } from "../src/components/carousel";
 
 const meta = {
-  title: "Data/Carousel",
-  component: ".blora-carousel",
+  title: "Data display/Carousel",
+  component: "blora-carousel",
   tags: ["autodocs"],
 } satisfies Meta;
 export default meta;
 type Story = StoryObj;
 
-const init = (el: Element | undefined): void => {
-  if (!(el instanceof HTMLElement)) return;
-  (el as any).__ctrl?.destroy();
-  (el as any).__ctrl = createCarouselController(el);
-};
+const slide = (label: string, background: string, color = "var(--blora-color-text-emphasis)") =>
+  html`<blora-carousel-slide label=${label}>
+    <div
+      style="height: 240px; display: grid; place-items: center; background: ${background}; color: ${color}; border-radius: var(--blora-radius-md); font-family: var(--blora-font-display); font-size: 2rem;"
+    >
+      ${label}
+    </div>
+  </blora-carousel-slide>`;
 
 export const Default: Story = {
   render: () => html`
-    <div class="blora-carousel" ${ref(init)}>
-      <div class="blora-carousel__track">
-        <div class="blora-carousel__slide">
-          <div
-            style="height: 240px; display: grid; place-items: center; background: var(--blora-color-surface-sunken); border-radius: var(--blora-radius-md); font-family: var(--blora-font-display); font-size: 2rem; color: var(--blora-color-text-emphasis);"
-          >
-            项目概览
-          </div>
-        </div>
-        <div class="blora-carousel__slide">
-          <div
-            style="height: 240px; display: grid; place-items: center; background: var(--blora-color-action-primary-default); color: var(--blora-color-text-on-accent); border-radius: var(--blora-radius-md); font-family: var(--blora-font-display); font-size: 2rem;"
-          >
-            数据展示
-          </div>
-        </div>
-        <div class="blora-carousel__slide">
-          <div
-            style="height: 240px; display: grid; place-items: center; background: var(--blora-color-status-info); color: var(--blora-color-text-on-accent); border-radius: var(--blora-radius-md); font-family: var(--blora-font-display); font-size: 2rem;"
-          >
-            图表分析
-          </div>
-        </div>
-      </div>
-      <button
-        class="blora-carousel__arrow blora-carousel__arrow--prev"
-        type="button"
-        aria-label="上一张"
-      >
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M15 18l-6-6 6-6" />
-        </svg>
-      </button>
-      <button
-        class="blora-carousel__arrow blora-carousel__arrow--next"
-        type="button"
-        aria-label="下一张"
-      >
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M9 18l6-6-6-6" />
-        </svg>
-      </button>
-      <div class="blora-carousel__dots">
-        <span class="blora-carousel__dot" data-active></span>
-        <span class="blora-carousel__dot"></span>
-        <span class="blora-carousel__dot"></span>
-      </div>
-    </div>
+    <blora-carousel label="项目轮播">
+      ${slide("项目概览", "var(--blora-color-surface-sunken)")}
+      ${slide(
+        "数据展示",
+        "var(--blora-color-action-primary-default)",
+        "var(--blora-color-text-on-accent)",
+      )}
+      ${slide("图表分析", "var(--blora-color-status-info)", "var(--blora-color-text-on-accent)")}
+    </blora-carousel>
   `,
 };
 
 export const Autoplay: Story = {
   render: () => html`
-    <div class="blora-carousel" data-autoplay ${ref(init)}>
-      <div class="blora-carousel__track">
-        <div class="blora-carousel__slide">
-          <div
-            style="height: 240px; display: grid; place-items: center; background: var(--blora-color-surface-sunken); border-radius: var(--blora-radius-md); font-family: var(--blora-font-display); font-size: 2rem;"
-          >
-            幻灯片 A
-          </div>
-        </div>
-        <div class="blora-carousel__slide">
-          <div
-            style="height: 240px; display: grid; place-items: center; background: var(--blora-color-action-primary-default); color: var(--blora-color-text-on-accent); border-radius: var(--blora-radius-md); font-family: var(--blora-font-display); font-size: 2rem;"
-          >
-            幻灯片 B
-          </div>
-        </div>
-        <div class="blora-carousel__slide">
-          <div
-            style="height: 240px; display: grid; place-items: center; background: var(--blora-color-status-success); color: var(--blora-color-text-on-accent); border-radius: var(--blora-radius-md); font-family: var(--blora-font-display); font-size: 2rem;"
-          >
-            幻灯片 C
-          </div>
-        </div>
-      </div>
-      <button
-        class="blora-carousel__arrow blora-carousel__arrow--prev"
-        type="button"
-        aria-label="上一张"
-      >
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M15 18l-6-6 6-6" />
-        </svg>
-      </button>
-      <button
-        class="blora-carousel__arrow blora-carousel__arrow--next"
-        type="button"
-        aria-label="下一张"
-      >
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M9 18l6-6-6-6" />
-        </svg>
-      </button>
-      <div class="blora-carousel__dots">
-        <span class="blora-carousel__dot" data-active></span>
-        <span class="blora-carousel__dot"></span>
-        <span class="blora-carousel__dot"></span>
-      </div>
-    </div>
+    <blora-carousel label="自动轮播" autoplay>
+      ${slide("幻灯片 A", "var(--blora-color-surface-sunken)")}
+      ${slide(
+        "幻灯片 B",
+        "var(--blora-color-action-primary-default)",
+        "var(--blora-color-text-on-accent)",
+      )}
+      ${slide("幻灯片 C", "var(--blora-color-status-success)", "var(--blora-color-text-on-accent)")}
+    </blora-carousel>
   `,
 };

@@ -1,5 +1,6 @@
 {
   "name": "avatar",
+  "category": "data-display",
   "status": "stable",
   "kind": "css-only",
   "since": "2.0.0",

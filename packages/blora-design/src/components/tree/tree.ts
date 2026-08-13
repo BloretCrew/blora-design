@@ -2,6 +2,11 @@
  * Tree controller — expand/collapse with measured content height (symmetric open/close).
  * No hard-coded max-height caps.
  */
+import { BloraElement } from "../../core/blora-element.js";
+import { createBloraIcon } from "../../core/icons.js";
+
+export const BLORA_TREE_TAG = "blora-tree";
+
 export interface TreeController {
   destroy(): void;
 }
@@ -101,6 +106,16 @@ export function createTreeController(root: HTMLElement): TreeController {
       node.setAttribute("data-selected", "");
       node.setAttribute("aria-selected", "true");
     }
+    root.dispatchEvent(
+      new CustomEvent("blora-tree-change", {
+        bubbles: true,
+        detail: {
+          value: node.dataset.value ?? node.textContent?.trim() ?? "",
+          label: node.dataset.label ?? node.textContent?.trim() ?? "",
+          selected: node.hasAttribute("data-selected"),
+        },
+      }),
+    );
   };
 
   const onKey = (e: KeyboardEvent) => {
@@ -135,4 +150,134 @@ export function createTreeController(root: HTMLElement): TreeController {
       root.removeEventListener("keydown", onKey);
     },
   };
+}
+
+interface TreeDefinition {
+  children: TreeDefinition[];
+  label: string;
+  open: boolean;
+  selected: boolean;
+  value: string;
+}
+
+function directText(element: Element): string {
+  return Array.from(element.childNodes)
+    .filter((node) => node.nodeType === Node.TEXT_NODE)
+    .map((node) => node.textContent ?? "")
+    .join("")
+    .trim();
+}
+
+function treeDefinitions(elements: Element[]): TreeDefinition[] {
+  return elements
+    .filter((item) => item.localName === "blora-tree-node")
+    .map((item) => {
+      const label = item.getAttribute("label") ?? directText(item);
+      return {
+        children: treeDefinitions(Array.from(item.children)),
+        label,
+        open: item.hasAttribute("open"),
+        selected: item.hasAttribute("selected"),
+        value: item.getAttribute("value") ?? label,
+      };
+    })
+    .filter((item) => item.label);
+}
+
+function appendChevron(doc: Document, target: HTMLElement): void {
+  target.appendChild(createBloraIcon("chevron-right", 12, doc));
+}
+
+/** Tree CE that consumes nested `<blora-tree-node>` definitions. */
+export class BloraTree extends BloraElement {
+  private controller: TreeController | null = null;
+  private definitions: TreeDefinition[] | null = null;
+  private reflecting = false;
+
+  static get observedAttributes(): string[] {
+    return ["value"];
+  }
+
+  attributeChangedCallback(): void {
+    if (!this.isConnectedInternal || this.reflecting) return;
+    this.sync();
+  }
+
+  get value(): string {
+    return this.getAttribute("value") ?? "";
+  }
+
+  set value(value: string) {
+    this.setAttribute("value", value);
+  }
+
+  protected render(): void {
+    if (!this.definitions) this.definitions = treeDefinitions(Array.from(this.children));
+    const selectedValue = this.getAttribute("value");
+    const root = this.ownerDocument.createElement("div");
+    root.className = "blora-tree";
+    root.dataset.bloraGenerated = "";
+
+    const appendNodes = (target: HTMLElement, definitions: TreeDefinition[]) => {
+      definitions.forEach((definition) => {
+        const node = this.ownerDocument.createElement("div");
+        node.className = "blora-tree__node";
+        node.dataset.value = definition.value;
+        node.dataset.label = definition.label;
+        if (definition.open) node.dataset.open = "";
+        if (definition.selected || selectedValue === definition.value) node.dataset.selected = "";
+        const toggle = this.ownerDocument.createElement("span");
+        toggle.className = "blora-tree__toggle";
+        if (definition.children.length) appendChevron(this.ownerDocument, toggle);
+        else toggle.setAttribute("aria-hidden", "true");
+        const label = this.ownerDocument.createElement("span");
+        label.textContent = definition.label;
+        node.append(toggle, label);
+        target.appendChild(node);
+        if (definition.children.length) {
+          const children = this.ownerDocument.createElement("div");
+          children.className = "blora-tree__children";
+          appendNodes(children, definition.children);
+          target.appendChild(children);
+        }
+      });
+    };
+    appendNodes(root, this.definitions);
+    this.replaceChildren(root);
+  }
+
+  protected override sync(): void {
+    const field = this.querySelector<HTMLInputElement | HTMLTextAreaElement>("input, textarea");
+    if (field) {
+      field.disabled = this.hasAttribute("disabled");
+      if (this.hasAttribute("placeholder")) field.placeholder = this.getAttribute("placeholder") ?? "";
+      if (this.hasAttribute("value") && this.ownerDocument.activeElement !== field) {
+        field.value = this.getAttribute("value") ?? field.value;
+      }
+    }
+    this.rebind();
+  }
+
+  protected bindEvents(): void {
+    const root = this.querySelector<HTMLElement>(".blora-tree");
+    if (!root) return;
+    this.controller = createTreeController(root);
+    this.listen(root, "blora-tree-change", (event) => {
+      const detail = (event as CustomEvent<{ value: string; selected: boolean }>).detail;
+      this.reflecting = true;
+      if (detail.selected) this.setAttribute("value", detail.value);
+      else this.removeAttribute("value");
+      this.reflecting = false;
+    });
+  }
+
+  protected onDisconnect(): void {
+    this.controller?.destroy();
+    this.controller = null;
+  }
+}
+
+export function defineBloraTree(registry: CustomElementRegistry = customElements): void {
+  if (!registry || registry.get(BLORA_TREE_TAG)) return;
+  registry.define(BLORA_TREE_TAG, BloraTree);
 }

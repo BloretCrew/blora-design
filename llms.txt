@@ -4,7 +4,7 @@
 
 ## System
 
-Blora Design 2.0 prefers native HTML semantics, headless controllers, and a small set of Web Components. Design Tokens (DTCG JSON → CSS) drive visuals. Light/dark, RTL, and WCAG 2.2 AA are project goals. Core package has zero runtime third-party dependencies.
+Blora Design 2.0 prefers native HTML semantics for primitives and Composite Custom Elements for structure-sensitive controls. Design Tokens (DTCG JSON → CSS) drive visuals. Light/dark, RTL, and WCAG 2.2 AA are project goals. Core package has zero runtime third-party dependencies.
 
 ## Installation
 
@@ -13,31 +13,33 @@ pnpm add @bloret-crew/blora-design@alpha
 ```
 
 ```js
-import "@bloret-crew/blora-design/tokens.css";
-import "@bloret-crew/blora-design/foundations.css";
-import { createTableController, toast, defineBloraSelect } from "@bloret-crew/blora-design";
-// optional CE auto-register:
-// import "@bloret-crew/blora-design/auto";
+import "@bloret-crew/blora-design/blora.css";
+import "@bloret-crew/blora-design/auto";
+import { createTableController, message, notify } from "@bloret-crew/blora-design";
 // tree-shake friendly subpaths:
 // import { createTableController } from "@bloret-crew/blora-design/table";
 ```
 
 Use `.blora-button[data-variant="primary"]` — not 1.x `.blora-btn--primary` / global `Blora.init()`.
+Feedback: `message` / `message.success` (pill) + `notify` (cards). **No toast API.**
 
 ## Key entry points
 
 - Package: `@bloret-crew/blora-design` (`2.0.0-alpha.1`+)
-- `./auto` — register stable custom elements (select, dialog)
-- `./button` `./select` `./dialog` `./table` `./toast` — JS subpaths
+- `./auto` — register the default Composite CE surface (range, date/time, search, transfer, accordion/collapse, command, segmented, tabs, select, dialog)
+- `./button` `./select` `./dialog` `./table` — JS subpaths (toast **removed**)
 - `./blora.global.js` — IIFE CDN global `Blora`
 - `./compat/v1` + `./compat/v1.css` — 1.x compatibility
 - `./custom-elements.json` / `./component-manifest.json` / `./api-snapshot.json`
 - Human guide: `docs/guide.md`
+- **AI handoff (full project brief):** `docs/handoff/AI-PROJECT-HANDOFF.md`
 - Contracts: `packages/blora-design/contracts/*.contract.json`
 - Contract stability policy: `docs/refactor/contract-stability.md`
 - Component matrix: `docs/refactor/component-matrix.md`
 - **Remaining work:** `docs/refactor/remaining-work.md` (stop before Beta until checklist)
 - Migration: `docs/migration/v1-to-v2.md`
+- Showcase: `examples/showcase-v2/` (requires full package build)
+- Story DOM source of truth: `packages/blora-design/stories/*.stories.ts`
 - Token map CSV: `docs/migration/token-map-v1-v2.csv`
 - Alpha install notes: `docs/refactor/alpha-install-notes.md`
 - 1.x freeze: `legacy/v1/`, `legacy/showcase-v1.html`
@@ -45,10 +47,10 @@ Use `.blora-button[data-variant="primary"]` — not 1.x `.blora-btn--primary` / 
 
 ## Architecture
 
-- Prefer native HTML; Custom Elements only for composite shipped CE (select, dialog).
-- Most interactive widgets: `createXxxController(root)` + destroy on teardown.
+- Prefer native HTML for primitives; use Composite CE for structure-sensitive widgets.
+- `createXxxController(root)` remains available for advanced/compat markup and must be destroyed on teardown.
 - Table row selection: `data-blora-selectable` (built-in).
-- Form-associated WC for every control is **not** the default (ADR-013).
+- Composite CE is the default structure contract (ADR-015, superseding ADR-013); FA-WC remains staged per form component.
 - `sideEffects`: CSS files + `dist/auto.js` only (main entry is tree-shake friendly).
 
 ## Prohibitions
