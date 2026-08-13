@@ -29,7 +29,7 @@ const manifest = {
     cssExport: `./components/${c.name}.css`,
     contract: `contracts/${c.name}.contract.json`,
   })),
-  jsSubpaths: ["./button", "./select", "./dialog", "./table", "./auto", "./compat/v1"],
+  jsSubpaths: ["./button", "./select", "./dialog", "./table", "./auto"],
   notes:
     "status=stable in contracts is aspirational until Phase 10 DoD; see docs/refactor/contract-stability.md",
 };

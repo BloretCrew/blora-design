@@ -12,7 +12,6 @@ Blora Design 2.0 — token-driven, accessible, zero-dependency Web UI design sys
 | `@bloret-crew/blora-design/auto` | Side-effect: define the complete default Composite CE surface |
 | `@bloret-crew/blora-design/button` (also select/dialog/table) | JS subpaths |
 | `@bloret-crew/blora-design/blora.global.js` | IIFE CDN → `globalThis.Blora` |
-| `@bloret-crew/blora-design/compat/v1` | 1.x compatibility |
 | `@bloret-crew/blora-design/custom-elements.json` | CEM |
 | `@bloret-crew/blora-design/component-manifest.json` | Component list |
 
@@ -40,8 +39,8 @@ import { setButtonLoading, createTableController, message } from "@bloret-crew/b
 <blora-search placeholder="Search…"></blora-search>
 ```
 
-- Prefer **native HTML + CSS** for primitives and **Composite Custom Elements** for structure-sensitive controls. Headless controllers remain advanced/compat APIs.
-- Do **not** treat 1.x global `Blora.*` as the 2.0 API. Migration: `compat/v1`, `legacy/v1/`, monorepo codemod.
+- Prefer **native HTML + CSS** for primitives and **Composite Custom Elements** for structure-sensitive controls. Headless controllers remain advanced APIs.
+- Do **not** treat 1.x global `Blora.*` as the 2.0 API. There is no runtime 1.x compatibility layer — write 2.0 markup and tokens. Visual baseline: `legacy/v1/`.
 - Human guide (Chinese): [`docs/guide.md`](../../docs/guide.md)
 
 ## License

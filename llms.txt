@@ -29,7 +29,6 @@ Feedback: `message` / `message.success` (pill) + `notify` (cards). **No toast AP
 - `./auto` — register the default Composite CE surface (range, date/time, search, transfer, accordion/collapse, command, segmented, tabs, select, dialog)
 - `./button` `./select` `./dialog` `./table` — JS subpaths (toast **removed**)
 - `./blora.global.js` — IIFE CDN global `Blora`
-- `./compat/v1` + `./compat/v1.css` — 1.x compatibility
 - `./custom-elements.json` / `./component-manifest.json` / `./api-snapshot.json`
 - Human guide: `docs/guide.md`
 - **AI handoff (full project brief):** `docs/handoff/AI-PROJECT-HANDOFF.md`
@@ -48,7 +47,7 @@ Feedback: `message` / `message.success` (pill) + `notify` (cards). **No toast AP
 ## Architecture
 
 - Prefer native HTML for primitives; use Composite CE for structure-sensitive widgets.
-- `createXxxController(root)` remains available for advanced/compat markup and must be destroyed on teardown.
+- `createXxxController(root)` remains available for advanced markup and must be destroyed on teardown.
 - Table row selection: `data-blora-selectable` (built-in).
 - Composite CE is the default structure contract (ADR-015, superseding ADR-013); FA-WC remains staged per form component.
 - `sideEffects`: CSS files + `dist/auto.js` only (main entry is tree-shake friendly).
@@ -63,4 +62,4 @@ Feedback: `message` / `message.success` (pill) + `notify` (cards). **No toast AP
 
 ## Migration
 
-1.x → 2.0: `docs/migration/v1-to-v2.md`. Compat: `@bloret-crew/blora-design/compat/v1`.
+1.x → 2.0: `docs/migration/v1-to-v2.md`. No runtime 1.x compatibility layer.

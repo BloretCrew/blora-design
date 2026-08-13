@@ -35,11 +35,11 @@ Primary user docs for beta:
 - `docs/refactor/alpha-install-notes.md` — npm channel notes (extend for beta)  
 - `CHANGELOG.md`  
 
-Compat remains: `@bloret-crew/blora-design/compat/v1`.
+There is no `@bloret-crew/blora-design/compat/v1` entry.
 
 ## 4. Size budgets
 
-Enforced by `packages/blora-design/scripts/check-size.mjs` (shell CSS, flattened CSS, main JS, compat, global IIFE, key JS subpaths). Extend budgets only with review when intentional growth is required.
+Enforced by `packages/blora-design/scripts/check-size.mjs` (shell CSS, flattened CSS, main JS, global IIFE, key JS subpaths). Extend budgets only with review when intentional growth is required.
 
 ## 5. Not in this freeze
 

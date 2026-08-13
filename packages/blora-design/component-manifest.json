@@ -880,8 +880,7 @@
     "./select",
     "./dialog",
     "./table",
-    "./auto",
-    "./compat/v1"
+    "./auto"
   ],
   "notes": "status=stable in contracts is aspirational until Phase 10 DoD; see docs/refactor/contract-stability.md"
 }

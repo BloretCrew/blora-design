@@ -66,7 +66,7 @@ message.success("已保存");
 ```
 
 > **Not recommended for new 2.0 apps:** global `Blora.init()`, `blora.js` UMD, or `blora-btn blora-btn--primary`.  
-> Those belong to **1.x** / optional **compat** (`legacy/v1/`, `compat/v1`). See [migration](./docs/migration/v1-to-v2.md).
+> Those belong to frozen **1.x** (`legacy/v1/`). 2.0 has no runtime compatibility layer. See [migration](./docs/migration/v1-to-v2.md).
 
 Optional add-ons:
 
@@ -83,7 +83,7 @@ pnpm add @bloret-crew/blora-design-markdown @bloret-crew/blora-design-theming
 |---------|------|
 | Native HTML + CSS | Presentational (Alert, Tag, List, …) |
 | Composite Custom Element | Structure-sensitive controls (Range, Pickers, Search, Transfer, Tabs, …) |
-| Headless controller (advanced/compat) | Open data DOM or migration paths (Table, Tree, Form, Drawer, …) |
+| Headless controller (advanced) | Open data DOM (Table, Tree, Form, Drawer, …) |
 
 Composite CE is the default for complex structure (ADR-015, superseding ADR-013). Full FA-WC-for-everything is still staged per form contract.
 
@@ -121,7 +121,6 @@ blora-design-2/
 ├── addons/                 # markdown, thread, qrcode, effects, layout, theming
 ├── legacy/                 # frozen 1.x sources + visual baselines (do not delete)
 ├── docs/                   # guide, standards, refactor trackers, migration
-├── Blora-Design-2.0-Refactor-Spec.md
 └── pnpm-workspace.yaml
 ```
 

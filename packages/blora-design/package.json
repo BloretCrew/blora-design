@@ -134,12 +134,7 @@
     "./components/swap.css": "./dist/components/swap/swap.css",
     "./components/media.css": "./dist/components/media/media.css",
     "./components/fieldset.css": "./dist/components/fieldset/fieldset.css",
-    "./components/filter.css": "./dist/components/filter/filter.css",
-    "./compat/v1": {
-      "types": "./dist/compat/v1/index.d.ts",
-      "import": "./dist/compat/v1/index.js"
-    },
-    "./compat/v1.css": "./dist/compat/v1.css"
+    "./components/filter.css": "./dist/components/filter/filter.css"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

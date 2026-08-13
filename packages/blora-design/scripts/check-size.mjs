@@ -15,7 +15,6 @@ const budgets = [
   /** Shell only — keep small so we notice accidental inlining */
   { file: "blora.css", gzipBytes: 20 * 1024, note: "import-shell" },
   { file: "index.js", gzipBytes: 60 * 1024 },
-  { file: "compat/v1/index.js", gzipBytes: 8 * 1024, optional: true },
   { file: "blora.global.js", gzipBytes: 80 * 1024, optional: true, note: "cdn-iife" },
   { file: "components/button/index.js", gzipBytes: 8 * 1024, optional: true },
   { file: "components/select/index.js", gzipBytes: 20 * 1024, optional: true },

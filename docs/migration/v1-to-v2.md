@@ -28,7 +28,6 @@ pnpm add @bloret-crew/blora-design@alpha
 | `@bloret-crew/blora-design/auto`                    | **有副作用**：注册稳定 CE（`blora-select`、`blora-dialog`）                                |
 | `@bloret-crew/blora-design/button` 等               | JS 子路径（button / select / dialog / table）                                              |
 | `@bloret-crew/blora-design/components/*.css`        | 按需样式                                                                                   |
-| `@bloret-crew/blora-design/compat/v1`               | 1.x class/token 兼容                                                                       |
 | `@bloret-crew/blora-design/blora.global.js`         | CDN / IIFE 全局 `Blora`（经典 script）                                                     |
 | `@bloret-crew/blora-design/custom-elements.json`    | CEM                                                                                        |
 | `@bloret-crew/blora-design/component-manifest.json` | 组件清单                                                                                   |
@@ -88,11 +87,7 @@ defineBloraSelect();
 | `--blora-ease`       | `--blora-easing-standard`              |
 | `--blora-dur-fast`   | `--blora-duration-fast`                |
 
-如需渐进迁移，加载 compat 层：
-
-```html
-<link rel="stylesheet" href=".../blora.css" /> <link rel="stylesheet" href=".../compat/v1.css" />
-```
+2.0 **没有**运行时 1.x 兼容层。请把旧 token / class 改成上表和 [`token-map-v1-v2.csv`](./token-map-v1-v2.csv) 中的 2.0 名称。
 
 ## 6. Class 映射
 
@@ -200,8 +195,7 @@ Codemod 处理安全子集：class 重命名、modifier → data 属性等。复
 
 ## 11. 常见错误
 
-- **样式不生效**：确保加载了 `blora.css`，compat 层需要在 `blora.css` 之后加载。
-- **Warning 刷屏**：`initV1Compatibility()` 每条规则每页只警告一次。使用 `{ silent: true }` 关闭。
+- **样式不生效**：确保加载了 `blora.css`，并使用 2.0 class / token，不要再写 1.x 名称。
 - **`is-open` 不工作**：2.0 使用 `data-open` 属性代替 `.is-open` class。
 
 ## 12. 回滚方法
@@ -219,23 +213,7 @@ Codemod 处理安全子集：class 重命名、modifier → data 属性等。复
 2. 本文件入口表（§2.1）与 npm 包 `exports` 一致。
 3. `CHANGELOG.md` 记录破坏性/迁移注意。
 4. Issue 模板可用于反馈（`.github/ISSUE_TEMPLATE`）。
-5. 兼容：`import "@bloret-crew/blora-design/compat/v1"` + `compat/v1.css`。
-
-## 兼容层 API {#api}
-
-```js
-import { initV1Compatibility } from "@bloret-crew/blora-design/compat/v1";
-
-// 初始化（扫描 DOM + warning + MutationObserver）
-const cleanup = initV1Compatibility();
-
-// 静默模式
-initV1Compatibility({ silent: true });
-
-// 仅检测报告
-import { getCompatReport } from "@bloret-crew/blora-design/compat/v1";
-const report = getCompatReport();
-```
+5. 包 `exports` 中不再包含 `compat/v1`。
 
 ## 无障碍 {#a11y}
 

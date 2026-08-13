@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Removed the `@bloret-crew/blora-design/compat/v1` runtime compatibility layer and `compat/v1.css`. Write 2.0 tokens, classes, and Composite CEs directly.
+
 ## 2.0.0-alpha.1
 
 ### Released packages

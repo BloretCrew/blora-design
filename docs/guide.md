@@ -361,15 +361,12 @@ Markdown 为零依赖子集（标题、列表、代码块等）；**不要**把�
 | `blora.css` + `blora.js` + `Blora.init()` | ESM 入口 + 按组件 CSS + Composite CE；仅无 CE 的 advanced 能力使用 controller |
 | `Blora.toast` / `Blora.table.*` | 具名导出 `message` / `createTableController`（无 toast API） |
 | `.blora-btn.blora-btn--primary` | `.blora-button[data-variant="primary"]` |
-| 全局自动扫描 `data-blora-*` | `./auto` 注册 Composite CE；兼容层仅用于迁移期（见下） |
+| 全局自动扫描 `data-blora-*` | `./auto` 注册 Composite CE |
 
-### 5.2 兼容层（有意保留，不是「残留未删」）
+### 5.2 没有 1.x 运行时兼容层
 
-- 包内 `compat/v1`：class / token 映射、`initV1Compatibility`、告警。  
-- 工具：`migrate:check`、codemod（见 monorepo scripts / Phase 8 文档）。  
-- **冻结副本** `legacy/v1/`、`legacy/showcase-v1.html`：视觉与行为基线，**不要删除**。  
-
-新代码请直接写 2.0；旧页面可阶段性挂兼容层再逐步替换。
+2.0 **不提供** `compat/v1`。请直接写 2.0 class、token 和 Composite CE。  
+**冻结副本** `legacy/v1/`、`legacy/showcase-v1.html` 只作视觉与行为基线，不是可调用 API。
 
 ### 5.3 从 Bootstrap 等迁移
 

@@ -326,7 +326,6 @@ pnpm verify
 | `src/core/`                                  | `BloraElement` 基类等 CE 基础设施                                                    |
 | `src/controllers/`                           | 共享 controller（如 `overlay-controller`）                                           |
 | `src/entries/`                               | 分包 entry：button、select、dialog、table、global                                    |
-| `src/compat/v1/`                             | 1.x class/token 兼容层                                                               |
 
 ### 7.3 典型组件目录模式
 

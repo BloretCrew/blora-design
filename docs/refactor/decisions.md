@@ -179,15 +179,15 @@ v1 的 `@keyframes blora-pulse` 定义在 `blora.css` 全局作用域。v2 按�
 ## ADR-009: compat 层通过 JS 运行时转换 class，而非复制组件 CSS
 
 **日期**：2026-07-30
-**状态**：已采纳
+**状态**：**已撤销**（2026-08-13）
 
 ### 背景
 
 Spec §23.1 定义了兼容等级 A（旧 markup 基本不改即可工作）。1.x 使用 `.blora-btn--primary` 等 BEM modifier class，2.0 使用 `data-variant="primary"` 等 data 属性。需要让旧 markup 在 2.0 中工作。
 
-### 决策
+### 决策（已撤销）
 
-compat/v1.css 只提供 token 变量映射（旧变量名指向新变量名），不复制组件 CSS。compat/v1.ts 的 `initV1Compatibility()` 在运行时扫描 DOM，将旧 class 名替换为新 class 名 + data 属性。
+曾提供 `compat/v1` token 映射与 `initV1Compatibility()` 运行时 class 改写。1.x 无外部用户，该层已从包 `exports` 和源码中删除。请直接写 2.0 API。
 
 ### 理由
 

@@ -20,7 +20,7 @@
 import { readFileSync, writeFileSync, readdirSync, statSync, existsSync } from "node:fs";
 import { resolve, join, extname, relative } from "node:path";
 
-// --- Migration rules (mirrors src/compat/v1/mappings.ts) ---
+// --- 1.x → 2.0 rewrite rules (no runtime compat layer) ---
 
 const CLASS_TRANSFORMS = [
   // Button modifiers (before base)

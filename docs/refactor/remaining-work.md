@@ -163,7 +163,7 @@
 
 - [x] `exports`：`./auto`（注册完整默认 Composite CE 面，当前 61 个；side-effect entry；数量由 manifest 构建校验）
 - [x] 稳定组件 **JS 子路径**：`./button` `./select` `./dialog` `./table`（vite 分 entry；toast 已删除，用 `message`）
-- [x] `./compat/v1` 导出 + size 预算（`compat/v1/index.js` gzip 计入 check-size）
+- [x] ~~`./compat/v1` 导出 + size 预算~~ **已撤销**：2.0 不提供 1.x 运行时兼容层
 - [x] **CDN / IIFE**：`./blora.global.js`（`vite.global.config.ts`，`globalThis.Blora`）
 - [x] provenance / 签名策略：**publish.yml** 支持 opt-in `vars.NPM_PROVENANCE=1` + `id-token: write`（默认不强制，避免未配置 trusted publishing 时发版失败）
 - [x] Tree-shaking / sideEffects：`sideEffects` 仅 CSS + `dist/auto.js`；主入口与 JS 子路径无额外副作用声明
