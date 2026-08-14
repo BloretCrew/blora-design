@@ -14,6 +14,8 @@
      pad-y = 0.75em keeps total height ≈ old 0.55em + line-height 1.4. */
   --blora-button-pad-y: 0.75em;
   --blora-button-pad-x: 1.1em;
+  --blora-button-radius: var(--blora-radius-lg);
+  --blora-button-corner: superellipse(1.2);
 
   display: inline-flex;
   align-items: center;
@@ -49,9 +51,7 @@
   color: var(--blora-button-fg);
   background: var(--blora-button-bg);
   border: 1px solid var(--blora-button-bd);
-  border-radius: var(--blora-radius-md);
-  /* Circular arcs hold constant curvature, then drop to 0 at the straight
-     edge. A mild superellipse eases that join without changing the 14px size. */
+  border-radius: var(--blora-button-radius);
   cursor: pointer;
   white-space: nowrap;
   transition:
@@ -266,21 +266,21 @@
 }
 
 .blora-button-group .blora-button:first-child {
-  border-radius: var(--blora-radius-md) 0 0 var(--blora-radius-md);
+  border-radius: var(--blora-button-radius) 0 0 var(--blora-button-radius);
   margin-inline-start: 0;
 }
 
 .blora-button-group .blora-button:last-child {
-  border-radius: 0 var(--blora-radius-md) var(--blora-radius-md) 0;
+  border-radius: 0 var(--blora-button-radius) var(--blora-button-radius) 0;
 }
 
 .blora-button-group .blora-button:only-child {
-  border-radius: var(--blora-radius-md);
+  border-radius: var(--blora-button-radius);
 }
 
-@supports (corner-shape: superellipse(1.6)) {
+@supports (corner-shape: superellipse(1.2)) {
   .blora-button {
-    corner-shape: superellipse(1.6);
+    corner-shape: var(--blora-button-corner);
   }
 
   .blora-button-group .blora-button {
@@ -288,15 +288,15 @@
   }
 
   .blora-button-group .blora-button:first-child {
-    corner-shape: superellipse(1.6) square square superellipse(1.6);
+    corner-shape: var(--blora-button-corner) square square var(--blora-button-corner);
   }
 
   .blora-button-group .blora-button:last-child {
-    corner-shape: square superellipse(1.6) superellipse(1.6) square;
+    corner-shape: square var(--blora-button-corner) var(--blora-button-corner) square;
   }
 
   .blora-button-group .blora-button:only-child {
-    corner-shape: superellipse(1.6);
+    corner-shape: var(--blora-button-corner);
   }
 }
 
