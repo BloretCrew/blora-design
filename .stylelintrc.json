@@ -1,27 +1,16 @@
 {
   "extends": ["stylelint-config-standard"],
   "rules": {
-    "property-no-unknown": null,
     "no-descending-specificity": null,
+    "property-no-unknown": null,
     "custom-property-pattern": "^blora-[a-z0-9-]+$",
     "selector-class-pattern": "(^blora-[a-z0-9_-]+$)|(^is-[a-z0-9-]+$)",
-    "at-rule-no-unknown": [
-      true,
-      {
-        "ignoreAtRules": ["layer", "container", "import"]
-      }
-    ],
+    "at-rule-no-unknown": [true, { "ignoreAtRules": ["layer", "container", "import"] }],
     "color-hex-length": "short",
     "import-notation": ["string", { "except": ["url"] }],
     "selector-no-vendor-prefix": null,
     "media-feature-range-notation": null,
-    "color-no-hex": [
-      true,
-      {
-        "severity": "error",
-        "message": "Do not use hex colors directly in component CSS. Use registered design tokens (--blora-*) instead. Hex colors are only allowed in primitive token source files."
-      }
-    ],
+    "color-no-hex": [true, { "severity": "error", "message": "Do not use hex colors directly in component CSS. Use registered design tokens (--blora-*) instead. Hex colors are only allowed in primitive token source files." }],
     "declaration-property-value-allowed-list": {
       "z-index": [
         "/^var\\(--blora-z-[a-z0-9-]+\\)$/",
@@ -31,15 +20,7 @@
       ]
     }
   },
-  "ignoreFiles": [
-    "legacy/**",
-    "dist/**",
-    "node_modules/**",
-    "coverage/**",
-    "*.min.css",
-    "packages/tokens/src/**/*.json",
-    "packages/tokens/generated/**"
-  ],
+  "ignoreFiles": ["legacy/**", "dist/**", "node_modules/**", "coverage/**", "*.min.css", "packages/tokens/src/**/*.json", "packages/tokens/generated/**"],
   "overrides": [
     {
       "files": ["addons/**/*.css"],
@@ -49,15 +30,24 @@
       }
     },
     {
-      "files": [
-        "packages/blora-design/src/components/{affix,autocomplete,calendar,carousel,cascader,chart-container,chat,color-picker,command-palette,comment,copy,countdown,datepicker,deck,dock,fab,masonry,megamenu,mentions,mockup,otp,range,rate,search,slider,speed-dial,splitter,tags-input,text-rotate,timepicker,tour,transfer,tree,upload,watermark}/**/*.css"
-      ],
+      "files": ["packages/blora-design/src/components/{affix,autocomplete,calendar,carousel,cascader,chart-container,chat,color-picker,command-palette,comment,copy,countdown,datepicker,deck,dock,fab,masonry,megamenu,mentions,mockup,otp,range,rate,search,slider,speed-dial,splitter,tags-input,text-rotate,timepicker,tour,transfer,tree,upload,watermark}/**/*.css"],
       "rules": {
         "no-duplicate-selectors": null,
         "declaration-block-no-duplicate-properties": null,
         "declaration-block-no-shorthand-property-overrides": null,
+        "declaration-block-single-line-max-declarations": null,
+        "at-rule-empty-line-before": null,
         "property-no-unknown": null,
         "selector-class-pattern": null
+      }
+    },
+    {
+      "files": ["addons/effects/**/*.css"],
+      "rules": {
+        "declaration-block-single-line-max-declarations": null,
+        "at-rule-empty-line-before": null,
+        "property-no-unknown": null,
+        "custom-property-pattern": "(^blora-[a-z0-9-]+$)|(^fx-[a-z0-9-]+$)|^i$"
       }
     }
   ]

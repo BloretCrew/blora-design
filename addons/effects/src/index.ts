@@ -25,7 +25,7 @@ export {
 } from "./extras.js";
 
 export type TextFxName =
-  "grow" | "shrink" | "shake" | "nod" | "jitter" | "explode" | "ripple" | "bloom";
+  "big" | "small" | "shake" | "nod" | "disperse" | "ripple" | "bloom" | "jitter";
 
 export interface TextFxOptions {
   /** Loop the animation (default: false) */
@@ -34,24 +34,23 @@ export interface TextFxOptions {
   clickable?: boolean;
 }
 
-const TEXT_FX: TextFxName[] = [
-  "grow",
-  "shrink",
-  "shake",
-  "nod",
-  "jitter",
-  "explode",
-  "ripple",
-  "bloom",
-];
+const TEXT_FX: TextFxName[] = ["big", "small", "shake", "nod", "disperse", "ripple", "bloom", "jitter"];
+
+const TEXT_FX_ALIASES: Record<string, TextFxName> = {
+  grow: "big",
+  shrink: "small",
+  explode: "disperse",
+};
 
 const TEXT_FX_SET = new Set<string>(TEXT_FX);
+const TEXT_FX_CLASS_NAMES = [...TEXT_FX, ...Object.keys(TEXT_FX_ALIASES)];
 
-const TEXT_FX_SPLIT: TextFxName[] = ["explode", "ripple", "bloom"];
+const TEXT_FX_SPLIT: TextFxName[] = ["shake", "disperse", "ripple", "bloom", "jitter"];
 
 function textFxNameFromEl(el: HTMLElement): string {
   const raw = (el.getAttribute("data-blora-text-fx") || "").trim().toLowerCase();
-  if (TEXT_FX_SET.has(raw)) return raw;
+  const normalized = TEXT_FX_ALIASES[raw] ?? raw;
+  if (TEXT_FX_SET.has(normalized)) return normalized;
   for (const fx of TEXT_FX) {
     if (el.classList.contains(`blora-text-fx--${fx}`)) return fx;
   }
@@ -70,15 +69,19 @@ function layoutTextFxPhysics(el: HTMLElement, name: string): void {
 
   chars.forEach((span, i) => {
     const charSpan = span as HTMLElement;
+    const ratio = n <= 1 ? 0.5 : i / (n - 1);
     charSpan.style.setProperty("--i", String(i));
+    charSpan.style.setProperty("--fx-ratio", ratio.toFixed(3));
 
-    if (name === "explode") {
-      const t = n <= 1 ? 0 : (i / (n - 1)) * 2 - 1;
-      const x = t * 1.15;
-      const y = -0.95 - (1 - Math.abs(t)) * 0.35;
-      const r = t * 26;
-      charSpan.style.setProperty("--fx-x", `${x.toFixed(3)}em`);
-      charSpan.style.setProperty("--fx-y", `${y.toFixed(3)}em`);
+    if (name === "disperse") {
+      const ratio = n <= 1 ? 0.5 : i / (n - 1);
+      const angle = (ratio - 0.5) * 1.6 + (Math.random() - 0.5) * 0.5;
+      const dist = 1.4 + Math.random() * 1.1;
+      const x = Math.sin(angle) * dist;
+      const y = -Math.cos(angle) * dist - Math.random() * 0.5;
+      const r = (Math.random() - 0.5) * 50;
+      charSpan.style.setProperty("--fx-x", `${x.toFixed(2)}em`);
+      charSpan.style.setProperty("--fx-y", `${y.toFixed(2)}em`);
       charSpan.style.setProperty("--fx-r", `${r.toFixed(1)}deg`);
     } else if (name === "bloom") {
       const fromCenter = Math.abs(i - mid);
@@ -125,13 +128,20 @@ function unsplitTextFxLetters(el: HTMLElement): void {
 }
 
 function applyTextFxName(el: HTMLElement, name: TextFxName): boolean {
-  if (!TEXT_FX_SET.has(name)) return false;
+  const requestedName = name;
+  if (!TEXT_FX_SET.has(name)) {
+    const alias = TEXT_FX_ALIASES[name];
+    if (!alias) return false;
+    name = alias;
+  }
 
   el.classList.add("blora-text-fx");
 
-  for (const fx of TEXT_FX) {
-    el.classList.toggle(`blora-text-fx--${fx}`, fx === name);
+  for (const fx of TEXT_FX_CLASS_NAMES) {
+    el.classList.remove(`blora-text-fx--${fx}`);
   }
+  el.classList.add(`blora-text-fx--${name}`);
+  if (requestedName !== name) el.classList.add(`blora-text-fx--${requestedName}`);
 
   el.setAttribute("data-blora-text-fx", name);
 
@@ -162,7 +172,7 @@ function restartTextFxAnimation(el: HTMLElement): void {
  * Apply a text effect to a target element.
  *
  * @param target - The element to apply the effect to
- * @param name - Effect name (grow, shrink, shake, nod, jitter, explode, ripple, bloom)
+ * @param name - Effect name (big, small, shake, nod, disperse, ripple, bloom, jitter)
  * @param options - Loop and clickable options
  * @returns The element if successful, null otherwise
  */
