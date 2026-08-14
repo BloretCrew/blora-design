@@ -4,6 +4,7 @@ node_modules/
 # Build output
 dist/
 build/
+.pages-site/
 .storybook-static/
 .storybook-runtime/
 .out/

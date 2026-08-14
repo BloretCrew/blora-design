@@ -2,6 +2,8 @@
 
 Full-page demo mirroring **section inventory** of `legacy/showcase-v1.html`, implemented with **Blora Design 2.0 only**.
 
+Published at **https://bloretcrew.github.io/blora-design/** (`Pages` workflow on `master`).
+
 ## Run
 
 ```bash

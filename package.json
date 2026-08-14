@@ -22,6 +22,7 @@
     "test:visual": "pnpm --filter @bloret-crew/blora-design run build && playwright test --project=visual --config playwright.config.ts",
     "build": "pnpm run build:tokens && pnpm -r run build",
     "build:tokens": "node packages/tokens/scripts/build-tokens.mjs",
+    "pages": "node scripts/build-showcase-pages.mjs",
     "size": "pnpm -r run size",
     "pack:test": "pnpm -r run pack:test",
     "pack:test:addons": "node scripts/pack-test-addons.mjs",

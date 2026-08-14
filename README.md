@@ -9,7 +9,7 @@
 **Status:** Phase 9 complete. **Phase 10 (pre-release) in progress** — Alpha → Beta → RC → Stable.  
 **Master remaining-work checklist:** [`docs/refactor/remaining-work.md`](./docs/refactor/remaining-work.md)
 
-Interactive demos: **Storybook** (`pnpm storybook`). Frozen 1.x reference: `legacy/showcase-v1.html` (not the 2.0 recommended entry).
+Interactive demos: **[showcase](https://bloretcrew.github.io/blora-design/)** · **Storybook** (`pnpm storybook`). Frozen 1.x reference: `legacy/showcase-v1.html` (not the 2.0 recommended entry).
 
 ---
 
