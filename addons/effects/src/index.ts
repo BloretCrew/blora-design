@@ -66,7 +66,6 @@ function layoutTextFxPhysics(el: HTMLElement, name: string): void {
     charSpan.style.setProperty("--fx-ratio", ratio.toFixed(3));
 
     if (name === "disperse") {
-      const ratio = n <= 1 ? 0.5 : i / (n - 1);
       const angle = (ratio - 0.5) * 1.6 + (Math.random() - 0.5) * 0.5;
       const dist = 1.4 + Math.random() * 1.1;
       const x = Math.sin(angle) * dist;
@@ -76,9 +75,7 @@ function layoutTextFxPhysics(el: HTMLElement, name: string): void {
       charSpan.style.setProperty("--fx-y", `${y.toFixed(2)}em`);
       charSpan.style.setProperty("--fx-r", `${r.toFixed(1)}deg`);
     } else if (name === "bloom") {
-      const fromCenter = Math.abs(i - mid);
-      charSpan.style.setProperty("--fx-center-delay", `${Math.round(fromCenter * 28)}ms`);
-      charSpan.style.setProperty("--fx-r", `${((i - mid) * 12).toFixed(1)}deg`);
+      charSpan.style.setProperty("--fx-center-delay", `${Math.round(Math.abs(i - mid) * 28)}ms`);
     } else {
       charSpan.style.removeProperty("--fx-x");
       charSpan.style.removeProperty("--fx-y");
