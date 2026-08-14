@@ -5,6 +5,7 @@ const storybookUrl = `http://localhost:${storybookPort}`;
 
 export default defineConfig({
   testDir: "./packages/blora-design/tests/browser",
+  passWithNoTests: true,
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,

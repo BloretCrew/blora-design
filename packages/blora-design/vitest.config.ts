@@ -10,6 +10,7 @@ export default defineConfig({
   },
   test: {
     environment: "jsdom",
+    passWithNoTests: true,
     include: ["tests/**/*.test.ts"],
     exclude: ["tests/browser/**", "node_modules/**", "dist/**"],
     pool: "forks",

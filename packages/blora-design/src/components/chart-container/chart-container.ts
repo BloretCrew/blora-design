@@ -51,7 +51,7 @@ export class BloraChartContainer extends BloraElement {
     const subtitle = this.querySelector(".blora-text-xs");
     if (subtitle) subtitle.textContent = this.getAttribute("subtitle") ?? "";
     const trendText = this.getAttribute("trend");
-    let trend = this.querySelector<HTMLElement>(".blora-tag");
+    const trend = this.querySelector<HTMLElement>(".blora-tag");
     if (trendText) {
       if (!trend) {
         this.render();

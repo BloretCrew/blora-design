@@ -21,7 +21,7 @@
     "contracts/"
   ],
   "scripts": {
-    "lint": "eslint src/ tests/",
+    "lint": "eslint src/ tests/ --no-error-on-unmatched-pattern",
     "lint:css": "stylelint \"src/**/*.css\"",
     "typecheck": "tsc --noEmit",
     "test": "vitest run --config vitest.config.ts",

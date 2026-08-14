@@ -45,7 +45,7 @@ export function paginationWindow(page: number, total: number, maxVisible = 7): P
   const neighbor = Math.floor((baseWindow - 1) / 2);
   const maxFirst = Math.max(2, pageCount - 1 - baseWindow + 1);
   let first = Math.min(Math.max(2, current - neighbor), maxFirst);
-  let last = first + baseWindow - 1;
+  const last = first + baseWindow - 1;
 
   // An ellipsis that would hide only the page next to 1 / last is a gap, not a skip.
   // Grow the window by 1 and drop that ellipsis so the row width stays constant.

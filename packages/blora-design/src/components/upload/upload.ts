@@ -189,8 +189,13 @@ export class BloraUpload extends BloraElement {
       const trigger = this.ownerDocument.createElement("button");
       trigger.type = "button";
       trigger.className = "blora-file-picker__trigger";
-      trigger.textContent = prompt;
       trigger.disabled = disabled;
+      const triggerIcon = createBloraIcon("upload", 18, this.ownerDocument);
+      triggerIcon.setAttribute("stroke-width", "1.8");
+      const triggerLabel = this.ownerDocument.createElement("span");
+      triggerLabel.className = "blora-file-picker__label";
+      triggerLabel.textContent = prompt;
+      trigger.append(triggerIcon, triggerLabel);
       const empty = this.ownerDocument.createElement("span");
       empty.className = "blora-file-picker__empty";
       empty.textContent = hintText;
@@ -259,7 +264,9 @@ export class BloraUpload extends BloraElement {
     if (hint) hint.textContent = hintText;
     const trigger = root.querySelector<HTMLButtonElement>(".blora-file-picker__trigger");
     if (trigger) {
-      trigger.textContent = prompt;
+      const label = trigger.querySelector<HTMLElement>(".blora-file-picker__label");
+      if (label) label.textContent = prompt;
+      else trigger.textContent = prompt;
       trigger.disabled = disabled;
     }
     const empty = root.querySelector<HTMLElement>(".blora-file-picker__empty");
