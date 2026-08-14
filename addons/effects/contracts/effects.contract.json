@@ -10,7 +10,7 @@
   "properties": {},
   "methods": {
     "textFx": {
-      "description": "Apply one of the eight Apple-style text effects: big, small, shake, nod, disperse, ripple, bloom, or jitter. Legacy grow/shrink/explode inputs normalize to big/small/disperse."
+      "description": "Apply one of the eight Apple-style text effects: big, small, shake, nod, disperse, ripple, bloom, or jitter."
     }
   },
   "events": {},

@@ -36,21 +36,13 @@ export interface TextFxOptions {
 
 const TEXT_FX: TextFxName[] = ["big", "small", "shake", "nod", "disperse", "ripple", "bloom", "jitter"];
 
-const TEXT_FX_ALIASES: Record<string, TextFxName> = {
-  grow: "big",
-  shrink: "small",
-  explode: "disperse",
-};
-
 const TEXT_FX_SET = new Set<string>(TEXT_FX);
-const TEXT_FX_CLASS_NAMES = [...TEXT_FX, ...Object.keys(TEXT_FX_ALIASES)];
 
 const TEXT_FX_SPLIT: TextFxName[] = ["shake", "disperse", "ripple", "bloom", "jitter"];
 
 function textFxNameFromEl(el: HTMLElement): string {
   const raw = (el.getAttribute("data-blora-text-fx") || "").trim().toLowerCase();
-  const normalized = TEXT_FX_ALIASES[raw] ?? raw;
-  if (TEXT_FX_SET.has(normalized)) return normalized;
+  if (TEXT_FX_SET.has(raw)) return raw;
   for (const fx of TEXT_FX) {
     if (el.classList.contains(`blora-text-fx--${fx}`)) return fx;
   }
@@ -128,20 +120,14 @@ function unsplitTextFxLetters(el: HTMLElement): void {
 }
 
 function applyTextFxName(el: HTMLElement, name: TextFxName): boolean {
-  const requestedName = name;
-  if (!TEXT_FX_SET.has(name)) {
-    const alias = TEXT_FX_ALIASES[name];
-    if (!alias) return false;
-    name = alias;
-  }
+  if (!TEXT_FX_SET.has(name)) return false;
 
   el.classList.add("blora-text-fx");
 
-  for (const fx of TEXT_FX_CLASS_NAMES) {
+  for (const fx of TEXT_FX) {
     el.classList.remove(`blora-text-fx--${fx}`);
   }
   el.classList.add(`blora-text-fx--${name}`);
-  if (requestedName !== name) el.classList.add(`blora-text-fx--${requestedName}`);
 
   el.setAttribute("data-blora-text-fx", name);
 
