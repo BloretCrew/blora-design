@@ -1,6 +1,7 @@
 {
   "extends": ["stylelint-config-standard"],
   "rules": {
+    "property-no-unknown": null,
     "no-descending-specificity": null,
     "custom-property-pattern": "^blora-[a-z0-9-]+$",
     "selector-class-pattern": "(^blora-[a-z0-9_-]+$)|(^is-[a-z0-9-]+$)",

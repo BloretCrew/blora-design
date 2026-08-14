@@ -41,8 +41,10 @@ blora-speed-dial {
   min-height: var(--blora-sd-trigger-size);
   padding: 0;
   border-radius: 50%;
+
   --blora-button-radius: 50%;
   --blora-button-corner: round;
+
   corner-shape: round;
   aspect-ratio: 1;
   box-shadow: var(--blora-shadow-3);
@@ -215,8 +217,10 @@ blora-speed-dial {
   min-height: var(--blora-sd-action-size);
   padding: 0;
   border-radius: 50%;
+
   --blora-button-radius: 50%;
   --blora-button-corner: round;
+
   corner-shape: round;
   aspect-ratio: 1;
 }

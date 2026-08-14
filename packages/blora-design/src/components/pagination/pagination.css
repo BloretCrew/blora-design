@@ -17,11 +17,11 @@ blora-pagination {
   gap: var(--blora-pagination-gap);
   max-width: 100%;
   font-size: var(--blora-text-sm);
+
   /* Keep hover scale inside the scrollport. overflow-x:auto otherwise
      computes overflow-y to auto and a 2px scrollbar flashes on hover. */
   padding: var(--blora-space-1);
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow: auto hidden;
   overscroll-behavior-inline: contain;
   scrollbar-width: thin;
 }
@@ -116,12 +116,12 @@ blora-pagination {
     var(--blora-pagination-window) * var(--blora-pagination-item-size) +
       (var(--blora-pagination-window) - 1) * var(--blora-pagination-gap)
   );
+
   /* overflow-x:hidden + overflow-y:visible computes to overflow-y:auto,
      so hover scale flashes a 2px scrollbar beside the ellipsis. hidden/clip
      never make a scrollbar. padding-block keeps the 1.06 scale uncropped. */
   overflow: hidden;
-  overflow-x: clip;
-  overflow-y: clip;
+  overflow: clip;
   padding-block: calc(
     (var(--blora-pagination-hover-scale) - 1) * var(--blora-pagination-item-size) / 2
   );
