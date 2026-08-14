@@ -7,6 +7,13 @@
   .blora-text-fx { --blora-fx-dur: 2.4s; display: inline-flex; flex-wrap: wrap; align-items: center; justify-content: center; max-width: 100%; transform: translateZ(0); white-space: pre-wrap; line-height: 1.4; }
   .blora-text-fx.is-clickable { cursor: pointer; }
   .blora-text-fx__ch { display: inline-block; transform: translateZ(0); transform-origin: center center; white-space: pre; will-change: transform, opacity, text-shadow; }
+
+  /* Split chars overlap while animating; a translucent selection tint stacks and
+     darkens the overlap. Use an opaque selection background so overlaps stay flat. */
+  .blora-text-fx__ch::selection {
+    background: var(--blora-color-action-primary-default);
+    color: var(--blora-color-text-on-accent);
+  }
   .blora-text-fx--big.is-play { animation: blora-fx-big var(--blora-fx-dur, 2.5s) cubic-bezier(0.12, 0.75, 0.25, 1) infinite; }
   .blora-text-fx--small.is-play { animation: blora-fx-small var(--blora-fx-dur, 2.5s) cubic-bezier(0.12, 0.75, 0.25, 1) infinite; }
   .blora-text-fx--shake.is-play { animation: blora-fx-shake-box var(--blora-fx-dur, 2.4s) ease-in-out infinite; }
