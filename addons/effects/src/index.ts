@@ -99,6 +99,32 @@ function handleTextFxCopy(this: HTMLElement, event: ClipboardEvent): void {
   event.clipboardData.setData("text/plain", plain);
 }
 
+function charSpanAtPoint(el: HTMLElement, x: number, y: number): HTMLElement | null {
+  const doc = el.ownerDocument;
+  const fromRange = (doc as Document & { caretRangeFromPoint?: (x: number, y: number) => Range | null })
+    .caretRangeFromPoint?.(x, y);
+  if (fromRange?.startContainer?.nodeType === Node.TEXT_NODE) {
+    return (
+      (fromRange.startContainer.parentElement as HTMLElement | null)?.closest(
+        ".blora-text-fx__ch",
+      ) ?? null
+    );
+  }
+  const fromPos = (
+    doc as Document & {
+      caretPositionFromPoint?: (x: number, y: number) => { offsetNode: Node } | null;
+    }
+  ).caretPositionFromPoint?.(x, y);
+  if (fromPos?.offsetNode?.nodeType === Node.TEXT_NODE) {
+    return (
+      (fromPos.offsetNode.parentElement as HTMLElement | null)?.closest(
+        ".blora-text-fx__ch",
+      ) ?? null
+    );
+  }
+  return null;
+}
+
 function handleTextFxDblClick(this: HTMLElement, event: MouseEvent): void {
   /* Split chars are independent inline-block boxes, so the browser's native
      word/triple-click selection does not apply. Restore it: double click
@@ -109,26 +135,33 @@ function handleTextFxDblClick(this: HTMLElement, event: MouseEvent): void {
   if (!selection) return;
 
   const range = doc.createRange();
+  const chars = Array.from(this.querySelectorAll<HTMLElement>(".blora-text-fx__ch"));
   if (event.detail >= 3) {
     range.selectNodeContents(this);
   } else {
+    /* Animated chars move under the cursor, so the dblclick target may be the
+       container or a gap. Fall back to the char nearest the click point, then
+       to the whole line — never leave the browser's single-char selection. */
     const target = event.target as HTMLElement;
-    const clicked = target.closest<HTMLElement>(".blora-text-fx__ch");
-    const chars = Array.from(this.querySelectorAll<HTMLElement>(".blora-text-fx__ch"));
-    if (!clicked || !chars.length) return;
-    const idx = chars.indexOf(clicked);
-    if (idx < 0) return;
-    const isSpace = (span: HTMLElement) =>
-      span.textContent === "\u00a0" || span.textContent?.trim() === "";
-    let start = idx;
-    let end = idx;
-    while (start > 0 && !isSpace(chars[start - 1]!)) start--;
-    while (end < chars.length - 1 && !isSpace(chars[end + 1]!)) end++;
-    if (isSpace(chars[idx]!)) {
-      range.selectNode(chars[idx]!);
+    const clicked =
+      target.closest<HTMLElement>(".blora-text-fx__ch") ??
+      charSpanAtPoint(this, event.clientX, event.clientY);
+    const idx = clicked ? chars.indexOf(clicked) : -1;
+    if (idx < 0 || !chars.length) {
+      range.selectNodeContents(this);
     } else {
-      range.setStartBefore(chars[start]!);
-      range.setEndAfter(chars[end]!);
+      const isSpace = (span: HTMLElement) =>
+        span.textContent === "\u00a0" || span.textContent?.trim() === "";
+      let start = idx;
+      let end = idx;
+      while (start > 0 && !isSpace(chars[start - 1]!)) start--;
+      while (end < chars.length - 1 && !isSpace(chars[end + 1]!)) end++;
+      if (isSpace(chars[idx]!)) {
+        range.selectNode(chars[idx]!);
+      } else {
+        range.setStartBefore(chars[start]!);
+        range.setEndAfter(chars[end]!);
+      }
     }
   }
   selection.removeAllRanges();
