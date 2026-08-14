@@ -99,14 +99,38 @@ function handleTextFxCopy(this: HTMLElement, event: ClipboardEvent): void {
   event.clipboardData.setData("text/plain", plain);
 }
 
-function handleTextFxDblClick(this: HTMLElement): void {
-  /* Split chars are independent inline-block boxes, so a plain double-click
-     selects a single character. Select the whole line instead. */
+function handleTextFxDblClick(this: HTMLElement, event: MouseEvent): void {
+  /* Split chars are independent inline-block boxes, so the browser's native
+     word/triple-click selection does not apply. Restore it: double click
+     selects the word (contiguous non-space chars), triple click the line. */
+  event.preventDefault();
   const doc = this.ownerDocument;
   const selection = doc.getSelection();
   if (!selection) return;
+
   const range = doc.createRange();
-  range.selectNodeContents(this);
+  if (event.detail >= 3) {
+    range.selectNodeContents(this);
+  } else {
+    const target = event.target as HTMLElement;
+    const clicked = target.closest<HTMLElement>(".blora-text-fx__ch");
+    const chars = Array.from(this.querySelectorAll<HTMLElement>(".blora-text-fx__ch"));
+    if (!clicked || !chars.length) return;
+    const idx = chars.indexOf(clicked);
+    if (idx < 0) return;
+    const isSpace = (span: HTMLElement) =>
+      span.textContent === "\u00a0" || span.textContent?.trim() === "";
+    let start = idx;
+    let end = idx;
+    while (start > 0 && !isSpace(chars[start - 1]!)) start--;
+    while (end < chars.length - 1 && !isSpace(chars[end + 1]!)) end++;
+    if (isSpace(chars[idx]!)) {
+      range.selectNode(chars[idx]!);
+    } else {
+      range.setStartBefore(chars[start]!);
+      range.setEndAfter(chars[end]!);
+    }
+  }
   selection.removeAllRanges();
   selection.addRange(range);
 }
