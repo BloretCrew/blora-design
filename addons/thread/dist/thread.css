@@ -1,0 +1,443 @@
+/* =========================================================================
+   Blora Design 2.0 - Thread and Post add-on
+   Visual baseline: legacy/v1/blora.css lines 3310-3632
+
+   NOTE: Do NOT wrap in @layer blora.addons when consumed via Storybook/direct
+   CSS imports. Unlayered reset (font:inherit, border:none on button) would
+   win over layered rules and break tools font-size + collapse outline.
+   ========================================================================= */
+
+/* Comment styles live in core `comment.css` — do not override here. */
+
+/* -- Thread / Post -- */
+
+.blora-thread {
+  display: flex;
+  flex-direction: column;
+  gap: var(--blora-space-3);
+  max-width: 48rem;
+}
+
+.blora-post {
+  position: relative;
+  padding: var(--blora-space-4) var(--blora-space-5);
+  border: 1px solid var(--blora-color-border-subtle);
+  border-radius: var(--blora-radius-lg);
+  background: var(--blora-color-surface-default);
+  box-shadow: var(--blora-shadow-1);
+}
+
+.blora-post + .blora-post {
+  margin-top: var(--blora-space-3);
+}
+
+/* 跟帖底色略浅于主帖，避免和 surface 按钮糊成一片 */
+.blora-post--reply {
+  background: color-mix(
+    in srgb,
+    var(--blora-color-surface-default) 88%,
+    var(--blora-color-surface-raised)
+  );
+  box-shadow: none;
+  border-color: var(--blora-color-border-subtle);
+}
+
+:root[data-blora-color-scheme="dark"] .blora-post--reply,
+.blora-scope[data-blora-color-scheme="dark"] .blora-post--reply {
+  background: color-mix(
+    in srgb,
+    var(--blora-color-surface-default) 70%,
+    var(--blora-color-surface-raised)
+  );
+}
+
+.blora-post__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--blora-space-3);
+  margin-bottom: var(--blora-space-4);
+}
+
+.blora-post__identity {
+  display: flex;
+  align-items: center;
+  gap: var(--blora-space-3);
+  min-width: 0;
+  flex: 1 1 12rem;
+}
+
+.blora-post__who {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15em;
+}
+
+.blora-post__author-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35em 0.55em;
+}
+
+.blora-post__author {
+  font-weight: 600;
+  font-size: var(--blora-text-sm);
+  color: var(--blora-color-text-primary);
+  text-decoration: none;
+}
+
+.blora-post__author:hover {
+  color: var(--blora-color-action-primary-default);
+}
+
+.blora-post__badge {
+  font-size: var(--blora-text-xs);
+  font-weight: 600;
+  padding: 0.1em 0.45em;
+  border-radius: var(--blora-radius-xs);
+  background: color-mix(
+    in srgb,
+    var(--blora-color-status-warning) 22%,
+    var(--blora-color-surface-default)
+  );
+  color: color-mix(in srgb, var(--blora-color-status-warning) 75%, var(--blora-color-text-primary));
+  border: 1px solid color-mix(in srgb, var(--blora-color-status-warning) 35%, transparent);
+}
+
+.blora-post__reply-to {
+  font-size: var(--blora-text-xs);
+  color: var(--blora-color-text-muted);
+}
+
+.blora-post__reply-to a {
+  color: var(--blora-color-action-primary-default);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.blora-post__reply-to a:hover {
+  text-decoration: underline;
+}
+
+.blora-post__sub {
+  font-size: var(--blora-text-xs);
+  color: var(--blora-color-text-subtle);
+}
+
+.blora-post__sub time,
+.blora-post__loc {
+  font-family: var(--blora-font-mono);
+}
+
+/* 工具栏：小字幽灵按钮，v1 字号 text-xs（12px） */
+.blora-post__tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.15em 0.1em;
+  margin-inline-start: auto;
+  flex: 0 0 auto;
+}
+
+.blora-post__tools button,
+.blora-post__tools a {
+  /* 覆盖 reset 的 font:inherit / border:none / padding:0 */
+  appearance: none;
+  box-sizing: border-box;
+  border: 0;
+  border-style: none;
+  background: none;
+  background-color: transparent;
+  padding: 0.3em 0.55em;
+  border-radius: var(--blora-radius-xs);
+  font-family: var(--blora-font-sans);
+  font-size: var(--blora-text-xs); /* 0.75rem / 12px — v1 */
+  font-weight: 400;
+  font-style: normal;
+  color: var(--blora-color-text-subtle);
+  cursor: pointer;
+  text-decoration: none;
+  line-height: 1.3;
+  white-space: nowrap;
+  transition:
+    color var(--blora-duration-fast) var(--blora-easing-standard),
+    background var(--blora-duration-fast) var(--blora-easing-standard);
+}
+
+.blora-post__tools button:hover,
+.blora-post__tools a:hover {
+  color: var(--blora-color-action-primary-default);
+  background: var(--blora-color-action-primary-tint);
+}
+
+.blora-post__tools .is-danger:hover {
+  color: var(--blora-color-status-danger);
+  background: color-mix(in srgb, var(--blora-color-status-danger) 12%, transparent);
+}
+
+.blora-post__more {
+  letter-spacing: 0.05em;
+  font-weight: 700;
+}
+
+.blora-post__title {
+  font-family: var(--blora-font-heading);
+  font-size: var(--blora-text-xl);
+  font-weight: 600;
+  color: var(--blora-color-text-primary);
+  line-height: var(--blora-leading-tight);
+  margin: 0 0 var(--blora-space-3);
+}
+
+/* Markdown title in post (v1: .blora-post__title.blora-md) */
+.blora-post__title.blora-md :is(h1, h2, h3, h4, h5, h6, p) {
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  line-height: inherit;
+}
+
+/* -- Post quote：左侧圆角竖线，无色块底 -- */
+
+.blora-post__quote {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35em 0.65em;
+  margin: 0 0 var(--blora-space-3);
+  padding: 0.15em 0 0.15em 0.9em;
+  background: transparent;
+  font-size: var(--blora-text-sm);
+  color: var(--blora-color-text-muted);
+}
+
+.blora-post__quote::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0.15em;
+  bottom: 0.15em;
+  width: 3px;
+  border-radius: var(--blora-radius-full);
+  background: var(--blora-color-action-primary-default);
+}
+
+.blora-post__quote-label {
+  font-weight: 500;
+  color: var(--blora-color-text-emphasis);
+}
+
+.blora-post__quote-text {
+  color: var(--blora-color-text-subtle);
+}
+
+/* -- Post body -- */
+
+.blora-post__body {
+  font-size: var(--blora-text-sm);
+  color: var(--blora-color-text-emphasis);
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.blora-post__body p {
+  margin: 0 0 0.75em;
+}
+
+.blora-post__body p:last-child {
+  margin-bottom: 0;
+}
+
+.blora-post__body strong {
+  color: var(--blora-color-text-primary);
+  font-weight: 600;
+}
+
+/* 正文列表（v1 md 产物 / 演示页） */
+.blora-post__body ul,
+.blora-post__body ol {
+  margin: 0.4em 0 0.75em;
+  padding-inline-start: 1.35em;
+}
+
+.blora-post__body ul {
+  list-style: disc;
+}
+
+.blora-post__body ol {
+  list-style: decimal;
+}
+
+.blora-post__body li {
+  margin: 0.2em 0;
+}
+
+/* -- Post reactions -- */
+
+.blora-post__react {
+  margin-top: var(--blora-space-4);
+}
+
+.blora-post__react-btn svg,
+.blora-post__more svg {
+  display: block;
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.blora-post__react-btn {
+  display: inline-grid;
+  place-items: center;
+  box-sizing: border-box;
+  width: 2.1rem;
+  height: 2.1rem;
+  min-width: 2.1rem;
+  min-height: 2.1rem;
+  padding: 0;
+  border: 1px solid var(--blora-color-border-subtle);
+  border-radius: 50%;
+  background: var(--blora-color-surface-default);
+  color: var(--blora-color-text-muted);
+  cursor: pointer;
+  font-family: var(--blora-font-sans);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1;
+  transition:
+    border-color var(--blora-duration-fast) var(--blora-easing-standard),
+    color var(--blora-duration-fast) var(--blora-easing-standard),
+    background var(--blora-duration-fast) var(--blora-easing-standard),
+    transform var(--blora-duration-fast) var(--blora-easing-standard);
+}
+
+.blora-post__react-btn:hover {
+  border-color: var(--blora-color-action-primary-default);
+  color: var(--blora-color-action-primary-default);
+  background: var(--blora-color-action-primary-tint);
+  transform: scale(1.06);
+}
+
+.blora-post__react-btn.is-active {
+  border-color: var(--blora-color-action-primary-default);
+  background: var(--blora-color-action-primary-tint);
+  color: var(--blora-color-action-primary-default);
+}
+
+/* -- Post replies (collapsible) -- */
+
+.blora-post__replies {
+  margin-top: var(--blora-space-5);
+  padding-top: var(--blora-space-4);
+  border-top: 1px solid var(--blora-color-border-subtle);
+}
+
+.blora-post__replies-body {
+  display: grid;
+  gap: var(--blora-space-3);
+  overflow: hidden;
+  opacity: 1;
+  transform: translateY(0);
+  max-height: none;
+  transition:
+    max-height var(--blora-duration-base) var(--blora-easing-standard),
+    opacity var(--blora-duration-base) var(--blora-easing-standard),
+    transform var(--blora-duration-base) var(--blora-easing-standard),
+    margin var(--blora-duration-base) var(--blora-easing-standard);
+}
+
+.blora-post__replies.is-collapsed .blora-post__replies-body {
+  max-height: 0 !important;
+  opacity: 0;
+  transform: translateY(-0.35em);
+  margin-bottom: 0;
+  pointer-events: none;
+}
+
+/* 收起/展开：全宽 outline 按钮（v1 .blora-post__collapse） */
+.blora-post__collapse {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: var(--blora-space-3);
+  padding: 0.65em 1em;
+
+  /* 覆盖 reset border:none — 必须显式 width + style + color */
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--blora-color-border-subtle);
+  border-radius: var(--blora-radius-md);
+  background: var(--blora-color-surface-default);
+  background-color: var(--blora-color-surface-default);
+  color: var(--blora-color-action-primary-default);
+  font-family: var(--blora-font-sans);
+  font-size: var(--blora-text-sm);
+  font-weight: 500;
+  line-height: 1.4;
+  cursor: pointer;
+  text-align: center;
+  appearance: none;
+  transition:
+    background var(--blora-duration-fast) var(--blora-easing-standard),
+    color var(--blora-duration-fast) var(--blora-easing-standard),
+    border-color var(--blora-duration-fast) var(--blora-easing-standard);
+}
+
+.blora-post__replies.is-collapsed .blora-post__collapse {
+  margin-top: 0;
+}
+
+.blora-post__collapse:hover {
+  background: var(--blora-color-action-primary-tint);
+  background-color: var(--blora-color-action-primary-tint);
+  border-color: color-mix(
+    in srgb,
+    var(--blora-color-action-primary-default) 35%,
+    var(--blora-color-border-subtle)
+  );
+  color: var(--blora-color-action-primary-default);
+}
+
+.blora-post--reply .blora-post__replies {
+  margin-top: var(--blora-space-4);
+  padding-top: var(--blora-space-3);
+}
+
+/* -- Reduced motion -- */
+
+@media (prefers-reduced-motion: reduce) {
+  .blora-post__replies-body {
+    transition: none;
+  }
+
+  .blora-post__react-btn {
+    transition: none;
+  }
+
+  .blora-post__react-btn:hover {
+    transform: none;
+  }
+
+  .blora-post__tools button,
+  .blora-post__tools a,
+  .blora-post__collapse {
+    transition: none;
+  }
+}
+
+/* -- Responsive -- */
+
+@media (max-width: 560px) {
+  .blora-post {
+    padding: var(--blora-space-3) var(--blora-space-4);
+  }
+
+  .blora-post__tools {
+    width: 100%;
+    justify-content: flex-start;
+    margin-inline-start: 0;
+  }
+}

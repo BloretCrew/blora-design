@@ -1,0 +1,202 @@
+/* Blora Design 2.0 - Theming add-on (palette picker + scheme helpers) */
+
+/*
+ * Explicit scheme must repaint Storybook chrome (#storybook-root, .sb-show-main)
+ * or light docs canvas will sit under dark tokens (or the reverse) → unreadable text.
+ */
+html[data-blora-color-scheme="dark"],
+html[data-blora-color-scheme="dark"] body,
+html[data-blora-color-scheme="dark"] #storybook-root,
+html[data-blora-color-scheme="dark"] .sb-show-main,
+html[data-blora-color-scheme="dark"] .docs-story,
+html[data-blora-color-scheme="dark"] .blora-scope {
+  background-color: var(--blora-color-surface-canvas) !important;
+  color: var(--blora-color-text-secondary);
+}
+
+html[data-blora-color-scheme="dark"] .blora-scope {
+  min-height: 100%;
+}
+
+html[data-blora-color-scheme="light"],
+html[data-blora-color-scheme="light"] body,
+html[data-blora-color-scheme="light"] #storybook-root,
+html[data-blora-color-scheme="light"] .sb-show-main,
+html[data-blora-color-scheme="light"] .docs-story,
+html[data-blora-color-scheme="light"] .blora-scope {
+  background-color: var(--blora-color-surface-canvas);
+  color: var(--blora-color-text-secondary);
+}
+
+.blora-palette-picker {
+  position: relative;
+}
+
+blora-palette-picker,
+blora-color-scheme-toggle {
+  display: inline-block;
+  line-height: var(--blora-leading-normal);
+  vertical-align: middle;
+}
+
+.blora-color-scheme-toggle__button {
+  width: var(--blora-space-6);
+  padding-inline: 0;
+}
+
+.blora-palette-picker__trigger {
+  white-space: nowrap;
+
+  /* Keep label readable at any canvas width (do not collapse to empty pill) */
+  max-width: min(12rem, 100%);
+  overflow: hidden;
+}
+
+.blora-palette-picker__trigger svg {
+  flex: none;
+}
+
+.blora-palette-picker__label {
+  display: inline-block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: inherit;
+}
+
+.blora-palette-picker__menu {
+  position: absolute;
+  top: calc(100% + var(--blora-space-2));
+  inset-inline-end: 0;
+  z-index: var(--blora-z-dropdown);
+  width: min(20rem, calc(100vw - 2 * var(--blora-space-4)));
+  padding: var(--blora-space-3);
+  border: 1px solid var(--blora-color-border-subtle);
+  border-radius: var(--blora-radius-lg);
+  background: var(--blora-color-surface-default);
+  box-shadow: var(--blora-shadow-3);
+  line-height: var(--blora-leading-normal);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-0.35em);
+  transition:
+    opacity var(--blora-duration-fast) var(--blora-easing-standard),
+    transform var(--blora-duration-base) var(--blora-easing-standard),
+    visibility 0s linear var(--blora-duration-base);
+}
+
+.blora-palette-picker.is-open .blora-palette-picker__menu {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+  transition-delay: 0s;
+}
+
+.blora-palette-picker__head {
+  padding: var(--blora-space-1) var(--blora-space-1) var(--blora-space-3);
+}
+
+.blora-palette-picker__title {
+  display: block;
+  color: var(--blora-color-text-primary);
+  font-size: var(--blora-text-sm);
+  font-weight: 600;
+}
+
+.blora-palette-picker__hint {
+  display: block;
+  margin-top: 0.15rem;
+  color: var(--blora-color-text-emphasis);
+  font-size: var(--blora-text-xs);
+}
+
+.blora-palette-picker__list {
+  display: grid;
+  gap: var(--blora-space-2);
+  max-height: min(22rem, 60vh);
+  overflow: auto;
+}
+
+.blora-palette-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--blora-space-3);
+  width: 100%;
+  padding: var(--blora-space-2) var(--blora-space-3);
+  border: 1px solid transparent;
+  border-radius: var(--blora-radius-md);
+  background: transparent;
+  cursor: pointer;
+  text-align: start;
+  font: inherit;
+  color: inherit;
+}
+
+.blora-palette-card:hover {
+  background: var(--blora-color-surface-raised);
+  border-color: var(--blora-color-border-subtle);
+}
+
+.blora-palette-card[aria-selected="true"] {
+  background: var(--blora-color-action-primary-tint);
+  border-color: color-mix(in srgb, var(--blora-color-action-primary-default) 38%, transparent);
+}
+
+.blora-palette-card__copy {
+  min-width: 0;
+}
+
+.blora-palette-card__name {
+  display: block;
+  color: var(--blora-color-text-primary);
+  font-size: var(--blora-text-sm);
+  font-weight: 600;
+}
+
+.blora-palette-card__desc {
+  display: block;
+  margin-top: 0.1rem;
+  overflow: hidden;
+  color: var(--blora-color-text-emphasis);
+  font-size: var(--blora-text-xs);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.blora-palette-card__colors {
+  display: flex;
+  flex: none;
+}
+
+.blora-palette-card__color {
+  width: 1.25rem;
+  height: 2rem;
+  margin-inline-start: -0.2rem;
+  border: 2px solid var(--blora-color-surface-default);
+  border-radius: var(--blora-radius-sm);
+  box-shadow: var(--blora-shadow-1);
+}
+
+.blora-palette-card:hover .blora-palette-card__color {
+  border-color: var(--blora-color-surface-raised);
+}
+
+@media (max-width: 560px) {
+  /* Keep label visible — hiding left an empty outline pill with no icon */
+  .blora-palette-picker__label {
+    display: inline-block;
+    max-width: 8rem;
+  }
+
+  .blora-palette-picker__menu {
+    position: fixed;
+    top: max(4.25rem, env(safe-area-inset-top, 0px) + 3.5rem);
+    inset-inline: var(--blora-space-3);
+    width: auto;
+    max-height: min(70dvh, 28rem);
+  }
+}

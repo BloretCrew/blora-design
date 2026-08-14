@@ -1,0 +1,1769 @@
+<!doctype html>
+<html lang="zh-CN" data-blora-color-scheme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#faf7f8" />
+    <title>Accordion · Blora Design Components</title>
+    <script>
+      (() => {
+        try {
+          const saved = localStorage.getItem("blora-color-scheme");
+          const preferred = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+          document.documentElement.dataset.bloraColorScheme = saved || preferred;
+        } catch {
+          document.documentElement.dataset.bloraColorScheme = "light";
+        }
+      })();
+    </script>
+    <link rel="stylesheet" href="packages/blora-design/dist/blora.css" />
+    <link rel="stylesheet" href="packages/blora-design/dist/tokens.dark.css" />
+    <link rel="stylesheet" href="packages/blora-design/dist/tokens.themes.css" />
+    <link rel="stylesheet" href="addons/theming/dist/theming.css" />
+    <link rel="stylesheet" href="addons/layout/dist/layout.css" />
+    <link rel="stylesheet" href="addons/effects/dist/effects.css" />
+    <link rel="stylesheet" href="addons/markdown/dist/markdown.css" />
+    <link rel="stylesheet" href="addons/qrcode/dist/qrcode.css" />
+    <link rel="stylesheet" href="addons/thread/dist/thread.css" />
+    <style>
+      :root {
+        --showcase-navbar-offset: 6rem;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-padding-top: var(--showcase-navbar-offset);
+      }
+
+      body {
+        min-width: 20rem;
+      }
+
+      button,
+      a {
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      /* Showcase owns only page composition. Visual component chrome comes
+         from the official Navbar, Layout, Tabs, Badge and Button CSS above. */
+      .showcase-navbar {
+        z-index: var(--blora-z-sticky);
+      }
+
+      .showcase-catalog {
+        --blora-sidebar-width: 15rem;
+        --blora-sidebar-min-height: calc(100dvh - var(--showcase-navbar-offset));
+        --blora-sidebar-aside-padding: 0 var(--blora-space-5) var(--blora-space-6) 0;
+        --blora-sidebar-aside-background: transparent;
+        --blora-sidebar-content-padding: 0 0 var(--blora-space-12)
+          clamp(var(--blora-space-7), 5vw, var(--blora-space-12));
+        --blora-sidebar-sticky-offset: var(--showcase-navbar-offset);
+        --blora-sidebar-sticky-height: calc(
+          100dvh - var(--showcase-navbar-offset) - var(--blora-space-5)
+        );
+        --blora-sidebar-drawer-aside-padding: var(--blora-space-5);
+        --blora-sidebar-drawer-content-padding: var(--blora-space-4) var(--blora-space-5)
+          var(--blora-space-10);
+        --blora-sidebar-toggle-min-height: 2.75rem;
+
+        width: min(90rem, calc(100% - var(--blora-space-8)));
+        margin: var(--blora-space-6) auto var(--blora-space-12);
+      }
+
+      #component-sidebar {
+        overflow-anchor: none;
+      }
+
+      .showcase-sidebar-title {
+        margin: 0;
+      }
+
+      .showcase-sidebar-title {
+        padding: var(--blora-space-3) var(--blora-space-3) var(--blora-space-5);
+        color: var(--blora-color-text-muted);
+        font-family: var(--blora-font-heading);
+        font-size: var(--blora-text-sm);
+        font-weight: 600;
+      }
+
+      .showcase-panel[hidden] {
+        display: none;
+      }
+
+      .showcase-preview-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--blora-space-4);
+      }
+
+      .showcase-heading {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: end;
+        gap: var(--blora-space-6);
+        padding: var(--blora-space-7) 0 var(--blora-space-8);
+        border-bottom: 1px solid var(--blora-color-border-subtle);
+      }
+
+      .showcase-heading__eyebrow {
+        margin: 0 0 var(--blora-space-2);
+        color: var(--blora-color-action-primary-default);
+        font-family: var(--blora-font-mono);
+        font-size: var(--blora-text-xs);
+        font-weight: 600;
+        letter-spacing: var(--blora-tracking-caps);
+        text-transform: uppercase;
+      }
+
+      .showcase-heading h1 {
+        width: fit-content;
+        max-width: 100%;
+        margin: 0;
+        color: var(--blora-color-text-primary);
+        font-family: var(--blora-font-heading);
+        font-size: clamp(var(--blora-text-3xl), 4vw, var(--blora-text-4xl));
+        line-height: var(--blora-leading-tight);
+      }
+
+      .showcase-heading h1:focus-visible {
+        margin: calc(-1 * var(--blora-space-1)) calc(-1 * var(--blora-space-2));
+        padding: var(--blora-space-1) var(--blora-space-2);
+        border-radius: var(--blora-radius-sm);
+        outline: var(--blora-focus-ring-width-strong) solid
+          var(--blora-color-action-primary-default);
+        outline-offset: var(--blora-space-1);
+        box-shadow: none;
+      }
+
+      .showcase-heading__description {
+        max-width: 42rem;
+        margin: var(--blora-space-3) 0 0;
+        color: var(--blora-color-text-muted);
+        line-height: var(--blora-leading-loose);
+      }
+
+      .showcase-heading > .blora-badge {
+        width: max-content;
+      }
+
+      .showcase-section {
+        padding-block: var(--blora-space-9);
+      }
+
+      .showcase-section + .showcase-section {
+        border-top: 1px solid var(--blora-color-border-subtle);
+      }
+
+      .showcase-section h2 {
+        margin: 0 0 var(--blora-space-4);
+        color: var(--blora-color-text-primary);
+        font-family: var(--blora-font-heading);
+        font-size: var(--blora-text-xl);
+      }
+
+      .showcase-section__description {
+        margin: calc(var(--blora-space-3) * -1) 0 var(--blora-space-5);
+        color: var(--blora-color-text-muted);
+      }
+
+      .showcase-example {
+        overflow: clip;
+        background: var(--blora-color-surface-default);
+        border: 1px solid var(--blora-color-border-subtle);
+        border-radius: var(--blora-radius-lg);
+        box-shadow: var(--blora-shadow-1);
+      }
+
+      .showcase-preview,
+      .showcase-code-panel {
+        padding: clamp(var(--blora-space-5), 4vw, var(--blora-space-8));
+        background: var(--blora-color-surface-canvas);
+      }
+
+      .showcase-preview {
+        display: grid;
+        min-height: 18rem;
+        place-items: start center;
+        transition: min-height var(--blora-duration-base) var(--blora-easing-standard);
+      }
+
+      .showcase-preview > * {
+        width: min(40rem, 100%);
+        min-width: 0;
+      }
+
+      .showcase-preview:has([data-showcase-addon-layout]) {
+        place-items: start stretch;
+      }
+
+      .showcase-preview > [data-showcase-addon-layout] {
+        width: 100%;
+      }
+
+      .showcase-preview:has([data-showcase-addon-thread]) {
+        place-items: start stretch;
+      }
+
+      .showcase-preview > [data-showcase-addon-thread] {
+        width: min(48rem, 100%);
+      }
+
+      [data-showcase-row] {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--blora-space-3);
+      }
+
+      [data-showcase-stack] {
+        display: grid;
+        gap: var(--blora-space-4);
+      }
+
+      [data-showcase-center] {
+        display: grid;
+        place-items: center;
+      }
+
+      [data-showcase-grid] {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+        gap: var(--blora-space-4);
+      }
+
+      [data-showcase-mockup-stage] {
+        display: grid;
+        justify-items: center;
+        min-width: 0;
+        padding: var(--blora-space-6);
+        border: 1px solid var(--blora-color-border-subtle);
+        border-radius: var(--blora-radius-lg);
+        background: var(--blora-color-surface-raised);
+      }
+
+      [data-showcase-mockup-stage] > blora-mockup:not([variant="phone"]) {
+        width: 100%;
+      }
+
+      [data-showcase-mockup-stage] > blora-mockup[variant="phone"] {
+        width: min(100%, 15.5rem);
+      }
+
+      [data-showcase-cases] {
+        display: grid;
+        gap: var(--blora-space-8);
+        width: 100%;
+      }
+
+      [data-showcase-case] {
+        display: grid;
+        gap: var(--blora-space-4);
+        min-width: 0;
+      }
+
+      [data-showcase-case] > h3 {
+        margin: 0;
+        color: var(--blora-color-text-primary);
+        font-family: var(--blora-font-heading);
+        font-size: var(--blora-text-md);
+      }
+
+      [data-showcase-case="WithBadge"] {
+        justify-items: start;
+      }
+
+      .showcase-fx-surface,
+      [data-showcase-effect-surface] {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, var(--blora-color-action-primary-default), var(--blora-color-status-info));
+      }
+
+      .showcase-fx-surface[data-tone="success"],
+      [data-showcase-effect-surface="success"] {
+        background: linear-gradient(135deg, var(--blora-color-status-success), var(--blora-color-surface-sunken));
+      }
+
+      .showcase-fx-surface[data-tone="info"],
+      [data-showcase-effect-surface="info"] {
+        background: linear-gradient(135deg, var(--blora-color-status-info), var(--blora-color-status-warning));
+      }
+
+      [data-showcase-image-diff],
+      [data-showcase-hover-gallery] {
+        width: min(28rem, 100%);
+      }
+
+      [data-showcase-anchor-layout] {
+        display: grid;
+        grid-template-columns: 9rem minmax(0, 1fr);
+        gap: var(--blora-space-6);
+        align-items: start;
+      }
+
+      [data-showcase-anchor] {
+        position: sticky;
+        top: var(--blora-space-4);
+      }
+
+      [data-showcase-anchor-content] {
+        max-height: 22rem;
+        overflow: auto;
+      }
+
+      [data-showcase-anchor-content] > section {
+        min-height: 18rem;
+        scroll-margin-top: var(--blora-space-4);
+      }
+
+      [data-showcase-overlay-space] {
+        min-height: 18rem;
+      }
+
+      [data-showcase-drawer-stage] {
+        position: relative;
+        min-height: 20rem;
+        overflow: hidden;
+        border: 1px solid var(--blora-color-border-subtle);
+        border-radius: var(--blora-radius-lg);
+      }
+
+      [data-showcase-drawer-stage] > .blora-button {
+        margin: var(--blora-space-4);
+      }
+
+      [data-showcase-mentions-stage] {
+        min-height: 19rem;
+        padding-bottom: 14rem;
+      }
+
+      [data-showcase-slide] {
+        display: grid;
+        min-height: 12rem;
+        place-items: center;
+        padding: var(--blora-space-6);
+        color: var(--blora-color-text-primary);
+        background: var(--blora-color-surface-raised);
+      }
+
+      [data-showcase-tile] {
+        break-inside: avoid;
+        margin-block-end: var(--blora-space-3);
+        padding: var(--blora-space-4);
+        color: var(--blora-color-text-primary);
+        background: var(--blora-color-surface-raised);
+        border-radius: var(--blora-radius-md);
+      }
+
+      [data-showcase-service] {
+        display: grid;
+        gap: var(--blora-space-3);
+        justify-items: start;
+      }
+
+      @media (max-width: 900px) {
+        :root {
+          --showcase-navbar-offset: 5.5rem;
+        }
+
+        .showcase-catalog {
+          width: min(calc(100% - var(--blora-space-6)), 58rem);
+        }
+
+        .showcase-heading {
+          grid-template-columns: 1fr;
+          align-items: start;
+          padding-block-start: var(--blora-space-6);
+        }
+      }
+
+      @media (max-width: 560px) {
+        .showcase-preview,
+        .showcase-code-panel {
+          padding: var(--blora-space-4);
+        }
+
+        [data-showcase-anchor-layout] {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body class="blora-page blora-scope">
+    <blora-navbar class="showcase-navbar" title="Blora Design" brand-href="#button" variant="floating">
+      <blora-navbar-tool>
+        <blora-palette-picker button-variant="ghost"></blora-palette-picker>
+        <blora-color-scheme-toggle id="theme-toggle"></blora-color-scheme-toggle>
+      </blora-navbar-tool>
+      <blora-navbar-action label="规范文档" href="docs/standards.md"></blora-navbar-action>
+      <blora-navbar-action label="开始使用" href="#button" variant="primary"></blora-navbar-action>
+    </blora-navbar>
+
+    <blora-sidebar-layout class="showcase-catalog" id="showcase-shell" variant="seamless" label="组件导航" toggle-label="组件导航" sticky>
+      <blora-sidebar-layout-sidebar id="component-sidebar" label="组件导航">
+        <p class="showcase-sidebar-title">Components</p>
+        <div id="component-navigation-mount"></div>
+      </blora-sidebar-layout-sidebar>
+
+      <blora-sidebar-layout-content id="component-content">
+        <div id="component-panel-root"></div>
+      </blora-sidebar-layout-content>
+    </blora-sidebar-layout>
+
+    <div id="showcase-component-sources" hidden>
+      <template data-component="button" data-label="Button" data-group="操作" data-eyebrow="Actions" data-kind="Native + CSS" data-description="原生按钮语义配合统一变体、尺寸、禁用与加载状态。">
+        <div data-showcase-cases>
+          <section data-showcase-case="Default"><h3>默认</h3><div data-showcase-row><button class="blora-button" type="button">保存</button></div></section>
+          <section data-showcase-case="Variants"><h3>变体</h3><div data-showcase-row>
+            <button class="blora-button" type="button" data-variant="primary">Primary</button>
+            <button class="blora-button" type="button" data-variant="secondary">Secondary</button>
+            <button class="blora-button" type="button" data-variant="outline">Outline</button>
+            <button class="blora-button" type="button" data-variant="ghost">Ghost</button>
+            <button class="blora-button" type="button" data-variant="danger">Danger</button>
+            <button class="blora-button" type="button" data-variant="text">Text</button>
+          </div></section>
+          <section data-showcase-case="Sizes"><h3>尺寸</h3><div data-showcase-row>
+            <button class="blora-button" type="button" data-size="xs">XS</button>
+            <button class="blora-button" type="button" data-size="sm">Small</button>
+            <button class="blora-button" type="button" data-size="md">Medium</button>
+            <button class="blora-button" type="button" data-size="lg">Large</button>
+            <button class="blora-button" type="button" data-size="xl">XLarge</button>
+          </div></section>
+          <section data-showcase-case="Disabled"><h3>禁用</h3><div data-showcase-row>
+            <button class="blora-button" type="button" data-variant="primary" disabled>Primary</button>
+            <button class="blora-button" type="button" data-variant="secondary" disabled>Secondary</button>
+            <button class="blora-button" type="button" data-variant="outline" disabled>Outline</button>
+            <button class="blora-button" type="button" data-variant="ghost" disabled>Ghost</button>
+            <button class="blora-button" type="button" data-variant="danger" disabled>Danger</button>
+          </div></section>
+          <section data-showcase-case="Loading"><h3>加载</h3><div data-showcase-row>
+            <button class="blora-button" type="button" data-variant="primary" data-loading aria-busy="true">Primary</button>
+            <button class="blora-button" type="button" data-variant="secondary" data-loading aria-busy="true">Secondary</button>
+            <button class="blora-button" type="button" data-variant="outline" data-loading aria-busy="true">Outline</button>
+            <button class="blora-button" type="button" data-variant="danger" data-loading aria-busy="true">Danger</button>
+          </div></section>
+          <section data-showcase-case="ButtonGroup"><h3>按钮组</h3><div class="blora-button-group">
+            <button class="blora-button" type="button" data-variant="outline">Left</button>
+            <button class="blora-button" type="button" data-variant="outline">Center</button>
+            <button class="blora-button" type="button" data-variant="outline">Right</button>
+          </div></section>
+        </div>
+      </template>
+      <template data-component="copy" data-label="Copy" data-group="操作" data-eyebrow="Actions" data-kind="Composite CE" data-description="复制文本并提供成功反馈的声明式组件。">
+        <blora-copy text="pnpm add @bloret-crew/blora-design" label="复制安装命令"></blora-copy>
+      </template>
+      <template data-component="fab" data-label="FAB" data-group="操作" data-eyebrow="Actions" data-kind="CSS-only" data-description="适合页面主操作的浮动按钮视觉表面。">
+        <div data-showcase-center>
+          <button class="blora-fab blora-fab--static" type="button" aria-label="新建项目">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+          </button>
+        </div>
+      </template>
+      <template data-component="speed-dial" data-label="Speed Dial" data-group="操作" data-eyebrow="Actions" data-kind="Composite CE" data-description="从主浮动按钮展开一组相关快捷操作。">
+        <div class="blora-speed-dial-grid" data-showcase-case="AllVariants">
+          <div class="blora-speed-dial-stage"><p class="blora-speed-dial-stage__label">垂直 · 图标</p><blora-speed-dial label="新建"><blora-speed-dial-action value="camera" label="拍照" icon="camera"></blora-speed-dial-action><blora-speed-dial-action value="gallery" label="图库" icon="image"></blora-speed-dial-action><blora-speed-dial-action value="voice" label="语音" icon="mic"></blora-speed-dial-action></blora-speed-dial></div>
+          <div class="blora-speed-dial-stage"><p class="blora-speed-dial-stage__label">垂直 · 标签</p><blora-speed-dial label="快捷操作" action-appearance="label"><blora-speed-dial-action value="document" label="新建文档" icon="document-add"></blora-speed-dial-action><blora-speed-dial-action value="upload" label="上传文件" icon="upload"></blora-speed-dial-action><blora-speed-dial-action value="share" label="分享" icon="share"></blora-speed-dial-action></blora-speed-dial></div>
+          <div class="blora-speed-dial-stage"><p class="blora-speed-dial-stage__label">垂直 · 矩形按钮</p><blora-speed-dial label="项目操作" action-appearance="button"><blora-speed-dial-action value="new-project" label="新建项目"></blora-speed-dial-action><blora-speed-dial-action value="import" label="导入数据"></blora-speed-dial-action><blora-speed-dial-action value="export" label="导出报告"></blora-speed-dial-action></blora-speed-dial></div>
+          <div class="blora-speed-dial-stage"><p class="blora-speed-dial-stage__label">标签 · 关闭钮</p><blora-speed-dial label="编辑操作" action-appearance="label" close-button><blora-speed-dial-action value="edit" label="编辑" icon="pencil"></blora-speed-dial-action><blora-speed-dial-action value="copy" label="复制" icon="copy"></blora-speed-dial-action><blora-speed-dial-action value="delete" label="删除" icon="trash" variant="danger"></blora-speed-dial-action></blora-speed-dial></div>
+          <div class="blora-speed-dial-stage"><p class="blora-speed-dial-stage__label">标签 · 主操作</p><blora-speed-dial label="发布操作" action-appearance="label" main-label="发布" main-icon="arrow-up"><blora-speed-dial-action value="draft" label="草稿" icon="document"></blora-speed-dial-action><blora-speed-dial-action value="schedule" label="定时" icon="clock"></blora-speed-dial-action><blora-speed-dial-action value="preview" label="预览" icon="eye"></blora-speed-dial-action></blora-speed-dial></div>
+          <div class="blora-speed-dial-stage"><p class="blora-speed-dial-stage__label">水平 · 向左</p><blora-speed-dial label="联系操作" mode="left"><blora-speed-dial-action value="message" label="消息" icon="message"></blora-speed-dial-action><blora-speed-dial-action value="mail" label="邮件" icon="mail"></blora-speed-dial-action><blora-speed-dial-action value="phone" label="电话" icon="phone"></blora-speed-dial-action></blora-speed-dial></div>
+          <div class="blora-speed-dial-stage"><p class="blora-speed-dial-stage__label">花瓣 · 主操作</p><blora-speed-dial label="媒体操作" mode="flower" main-label="编辑" main-icon="pencil"><blora-speed-dial-action value="camera" label="拍照" icon="camera"></blora-speed-dial-action><blora-speed-dial-action value="chart" label="统计" icon="chart"></blora-speed-dial-action><blora-speed-dial-action value="gallery" label="图库" icon="image"></blora-speed-dial-action><blora-speed-dial-action value="voice" label="语音" icon="mic"></blora-speed-dial-action></blora-speed-dial></div>
+          <div class="blora-speed-dial-stage"><p class="blora-speed-dial-stage__label">花瓣 · 纯展开</p><blora-speed-dial label="快捷入口" mode="flower"><blora-speed-dial-action value="home" label="首页" icon="home"></blora-speed-dial-action><blora-speed-dial-action value="search" label="搜索" icon="search"></blora-speed-dial-action><blora-speed-dial-action value="favorite" label="收藏" icon="star"></blora-speed-dial-action><blora-speed-dial-action value="theme" label="主题" icon="sun"></blora-speed-dial-action></blora-speed-dial></div>
+        </div>
+      </template>
+
+      <template data-component="field" data-label="Field" data-group="数据输入" data-eyebrow="Data input" data-kind="Composite CE" data-description="统一管理标签、输入、提示、错误和字数限制。">
+        <div data-showcase-stack>
+          <blora-field label="文本输入" name="text-limit" value="这是一段用于演示超过二十个字符后自动标红的文本内容" hint="最长 20 个字符，超出部分会标红但不会截断输入。" limit="20" required></blora-field>
+          <blora-field label="邮箱" name="email" type="email" value="invalid" error="请输入有效邮箱"></blora-field>
+          <blora-field label="只读状态" name="disabled-field" value="不可编辑" disabled></blora-field>
+        </div>
+      </template>
+      <template data-component="fieldset" data-label="Fieldset" data-group="数据输入" data-eyebrow="Data input" data-kind="Native + CSS" data-description="使用原生 fieldset 和 legend 语义组织相关控件。">
+        <div data-showcase-cases><section data-showcase-case="Default"><h3>默认</h3><fieldset class="blora-fieldset"><legend class="blora-fieldset__legend">发布设置</legend><p class="blora-fieldset__description">使用原生语义组织一组相关控件。</p><blora-checkbox label="允许评论"></blora-checkbox></fieldset></section><section data-showcase-case="Flat"><h3>平面分组</h3><fieldset class="blora-fieldset" data-variant="flat"><legend class="blora-fieldset__legend">平面分组</legend><p class="blora-fieldset__description">无容器表面的轻量分组。</p></fieldset></section></div>
+      </template>
+      <template data-component="filter" data-label="Filter" data-group="数据输入" data-eyebrow="Data input" data-kind="Native + CSS" data-description="以原生单选和重置行为提供紧凑筛选器。">
+        <div data-showcase-cases><section data-showcase-case="Default"><h3>单选筛选</h3><form class="blora-filter" aria-label="状态筛选"><label class="blora-filter__item"><input type="radio" name="status-filter"><span class="blora-filter__label">全部</span></label><label class="blora-filter__item"><input type="radio" name="status-filter"><span class="blora-filter__label">进行中</span></label><label class="blora-filter__item"><input type="radio" name="status-filter"><span class="blora-filter__label">已完成</span></label><button class="blora-filter__reset" type="reset">清除</button></form></section></div>
+      </template>
+      <template data-component="input" data-label="Input" data-group="数据输入" data-eyebrow="Data input" data-kind="Native + CSS" data-description="保留原生输入语义的统一输入框表面。">
+        <div data-showcase-cases>
+          <section data-showcase-case="Default"><h3>默认</h3><input class="blora-input" type="text" placeholder="请输入内容" aria-label="示例输入框" /></section>
+          <section data-showcase-case="Types"><h3>输入类型与禁用</h3><div data-showcase-stack>
+            <input class="blora-input" type="text" placeholder="text" aria-label="文本" />
+            <input class="blora-input" type="password" placeholder="password" aria-label="密码" />
+            <input class="blora-input" type="email" placeholder="email" aria-label="邮箱" />
+            <input class="blora-input" type="number" placeholder="number" aria-label="数字" />
+            <input class="blora-input" type="search" placeholder="search" aria-label="搜索" />
+            <input class="blora-input" type="text" placeholder="disabled" aria-label="禁用" disabled />
+          </div></section>
+        </div>
+      </template>
+      <template data-component="textarea" data-label="Textarea" data-group="数据输入" data-eyebrow="Data input" data-kind="Native + CSS" data-description="用于多行文本输入的原生控件样式。">
+        <div data-showcase-cases>
+          <section data-showcase-case="Default"><h3>默认</h3><textarea class="blora-textarea" rows="4" placeholder="请输入详细说明" aria-label="示例多行输入"></textarea></section>
+          <section data-showcase-case="Disabled"><h3>禁用</h3><textarea class="blora-textarea" rows="3" placeholder="disabled" aria-label="禁用多行输入" disabled></textarea></section>
+        </div>
+      </template>
+      <template data-component="checkbox" data-label="Checkbox" data-group="数据输入" data-eyebrow="Data input" data-kind="Composite CE" data-description="支持表单提交、禁用和必选状态的复选框。">
+        <div data-showcase-cases>
+          <section data-showcase-case="Default"><h3>默认</h3><div data-showcase-stack>
+            <blora-checkbox name="features" value="notice" checked>接收通知</blora-checkbox>
+            <blora-checkbox name="features" value="report">生成周报</blora-checkbox>
+            <blora-checkbox disabled>禁用选项</blora-checkbox>
+          </div></section>
+          <section data-showcase-case="CheckAll"><h3>全选</h3><blora-checkbox name="options" label="批量选择">
+            <blora-checkbox-option check-all>全选</blora-checkbox-option>
+            <blora-checkbox-option value="a">选项 A</blora-checkbox-option>
+            <blora-checkbox-option value="b">选项 B</blora-checkbox-option>
+            <blora-checkbox-option value="c">选项 C</blora-checkbox-option>
+          </blora-checkbox></section>
+        </div>
+      </template>
+      <template data-component="radio" data-label="Radio" data-group="数据输入" data-eyebrow="Data input" data-kind="Composite CE" data-description="表单关联的单选输入组件。">
+        <div data-showcase-stack>
+          <blora-radio name="plan" value="basic" checked>基础版</blora-radio>
+          <blora-radio name="plan" value="pro">专业版</blora-radio>
+          <blora-radio name="plan" value="legacy" disabled>已停用方案</blora-radio>
+        </div>
+      </template>
+      <template data-component="switch" data-label="Switch" data-group="数据输入" data-eyebrow="Data input" data-kind="Composite CE" data-description="用于即时开关状态的表单控件。">
+        <div data-showcase-cases>
+          <section data-showcase-case="Default"><h3>默认状态</h3><div data-showcase-stack><blora-switch name="notifications" checked>开启通知</blora-switch><blora-switch name="updates">自动更新</blora-switch><blora-switch name="legacy-switch" disabled>禁用开关</blora-switch></div></section>
+          <section data-showcase-case="Sizes"><h3>尺寸</h3><div data-showcase-row><blora-switch size="sm">小号</blora-switch><blora-switch>默认</blora-switch><blora-switch size="lg">大号</blora-switch></div></section>
+        </div>
+      </template>
+      <template data-component="select" data-label="Select" data-group="数据输入" data-eyebrow="Data input" data-kind="Composite CE" data-description="带键盘导航和表单关联的单选与多选组合框。">
+        <div data-showcase-cases>
+          <section data-showcase-case="Default"><h3>默认</h3><blora-select name="country" placeholder="选择国家"><blora-option value="cn">中国</blora-option><blora-option value="jp">日本</blora-option><blora-option value="us">美国</blora-option></blora-select></section>
+          <section data-showcase-case="DisabledOption"><h3>禁用选项</h3><blora-select placeholder="选择选项"><blora-option value="a">选项 A</blora-option><blora-option value="b" disabled>选项 B（禁用）</blora-option><blora-option value="c">选项 C</blora-option></blora-select></section>
+          <section data-showcase-case="Disabled"><h3>禁用控件</h3><blora-select placeholder="已禁用" disabled><blora-option value="a">选项 A</blora-option></blora-select></section>
+          <section data-showcase-case="Multiple"><h3>多选与最大标签数</h3><blora-select multiple max-tag-count="2" value="design,frontend,product" placeholder="选择团队"><blora-option value="design">设计</blora-option><blora-option value="frontend">前端</blora-option><blora-option value="product">产品</blora-option><blora-option value="research">研究</blora-option></blora-select></section>
+        </div>
+      </template>
+      <template data-component="autocomplete" data-label="Autocomplete" data-group="数据输入" data-eyebrow="Data input" data-kind="Composite CE" data-description="根据输入过滤候选项的自动完成控件。">
+        <blora-autocomplete label="组件" placeholder="搜索组件…">
+          <blora-autocomplete-option value="Button"></blora-autocomplete-option>
+          <blora-autocomplete-option value="Dialog"></blora-autocomplete-option>
+          <blora-autocomplete-option value="Table"></blora-autocomplete-option>
+        </blora-autocomplete>
+      </template>
+      <template data-component="cascader" data-label="Cascader" data-group="数据输入" data-eyebrow="Data input" data-kind="Composite CE" data-description="逐级选择层级数据并显示完整结果。">
+        <blora-cascader placeholder="选择成员" show-result>
+          <blora-cascader-option label="技术部">
+            <blora-cascader-option label="前端组">
+              <blora-cascader-option label="张三"></blora-cascader-option>
+              <blora-cascader-option label="李四"></blora-cascader-option>
+            </blora-cascader-option>
+          </blora-cascader-option>
+          <blora-cascader-option label="产品部">
+            <blora-cascader-option label="桌面组">
+              <blora-cascader-option label="周十"></blora-cascader-option>
+            </blora-cascader-option>
+          </blora-cascader-option>
+        </blora-cascader>
+      </template>
+      <template data-component="color-picker" data-label="Color Picker" data-group="数据输入" data-eyebrow="Data input" data-kind="Composite CE" data-description="选择并同步十六进制颜色值。">
+        <div data-showcase-overlay-space><blora-color-picker label="品牌色" value="#ad5c68"></blora-color-picker></div>
+      </template>
+      <template data-component="calendar" data-label="Calendar" data-group="数据输入" data-eyebrow="Data input" data-kind="Composite CE" data-description="完整月份视图与键盘可操作的日期选择。">
+        <blora-calendar value="2026-08-11"></blora-calendar>
+      </template>
+      <template data-component="datepicker" data-label="Date Picker" data-group="数据输入" data-eyebrow="Data input" data-kind="Composite CE" data-description="使用官方日历面板选择日期。">
+        <blora-datepicker name="date" value="2026-08-11" placeholder="选择日期"></blora-datepicker>
+      </template>
+      <template data-component="timepicker" data-label="Time Picker" data-group="数据输入" data-eyebrow="Data input" data-kind="Composite CE" data-description="选择并校验小时与分钟。">
+        <blora-timepicker name="time" value="14:30" placeholder="HH:MM"></blora-timepicker>
+      </template>
+      <template data-component="mentions" data-label="Mentions" data-group="数据输入" data-eyebrow="Data input" data-kind="Composite CE" data-description="在多行文本中输入 @ 触发成员建议。">
+        <div data-showcase-cases>
+          <section data-showcase-case="Default"><h3>基础名单</h3><div data-showcase-mentions-stage><blora-mentions label="Mentions" placeholder="输入 @ 提及同事"><blora-mention value="alice"></blora-mention><blora-mention value="bob"></blora-mention><blora-mention value="carol"></blora-mention><blora-mention value="dave"></blora-mention><blora-mention value="张三"></blora-mention><blora-mention value="李四"></blora-mention></blora-mentions></div></section>
+          <section data-showcase-case="RichWithAvatar"><h3>头像与标签</h3><div data-showcase-mentions-stage><blora-mentions label="@ 提及（带头像与标签）" placeholder="输入 @ 试试"><blora-mention value="111creator" label="111creator" initials="11" avatar-variant="info" tag="创悦谷负责&策划" keywords="创悦 策划"></blora-mention><blora-mention value="114POPLAR" label="114POPLAR" initials="11" avatar-variant="info"></blora-mention><blora-mention value="Bai_vin" label="Bai_vin" initials="BA" avatar-variant="info" tag="设计系统"></blora-mention><blora-mention value="zhangsan" label="张三" initials="张" avatar-variant="primary" tag="前端"></blora-mention><blora-mention value="lisi" label="李四" initials="李" avatar-variant="success" tag="产品"></blora-mention></blora-mentions></div></section>
+        </div>
+      </template>
+      <template data-component="otp" data-label="OTP" data-group="数据输入" data-eyebrow="Data input" data-kind="Composite CE" data-description="分格输入一次性验证码并同步完整值。">
+        <div data-showcase-cases>
+          <section data-showcase-case="Numeric6"><h3>6 位数字</h3><blora-otp length="6" mode="numeric" label="数字验证码"></blora-otp></section>
+          <section data-showcase-case="Alphanumeric6"><h3>6 位字母数字</h3><blora-otp length="6" mode="alphanumeric" label="字母数字验证码"></blora-otp></section>
+          <section data-showcase-case="Any4"><h3>4 位任意字符</h3><blora-otp length="4" mode="any" label="任意字符验证码"></blora-otp></section>
+          <section data-showcase-case="UppercaseAlphanumeric8"><h3>8 位大写字母数字</h3><blora-otp length="8" mode="alphanumeric" uppercase label="大写验证码"></blora-otp></section>
+        </div>
+      </template>
+      <template data-component="range" data-label="Range" data-group="数据输入" data-eyebrow="Data input" data-kind="Composite CE" data-description="支持双手柄区间值和可选提示。">
+        <blora-range min="0" max="100" values="25,70" tooltip></blora-range>
+      </template>
+      <template data-component="rate" data-label="Rate" data-group="数据输入" data-eyebrow="Data input" data-kind="Composite CE" data-description="键盘可操作的评分输入。">
+        <div data-showcase-cases>
+          <section data-showcase-case="Default"><h3>可编辑</h3><blora-rate value="4" label="评分"></blora-rate></section>
+          <section data-showcase-case="Readonly"><h3>只读</h3><blora-rate value="3" readonly label="只读评分"></blora-rate></section>
+        </div>
+      </template>
+      <template data-component="search" data-label="Search" data-group="数据输入" data-eyebrow="Data input" data-kind="Composite CE" data-description="带搜索图标和清除行为的输入控件。">
+        <blora-search name="query" placeholder="搜索项目、用户…"></blora-search>
+      </template>
+      <template data-component="slider" data-label="Slider" data-group="数据输入" data-eyebrow="Data input" data-kind="Composite CE" data-description="单值滑块，支持步长、数值显示和 tooltip。">
+        <blora-slider min="0" max="100" value="42" tooltip></blora-slider>
+      </template>
+      <template data-component="tags-input" data-label="Tags Input" data-group="数据输入" data-eyebrow="Data input" data-kind="Composite CE" data-description="新增、删除并键盘管理多个标签值。">
+        <blora-tags-input values="React,Vue,Svelte" placeholder="添加标签…" label="技术栈"></blora-tags-input>
+      </template>
+      <template data-component="transfer" data-label="Transfer" data-group="数据输入" data-eyebrow="Data input" data-kind="Composite CE" data-description="在候选与已选列表之间移动项目。">
+        <blora-transfer source-label="候选" target-label="已选">
+          <blora-transfer-item value="zhang">张三</blora-transfer-item>
+          <blora-transfer-item value="li" checked>李四</blora-transfer-item>
+          <blora-transfer-item value="wang">王五</blora-transfer-item>
+          <blora-transfer-item value="li-target" target checked>李四</blora-transfer-item>
+        </blora-transfer>
+      </template>
+      <template data-component="tree-select" data-label="Tree Select" data-group="数据输入" data-eyebrow="Data input" data-kind="Composite CE" data-description="从层级选项中选择一个值。">
+        <blora-tree-select label="地区" placeholder="选择地区">
+          <blora-tree-select-option label="华东" value="east">
+            <blora-tree-select-option label="上海" value="sh"></blora-tree-select-option>
+            <blora-tree-select-option label="杭州" value="hz"></blora-tree-select-option>
+          </blora-tree-select-option>
+          <blora-tree-select-option label="华北" value="north">
+            <blora-tree-select-option label="北京" value="bj"></blora-tree-select-option>
+          </blora-tree-select-option>
+        </blora-tree-select>
+      </template>
+      <template data-component="upload" data-label="Upload" data-group="数据输入" data-eyebrow="Data input" data-kind="Composite CE" data-description="支持点击与拖放选择文件的上传输入。">
+        <div data-showcase-cases>
+          <section data-showcase-case="Default"><h3>拖放上传</h3><blora-upload prompt="拖拽文件至此" hint="支持 SVG / PNG / JPG · 单文件 ≤ 8MB" accept=".svg,.png,.jpg,.jpeg" multiple></blora-upload></section>
+          <section data-showcase-case="CompactFilePicker"><h3>紧凑文件选择器</h3><blora-upload variant="compact" prompt="选择附件" hint="支持 PDF / ZIP · 单文件 ≤ 20MB" accept=".pdf,.zip"></blora-upload></section>
+        </div>
+      </template>
+      <template data-component="number-input" data-label="Number Input" data-group="数据输入" data-eyebrow="Data input" data-kind="Composite CE" data-description="由原生 number 输入和 Lucide 加减控制组成的数字步进器。">
+        <div data-showcase-cases>
+          <section data-showcase-case="Default"><h3>数字步进</h3><blora-number-input label="数量" value="3" min="0" max="10" step="1"></blora-number-input></section>
+          <section data-showcase-case="Disabled"><h3>禁用</h3><blora-number-input label="不可编辑" value="3" disabled></blora-number-input></section>
+        </div>
+      </template>
+      <template data-component="swap" data-label="Swap" data-group="操作" data-eyebrow="Actions" data-kind="Composite CE" data-description="用原生复选框和 Lucide 图标表达两个明确状态。">
+        <div data-showcase-cases>
+          <section data-showcase-case="States"><h3>状态切换</h3><div data-showcase-row><blora-swap off-label="深色模式" on-label="浅色模式"></blora-swap><blora-swap checked off-label="深色模式" on-label="浅色模式"></blora-swap></div></section>
+        </div>
+      </template>
+      <template data-component="form" data-label="Form" data-group="数据输入" data-eyebrow="Data input" data-kind="Headless" data-description="为开放表单 DOM 提供统一校验和提交事件。">
+        <form class="blora-form" data-blora-form data-showcase-form>
+          <blora-field label="邮箱" name="email" type="email" validate="email" required></blora-field>
+          <blora-field label="名称" name="name" minlength="2" required></blora-field>
+          <button class="blora-button" type="submit" data-variant="primary">提交</button>
+        </form>
+      </template>
+
+      <template data-component="accordion" data-label="Accordion" data-group="数据展示" data-eyebrow="Data display" data-kind="Composite CE" data-description="单开模式的信息折叠组，官方 CE 持有标题、箭头和 ARIA 状态。">
+        <blora-accordion id="demo-accordion">
+          <blora-accordion-item heading="什么是 Blora Design？" open>一套基于 Web 标准的令牌驱动 UI 设计系统。</blora-accordion-item>
+          <blora-accordion-item heading="如何安装？"><code class="blora-code">pnpm add @bloret-crew/blora-design</code></blora-accordion-item>
+          <blora-accordion-item heading="支持哪些浏览器？">现代 Chromium、Firefox 与 Safari。</blora-accordion-item>
+        </blora-accordion>
+      </template>
+      <template data-component="avatar" data-label="Avatar" data-group="数据展示" data-eyebrow="Data display" data-kind="CSS-only" data-description="展示人物或实体缩写，支持尺寸、形状和语义变体。">
+        <div data-showcase-cases>
+          <section data-showcase-case="Sizes"><h3>尺寸</h3><div data-showcase-row><div class="blora-avatar" data-size="xs">XS</div><div class="blora-avatar" data-size="sm">SM</div><div class="blora-avatar">MD</div><div class="blora-avatar" data-size="lg">LG</div><div class="blora-avatar" data-size="xl">XL</div></div></section>
+          <section data-showcase-case="Variants"><h3>语义变体</h3><div data-showcase-row><div class="blora-avatar" data-variant="primary">P</div><div class="blora-avatar" data-variant="neutral">N</div><div class="blora-avatar" data-variant="info">I</div><div class="blora-avatar" data-variant="success">S</div><div class="blora-avatar" data-variant="contrast">C</div></div></section>
+          <section data-showcase-case="Shapes"><h3>形状</h3><div data-showcase-row><div class="blora-avatar">圆</div><div class="blora-avatar" data-shape="square">方</div></div></section>
+          <section data-showcase-case="Group"><h3>头像组</h3><div class="blora-avatar-group"><div class="blora-avatar" data-size="sm" data-variant="primary">A</div><div class="blora-avatar" data-size="sm" data-variant="success">B</div><div class="blora-avatar" data-size="sm" data-variant="info">C</div><div class="blora-avatar" data-size="sm" data-variant="neutral">+2</div></div></section>
+          <section data-showcase-case="WithBadge"><h3>角标</h3><div class="blora-avatar-wrap"><div class="blora-avatar" data-size="lg" data-variant="primary">AB</div><span class="blora-badge">3</span></div></section>
+          <section data-showcase-case="StatusDot"><h3>状态点</h3><div data-showcase-row><span class="blora-dot"></span>默认 <span class="blora-dot" data-variant="primary"></span>主色 <span class="blora-dot" data-variant="success"></span>成功 <span class="blora-dot" data-variant="warning"></span>警告</div></section>
+          <section data-showcase-case="PulseStatus"><h3>脉冲在线状态</h3><div class="blora-avatar-wrap"><div class="blora-avatar" data-size="lg" data-variant="primary">AB</div><span class="blora-dot" data-variant="success" data-pulse aria-label="在线"></span></div></section>
+        </div>
+      </template>
+      <template data-component="badge" data-label="Badge" data-group="数据展示" data-eyebrow="Data display" data-kind="CSS-only" data-description="紧凑显示数量、状态或新内容提示。">
+        <div data-showcase-row>
+          <span class="blora-badge">9</span>
+          <span class="blora-badge">99+</span>
+          <span class="blora-badge" data-variant="pill">New</span>
+          <span class="blora-badge" data-variant="neutral">Neutral</span>
+          <span class="blora-badge" data-variant="info">Info</span>
+          <span class="blora-badge" data-variant="success">Ready</span>
+          <span class="blora-badge" data-variant="warning">Warning</span>
+          <span class="blora-badge" data-variant="danger">Danger</span>
+          <span class="blora-badge" data-variant="dot" aria-label="有新消息"></span>
+        </div>
+      </template>
+      <template data-component="media" data-label="Media Container" data-group="数据展示" data-eyebrow="Data display" data-kind="CSS-only" data-description="为图片、视频和嵌入内容提供统一的比例、裁切和圆角容器。">
+        <div data-showcase-cases><section data-showcase-case="Ratios"><h3>比例</h3><div class="blora-grid blora-grid--3"><figure class="blora-stack blora-stack--sm"><div class="blora-media" data-ratio="square"><img src="legacy/visual-baseline-light.png" alt="1 比 1 裁切" /></div><figcaption class="blora-text-muted blora-text-center">1 : 1</figcaption></figure><figure class="blora-stack blora-stack--sm"><div class="blora-media" data-ratio="video"><img src="legacy/visual-baseline-light.png" alt="16 比 9 裁切" /></div><figcaption class="blora-text-muted blora-text-center">16 : 9</figcaption></figure><figure class="blora-stack blora-stack--sm"><div class="blora-media" data-ratio="portrait"><img src="legacy/visual-baseline-light.png" alt="3 比 4 裁切" /></div><figcaption class="blora-text-muted blora-text-center">3 : 4</figcaption></figure></div></section></div>
+      </template>
+      <template data-component="card" data-label="Card" data-group="数据展示" data-eyebrow="Data display" data-kind="CSS-only" data-description="承载标题、内容和操作的通用内容容器。">
+        <div data-showcase-cases>
+          <section data-showcase-case="Default"><h3>默认</h3><div class="blora-card"><div class="blora-card__title">项目概览</div><div class="blora-card__body">卡片内容可以组合文本和其他正式组件。</div><div class="blora-card__foot"><button class="blora-button" type="button" data-variant="primary" data-size="sm">查看详情</button></div></div></section>
+          <section data-showcase-case="Variants"><h3>变体</h3><div data-showcase-grid><div class="blora-card"><div class="blora-card__title">Default</div><div class="blora-card__body">默认卡片样式</div></div><div class="blora-card" data-variant="hover"><div class="blora-card__title">Hover</div><div class="blora-card__body">悬浮效果卡片</div></div><div class="blora-card" data-variant="flat"><div class="blora-card__title">Flat</div><div class="blora-card__body">无阴影卡片</div></div><div class="blora-card" data-variant="inset"><div class="blora-card__title">Inset</div><div class="blora-card__body">内嵌卡片</div></div></div></section>
+          <section data-showcase-case="Panel"><h3>面板</h3><div class="blora-panel"><div class="blora-panel__header"><span>面板标题</span><button class="blora-button" type="button" data-variant="text" data-size="sm">更多</button></div><p>面板内容区域，比卡片更宽松的容器。</p></div></section>
+          <section data-showcase-case="PositionedBadge"><h3>定位角标</h3><div class="blora-card" data-positioned data-with-badge><span class="blora-badge blora-card__badge" data-variant="circle">3</span><div class="blora-card__title">待处理项目</div><div class="blora-card__body">卡片角标由正式定位契约管理。</div></div></section>
+        </div>
+      </template>
+      <template data-component="carousel" data-label="Carousel" data-group="数据展示" data-eyebrow="Data display" data-kind="Composite CE" data-description="通过按钮、指示器和键盘浏览一组幻灯内容。">
+        <div data-showcase-cases>
+          <section data-showcase-case="Default"><h3>手动切换</h3><blora-carousel label="项目轮播"><blora-carousel-slide label="第一项"><div data-showcase-slide>第一项 · 设计规范</div></blora-carousel-slide><blora-carousel-slide label="第二项"><div data-showcase-slide>第二项 · 组件契约</div></blora-carousel-slide><blora-carousel-slide label="第三项"><div data-showcase-slide>第三项 · 发布门禁</div></blora-carousel-slide></blora-carousel></section>
+          <section data-showcase-case="Autoplay"><h3>自动播放</h3><blora-carousel label="自动项目轮播" autoplay><blora-carousel-slide label="第一项"><div data-showcase-slide>第一项 · 设计规范</div></blora-carousel-slide><blora-carousel-slide label="第二项"><div data-showcase-slide>第二项 · 组件契约</div></blora-carousel-slide><blora-carousel-slide label="第三项"><div data-showcase-slide>第三项 · 发布门禁</div></blora-carousel-slide></blora-carousel></section>
+        </div>
+      </template>
+      <template data-component="chart-container" data-label="Chart Container" data-group="数据展示" data-eyebrow="Data display" data-kind="Composite CE" data-description="为任意 SVG 或 Canvas 图表提供统一标题、趋势和内容框架。">
+        <div data-showcase-cases><section data-showcase-case="Default"><h3>默认</h3><blora-chart-container title="访问趋势" subtitle="最近 7 天" trend="+12%" trend-variant="success">
+          <svg viewBox="0 0 400 160" width="100%" height="160" preserveAspectRatio="none" role="img" aria-label="访问趋势折线图">
+            <polyline points="0,120 57,90 114,100 171,60 228,70 285,40 342,50 400,20" fill="none" stroke="var(--blora-color-action-primary-default)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+          </svg>
+        </blora-chart-container></section><section data-showcase-case="TrendVariants"><h3>趋势语义</h3><div data-showcase-grid><blora-chart-container title="增长" trend="+8.3%" trend-variant="success"><div>趋势向上</div></blora-chart-container><blora-chart-container title="下降" trend="-4.1%" trend-variant="danger"><div>趋势向下</div></blora-chart-container></div></section></div>
+      </template>
+      <template data-component="chat" data-label="Chat" data-group="数据展示" data-eyebrow="Data display" data-kind="Composite CE" data-description="展示左右两侧对话气泡、作者、头像和时间。">
+        <div data-showcase-stack>
+          <blora-chat author="Alice" time="10:24" avatar="A" message="设计稿已经更新。"></blora-chat>
+          <blora-chat author="Blora" time="10:26" avatar="B" message="收到，我来检查组件状态。" side="end" variant="primary"></blora-chat>
+        </div>
+      </template>
+      <template data-component="collapse" data-label="Collapse" data-group="数据展示" data-eyebrow="Data display" data-kind="Composite CE" data-description="允许多个条目独立展开的信息折叠组。">
+        <blora-collapse id="demo-collapse">
+          <blora-collapse-item heading="设计令牌" open>颜色、间距、圆角和阴影全部来自统一 token。</blora-collapse-item>
+          <blora-collapse-item heading="组件结构" open>复合组件由 CE 生成官方 light DOM。</blora-collapse-item>
+          <blora-collapse-item heading="无障碍">原生按钮、键盘操作和 ARIA 状态保持同步。</blora-collapse-item>
+        </blora-collapse>
+      </template>
+      <template data-component="comment" data-label="Comment" data-group="数据展示" data-eyebrow="Data display" data-kind="Composite CE" data-description="展示作者、时间、正文和评论操作。">
+        <blora-comment author="Rhedar" time="刚刚" avatar="R" content="Composite CE 让不同页面保持同一结构。" likes="12"></blora-comment>
+      </template>
+      <template data-component="descriptions" data-label="Descriptions" data-group="数据展示" data-eyebrow="Data display" data-kind="CSS-only" data-description="以键值表形式展示对象详情。">
+        <table class="blora-descriptions">
+          <tbody>
+            <tr><th>用户名</th><td>rhedar</td></tr>
+            <tr><th>邮箱</th><td>rhedar@bloret.net</td></tr>
+            <tr><th>角色</th><td>管理员</td></tr>
+            <tr><th>状态</th><td>活跃</td></tr>
+          </tbody>
+        </table>
+      </template>
+      <template data-component="empty" data-label="Empty" data-group="数据展示" data-eyebrow="Data display" data-kind="Composite CE" data-description="为空状态提供图形、说明和可选操作。">
+        <blora-empty title="暂无数据" description="列表为空，可创建一个新项开始。" action-label="创建项目"></blora-empty>
+      </template>
+      <template data-component="image" data-label="Image" data-group="数据展示" data-eyebrow="Data display" data-kind="Composite CE" data-description="提供框架化图片、滤镜、标题和预览行为。">
+        <div data-showcase-cases>
+          <section data-showcase-case="Variants"><h3>变体与滤镜</h3><div data-showcase-grid>
+            <blora-image src="legacy/visual-baseline-light.png" alt="悬浮缩放" caption="Hover zoom" variant="hover"></blora-image>
+            <blora-image src="legacy/visual-baseline-light.png" alt="图片边框" caption="Frame" variant="frame"></blora-image>
+            <blora-image src="legacy/visual-baseline-light.png" alt="弱化滤镜" caption="Muted" variant="hover" filter="muted"></blora-image>
+            <blora-image src="legacy/visual-baseline-light.png" alt="单色滤镜" caption="Monochrome" variant="hover" filter="monochrome"></blora-image>
+          </div></section>
+          <section data-showcase-case="Preview"><h3>点击预览</h3><blora-image src="legacy/visual-baseline-light.png" alt="Blora Design 视觉基线" caption="点击查看视觉基线" variant="preview" preview></blora-image></section>
+          <section data-showcase-case="PreviewGroup"><h3>预览组</h3><div data-showcase-grid><blora-image src="legacy/visual-baseline-light.png" alt="浅色视觉基线" preview preview-group="baselines"></blora-image><blora-image src="legacy/visual-baseline-dark.png" alt="深色视觉基线" preview preview-group="baselines"></blora-image></div></section>
+        </div>
+      </template>
+      <template data-component="list" data-label="List" data-group="数据展示" data-eyebrow="Data display" data-kind="CSS-only" data-description="无外框的分隔列表，可按需与 Card 组合。">
+        <div data-showcase-cases>
+          <section data-showcase-case="Default"><h3>无外框列表</h3><div class="blora-list"><div class="blora-list__item"><div class="blora-avatar" data-size="sm">A</div><div class="blora-list__meta"><div class="blora-list__title">Alice</div><div class="blora-list__desc">管理员</div></div></div><div class="blora-list__item"><div class="blora-avatar" data-size="sm" data-variant="success">B</div><div class="blora-list__meta"><div class="blora-list__title">Bob</div><div class="blora-list__desc">编辑者</div></div></div><div class="blora-list__item"><div class="blora-avatar" data-size="sm" data-variant="info">C</div><div class="blora-list__meta"><div class="blora-list__title">Carol</div><div class="blora-list__desc">访客</div></div></div></div></section>
+          <section data-showcase-case="InCard"><h3>组合在 Card 中</h3><div class="blora-card" style="padding:0;overflow:hidden"><div class="blora-list"><div class="blora-list__item"><div class="blora-avatar" data-size="sm">A</div><div class="blora-list__meta"><div class="blora-list__title">Alice</div><div class="blora-list__desc">管理员</div></div></div><div class="blora-list__item"><div class="blora-avatar" data-size="sm" data-variant="success">B</div><div class="blora-list__meta"><div class="blora-list__title">Bob</div><div class="blora-list__desc">编辑者</div></div></div><div class="blora-list__item"><div class="blora-avatar" data-size="sm" data-variant="info">C</div><div class="blora-list__meta"><div class="blora-list__title">Carol</div><div class="blora-list__desc">访客</div></div></div></div></div></section>
+          <section data-showcase-case="Hoverable"><h3>悬浮条目</h3><div class="blora-list" data-hover><div class="blora-list__item"><div class="blora-list__title">可悬浮条目</div></div><div class="blora-list__item"><div class="blora-list__title">第二条</div></div></div></section>
+        </div>
+      </template>
+      <template data-component="masonry" data-label="Masonry" data-group="布局" data-eyebrow="Layout" data-kind="CSS-only" data-description="使用 CSS columns 排列不同高度的内容块。">
+        <div class="blora-masonry" style="columns: 3; column-gap: var(--blora-space-3);">
+          <div data-showcase-tile style="height: 8rem;">A</div>
+          <div data-showcase-tile style="height: 12rem;">B</div>
+          <div data-showcase-tile style="height: 6rem;">C</div>
+          <div data-showcase-tile style="height: 10rem;">D</div>
+          <div data-showcase-tile style="height: 7rem;">E</div>
+        </div>
+      </template>
+      <template data-component="statistic" data-label="Statistic" data-group="数据展示" data-eyebrow="Data display" data-kind="Composite CE" data-description="统一展示指标值、单位和趋势变化。">
+        <div class="blora-grid blora-grid--3">
+          <blora-statistic label="活跃用户" value="12,847" trend="↑ 12.5%" direction="up"></blora-statistic>
+          <blora-statistic label="月收入" value="¥86.2" suffix="万" trend="↑ 8.3%" direction="up"></blora-statistic>
+          <blora-statistic label="流失率" value="2.1" suffix="%" trend="↓ 0.4%" direction="down"></blora-statistic>
+        </div>
+      </template>
+      <template data-component="table" data-label="Table" data-group="数据展示" data-eyebrow="Data display" data-kind="Headless" data-description="原生表格结构配合排序、选择、分页和虚拟化控制器。">
+        <div data-showcase-cases>
+          <section data-showcase-case="Default"><h3>默认与排序</h3><div class="blora-table-wrap" data-showcase-table><table class="blora-table"><thead><tr><th data-sort data-col-key="name">Name</th><th data-sort data-col-key="role">Role</th><th data-sort data-col-key="status">Status</th></tr></thead><tbody><tr><td>Alice</td><td>Admin</td><td>Active</td></tr><tr><td>Bob</td><td>Editor</td><td>Offline</td></tr><tr><td>Carol</td><td>Guest</td><td>Pending</td></tr><tr><td>Dave</td><td>Editor</td><td>Active</td></tr></tbody></table></div></section>
+          <section data-showcase-case="Selectable"><h3>行选择</h3><div class="blora-table-wrap" data-blora-selectable data-showcase-table><table class="blora-table"><thead><tr><th data-sort data-col-key="name">成员</th><th data-sort data-col-key="dept">部门</th><th data-sort data-col-key="task">事项</th><th data-sort data-col-key="status">状态</th><th data-sort data-col-key="score">评分</th></tr></thead><tbody><tr><td>张三</td><td>技术部</td><td>前端框架搭建</td><td>已完成</td><td>5</td></tr><tr><td>李四</td><td>技术部</td><td>接口文档撰写</td><td>审核中</td><td>5</td></tr><tr><td>王五</td><td>技术部</td><td>数据库迁移</td><td>待办</td><td>4</td></tr></tbody></table></div></section>
+          <section data-showcase-case="ColumnSettings"><h3>列设置与拖拽排序</h3><div class="blora-table-wrap" data-blora-cols data-blora-cols-key="showcase-table-cols" data-showcase-table><table class="blora-table"><thead><tr><th data-sort data-col-key="name">Name</th><th data-sort data-col-key="role">Role</th><th data-sort data-col-key="status">Status</th><th data-col-key="dept">Dept</th></tr></thead><tbody><tr><td>Alice</td><td>Admin</td><td>Active</td><td>Core</td></tr><tr><td>Bob</td><td>Editor</td><td>Offline</td><td>Docs</td></tr><tr><td>Carol</td><td>Guest</td><td>Pending</td><td>Ops</td></tr></tbody></table></div></section>
+          <section data-showcase-case="VirtualScroll"><h3>纵向虚拟滚动</h3><div class="blora-table-wrap" data-blora-virtual data-virtual-axis="y" data-row-height="44" data-viewport-height="360" data-overscan="6" data-showcase-table data-showcase-virtual="y"><table class="blora-table"><thead><tr><th data-col-key="name">Name</th><th data-col-key="role">Role</th><th data-col-key="status">Status</th></tr></thead><tbody></tbody></table></div></section>
+          <section data-showcase-case="VirtualScrollBoth"><h3>横纵双向虚拟滚动</h3><div class="blora-table-wrap" data-blora-virtual data-virtual-axis="both" data-row-height="40" data-col-width="100" data-viewport-height="320" data-overscan="4" data-showcase-table data-showcase-virtual="both"><table class="blora-table"><thead><tr></tr></thead><tbody></tbody></table></div></section>
+          <section data-showcase-case="Striped"><h3>斑马纹</h3><div class="blora-table-wrap"><table class="blora-table" data-striped><thead><tr><th>成员</th><th>状态</th></tr></thead><tbody><tr><td>Alice</td><td>Active</td></tr><tr><td>Bob</td><td>Offline</td></tr><tr><td>Carol</td><td>Pending</td></tr></tbody></table></div></section>
+        </div>
+      </template>
+      <template data-component="tag" data-label="Tag" data-group="数据展示" data-eyebrow="Data display" data-kind="CSS-only" data-description="用于分类、筛选或状态表达的紧凑标签。">
+        <div data-showcase-cases>
+          <section data-showcase-case="Default"><h3>默认</h3><div data-showcase-row><span class="blora-tag">Default</span></div></section>
+          <section data-showcase-case="Variants"><h3>语义变体</h3><div data-showcase-row><span class="blora-tag">Default</span><span class="blora-tag" data-variant="primary">Primary</span><span class="blora-tag" data-variant="neutral">Neutral</span><span class="blora-tag" data-variant="info">Info</span><span class="blora-tag" data-variant="success">Success</span><span class="blora-tag" data-variant="warning">Warning</span><span class="blora-tag" data-variant="solid">Solid</span></div></section>
+        </div>
+      </template>
+      <template data-component="timeline" data-label="Timeline" data-group="数据展示" data-eyebrow="Data display" data-kind="Composite CE" data-description="按时间顺序展示事件、状态与说明。">
+        <blora-timeline>
+          <blora-timeline-item time="09:00" title="项目启动" description="召开启动会议" variant="primary"></blora-timeline-item>
+          <blora-timeline-item time="12:00" title="完成设计" description="UI 设计稿已确认" variant="success"></blora-timeline-item>
+          <blora-timeline-item time="15:00" title="开发中"></blora-timeline-item>
+        </blora-timeline>
+      </template>
+      <template data-component="tree" data-label="Tree" data-group="数据展示" data-eyebrow="Data display" data-kind="Composite CE" data-description="浏览、展开并选择层级数据。">
+        <blora-tree value="tech">
+          <blora-tree-node value="tech" label="技术部" open selected>
+            <blora-tree-node value="frontend" label="前端组" open><blora-tree-node value="zhang" label="张三"></blora-tree-node><blora-tree-node value="li" label="李四"></blora-tree-node></blora-tree-node>
+            <blora-tree-node value="design" label="设计组"><blora-tree-node value="sun" label="孙八"></blora-tree-node></blora-tree-node>
+          </blora-tree-node>
+        </blora-tree>
+      </template>
+      <template data-component="mockup" data-label="Mockup" data-group="样机" data-eyebrow="Mockup" data-kind="Composite CE" data-description="提供浏览器、终端、窗口和手机等内容演示外壳。">
+        <div data-showcase-cases>
+          <section data-showcase-case="Browser"><h3>浏览器外壳</h3><div data-showcase-mockup-stage><blora-mockup variant="browser" address="https://blora.design/components"><div><strong>Blora Design</strong><p class="blora-text-muted">令牌驱动的 Web UI 框架</p></div></blora-mockup></div></section>
+          <section data-showcase-case="Code"><h3>代码终端</h3><div data-showcase-mockup-stage><blora-mockup variant="code" label="终端输出"><blora-mockup-line prefix="$"><code>npm install @bloret-crew/blora-design</code></blora-mockup-line><blora-mockup-line prefix="✓" tone="success"><code>project ready</code></blora-mockup-line></blora-mockup></div></section>
+          <section data-showcase-case="Window"><h3>应用窗口</h3><div data-showcase-mockup-stage><blora-mockup variant="window" title="Preferences"><p>深色模式 · 跟随系统</p></blora-mockup></div></section>
+          <section data-showcase-case="Phone"><h3>手机设备</h3><div data-showcase-mockup-stage><blora-mockup variant="phone" label="手机预览"><strong>Good morning, Blora</strong></blora-mockup></div></section>
+        </div>
+      </template>
+
+      <template data-component="alert" data-label="Alert" data-group="反馈" data-eyebrow="Feedback" data-kind="Composite CE" data-description="页面内持续展示重要状态与说明。">
+        <div data-showcase-stack>
+          <blora-alert variant="info" title="提示" description="这是一条可关闭的信息提示。" dismissible></blora-alert>
+          <blora-alert variant="success" title="成功" description="操作已完成。"></blora-alert>
+          <blora-alert variant="warning" title="警告" description="请注意潜在风险。"></blora-alert>
+          <blora-alert variant="danger" title="错误" description="操作失败，请稍后重试。"></blora-alert>
+        </div>
+      </template>
+      <template data-component="banner" data-label="Banner" data-group="反馈" data-eyebrow="Feedback" data-kind="Composite CE" data-description="横向呈现高优先级通知和相关操作。">
+        <blora-banner title="Blora Design 2.0" description="新的 Composite CE 结构已经可用。">
+          <blora-banner-action label="立即升级" value="upgrade" variant="primary"></blora-banner-action>
+          <blora-banner-action label="查看详情" value="details"></blora-banner-action>
+        </blora-banner>
+      </template>
+      <template data-component="dialog" data-label="Dialog" data-group="操作" data-eyebrow="Actions" data-kind="Composite CE" data-description="带焦点陷阱、Esc 关闭和遮罩管理的模态对话框。">
+        <div data-showcase-cases>
+          <section data-showcase-case="Default"><h3>默认</h3><button class="blora-button" type="button" data-variant="primary" data-showcase-action="dialog" data-showcase-target="showcase-dialog-default">打开对话框</button><blora-dialog id="showcase-dialog-default"><span slot="title">确认操作</span><p>此操作不可撤销，是否继续？</p><div slot="footer"><button class="blora-button" type="button" data-variant="ghost" data-showcase-action="close-overlay">取消</button><button class="blora-button" type="button" data-variant="primary" data-showcase-action="close-overlay">确认</button></div></blora-dialog></section>
+          <section data-showcase-case="Sizes"><h3>尺寸</h3><div data-showcase-row>
+            <button class="blora-button" type="button" data-variant="outline" data-showcase-action="dialog" data-showcase-target="showcase-dialog-sm">Small</button>
+            <button class="blora-button" type="button" data-variant="outline" data-showcase-action="dialog" data-showcase-target="showcase-dialog-md">Medium</button>
+            <button class="blora-button" type="button" data-variant="outline" data-showcase-action="dialog" data-showcase-target="showcase-dialog-lg">Large</button>
+          </div><blora-dialog id="showcase-dialog-sm" size="sm"><span slot="title">Small Dialog</span><p>小尺寸对话框。</p></blora-dialog><blora-dialog id="showcase-dialog-md" size="md"><span slot="title">Medium Dialog</span><p>中尺寸对话框。</p></blora-dialog><blora-dialog id="showcase-dialog-lg" size="lg"><span slot="title">Large Dialog</span><p>大尺寸对话框。</p></blora-dialog></section>
+          <section data-showcase-case="NoCloseOnOutside"><h3>禁止点击遮罩关闭</h3><button class="blora-button" type="button" data-variant="primary" data-showcase-action="dialog" data-showcase-target="showcase-dialog-persistent">打开持久对话框</button><blora-dialog id="showcase-dialog-persistent" close-on-outside-click="false"><span slot="title">持久对话框</span><p>点击遮罩不会关闭，请使用关闭按钮或 Esc。</p></blora-dialog></section>
+        </div>
+      </template>
+      <template data-component="drawer" data-label="Drawer" data-group="布局" data-eyebrow="Layout" data-kind="Composite CE" data-description="从屏幕边缘进入的非模态任务面板。">
+        <div data-showcase-cases>
+          <section data-showcase-case="Right"><h3>右侧</h3><div data-showcase-drawer-stage><button class="blora-button" type="button" data-variant="outline" data-showcase-action="drawer" data-showcase-target="showcase-drawer-right">打开（右侧）</button><blora-drawer id="showcase-drawer-right" title="右侧抽屉" position="right">打开/关闭均有动画。点击遮罩、关闭或 Esc 关闭。</blora-drawer></div></section>
+          <section data-showcase-case="Left"><h3>左侧</h3><div data-showcase-drawer-stage><button class="blora-button" type="button" data-variant="outline" data-showcase-action="drawer" data-showcase-target="showcase-drawer-left">打开（左侧）</button><blora-drawer id="showcase-drawer-left" title="左侧抽屉" position="left">打开/关闭均有动画。点击遮罩、关闭或 Esc 关闭。</blora-drawer></div></section>
+          <section data-showcase-case="Top"><h3>顶部</h3><div data-showcase-drawer-stage><button class="blora-button" type="button" data-variant="outline" data-showcase-action="drawer" data-showcase-target="showcase-drawer-top">打开（顶部）</button><blora-drawer id="showcase-drawer-top" title="顶部抽屉" position="top">打开/关闭均有动画。点击遮罩、关闭或 Esc 关闭。</blora-drawer></div></section>
+          <section data-showcase-case="Bottom"><h3>底部</h3><div data-showcase-drawer-stage><button class="blora-button" type="button" data-variant="outline" data-showcase-action="drawer" data-showcase-target="showcase-drawer-bottom">打开（底部）</button><blora-drawer id="showcase-drawer-bottom" title="底部抽屉" position="bottom">打开/关闭均有动画。点击遮罩、关闭或 Esc 关闭。</blora-drawer></div></section>
+        </div>
+      </template>
+      <template data-component="message" data-label="Message" data-group="反馈" data-eyebrow="Feedback" data-kind="Service" data-description="顶部居中的轻量状态胶囊，支持静态元素与 message() 服务。">
+        <div data-showcase-cases>
+          <section data-showcase-case="Variants"><h3>静态变体</h3><div id="message-variants" class="blora-stack" data-showcase-service="message"></div></section>
+          <section data-showcase-case="LiveAPI"><h3>浮动服务 API</h3><div data-showcase-row><button class="blora-button" type="button" data-variant="primary" data-showcase-action="message" data-showcase-message="success">message.success</button><button class="blora-button" type="button" data-variant="outline" data-showcase-action="message" data-showcase-message="info">message.info</button><button class="blora-button" type="button" data-variant="outline" data-showcase-action="message" data-showcase-message="warning">message.warning</button><button class="blora-button" type="button" data-variant="outline" data-showcase-action="message" data-showcase-message="error">message.error</button></div></section>
+        </div>
+      </template>
+      <template data-component="notification" data-label="Notification" data-group="反馈" data-eyebrow="Feedback" data-kind="Service" data-description="带标题、描述和四角 placement 的通知卡片。">
+        <section data-showcase-case="Variants"><h3>语义变体</h3><div id="notification-variants" class="blora-stack" data-showcase-service="notification"></div></section>
+      </template>
+      <template data-component="popconfirm" data-label="Popconfirm" data-group="反馈" data-eyebrow="Feedback" data-kind="Composite CE" data-description="在触发元素附近确认高风险操作。">
+        <div data-showcase-overlay-space><blora-popconfirm trigger="删除" message="确认删除此项？" cancel-label="取消" confirm-label="确定"></blora-popconfirm></div>
+      </template>
+      <template data-component="progress" data-label="Progress" data-group="反馈" data-eyebrow="Feedback" data-kind="Composite CE" data-description="以可访问进度条展示任务完成程度。">
+        <div data-showcase-cases>
+          <section data-showcase-case="Default"><h3>线性进度</h3><div data-showcase-stack>
+            <blora-progress label="上传中" value="30"></blora-progress>
+            <blora-progress label="处理中" value="60" variant="success"></blora-progress>
+            <blora-progress label="下载中" value="90" variant="info"></blora-progress>
+            <blora-progress label="不确定" value="100" variant="striped"></blora-progress>
+          </div></section>
+          <section data-showcase-case="Circular"><h3>环形进度</h3><div data-showcase-row><blora-progress shape="circular" label="完成度" value="70"></blora-progress><blora-progress shape="circular" label="同步中" value="40" variant="success"></blora-progress></div></section>
+        </div>
+      </template>
+      <template data-component="result" data-label="Result" data-group="反馈" data-eyebrow="Feedback" data-kind="Composite CE" data-description="展示完整操作结果、状态图标和后续说明。">
+        <div class="blora-grid blora-grid--4" data-showcase-case="Variants">
+          <blora-result variant="success" title="操作成功" description="数据已保存"></blora-result>
+          <blora-result variant="warning" title="注意" description="存在待处理项"></blora-result>
+          <blora-result variant="error" title="加载失败" description="请稍后重试"></blora-result>
+          <blora-result variant="info" title="提示" description="保存中…"></blora-result>
+        </div>
+      </template>
+      <template data-component="skeleton" data-label="Skeleton" data-group="反馈" data-eyebrow="Feedback" data-kind="CSS-only" data-description="内容加载前的占位骨架。">
+        <div data-showcase-cases>
+          <section data-showcase-case="CardSkeleton"><h3>卡片骨架</h3><div class="blora-card"><div class="blora-skeleton" style="width:60%;height:1.25rem"></div><div class="blora-skeleton" style="width:100%;height:.875rem;margin-top:var(--blora-space-3)"></div><div class="blora-skeleton" style="width:80%;height:.875rem;margin-top:var(--blora-space-2)"></div><div class="blora-skeleton" style="width:50%;height:.875rem;margin-top:var(--blora-space-2)"></div></div></section>
+          <section data-showcase-case="AvatarSkeleton"><h3>头像骨架</h3><div data-showcase-row><div class="blora-skeleton" style="width:2.5rem;height:2.5rem;border-radius:50%"></div><div data-showcase-stack><div class="blora-skeleton" style="width:8rem;height:.875rem"></div><div class="blora-skeleton" style="width:5rem;height:.75rem"></div></div></div></section>
+        </div>
+      </template>
+      <template data-component="spinner" data-label="Spinner" data-group="反馈" data-eyebrow="Feedback" data-kind="CSS-only" data-description="表示未知时长等待状态的旋转加载指示。">
+        <div data-showcase-row>
+          <span class="blora-spinner" data-size="sm" role="status" aria-label="加载中"></span>
+          <span class="blora-spinner" role="status" aria-label="加载中"></span>
+          <span class="blora-spinner" data-size="lg" role="status" aria-label="加载中"></span>
+        </div>
+      </template>
+
+      <template data-component="backtop" data-label="BackTop" data-group="导航" data-eyebrow="Navigation" data-kind="Composite CE" data-description="滚动超过阈值后显示并返回页面顶部。">
+        <div><p class="blora-text-muted">向下滚动页面后，按钮固定显示在页面右下角。</p><blora-backtop show-after="120" label="回到顶部"></blora-backtop></div>
+      </template>
+      <template data-component="breadcrumb" data-label="Breadcrumb" data-group="导航" data-eyebrow="Navigation" data-kind="Composite CE" data-description="帮助用户理解当前页面在层级结构中的位置。">
+        <blora-breadcrumb>
+          <blora-breadcrumb-item label="首页" href="#breadcrumb"></blora-breadcrumb-item>
+          <blora-breadcrumb-item label="组件" href="#breadcrumb"></blora-breadcrumb-item>
+          <blora-breadcrumb-item label="导航" href="#breadcrumb"></blora-breadcrumb-item>
+          <blora-breadcrumb-item label="面包屑" current></blora-breadcrumb-item>
+        </blora-breadcrumb>
+      </template>
+      <template data-component="command-palette" data-label="Command Palette" data-group="导航" data-eyebrow="Navigation" data-kind="Composite CE" data-description="快速搜索并执行命令的键盘优先界面。">
+        <blora-command placeholder="输入命令或搜索…">
+          <blora-command-item value="new" icon="document" shortcut="⌘N">新建文档</blora-command-item>
+          <blora-command-item value="open" icon="folder" shortcut="⌘O">打开文件</blora-command-item>
+          <blora-command-item value="settings" icon="settings" shortcut="⌘,">设置</blora-command-item>
+        </blora-command>
+      </template>
+      <template data-component="dock" data-label="Dock" data-group="导航" data-eyebrow="Navigation" data-kind="Composite CE" data-description="适用于移动端或紧凑应用的主导航栏。">
+        <blora-dock label="底部导航" static>
+          <blora-dock-item value="home" href="#dock" icon="home" active><span>首页</span></blora-dock-item>
+          <blora-dock-item value="search" href="#dock" icon="search"><span>搜索</span></blora-dock-item>
+          <blora-dock-item value="account" href="#dock" icon="user"><span>账户</span></blora-dock-item>
+          <blora-dock-item value="settings" href="#dock" icon="settings"><span>设置</span></blora-dock-item>
+        </blora-dock>
+      </template>
+      <template data-component="dropdown" data-label="Dropdown" data-group="操作" data-eyebrow="Actions" data-kind="Composite CE" data-description="从触发按钮展开一组菜单操作。">
+        <div data-showcase-cases>
+          <section data-showcase-case="Default"><h3>默认</h3><div data-showcase-overlay-space><blora-dropdown label="下拉菜单"><blora-dropdown-item value="one">操作一</blora-dropdown-item><blora-dropdown-item value="two">操作二</blora-dropdown-item><blora-dropdown-item value="three">操作三</blora-dropdown-item></blora-dropdown></div></section>
+          <section data-showcase-case="WithSeparator"><h3>带分隔线</h3><div data-showcase-overlay-space><blora-dropdown label="操作菜单"><blora-dropdown-item value="edit">编辑</blora-dropdown-item><blora-dropdown-item value="copy">复制</blora-dropdown-item><blora-dropdown-item value="delete" separator>删除</blora-dropdown-item></blora-dropdown></div></section>
+        </div>
+      </template>
+      <template data-component="megamenu" data-label="Megamenu" data-group="导航" data-eyebrow="Navigation" data-kind="Composite CE" data-description="在大型面板中按栏目组织复杂导航。">
+        <div data-showcase-overlay-space>
+          <blora-megamenu label="浏览产品">
+            <blora-megamenu-section title="工作"><a href="#megamenu">项目管理</a><a href="#megamenu">任务中心</a></blora-megamenu-section>
+            <blora-megamenu-section title="数据"><a href="#megamenu">分析面板</a><a href="#megamenu">导出记录</a></blora-megamenu-section>
+            <blora-megamenu-section title="支持"><a href="#megamenu">帮助中心</a><a href="#megamenu">服务状态</a></blora-megamenu-section>
+          </blora-megamenu>
+        </div>
+      </template>
+      <template data-component="navbar" data-label="Navbar" data-group="导航" data-eyebrow="Navigation" data-kind="Composite CE" data-description="品牌、主导航、工具和行动按钮的统一顶栏。">
+        <div data-showcase-cases>
+          <section data-showcase-case="Floating"><h3>浮动</h3><blora-navbar title="Blora Design" variant="floating"><blora-navbar-link label="设计规范" href="#navbar" current></blora-navbar-link><blora-navbar-link label="设计令牌" href="#navbar"></blora-navbar-link><blora-navbar-link label="组件" href="#navbar"></blora-navbar-link><blora-navbar-action label="规范文档" href="#navbar"></blora-navbar-action><blora-navbar-action label="登录" href="#navbar" variant="primary"></blora-navbar-action></blora-navbar></section>
+          <section data-showcase-case="FullWidth"><h3>通栏</h3><blora-navbar title="Blora Design" variant="full"><blora-navbar-link label="设计规范" href="#navbar" current></blora-navbar-link><blora-navbar-link label="设计令牌" href="#navbar"></blora-navbar-link><blora-navbar-link label="组件" href="#navbar"></blora-navbar-link><blora-navbar-action label="规范文档" href="#navbar"></blora-navbar-action><blora-navbar-action label="登录" href="#navbar" variant="primary"></blora-navbar-action></blora-navbar></section>
+        </div>
+      </template>
+      <template data-component="pagination" data-label="Pagination" data-group="导航" data-eyebrow="Navigation" data-kind="Composite CE" data-description="在多页数据间切换并同步当前页。">
+        <div data-showcase-cases>
+          <section data-showcase-case="Default"><h3>较少页数</h3><blora-pagination label="分页" page="2" total="5"></blora-pagination></section>
+          <section data-showcase-case="EllipsisWindow"><h3>固定窗口与双侧省略号</h3><blora-pagination label="分页" page="7" total="12" max-visible="7"></blora-pagination></section>
+        </div>
+      </template>
+      <template data-component="segmented" data-label="Segmented" data-group="导航" data-eyebrow="Navigation" data-kind="Composite CE" data-description="在少量互斥视图或筛选项之间快速切换。">
+        <blora-segmented value="week">
+          <blora-segment value="day">日</blora-segment>
+          <blora-segment value="week">周</blora-segment>
+          <blora-segment value="month">月</blora-segment>
+        </blora-segmented>
+      </template>
+      <template data-component="sidebar-nav" data-label="Sidebar Navigation" data-group="导航" data-eyebrow="Navigation" data-kind="Composite CE" data-description="正式统一的分组侧栏导航，只高亮当前文字。">
+        <blora-sidebar-nav label="设计系统导航" value="overview">
+          <blora-sidebar-nav-group label="规范">
+            <blora-sidebar-nav-link label="概述" href="#sidebar-nav" value="overview"></blora-sidebar-nav-link>
+            <blora-sidebar-nav-link label="色彩" href="#sidebar-nav" value="colors"></blora-sidebar-nav-link>
+            <blora-sidebar-nav-link label="字体" href="#sidebar-nav" value="typography"></blora-sidebar-nav-link>
+          </blora-sidebar-nav-group>
+          <blora-sidebar-nav-group label="基础">
+            <blora-sidebar-nav-link label="按钮" href="#sidebar-nav" value="button"></blora-sidebar-nav-link>
+            <blora-sidebar-nav-link label="表单输入" href="#sidebar-nav" value="input"></blora-sidebar-nav-link>
+          </blora-sidebar-nav-group>
+        </blora-sidebar-nav>
+      </template>
+      <template data-component="steps" data-label="Steps" data-group="导航" data-eyebrow="Navigation" data-kind="Composite CE" data-description="展示流程阶段、当前进度与步骤说明。">
+        <blora-steps current="2" clickable>
+          <blora-step title="需求分析" description="明确业务需求"></blora-step>
+          <blora-step title="设计开发" description="UI 设计与实现"></blora-step>
+          <blora-step title="测试验收" description="功能测试与审查"></blora-step>
+          <blora-step title="上线" description="发布到生产环境"></blora-step>
+        </blora-steps>
+      </template>
+      <template data-component="tabs" data-label="Tabs" data-group="导航" data-eyebrow="Navigation" data-kind="Composite CE" data-description="在同一上下文中切换多个内容面板。">
+        <div data-showcase-cases>
+          <section data-showcase-case="Default"><h3>默认</h3><blora-tabs><blora-tab label="概览" value="overview" selected>概览内容区域</blora-tab><blora-tab label="活动" value="activity">活动内容区域</blora-tab><blora-tab label="设置" value="settings">设置内容区域</blora-tab></blora-tabs></section>
+          <section data-showcase-case="Pills"><h3>胶囊</h3><blora-tabs variant="pills"><blora-tab label="概览" value="overview" selected>概览内容区域</blora-tab><blora-tab label="活动" value="activity">活动内容区域</blora-tab><blora-tab label="设置" value="settings">设置内容区域</blora-tab></blora-tabs></section>
+          <section data-showcase-case="Vertical"><h3>垂直</h3><blora-tabs orientation="vertical"><blora-tab label="概览" value="overview" selected>概览内容区域</blora-tab><blora-tab label="活动" value="activity">活动内容区域</blora-tab><blora-tab label="设置" value="settings">设置内容区域</blora-tab></blora-tabs></section>
+          <section data-showcase-case="FullBleed"><h3>通栏</h3><blora-tabs flush><blora-tab label="概览" value="overview" selected>概览内容区域</blora-tab><blora-tab label="活动" value="activity">活动内容区域</blora-tab><blora-tab label="设置" value="settings">设置内容区域</blora-tab></blora-tabs></section>
+        </div>
+      </template>
+      <template data-component="tour" data-label="Tour" data-group="导航" data-eyebrow="Navigation" data-kind="Composite CE" data-description="分步骤介绍页面功能并管理焦点。">
+        <blora-tour label="开始漫游">
+          <blora-tour-step title="标签" description="这是第一步：高亮当前标签。"><span class="blora-tag" data-variant="primary">步骤 A</span></blora-tour-step>
+          <blora-tour-step title="按钮" description="第二步：关注操作按钮。"><button class="blora-button" data-variant="outline" type="button">步骤 B</button></blora-tour-step>
+          <blora-tour-step title="说明" description="第三步：可跳过或完成引导。"><span class="blora-text-muted">步骤 C 文案</span></blora-tour-step>
+        </blora-tour>
+      </template>
+
+      <template data-component="popover" data-label="Popover" data-group="反馈" data-eyebrow="Feedback" data-kind="Composite CE" data-description="点击触发、与触发器对齐的轻量内容面板。">
+        <div data-showcase-overlay-space><blora-popover trigger="打开 Popover" content="弹出层与触发按钮左侧对齐。"></blora-popover></div>
+      </template>
+      <template data-component="tooltip" data-label="Tooltip" data-group="反馈" data-eyebrow="Feedback" data-kind="Composite CE" data-description="悬停或聚焦时提供简短辅助说明。">
+        <div data-showcase-overlay-space><blora-tooltip trigger="悬停或聚焦查看" text="这是一个提示信息" placement="bottom"></blora-tooltip></div>
+      </template>
+      <template data-component="deck" data-label="Deck" data-group="布局" data-eyebrow="Layout" data-kind="Composite CE" data-description="以叠层卡片浏览队列或相册内容。">
+        <blora-deck label="卡片叠层" current="2" style="width: 18rem; height: 20rem;">
+          <blora-deck-card variant="flat"><div data-showcase-slide><strong>设计评审</strong></div></blora-deck-card>
+          <blora-deck-card variant="flat"><div data-showcase-slide><strong>接口联调</strong></div></blora-deck-card>
+          <blora-deck-card front><div data-showcase-slide><strong>当前卡片</strong></div></blora-deck-card>
+          <blora-deck-card variant="flat"><div data-showcase-slide><strong>上线检查</strong></div></blora-deck-card>
+        </blora-deck>
+      </template>
+      <template data-component="splitter" data-label="Splitter" data-group="布局" data-eyebrow="Layout" data-kind="Composite CE" data-description="通过可拖拽分隔条调整两个面板的空间比例。">
+        <blora-splitter min="100" position="45" style="min-height: 12rem;">
+          <blora-splitter-pane style="background: var(--blora-color-surface-raised); display: grid; place-items: center; padding: var(--blora-space-4);">左栏 · 拖拽中间条</blora-splitter-pane>
+          <blora-splitter-pane style="display: grid; place-items: center; padding: var(--blora-space-4);">右栏 · 自适应</blora-splitter-pane>
+        </blora-splitter>
+      </template>
+      <template data-addon="effects" data-label="Effects" data-group="数据展示" data-eyebrow="Data display" data-kind="Service" data-description="文字动效、轮换、倒计时、数字增长、双边对比、悬停画廊、水印和快捷键提示。">
+        <div data-showcase-cases data-showcase-addon-effects>
+          <section data-showcase-case="TextFx"><h3>文字动效</h3><div class="showcase-preview-row">
+            <span data-blora-text-fx="grow">Grow</span><span data-blora-text-fx="shrink">Shrink</span>
+            <span data-blora-text-fx="shake">Shake</span><span data-blora-text-fx="nod">Nod</span>
+            <span data-blora-text-fx="jitter">Jitter</span><span data-blora-text-fx="explode">Explode</span>
+            <span data-blora-text-fx="ripple">Ripple</span><span data-blora-text-fx="bloom">Bloom</span>
+          </div></section>
+          <section data-showcase-case="TextRotate"><h3>文字轮换</h3><div class="blora-text-rotate" data-showcase-text-rotate aria-live="polite">
+            <span class="blora-text-rotate__item is-active">结构统一</span>
+            <span class="blora-text-rotate__item">令牌驱动</span>
+          </div></section>
+          <section data-showcase-case="Countdown"><h3>倒计时</h3><div class="blora-countdown" data-blora-countdown data-showcase-countdown data-seconds="86405">
+            <span class="blora-countdown__unit"><strong class="blora-countdown__value" data-unit="days">1</strong><span class="blora-countdown__label">天</span></span>
+            <span class="blora-countdown__unit"><strong class="blora-countdown__value" data-unit="hours">00</strong><span class="blora-countdown__label">时</span></span>
+            <span class="blora-countdown__unit"><strong class="blora-countdown__value" data-unit="minutes">00</strong><span class="blora-countdown__label">分</span></span>
+            <span class="blora-countdown__unit"><strong class="blora-countdown__value" data-unit="seconds">05</strong><span class="blora-countdown__label">秒</span></span>
+          </div></section>
+          <section data-showcase-case="CountUp"><h3>数字增长</h3><strong data-showcase-countup data-blora-countup="12847">0</strong></section>
+          <section data-showcase-case="ImageDiff"><h3>图片对比</h3><div class="blora-diff" data-showcase-image-diff><div class="blora-diff__item blora-diff__item--before"><div class="showcase-fx-surface"></div></div><div class="blora-diff__item"><div class="showcase-fx-surface" data-tone="success"></div></div><div class="blora-diff__divider" aria-hidden="true"></div><input class="blora-diff__range" type="range" min="0" max="100" value="50" aria-label="对比位置"></div></section>
+          <section data-showcase-case="Content"><h3>任意内容</h3><div class="blora-diff" data-showcase-image-diff style="--blora-diff-ratio: 4 / 3"><div class="blora-diff__item blora-diff__item--before"><article class="blora-card" data-variant="flat"><div class="blora-card__title">草稿</div><div class="blora-card__body">标题和说明挤在一起，状态也不清楚。</div><div class="blora-card__foot"><span class="blora-badge" data-variant="neutral">草稿</span></div></article></div><div class="blora-diff__item"><article class="blora-card"><div class="blora-card__title">已发布</div><div class="blora-card__body">层级拆开，用正式标签表达状态。</div><div class="blora-card__foot"><span class="blora-tag" data-variant="success">已发布</span></div></article></div><div class="blora-diff__divider" aria-hidden="true"></div><input class="blora-diff__range" type="range" min="0" max="100" value="50" aria-label="对比位置"></div></section>
+          <section data-showcase-case="HoverGallery"><h3>悬停画廊</h3><div class="blora-hover-gallery blora-hover-gallery--wide" data-showcase-hover-gallery tabindex="0" aria-label="图库"><div class="blora-hover-gallery__track"><div class="blora-hover-gallery__item showcase-fx-surface is-active"></div><div class="blora-hover-gallery__item showcase-fx-surface" data-tone="success"></div><div class="blora-hover-gallery__item showcase-fx-surface" data-tone="info"></div></div></div><p class="blora-text-muted">拖拽或方向键切换</p></section>
+          <section data-showcase-case="Watermark"><h3>水印</h3><div class="blora-watermark" data-showcase-watermark data-blora-watermark="BLORA" data-text="BLORA"><p>受保护的预览内容</p></div></section>
+          <section data-showcase-case="ShortcutHints"><h3>快捷键提示</h3><p>打开命令：<kbd data-blora-shortcut="mod+k">Ctrl K</kbd></p></section>
+        </div>
+      </template>
+      <template data-addon="layout" data-label="Layout" data-group="布局" data-eyebrow="Layout" data-kind="Composite CE" data-description="响应式侧栏、吸附、锚点、滚动监听和顺滑滚动能力。">
+        <div data-showcase-cases data-showcase-addon-layout>
+          <section data-showcase-case="Default"><h3>响应式侧栏</h3>
+            <blora-sidebar-layout label="设计系统导航" toggle-label="打开导航">
+              <blora-sidebar-layout-sidebar>
+                <blora-sidebar-nav label="设计系统导航" value="overview">
+                  <blora-sidebar-nav-group label="规范">
+                    <blora-sidebar-nav-link label="概述" href="#layout" value="overview"></blora-sidebar-nav-link>
+                    <blora-sidebar-nav-link label="色彩" href="#layout" value="colors"></blora-sidebar-nav-link>
+                    <blora-sidebar-nav-link label="字体" href="#layout" value="typography"></blora-sidebar-nav-link>
+                  </blora-sidebar-nav-group>
+                  <blora-sidebar-nav-group label="基础">
+                    <blora-sidebar-nav-link label="按钮" href="#layout" value="button"></blora-sidebar-nav-link>
+                    <blora-sidebar-nav-link label="表单" href="#layout" value="input"></blora-sidebar-nav-link>
+                  </blora-sidebar-nav-group>
+                </blora-sidebar-nav>
+              </blora-sidebar-layout-sidebar>
+              <blora-sidebar-layout-content>
+                <h3 class="blora-h3">设计规范</h3>
+                <p class="blora-text-muted">左侧导航按组分块。窄屏（≤900px）下折叠为抽屉。</p>
+              </blora-sidebar-layout-content>
+            </blora-sidebar-layout>
+          </section>
+          <section data-showcase-case="Compact"><h3>紧凑侧栏</h3>
+            <blora-sidebar-layout compact label="设计系统导航" toggle-label="打开导航">
+              <blora-sidebar-layout-sidebar>
+                <blora-sidebar-nav label="设计系统导航" value="overview">
+                  <blora-sidebar-nav-group label="规范">
+                    <blora-sidebar-nav-link label="概述" href="#layout" value="overview"></blora-sidebar-nav-link>
+                    <blora-sidebar-nav-link label="色彩" href="#layout" value="colors"></blora-sidebar-nav-link>
+                  </blora-sidebar-nav-group>
+                </blora-sidebar-nav>
+              </blora-sidebar-layout-sidebar>
+              <blora-sidebar-layout-content>
+                <h3 class="blora-h3">紧凑模式</h3>
+                <p class="blora-text-muted">min-height: 20rem（默认 28rem）</p>
+              </blora-sidebar-layout-content>
+            </blora-sidebar-layout>
+          </section>
+          <section data-showcase-case="Affix"><h3>吸附</h3><div class="blora-affix" data-showcase-affix><div class="blora-affix__inner"><button class="blora-button" type="button">吸附操作</button></div></div></section>
+          <section data-showcase-case="Anchor"><h3>锚点与滚动监听</h3><div data-showcase-anchor-layout><nav class="blora-anchor" data-showcase-anchor data-offset="80"><a class="blora-anchor__link" href="#showcase-anchor-a">Section A</a><a class="blora-anchor__link" href="#showcase-anchor-b">Section B</a><a class="blora-anchor__link" href="#showcase-anchor-c">Section C</a></nav><div data-showcase-anchor-content><section id="showcase-anchor-a"><h4>Section A</h4><p>平滑滚动与活动项同步。</p></section><section id="showcase-anchor-b"><h4>Section B</h4><p>滚动监听会更新导航状态。</p></section><section id="showcase-anchor-c"><h4>Section C</h4><p>键盘和链接语义保持原生。</p></section></div></div></section>
+        </div>
+      </template>
+      <template data-addon="markdown" data-label="Markdown" data-group="数据展示" data-eyebrow="Data display" data-kind="Service" data-description="默认安全转义并渲染标题、强调、列表、引用、链接和代码块。">
+        <article data-blora-markdown data-showcase-markdown>
+          <script type="text/markdown"># Blora Design
+
+> 安全、可组合、令牌驱动。
+
+- **默认转义 HTML**
+- 支持列表与 `inline code`</script>
+        </article>
+      </template>
+      <template data-addon="qrcode" data-label="QR Code" data-group="数据展示" data-eyebrow="Data display" data-kind="Service" data-description="将文本或链接渲染为带无障碍标签的二维码画布。">
+        <figure>
+          <div data-blora-qrcode data-showcase-qrcode data-text="https://blora.design/components" aria-label="Blora Design 文档二维码"></div>
+          <figcaption>blora.design/components</figcaption>
+        </figure>
+      </template>
+      <template data-addon="theming" data-label="Theming" data-group="操作" data-eyebrow="Actions" data-kind="Composite CE" data-description="正式色板选择器、明暗模式切换及主题持久化服务。">
+        <div class="showcase-preview-row"><blora-palette-picker button-variant="outline" size="sm"></blora-palette-picker><blora-color-scheme-toggle button-variant="outline" size="sm"></blora-color-scheme-toggle></div>
+      </template>
+      <template data-addon="thread" data-label="Thread" data-group="数据展示" data-eyebrow="Data display" data-kind="Headless" data-description="论坛主题、回复折叠和回应状态的完整线程结构。">
+        <div data-showcase-cases data-showcase-addon-thread>
+        <section data-showcase-case="ForumThread"><h3>论坛跟帖</h3>
+          <div class="blora-thread" data-blora-thread data-showcase-thread>
+            <article class="blora-post">
+              <header class="blora-post__head">
+                <div class="blora-post__identity">
+                  <span class="blora-avatar" data-size="lg" data-variant="primary">D</span>
+                  <div class="blora-post__who">
+                    <div class="blora-post__author-row">
+                      <a class="blora-post__author" href="#thread">diddy123</a>
+                    </div>
+                    <div class="blora-post__sub">评论于 <time datetime="2026-07-17">10 天前</time> · <span class="blora-post__loc">江苏</span></div>
+                  </div>
+                </div>
+                <div class="blora-post__tools">
+                  <button type="button">链接</button>
+                  <button type="button">回复</button>
+                  <button type="button" class="is-danger">删除</button>
+                  <button type="button">编辑</button>
+                  <button type="button" class="blora-post__more" aria-label="更多"></button>
+                </div>
+              </header>
+              <div class="blora-post__title">妈妈</div>
+              <div class="blora-post__react">
+                <button type="button" class="blora-post__react-btn" data-blora-post-react aria-label="添加表情" title="表情" aria-pressed="false"></button>
+              </div>
+              <div class="blora-post__replies" data-blora-thread-replies>
+                <div class="blora-post__replies-body" data-blora-thread-body>
+                  <article class="blora-post blora-post--reply">
+                    <header class="blora-post__head">
+                      <div class="blora-post__identity">
+                        <span class="blora-avatar" data-size="sm" data-variant="neutral">De</span>
+                        <div class="blora-post__who">
+                          <div class="blora-post__author-row">
+                            <a class="blora-post__author" href="#thread">Detrital</a>
+                            <span class="blora-post__badge">何意味</span>
+                            <span class="blora-post__reply-to">回复 <a href="#thread">@diddy123</a></span>
+                          </div>
+                          <div class="blora-post__sub">评论于 <time datetime="2026-07-17">10 天前</time> · <span class="blora-post__loc">浙江</span></div>
+                        </div>
+                      </div>
+                      <div class="blora-post__tools">
+                        <button type="button">链接</button>
+                        <button type="button">回复</button>
+                        <button type="button" class="is-danger">删除</button>
+                        <button type="button">编辑</button>
+                        <button type="button" class="blora-post__more" aria-label="更多"></button>
+                      </div>
+                    </header>
+                    <div class="blora-post__quote">
+                      <span class="blora-post__quote-label">回复 @diddy123</span>
+                      <span class="blora-post__quote-text">## 妈妈</span>
+                    </div>
+                    <div class="blora-post__body">
+                      <p>这个帖子仅以一个二级标题「妈妈」作为内容，没有正文。在论坛中，<strong>这种极简发帖通常是为了引发情感共鸣或作为一个开放话题，让网友围绕「母亲」展开讨论</strong>——比如分享与妈妈的暖心故事、求助与妈妈的矛盾、或者单纯表达思念。</p>
+                      <p>在网络文化中，「妈妈」一词还有延伸用法：在饭圈（粉丝圈）里，「妈妈」常作为粉丝自称（「妈妈粉」），表示以母亲般的心态爱护偶像；在一些表情包或段子里，「妈妈」也会被用来撒娇或偷懒（如经典的「妈妈，饿饿，饭饭」）。</p>
+                      <p>由于原帖缺乏正文，具体含义需要结合上下文才能确定，但可以推测这是一个与母亲相关的情感或闲聊帖。</p>
+                    </div>
+                    <div class="blora-post__react">
+                      <button type="button" class="blora-post__react-btn" data-blora-post-react aria-label="添加表情" title="表情" aria-pressed="false"></button>
+                    </div>
+                  </article>
+                  <article class="blora-post blora-post--reply">
+                    <header class="blora-post__head">
+                      <div class="blora-post__identity">
+                        <span class="blora-avatar" data-size="sm" data-variant="primary">De</span>
+                        <div class="blora-post__who">
+                          <div class="blora-post__author-row">
+                            <a class="blora-post__author" href="#thread">Detrital</a>
+                            <span class="blora-post__badge">何意味</span>
+                            <span class="blora-post__reply-to">回复 <a href="#thread">@Detrital</a></span>
+                          </div>
+                          <div class="blora-post__sub">评论于 <time datetime="2026-07-17">10 天前</time> · <span class="blora-post__loc">浙江</span></div>
+                        </div>
+                      </div>
+                      <div class="blora-post__tools">
+                        <button type="button">链接</button>
+                        <button type="button">回复</button>
+                        <button type="button" class="is-danger">删除</button>
+                        <button type="button">编辑</button>
+                        <button type="button" class="blora-post__more" aria-label="更多"></button>
+                      </div>
+                    </header>
+                    <div class="blora-post__body">
+                      <p>补充一句：极简标题帖在社区里往往靠跟帖把话题撑起来，楼主不一定会回来解释。</p>
+                      <ul>
+                        <li>适合闲聊 / 情感共鸣</li>
+                        <li>需要结合上下文理解</li>
+                      </ul>
+                    </div>
+                    <div class="blora-post__react">
+                      <button type="button" class="blora-post__react-btn" data-blora-post-react aria-label="添加表情" title="表情" aria-pressed="false"></button>
+                    </div>
+                  </article>
+                </div>
+                <button class="blora-post__collapse" type="button" data-blora-thread-toggle aria-expanded="true" data-label-collapse="收起评论" data-label-expand="展开评论">收起评论</button>
+              </div>
+            </article>
+          </div>
+        </section>
+        <section data-showcase-case="CollapsedByDefault"><h3>默认收起</h3><div class="blora-thread" data-blora-thread data-showcase-thread><article class="blora-post"><h3 class="blora-post__title">收起态示例</h3><p class="blora-post__body">主帖内容，下方回复默认折叠。</p><div class="blora-post__replies is-collapsed" data-blora-thread-replies><div class="blora-post__replies-body" data-blora-thread-body><article class="blora-post blora-post--reply"><p class="blora-post__body">第一条回复</p></article></div><button class="blora-post__collapse" type="button" data-blora-thread-toggle aria-expanded="false" data-label-collapse="收起评论" data-label-expand="展开评论">展开评论</button></div></article></div></section>
+        <section data-showcase-case="QuoteOnly"><h3>引用条</h3><div class="blora-thread"><article class="blora-post blora-post--reply"><div class="blora-post__quote"><span class="blora-post__quote-label">回复 @someone</span><span class="blora-post__quote-text">被引用的原文摘要…</span></div><div class="blora-post__body"><p>跟帖正文与引用内容保持清晰层级。</p></div></article></div></section>
+        </div>
+      </template>
+    </div>
+
+    <script src="packages/blora-design/dist/blora.global.js"></script>
+    <script src="addons/theming/dist/theming.global.js"></script>
+    <script src="addons/layout/dist/layout.global.js"></script>
+    <script src="addons/effects/dist/effects.global.js"></script>
+    <script src="addons/markdown/dist/markdown.global.js"></script>
+    <script src="addons/qrcode/dist/qrcode.global.js"></script>
+    <script src="addons/thread/dist/thread.global.js"></script>
+    <script>
+      (() => {
+        const Blora = window.Blora;
+        if (!Blora) {
+          console.error("[showcase-v2] window.Blora missing — run the full package build");
+          return;
+        }
+        const root = document.documentElement;
+        const showcaseShell = document.getElementById("showcase-shell");
+        const componentNavigationMount = document.getElementById("component-navigation-mount");
+        const componentPanelRoot = document.getElementById("component-panel-root");
+        const sourceTemplates = [
+          ...document.querySelectorAll("#showcase-component-sources template:is([data-component], [data-addon])"),
+        ];
+        sourceTemplates.forEach((template) => {
+          if (!template.dataset.component) template.dataset.component = template.dataset.addon;
+        });
+        const voidElements = new Set(["area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "source", "track", "wbr"]);
+        const sourceScripts = {
+          form: [
+            'import { createFormController } from "@bloret-crew/blora-design";',
+            'createFormController(document.querySelector("[data-blora-form]"));',
+          ],
+          table: [
+            'import { createTableController } from "@bloret-crew/blora-design";',
+            'document.querySelectorAll(".blora-table-wrap").forEach((root) => {',
+            "  createTableController(root);",
+            "});",
+          ],
+          message: [
+            'import { createMessageElement, message } from "@bloret-crew/blora-design";',
+            "",
+            "document.querySelector(\"#message-variants\").append(",
+            '  createMessageElement({ content: "这是一条提示消息", type: "info" }),',
+            '  createMessageElement({ content: "操作已成功完成", type: "success" }),',
+            '  createMessageElement({ content: "请关注重要提示", type: "warning" }),',
+            '  createMessageElement({ content: "系统遇到了问题", type: "danger" }),',
+            ");",
+            "",
+            'message.success("操作成功");',
+            'message.info("这是一条提示");',
+            'message.warning("请注意");',
+            'message.error("出错了");',
+          ],
+          notification: [
+            'import { createNotificationElement, createNotificationController, notify } from "@bloret-crew/blora-design";',
+            "",
+            "const cards = [",
+            '  { type: "info", title: "新版本可用", description: "Blora Design 2.0 已准备就绪。" },',
+            '  { type: "success", title: "保存成功", description: "文档已保存至云端。" },',
+            '  { type: "warning", title: "存储空间不足", description: "剩余空间不足 1GB。" },',
+            '  { type: "danger", title: "同步失败", description: "请检查网络后重试。" },',
+            "].map((options) => createNotificationElement(options));",
+            'document.querySelector("#notification-variants").append(...cards);',
+            "cards.forEach((card) => createNotificationController(card));",
+            "",
+            'notify({ title: "保存成功", description: "文档已保存至云端。", placement: "top-right" });',
+          ],
+          effects: [
+            'import "@bloret-crew/blora-design-effects/effects.css";',
+            "import {",
+            "  textFx,",
+            "  createTextRotateController,",
+            "  createCountdownController,",
+            "  createCountUpController,",
+            "  createImageDiffController,",
+            "  createHoverGalleryController,",
+            "  createWatermarkController,",
+            "  initShortcutHints,",
+            '} from "@bloret-crew/blora-design-effects";',
+            "",
+            'document.querySelectorAll("[data-blora-text-fx]").forEach((el) => {',
+            '  textFx(el, el.getAttribute("data-blora-text-fx"), { loop: true });',
+            "});",
+            'createTextRotateController(document.querySelector(".blora-text-rotate"));',
+            'createCountdownController(document.querySelector(".blora-countdown"));',
+            'createCountUpController(document.querySelector("[data-blora-countup]"));',
+            'createImageDiffController(document.querySelector(".blora-diff"));',
+            'createHoverGalleryController(document.querySelector(".blora-hover-gallery"));',
+            'createWatermarkController(document.querySelector(".blora-watermark"));',
+            "initShortcutHints(document);",
+          ],
+          layout: [
+            'import "@bloret-crew/blora-design-layout/layout.css";',
+            'import { createAffixController, createAnchorController, initSmoothScroll } from "@bloret-crew/blora-design-layout";',
+            "",
+            'createAffixController(document.querySelector(".blora-affix"));',
+            'createAnchorController(document.querySelector(".blora-anchor"));',
+            "initSmoothScroll();",
+          ],
+          markdown: [
+            'import "@bloret-crew/blora-design-markdown/markdown.css";',
+            'import { renderMarkdownTo } from "@bloret-crew/blora-design-markdown";',
+            "",
+            'const host = document.querySelector("[data-blora-markdown]");',
+            'const source = host.querySelector("script[type=\'text/markdown\']").textContent;',
+            "renderMarkdownTo(host, source);",
+          ],
+          qrcode: [
+            'import { createQRCodeController } from "@bloret-crew/blora-design-qrcode";',
+            "",
+            'createQRCodeController(document.querySelector("[data-blora-qrcode]"), { size: 180 });',
+          ],
+          theming: [
+            'import "@bloret-crew/blora-design-theming/theming.css";',
+            'import { bootThemeFromStorage } from "@bloret-crew/blora-design-theming";',
+            "",
+            "bootThemeFromStorage();",
+          ],
+          thread: [
+            'import "@bloret-crew/blora-design-thread/thread.css";',
+            'import { createThreadController } from "@bloret-crew/blora-design-thread";',
+            "",
+            'document.querySelectorAll("[data-blora-thread]").forEach((root) => {',
+            "  createThreadController(root);",
+            "});",
+          ],
+        };
+
+        function escapeAttribute(value) {
+          return value.replaceAll("&", "&amp;").replaceAll('"', "&quot;");
+        }
+
+        function isShowcaseChrome(node) {
+          if (!(node instanceof Element)) return false;
+          const attributes = [...node.attributes];
+          return attributes.length > 0 && attributes.every((attribute) => attribute.name.startsWith("data-showcase-"));
+        }
+
+        function serializeNode(node, depth = 0) {
+          const indent = "  ".repeat(depth);
+          if (node.nodeType === Node.COMMENT_NODE) {
+            const text = (node.textContent || "").trim();
+            return text ? [`${indent}<!-- ${text} -->`] : [];
+          }
+          if (node.nodeType === Node.TEXT_NODE) {
+            const raw = node.textContent ?? "";
+            if (!raw.trim()) return [];
+            return raw.replaceAll("\r\n", "\n").split("\n").map((line) => `${indent}${line.trimEnd()}`);
+          }
+          if (!(node instanceof Element)) return [];
+          if (isShowcaseChrome(node)) {
+            return [...node.childNodes].flatMap((child) => serializeNode(child, depth));
+          }
+          const tag = node.localName;
+          const attributes = [...node.attributes]
+            .filter((attribute) => !attribute.name.startsWith("data-showcase-"))
+            .map((attribute) =>
+              attribute.value === ""
+                ? attribute.name
+                : `${attribute.name}="${escapeAttribute(attribute.value)}"`,
+            );
+          const inline = `${indent}<${tag}${attributes.length ? ` ${attributes.join(" ")}` : ""}`;
+          const pretty = attributes.length > 1 && inline.length > 88;
+          const open = pretty
+            ? [
+                `${indent}<${tag}`,
+                ...attributes.map((attribute, index) => {
+                  const suffix = index === attributes.length - 1 ? ">" : "";
+                  return `${indent}  ${attribute}${suffix}`;
+                }),
+              ]
+            : [`${inline}>`];
+          if (voidElements.has(tag)) return open;
+          const childDepth = tag === "script" || tag === "style" ? 0 : depth + 1;
+          const children = [...node.childNodes].flatMap((child) => serializeNode(child, childDepth));
+          if (children.length === 0) {
+            if (!pretty) return [`${inline}></${tag}>`];
+            const last = open[open.length - 1];
+            open[open.length - 1] = `${last.slice(0, -1)}></${tag}>`;
+            return open;
+          }
+          const textOnly = node.children.length === 0;
+          const singleLineText =
+            !pretty && textOnly && children.length === 1 && !String(node.textContent || "").includes("\n");
+          if (singleLineText) return [`${inline}>${children[0].trim()}</${tag}>`];
+          return [...open, ...children, `${indent}</${tag}>`];
+        }
+
+        function sourceLines(template) {
+          const lines = [...template.content.childNodes].flatMap((node) => serializeNode(node));
+          const extra = sourceScripts[template.dataset.component];
+          if (extra?.length) {
+            if (lines.length) lines.push("");
+            lines.push(...extra);
+          }
+          return lines;
+        }
+
+        function createElement(tag, attributes = {}, text = "") {
+          const element = document.createElement(tag);
+          for (const [name, value] of Object.entries(attributes)) {
+            if (value !== undefined && value !== null) element.setAttribute(name, value);
+          }
+          if (text) element.textContent = text;
+          return element;
+        }
+
+        function badgeVariant(kind) {
+          if (kind.includes("CE")) return "success";
+          if (kind === "Headless" || kind === "Service") return "info";
+          return "neutral";
+        }
+
+        function revealCurrentNavigation(attempt = 0) {
+          const componentSidebar = document.getElementById("component-sidebar");
+          const current = componentNavigation.querySelector('[aria-current="page"]');
+          if (
+            !componentSidebar ||
+            componentSidebar.localName !== "aside" ||
+            !componentSidebar.contains(componentNavigation) ||
+            !current
+          ) {
+            if (attempt < 60) {
+              setTimeout(() => revealCurrentNavigation(attempt + 1), 50);
+            }
+            return;
+          }
+          const sidebarRect = componentSidebar.getBoundingClientRect();
+          const currentRect = current.getBoundingClientRect();
+          if (sidebarRect.height === 0) {
+            if (attempt < 60) {
+              setTimeout(() => revealCurrentNavigation(attempt + 1), 50);
+            }
+            return;
+          }
+          componentSidebar.scrollTop +=
+            currentRect.top -
+            sidebarRect.top -
+            (sidebarRect.height - currentRect.height) / 2;
+        }
+
+        const componentNavigation = createElement("blora-sidebar-nav", {
+          id: "component-navigation",
+          label: "组件导航",
+          value: "button",
+        });
+
+        const groupOrder = ["操作", "数据展示", "导航", "反馈", "数据输入", "布局", "样机"];
+        const groups = new Map();
+        for (const template of sourceTemplates) {
+          const group = template.dataset.group;
+          if (!groups.has(group)) groups.set(group, []);
+          groups.get(group).push(template);
+        }
+
+        for (const label of [...groups.keys()].sort(
+          (left, right) =>
+            (groupOrder.indexOf(left) + 1 || 99) - (groupOrder.indexOf(right) + 1 || 99),
+        )) {
+          const templates = groups.get(label);
+          const group = createElement("blora-sidebar-nav-group", { label });
+          for (const template of templates) {
+            group.append(
+              createElement("blora-sidebar-nav-link", {
+                label: template.dataset.label,
+                href: `#${template.dataset.component}`,
+                value: template.dataset.component,
+              }),
+            );
+          }
+          componentNavigation.append(group);
+        }
+        componentNavigationMount.replaceWith(componentNavigation);
+
+        for (const template of sourceTemplates) {
+          const name = template.dataset.component;
+          const titleId = `${name}-basic-title`;
+          const article = createElement("article", {
+            class: "showcase-panel",
+            id: `panel-${name}`,
+            "data-component-panel": name,
+          });
+          if (name !== "button") article.hidden = true;
+
+          const heading = createElement("header", { class: "showcase-heading" });
+          const headingCopy = createElement("div");
+          headingCopy.append(
+            createElement("p", { class: "showcase-heading__eyebrow" }, template.dataset.eyebrow),
+            createElement("h1", { tabindex: "-1" }, template.dataset.label),
+            createElement(
+              "p",
+              { class: "showcase-heading__description" },
+              template.dataset.description,
+            ),
+          );
+          heading.append(
+            headingCopy,
+            createElement(
+              "span",
+              { class: "blora-badge", "data-variant": badgeVariant(template.dataset.kind) },
+              template.dataset.kind,
+            ),
+          );
+
+          const section = createElement("section", {
+            class: "showcase-section",
+            "aria-labelledby": titleId,
+          });
+          section.append(
+            createElement("h2", { id: titleId }, "基础用法"),
+            createElement(
+              "p",
+              { class: "showcase-section__description" },
+              "下方 Preview 与 HTML 均来自同一份正式组件声明。",
+            ),
+          );
+
+          const example = createElement("div", {
+            class: "showcase-example",
+            "data-example": name,
+          });
+          const tabs = createElement("blora-tabs", { flush: "" });
+          const previewTab = createElement("blora-tab", {
+            label: "Preview",
+            value: "preview",
+            selected: "",
+          });
+          previewTab.append(
+            createElement("div", {
+              class: "showcase-preview",
+              id: `${name}-preview`,
+              "data-preview-mount": name,
+            }),
+          );
+          const codeTab = createElement("blora-tab", { label: "HTML", value: "html" });
+          const codePanel = createElement("div", { class: "showcase-code-panel" });
+          const mockup = createElement("blora-mockup", {
+            id: `${name}-code`,
+            variant: "code",
+            label: `${template.dataset.label} HTML 示例`,
+          });
+          for (const line of sourceLines(template)) {
+            mockup.append(createElement("blora-mockup-line", {}, line));
+          }
+          codePanel.append(mockup);
+          codeTab.append(codePanel);
+          tabs.append(previewTab, codeTab);
+          example.append(tabs);
+          section.append(example);
+          article.append(heading, section);
+          componentPanelRoot.append(article);
+        }
+
+        Blora.autoDefine();
+
+        const componentPanels = [...document.querySelectorAll("[data-component-panel]")];
+        const componentNames = new Set(componentPanels.map((panel) => panel.dataset.componentPanel));
+
+        function hydratePanel(name) {
+          const panel = document.querySelector(`[data-component-panel="${name}"]`);
+          if (!panel || panel.dataset.hydrated === "true") return;
+          const source = sourceTemplates.find((template) => template.dataset.component === name);
+          const mount = panel.querySelector(`[data-preview-mount="${name}"]`);
+          mount.append(source.content.cloneNode(true));
+          panel.dataset.hydrated = "true";
+
+          const resizePreview = () => {
+            const previewRect = mount.getBoundingClientRect();
+            let requiredBottom = previewRect.top;
+            for (const element of mount.querySelectorAll("*")) {
+              const style = getComputedStyle(element);
+              if (style.display === "none" || style.visibility === "hidden") continue;
+              requiredBottom = Math.max(requiredBottom, element.getBoundingClientRect().bottom);
+            }
+            const blockPadding = parseFloat(getComputedStyle(mount).paddingBottom) || 0;
+            mount.style.minHeight = `${Math.max(288, Math.ceil(requiredBottom - previewRect.top + blockPadding))}px`;
+          };
+          const schedulePreviewResize = () => requestAnimationFrame(() => requestAnimationFrame(resizePreview));
+          new ResizeObserver(schedulePreviewResize).observe(mount);
+          new MutationObserver(schedulePreviewResize).observe(mount, {
+            attributes: true,
+            childList: true,
+            subtree: true,
+          });
+          mount.addEventListener("click", schedulePreviewResize);
+          mount.addEventListener("input", schedulePreviewResize);
+          schedulePreviewResize();
+
+          const messageTarget = mount.querySelector('[data-showcase-service="message"]');
+          if (messageTarget) {
+            messageTarget.append(
+              Blora.createMessageElement({ content: "这是一条提示消息", type: "info" }),
+              Blora.createMessageElement({ content: "操作已成功完成", type: "success" }),
+              Blora.createMessageElement({ content: "请关注重要提示", type: "warning" }),
+              Blora.createMessageElement({ content: "系统遇到了问题", type: "danger" }),
+            );
+          }
+          const notificationTarget = mount.querySelector(
+            '[data-showcase-service="notification"]',
+          );
+          if (notificationTarget) {
+            const cards = [
+              { type: "info", title: "新版本可用", description: "Blora Design 2.0 已准备就绪。" },
+              { type: "success", title: "保存成功", description: "文档已保存至云端。" },
+              { type: "warning", title: "存储空间不足", description: "剩余空间不足 1GB。" },
+              { type: "danger", title: "同步失败", description: "请检查网络后重试。" },
+            ].map((options) => Blora.createNotificationElement(options));
+            notificationTarget.append(...cards);
+            cards.forEach((card) => Blora.createNotificationController(card));
+          }
+          mount.querySelectorAll("[data-showcase-table]").forEach((table) => {
+            const controller = Blora.createTableController(table);
+            if (table.dataset.showcaseVirtual === "y") {
+              controller.setRows(
+                Array.from({ length: 500 }, (_, index) => [
+                  `User ${index + 1}`,
+                  index % 3 === 0 ? "Admin" : index % 3 === 1 ? "Editor" : "Guest",
+                  index % 2 === 0 ? "Active" : "Offline",
+                ]),
+              );
+            }
+            if (table.dataset.showcaseVirtual === "both") {
+              const keys = Array.from({ length: 40 }, (_, index) => `c${index}`);
+              controller.setRows(
+                Array.from({ length: 300 }, (_, rowIndex) =>
+                  Object.fromEntries(keys.map((key, columnIndex) => [key, `R${rowIndex + 1}C${columnIndex + 1}`])),
+                ),
+                keys,
+              );
+            }
+          });
+          mount.querySelectorAll("[data-showcase-form]").forEach((form) => {
+            Blora.createFormController(form);
+            form.addEventListener("submit", (event) => event.preventDefault());
+          });
+          if (name === "effects") {
+            mount.querySelectorAll("[data-blora-text-fx], [data-fx]").forEach((target) => {
+              window.BloraEffects.textFx(
+                target,
+                target.getAttribute("data-blora-text-fx") || target.dataset.fx,
+                { loop: true },
+              );
+            });
+            mount.querySelectorAll("[data-showcase-text-rotate]").forEach((target) => window.BloraEffects.createTextRotateController(target));
+            mount.querySelectorAll("[data-showcase-countdown]").forEach((target) => window.BloraEffects.createCountdownController(target));
+            mount.querySelectorAll("[data-showcase-countup]").forEach((target) => window.BloraEffects.createCountUpController(target));
+            mount.querySelectorAll("[data-showcase-image-diff]").forEach((target) => window.BloraEffects.createImageDiffController(target));
+            mount.querySelectorAll("[data-showcase-hover-gallery]").forEach((target) => window.BloraEffects.createHoverGalleryController(target));
+            mount.querySelectorAll("[data-showcase-watermark]").forEach((target) => window.BloraEffects.createWatermarkController(target));
+            window.BloraEffects.initShortcutHints(mount);
+          }
+          if (name === "layout") {
+            mount.querySelectorAll("[data-showcase-affix]").forEach((target) => window.BloraLayout.createAffixController(target));
+            window.BloraLayout.initSmoothScroll(mount.ownerDocument);
+            mount.querySelectorAll("[data-showcase-anchor]").forEach((target) => window.BloraLayout.createAnchorController(target));
+          }
+          if (name === "markdown") {
+            const target = mount.querySelector("[data-blora-markdown], [data-showcase-markdown]");
+            const script = target.querySelector("script[type='text/markdown']");
+            const source = (script?.textContent || target.textContent || "").trim();
+            window.BloraMarkdown.renderMarkdownTo(target, source);
+          }
+          if (name === "qrcode") {
+            window.BloraQRCode.renderQRCode(
+              mount.querySelector("[data-blora-qrcode], [data-showcase-qrcode]"),
+              "https://blora.design/components",
+              { size: 180 },
+            );
+          }
+          if (name === "thread") {
+            mount.querySelectorAll("[data-showcase-thread]").forEach((target) => window.BloraThread.createThreadController(target));
+            mount.querySelectorAll(".blora-post__react-btn").forEach((button) => {
+              if (!button.querySelector("svg") && typeof Blora.createBloraIcon === "function") {
+                button.replaceChildren(Blora.createBloraIcon("smile", 18));
+              }
+            });
+            mount.querySelectorAll(".blora-post__more").forEach((button) => {
+              if (!button.querySelector("svg") && typeof Blora.createBloraIcon === "function") {
+                button.replaceChildren(Blora.createBloraIcon("ellipsis", 16));
+              }
+            });
+          }
+        }
+
+        function syncTheme() {
+          const canvas = getComputedStyle(document.body).getPropertyValue("--blora-color-surface-canvas").trim();
+          document.querySelector('meta[name="theme-color"]').setAttribute("content", canvas);
+        }
+
+        let preservedSidebarScrollTop = null;
+        let navigationWasPointerDriven = false;
+
+        function selectComponent(name, { focusHeading = false } = {}) {
+          const next = componentNames.has(name) ? name : "button";
+          const componentSidebar = document.getElementById("component-sidebar");
+          const sidebarScrollTop = preservedSidebarScrollTop ?? componentSidebar?.scrollTop ?? 0;
+          preservedSidebarScrollTop = null;
+          const restoreSidebarScroll = () => {
+            if (componentSidebar) componentSidebar.scrollTop = sidebarScrollTop;
+          };
+          hydratePanel(next);
+          componentNavigation.value = next;
+          restoreSidebarScroll();
+          queueMicrotask(restoreSidebarScroll);
+          requestAnimationFrame(restoreSidebarScroll);
+          componentPanels.forEach((panel) => {
+            panel.hidden = panel.dataset.componentPanel !== next;
+          });
+          const activePanel = document.querySelector(`[data-component-panel="${next}"]`);
+          const title = activePanel.querySelector("h1");
+          document.title = `${title.textContent} · Blora Design Components`;
+          if (focusHeading) title.focus({ preventScroll: true });
+        }
+
+        componentPanelRoot.addEventListener("click", (event) => {
+          const trigger = event.target.closest("[data-showcase-action]");
+          if (!trigger) return;
+          const panel = trigger.closest("[data-component-panel]");
+          const action = trigger.dataset.showcaseAction;
+          const target = trigger.dataset.showcaseTarget
+            ? panel.querySelector(`#${CSS.escape(trigger.dataset.showcaseTarget)}`)
+            : null;
+          if (action === "dialog") (target ?? panel.querySelector("blora-dialog"))?.show();
+          if (action === "drawer") (target ?? panel.querySelector("blora-drawer"))?.open();
+          if (action === "message") {
+            const type = trigger.dataset.showcaseMessage;
+            const content = {
+              success: "操作成功",
+              info: "这是一条提示",
+              warning: "请注意",
+              error: "出错了",
+            }[type];
+            Blora.message[type](content);
+          }
+          if (action === "close-overlay") trigger.closest("blora-dialog")?.close();
+        });
+
+        root.addEventListener("blora-theme-change", syncTheme);
+        root.addEventListener("blora-color-scheme-change", syncTheme);
+
+      componentNavigation.addEventListener("pointerdown", (event) => {
+        if (event.button !== 0) return;
+        if (!event.target.closest('a[href^="#"]')) return;
+        event.preventDefault();
+          navigationWasPointerDriven = true;
+          preservedSidebarScrollTop = document.getElementById("component-sidebar")?.scrollTop ?? 0;
+        }, true);
+        componentNavigation.addEventListener("blora-change", (event) => {
+          history.pushState(null, "", `#${event.detail.value}`);
+          selectComponent(event.detail.value, { focusHeading: !navigationWasPointerDriven });
+          navigationWasPointerDriven = false;
+        });
+        new MutationObserver(() => {
+          if (showcaseShell.hasAttribute("data-open")) {
+            requestAnimationFrame(() => revealCurrentNavigation());
+          }
+        }).observe(showcaseShell, { attributeFilter: ["data-open"] });
+        addEventListener("hashchange", () => selectComponent(location.hash.slice(1)));
+
+        syncTheme();
+        selectComponent(location.hash.slice(1));
+        requestAnimationFrame(() => revealCurrentNavigation());
+      })();
+    </script>
+  </body>
+</html>

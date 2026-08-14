@@ -1,0 +1,57 @@
+blora-sidebar-nav {
+  display: block;
+}
+
+.blora-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+}
+
+.blora-sidebar-nav__group {
+  display: flex;
+  flex-direction: column;
+}
+
+.blora-sidebar-nav__group-label {
+  padding: var(--blora-space-4) var(--blora-space-3) var(--blora-space-1);
+  color: var(--blora-color-text-disabled);
+  font-size: var(--blora-text-xs);
+  letter-spacing: var(--blora-tracking-caps);
+  text-transform: uppercase;
+}
+
+.blora-sidebar-nav__link {
+  display: flex;
+  align-items: center;
+  min-height: var(--blora-space-6);
+  padding: var(--blora-space-2) var(--blora-space-3);
+  color: var(--blora-color-text-emphasis);
+  font-size: var(--blora-text-sm);
+  text-decoration: none;
+  border-radius: var(--blora-radius-md);
+  transition:
+    color var(--blora-duration-fast) var(--blora-easing-standard),
+    background-color var(--blora-duration-fast) var(--blora-easing-standard);
+}
+
+.blora-sidebar-nav__link:hover {
+  color: var(--blora-color-text-primary);
+  background-color: var(--blora-color-surface-raised);
+}
+
+.blora-sidebar-nav__link[aria-current="page"] {
+  color: var(--blora-color-action-primary-default);
+  font-weight: 500;
+}
+
+@media (pointer: coarse) {
+  .blora-sidebar-nav__link {
+    min-height: calc(var(--blora-space-6) + var(--blora-space-3));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blora-sidebar-nav__link {
+    transition-duration: 0.01ms;
+  }
+}

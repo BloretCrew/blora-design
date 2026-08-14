@@ -1,0 +1,23 @@
+/* =========================================================================
+   Blora Design 2.0 - QR Code add-on
+   Visual baseline: legacy/v1/blora.css lines 3261-3267
+   ========================================================================= */
+
+@layer blora.addons {
+  .blora-qrcode {
+    display: inline-grid;
+    place-items: center;
+    padding: var(--blora-space-3);
+    background: var(--blora-color-surface-default);
+    border: var(--blora-border-subtle);
+    border-radius: var(--blora-radius-md);
+  }
+
+  .blora-qrcode canvas,
+  .blora-qrcode img {
+    display: block;
+    width: var(--blora-qr-size, 148px);
+    height: var(--blora-qr-size, 148px);
+    image-rendering: pixelated;
+  }
+}

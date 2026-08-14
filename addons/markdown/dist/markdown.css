@@ -1,0 +1,141 @@
+/* =========================================================================
+   Blora Design 2.0 - Markdown rendering add-on
+   Visual baseline: legacy/v1/blora.css lines 3453-3510
+   Spec §17.6: Must require explicit security policy.
+   ========================================================================= */
+
+@layer blora.addons {
+  .blora-md {
+    min-width: 0;
+  }
+
+  .blora-md__p {
+    margin: 0 0 0.75em;
+  }
+
+  .blora-md__p:last-child {
+    margin-bottom: 0;
+  }
+
+  .blora-md__h {
+    font-family: var(--blora-font-heading);
+    font-weight: 600;
+    color: var(--blora-color-text-primary);
+    line-height: var(--blora-leading-tight);
+    margin: 0.9em 0 0.4em;
+  }
+
+  .blora-md__h:first-child {
+    margin-top: 0;
+  }
+
+  .blora-md__h1 {
+    font-size: var(--blora-text-2xl);
+  }
+
+  .blora-md__h2 {
+    font-size: var(--blora-text-xl);
+  }
+
+  .blora-md__h3 {
+    font-size: var(--blora-text-lg);
+  }
+
+  .blora-md__h4,
+  .blora-md__h5,
+  .blora-md__h6 {
+    font-size: var(--blora-text-base);
+  }
+
+  .blora-md__ul,
+  .blora-md__ol {
+    margin: 0.4em 0 0.75em;
+    padding-inline-start: 1.35em;
+  }
+
+  .blora-md__ul {
+    list-style: disc;
+  }
+
+  .blora-md__ol {
+    list-style: decimal;
+  }
+
+  .blora-md__ul li,
+  .blora-md__ol li {
+    margin: 0.2em 0;
+  }
+
+  .blora-md__blockquote {
+    margin: 0.5em 0 0.75em;
+    padding: 0.15em 0 0.15em 0.85em;
+    border-inline-start: 3px solid var(--blora-color-action-primary-default);
+    border-radius: 0 var(--blora-radius-xs) var(--blora-radius-xs) 0;
+    color: var(--blora-color-text-muted);
+  }
+
+  /* Align with mockup code block: JetBrains Mono stack + 0.875rem / 1.7 */
+  .blora-md__pre {
+    margin: 0.5em 0 0.75em;
+    padding: 1rem 1.25rem;
+    border-radius: var(--blora-radius-lg);
+    background: var(--blora-color-code-background);
+    color: var(--blora-color-code-foreground);
+    overflow-x: auto;
+    font-family: var(--blora-font-mono);
+    font-size: 0.875rem;
+    line-height: 1.7;
+    direction: ltr;
+    white-space: pre;
+  }
+
+  .blora-md__code {
+    font-family: var(--blora-font-mono);
+    font-size: 0.875em;
+    padding: 0.1em 0.35em;
+    border-radius: var(--blora-radius-xs);
+    background: var(--blora-color-surface-sunken);
+    color: var(--blora-color-text-primary);
+  }
+
+  .blora-md__pre .blora-md__code,
+  .blora-md__pre code {
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    white-space: inherit;
+  }
+
+  .blora-md__a {
+    color: var(--blora-color-action-primary-default);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  .blora-md__a:hover {
+    color: var(--blora-color-action-primary-hover);
+  }
+
+  .blora-md__img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--blora-radius-md);
+    margin: 0.5em 0;
+  }
+
+  .blora-md__hr {
+    border: 0;
+    border-top: 1px solid var(--blora-color-border-subtle);
+    margin: 1em 0;
+  }
+
+  .blora-md strong {
+    color: var(--blora-color-text-primary);
+    font-weight: 600;
+  }
+
+  .blora-md del {
+    opacity: 0.75;
+  }
+}

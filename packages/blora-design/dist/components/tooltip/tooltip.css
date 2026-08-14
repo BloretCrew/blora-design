@@ -1,0 +1,87 @@
+/* Blora Design 2.0 - Tooltip */
+
+blora-tooltip {
+  display: inline-block;
+}
+
+.blora-tooltip {
+  position: relative;
+  display: inline-flex;
+}
+
+.blora-tooltip__bubble {
+  position: absolute;
+  inset-block-end: calc(100% + 0.5em);
+  inset-inline-start: 50%;
+  width: max-content;
+  max-width: min(20rem, calc(100vw - 2 * var(--blora-space-3)));
+  transform: translateX(-50%) translateY(4px);
+  padding: 0.4em 0.8em;
+  background: var(--blora-color-tooltip-background);
+  color: var(--blora-color-tooltip-foreground);
+  font-size: var(--blora-text-xs);
+  border: 1px solid var(--blora-color-border-subtle);
+  border-radius: var(--blora-radius-sm);
+  white-space: normal;
+  overflow-wrap: anywhere;
+  opacity: 0;
+  pointer-events: none;
+  transition: all var(--blora-duration-fast) var(--blora-easing-standard);
+  z-index: var(--blora-z-dropdown);
+
+  /* Shadow alone disappears on dark canvas; ring keeps the frame readable */
+  box-shadow: var(--blora-shadow-3);
+}
+
+/* Arrow border (outer) + fill (inner) so the tip matches the bubble edge */
+.blora-tooltip__bubble::before,
+.blora-tooltip__bubble::after {
+  content: "";
+  position: absolute;
+  inset-block-start: 100%;
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+  border: solid transparent;
+}
+
+.blora-tooltip__bubble::before {
+  border-width: 6px;
+  border-block-start-color: var(--blora-color-border-subtle);
+}
+
+.blora-tooltip__bubble::after {
+  border-width: 5px;
+  border-block-start-color: var(--blora-color-tooltip-background);
+
+  /* Sit over the border triangle so only a 1px rim shows */
+  margin-block-start: -1px;
+}
+
+.blora-tooltip:hover .blora-tooltip__bubble,
+.blora-tooltip:focus-within .blora-tooltip__bubble {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Bottom placement */
+.blora-tooltip[data-placement="bottom"] .blora-tooltip__bubble {
+  inset-block: calc(100% + 0.5em) auto;
+  transform: translateX(-50%) translateY(-4px);
+}
+
+.blora-tooltip[data-placement="bottom"] .blora-tooltip__bubble::before {
+  inset-block: auto 100%;
+  border-color: transparent transparent var(--blora-color-border-subtle);
+}
+
+.blora-tooltip[data-placement="bottom"] .blora-tooltip__bubble::after {
+  inset-block: auto 100%;
+  border-color: transparent transparent var(--blora-color-tooltip-background);
+  margin-block: 0;
+  margin-block-end: -1px;
+}
+
+.blora-tooltip:hover .blora-tooltip[data-placement="bottom"] .blora-tooltip__bubble,
+.blora-tooltip[data-placement="bottom"]:focus-within .blora-tooltip__bubble {
+  transform: translateX(-50%) translateY(0);
+}
