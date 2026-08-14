@@ -50,6 +50,8 @@
   background: var(--blora-button-bg);
   border: 1px solid var(--blora-button-bd);
   border-radius: var(--blora-radius-md);
+  /* Circular arcs hold constant curvature, then drop to 0 at the straight
+     edge. A mild superellipse eases that join without changing the 14px size. */
   cursor: pointer;
   white-space: nowrap;
   transition:
@@ -274,6 +276,28 @@
 
 .blora-button-group .blora-button:only-child {
   border-radius: var(--blora-radius-md);
+}
+
+@supports (corner-shape: superellipse(1.6)) {
+  .blora-button {
+    corner-shape: superellipse(1.6);
+  }
+
+  .blora-button-group .blora-button {
+    corner-shape: square;
+  }
+
+  .blora-button-group .blora-button:first-child {
+    corner-shape: superellipse(1.6) square square superellipse(1.6);
+  }
+
+  .blora-button-group .blora-button:last-child {
+    corner-shape: square superellipse(1.6) superellipse(1.6) square;
+  }
+
+  .blora-button-group .blora-button:only-child {
+    corner-shape: superellipse(1.6);
+  }
 }
 
 .blora-button-group .blora-button:hover,
