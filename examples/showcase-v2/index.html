@@ -103,22 +103,28 @@
       .showcase-textfx-list {
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
-        gap: var(--blora-space-4);
+        align-items: stretch;
+        gap: var(--blora-space-3);
       }
 
-      .showcase-textfx-list > [data-blora-text-fx] {
+      .showcase-textfx-item {
         width: 100%;
-        min-height: 2.6rem;
-        display: inline-flex;
-        flex-wrap: wrap;
+        min-height: 3.2rem;
+        display: flex;
         align-items: center;
         justify-content: center;
-        text-align: center;
+        overflow: hidden;
         border: 1px solid var(--blora-color-border-subtle);
         border-radius: var(--blora-radius-lg);
         background: var(--blora-color-surface-raised);
-        padding: var(--blora-space-2) var(--blora-space-3);
+        padding: var(--blora-space-3) var(--blora-space-4);
+      }
+
+      .showcase-textfx-item [data-blora-text-fx] {
+        font-size: 19px;
+        font-weight: 500;
+        line-height: 1.4;
+        color: var(--blora-color-text-emphasis);
       }
 
       .showcase-heading {
@@ -1032,14 +1038,14 @@
       <template data-addon="effects" data-label="Effects" data-group="数据展示" data-eyebrow="Data display" data-kind="Service" data-description="文字动效、轮换、倒计时、数字增长、双边对比、悬停画廊、水印和快捷键提示。">
         <div data-showcase-cases data-showcase-addon-effects>
           <section data-showcase-case="TextFx"><h3>文字动效</h3><div class="showcase-textfx-list">
-            <span data-blora-text-fx="big">Make It Noticeable And Loud!</span>
-            <span data-blora-text-fx="small">Whisper very quietly in secret...</span>
-            <span data-blora-text-fx="shake">Earthquake rocking left to right</span>
-            <span data-blora-text-fx="nod">Yes! Absolutely agree with that!</span>
-            <span data-blora-text-fx="disperse">Disintegrate and scatter into the wind</span>
-            <span data-blora-text-fx="ripple">Rippling waves across the deep ocean</span>
-            <span data-blora-text-fx="bloom">Special Text Effects Showcase</span>
-            <span data-blora-text-fx="jitter">Shivering frantically in cold weather</span>
+            <div class="showcase-textfx-item"><span data-blora-text-fx="big">Make It Noticeable And Loud!</span></div>
+            <div class="showcase-textfx-item"><span data-blora-text-fx="small">Whisper very quietly in secret...</span></div>
+            <div class="showcase-textfx-item"><span data-blora-text-fx="shake">Earthquake rocking left to right</span></div>
+            <div class="showcase-textfx-item"><span data-blora-text-fx="nod">Yes! Absolutely agree with that!</span></div>
+            <div class="showcase-textfx-item"><span data-blora-text-fx="disperse">Disintegrate and scatter into the wind</span></div>
+            <div class="showcase-textfx-item"><span data-blora-text-fx="ripple">Rippling waves across the deep ocean</span></div>
+            <div class="showcase-textfx-item"><span data-blora-text-fx="bloom">Special Text Effects Showcase</span></div>
+            <div class="showcase-textfx-item"><span data-blora-text-fx="jitter">Shivering frantically in cold weather</span></div>
           </div></section>
           <section data-showcase-case="TextRotate"><h3>文字轮换</h3><div class="blora-text-rotate" data-showcase-text-rotate aria-live="polite">
             <span class="blora-text-rotate__item is-active">结构统一</span>

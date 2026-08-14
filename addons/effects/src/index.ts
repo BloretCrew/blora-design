@@ -57,7 +57,6 @@ function prefersReduced(el: HTMLElement): boolean {
 function layoutTextFxPhysics(el: HTMLElement, name: string): void {
   const chars = el.querySelectorAll(".blora-text-fx__ch");
   const n = chars.length || 1;
-  const mid = (n - 1) / 2;
 
   chars.forEach((span, i) => {
     const charSpan = span as HTMLElement;
@@ -74,8 +73,6 @@ function layoutTextFxPhysics(el: HTMLElement, name: string): void {
       charSpan.style.setProperty("--fx-x", `${x.toFixed(2)}em`);
       charSpan.style.setProperty("--fx-y", `${y.toFixed(2)}em`);
       charSpan.style.setProperty("--fx-r", `${r.toFixed(1)}deg`);
-    } else if (name === "bloom") {
-      charSpan.style.setProperty("--fx-center-delay", `${Math.round(Math.abs(i - mid) * 28)}ms`);
     } else {
       charSpan.style.removeProperty("--fx-x");
       charSpan.style.removeProperty("--fx-y");
