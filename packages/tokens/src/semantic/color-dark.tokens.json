@@ -25,6 +25,11 @@
         "default": { "$type": "color", "$value": "#D18A94" },
         "hover": { "$type": "color", "$value": "#E0A3AB" },
         "soft": { "$type": "color", "$value": "#B36F79" }
+      },
+      "selectionBg": {
+        "$type": "color",
+        "$value": "color-mix(in srgb, {color.action.primary.default} 27%, {color.surface.canvas})",
+        "$description": "暗色选区背景：在暗色上下文重新混主色与画布，避免继承亮色定义时 color-mix 提前冻结为浅色"
       }
     },
     "status": {

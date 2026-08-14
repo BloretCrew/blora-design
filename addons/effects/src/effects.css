@@ -8,11 +8,10 @@
   .blora-text-fx.is-clickable { cursor: pointer; }
   .blora-text-fx__ch { display: inline-block; transform: translateZ(0); transform-origin: center center; white-space: pre; will-change: transform, opacity, text-shadow; }
 
-  /* Split chars overlap while animating; a translucent selection tint stacks and
-     darkens the overlap. Use an opaque, light selection background so overlaps
-     stay flat (mix primary into the canvas colour, ~#E0CBCF on light). */
+  /* Split chars overlap while animating; the shared selection token is already
+     an opaque, light mix (primary + canvas) so overlaps stay flat. */
   .blora-text-fx__ch::selection {
-    background: color-mix(in srgb, var(--blora-color-action-primary-default) 27%, var(--blora-color-surface-canvas));
+    background: var(--blora-color-action-selection-bg);
     color: var(--blora-color-text-primary);
   }
   .blora-text-fx--big.is-play { animation: blora-fx-big var(--blora-fx-dur, 2.5s) cubic-bezier(0.12, 0.75, 0.25, 1) infinite; }

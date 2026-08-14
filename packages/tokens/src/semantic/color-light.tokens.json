@@ -97,8 +97,8 @@
       },
       "selectionBg": {
         "$type": "color",
-        "$value": "color-mix(in srgb, {color.action.primary.default} 28%, transparent)",
-        "$description": "文本选区背景"
+        "$value": "color-mix(in srgb, {color.action.primary.default} 27%, {color.surface.canvas})",
+        "$description": "文本选区背景：不透明淡色（主色混画布），字符重叠时不会因透明叠加而加深"
       }
     },
     "status": {

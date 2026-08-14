@@ -99,6 +99,18 @@ function handleTextFxCopy(this: HTMLElement, event: ClipboardEvent): void {
   event.clipboardData.setData("text/plain", plain);
 }
 
+function handleTextFxDblClick(this: HTMLElement): void {
+  /* Split chars are independent inline-block boxes, so a plain double-click
+     selects a single character. Select the whole line instead. */
+  const doc = this.ownerDocument;
+  const selection = doc.getSelection();
+  if (!selection) return;
+  const range = doc.createRange();
+  range.selectNodeContents(this);
+  selection.removeAllRanges();
+  selection.addRange(range);
+}
+
 function splitTextFxLetters(el: HTMLElement): void {
   if (el.dataset.bloraFxSplit === "1") {
     layoutTextFxPhysics(el, textFxNameFromEl(el));
@@ -119,6 +131,7 @@ function splitTextFxLetters(el: HTMLElement): void {
   el.dataset.bloraFxSplit = "1";
   el.dataset.bloraFxText = text;
   el.addEventListener("copy", handleTextFxCopy);
+  el.addEventListener("dblclick", handleTextFxDblClick);
   layoutTextFxPhysics(el, textFxNameFromEl(el));
 }
 
@@ -130,6 +143,7 @@ function unsplitTextFxLetters(el: HTMLElement): void {
   el.removeAttribute("data-blora-fx-split");
   el.removeAttribute("data-blora-fx-text");
   el.removeEventListener("copy", handleTextFxCopy);
+  el.removeEventListener("dblclick", handleTextFxDblClick);
 }
 
 function applyTextFxName(el: HTMLElement, name: TextFxName): boolean {
