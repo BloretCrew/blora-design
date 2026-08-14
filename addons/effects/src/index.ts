@@ -82,6 +82,23 @@ function layoutTextFxPhysics(el: HTMLElement, name: string): void {
   });
 }
 
+function handleTextFxCopy(this: HTMLElement, event: ClipboardEvent): void {
+  const selection = this.ownerDocument.getSelection();
+  if (!selection || selection.isCollapsed || !event.clipboardData) return;
+  const chars = Array.from(this.querySelectorAll<HTMLElement>(".blora-text-fx__ch"));
+  if (!chars.length) return;
+  const range = selection.rangeCount ? selection.getRangeAt(0) : null;
+  if (!range) return;
+  const selected = chars.filter((span) => range.intersectsNode(span));
+  if (!selected.length) return;
+  const plain = selected
+    .map((span) => span.textContent?.replace(/\u00a0/g, " ") ?? "")
+    .join("");
+  if (!plain) return;
+  event.preventDefault();
+  event.clipboardData.setData("text/plain", plain);
+}
+
 function splitTextFxLetters(el: HTMLElement): void {
   if (el.dataset.bloraFxSplit === "1") {
     layoutTextFxPhysics(el, textFxNameFromEl(el));
@@ -101,6 +118,7 @@ function splitTextFxLetters(el: HTMLElement): void {
 
   el.dataset.bloraFxSplit = "1";
   el.dataset.bloraFxText = text;
+  el.addEventListener("copy", handleTextFxCopy);
   layoutTextFxPhysics(el, textFxNameFromEl(el));
 }
 
@@ -111,6 +129,7 @@ function unsplitTextFxLetters(el: HTMLElement): void {
   el.textContent = text;
   el.removeAttribute("data-blora-fx-split");
   el.removeAttribute("data-blora-fx-text");
+  el.removeEventListener("copy", handleTextFxCopy);
 }
 
 function applyTextFxName(el: HTMLElement, name: TextFxName): boolean {
