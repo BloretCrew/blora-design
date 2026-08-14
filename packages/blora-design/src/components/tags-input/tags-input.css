@@ -12,7 +12,7 @@ blora-tags-input {
   min-height: 2.6em;
   background: var(--blora-color-surface-default);
   border: 1px solid var(--blora-color-border-subtle);
-  border-radius: var(--blora-radius-md);
+  border-radius: var(--blora-radius-lg);
   transition: all var(--blora-duration-fast) var(--blora-easing-standard);
 }
 
@@ -20,6 +20,12 @@ blora-tags-input {
   border-color: var(--blora-color-action-primary-default);
   box-shadow: 0 0 0 2px
     color-mix(in srgb, var(--blora-color-action-primary-default) 20%, transparent);
+}
+
+@supports (corner-shape: superellipse(1.2)) {
+  .blora-tags-input {
+    corner-shape: superellipse(1.2);
+  }
 }
 
 .blora-tags-input input {

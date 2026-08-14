@@ -56,7 +56,14 @@
     }
   },
   "slots": {
-    "default": "No authored structure; dropzone, native file input and file list are generated."
+    "default": "No authored structure; dropzone or compact file picker, native file input and file list are generated."
+  },
+  "classes": {
+    "blora-file-picker": "Compact v1 file input shell.",
+    "blora-file-picker__trigger": "Left action that opens the native file dialog.",
+    "blora-file-picker__empty": "Placeholder copy when no file is selected.",
+    "blora-file-picker__status": "Selected-file row inside the compact picker.",
+    "blora-file-clear": "Remove the current compact selection."
   },
   "parts": [],
   "cssProperties": [],

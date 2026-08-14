@@ -12,7 +12,7 @@
   color: var(--blora-color-text-secondary);
   background: var(--blora-color-surface-default);
   border: 1px solid var(--blora-color-border-subtle);
-  border-radius: var(--blora-radius-md);
+  border-radius: var(--blora-radius-lg);
   font-family: var(--blora-font-sans);
   transition:
     border-color var(--blora-duration-fast) var(--blora-easing-standard),
@@ -64,4 +64,10 @@
 /* Hide native search cancel button */
 .blora-input[type="search"]::-webkit-search-cancel-button {
   display: none;
+}
+
+@supports (corner-shape: superellipse(1.2)) {
+  .blora-input {
+    corner-shape: superellipse(1.2);
+  }
 }

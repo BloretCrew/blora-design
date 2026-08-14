@@ -24,13 +24,19 @@
   color: var(--blora-color-text-secondary);
   background: var(--blora-color-surface-default);
   border: 1px solid var(--blora-color-border-subtle);
-  border-radius: var(--blora-radius-md);
+  border-radius: var(--blora-radius-lg);
   cursor: pointer;
   position: relative;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   transition: all var(--blora-duration-fast) var(--blora-easing-standard);
+}
+
+@supports (corner-shape: superellipse(1.2)) {
+  .blora-select__trigger {
+    corner-shape: superellipse(1.2);
+  }
 }
 
 .blora-select__value {
@@ -107,7 +113,7 @@
   overflow-y: auto;
   background: var(--blora-color-surface-default);
   border: var(--blora-border-subtle);
-  border-radius: var(--blora-radius-md);
+  border-radius: var(--blora-radius-lg);
   box-shadow: var(--blora-shadow-3);
   padding: var(--blora-space-1);
   z-index: var(--blora-z-dropdown);

@@ -12,7 +12,7 @@
   color: var(--blora-color-text-secondary);
   background: var(--blora-color-surface-default);
   border: 1px solid var(--blora-color-border-subtle);
-  border-radius: var(--blora-radius-md);
+  border-radius: var(--blora-radius-lg);
   font-family: var(--blora-font-sans);
   min-height: 6em;
   resize: vertical;
@@ -50,4 +50,10 @@
 
 .blora-textarea[aria-invalid="true"]:focus {
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--blora-color-status-danger) 18%, transparent);
+}
+
+@supports (corner-shape: superellipse(1.2)) {
+  .blora-textarea {
+    corner-shape: superellipse(1.2);
+  }
 }

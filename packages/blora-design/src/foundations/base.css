@@ -203,6 +203,56 @@ html:has(body.blora-page) {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Shared rounded-rect join. Circles / capsules / phone mockups stay out. */
+@supports (corner-shape: superellipse(1.2)) {
+  .blora-otp__input,
+  .blora-fieldset,
+  .blora-alert,
+  .blora-banner,
+  .blora-card,
+  .blora-panel,
+  .blora-notification,
+  .blora-accordion,
+  .blora-collapse,
+  .blora-table-wrap,
+  .blora-descriptions,
+  .blora-pre,
+  .blora-media,
+  .blora-image,
+  .blora-chart-container,
+  .blora-carousel,
+  .blora-dropzone,
+  .blora-select__popup,
+  .blora-autocomplete__menu,
+  .blora-mentions__menu,
+  .blora-dropdown__menu,
+  .blora-popover__panel,
+  .blora-popconfirm__panel,
+  .blora-tooltip__bubble,
+  .blora-dialog__panel,
+  .blora-command,
+  .blora-cmdk,
+  .blora-calendar,
+  .blora-datepicker__panel,
+  .blora-timepicker__panel,
+  .blora-treeselect__panel,
+  .blora-transfer__panel,
+  .blora-cascader,
+  .blora-color-panel,
+  .blora-color-swatch,
+  .blora-tour-pop,
+  .blora-tour__tooltip,
+  .blora-megamenu__panel,
+  .blora-pagination__item,
+  .blora-speed-dial__label,
+  .blora-speed-dial-stage,
+  .blora-palette-picker__menu,
+  .blora-palette-card,
+  .blora-sidebar-layout {
+    corner-shape: superellipse(1.2);
+  }
+}
+
 /* -- 焦点环 -- §8.3: 状态优先用原生属性 -- */
 :where(body.blora-page, .blora-scope, .blora-portal) :focus-visible,
 [class^="blora-"]:focus-visible,

@@ -19,7 +19,7 @@ blora-otp {
   color: var(--blora-color-text-emphasis);
   background: var(--blora-color-surface-default);
   border: 1px solid var(--blora-color-border-subtle);
-  border-radius: var(--blora-radius-md);
+  border-radius: var(--blora-radius-lg);
   outline: none;
   transition:
     border-color var(--blora-duration-fast) var(--blora-easing-standard),

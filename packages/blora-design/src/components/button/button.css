@@ -237,6 +237,8 @@
 .blora-button[data-size="icon"] {
   --blora-button-pad-y: 0.75em;
   --blora-button-pad-x: 0.75em;
+  --blora-button-radius: 50%;
+  --blora-button-corner: round;
 
   padding: var(--blora-button-pad-y);
   aspect-ratio: 1;

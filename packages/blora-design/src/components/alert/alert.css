@@ -9,7 +9,7 @@
   align-items: center;
   gap: var(--blora-space-3);
   padding: var(--blora-space-4) var(--blora-space-5);
-  border-radius: var(--blora-radius-md);
+  border-radius: var(--blora-radius-lg);
   border: 1px solid;
   font-size: var(--blora-text-sm);
   line-height: var(--blora-leading-normal);

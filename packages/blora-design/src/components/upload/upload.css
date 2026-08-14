@@ -106,37 +106,149 @@ blora-upload {
 }
 
 .blora-file-picker {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--blora-space-2);
-  min-height: 2.5rem;
-  padding: 0 var(--blora-space-4);
-  color: var(--blora-color-action-primary-default);
-  background: var(--blora-color-surface-raised);
-  border: 1px solid var(--blora-color-border-default);
-  border-radius: var(--blora-radius-md);
-  font: inherit;
-  cursor: pointer;
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  min-height: var(--blora-control-height);
+  color: var(--blora-color-text-muted);
+  background: var(--blora-color-surface-default);
+  border: 1px solid var(--blora-color-border-subtle);
+  border-radius: var(--blora-radius-lg);
+  overflow: hidden;
+  transition:
+    border-color var(--blora-duration-fast) var(--blora-easing-standard),
+    box-shadow var(--blora-duration-fast) var(--blora-easing-standard),
+    background var(--blora-duration-fast) var(--blora-easing-standard);
 }
 
 .blora-file-picker:hover {
-  background: color-mix(in srgb, var(--blora-color-action-primary-default) 6%, transparent);
+  border-color: var(--blora-color-text-subtle);
+}
+
+.blora-file-picker:focus-within,
+.blora-file-picker[data-dragover] {
   border-color: var(--blora-color-action-primary-default);
+  box-shadow: var(--blora-focus-ring-default);
 }
 
-.blora-file-picker:focus-visible {
-  outline: 2px solid var(--blora-color-action-primary-default);
-  outline-offset: 2px;
+.blora-file-picker[data-dragover] {
+  background: var(--blora-color-action-primary-tint);
 }
 
-.blora-file-picker:disabled {
-  color: var(--blora-color-text-subtle);
-  cursor: not-allowed;
-  opacity: 0.7;
-}
-
-.blora-file-picker .blora-dropzone__icon {
+.blora-file-picker__trigger {
   display: inline-flex;
-  font-size: 1rem;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  min-height: calc(var(--blora-control-height) - 2px);
+  padding: 0 var(--blora-control-pad-x);
+  border: 0;
+  border-inline-end: 1px solid var(--blora-color-border-subtle);
+  border-radius: calc(var(--blora-radius-lg) - 1px) 0 0 calc(var(--blora-radius-lg) - 1px);
+  color: var(--blora-color-text-emphasis);
+  background: var(--blora-color-surface-raised);
+  font: inherit;
+  font-size: var(--blora-text-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    color var(--blora-duration-fast) var(--blora-easing-standard),
+    background var(--blora-duration-fast) var(--blora-easing-standard);
+}
+
+.blora-file-picker__trigger:hover,
+.blora-file-picker__trigger:focus-visible {
+  outline: none;
+  background: var(--blora-color-surface-sunken);
+}
+
+.blora-file-picker__trigger:disabled {
+  color: var(--blora-color-text-disabled);
+  cursor: not-allowed;
+}
+
+@supports (corner-shape: superellipse(1.2)) {
+  .blora-file-picker {
+    corner-shape: superellipse(1.2);
+  }
+
+  .blora-file-picker__trigger {
+    corner-shape: superellipse(1.2) square square superellipse(1.2);
+  }
+}
+
+.blora-file-picker__empty {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  padding: 0 var(--blora-control-pad-x);
+  font-size: var(--blora-text-sm);
+}
+
+.blora-file-picker__empty[hidden] {
+  display: none;
+}
+
+.blora-file-picker__status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--blora-space-1);
+  flex: 1;
+  min-width: 0;
+  padding: 0 calc((var(--blora-control-height) - 2rem) / 2) 0 var(--blora-control-pad-x);
+  color: var(--blora-color-text-secondary);
+  background: transparent;
+}
+
+.blora-file-picker__status[hidden] {
+  display: none;
+}
+
+.blora-file-status__name {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--blora-color-text-muted);
+  font-size: var(--blora-text-sm);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.blora-file-clear {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 2rem;
+  min-height: 2rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  color: var(--blora-color-text-subtle);
+  background: transparent;
+  cursor: pointer;
+}
+
+.blora-file-clear:hover,
+.blora-file-clear:focus-visible {
+  color: var(--blora-color-text-emphasis);
+  outline: none;
+  background: var(--blora-color-surface-sunken);
+}
+
+.blora-file-clear svg {
+  width: 14px;
+  height: 14px;
+}
+
+@media (max-width: 560px) {
+  .blora-file-picker__trigger {
+    max-width: 44%;
+    padding-inline: var(--blora-space-3);
+  }
+
+  .blora-file-picker__empty,
+  .blora-file-picker__status {
+    padding-inline-start: var(--blora-space-3);
+  }
 }

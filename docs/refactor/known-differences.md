@@ -41,11 +41,19 @@
 - **改变原因**：其他（降低已选状态的悬浮干扰）
 - **审核状态**：approved
 
+### Input / Textarea / Select / Tags Input - 连贯圆角矩形
+
+- **组件**：input、textarea、select 触发器、tags-input
+- **1.x 表现**：`border-radius: 14px` 圆形弧。
+- **2.0 表现**：与按钮同一套 `--blora-radius-lg` + `corner-shape: superellipse(1.2)`。卡片、面板、弹层、下拉、OTP 等矩形壳同样套超椭圆；圆形与胶囊除外。
+- **改变原因**：其他（圆角衔接）
+- **审核状态**：pending
+
 ### Button - 圆角与直线用超椭圆衔接
 
 - **组件**：button
 - **1.x 表现**：`border-radius: 14px` 圆形弧，接到长边时曲率突变。
-- **2.0 表现**：半径改为 `--blora-radius-lg`（18px），支持时使用 `corner-shape: superellipse(1.2)`，比 14px 超椭圆更圆，仍保持弧线与直线顺接。
+- **2.0 表现**：半径改为 `--blora-radius-lg`（18px），支持时使用 `corner-shape: superellipse(1.2)`，比 14px 超椭圆更圆，仍保持弧线与直线顺接。`data-size="icon"` 与 Speed Dial 圆形触发器强制 `corner-shape: round`，避免被拧成超椭圆。
 - **改变原因**：其他（圆角衔接）
 - **审核状态**：pending
 

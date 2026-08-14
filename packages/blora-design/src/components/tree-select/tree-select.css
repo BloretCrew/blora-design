@@ -32,7 +32,7 @@ blora-tree-select {
   padding: var(--blora-space-2);
   background: var(--blora-color-surface-default);
   border: 1px solid var(--blora-color-border-subtle);
-  border-radius: var(--blora-radius-md);
+  border-radius: var(--blora-radius-lg);
   box-shadow: var(--blora-shadow-3);
   opacity: 0;
   pointer-events: none;

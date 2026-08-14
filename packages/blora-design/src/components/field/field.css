@@ -115,11 +115,11 @@ blora-field {
 }
 
 .blora-input-group .blora-input:first-child {
-  border-radius: var(--blora-radius-md) 0 0 var(--blora-radius-md);
+  border-radius: var(--blora-radius-lg) 0 0 var(--blora-radius-lg);
 }
 
 .blora-input-group .blora-input:last-child {
-  border-radius: 0 var(--blora-radius-md) var(--blora-radius-md) 0;
+  border-radius: 0 var(--blora-radius-lg) var(--blora-radius-lg) 0;
 }
 
 .blora-input-group__addon {
@@ -133,13 +133,25 @@ blora-field {
 }
 
 .blora-input-group__addon:first-child {
-  border-radius: var(--blora-radius-md) 0 0 var(--blora-radius-md);
+  border-radius: var(--blora-radius-lg) 0 0 var(--blora-radius-lg);
   border-inline-end: none;
 }
 
 .blora-input-group__addon:last-child {
-  border-radius: 0 var(--blora-radius-md) var(--blora-radius-md) 0;
+  border-radius: 0 var(--blora-radius-lg) var(--blora-radius-lg) 0;
   border-inline-start: none;
+}
+
+@supports (corner-shape: superellipse(1.2)) {
+  .blora-input-group .blora-input:first-child,
+  .blora-input-group__addon:first-child {
+    corner-shape: superellipse(1.2) square square superellipse(1.2);
+  }
+
+  .blora-input-group .blora-input:last-child,
+  .blora-input-group__addon:last-child {
+    corner-shape: square superellipse(1.2) superellipse(1.2) square;
+  }
 }
 
 /* Char counter (created by createFieldController) */
