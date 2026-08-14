@@ -125,30 +125,33 @@ function charSpanAtPoint(el: HTMLElement, x: number, y: number): HTMLElement | n
   return null;
 }
 
-function handleTextFxDblClick(this: HTMLElement, event: MouseEvent): void {
+function selectTextFxForEvent(el: HTMLElement, event: MouseEvent): void {
   /* Split chars are independent inline-block boxes, so the browser's native
      word/triple-click selection does not apply. Restore it: double click
-     selects the word (contiguous non-space chars), triple click the line. */
+     selects the word (contiguous non-space chars), triple click the line.
+     Runs on mouseup (detail>=2) so the browser's per-char selection is
+     prevented before it sticks, and again on dblclick as a fallback. */
+  if (event.detail < 2) return;
   event.preventDefault();
-  const doc = this.ownerDocument;
+  const doc = el.ownerDocument;
   const selection = doc.getSelection();
   if (!selection) return;
 
   const range = doc.createRange();
-  const chars = Array.from(this.querySelectorAll<HTMLElement>(".blora-text-fx__ch"));
-  if (event.detail >= 3) {
-    range.selectNodeContents(this);
+  const chars = Array.from(el.querySelectorAll<HTMLElement>(".blora-text-fx__ch"));
+  if (event.detail >= 3 || !chars.length) {
+    range.selectNodeContents(el);
   } else {
-    /* Animated chars move under the cursor, so the dblclick target may be the
+    /* Animated chars move under the cursor, so the click target may be the
        container or a gap. Fall back to the char nearest the click point, then
        to the whole line — never leave the browser's single-char selection. */
     const target = event.target as HTMLElement;
     const clicked =
       target.closest<HTMLElement>(".blora-text-fx__ch") ??
-      charSpanAtPoint(this, event.clientX, event.clientY);
+      charSpanAtPoint(el, event.clientX, event.clientY);
     const idx = clicked ? chars.indexOf(clicked) : -1;
-    if (idx < 0 || !chars.length) {
-      range.selectNodeContents(this);
+    if (idx < 0) {
+      range.selectNodeContents(el);
     } else {
       const isSpace = (span: HTMLElement) =>
         span.textContent === "\u00a0" || span.textContent?.trim() === "";
@@ -166,6 +169,14 @@ function handleTextFxDblClick(this: HTMLElement, event: MouseEvent): void {
   }
   selection.removeAllRanges();
   selection.addRange(range);
+}
+
+function handleTextFxMouseUp(this: HTMLElement, event: MouseEvent): void {
+  selectTextFxForEvent(this, event);
+}
+
+function handleTextFxDblClick(this: HTMLElement, event: MouseEvent): void {
+  selectTextFxForEvent(this, event);
 }
 
 function splitTextFxLetters(el: HTMLElement): void {
@@ -188,6 +199,7 @@ function splitTextFxLetters(el: HTMLElement): void {
   el.dataset.bloraFxSplit = "1";
   el.dataset.bloraFxText = text;
   el.addEventListener("copy", handleTextFxCopy);
+  el.addEventListener("mouseup", handleTextFxMouseUp);
   el.addEventListener("dblclick", handleTextFxDblClick);
   layoutTextFxPhysics(el, textFxNameFromEl(el));
 }
@@ -200,6 +212,7 @@ function unsplitTextFxLetters(el: HTMLElement): void {
   el.removeAttribute("data-blora-fx-split");
   el.removeAttribute("data-blora-fx-text");
   el.removeEventListener("copy", handleTextFxCopy);
+  el.removeEventListener("mouseup", handleTextFxMouseUp);
   el.removeEventListener("dblclick", handleTextFxDblClick);
 }
 
