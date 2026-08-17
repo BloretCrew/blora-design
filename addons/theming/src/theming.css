@@ -32,6 +32,11 @@ html[data-blora-color-scheme="light"] .blora-scope {
   position: relative;
 }
 
+.blora-navbar .blora-palette-picker__menu,
+.blora-navbar__tools .blora-palette-picker__menu {
+  inset-inline: auto 0;
+}
+
 blora-palette-picker,
 blora-color-scheme-toggle {
   display: inline-block;
@@ -40,8 +45,8 @@ blora-color-scheme-toggle {
 }
 
 .blora-color-scheme-toggle__button {
-  width: var(--blora-space-6);
-  padding-inline: 0;
+  aspect-ratio: 1;
+  padding-inline: var(--blora-button-pad-y);
 }
 
 .blora-palette-picker__trigger {
@@ -68,7 +73,7 @@ blora-color-scheme-toggle {
 .blora-palette-picker__menu {
   position: absolute;
   top: calc(100% + var(--blora-space-2));
-  inset-inline-end: 0;
+  inset-inline-start: 0;
   z-index: var(--blora-z-dropdown);
   width: min(20rem, calc(100vw - 2 * var(--blora-space-4)));
   padding: var(--blora-space-3);

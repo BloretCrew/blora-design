@@ -468,10 +468,17 @@
             <button class="blora-button" type="button" data-variant="danger" disabled>Danger</button>
           </div></section>
           <section data-showcase-case="Loading"><h3>加载</h3><div data-showcase-row>
-            <button class="blora-button" type="button" data-variant="primary" data-loading aria-busy="true">Primary</button>
-            <button class="blora-button" type="button" data-variant="secondary" data-loading aria-busy="true">Secondary</button>
-            <button class="blora-button" type="button" data-variant="outline" data-loading aria-busy="true">Outline</button>
-            <button class="blora-button" type="button" data-variant="danger" data-loading aria-busy="true">Danger</button>
+            <button class="blora-button" type="button" data-variant="outline" data-size="icon" data-loading aria-busy="true" aria-label="加载中"></button>
+            <button class="blora-button" type="button" data-variant="outline" data-loading aria-busy="true">加载中</button>
+            <button class="blora-button" type="button" data-variant="primary" data-loading aria-busy="true">保存</button>
+          </div></section>
+          <section data-showcase-case="IconButtons"><h3>图标按钮</h3><div data-showcase-row>
+            <button class="blora-button" type="button" data-variant="outline" data-size="icon" data-shape="square" data-icon="heart" aria-label="喜欢"></button>
+            <button class="blora-button" type="button" data-variant="outline" data-size="icon" data-shape="circle" data-icon="heart" aria-label="喜欢"></button>
+          </div></section>
+          <section data-showcase-case="WithIcon"><h3>带图标</h3><div data-showcase-row>
+            <button class="blora-button" type="button" data-variant="outline" data-icon="heart">喜欢</button>
+            <button class="blora-button" type="button" data-variant="outline" data-icon="heart" data-icon-position="end">喜欢</button>
           </div></section>
           <section data-showcase-case="ButtonGroup"><h3>按钮组</h3><div class="blora-button-group">
             <button class="blora-button" type="button" data-variant="outline">Left</button>
@@ -699,17 +706,35 @@
           <section data-showcase-case="PulseStatus"><h3>脉冲在线状态</h3><div class="blora-avatar-wrap"><div class="blora-avatar" data-size="lg" data-variant="primary">AB</div><span class="blora-dot" data-variant="success" data-pulse aria-label="在线"></span></div></section>
         </div>
       </template>
-      <template data-component="badge" data-label="Badge" data-group="数据展示" data-eyebrow="Data display" data-kind="CSS-only" data-description="紧凑显示数量、状态或新内容提示。">
-        <div data-showcase-row>
-          <span class="blora-badge">9</span>
-          <span class="blora-badge">99+</span>
-          <span class="blora-badge" data-variant="pill">New</span>
-          <span class="blora-badge" data-variant="neutral">Neutral</span>
-          <span class="blora-badge" data-variant="info">Info</span>
-          <span class="blora-badge" data-variant="success">Ready</span>
-          <span class="blora-badge" data-variant="warning">Warning</span>
-          <span class="blora-badge" data-variant="danger">Danger</span>
-          <span class="blora-badge" data-variant="dot" aria-label="有新消息"></span>
+      <template data-component="badge" data-label="Badge" data-group="数据展示" data-eyebrow="Data display" data-kind="CSS-only" data-description="数量、红点或状态提示。实心、不可关闭。分类和可移除标签请用 Tag。">
+        <div data-showcase-cases>
+          <section data-showcase-case="Default">
+            <h3>默认</h3>
+            <div data-showcase-row>
+              <span class="blora-badge">9</span>
+              <span class="blora-badge">99+</span>
+              <span class="blora-badge" data-variant="pill">New</span>
+              <span class="blora-badge" data-variant="neutral">Neutral</span>
+              <span class="blora-badge" data-variant="info">Info</span>
+              <span class="blora-badge" data-variant="success">Ready</span>
+              <span class="blora-badge" data-variant="warning">Warning</span>
+              <span class="blora-badge" data-variant="danger">Danger</span>
+              <span class="blora-badge" data-variant="dot" aria-label="有新消息"></span>
+            </div>
+          </section>
+          <section data-showcase-case="WithIcon">
+            <h3>带图标</h3>
+            <div data-showcase-row>
+              <span class="blora-badge" data-variant="info" data-icon="info">Info</span>
+              <span class="blora-badge" data-variant="success" data-icon="circle-check">Success</span>
+              <span class="blora-badge" data-variant="warning" data-icon="triangle-alert">Warning</span>
+              <span class="blora-badge" data-variant="danger" data-icon="ban">Error</span>
+            </div>
+          </section>
+          <section data-showcase-case="VersusTag">
+            <h3>和 Tag 怎么选</h3>
+            <p class="blora-text-muted">Badge 回答「现在怎样」：数量、红点、New、成功/警告。不能点掉。分类词、筛选、可关闭用 Tag。</p>
+          </section>
         </div>
       </template>
       <template data-component="media" data-label="Media Container" data-group="数据展示" data-eyebrow="Data display" data-kind="CSS-only" data-description="为图片、视频和嵌入内容提供统一的比例、裁切和圆角容器。">
@@ -749,8 +774,15 @@
           <blora-collapse-item heading="无障碍">原生按钮、键盘操作和 ARIA 状态保持同步。</blora-collapse-item>
         </blora-collapse>
       </template>
-      <template data-component="comment" data-label="Comment" data-group="数据展示" data-eyebrow="Data display" data-kind="Composite CE" data-description="展示作者、时间、正文和评论操作。">
-        <blora-comment author="Rhedar" time="刚刚" avatar="R" content="Composite CE 让不同页面保持同一结构。" likes="12"></blora-comment>
+      <template data-component="comment" data-label="Comment" data-group="数据展示" data-eyebrow="Data display" data-kind="Composite CE" data-description="评论布局壳。头像、作者、时间、正文和操作都由开发者塞入现有组件。">
+        <blora-comment>
+          <span slot="avatar" class="blora-avatar" data-size="sm">R</span>
+          <span slot="author">Rhedar</span>
+          <time slot="meta">刚刚</time>
+          Composite CE 让不同页面保持同一结构。
+          <button slot="actions" type="button" class="blora-button" data-size="xs" data-variant="outline">回复</button>
+          <button slot="actions" type="button" class="blora-button" data-size="xs" data-variant="outline" data-icon="thumbs-up" aria-label="赞">12</button>
+        </blora-comment>
       </template>
       <template data-component="descriptions" data-label="Descriptions" data-group="数据展示" data-eyebrow="Data display" data-kind="CSS-only" data-description="以键值表形式展示对象详情。">
         <table class="blora-descriptions">
@@ -810,10 +842,15 @@
           <section data-showcase-case="Striped"><h3>斑马纹</h3><div class="blora-table-wrap"><table class="blora-table" data-striped><thead><tr><th>成员</th><th>状态</th></tr></thead><tbody><tr><td>Alice</td><td>Active</td></tr><tr><td>Bob</td><td>Offline</td></tr><tr><td>Carol</td><td>Pending</td></tr></tbody></table></div></section>
         </div>
       </template>
-      <template data-component="tag" data-label="Tag" data-group="数据展示" data-eyebrow="Data display" data-kind="CSS-only" data-description="用于分类、筛选或状态表达的紧凑标签。">
+      <template data-component="tag" data-label="Tag" data-group="数据展示" data-eyebrow="Data display" data-kind="CSS-only" data-description="分类、关键词或可移除标签。浅底描边。数量、红点和状态提示请用 Badge。">
         <div data-showcase-cases>
           <section data-showcase-case="Default"><h3>默认</h3><div data-showcase-row><span class="blora-tag">Default</span></div></section>
-          <section data-showcase-case="Variants"><h3>语义变体</h3><div data-showcase-row><span class="blora-tag">Default</span><span class="blora-tag" data-variant="primary">Primary</span><span class="blora-tag" data-variant="neutral">Neutral</span><span class="blora-tag" data-variant="info">Info</span><span class="blora-tag" data-variant="success">Success</span><span class="blora-tag" data-variant="warning">Warning</span><span class="blora-tag" data-variant="solid">Solid</span></div></section>
+          <section data-showcase-case="Variants"><h3>语义变体</h3><div data-showcase-row><span class="blora-tag">Default</span><span class="blora-tag" data-variant="primary">Primary</span><span class="blora-tag" data-variant="neutral">Neutral</span><span class="blora-tag" data-variant="info">Info</span><span class="blora-tag" data-variant="success">Success</span><span class="blora-tag" data-variant="warning">Warning</span></div></section>
+          <section data-showcase-case="Removable"><h3>可移除</h3><div data-showcase-row><span class="blora-tag blora-tag--removable" data-variant="primary">React<button class="blora-tag__close" type="button" aria-label="移除"></button></span><span class="blora-tag blora-tag--removable">设计系统<button class="blora-tag__close" type="button" aria-label="移除"></button></span></div></section>
+          <section data-showcase-case="VersusBadge">
+            <h3>和 Badge 怎么选</h3>
+            <p class="blora-text-muted">Tag 回答「这是什么」：分类、主题、可关掉的词。数量、红点、New、成功/警告用 Badge。</p>
+          </section>
         </div>
       </template>
       <template data-component="timeline" data-label="Timeline" data-group="数据展示" data-eyebrow="Data display" data-kind="Composite CE" data-description="按时间顺序展示事件、状态与说明。">
@@ -944,10 +981,17 @@
           <blora-dock-item value="settings" href="#dock" icon="settings"><span>设置</span></blora-dock-item>
         </blora-dock>
       </template>
-      <template data-component="dropdown" data-label="Dropdown" data-group="操作" data-eyebrow="Actions" data-kind="Composite CE" data-description="从触发按钮展开一组菜单操作。">
+      <template data-component="dropdown" data-label="Dropdown" data-group="操作" data-eyebrow="Actions" data-kind="Composite CE" data-description="从触发按钮展开菜单、卡片或辅助说明，并可对齐到起点、居中或终点。">
         <div data-showcase-cases>
           <section data-showcase-case="Default"><h3>默认</h3><div data-showcase-overlay-space><blora-dropdown label="下拉菜单"><blora-dropdown-item value="one">操作一</blora-dropdown-item><blora-dropdown-item value="two">操作二</blora-dropdown-item><blora-dropdown-item value="three">操作三</blora-dropdown-item></blora-dropdown></div></section>
           <section data-showcase-case="WithSeparator"><h3>带分隔线</h3><div data-showcase-overlay-space><blora-dropdown label="操作菜单"><blora-dropdown-item value="edit">编辑</blora-dropdown-item><blora-dropdown-item value="copy">复制</blora-dropdown-item><blora-dropdown-item value="delete" separator>删除</blora-dropdown-item></blora-dropdown></div></section>
+          <section data-showcase-case="Align"><h3>面板对齐</h3><div data-showcase-row data-showcase-overlay-space>
+            <blora-dropdown label="起点" align="start"><blora-dropdown-item value="one">操作一</blora-dropdown-item><blora-dropdown-item value="two">操作二</blora-dropdown-item></blora-dropdown>
+            <blora-dropdown label="居中" align="center"><blora-dropdown-item value="one">操作一</blora-dropdown-item><blora-dropdown-item value="two">操作二</blora-dropdown-item></blora-dropdown>
+            <blora-dropdown label="终点" align="end"><blora-dropdown-item value="one">操作一</blora-dropdown-item><blora-dropdown-item value="two">操作二</blora-dropdown-item></blora-dropdown>
+          </div></section>
+          <section data-showcase-case="Card"><h3>卡片内容</h3><div data-showcase-overlay-space><blora-dropdown label="打开卡片" align="start"><article class="blora-card" data-variant="flat"><div class="blora-card__title">这是一张卡片</div><div class="blora-card__body">下拉面板可以放入任意正式组件，不只是菜单项。</div></article></blora-dropdown></div></section>
+          <section data-showcase-case="Helper"><h3>辅助说明</h3><div data-showcase-overlay-space><p>一段普通文字和辅助说明 <blora-dropdown variant="helper" label="更多说明" align="start"><strong>需要更多信息？</strong><span class="blora-text-muted">这里是一段补充描述。</span></blora-dropdown></p></div></section>
         </div>
       </template>
       <template data-component="megamenu" data-label="Megamenu" data-group="导航" data-eyebrow="Navigation" data-kind="Composite CE" data-description="在大型面板中按栏目组织复杂导航。">
@@ -969,6 +1013,7 @@
         <div data-showcase-cases>
           <section data-showcase-case="Default"><h3>较少页数</h3><blora-pagination label="分页" page="2" total="5"></blora-pagination></section>
           <section data-showcase-case="EllipsisWindow"><h3>固定窗口与双侧省略号</h3><blora-pagination label="分页" page="7" total="12" max-visible="7"></blora-pagination></section>
+          <section data-showcase-case="Simple"><h3>简易页码</h3><blora-pagination variant="simple" label="分页" page="22" total="50"></blora-pagination></section>
         </div>
       </template>
       <template data-component="segmented" data-label="Segmented" data-group="导航" data-eyebrow="Navigation" data-kind="Composite CE" data-description="在少量互斥视图或筛选项之间快速切换。">
@@ -1009,13 +1054,20 @@
       </template>
       <template data-component="tour" data-label="Tour" data-group="导航" data-eyebrow="Navigation" data-kind="Composite CE" data-description="分步骤介绍页面功能并管理焦点。">
         <blora-tour label="开始漫游">
-          <blora-tour-step title="标签" description="这是第一步：高亮当前标签。"><span class="blora-tag" data-variant="primary">步骤 A</span></blora-tour-step>
-          <blora-tour-step title="按钮" description="第二步：关注操作按钮。"><button class="blora-button" data-variant="outline" type="button">步骤 B</button></blora-tour-step>
-          <blora-tour-step title="说明" description="第三步：可跳过或完成引导。"><span class="blora-text-muted">步骤 C 文案</span></blora-tour-step>
+          <blora-tour-step title="胶囊标签" description="高亮贴合 Tag 的全圆角胶囊，并向外扩一圈。"><span class="blora-tag" data-variant="primary">步骤 A</span></blora-tour-step>
+          <blora-tour-step title="圆角按钮" description="高亮跟随按钮的超椭圆圆角。"><button class="blora-button" data-variant="outline" type="button">步骤 B</button></blora-tour-step>
+          <blora-tour-step title="圆形图标钮" description="正圆按钮，外框也保持正圆。"><button class="blora-button" type="button" data-variant="outline" data-size="icon" data-shape="circle" data-icon="heart" aria-label="喜欢"></button></blora-tour-step>
+          <blora-tour-step title="头像" description="圆形头像的高亮同样是圆。"><div class="blora-avatar" data-size="lg" data-variant="primary">A</div></blora-tour-step>
+          <blora-tour-step title="数字角标" description="小圆形数量徽标。"><span class="blora-badge">9</span></blora-tour-step>
+          <blora-tour-step title="状态徽标" description="带图标的实心状态胶囊。"><span class="blora-badge" data-variant="info" data-icon="info">Info</span></blora-tour-step>
+          <blora-tour-step title="开关" description="细长胶囊轨道。"><blora-switch name="tour-notify" checked>通知</blora-switch></blora-tour-step>
+          <blora-tour-step title="输入框" description="较宽的超椭圆输入壳。"><input class="blora-input" type="text" value="hello@blora" readonly aria-label="示例邮箱" style="width:12rem" /></blora-tour-step>
+          <blora-tour-step title="纯文字" description="没有圆角的文本，只加一圈很浅的外扩。"><span class="blora-text-muted">步骤 C 文案</span></blora-tour-step>
+          <blora-tour-step title="卡片" description="更大的矩形容器，圆角和外扩一起放大。"><article class="blora-card" data-variant="flat" style="width:12rem;padding:var(--blora-space-4)"><div class="blora-card__title">卡片</div><div class="blora-card__body">圆角矩形容器</div></article></blora-tour-step>
         </blora-tour>
       </template>
 
-      <template data-component="popover" data-label="Popover" data-group="反馈" data-eyebrow="Feedback" data-kind="Composite CE" data-description="点击触发、与触发器对齐的轻量内容面板。">
+      <template data-component="popover" data-label="Popover" data-group="操作" data-eyebrow="Actions" data-kind="Composite CE" data-description="点击触发、与触发器对齐的轻量内容面板。">
         <div data-showcase-overlay-space><blora-popover trigger="打开 Popover" content="弹出层与触发按钮左侧对齐。"></blora-popover></div>
       </template>
       <template data-component="tooltip" data-label="Tooltip" data-group="反馈" data-eyebrow="Feedback" data-kind="Composite CE" data-description="悬停或聚焦时提供简短辅助说明。">
@@ -1597,6 +1649,8 @@
           const mount = panel.querySelector(`[data-preview-mount="${name}"]`);
           mount.append(source.content.cloneNode(true));
           panel.dataset.hydrated = "true";
+          if (typeof Blora.enhanceButtons === "function") Blora.enhanceButtons(mount);
+          if (typeof Blora.enhanceBadges === "function") Blora.enhanceBadges(mount);
 
           const resizePreview = () => {
             const previewRect = mount.getBoundingClientRect();

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/web-components";
 import { html } from "lit";
+import { createBloraIcon } from "../src/core/icons";
 
 const meta = {
   title: "Actions/Button",
@@ -99,6 +100,46 @@ export const Loading: Story = {
         aria-busy="true"
       >
         Danger
+      </button>
+    </div>
+  `,
+};
+
+export const IconButtons: Story = {
+  render: () => html`
+    <div class="blora-row">
+      <button
+        class="blora-button"
+        type="button"
+        data-variant="outline"
+        data-size="icon"
+        data-shape="square"
+        aria-label="喜欢"
+      >
+        ${createBloraIcon("heart", 16)}
+      </button>
+      <button
+        class="blora-button"
+        type="button"
+        data-variant="outline"
+        data-size="icon"
+        data-shape="circle"
+        aria-label="喜欢"
+      >
+        ${createBloraIcon("heart", 16)}
+      </button>
+    </div>
+  `,
+};
+
+export const WithIcon: Story = {
+  render: () => html`
+    <div class="blora-row">
+      <button class="blora-button" type="button" data-variant="outline">
+        ${createBloraIcon("heart", 16)} 喜欢
+      </button>
+      <button class="blora-button" type="button" data-variant="outline">
+        喜欢 ${createBloraIcon("heart", 16)}
       </button>
     </div>
   `,

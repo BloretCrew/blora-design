@@ -206,7 +206,11 @@ export function createPaginationController(root: HTMLElement): PaginationControl
 export class BloraPagination extends BloraElement {
   private controller: PaginationController | null = null;
   static get observedAttributes(): string[] {
-    return ["page", "total", "max-visible", "label", "disabled"];
+    return ["page", "total", "max-visible", "label", "disabled", "variant"];
+  }
+
+  private layout(): "simple" | "default" {
+    return this.getAttribute("variant") === "simple" ? "simple" : "default";
   }
 
   attributeChangedCallback(name: string): void {
@@ -226,11 +230,8 @@ export class BloraPagination extends BloraElement {
   }
 
   get page(): number {
-    return Number(
-      this.querySelector<HTMLButtonElement>('[aria-current="page"]')?.textContent ??
-        this.getAttribute("page") ??
-        1,
-    );
+    const marked = this.querySelector<HTMLElement>("[data-page][aria-current='page']");
+    return Number(marked?.dataset.page ?? this.getAttribute("page") ?? 1);
   }
 
   set page(page: number) {
@@ -245,7 +246,18 @@ export class BloraPagination extends BloraElement {
     root.className = "blora-pagination";
     root.dataset.bloraGenerated = "";
     root.dataset.total = String(total);
+    root.dataset.variant = this.layout();
     root.setAttribute("aria-label", this.getAttribute("label") ?? "Pagination");
+    if (this.layout() === "simple") {
+      root.append(
+        this.createNav("上一页", "chevron-left"),
+        this.createStatus(current),
+        this.createNav("下一页", "chevron-right"),
+      );
+      this.replaceChildren(root);
+      this.applyWindow(root, window, current, total);
+      return;
+    }
     root.appendChild(this.createNav("上一页", "chevron-left"));
     if (window.windowed) {
       root.appendChild(this.createPageButton(1, current));
@@ -278,6 +290,15 @@ export class BloraPagination extends BloraElement {
     const total = Math.max(1, Number(this.getAttribute("total") ?? 1));
     const current = Math.max(1, Math.min(total, Number(this.getAttribute("page") ?? 1)));
     const window = paginationWindow(current, total, Number(this.getAttribute("max-visible") ?? 7));
+    if ((this.layout() === "simple") !== Boolean(root.querySelector(".blora-pagination__status"))) {
+      this.render();
+      this.rebind();
+      return;
+    }
+    if (this.layout() === "simple") {
+      this.applyWindow(root, window, current, total);
+      return;
+    }
     if (window.windowed !== Boolean(root.querySelector(".blora-pagination__track"))) {
       this.render();
       this.rebind();
@@ -308,12 +329,18 @@ export class BloraPagination extends BloraElement {
     total: number,
   ): void {
     root.dataset.total = String(total);
+    root.dataset.variant = this.layout();
     root.setAttribute("aria-label", this.getAttribute("label") ?? "Pagination");
+    const status = root.querySelector<HTMLElement>(".blora-pagination__status");
+    if (status) {
+      status.dataset.page = String(current);
+      status.textContent = `第 ${current} 页`;
+    }
     root.style.setProperty("--blora-pagination-window", String(window.windowSize));
     root.style.setProperty("--blora-pagination-offset", String(window.offset));
     root.querySelector('[data-edge="start"]')?.classList.toggle("is-inactive", !window.showStartEllipsis);
     root.querySelector('[data-edge="end"]')?.classList.toggle("is-inactive", !window.showEndEllipsis);
-    root.querySelectorAll<HTMLButtonElement>("[data-page]").forEach((button) => {
+    root.querySelectorAll<HTMLButtonElement>("button[data-page]").forEach((button) => {
       const page = Number(button.dataset.page);
       const visible = !window.windowed || page === 1 || page === total || window.inner.includes(page);
       if (page === current) button.setAttribute("aria-current", "page");
@@ -327,6 +354,15 @@ export class BloraPagination extends BloraElement {
     const next = root.querySelector<HTMLButtonElement>('.blora-pagination__nav[aria-label="下一页"]');
     if (prev) prev.disabled = this.hasAttribute("disabled") || current <= 1;
     if (next) next.disabled = this.hasAttribute("disabled") || current >= total;
+  }
+
+  private createStatus(page: number): HTMLSpanElement {
+    const status = this.ownerDocument.createElement("span");
+    status.className = "blora-pagination__status";
+    status.dataset.page = String(page);
+    status.setAttribute("aria-current", "page");
+    status.textContent = `第 ${page} 页`;
+    return status;
   }
 
   private createPageButton(page: number, current: number): HTMLButtonElement {

@@ -10,6 +10,7 @@ blora-tour,
 
 .blora-tour__steps {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--blora-space-3);
 }
@@ -47,9 +48,13 @@ blora-tour,
 
 /* Tour overlay and tooltip (created by createTourController) */
 .blora-tour__overlay {
+  --blora-tour-pad: 4px;
+
   position: fixed;
+  inset: 0;
   z-index: var(--blora-z-toast);
   pointer-events: none;
+  background: color-mix(in srgb, var(--blora-color-text-primary) 45%, transparent);
 }
 
 .blora-tour__tooltip {
@@ -95,32 +100,9 @@ blora-tour,
 
 .blora-tour__buttons {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   gap: var(--blora-space-2);
-}
-
-.blora-tour__buttons button {
-  padding: 0.3em 0.8em;
-  border-radius: var(--blora-radius-sm);
-  font-size: var(--blora-text-xs);
-  cursor: pointer;
-  border: 1px solid var(--blora-color-border-subtle);
-  background: transparent;
-  color: var(--blora-color-text-secondary);
-  transition: all var(--blora-duration-fast) var(--blora-easing-standard);
-}
-
-.blora-tour__buttons button:hover {
-  background: var(--blora-color-surface-raised);
-}
-
-.blora-tour__buttons .blora-tour__next {
-  background: var(--blora-color-action-primary-default);
-  border-color: var(--blora-color-action-primary-default);
-  color: var(--blora-color-text-on-accent);
-}
-
-.blora-tour__buttons .blora-tour__next:hover {
-  background: var(--blora-color-action-primary-hover);
 }
 
 .blora-tour-pop__steps {
@@ -133,8 +115,4 @@ blora-tour,
   position: fixed;
   z-index: var(--blora-z-toast);
   pointer-events: none;
-  border-radius: var(--blora-radius-md);
-  box-shadow:
-    0 0 0 9999px var(--blora-color-overlay-modal),
-    0 0 0 3px var(--blora-color-action-primary-default);
 }

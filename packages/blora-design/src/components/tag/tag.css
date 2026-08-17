@@ -50,12 +50,6 @@
   border-color: color-mix(in srgb, var(--blora-color-status-warning) 30%, transparent);
 }
 
-.blora-tag[data-variant="solid"] {
-  background: var(--blora-color-text-secondary);
-  color: var(--blora-color-text-on-accent);
-  border-color: var(--blora-color-text-secondary);
-}
-
 .blora-tag--removable {
   padding-inline-end: 0.35em;
 }

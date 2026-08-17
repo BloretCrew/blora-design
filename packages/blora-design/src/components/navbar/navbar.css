@@ -45,10 +45,11 @@ blora-navbar > .blora-navbar {
   pointer-events: none;
 }
 
-/* A modal backdrop must own the final blur composition. Keeping the navbar's
-   own backdrop-filter active creates an isolated backdrop root that remains
-   visually sharp through overlays. */
-:root[data-blora-modal-open] .blora-navbar::before {
+/* A modal/tour backdrop must own the final blur composition. Keeping the
+   navbar's own backdrop-filter active creates an isolated backdrop root;
+   a giant overlay shadow then seams through it as a vertical divider. */
+:root[data-blora-modal-open] .blora-navbar::before,
+:root[data-blora-tour-open] .blora-navbar::before {
   backdrop-filter: none;
 }
 

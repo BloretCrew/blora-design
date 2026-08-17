@@ -17,6 +17,22 @@
 
 ---
 
+### Button - 加载态保留文字
+
+- **组件**：button
+- **1.x 表现**：`.blora-btn.is-loading` 把文字设为透明，只显示居中转圈。
+- **2.0 表现**：`data-loading` 在文字左侧显示转圈，文字保持可见；纯图标按钮仍只显示转圈。
+- **改变原因**：可用性（加载中仍需知道按钮在做什么）
+- **审核状态**：approved
+
+### Button - 内部内容无法撑高
+
+- **组件**：button
+- **1.x 表现**：高度由 padding + 内容决定，大图标或图片会把同尺寸按钮撑得不一样高。
+- **2.0 表现**：高度锁在 `--blora-button-height`（字号 + 上下 padding + 双边框）；内部替换元素强制 `1em`。
+- **改变原因**：架构（同 `data-size` 必须等高，不因插图/图标变化）
+- **审核状态**：pending
+
 ### Checkbox - 对勾垂直居中微调
 
 - **组件**：checkbox
@@ -32,6 +48,30 @@
 - **2.0 表现**：`.blora-pagination__nav` 更大触控目标。
 - **改变原因**：可用性
 - **审核状态**：approved
+
+### Comment - 改为 slot 布局壳
+
+- **组件**：comment
+- **1.x 表现**：作者手写 `.blora-comment` 树；2.0 前期 CE 用 `author` / `time` / `likes` 等属性生成固定操作。
+- **2.0 表现**：`<blora-comment>` 只负责布局。头像、作者、时间、正文、操作通过 slot 塞入现有组件。
+- **改变原因**：架构（评论内容因产品而异，不应收成底层属性）
+- **审核状态**：pending
+
+### Tag - 去掉 solid 变体
+
+- **组件**：tag
+- **1.x 表现**：`.blora-tag--solid` 是深色实心胶囊，和 Badge 文字状态条几乎同形。
+- **2.0 表现**：删除 `solid`。实心状态用 Badge；Tag 只保留浅底描边分类（含可关闭）。
+- **改变原因**：其他（Badge / Tag 职责分开）
+- **审核状态**：pending
+
+### Badge - 语义文字徽标内边距对齐 Tag
+
+- **组件**：badge
+- **1.x 表现**：所有徽标共用 `height: 1.5em; padding: 0 0.4em`，长单词左右几乎贴边。
+- **2.0 表现**：数字角标 / 圆点 / 圆形仍用 1.x 紧凑尺寸；`neutral` / `info` / `success` / `warning` / `danger` 文字徽标使用与 `.blora-tag` 相同的 `0.2em 0.7em` 内边距。
+- **改变原因**：其他（文字徽标可读性）
+- **审核状态**：pending
 
 ### Pagination - 当前页悬浮反馈弱化
 

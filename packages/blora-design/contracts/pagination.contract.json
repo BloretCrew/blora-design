@@ -28,6 +28,10 @@
     "disabled": {
       "type": "boolean",
       "default": false
+    },
+    "variant": {
+      "type": "\"default\" | \"simple\"",
+      "default": "default"
     }
   },
   "properties": {
@@ -48,7 +52,8 @@
     "blora-pagination__nav": "Prev/next nav button with larger touch target.",
     "blora-pagination__ellipsis": "Ellipsis separator.",
     "blora-pagination__window": "Clipped viewport for the sliding numeric window.",
-    "blora-pagination__track": "Track of inner page buttons translated on page change."
+    "blora-pagination__track": "Track of inner page buttons translated on page change.",
+    "blora-pagination__status": "Current-page label in the simple prev / status / next layout."
   },
   "slots": {
     "default": "Content"

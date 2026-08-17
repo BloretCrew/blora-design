@@ -253,6 +253,39 @@ function mountPalettePicker(root: HTMLElement): PalettePickerController {
     if (label && THEME_PRESETS[current]) label.textContent = THEME_PRESETS[current]!.name;
   };
 
+  const clearMenuPlace = () => {
+    menu.style.removeProperty("position");
+    menu.style.removeProperty("top");
+    menu.style.removeProperty("left");
+    menu.style.removeProperty("right");
+    menu.style.removeProperty("width");
+    menu.style.removeProperty("max-width");
+  };
+
+  const placeMenu = () => {
+    if (typeof window.matchMedia === "function" && window.matchMedia("(max-width: 560px)").matches) {
+      clearMenuPlace();
+      return;
+    }
+    const triggerRect = trigger.getBoundingClientRect();
+    const menuWidth = menu.offsetWidth;
+    const pad = 16;
+    const top = triggerRect.bottom + 8;
+    const preferEnd = (triggerRect.left + triggerRect.right) / 2 > window.innerWidth / 2;
+    const fitsStart = triggerRect.left + menuWidth <= window.innerWidth - pad;
+    const fitsEnd = triggerRect.right - menuWidth >= pad;
+    const alignEnd = preferEnd ? fitsEnd || !fitsStart : !fitsStart && fitsEnd;
+    menu.style.position = "fixed";
+    menu.style.top = `${Math.max(pad, top)}px`;
+    if (alignEnd) {
+      menu.style.left = "auto";
+      menu.style.right = `${Math.max(pad, window.innerWidth - triggerRect.right)}px`;
+    } else {
+      menu.style.left = `${Math.max(pad, triggerRect.left)}px`;
+      menu.style.right = "auto";
+    }
+  };
+
   const open = (focus = false) => {
     doc
       .querySelectorAll<HTMLElement>(
@@ -264,9 +297,18 @@ function mountPalettePicker(root: HTMLElement): PalettePickerController {
         other
           .querySelector("[data-blora-palette-trigger], .blora-palette-picker__trigger")
           ?.setAttribute("aria-expanded", "false");
+        const otherMenu = other.querySelector<HTMLElement>(".blora-palette-picker__menu");
+        if (!otherMenu) return;
+        otherMenu.style.removeProperty("position");
+        otherMenu.style.removeProperty("top");
+        otherMenu.style.removeProperty("left");
+        otherMenu.style.removeProperty("right");
+        otherMenu.style.removeProperty("width");
+        otherMenu.style.removeProperty("max-width");
       });
     root.classList.add("is-open");
     trigger.setAttribute("aria-expanded", "true");
+    placeMenu();
     if (focus) {
       const opts = options();
       (opts.find((o) => o.getAttribute("aria-selected") === "true") || opts[0])?.focus();
@@ -276,6 +318,7 @@ function mountPalettePicker(root: HTMLElement): PalettePickerController {
   const close = (restore = false) => {
     root.classList.remove("is-open");
     trigger.setAttribute("aria-expanded", "false");
+    clearMenuPlace();
     if (restore) trigger.focus();
   };
 
@@ -319,6 +362,9 @@ function mountPalettePicker(root: HTMLElement): PalettePickerController {
     if (!root.contains(e.target as Node)) close();
   };
   const onTheme = () => sync();
+  const onReposition = () => {
+    if (root.classList.contains("is-open")) placeMenu();
+  };
 
   trigger.addEventListener("click", onTrigger);
   trigger.addEventListener("keydown", onTriggerKey);
@@ -326,6 +372,8 @@ function mountPalettePicker(root: HTMLElement): PalettePickerController {
   menu.addEventListener("keydown", onMenuKey);
   doc.addEventListener("click", onDoc);
   doc.documentElement.addEventListener("blora-theme-change", onTheme);
+  window.addEventListener("resize", onReposition);
+  window.addEventListener("scroll", onReposition, true);
   sync();
 
   return {
@@ -337,6 +385,8 @@ function mountPalettePicker(root: HTMLElement): PalettePickerController {
       menu!.removeEventListener("keydown", onMenuKey);
       doc.removeEventListener("click", onDoc);
       doc.documentElement.removeEventListener("blora-theme-change", onTheme);
+      window.removeEventListener("resize", onReposition);
+      window.removeEventListener("scroll", onReposition, true);
     },
     open: () => open(true),
   };
@@ -350,8 +400,8 @@ const ThemingBase: typeof HTMLElement =
 
 function createThemingIcon(doc: Document, name: "moon" | "palette" | "sun"): SVGSVGElement {
   const svg = doc.createElementNS("http://www.w3.org/2000/svg", "svg");
-  svg.setAttribute("width", name === "palette" ? "17" : "19");
-  svg.setAttribute("height", name === "palette" ? "17" : "19");
+  svg.setAttribute("width", "16");
+  svg.setAttribute("height", "16");
   svg.setAttribute("viewBox", "0 0 24 24");
   svg.setAttribute("fill", "none");
   svg.setAttribute("stroke", "currentColor");

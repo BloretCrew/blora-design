@@ -5,7 +5,7 @@ import { defineBloraPopover } from "../src/components/popover";
 defineBloraPopover();
 
 const meta = {
-  title: "Feedback/Popover",
+  title: "Actions/Popover",
   component: "blora-popover",
   tags: ["autodocs"],
 } satisfies Meta;

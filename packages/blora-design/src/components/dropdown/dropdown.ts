@@ -61,11 +61,12 @@ export function createDropdownController(root: HTMLElement): DropdownController 
   const menu: HTMLElement = menuEl;
 
   // --- ARIA setup ---
-  trigger.setAttribute("aria-haspopup", "menu");
+  const isMenu = Boolean(menu.querySelector(".blora-dropdown__item"));
+  trigger.setAttribute("aria-haspopup", isMenu ? "menu" : "dialog");
   if (!trigger.id) {
     trigger.id = `blora-dropdown-trigger-${Math.random().toString(36).slice(2, 9)}`;
   }
-  menu.setAttribute("role", "menu");
+  menu.setAttribute("role", isMenu ? "menu" : "dialog");
   menu.setAttribute("aria-labelledby", trigger.id);
 
   function isOpen(): boolean {
@@ -78,6 +79,12 @@ export function createDropdownController(root: HTMLElement): DropdownController 
   }
 
   function open(): void {
+    document.querySelectorAll<HTMLElement>(".blora-dropdown[data-open]").forEach((other) => {
+      if (other === root) return;
+      other.removeAttribute("data-open");
+      other.querySelector("[data-dropdown-trigger]")?.setAttribute("aria-expanded", "false");
+      other.querySelector(".blora-dropdown__menu")?.setAttribute("aria-hidden", "true");
+    });
     root.setAttribute("data-open", "");
     syncAria();
   }
@@ -159,9 +166,10 @@ interface DropdownItemDefinition {
 export class BloraDropdown extends BloraElement {
   private controller: DropdownController | null = null;
   private definitions: DropdownItemDefinition[] | null = null;
+  private contentNodes: Node[] | null = null;
 
   static get observedAttributes(): string[] {
-    return ["label", "open", "disabled"];
+    return ["label", "open", "disabled", "align", "variant"];
   }
 
   attributeChangedCallback(name: string): void {
@@ -186,35 +194,64 @@ export class BloraDropdown extends BloraElement {
     this.controller?.toggle();
   }
 
+  private alignValue(): "start" | "center" | "end" {
+    const align = this.getAttribute("align");
+    return align === "center" || align === "end" ? align : "start";
+  }
+
+  private isHelper(): boolean {
+    return this.getAttribute("variant") === "helper";
+  }
+
   protected render(): void {
-    if (!this.definitions) {
-      this.definitions = Array.from(this.children)
-        .filter((item) => item.localName === "blora-dropdown-item")
-        .map((item) => ({
+    const items = Array.from(this.children).filter((item) => item.localName === "blora-dropdown-item");
+    if (!this.definitions && !this.contentNodes) {
+      if (items.length) {
+        this.definitions = items.map((item) => ({
           disabled: item.hasAttribute("disabled"),
           href: item.getAttribute("href"),
           label: item.getAttribute("label") ?? item.textContent?.trim() ?? "",
           separator: item.hasAttribute("separator"),
           value: item.getAttribute("value") ?? item.textContent?.trim() ?? "",
         }));
+      } else {
+        const kids = Array.from(this.childNodes).filter(
+          (node) =>
+            node.nodeType === Node.ELEMENT_NODE || (node.textContent?.trim().length ?? 0) > 0,
+        );
+        this.contentNodes = kids.length ? kids : [];
+      }
     }
     const root = this.ownerDocument.createElement("div");
     root.className = "blora-dropdown";
     root.dataset.bloraGenerated = "";
+    root.dataset.align = this.alignValue();
+    if (this.isHelper()) root.dataset.variant = "helper";
     if (this.hasAttribute("open")) root.dataset.open = "";
     const trigger = this.ownerDocument.createElement("button");
     trigger.type = "button";
     trigger.className = "blora-button";
-    trigger.dataset.variant = "outline";
     trigger.dataset.dropdownTrigger = "";
     trigger.disabled = this.hasAttribute("disabled");
-    const label = this.ownerDocument.createElement("span");
-    label.className = "blora-dropdown__label";
-    label.textContent = this.getAttribute("label") ?? "Menu";
-    trigger.append(label, createBloraIcon("chevron-down", 16, this.ownerDocument));
+    const labelText = this.getAttribute("label") ?? "Menu";
+    if (this.isHelper()) {
+      trigger.dataset.variant = "ghost";
+      trigger.dataset.size = "icon";
+      trigger.setAttribute("aria-label", labelText);
+      trigger.append(createBloraIcon("info", 16, this.ownerDocument));
+    } else {
+      trigger.dataset.variant = "outline";
+      const label = this.ownerDocument.createElement("span");
+      label.className = "blora-dropdown__label";
+      label.textContent = labelText;
+      trigger.append(label, createBloraIcon("chevron-down", 16, this.ownerDocument));
+    }
     const menu = this.ownerDocument.createElement("div");
     menu.className = "blora-dropdown__menu";
-    for (const definition of this.definitions) {
+    if (this.contentNodes) {
+      menu.append(...this.contentNodes);
+    }
+    for (const definition of this.definitions ?? []) {
       if (definition.separator) {
         const separator = this.ownerDocument.createElement("div");
         separator.className = "blora-dropdown__sep";
@@ -240,11 +277,15 @@ export class BloraDropdown extends BloraElement {
   }
 
   protected override sync(): void {
+    const root = this.querySelector<HTMLElement>(".blora-dropdown");
     const trigger = this.querySelector<HTMLButtonElement>("[data-dropdown-trigger]");
-    if (!trigger) return;
+    if (!root || !trigger) return;
+    root.dataset.align = this.alignValue();
     trigger.disabled = this.hasAttribute("disabled");
+    const labelText = this.getAttribute("label") ?? "Menu";
     const label = trigger.querySelector<HTMLElement>(".blora-dropdown__label");
-    if (label) label.textContent = this.getAttribute("label") ?? "Menu";
+    if (label) label.textContent = labelText;
+    if (this.isHelper()) trigger.setAttribute("aria-label", labelText);
   }
 
   protected bindEvents(): void {

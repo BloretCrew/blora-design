@@ -32,10 +32,48 @@ blora-dropdown {
   z-index: var(--blora-z-dropdown);
 }
 
+.blora-dropdown[data-align="end"] .blora-dropdown__menu {
+  inset-inline: auto 0;
+}
+
+.blora-dropdown[data-align="center"] .blora-dropdown__menu {
+  inset-inline-start: 50%;
+  transform: translate(-50%, -4px);
+}
+
 .blora-dropdown[data-open] .blora-dropdown__menu {
   opacity: 1;
   pointer-events: auto;
   transform: translateY(0);
+}
+
+.blora-dropdown[data-align="center"][data-open] .blora-dropdown__menu {
+  transform: translate(-50%, 0);
+}
+
+.blora-dropdown[data-variant="helper"] {
+  vertical-align: middle;
+}
+
+.blora-dropdown[data-variant="helper"] .blora-dropdown__menu {
+  display: flex;
+  flex-direction: column;
+  gap: var(--blora-space-2);
+  min-width: 14rem;
+  padding: var(--blora-space-4);
+}
+
+.blora-dropdown[data-variant="helper"] .blora-dropdown__menu > strong {
+  color: var(--blora-color-text-primary);
+  font-size: var(--blora-text-sm);
+}
+
+.blora-dropdown__menu > .blora-card {
+  border: none;
+  box-shadow: none;
+  background: transparent;
+  padding: var(--blora-space-2);
+  max-width: 18rem;
 }
 
 .blora-dropdown__item {

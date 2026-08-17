@@ -9,13 +9,22 @@
   "attributes": {
     "data-variant": {
       "type": "\"dot\" | \"circle\" | \"pill\" | \"neutral\" | \"success\" | \"info\" | \"warning\" | \"danger\""
+    },
+    "data-icon": {
+      "type": "string",
+      "reflects": true
+    },
+    "data-icon-position": {
+      "type": "\"start\" | \"end\"",
+      "default": "start",
+      "reflects": true
     }
   },
   "properties": {},
   "methods": {},
   "events": {},
   "slots": {
-    "default": "Content"
+    "default": "Count, status word, or short indicator. Not a category label — use Tag."
   },
   "parts": [],
   "cssProperties": [],

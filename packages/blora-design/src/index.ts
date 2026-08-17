@@ -26,7 +26,12 @@ export {
 export { OverlayController, type OverlayOptions } from "./controllers/overlay-controller.js";
 
 // Component helpers
-export { setButtonLoading, type ButtonLoadingOptions } from "./components/button/index.js";
+export {
+  enhanceButtons,
+  setButtonLoading,
+  type ButtonLoadingOptions,
+} from "./components/button/index.js";
+export { enhanceBadges } from "./components/badge/index.js";
 
 // Dialog component
 export {

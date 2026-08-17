@@ -8,35 +8,17 @@
   "since": "2.0.0",
   "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {
-    "author": {
-      "type": "string"
-    },
-    "time": {
-      "type": "string"
-    },
-    "avatar": {
-      "type": "string"
-    },
-    "content": {
-      "type": "string"
-    },
-    "likes": {
-      "type": "string",
-      "default": "赞"
-    }
-  },
+  "attributes": {},
   "properties": {},
   "methods": {},
-  "events": {
-    "blora-comment-action": {
-      "detail": "{ value: string }",
-      "bubbles": true,
-      "composed": true
-    }
-  },
+  "events": {},
   "slots": {
-    "default": "No child structure; attributes generate the official comment tree."
+    "avatar": "Optional avatar or other identity control.",
+    "author": "Optional author name or identity content.",
+    "meta": "Optional meta content such as time or status. `slot=\"time\"` is accepted as an alias.",
+    "default": "Comment body. Any components or text.",
+    "actions": "Optional action controls. Authors supply official buttons or other components.",
+    "nested": "Optional nested replies. Child `blora-comment` elements are also collected here."
   },
   "parts": [],
   "cssProperties": [],

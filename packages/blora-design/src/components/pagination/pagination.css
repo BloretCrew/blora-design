@@ -160,3 +160,52 @@ blora-pagination {
     )
   );
 }
+
+/* Compact prev / current / next as three separate capsules */
+.blora-pagination[data-variant="simple"] {
+  gap: var(--blora-space-2);
+  width: max-content;
+  padding: 0;
+  overflow: visible;
+}
+
+.blora-pagination[data-variant="simple"] .blora-pagination__item,
+.blora-pagination[data-variant="simple"] .blora-pagination__status {
+  border: 1px solid var(--blora-color-border-subtle);
+  border-radius: var(--blora-radius-full);
+  background: var(--blora-color-surface-default);
+}
+
+.blora-pagination[data-variant="simple"] .blora-pagination__item {
+  width: var(--blora-pagination-item-size);
+  min-width: var(--blora-pagination-item-size);
+  max-width: var(--blora-pagination-item-size);
+}
+
+.blora-pagination[data-variant="simple"] .blora-pagination__item:hover:not([disabled]),
+.blora-pagination[data-variant="simple"] .blora-pagination__item[aria-current="page"]:hover:not([disabled]) {
+  transform: none;
+  box-shadow: none;
+}
+
+.blora-pagination[data-variant="simple"] .blora-pagination__status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-width: 5.5em;
+  height: var(--blora-pagination-item-size);
+  padding-inline: 0.9em;
+  font: inherit;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--blora-color-text-primary);
+  white-space: nowrap;
+}
+
+@supports (corner-shape: round) {
+  .blora-pagination[data-variant="simple"] .blora-pagination__item,
+  .blora-pagination[data-variant="simple"] .blora-pagination__status {
+    corner-shape: round;
+  }
+}

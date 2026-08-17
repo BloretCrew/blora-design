@@ -6,12 +6,17 @@
   "since": "2.0.0",
   "requiresJavaScript": false,
   "formAssociated": false,
-  "attributes": {},
+  "attributes": {
+    "data-variant": {
+      "type": "\"primary\" | \"neutral\" | \"info\" | \"success\" | \"warning\"",
+      "reflects": true
+    }
+  },
   "properties": {},
   "methods": {},
   "events": {},
   "slots": {
-    "default": "Content"
+    "default": "Category, keyword, or removable label. Not a count or status chip — use Badge."
   },
   "parts": [],
   "cssProperties": [],

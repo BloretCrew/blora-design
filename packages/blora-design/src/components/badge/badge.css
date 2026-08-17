@@ -11,6 +11,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 0.35em;
   box-sizing: border-box;
   flex-shrink: 0; /* .blora-row > * { min-width: 0 } must not squash pills */
   min-width: 1.5em;
@@ -60,27 +61,43 @@
   border-radius: var(--blora-radius-full);
 }
 
+.blora-badge[data-variant="neutral"],
+.blora-badge[data-variant="success"],
+.blora-badge[data-variant="info"],
+.blora-badge[data-variant="warning"],
+.blora-badge[data-variant="danger"] {
+  /* Status labels are words, not counts. Match .blora-tag inset so
+     "Neutral" / "Warning" do not kiss the capsule ends. */
+  min-width: max-content;
+  height: auto;
+  padding: 0.2em 0.7em;
+  line-height: 1.25;
+  box-shadow: none;
+}
+
 .blora-badge[data-variant="neutral"] {
   background: var(--blora-color-status-neutral);
-  box-shadow: none;
 }
 
 .blora-badge[data-variant="success"] {
   background: var(--blora-color-status-success);
-  box-shadow: none;
 }
 
 .blora-badge[data-variant="info"] {
   background: var(--blora-color-status-info);
-  box-shadow: none;
 }
 
 .blora-badge[data-variant="warning"] {
   background: var(--blora-color-status-warning);
-  box-shadow: none;
 }
 
 .blora-badge[data-variant="danger"] {
   background: var(--blora-color-status-danger);
-  box-shadow: none;
+}
+
+.blora-badge > svg {
+  display: block;
+  flex: none;
+  width: 1em;
+  height: 1em;
 }

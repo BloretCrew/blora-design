@@ -1,7 +1,7 @@
 {
   "name": "@bloret-crew/blora-design",
   "version": "2.0.0-alpha.1",
-  "generatedAt": "2026-08-14T08:50:17.664Z",
+  "generatedAt": "2026-08-16T12:46:21.066Z",
   "components": [
     {
       "name": "accordion",
@@ -531,7 +531,7 @@
       "name": "popover",
       "status": "stable",
       "kind": "custom-element",
-      "category": "feedback",
+      "category": "actions",
       "tagName": "blora-popover",
       "requiresJavaScript": true,
       "formAssociated": false,

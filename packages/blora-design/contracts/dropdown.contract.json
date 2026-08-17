@@ -19,6 +19,14 @@
     "disabled": {
       "type": "boolean",
       "default": false
+    },
+    "align": {
+      "type": "\"start\" | \"center\" | \"end\"",
+      "default": "start"
+    },
+    "variant": {
+      "type": "\"menu\" | \"helper\"",
+      "default": "menu"
     }
   },
   "properties": {},
@@ -66,7 +74,7 @@
     }
   },
   "slots": {
-    "default": "Trigger and menu content"
+    "default": "Menu items (blora-dropdown-item) or arbitrary panel content such as a card"
   },
   "parts": [],
   "cssProperties": [],

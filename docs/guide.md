@@ -134,6 +134,8 @@ ADR-015 已用 Composite CE 取代 ADR-013 的默认 headless 推荐。结构封
 <button type="button" class="blora-button" data-variant="primary" data-size="sm">小</button>
 ```
 
+同 `data-size` 的按钮高度由 `--blora-button-height` 锁死，内部图标 / 图片 / 自定义节点强制 `1em`，不会把按钮撑高。
+
 ```js
 import { setButtonLoading } from "@bloret-crew/blora-design";
 setButtonLoading(btn, true);
@@ -295,7 +297,41 @@ Dialog / Drawer：
 <blora-drawer>…</blora-drawer>
 ```
 
-### 3.8 图片预览 / 回到顶部
+### 3.8 Badge 与 Tag
+
+不要混用。职责如下：
+
+| | Badge | Tag |
+|---|---|---|
+| 问题 | 现在怎样？ | 这是什么？ |
+| 例子 | `9`、红点、`New`、警告 | `React`、`设计系统` |
+| 外观 | 实心胶囊或角标 | 浅底描边 |
+| 交互 | 只展示 | 常可关闭、可筛选 |
+
+```html
+<span class="blora-badge">9</span>
+<span class="blora-badge" data-variant="warning" data-icon="triangle-alert">Warning</span>
+
+<span class="blora-tag" data-variant="primary">React</span>
+<span class="blora-tag blora-tag--removable">设计系统<button class="blora-tag__close" type="button" aria-label="移除"></button></span>
+```
+
+1.x 的 `.blora-tag--solid` 已删除；实心状态请改写为 Badge。
+
+Comment 只做布局壳，不把 `time` / `likes` 收成底层属性：
+
+```html
+<blora-comment>
+  <span slot="avatar" class="blora-avatar" data-size="sm">R</span>
+  <span slot="author">Rhedar</span>
+  <time slot="meta">刚刚</time>
+  正文可以塞入任意组件。
+  <button slot="actions" type="button" class="blora-button" data-size="xs" data-variant="outline">回复</button>
+  <button slot="actions" type="button" class="blora-button" data-size="xs" data-variant="outline" data-icon="thumbs-up" aria-label="赞">12</button>
+</blora-comment>
+```
+
+### 3.9 图片预览 / 回到顶部
 
 ```js
 import { openImagePreview, initBackTop } from "@bloret-crew/blora-design";
@@ -304,7 +340,7 @@ openImagePreview({ src: "/a.png", alt: "图" });
 initBackTop(); // 自动管理 <blora-backtop>
 ```
 
-### 3.9 Tree Select / Tree
+### 3.10 Tree Select / Tree
 
 ```html
 <blora-tree><!-- blora-tree-node definitions --></blora-tree>

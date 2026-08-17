@@ -2,81 +2,115 @@ import { BloraElement } from "../../core/blora-element.js";
 
 export const BLORA_COMMENT_TAG = "blora-comment";
 
-export class BloraComment extends BloraElement {
-  static get observedAttributes(): string[] {
-    return ["author", "time", "avatar", "content", "likes"];
-  }
+type NamedSlot = "actions" | "author" | "avatar" | "meta" | "nested";
+type Assigned = Record<NamedSlot | "body", Node[]>;
 
-  attributeChangedCallback(): void {
-    if (this.isConnectedInternal) this.sync();
-  }
+function slotName(el: HTMLElement): NamedSlot | "body" {
+  const slot = el.getAttribute("slot");
+  if (el.localName === "blora-comment" || slot === "nested") return "nested";
+  if (slot === "time" || slot === "meta") return "meta";
+  if (slot === "avatar" || slot === "author" || slot === "actions") return slot;
+  return "body";
+}
+
+export class BloraComment extends BloraElement {
+  private assigned: Assigned | null = null;
 
   protected render(): void {
-    const root = this.ownerDocument.createElement("article");
-    root.className = "blora-comment";
-    root.dataset.bloraGenerated = "";
-    const avatar = this.ownerDocument.createElement("span");
-    avatar.className = "blora-avatar";
-    avatar.dataset.size = "sm";
-    avatar.dataset.variant = "primary";
-    avatar.textContent =
-      this.getAttribute("avatar") ?? (this.getAttribute("author") ?? "?").slice(0, 1);
-    const main = this.ownerDocument.createElement("div");
+    const assigned = this.takeAssigned();
+    const doc = this.ownerDocument;
+    const article = doc.createElement("article");
+    article.className = "blora-comment";
+    article.dataset.bloraGenerated = "";
+
+    const main = doc.createElement("div");
     main.className = "blora-comment__main";
-    const head = this.ownerDocument.createElement("div");
-    head.className = "blora-comment__head";
-    const author = this.ownerDocument.createElement("span");
-    author.className = "blora-comment__author";
-    author.textContent = this.getAttribute("author") ?? "";
-    const time = this.ownerDocument.createElement("span");
-    time.className = "blora-comment__time";
-    time.textContent = this.getAttribute("time") ?? "";
-    head.append(author, time);
-    const body = this.ownerDocument.createElement("div");
-    body.className = "blora-comment__body";
-    body.textContent = this.getAttribute("content") ?? "";
-    const actions = this.ownerDocument.createElement("div");
-    actions.className = "blora-comment__actions";
-    const action = (value: string, label: string) => {
-      const button = this.ownerDocument.createElement("button");
-      button.type = "button";
-      button.dataset.value = value;
-      button.textContent = label;
-      return button;
-    };
-    actions.append(action("reply", "回复"), action("like", this.getAttribute("likes") ?? "赞"));
-    main.append(head, body, actions);
-    root.append(avatar, main);
-    this.replaceChildren(root);
-  }
 
-  protected override sync(): void {
-    const author = this.querySelector(".blora-comment__author");
-    if (author) author.textContent = this.getAttribute("author") ?? "";
-    const time = this.querySelector(".blora-comment__time");
-    if (time) time.textContent = this.getAttribute("time") ?? "";
-    const body = this.querySelector(".blora-comment__body");
-    if (body) body.textContent = this.getAttribute("content") ?? "";
-    const avatar = this.querySelector(".blora-avatar");
-    if (avatar) {
-      avatar.textContent =
-        this.getAttribute("avatar") ?? (this.getAttribute("author") ?? "?").slice(0, 1);
+    if (assigned.author.length || assigned.meta.length) {
+      const head = doc.createElement("div");
+      head.className = "blora-comment__head";
+      if (assigned.author.length) {
+        const author = doc.createElement("span");
+        author.className = "blora-comment__author";
+        author.append(...this.take(assigned.author));
+        head.append(author);
+      }
+      if (assigned.meta.length) {
+        const meta = doc.createElement("span");
+        meta.className = "blora-comment__time";
+        meta.append(...this.take(assigned.meta));
+        head.append(meta);
+      }
+      main.append(head);
     }
-    const like = this.querySelector<HTMLButtonElement>('[data-value="like"]');
-    if (like) like.textContent = this.getAttribute("likes") ?? "赞";
+
+    if (assigned.body.length) {
+      const body = doc.createElement("div");
+      body.className = "blora-comment__body";
+      body.append(...this.take(assigned.body));
+      main.append(body);
+    }
+
+    if (assigned.actions.length) {
+      const actions = doc.createElement("div");
+      actions.className = "blora-comment__actions";
+      actions.append(...this.take(assigned.actions));
+      main.append(actions);
+    }
+
+    if (assigned.nested.length) {
+      const nested = doc.createElement("div");
+      nested.className = "blora-comment__nested";
+      nested.append(...this.take(assigned.nested));
+      main.append(nested);
+    }
+
+    if (assigned.avatar.length) {
+      const avatar = doc.createElement("div");
+      avatar.className = "blora-comment__avatar";
+      avatar.append(...this.take(assigned.avatar));
+      article.append(avatar, main);
+    } else {
+      article.append(main);
+    }
+
+    this.replaceChildren(article);
   }
 
-  protected bindEvents(): void {
-    const actions = this.querySelector(".blora-comment__actions");
-    if (!actions) return;
-    this.listen(actions, "click", (event) => {
-      const button = (event.target as HTMLElement).closest<HTMLButtonElement>("button");
-      if (button) this.emit("blora-comment-action", { value: button.dataset.value ?? "" });
-    });
+  protected bindEvents(): void {}
+
+  private takeAssigned(): Assigned {
+    if (!this.assigned) {
+      const assigned: Assigned = {
+        avatar: [],
+        author: [],
+        meta: [],
+        body: [],
+        actions: [],
+        nested: [],
+      };
+      for (const node of Array.from(this.childNodes)) {
+        if (node.nodeType === Node.ELEMENT_NODE) {
+          const el = node as HTMLElement;
+          if (el.hasAttribute("data-blora-generated")) continue;
+          assigned[slotName(el)].push(el);
+        } else if (node.nodeType === Node.TEXT_NODE && node.textContent?.trim()) {
+          assigned.body.push(node);
+        }
+      }
+      this.assigned = assigned;
+    }
+    return this.assigned;
+  }
+
+  private take(nodes: Node[]): Node[] {
+    for (const node of nodes) node.parentNode?.removeChild(node);
+    return nodes;
   }
 }
 
 export function defineBloraComment(registry: CustomElementRegistry = customElements): void {
-  if (!registry || registry.get(BLORA_COMMENT_TAG)) return;
-  registry.define(BLORA_COMMENT_TAG, BloraComment);
+  if (!registry.get(BLORA_COMMENT_TAG)) {
+    registry.define(BLORA_COMMENT_TAG, BloraComment);
+  }
 }

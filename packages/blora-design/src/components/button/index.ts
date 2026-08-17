@@ -1,1 +1,1 @@
-export { setButtonLoading, type ButtonLoadingOptions } from "./button.js";
+export { enhanceButtons, setButtonLoading, type ButtonLoadingOptions } from "./button.js";

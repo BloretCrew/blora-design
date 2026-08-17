@@ -110,6 +110,16 @@ defineBloraSelect();
 | `.blora-card--relative`   | `.blora-card[data-positioned]`      |
 | `.blora-card--with-badge` | `.blora-card[data-with-badge]`      |
 
+### Tag / Badge {#tag-badge}
+
+| 1.x | 2.0 |
+| --- | --- |
+| `.blora-tag--primary` | `.blora-tag[data-variant="primary"]` |
+| `.blora-tag--solid` | **removed** — 实心状态改 `.blora-badge` |
+| `.blora-badge--pill` | `.blora-badge[data-variant="pill"]` |
+
+Badge = 数量 / 红点 / 状态；Tag = 分类 / 可关闭。不要互相替代。
+
 ### Accordion {#accordion}
 
 | 1.x                             | 2.0                                 |

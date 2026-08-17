@@ -1,6 +1,6 @@
 {
   "name": "popover",
-  "category": "feedback",
+  "category": "actions",
   "status": "stable",
   "kind": "custom-element",
   "tagName": "blora-popover",

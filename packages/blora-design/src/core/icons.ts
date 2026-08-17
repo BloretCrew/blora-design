@@ -6,6 +6,7 @@
  */
 export type BloraIconName =
   | "arrow-up"
+  | "ban"
   | "calendar"
   | "camera"
   | "chart"
@@ -14,6 +15,7 @@ export type BloraIconName =
   | "chevron-left"
   | "chevron-right"
   | "circle-alert"
+  | "circle-check"
   | "clock"
   | "close"
   | "copy"
@@ -22,6 +24,7 @@ export type BloraIconName =
   | "ellipsis"
   | "eye"
   | "folder"
+  | "heart"
   | "home"
   | "image"
   | "inbox"
@@ -40,7 +43,9 @@ export type BloraIconName =
   | "smile"
   | "star"
   | "sun"
+  | "thumbs-up"
   | "trash"
+  | "triangle-alert"
   | "upload"
   | "user";
 
@@ -78,6 +83,12 @@ export function createBloraIcon(
     case "arrow-up":
       nodes.push(svgNode(doc, "path", { d: "M12 19V5M5 12l7-7 7 7" }));
       break;
+    case "ban":
+      nodes.push(
+        svgNode(doc, "circle", { cx: "12", cy: "12", r: "10" }),
+        svgNode(doc, "path", { d: "m4.9 4.9 14.2 14.2" }),
+      );
+      break;
     case "calendar":
       nodes.push(
         svgNode(doc, "rect", { x: "3", y: "4", width: "18", height: "18", rx: "2" }),
@@ -114,6 +125,12 @@ export function createBloraIcon(
       nodes.push(
         svgNode(doc, "circle", { cx: "12", cy: "12", r: "10" }),
         svgNode(doc, "path", { d: "M12 8v4M12 16h.01" }),
+      );
+      break;
+    case "circle-check":
+      nodes.push(
+        svgNode(doc, "circle", { cx: "12", cy: "12", r: "10" }),
+        svgNode(doc, "path", { d: "m9 12 2 2 4-4" }),
       );
       break;
     case "clock":
@@ -160,6 +177,13 @@ export function createBloraIcon(
       nodes.push(
         svgNode(doc, "path", {
           d: "M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z",
+        }),
+      );
+      break;
+    case "heart":
+      nodes.push(
+        svgNode(doc, "path", {
+          d: "M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z",
         }),
       );
       break;
@@ -275,8 +299,24 @@ export function createBloraIcon(
         }),
       );
       break;
+    case "thumbs-up":
+      nodes.push(
+        svgNode(doc, "path", { d: "M7 10v12" }),
+        svgNode(doc, "path", {
+          d: "M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z",
+        }),
+      );
+      break;
     case "trash":
       nodes.push(svgNode(doc, "path", { d: "M3 6h18M8 6V4h8v2M19 6l-1 15H6L5 6M10 11v6M14 11v6" }));
+      break;
+    case "triangle-alert":
+      nodes.push(
+        svgNode(doc, "path", {
+          d: "m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3",
+        }),
+        svgNode(doc, "path", { d: "M12 9v4M12 17h.01" }),
+      );
       break;
     case "upload":
       nodes.push(
@@ -298,6 +338,7 @@ export function createBloraIcon(
 
 const ICON_NAMES = new Set<string>([
   "arrow-up",
+  "ban",
   "calendar",
   "camera",
   "chart",
@@ -306,6 +347,7 @@ const ICON_NAMES = new Set<string>([
   "chevron-left",
   "chevron-right",
   "circle-alert",
+  "circle-check",
   "clock",
   "close",
   "copy",
@@ -314,6 +356,7 @@ const ICON_NAMES = new Set<string>([
   "ellipsis",
   "eye",
   "folder",
+  "heart",
   "home",
   "image",
   "inbox",
@@ -332,7 +375,9 @@ const ICON_NAMES = new Set<string>([
   "smile",
   "star",
   "sun",
+  "thumbs-up",
   "trash",
+  "triangle-alert",
   "upload",
   "user",
 ]);

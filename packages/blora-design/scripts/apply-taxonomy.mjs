@@ -13,6 +13,7 @@ function withCategory(json, categoryId) {
   if (json.category === categoryId) return json;
   const next = {};
   for (const [key, value] of Object.entries(json)) {
+    if (key === "category") continue;
     next[key] = value;
     if (key === "name") next.category = categoryId;
   }

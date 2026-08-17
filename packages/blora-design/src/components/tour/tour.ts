@@ -14,6 +14,116 @@ export interface TourController {
   start(): void;
 }
 
+function cssLengthToPx(value: string, axis: number): number {
+  const trimmed = value.trim();
+  if (!trimmed) return 0;
+  if (trimmed.endsWith("%")) return (Number.parseFloat(trimmed) / 100) * axis;
+  return Number.parseFloat(trimmed) || 0;
+}
+
+/** Highlight the lone visual child (tag, button, …), not the wrapping step box. */
+function tourTarget(step: HTMLElement): HTMLElement {
+  const kids = Array.from(step.children).filter((node): node is HTMLElement => node instanceof HTMLElement);
+  return kids.length === 1 ? kids[0]! : step;
+}
+
+function tourPadPx(overlay: HTMLElement): number {
+  const raw = getComputedStyle(overlay).getPropertyValue("--blora-tour-pad").trim();
+  const pad = Number.parseFloat(raw);
+  return Number.isFinite(pad) && pad >= 0 ? pad : 4;
+}
+
+function cornerRadius(value: string, axis: number, pad: number): number {
+  return cssLengthToPx(value.trim().split(/\s+/)[0] ?? "0px", axis) + pad;
+}
+
+function clampCornerRadii(
+  width: number,
+  height: number,
+  radii: { bl: number; br: number; tl: number; tr: number },
+): { bl: number; br: number; tl: number; tr: number } {
+  const factor = Math.min(
+    1,
+    width / Math.max(radii.tl + radii.tr, 0.001),
+    width / Math.max(radii.bl + radii.br, 0.001),
+    height / Math.max(radii.tl + radii.bl, 0.001),
+    height / Math.max(radii.tr + radii.br, 0.001),
+  );
+  return {
+    tl: radii.tl * factor,
+    tr: radii.tr * factor,
+    br: radii.br * factor,
+    bl: radii.bl * factor,
+  };
+}
+
+function roundedRectPath(
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  radii: { bl: number; br: number; tl: number; tr: number },
+): string {
+  const { bl, br, tl, tr } = clampCornerRadii(width, height, radii);
+  return [
+    `M ${x + tl} ${y}`,
+    `H ${x + width - tr}`,
+    `A ${tr} ${tr} 0 0 1 ${x + width} ${y + tr}`,
+    `V ${y + height - br}`,
+    `A ${br} ${br} 0 0 1 ${x + width - br} ${y + height}`,
+    `H ${x + bl}`,
+    `A ${bl} ${bl} 0 0 1 ${x} ${y + height - bl}`,
+    `V ${y + tl}`,
+    `A ${tl} ${tl} 0 0 1 ${x + tl} ${y}`,
+    "Z",
+  ].join(" ");
+}
+
+/** Full-viewport dimmer with a punched hole. Avoids a 9999px box-shadow that
+ *  seams through the navbar's backdrop-filter as a vertical shadow line. */
+function applyTourHoleMask(
+  overlay: HTMLElement,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  radii: { bl: number; br: number; tl: number; tr: number },
+): void {
+  const vw = Math.max(1, window.innerWidth);
+  const vh = Math.max(1, window.innerHeight);
+  const path = roundedRectPath(x, y, width, height, radii);
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${vw}" height="${vh}"><rect width="100%" height="100%" fill="white"/><path d="${path}" fill="black"/></svg>`;
+  const image = `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+  overlay.style.maskImage = image;
+  overlay.style.webkitMaskImage = image;
+  overlay.style.maskSize = "100% 100%";
+  overlay.style.webkitMaskSize = "100% 100%";
+  overlay.style.maskRepeat = "no-repeat";
+  overlay.style.webkitMaskRepeat = "no-repeat";
+}
+
+function fitTourOverlay(overlay: HTMLElement, target: HTMLElement): { pad: number; rect: DOMRect } {
+  const rect = target.getBoundingClientRect();
+  const style = getComputedStyle(target);
+  const pad = tourPadPx(overlay);
+  const x = rect.left - pad;
+  const y = rect.top - pad;
+  const width = Math.max(0, rect.width + pad * 2);
+  const height = Math.max(0, rect.height + pad * 2);
+  overlay.style.inset = "0";
+  overlay.style.width = "auto";
+  overlay.style.height = "auto";
+  overlay.style.borderRadius = "0";
+  overlay.style.removeProperty("corner-shape");
+  applyTourHoleMask(overlay, x, y, width, height, {
+    tl: cornerRadius(style.borderTopLeftRadius, rect.width, pad),
+    tr: cornerRadius(style.borderTopRightRadius, rect.width, pad),
+    br: cornerRadius(style.borderBottomRightRadius, rect.width, pad),
+    bl: cornerRadius(style.borderBottomLeftRadius, rect.width, pad),
+  });
+  return { pad, rect };
+}
+
 export function createTourController(root: HTMLElement): TourController {
   const doc = root.ownerDocument;
   const startBtn = root.querySelector<HTMLElement>("[data-tour-start]");
@@ -42,17 +152,19 @@ export function createTourController(root: HTMLElement): TourController {
     counter.className = "blora-tour__counter";
     const buttons = doc.createElement("div");
     buttons.className = "blora-tour__buttons";
-    const button = (className: string, text: string) => {
+    const button = (className: string, text: string, variant: string) => {
       const el = doc.createElement("button");
-      el.className = className;
+      el.className = `blora-button ${className}`;
+      el.dataset.variant = variant;
+      el.dataset.size = "sm";
       el.type = "button";
       el.textContent = text;
       return el;
     };
     buttons.append(
-      button("blora-tour__skip", "跳过"),
-      button("blora-tour__prev", "上一步"),
-      button("blora-tour__next", "下一步"),
+      button("blora-tour__skip", "跳过", "outline"),
+      button("blora-tour__prev", "上一步", "outline"),
+      button("blora-tour__next", "下一步", "primary"),
     );
     footer.append(counter, buttons);
     tooltip.append(title, desc, footer);
@@ -66,19 +178,19 @@ export function createTourController(root: HTMLElement): TourController {
     });
   };
 
+  const placeOverlay = () => {
+    if (!overlay || !tooltip || current < 0) return;
+    const step = steps[current]!;
+    const { pad, rect } = fitTourOverlay(overlay, tourTarget(step));
+    tooltip.style.top = `${rect.bottom + pad + 12}px`;
+    tooltip.style.left = `${Math.max(8, rect.left - pad)}px`;
+  };
+
+  const onReposition = () => placeOverlay();
+
   const goTo = (idx: number) => {
     current = Math.max(0, Math.min(idx, steps.length - 1));
     const step = steps[current]!;
-    const rect = step.getBoundingClientRect();
-
-    overlay!.style.position = "fixed";
-    overlay!.style.boxShadow = `0 0 0 9999px color-mix(in srgb, var(--blora-color-text-primary) 45%, transparent)`;
-    overlay!.style.borderRadius = "var(--blora-radius-sm)";
-    overlay!.style.top = `${rect.top - 4}px`;
-    overlay!.style.left = `${rect.left - 4}px`;
-    overlay!.style.width = `${rect.width + 8}px`;
-    overlay!.style.height = `${rect.height + 8}px`;
-    overlay!.style.zIndex = "var(--blora-z-toast)";
 
     tooltip!.querySelector(".blora-tour__title")!.textContent = step.dataset.tourTitle ?? "";
     tooltip!.querySelector(".blora-tour__desc")!.textContent = step.dataset.tourDesc ?? "";
@@ -90,11 +202,8 @@ export function createTourController(root: HTMLElement): TourController {
     tooltip!.querySelector<HTMLElement>(".blora-tour__prev")!.style.visibility =
       current > 0 ? "visible" : "hidden";
 
-    tooltip!.style.position = "fixed";
-    tooltip!.style.top = `${rect.bottom + 12}px`;
-    tooltip!.style.left = `${rect.left}px`;
-    tooltip!.style.zIndex = "var(--blora-z-toast)";
     tooltip!.setAttribute("data-open", "");
+    placeOverlay();
     root.dispatchEvent(
       new CustomEvent("blora-tour-change", {
         bubbles: true,
@@ -106,11 +215,17 @@ export function createTourController(root: HTMLElement): TourController {
   const start = () => {
     end();
     createOverlay();
+    doc.documentElement.setAttribute("data-blora-tour-open", "");
+    window.addEventListener("resize", onReposition);
+    window.addEventListener("scroll", onReposition, true);
     goTo(0);
   };
 
   const end = () => {
     const wasOpen = current >= 0;
+    window.removeEventListener("resize", onReposition);
+    window.removeEventListener("scroll", onReposition, true);
+    doc.documentElement.removeAttribute("data-blora-tour-open");
     overlay?.remove();
     tooltip?.remove();
     overlay = null;

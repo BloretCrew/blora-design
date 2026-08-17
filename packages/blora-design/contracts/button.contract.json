@@ -18,8 +18,21 @@
       "reflects": true
     },
     "data-size": {
-      "type": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\"",
+      "type": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | \"icon\"",
       "default": "md",
+      "reflects": true
+    },
+    "data-shape": {
+      "type": "\"square\" | \"circle\"",
+      "reflects": true
+    },
+    "data-icon": {
+      "type": "string",
+      "reflects": true
+    },
+    "data-icon-position": {
+      "type": "\"start\" | \"end\"",
+      "default": "start",
       "reflects": true
     },
     "data-loading": {
@@ -65,7 +78,8 @@
     "--blora-button-fg",
     "--blora-button-bd",
     "--blora-button-pad-y",
-    "--blora-button-pad-x"
+    "--blora-button-pad-x",
+    "--blora-button-height"
   ],
   "accessibilityPattern": "button",
   "migrationFromV1": "button.migration.md"

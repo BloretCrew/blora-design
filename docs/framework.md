@@ -365,26 +365,23 @@ Blora.cls / classPrefix / version   // "1.0.0"
 
 ### 6. 标签与徽章
 
+Badge 回答「现在怎样」：数量、红点、New、成功/警告，实心、不可关。
+Tag 回答「这是什么」：分类、主题、可关掉的词，浅底描边。不要用 `solid` Tag 冒充 Badge。
+
 ```html
 <span class="blora-tag">默认</span>
-<!-- 色：--primary --neutral --info --success --warning --solid -->
-<!-- 可移除：--removable + .blora-tag__close -->
+<!-- 色：primary / neutral / info / success / warning -->
+<!-- 可移除：.blora-tag--removable + .blora-tag__close -->
 
 <span class="blora-badge">9</span>
-<span class="blora-badge blora-badge--dot"></span>
-<span class="blora-badge blora-badge--circle">新</span>
-<span class="blora-badge blora-badge--pill">推荐</span>
-<!-- 色：--neutral --success --info -->
-
-<!-- 按钮徽章 -->
-<span class="blora-indicator">
-  <button class="blora-btn" type="button">通知</button>
-  <span class="blora-badge blora-indicator__item">3</span>
-</span>
+<span class="blora-badge" data-variant="dot"></span>
+<span class="blora-badge" data-variant="circle">新</span>
+<span class="blora-badge" data-variant="pill">推荐</span>
+<!-- 色：neutral / success / info / warning / danger -->
 
 <!-- 卡面右上角徽章 -->
-<article class="blora-card blora-card--relative blora-card--with-badge">
-  <span class="blora-badge blora-badge--pill blora-card__badge">推荐</span>
+<article class="blora-card" data-positioned data-with-badge>
+  <span class="blora-badge blora-card__badge" data-variant="pill">推荐</span>
   …
 </article>
 
@@ -1050,7 +1047,18 @@ Blora.renderMarkdown("#el", "## 标题\n正文"); // 别名 Blora.md
 </div>
 ```
 
-轻量评论仍用 `.blora-comment`。发帖区可用 textarea + Mentions + 工具按钮拼装（见 `guide.md`）。
+轻量评论用 `<blora-comment>` 做布局壳，头像、作者、时间、操作都通过 slot 塞入现有组件；也可以直接写 `.blora-comment` 结构。发帖区可用 textarea + Mentions + 工具按钮拼装（见 `guide.md`）。
+
+```html
+<blora-comment>
+  <span slot="avatar" class="blora-avatar" data-size="sm">R</span>
+  <span slot="author">Rhedar</span>
+  <time slot="meta">刚刚</time>
+  正文里可以放标签、图片或其他组件。
+  <button slot="actions" type="button" class="blora-button" data-size="xs" data-variant="outline">回复</button>
+  <button slot="actions" type="button" class="blora-button" data-size="xs" data-variant="outline" data-icon="thumbs-up" aria-label="赞">12</button>
+</blora-comment>
+```
 
 **TreeSelect / AutoComplete / Mentions / Select 增强**
 
