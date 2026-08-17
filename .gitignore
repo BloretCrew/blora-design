@@ -58,3 +58,6 @@ Thumbs.db
 # Environment
 .env
 .env.local
+
+# Local CI error logs
+logs/
