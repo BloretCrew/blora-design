@@ -11,11 +11,12 @@ export interface DrawerController {
   destroy(): void;
 }
 
-export function createDrawerController(root: HTMLElement): DrawerController {
+export function createDrawerController(root: HTMLElement, host?: HTMLElement): DrawerController {
   if (typeof document === "undefined") {
     return { open: () => {}, close: () => {}, destroy: () => {} };
   }
   const doc = root.ownerDocument;
+  const surface = host ?? (root.closest("blora-drawer") as HTMLElement | null) ?? root;
   const panel = root.querySelector<HTMLElement>(".blora-drawer__panel");
   const mask = root.querySelector<HTMLElement>(".blora-drawer__mask");
   let closing = false;
@@ -60,6 +61,10 @@ export function createDrawerController(root: HTMLElement): DrawerController {
       root.removeAttribute("data-open");
       root.removeAttribute("open");
       root.classList.remove("is-open");
+      if (surface !== root) {
+        surface.removeAttribute("data-open");
+        surface.removeAttribute("open");
+      }
       clearLeaving();
       closing = false;
       if (closeTimer) {
@@ -152,6 +157,8 @@ export class BloraDrawer extends BloraElement {
   }
 
   open(): void {
+    this.setAttribute("open", "");
+    this.setAttribute("data-open", "");
     this.controller?.open();
   }
 
@@ -215,7 +222,7 @@ export class BloraDrawer extends BloraElement {
   protected bindEvents(): void {
     const root = this.querySelector<HTMLElement>(".blora-drawer");
     this.controller?.destroy();
-    this.controller = root ? createDrawerController(root) : null;
+    this.controller = root ? createDrawerController(root, this) : null;
   }
 
   protected onDisconnect(): void {

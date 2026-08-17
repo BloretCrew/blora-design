@@ -25,6 +25,14 @@
 - **改变原因**：可用性（加载中仍需知道按钮在做什么）
 - **审核状态**：approved
 
+### Drawer - 打开时主机也带 open
+
+- **组件**：drawer
+- **1.x 表现**：`.blora-drawer.is-open` 就是可见层。
+- **2.0 表现**：`blora-drawer:not([open])` 在升级前隐藏主机。`open()` 同时给主机和内部 `.blora-drawer` 打上 `open`，否则按钮点了内部已开、页面仍是 `display: none`。
+- **改变原因**：bug 修复
+- **审核状态**：pending
+
 ### Transfer - 箭头在圆形钮里光学居中
 
 - **组件**：transfer / icons
