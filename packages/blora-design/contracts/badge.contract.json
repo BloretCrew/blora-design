@@ -18,6 +18,10 @@
       "type": "\"start\" | \"end\"",
       "default": "start",
       "reflects": true
+    },
+    "data-shape": {
+      "type": "\"circle\" | \"pill\"",
+      "reflects": true
     }
   },
   "properties": {},

@@ -38,6 +38,8 @@
 | Deck / Speed Dial / Megamenu / Dock | Composite CE + advanced controller | ✅ | 决策留核 |
 | FAB | CSS | ✅ | intentional CSS-only |
 | Media Container | CSS | ✅ | 正式比例与 object-fit 契约 |
+| Indicator / Hero / Footer / Join / Divider | CSS | ✅ | 1.x 页面骨架与角标定位收成正式契约 |
+| Menu | CSS | ✅ | 原生链接列表；侧栏仍用 Sidebar Nav |
 
 ## Add-ons（Phase 9 ✅）
 

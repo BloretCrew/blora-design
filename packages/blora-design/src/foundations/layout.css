@@ -223,41 +223,4 @@
   flex: 1;
 }
 
-/* -- Divider -- */
-.blora-divider {
-  height: 1px;
-  background: var(--blora-color-border-subtle);
-  border: none;
-  margin: var(--blora-space-5) 0;
-}
-
-.blora-divider--vert {
-  width: 1px;
-  height: auto;
-  align-self: stretch;
-  margin: 0 var(--blora-space-3);
-  background: var(--blora-color-border-subtle);
-}
-
-.blora-divider--dashed {
-  background: none;
-  border-top: 1px dashed var(--blora-color-text-subtle);
-}
-
-.blora-divider--text {
-  display: flex;
-  align-items: center;
-  gap: var(--blora-space-3);
-  background: none;
-  height: auto;
-  color: var(--blora-color-text-subtle);
-  font-size: var(--blora-text-sm);
-}
-
-.blora-divider--text::before,
-.blora-divider--text::after {
-  content: "";
-  flex: 1;
-  height: 1px;
-  background: var(--blora-color-border-subtle);
-}
+/* Divider lives in components/divider/divider.css */

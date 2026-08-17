@@ -9,8 +9,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
-          "数量、红点或状态提示。实心、不可关闭。分类、关键词、可移除标签用 Tag。",
+        component: "数量、红点或状态提示。实心、不可关闭。分类、关键词、可移除标签用 Tag。",
       },
     },
   },
@@ -19,11 +18,12 @@ const meta = {
 export default meta;
 type Story = StoryObj;
 
-export const Variants: Story = {
+export const Default: Story = {
   render: () => html`
     <div class="blora-row">
       <span class="blora-badge">9</span>
-      <span class="blora-badge">99+</span>
+      <span class="blora-badge" data-shape="pill">99+</span>
+      <span class="blora-badge" data-variant="circle">8</span>
       <span class="blora-badge" data-variant="dot"></span>
       <span class="blora-badge" data-variant="pill">New</span>
       <span class="blora-badge" data-variant="neutral">5</span>
@@ -32,6 +32,12 @@ export const Variants: Story = {
       <span class="blora-badge" data-variant="warning">!</span>
       <span class="blora-badge" data-variant="danger">!</span>
     </div>
+  `,
+};
+
+export const VersusTag: Story = {
+  render: () => html`
+    <p class="blora-text-muted">Badge 回答「现在怎样」；分类词、筛选、可关闭用 Tag。</p>
   `,
 };
 

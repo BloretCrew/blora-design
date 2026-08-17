@@ -24,6 +24,12 @@ export const Ratios: Story = {
         </div>
         <figcaption class="blora-text-muted blora-text-center">3 : 4</figcaption>
       </figure>
+      <figure class="blora-stack blora-stack--sm">
+        <div class="blora-media" data-ratio="wide" data-fit="contain">
+          <img src="https://picsum.photos/seed/blora-media-wd/1260/540" alt="21 比 9 容纳" />
+        </div>
+        <figcaption class="blora-text-muted blora-text-center">21 : 9 · contain</figcaption>
+      </figure>
     </div>
   `,
 };

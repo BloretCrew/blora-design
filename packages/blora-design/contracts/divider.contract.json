@@ -1,0 +1,30 @@
+{
+  "$schema": "../../schemas/component-contract.schema.json",
+  "name": "divider",
+  "category": "layout",
+  "status": "stable",
+  "kind": "css-only",
+  "since": "2.0.0",
+  "requiresJavaScript": false,
+  "formAssociated": false,
+  "attributes": {
+    "data-orientation": {
+      "type": "\"horizontal\" | \"vertical\"",
+      "default": "horizontal"
+    },
+    "data-variant": {
+      "type": "\"default\" | \"dashed\" | \"text\"",
+      "default": "default"
+    }
+  },
+  "properties": {},
+  "methods": {},
+  "events": {},
+  "slots": {
+    "default": "Optional label when data-variant is text."
+  },
+  "parts": [],
+  "cssProperties": [],
+  "accessibilityPattern": "separator",
+  "migrationFromV1": "divider.migration.md"
+}

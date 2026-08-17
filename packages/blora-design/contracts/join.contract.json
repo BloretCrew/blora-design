@@ -1,0 +1,26 @@
+{
+  "$schema": "../../schemas/component-contract.schema.json",
+  "name": "join",
+  "category": "layout",
+  "status": "stable",
+  "kind": "css-only",
+  "since": "2.0.0",
+  "requiresJavaScript": false,
+  "formAssociated": false,
+  "attributes": {
+    "data-orientation": {
+      "type": "\"horizontal\" | \"vertical\"",
+      "default": "horizontal"
+    }
+  },
+  "properties": {},
+  "methods": {},
+  "events": {},
+  "slots": {
+    "default": "Adjacent buttons, inputs, or other formal controls."
+  },
+  "parts": [],
+  "cssProperties": [],
+  "accessibilityPattern": "group",
+  "migrationFromV1": "join.migration.md"
+}

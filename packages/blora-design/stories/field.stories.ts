@@ -30,3 +30,14 @@ export const Default: Story = {
     </div>
   `,
 };
+
+export const Horizontal: Story = {
+  render: () => html`
+    <blora-field
+      layout="horizontal"
+      label="显示名"
+      value="Blora"
+      hint="标签与输入同一行。"
+    ></blora-field>
+  `,
+};

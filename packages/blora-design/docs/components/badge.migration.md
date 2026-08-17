@@ -22,6 +22,8 @@
 | `.blora-badge--warning` | `.blora-badge[data-variant="warning"]` | Added |
 | `.blora-badge--danger` | `.blora-badge[data-variant="danger"]` | Added |
 | — | `data-icon` | Optional Lucide name; call `enhanceBadges()` |
+| — | `data-shape="circle"` | One letter or digit becomes a disc. `enhanceBadges()` sets this. |
+| — | `data-shape="pill"` | Multi-character labels. Kind tags like `CSS-only` must use this. |
 
 ## Before / After
 

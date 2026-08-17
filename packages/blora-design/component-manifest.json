@@ -1,7 +1,7 @@
 {
   "name": "@bloret-crew/blora-design",
   "version": "2.0.0-alpha.1",
-  "generatedAt": "2026-08-16T12:46:21.066Z",
+  "generatedAt": "2026-08-17T00:14:30.172Z",
   "components": [
     {
       "name": "accordion",
@@ -274,6 +274,16 @@
       "contract": "contracts/dialog.contract.json"
     },
     {
+      "name": "divider",
+      "status": "stable",
+      "kind": "css-only",
+      "category": "layout",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/divider.css",
+      "contract": "contracts/divider.contract.json"
+    },
+    {
       "name": "dock",
       "status": "beta",
       "kind": "custom-element",
@@ -359,6 +369,16 @@
       "contract": "contracts/filter.contract.json"
     },
     {
+      "name": "footer",
+      "status": "stable",
+      "kind": "css-only",
+      "category": "layout",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/footer.css",
+      "contract": "contracts/footer.contract.json"
+    },
+    {
       "name": "form",
       "status": "beta",
       "kind": "headless",
@@ -367,6 +387,16 @@
       "formAssociated": false,
       "cssExport": "./components/form.css",
       "contract": "contracts/form.contract.json"
+    },
+    {
+      "name": "hero",
+      "status": "stable",
+      "kind": "css-only",
+      "category": "layout",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/hero.css",
+      "contract": "contracts/hero.contract.json"
     },
     {
       "name": "image",
@@ -380,6 +410,16 @@
       "contract": "contracts/image.contract.json"
     },
     {
+      "name": "indicator",
+      "status": "stable",
+      "kind": "css-only",
+      "category": "layout",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/indicator.css",
+      "contract": "contracts/indicator.contract.json"
+    },
+    {
       "name": "input",
       "status": "stable",
       "kind": "native",
@@ -388,6 +428,16 @@
       "formAssociated": true,
       "cssExport": "./components/input.css",
       "contract": "contracts/input.contract.json"
+    },
+    {
+      "name": "join",
+      "status": "stable",
+      "kind": "css-only",
+      "category": "layout",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/join.css",
+      "contract": "contracts/join.contract.json"
     },
     {
       "name": "list",
@@ -440,6 +490,16 @@
       "formAssociated": false,
       "cssExport": "./components/mentions.css",
       "contract": "contracts/mentions.contract.json"
+    },
+    {
+      "name": "menu",
+      "status": "stable",
+      "kind": "css-only",
+      "category": "navigation",
+      "requiresJavaScript": false,
+      "formAssociated": false,
+      "cssExport": "./components/menu.css",
+      "contract": "contracts/menu.contract.json"
     },
     {
       "name": "message",

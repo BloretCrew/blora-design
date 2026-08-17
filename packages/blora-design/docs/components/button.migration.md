@@ -51,4 +51,4 @@ and swaps the accessible label.
 - Optional `data-icon` is hydrated by `enhanceButtons()` using `createBloraIcon()`.
 - Loading keeps the label visible and places the spinner before the text.
 - `.blora-fab` and `.blora-button-group` remain class-based.
-- Height is locked to `--blora-button-height` (`1em + 2 × pad-y + 2px` border). Icons, images, and other children are capped at `1em` and cannot raise the box.
+- Height is locked to `--blora-button-height` (`1em + 2 × pad-y + 2px` border). Children cannot raise the box. Icon size is `--blora-button-icon-size` (default `auto`, so `createBloraIcon()` width/height win). Icon-only buttons default to `1.125rem`.

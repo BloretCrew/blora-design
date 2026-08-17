@@ -1,0 +1,21 @@
+{
+  "$schema": "../../schemas/component-contract.schema.json",
+  "name": "footer",
+  "category": "layout",
+  "status": "stable",
+  "kind": "css-only",
+  "since": "2.0.0",
+  "requiresJavaScript": false,
+  "formAssociated": false,
+  "attributes": {},
+  "properties": {},
+  "methods": {},
+  "events": {},
+  "slots": {
+    "default": "Column groups inside .blora-footer__inner, plus optional .blora-footer__bottom."
+  },
+  "parts": [],
+  "cssProperties": [],
+  "accessibilityPattern": "contentinfo",
+  "migrationFromV1": "footer.migration.md"
+}

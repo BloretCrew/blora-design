@@ -1,0 +1,26 @@
+{
+  "$schema": "../../schemas/component-contract.schema.json",
+  "name": "menu",
+  "category": "navigation",
+  "status": "stable",
+  "kind": "css-only",
+  "since": "2.0.0",
+  "requiresJavaScript": false,
+  "formAssociated": false,
+  "attributes": {
+    "data-orientation": {
+      "type": "\"vertical\" | \"horizontal\"",
+      "default": "vertical"
+    }
+  },
+  "properties": {},
+  "methods": {},
+  "events": {},
+  "slots": {
+    "default": "Optional .blora-menu__title plus .blora-menu__item links."
+  },
+  "parts": [],
+  "cssProperties": [],
+  "accessibilityPattern": "navigation",
+  "migrationFromV1": "menu.migration.md"
+}

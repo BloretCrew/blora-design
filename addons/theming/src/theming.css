@@ -45,8 +45,29 @@ blora-color-scheme-toggle {
 }
 
 .blora-color-scheme-toggle__button {
+  --blora-button-icon-size: 1.125rem;
+  --blora-button-radius: 50%;
+  --blora-button-corner: round;
+
+  box-sizing: border-box;
+  width: var(--blora-button-height);
+  min-inline-size: var(--blora-button-height);
+  height: var(--blora-button-height);
+  max-height: none;
+  padding: 0;
   aspect-ratio: 1;
-  padding-inline: var(--blora-button-pad-y);
+  border-radius: 50%;
+}
+
+/* Navbar sm tools are locked to --blora-space-6 (32px). Keep this control
+   on that token so it lines up with Coral, but drop the leftover inline
+   padding that left only ~13px for the glyph. */
+.blora-navbar .blora-color-scheme-toggle__button.blora-button[data-size="sm"] {
+  width: var(--blora-space-6);
+  min-inline-size: var(--blora-space-6);
+  height: var(--blora-space-6);
+  max-height: none;
+  padding: 0;
 }
 
 .blora-palette-picker__trigger {
@@ -55,10 +76,15 @@ blora-color-scheme-toggle {
   /* Keep label readable at any canvas width (do not collapse to empty pill) */
   max-width: min(12rem, 100%);
   overflow: hidden;
+
+  --blora-button-icon-size: 1.125rem;
 }
 
-.blora-palette-picker__trigger svg {
+.blora-palette-picker__trigger svg,
+.blora-color-scheme-toggle__button svg {
   flex: none;
+  width: 1.125rem;
+  height: 1.125rem;
 }
 
 .blora-palette-picker__label {

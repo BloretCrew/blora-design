@@ -16,14 +16,21 @@ export function createTooltipController(root: HTMLElement): TooltipController {
 
   const position = () => {
     bubble.style.setProperty("--blora-float-shift-x", "0px");
+    bubble.style.setProperty("--blora-float-shift-y", "0px");
     const rect = bubble.getBoundingClientRect();
     const gutter = 12;
-    let shift = 0;
-    if (rect.left < gutter) shift += gutter - rect.left;
-    if (rect.right + shift > win.innerWidth - gutter) {
-      shift -= rect.right + shift - (win.innerWidth - gutter);
+    let shiftX = 0;
+    let shiftY = 0;
+    if (rect.left < gutter) shiftX += gutter - rect.left;
+    if (rect.right + shiftX > win.innerWidth - gutter) {
+      shiftX -= rect.right + shiftX - (win.innerWidth - gutter);
     }
-    bubble.style.setProperty("--blora-float-shift-x", `${shift}px`);
+    if (rect.top < gutter) shiftY += gutter - rect.top;
+    if (rect.bottom + shiftY > win.innerHeight - gutter) {
+      shiftY -= rect.bottom + shiftY - (win.innerHeight - gutter);
+    }
+    bubble.style.setProperty("--blora-float-shift-x", `${shiftX}px`);
+    bubble.style.setProperty("--blora-float-shift-y", `${shiftY}px`);
   };
 
   root.addEventListener("pointerenter", position);

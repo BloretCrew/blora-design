@@ -175,6 +175,11 @@
 
       .showcase-heading > .blora-badge {
         width: max-content;
+        min-width: max-content;
+        height: auto;
+        padding: 0.2em 0.7em;
+        aspect-ratio: auto;
+        border-radius: var(--blora-radius-full);
       }
 
       .showcase-section {
@@ -511,10 +516,13 @@
       </template>
 
       <template data-component="field" data-label="Field" data-group="数据输入" data-eyebrow="Data input" data-kind="Composite CE" data-description="统一管理标签、输入、提示、错误和字数限制。">
-        <div data-showcase-stack>
+        <div data-showcase-cases>
+          <section data-showcase-case="Default"><h3>默认</h3><div data-showcase-stack>
           <blora-field label="文本输入" name="text-limit" value="这是一段用于演示超过二十个字符后自动标红的文本内容" hint="最长 20 个字符，超出部分会标红但不会截断输入。" limit="20" required></blora-field>
           <blora-field label="邮箱" name="email" type="email" value="invalid" error="请输入有效邮箱"></blora-field>
           <blora-field label="只读状态" name="disabled-field" value="不可编辑" disabled></blora-field>
+          </div></section>
+          <section data-showcase-case="Horizontal"><h3>横向</h3><blora-field layout="horizontal" label="显示名" value="Blora" hint="标签与输入同一行。"></blora-field></section>
         </div>
       </template>
       <template data-component="fieldset" data-label="Fieldset" data-group="数据输入" data-eyebrow="Data input" data-kind="Native + CSS" data-description="使用原生 fieldset 和 legend 语义组织相关控件。">
@@ -712,13 +720,14 @@
             <h3>默认</h3>
             <div data-showcase-row>
               <span class="blora-badge">9</span>
-              <span class="blora-badge">99+</span>
+              <span class="blora-badge" data-shape="pill">99+</span>
+              <span class="blora-badge" data-variant="circle">8</span>
               <span class="blora-badge" data-variant="pill">New</span>
-              <span class="blora-badge" data-variant="neutral">Neutral</span>
-              <span class="blora-badge" data-variant="info">Info</span>
-              <span class="blora-badge" data-variant="success">Ready</span>
-              <span class="blora-badge" data-variant="warning">Warning</span>
-              <span class="blora-badge" data-variant="danger">Danger</span>
+              <span class="blora-badge" data-variant="neutral" data-shape="pill">Neutral</span>
+              <span class="blora-badge" data-variant="info" data-shape="pill">Info</span>
+              <span class="blora-badge" data-variant="success" data-shape="pill">Ready</span>
+              <span class="blora-badge" data-variant="warning" data-shape="pill">Warning</span>
+              <span class="blora-badge" data-variant="danger" data-shape="pill">Danger</span>
               <span class="blora-badge" data-variant="dot" aria-label="有新消息"></span>
             </div>
           </section>
@@ -738,7 +747,7 @@
         </div>
       </template>
       <template data-component="media" data-label="Media Container" data-group="数据展示" data-eyebrow="Data display" data-kind="CSS-only" data-description="为图片、视频和嵌入内容提供统一的比例、裁切和圆角容器。">
-        <div data-showcase-cases><section data-showcase-case="Ratios"><h3>比例</h3><div class="blora-grid blora-grid--3"><figure class="blora-stack blora-stack--sm"><div class="blora-media" data-ratio="square"><img src="../../legacy/visual-baseline-light.png" alt="1 比 1 裁切" /></div><figcaption class="blora-text-muted blora-text-center">1 : 1</figcaption></figure><figure class="blora-stack blora-stack--sm"><div class="blora-media" data-ratio="video"><img src="../../legacy/visual-baseline-light.png" alt="16 比 9 裁切" /></div><figcaption class="blora-text-muted blora-text-center">16 : 9</figcaption></figure><figure class="blora-stack blora-stack--sm"><div class="blora-media" data-ratio="portrait"><img src="../../legacy/visual-baseline-light.png" alt="3 比 4 裁切" /></div><figcaption class="blora-text-muted blora-text-center">3 : 4</figcaption></figure></div></section></div>
+        <div data-showcase-cases><section data-showcase-case="Ratios"><h3>比例</h3><div class="blora-grid blora-grid--3"><figure class="blora-stack blora-stack--sm"><div class="blora-media" data-ratio="square"><img src="../../legacy/visual-baseline-light.png" alt="1 比 1 裁切" /></div><figcaption class="blora-text-muted blora-text-center">1 : 1</figcaption></figure><figure class="blora-stack blora-stack--sm"><div class="blora-media" data-ratio="video"><img src="../../legacy/visual-baseline-light.png" alt="16 比 9 裁切" /></div><figcaption class="blora-text-muted blora-text-center">16 : 9</figcaption></figure><figure class="blora-stack blora-stack--sm"><div class="blora-media" data-ratio="portrait"><img src="../../legacy/visual-baseline-light.png" alt="3 比 4 裁切" /></div><figcaption class="blora-text-muted blora-text-center">3 : 4</figcaption></figure><figure class="blora-stack blora-stack--sm"><div class="blora-media" data-ratio="wide" data-fit="contain"><img src="../../legacy/visual-baseline-light.png" alt="21 比 9 容纳" /></div><figcaption class="blora-text-muted blora-text-center">21 : 9 · contain</figcaption></figure></div></section></div>
       </template>
       <template data-component="card" data-label="Card" data-group="数据展示" data-eyebrow="Data display" data-kind="CSS-only" data-description="承载标题、内容和操作的通用内容容器。">
         <div data-showcase-cases>
@@ -1023,6 +1032,12 @@
           <blora-segment value="month">月</blora-segment>
         </blora-segmented>
       </template>
+      <template data-component="menu" data-label="Menu" data-group="导航" data-eyebrow="Navigation" data-kind="CSS-only" data-description="原生链接列表，可纵向或横向，当前项用 aria-current。">
+        <div data-showcase-cases>
+          <section data-showcase-case="Default"><h3>纵向</h3><nav class="blora-menu" aria-label="文档导航"><p class="blora-menu__title">指南</p><a class="blora-menu__item" href="#menu" aria-current="page">开始使用</a><a class="blora-menu__item" href="#menu">令牌</a><a class="blora-menu__item" href="#menu" aria-disabled="true">即将推出</a></nav></section>
+          <section data-showcase-case="Horizontal"><h3>横向</h3><nav class="blora-menu" data-orientation="horizontal" aria-label="页面导航"><a class="blora-menu__item" href="#menu" aria-current="page">概览</a><a class="blora-menu__item" href="#menu">组件</a><a class="blora-menu__item" href="#menu">主题</a></nav></section>
+        </div>
+      </template>
       <template data-component="sidebar-nav" data-label="Sidebar Navigation" data-group="导航" data-eyebrow="Navigation" data-kind="Composite CE" data-description="正式统一的分组侧栏导航，只高亮当前文字。">
         <blora-sidebar-nav label="设计系统导航" value="overview">
           <blora-sidebar-nav-group label="规范">
@@ -1071,7 +1086,12 @@
         <div data-showcase-overlay-space><blora-popover trigger="打开 Popover" content="弹出层与触发按钮左侧对齐。"></blora-popover></div>
       </template>
       <template data-component="tooltip" data-label="Tooltip" data-group="反馈" data-eyebrow="Feedback" data-kind="Composite CE" data-description="悬停或聚焦时提供简短辅助说明。">
-        <div data-showcase-overlay-space><blora-tooltip trigger="悬停或聚焦查看" text="这是一个提示信息" placement="bottom"></blora-tooltip></div>
+        <div data-showcase-cases>
+          <section data-showcase-case="Default"><h3>默认（上）</h3><div data-showcase-overlay-space><blora-tooltip trigger="悬停或聚焦查看" text="这是一个提示信息"></blora-tooltip></div></section>
+          <section data-showcase-case="Bottom"><h3>下方</h3><div data-showcase-overlay-space><blora-tooltip trigger="下方提示" text="出现在触发器下方" placement="bottom"></blora-tooltip></div></section>
+          <section data-showcase-case="Start"><h3>起始侧</h3><div data-showcase-overlay-space><blora-tooltip trigger="起始侧" text="逻辑起始侧，LTR 在左" placement="start"></blora-tooltip></div></section>
+          <section data-showcase-case="End"><h3>结束侧</h3><div data-showcase-overlay-space><blora-tooltip trigger="结束侧" text="逻辑结束侧，LTR 在右" placement="end"></blora-tooltip></div></section>
+        </div>
       </template>
       <template data-component="deck" data-label="Deck" data-group="布局" data-eyebrow="Layout" data-kind="Composite CE" data-description="以叠层卡片浏览队列或相册内容。">
         <blora-deck label="卡片叠层" current="2" style="width: 18rem; height: 20rem;">
@@ -1080,6 +1100,41 @@
           <blora-deck-card front><div data-showcase-slide><strong>当前卡片</strong></div></blora-deck-card>
           <blora-deck-card variant="flat"><div data-showcase-slide><strong>上线检查</strong></div></blora-deck-card>
         </blora-deck>
+      </template>
+      <template data-component="indicator" data-label="Indicator" data-group="布局" data-eyebrow="Layout" data-kind="CSS-only" data-description="把徽标、状态点或任意元素钉在宿主的角上。">
+        <div data-showcase-cases>
+          <section data-showcase-case="Default"><h3>默认（右上）</h3><span class="blora-indicator"><button class="blora-button" type="button">收件箱</button><span class="blora-indicator__item"><span class="blora-badge" data-shape="pill">12</span></span></span></section>
+          <section data-showcase-case="TopStart"><h3>左上</h3><span class="blora-indicator" data-placement="top-start"><button class="blora-button" type="button">通知</button><span class="blora-indicator__item"><span class="blora-badge" data-variant="danger" data-shape="circle">3</span></span></span></section>
+          <section data-showcase-case="BottomEnd"><h3>右下</h3><span class="blora-indicator" data-placement="bottom-end"><button class="blora-button" type="button">任务</button><span class="blora-indicator__item"><span class="blora-badge" data-variant="info" data-shape="circle">8</span></span></span></section>
+          <section data-showcase-case="BottomStart"><h3>左下</h3><span class="blora-indicator" data-placement="bottom-start"><button class="blora-button" type="button">消息</button><span class="blora-indicator__item"><span class="blora-badge" data-variant="success" data-shape="circle">1</span></span></span></section>
+          <section data-showcase-case="Inside"><h3>内侧</h3><span class="blora-indicator" data-placement="inside"><div class="blora-avatar" data-size="lg" data-variant="primary">AB</div><span class="blora-indicator__item"><span class="blora-dot" data-variant="success"></span></span></span></section>
+        </div>
+      </template>
+      <template data-component="hero" data-label="Hero" data-group="布局" data-eyebrow="Layout" data-kind="CSS-only" data-description="页面开场区，沿用 1.x 高度与内边距。">
+        <div data-showcase-cases>
+          <section data-showcase-case="Default"><h3>默认</h3><section class="blora-hero"><div class="blora-hero__content"><h2>设计系统，按契约交付</h2><p class="blora-text-muted">令牌驱动的页面开场区。</p></div></section></section>
+          <section data-showcase-case="Center"><h3>居中</h3><section class="blora-hero" data-align="center"><div class="blora-hero__content"><h2>居中开场</h2><p class="blora-text-muted">标题与说明水平居中。</p></div></section></section>
+          <section data-showcase-case="Surface"><h3>浅底</h3><section class="blora-hero" data-variant="surface"><div class="blora-hero__content"><h2>浅底开场</h2><p class="blora-text-muted">使用表面色而不是画布色。</p></div></section></section>
+          <section data-showcase-case="Compact"><h3>紧凑</h3><section class="blora-hero" data-size="compact" data-align="center"><div class="blora-hero__content"><h2>紧凑开场</h2><p class="blora-text-muted">最小高度降到 16rem。</p></div></section></section>
+        </div>
+      </template>
+      <template data-component="footer" data-label="Footer" data-group="布局" data-eyebrow="Layout" data-kind="CSS-only" data-description="站点页脚：多栏链接与底栏版权。">
+        <footer class="blora-footer"><div class="blora-footer__inner"><div><div class="blora-footer__title">Blora Design</div><p>令牌驱动的 Web UI 框架。</p></div><div><div class="blora-footer__title">文档</div><a class="blora-footer__link" href="#footer">指南</a><a class="blora-footer__link" href="#footer">契约</a></div><div><div class="blora-footer__title">组件</div><a class="blora-footer__link" href="#footer">按钮</a><a class="blora-footer__link" href="#footer">表单</a></div><div><div class="blora-footer__title">社区</div><a class="blora-footer__link" href="#footer">GitHub</a></div></div><div class="blora-footer__bottom">© Bloret Crew</div></footer>
+      </template>
+      <template data-component="join" data-label="Join" data-group="布局" data-eyebrow="Layout" data-kind="CSS-only" data-description="把相邻按钮或输入粘成一组，共享一条外轮廓。">
+        <div data-showcase-cases>
+          <section data-showcase-case="Default"><h3>横向按钮</h3><div class="blora-join"><button class="blora-button" type="button" data-variant="outline">左</button><button class="blora-button" type="button" data-variant="outline">中</button><button class="blora-button" type="button" data-variant="outline">右</button></div></section>
+          <section data-showcase-case="Vertical"><h3>纵向</h3><div class="blora-join" data-orientation="vertical"><button class="blora-button" type="button" data-variant="outline">上</button><button class="blora-button" type="button" data-variant="outline">中</button><button class="blora-button" type="button" data-variant="outline">下</button></div></section>
+          <section data-showcase-case="Mixed"><h3>输入加按钮</h3><div class="blora-join"><input class="blora-input" type="search" placeholder="搜索组件" aria-label="搜索组件" /><button class="blora-button" type="button" data-variant="primary">搜索</button></div></section>
+        </div>
+      </template>
+      <template data-component="divider" data-label="Divider" data-group="布局" data-eyebrow="Layout" data-kind="CSS-only" data-description="水平或垂直分隔线，可带文字或虚线。">
+        <div data-showcase-cases>
+          <section data-showcase-case="Default"><h3>默认</h3><p>上方内容</p><hr class="blora-divider" /><p>下方内容</p></section>
+          <section data-showcase-case="Vertical"><h3>垂直</h3><div class="blora-row"><span>左</span><hr class="blora-divider" data-orientation="vertical" /><span>右</span></div></section>
+          <section data-showcase-case="Text"><h3>带字</h3><div class="blora-divider" data-variant="text">或者</div></section>
+          <section data-showcase-case="Dashed"><h3>虚线</h3><hr class="blora-divider" data-variant="dashed" /></section>
+        </div>
       </template>
       <template data-component="splitter" data-label="Splitter" data-group="布局" data-eyebrow="Layout" data-kind="Composite CE" data-description="通过可拖拽分隔条调整两个面板的空间比例。">
         <blora-splitter min="100" position="45" style="min-height: 12rem;">
@@ -1583,7 +1638,11 @@
             headingCopy,
             createElement(
               "span",
-              { class: "blora-badge", "data-variant": badgeVariant(template.dataset.kind) },
+              {
+                class: "blora-badge",
+                "data-variant": badgeVariant(template.dataset.kind),
+                "data-shape": "pill",
+              },
               template.dataset.kind,
             ),
           );

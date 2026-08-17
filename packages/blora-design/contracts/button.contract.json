@@ -79,7 +79,8 @@
     "--blora-button-bd",
     "--blora-button-pad-y",
     "--blora-button-pad-x",
-    "--blora-button-height"
+    "--blora-button-height",
+    "--blora-button-icon-size"
   ],
   "accessibilityPattern": "button",
   "migrationFromV1": "button.migration.md"

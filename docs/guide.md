@@ -134,7 +134,7 @@ ADR-015 已用 Composite CE 取代 ADR-013 的默认 headless 推荐。结构封
 <button type="button" class="blora-button" data-variant="primary" data-size="sm">小</button>
 ```
 
-同 `data-size` 的按钮高度由 `--blora-button-height` 锁死，内部图标 / 图片 / 自定义节点强制 `1em`，不会把按钮撑高。
+同 `data-size` 的按钮高度由 `--blora-button-height` 锁死，内部内容不会把按钮撑高。图标尺寸由 `--blora-button-icon-size` 控制（默认 `auto`，尊重 `createBloraIcon()` 的宽高）；纯图标按钮默认为 `1.125rem`。
 
 ```js
 import { setButtonLoading } from "@bloret-crew/blora-design";
@@ -151,6 +151,7 @@ setButtonLoading(btn, true);
   limit="20"
   required
 ></blora-field>
+<blora-field layout="horizontal" label="显示名" name="display"></blora-field>
 
 <blora-checkbox name="agree" label="同意条款" required></blora-checkbox>
 ```
@@ -310,6 +311,7 @@ Dialog / Drawer：
 
 ```html
 <span class="blora-badge">9</span>
+<span class="blora-badge" data-variant="danger">3</span>
 <span class="blora-badge" data-variant="warning" data-icon="triangle-alert">Warning</span>
 
 <span class="blora-tag" data-variant="primary">React</span>
@@ -331,7 +333,33 @@ Comment 只做布局壳，不把 `time` / `likes` 收成底层属性：
 </blora-comment>
 ```
 
-### 3.9 图片预览 / 回到顶部
+### 3.9 页面骨架与编组
+
+```html
+<span class="blora-indicator">
+  <button type="button" class="blora-button">收件箱</button>
+  <span class="blora-indicator__item"><span class="blora-badge">12</span></span>
+</span>
+
+<section class="blora-hero" data-align="center">
+  <div class="blora-hero__content">开场标题</div>
+</section>
+
+<div class="blora-join">
+  <input class="blora-input" type="search" />
+  <button type="button" class="blora-button" data-variant="primary">搜索</button>
+</div>
+
+<nav class="blora-menu" aria-label="文档">
+  <a class="blora-menu__item" href="#" aria-current="page">开始</a>
+</nav>
+
+<hr class="blora-divider" />
+```
+
+Tooltip 默认在上方，也可用 `placement="bottom|start|end"`。LTR 下 `start` 在左、`end` 在右。
+
+### 3.10 图片预览 / 回到顶部
 
 ```js
 import { openImagePreview, initBackTop } from "@bloret-crew/blora-design";
@@ -340,7 +368,7 @@ openImagePreview({ src: "/a.png", alt: "图" });
 initBackTop(); // 自动管理 <blora-backtop>
 ```
 
-### 3.10 Tree Select / Tree
+### 3.11 Tree Select / Tree
 
 ```html
 <blora-tree><!-- blora-tree-node definitions --></blora-tree>

@@ -3,11 +3,8 @@
    ========================================================================= */
 
 .blora-badge {
-  /* Same contract as buttons: line-height 1 + flex center = glyph-centered
-     on every engine (desktop + mobile). Fixed height supplies the hit target.
-     Padding stays at the 1.x 0.4em so a single digit remains a circle
-     (0.4em × 2 + glyph ≤ 1.5em). Larger 2.0 padding made "3"/"9" into ovals
-     and the digit looked off-center in different hosts. */
+  /* Default is a growing capsule. A single digit opts into a disc with
+     data-shape="circle" — do not lock every badge to 1.5em. */
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -66,8 +63,6 @@
 .blora-badge[data-variant="info"],
 .blora-badge[data-variant="warning"],
 .blora-badge[data-variant="danger"] {
-  /* Status labels are words, not counts. Match .blora-tag inset so
-     "Neutral" / "Warning" do not kiss the capsule ends. */
   min-width: max-content;
   height: auto;
   padding: 0.2em 0.7em;
@@ -100,4 +95,42 @@
   flex: none;
   width: 1em;
   height: 1em;
+}
+
+.blora-badge[data-shape="circle"] {
+  inline-size: 1.5em;
+  block-size: 1.5em;
+  min-inline-size: 1.5em;
+  min-block-size: 1.5em;
+  max-inline-size: 1.5em;
+  max-block-size: 1.5em;
+  padding: 0;
+  aspect-ratio: 1;
+  line-height: 1;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.blora-badge[data-shape="pill"],
+.blora-badge[data-variant="pill"] {
+  inline-size: auto;
+  block-size: auto;
+  min-inline-size: max-content;
+  min-block-size: 0;
+  max-inline-size: none;
+  max-block-size: none;
+  aspect-ratio: auto;
+  padding: 0.2em 0.7em;
+  line-height: 1.25;
+  border-radius: var(--blora-radius-full);
+  overflow: visible;
+}
+
+.blora-badge[data-variant="circle"][data-shape="circle"] {
+  inline-size: 2em;
+  block-size: 2em;
+  min-inline-size: 2em;
+  min-block-size: 2em;
+  max-inline-size: 2em;
+  max-block-size: 2em;
 }

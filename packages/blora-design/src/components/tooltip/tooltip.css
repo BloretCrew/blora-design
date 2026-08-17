@@ -10,12 +10,16 @@ blora-tooltip {
 }
 
 .blora-tooltip__bubble {
+  --blora-float-shift-x: 0px;
+  --blora-float-shift-y: 0px;
+
   position: absolute;
   inset-block-end: calc(100% + 0.5em);
   inset-inline-start: 50%;
   width: max-content;
   max-width: min(20rem, calc(100vw - 2 * var(--blora-space-3)));
-  transform: translateX(-50%) translateY(4px);
+  transform: translateX(calc(-50% + var(--blora-float-shift-x)))
+    translateY(calc(4px + var(--blora-float-shift-y)));
   padding: 0.4em 0.8em;
   background: var(--blora-color-tooltip-background);
   color: var(--blora-color-tooltip-foreground);
@@ -28,12 +32,9 @@ blora-tooltip {
   pointer-events: none;
   transition: all var(--blora-duration-fast) var(--blora-easing-standard);
   z-index: var(--blora-z-dropdown);
-
-  /* Shadow alone disappears on dark canvas; ring keeps the frame readable */
   box-shadow: var(--blora-shadow-3);
 }
 
-/* Arrow border (outer) + fill (inner) so the tip matches the bubble edge */
 .blora-tooltip__bubble::before,
 .blora-tooltip__bubble::after {
   content: "";
@@ -52,36 +53,124 @@ blora-tooltip {
 .blora-tooltip__bubble::after {
   border-width: 5px;
   border-block-start-color: var(--blora-color-tooltip-background);
-
-  /* Sit over the border triangle so only a 1px rim shows */
   margin-block-start: -1px;
 }
 
 .blora-tooltip:hover .blora-tooltip__bubble,
 .blora-tooltip:focus-within .blora-tooltip__bubble {
   opacity: 1;
-  transform: translateX(-50%) translateY(0);
+  transform: translateX(calc(-50% + var(--blora-float-shift-x)))
+    translateY(var(--blora-float-shift-y));
 }
 
-/* Bottom placement */
 .blora-tooltip[data-placement="bottom"] .blora-tooltip__bubble {
   inset-block: calc(100% + 0.5em) auto;
-  transform: translateX(-50%) translateY(-4px);
+  transform: translateX(calc(-50% + var(--blora-float-shift-x)))
+    translateY(calc(-4px + var(--blora-float-shift-y)));
+}
+
+.blora-tooltip[data-placement="bottom"] .blora-tooltip__bubble::before,
+.blora-tooltip[data-placement="bottom"] .blora-tooltip__bubble::after {
+  inset-block: auto 100%;
+  border-block-start-color: transparent;
 }
 
 .blora-tooltip[data-placement="bottom"] .blora-tooltip__bubble::before {
-  inset-block: auto 100%;
-  border-color: transparent transparent var(--blora-color-border-subtle);
+  border-block-end-color: var(--blora-color-border-subtle);
 }
 
 .blora-tooltip[data-placement="bottom"] .blora-tooltip__bubble::after {
-  inset-block: auto 100%;
-  border-color: transparent transparent var(--blora-color-tooltip-background);
+  border-block-end-color: var(--blora-color-tooltip-background);
   margin-block: 0;
   margin-block-end: -1px;
 }
 
-.blora-tooltip:hover .blora-tooltip[data-placement="bottom"] .blora-tooltip__bubble,
+.blora-tooltip[data-placement="bottom"]:hover .blora-tooltip__bubble,
 .blora-tooltip[data-placement="bottom"]:focus-within .blora-tooltip__bubble {
-  transform: translateX(-50%) translateY(0);
+  transform: translateX(calc(-50% + var(--blora-float-shift-x)))
+    translateY(var(--blora-float-shift-y));
+}
+
+.blora-tooltip[data-placement="start"] .blora-tooltip__bubble,
+.blora-tooltip[data-placement="left"] .blora-tooltip__bubble {
+  inset-block: 50% auto;
+  inset-inline: auto calc(100% + 0.5em);
+  transform: translateX(calc(4px + var(--blora-float-shift-x)))
+    translateY(calc(-50% + var(--blora-float-shift-y)));
+}
+
+.blora-tooltip[data-placement="end"] .blora-tooltip__bubble,
+.blora-tooltip[data-placement="right"] .blora-tooltip__bubble {
+  inset-block: 50% auto;
+  inset-inline: calc(100% + 0.5em) auto;
+  transform: translateX(calc(-4px + var(--blora-float-shift-x)))
+    translateY(calc(-50% + var(--blora-float-shift-y)));
+}
+
+.blora-tooltip[data-placement="start"] .blora-tooltip__bubble::before,
+.blora-tooltip[data-placement="start"] .blora-tooltip__bubble::after,
+.blora-tooltip[data-placement="end"] .blora-tooltip__bubble::before,
+.blora-tooltip[data-placement="end"] .blora-tooltip__bubble::after,
+.blora-tooltip[data-placement="left"] .blora-tooltip__bubble::before,
+.blora-tooltip[data-placement="left"] .blora-tooltip__bubble::after,
+.blora-tooltip[data-placement="right"] .blora-tooltip__bubble::before,
+.blora-tooltip[data-placement="right"] .blora-tooltip__bubble::after {
+  inset-block: 50% auto;
+  transform: translateY(-50%);
+  border-block-start-color: transparent;
+  margin: 0;
+}
+
+.blora-tooltip[data-placement="start"] .blora-tooltip__bubble::before,
+.blora-tooltip[data-placement="left"] .blora-tooltip__bubble::before {
+  inset-inline-start: 100%;
+  border-inline-start-color: var(--blora-color-border-subtle);
+}
+
+.blora-tooltip[data-placement="start"] .blora-tooltip__bubble::after,
+.blora-tooltip[data-placement="left"] .blora-tooltip__bubble::after {
+  inset-inline-start: 100%;
+  border-inline-start-color: var(--blora-color-tooltip-background);
+  margin-inline-start: -1px;
+}
+
+.blora-tooltip[data-placement="end"] .blora-tooltip__bubble::before,
+.blora-tooltip[data-placement="right"] .blora-tooltip__bubble::before {
+  inset-inline: auto 100%;
+  border-inline-end-color: var(--blora-color-border-subtle);
+}
+
+.blora-tooltip[data-placement="end"] .blora-tooltip__bubble::after,
+.blora-tooltip[data-placement="right"] .blora-tooltip__bubble::after {
+  inset-inline: auto 100%;
+  border-inline-end-color: var(--blora-color-tooltip-background);
+  margin-inline-end: -1px;
+}
+
+.blora-tooltip[data-placement="start"]:hover .blora-tooltip__bubble,
+.blora-tooltip[data-placement="start"]:focus-within .blora-tooltip__bubble,
+.blora-tooltip[data-placement="left"]:hover .blora-tooltip__bubble,
+.blora-tooltip[data-placement="left"]:focus-within .blora-tooltip__bubble {
+  transform: translateX(var(--blora-float-shift-x))
+    translateY(calc(-50% + var(--blora-float-shift-y)));
+}
+
+.blora-tooltip[data-placement="end"]:hover .blora-tooltip__bubble,
+.blora-tooltip[data-placement="end"]:focus-within .blora-tooltip__bubble,
+.blora-tooltip[data-placement="right"]:hover .blora-tooltip__bubble,
+.blora-tooltip[data-placement="right"]:focus-within .blora-tooltip__bubble {
+  transform: translateX(var(--blora-float-shift-x))
+    translateY(calc(-50% + var(--blora-float-shift-y)));
+}
+
+.blora-tooltip[data-placement="left"] .blora-tooltip__bubble {
+  right: calc(100% + 0.5em);
+  left: auto;
+  inset-inline: auto;
+}
+
+.blora-tooltip[data-placement="right"] .blora-tooltip__bubble {
+  left: calc(100% + 0.5em);
+  right: auto;
+  inset-inline: auto;
 }

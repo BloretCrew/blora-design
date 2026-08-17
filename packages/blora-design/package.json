@@ -134,7 +134,13 @@
     "./components/swap.css": "./dist/components/swap/swap.css",
     "./components/media.css": "./dist/components/media/media.css",
     "./components/fieldset.css": "./dist/components/fieldset/fieldset.css",
-    "./components/filter.css": "./dist/components/filter/filter.css"
+    "./components/filter.css": "./dist/components/filter/filter.css",
+    "./components/divider.css": "./dist/components/divider/divider.css",
+    "./components/footer.css": "./dist/components/footer/footer.css",
+    "./components/hero.css": "./dist/components/hero/hero.css",
+    "./components/indicator.css": "./dist/components/indicator/indicator.css",
+    "./components/join.css": "./dist/components/join/join.css",
+    "./components/menu.css": "./dist/components/menu/menu.css"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

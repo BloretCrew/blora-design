@@ -15,7 +15,8 @@
       "type": "string"
     },
     "placement": {
-      "type": "\"top\" | \"bottom\""
+      "type": "\"top\" | \"bottom\" | \"start\" | \"end\" | \"left\" | \"right\"",
+      "default": "top"
     },
     "disabled": {
       "type": "boolean",

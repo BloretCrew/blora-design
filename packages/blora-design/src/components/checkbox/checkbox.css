@@ -11,6 +11,18 @@ blora-checkbox[data-group] {
   display: block;
 }
 
+/* Options are inline-flex; a margin-top stack does not space them. */
+blora-checkbox[data-group] [role="group"] {
+  display: flex;
+  flex-flow: column;
+  align-items: flex-start;
+  gap: var(--blora-space-3);
+}
+
+blora-checkbox[data-group] [role="group"] > * + * {
+  margin-top: 0;
+}
+
 .blora-checkbox {
   display: inline-flex;
   align-items: center;

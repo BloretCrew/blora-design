@@ -47,3 +47,9 @@ export const Removable: Story = {
     </div>
   `,
 };
+
+export const VersusBadge: Story = {
+  render: () => html`
+    <p class="blora-text-muted">Tag 回答「这是什么」；数量、红点、状态提示用 Badge。</p>
+  `,
+};

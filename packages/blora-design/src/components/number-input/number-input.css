@@ -32,9 +32,9 @@ blora-number-input {
   gap: 0.05em;
   height: 1.75em;
   padding: 0.1em;
-  border: 1px solid var(--blora-color-border-subtle);
+  border: 1px solid color-mix(in srgb, var(--blora-color-border-subtle) 55%, transparent);
   border-radius: var(--blora-radius-full);
-  background: var(--blora-color-surface-raised);
+  background: color-mix(in srgb, var(--blora-color-text-primary) 4%, transparent);
 }
 
 .blora-number-input__button {
@@ -52,7 +52,7 @@ blora-number-input {
 }
 
 .blora-number-input__button:hover:not(:disabled) {
-  background: var(--blora-color-surface-sunken);
+  background: color-mix(in srgb, var(--blora-color-text-primary) 8%, transparent);
   color: var(--blora-color-text-primary);
 }
 

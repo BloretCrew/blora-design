@@ -1,0 +1,26 @@
+{
+  "$schema": "../../schemas/component-contract.schema.json",
+  "name": "indicator",
+  "category": "layout",
+  "status": "stable",
+  "kind": "css-only",
+  "since": "2.0.0",
+  "requiresJavaScript": false,
+  "formAssociated": false,
+  "attributes": {
+    "data-placement": {
+      "type": "\"top-end\" | \"top-start\" | \"bottom-end\" | \"bottom-start\" | \"inside\"",
+      "default": "top-end"
+    }
+  },
+  "properties": {},
+  "methods": {},
+  "events": {},
+  "slots": {
+    "default": "Host content plus .blora-indicator__item for the pinned overlay."
+  },
+  "parts": [],
+  "cssProperties": [],
+  "accessibilityPattern": "section",
+  "migrationFromV1": "indicator.migration.md"
+}

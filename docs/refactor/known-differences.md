@@ -25,11 +25,19 @@
 - **改变原因**：可用性（加载中仍需知道按钮在做什么）
 - **审核状态**：approved
 
+### Tooltip - 四向放置
+
+- **组件**：tooltip
+- **1.x 表现**：浮层主要在触发器上方，靠 JS 做横向避让。
+- **2.0 表现**：`placement` 支持 `top` / `bottom` / `start` / `end`，以及物理 `left` / `right`。
+- **改变原因**：架构（侧向提示是真实能力，不是皮肤）
+- **审核状态**：pending
+
 ### Button - 内部内容无法撑高
 
 - **组件**：button
 - **1.x 表现**：高度由 padding + 内容决定，大图标或图片会把同尺寸按钮撑得不一样高。
-- **2.0 表现**：高度锁在 `--blora-button-height`（字号 + 上下 padding + 双边框）；内部替换元素强制 `1em`。
+- **2.0 表现**：高度锁在 `--blora-button-height`（字号 + 上下 padding + 双边框）。图标尺寸走 `--blora-button-icon-size`（默认 `auto`，尊重 `createBloraIcon` 的宽高）；`data-size="icon"` 默认为 `1.125rem`。内部内容不能撑高按钮，但不会被压成 `1em`。
 - **改变原因**：架构（同 `data-size` 必须等高，不因插图/图标变化）
 - **审核状态**：pending
 
@@ -40,6 +48,22 @@
 - **2.0 表现**：`::after` 使用 `rotate(-45deg) scale(n)`，与 transfer 行复选框统一。
 - **改变原因**：bug 修复
 - **审核状态**：approved
+
+### Checkbox - 全选组纵向间距
+
+- **组件**：checkbox
+- **1.x 表现**：选项是 `inline-flex`，放进 `.blora-stack` 后仍会横排贴在一起。
+- **2.0 表现**：`blora-checkbox[data-group]` 内选项纵向排列，间距 `--blora-space-3`。
+- **改变原因**：bug 修复
+- **审核状态**：pending
+
+### Radio - 内圆点几何居中
+
+- **组件**：radio
+- **1.x 表现**：内圆点用 `inset: 0; margin: auto` + `scale()`，非整倍 DPR / 125% 缩放下会偏 1px。
+- **2.0 表现**：`top/left: 50%` + `translate(-50%, -50%)`，外圈 `box-sizing: border-box` + grid 居中。
+- **改变原因**：bug 修复
+- **审核状态**：pending
 
 ### Pagination - 上一页/下一页按钮放大 50%
 

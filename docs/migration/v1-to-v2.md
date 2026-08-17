@@ -110,13 +110,26 @@ defineBloraSelect();
 | `.blora-card--relative`   | `.blora-card[data-positioned]`      |
 | `.blora-card--with-badge` | `.blora-card[data-with-badge]`      |
 
+### Hero / Footer / Indicator / Divider {#layout-chrome}
+
+| 1.x                           | 2.0                                            |
+| ----------------------------- | ---------------------------------------------- |
+| `.blora-hero--center`         | `.blora-hero[data-align="center"]`             |
+| `.blora-hero--surface`        | `.blora-hero[data-variant="surface"]`          |
+| `.blora-hero--compact`        | `.blora-hero[data-size="compact"]`             |
+| `.blora-indicator--top-start` | `.blora-indicator[data-placement="top-start"]` |
+| `.blora-divider--vert`        | `.blora-divider[data-orientation="vertical"]`  |
+| `.blora-divider--text`        | `.blora-divider[data-variant="text"]`          |
+
+`.blora-footer` 类名不变。输入与按钮粘组用新的 `.blora-join`。
+
 ### Tag / Badge {#tag-badge}
 
-| 1.x | 2.0 |
-| --- | --- |
-| `.blora-tag--primary` | `.blora-tag[data-variant="primary"]` |
-| `.blora-tag--solid` | **removed** — 实心状态改 `.blora-badge` |
-| `.blora-badge--pill` | `.blora-badge[data-variant="pill"]` |
+| 1.x                   | 2.0                                     |
+| --------------------- | --------------------------------------- |
+| `.blora-tag--primary` | `.blora-tag[data-variant="primary"]`    |
+| `.blora-tag--solid`   | **removed** — 实心状态改 `.blora-badge` |
+| `.blora-badge--pill`  | `.blora-badge[data-variant="pill"]`     |
 
 Badge = 数量 / 红点 / 状态；Tag = 分类 / 可关闭。不要互相替代。
 
