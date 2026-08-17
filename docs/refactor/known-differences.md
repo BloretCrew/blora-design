@@ -29,7 +29,7 @@
 
 - **组件**：dialog
 - **1.x 表现**：模态挂到 portal / body，遮罩相对视口。
-- **2.0 表现**：`show()` 把 `blora-dialog` 移到 `document.body`，关闭后还原。避免侧栏 `container-type` 把 `position: fixed` 困在目录盒里，滚动到顶时 navbar 从遮罩上方露出。
+- **2.0 表现**：`show()` 把主机挂到 `document.body` 并 `showPopover()` 进入顶层，遮罩按视口铺满。页面级 sidebar 去掉 `container-type`，避免 `fixed` 困在目录盒里。滚动到顶或滚下去，navbar 都在遮罩后面。
 - **改变原因**：bug 修复
 - **审核状态**：pending
 

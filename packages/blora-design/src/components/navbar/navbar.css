@@ -53,6 +53,10 @@ blora-navbar > .blora-navbar {
   backdrop-filter: none;
 }
 
+:root[data-blora-modal-open] blora-navbar {
+  z-index: var(--blora-z-base);
+}
+
 .blora-navbar > * {
   position: relative;
   z-index: var(--blora-z-base);

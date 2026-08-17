@@ -54,6 +54,7 @@ blora-sidebar-layout[compact] {
   overflow: visible;
   background: transparent;
   isolation: auto;
+  container-type: normal;
 }
 
 /* Page shell stays a page. Do not wrap it in the demo-card chrome. */

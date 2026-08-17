@@ -48,10 +48,11 @@ export class BloraDialog extends BloraElement {
     style.textContent = dialogStyles;
     shadow.appendChild(style);
 
+    this.setAttribute("popover", "manual");
+
     const backdrop = document.createElement("div");
     backdrop.className = "blora-dialog__backdrop";
     backdrop.setAttribute("part", "backdrop");
-    backdrop.setAttribute("popover", "manual");
 
     const mask = document.createElement("div");
     mask.className = "blora-dialog__mask";
@@ -122,7 +123,7 @@ export class BloraDialog extends BloraElement {
   private _closeButton: HTMLButtonElement | null = null;
   private _footer: HTMLElement | null = null;
   private _footerSlot: HTMLSlotElement | null = null;
-  private _backdropInTopLayer = false;
+  private _hostInTopLayer = false;
   private relocating = false;
   private home: { parent: Node; next: ChildNode | null } | null = null;
 
@@ -194,10 +195,7 @@ export class BloraDialog extends BloraElement {
     this.visible = true;
     this.portalToBody();
     this.setAttribute("open", "");
-    if (this._backdrop && typeof this._backdrop.showPopover === "function") {
-      this._backdrop.showPopover();
-      this._backdropInTopLayer = true;
-    }
+    this.promoteToTopLayer();
 
     const options: Partial<OverlayOptions> = {
       modal: true,
@@ -253,10 +251,7 @@ export class BloraDialog extends BloraElement {
     const animationDuration = 260;
 
     this.closeAnimationTimer = setTimeout(() => {
-      if (this._backdropInTopLayer && typeof this._backdrop?.hidePopover === "function") {
-        this._backdrop.hidePopover();
-        this._backdropInTopLayer = false;
-      }
+      this.dismissTopLayer();
       this.removeAttribute("open");
       this.removeAttribute("data-closing");
       this.closeAnimationTimer = null;
@@ -301,11 +296,33 @@ export class BloraDialog extends BloraElement {
     }
     this.overlay?.destroy();
     this.overlay = null;
-    if (this._backdropInTopLayer && typeof this._backdrop?.hidePopover === "function") {
-      this._backdrop.hidePopover();
-      this._backdropInTopLayer = false;
-    }
+    this.dismissTopLayer();
     this.restoreHome();
+  }
+
+  private promoteToTopLayer(): void {
+    if (typeof this.showPopover !== "function") return;
+    if (this.matches(":popover-open")) {
+      this._hostInTopLayer = true;
+      return;
+    }
+    try {
+      this.showPopover();
+      this._hostInTopLayer = true;
+    } catch {
+      this._hostInTopLayer = false;
+    }
+  }
+
+  private dismissTopLayer(): void {
+    if (this._hostInTopLayer && typeof this.hidePopover === "function") {
+      try {
+        this.hidePopover();
+      } catch {
+        /* already closed */
+      }
+    }
+    this._hostInTopLayer = false;
   }
 }
 
