@@ -36,6 +36,8 @@ jobs:
             ${{ runner.os }}-pnpm-store-
       - run: pnpm install --frozen-lockfile
       - run: pnpm build:tokens
+      # Emit core declarations so add-on typechecks resolve @bloret-crew/blora-design types
+      - run: pnpm --filter @bloret-crew/blora-design exec tsc --emitDeclarationOnly
       - run: pnpm lint
       - run: pnpm lint:css
       - run: pnpm lint:contracts
@@ -66,6 +68,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
       - run: pnpm install --frozen-lockfile
+      # Build every package first: showcase tests assert add-on dist assets exist
+      - run: pnpm run build
       - run: pnpm test
 
   build-package:
@@ -121,6 +125,8 @@ jobs:
             ${{ runner.os }}-pnpm-store-
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec playwright install --with-deps chromium
+      # Build every package first: the showcase page loads add-on dist assets
+      - run: pnpm run build
       - run: pnpm test:browser
 
   aggregate:
