@@ -1777,6 +1777,23 @@
           return rect.width >= innerWidth * 0.85 && rect.height >= innerHeight * 0.85;
         }
 
+        function isScrollport(style) {
+          return /auto|scroll|hidden|clip/.test(`${style.overflowX}${style.overflowY}`);
+        }
+
+        /* Overflow content (virtual table pads, lists) must not stretch the
+           Preview past the visible scrollport. Anchored menus stay outside
+           any scrollport, so they still enlarge the card. */
+        function visibleBottom(element, mount) {
+          let bottom = element.getBoundingClientRect().bottom;
+          for (let node = element.parentElement; node && node !== mount; node = node.parentElement) {
+            if (isScrollport(getComputedStyle(node))) {
+              bottom = Math.min(bottom, node.getBoundingClientRect().bottom);
+            }
+          }
+          return bottom;
+        }
+
         function bindPreviewResize(mount) {
           const resizePreview = () => {
             const previewRect = mount.getBoundingClientRect();
@@ -1785,7 +1802,7 @@
               const style = getComputedStyle(element);
               if (style.display === "none" || style.visibility === "hidden") continue;
               if (isViewportOverlay(element)) continue;
-              requiredBottom = Math.max(requiredBottom, element.getBoundingClientRect().bottom);
+              requiredBottom = Math.max(requiredBottom, visibleBottom(element, mount));
             }
             const blockPadding = parseFloat(getComputedStyle(mount).paddingBottom) || 0;
             mount.style.minHeight = `${Math.max(288, Math.ceil(requiredBottom - previewRect.top + blockPadding))}px`;
