@@ -1,11 +1,10 @@
 /* Blora Design 2.0 - Layout add-on CSS */
 
 /* Sidebar layout
- * Drawer mode is driven by the **component width** (container query) with a
- * viewport @media fallback. Storybook docs often keep a wide window while the
- * canvas is narrow — viewport-only media left a crushed two-column grid that
- * could not close cleanly. Overlay uses absolute (not fixed) so it stays
- * inside transformed ancestors (Storybook, scaled previews).
+ * Drawer mode is driven by component width (ResizeObserver → [data-drawer]).
+ * Default / compact cards keep an in-flow overlay (absolute) so Storybook
+ * and nested demos do not cover the whole page. variant=seamless is page
+ * chrome: the drawer is a viewport sheet (fixed), matching 1.x.
  */
 .blora-sidebar-layout {
   --blora-sidebar-drawer-at: 900px;
@@ -56,11 +55,12 @@ blora-sidebar-layout[compact] {
   background: transparent;
 }
 
+/* Page shell stays a page. Do not wrap it in the demo-card chrome. */
 .blora-sidebar-layout[data-variant="seamless"][data-drawer] {
-  overflow: hidden;
-  border: 1px solid var(--blora-color-border-subtle);
-  border-radius: var(--blora-radius-xl);
-  background: var(--blora-color-surface-canvas);
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
 }
 
 .blora-sidebar-layout__aside {
@@ -194,6 +194,27 @@ blora-sidebar-layout[compact] {
   visibility: visible;
   pointer-events: auto;
   transition-delay: 0s;
+}
+
+/* Seamless = app/page chrome. Sheet + mask pin to the viewport like 1.x,
+   not to the content column. Sticky must not win over fixed here. */
+.blora-sidebar-layout[data-variant="seamless"][data-drawer] .blora-sidebar-layout__aside,
+.blora-sidebar-layout[data-variant="seamless"][data-drawer][data-sticky] .blora-sidebar-layout__aside,
+.blora-sidebar-layout[data-variant="seamless"].blora-sidebar-layout--drawer .blora-sidebar-layout__aside {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  inset-inline-start: 0;
+  height: 100dvh;
+  max-height: 100dvh;
+  z-index: var(--blora-z-drawer);
+}
+
+.blora-sidebar-layout[data-variant="seamless"][data-drawer] .blora-sidebar-layout__mask,
+.blora-sidebar-layout[data-variant="seamless"].blora-sidebar-layout--drawer .blora-sidebar-layout__mask {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--blora-z-drawer) - 1);
 }
 
 /* Component-width driven (Storybook canvas, nested layouts) */
