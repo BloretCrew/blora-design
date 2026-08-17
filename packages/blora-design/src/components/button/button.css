@@ -24,10 +24,7 @@
   /* Cap the radius at 40% of the height. A fixed 18px on small buttons
      exceeds half their height, merging the corners into a capsule — obvious
      on Safari/Firefox where corner-shape: superellipse is unsupported. */
-  --blora-button-radius: min(
-    var(--blora-radius-lg),
-    calc(var(--blora-button-height) * 0.4)
-  );
+  --blora-button-radius: min(var(--blora-radius-lg), calc(var(--blora-button-height) * 0.4));
   --blora-button-corner: superellipse(1.2);
 
   display: inline-flex;

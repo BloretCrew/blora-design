@@ -719,9 +719,7 @@ test("showcase catalog routes one of every official component at a time", async 
 
   const layerOrder = await page.evaluate(() => {
     const navbar = document.querySelector<HTMLElement>(".showcase-navbar .blora-navbar")!;
-    const tab = document.querySelector<HTMLElement>(
-      "[data-example='accordion'] .blora-tabs__tab",
-    )!;
+    const tab = document.querySelector<HTMLElement>("[data-example='accordion'] .blora-tabs__tab")!;
     return {
       navbarZ: Number(getComputedStyle(navbar).zIndex),
       tabZ: Number(getComputedStyle(tab).zIndex),
