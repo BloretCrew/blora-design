@@ -396,6 +396,21 @@
         background: var(--blora-color-surface-raised);
       }
 
+      .showcase-deck-card {
+        display: flex;
+        height: 100%;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: var(--blora-space-2);
+        padding: var(--blora-space-5);
+        box-sizing: border-box;
+      }
+
+      .showcase-deck-card > p {
+        margin: 0;
+      }
+
       [data-showcase-tile] {
         break-inside: avoid;
         margin-block-end: var(--blora-space-3);
@@ -1116,10 +1131,10 @@
       </template>
       <template data-component="deck" data-label="Deck" data-group="布局" data-eyebrow="Layout" data-kind="Composite CE" data-description="以叠层卡片浏览队列或相册内容。">
         <blora-deck label="卡片叠层" current="2" style="width: 18rem; height: 20rem;">
-          <blora-deck-card variant="flat"><div data-showcase-slide><strong>设计评审</strong></div></blora-deck-card>
-          <blora-deck-card variant="flat"><div data-showcase-slide><strong>接口联调</strong></div></blora-deck-card>
-          <blora-deck-card front><div data-showcase-slide><strong>当前卡片</strong></div></blora-deck-card>
-          <blora-deck-card variant="flat"><div data-showcase-slide><strong>上线检查</strong></div></blora-deck-card>
+          <blora-deck-card variant="content"><div class="showcase-deck-card"><strong>设计评审</strong><p class="blora-text-muted">队列预览 · 第 1 张</p></div></blora-deck-card>
+          <blora-deck-card variant="content"><div class="showcase-deck-card"><strong>接口联调</strong><p class="blora-text-muted">待办卡片 · 第 2 张</p></div></blora-deck-card>
+          <blora-deck-card front variant="content"><div class="showcase-deck-card"><strong>当前卡片</strong><p class="blora-text-muted">相册 / 队列预览 · 第 3 张</p></div></blora-deck-card>
+          <blora-deck-card variant="content"><div class="showcase-deck-card"><strong>上线检查</strong><p class="blora-text-muted">发布清单 · 第 4 张</p></div></blora-deck-card>
         </blora-deck>
       </template>
       <template data-component="indicator" data-label="Indicator" data-group="布局" data-eyebrow="Layout" data-kind="CSS-only" data-description="把徽标、状态点或任意元素钉在宿主的角上。">

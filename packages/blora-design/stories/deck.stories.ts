@@ -10,7 +10,7 @@ export default meta;
 type Story = StoryObj;
 
 const card = (title: string, detail: string, front = false) => html`
-  <blora-deck-card variant=${front ? "default" : "flat"} ?front=${front}>
+  <blora-deck-card variant=${front ? "default" : "content"} ?front=${front}>
     <div
       style="display: flex; height: 100%; flex-direction: column; justify-content: center; align-items: center; gap: var(--blora-space-2); padding: var(--blora-space-5); box-sizing: border-box;"
     >

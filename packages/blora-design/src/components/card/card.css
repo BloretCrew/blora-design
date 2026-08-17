@@ -26,6 +26,17 @@
   box-shadow: none;
 }
 
+/* Deck / media surfaces: chrome stays on the card, content fills it. */
+.blora-card[data-variant="content"] {
+  display: grid;
+  padding: 0;
+  overflow: hidden;
+}
+
+.blora-card[data-variant="content"] > * {
+  min-width: 0;
+}
+
 .blora-card[data-variant="inset"] {
   background: var(--blora-color-surface-raised);
   box-shadow: var(--blora-shadow-inset);

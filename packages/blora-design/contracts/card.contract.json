@@ -8,7 +8,7 @@
   "formAssociated": false,
   "attributes": {
     "data-variant": {
-      "type": "\"hover\" | \"flat\" | \"inset\"",
+      "type": "\"hover\" | \"flat\" | \"inset\" | \"content\"",
       "default": null
     },
     "data-positioned": {

@@ -49,6 +49,14 @@
 - **改变原因**：bug 修复
 - **审核状态**：pending
 
+### Card - content 变体给叠层填满卡面
+
+- **组件**：card / deck
+- **1.x 表现**：Deck 子项就是一张 `.blora-card`，标题直接写在卡面上，没有再套一层浅底内框。
+- **2.0 表现**：新增 `data-variant="content"`：去掉内边距并裁切溢出，内容铺满卡面。展示页 Deck 用这个变体，不再套 `data-showcase-slide` 浅底框。
+- **改变原因**：bug 修复
+- **审核状态**：pending
+
 ### Theming - 2.0 不再提供 Cinnabar / Ocean
 
 - **组件**：theming
