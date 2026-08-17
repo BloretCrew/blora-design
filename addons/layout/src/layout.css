@@ -102,6 +102,133 @@ blora-sidebar-layout[compact] {
   overscroll-behavior: contain;
 }
 
+/* Soften the scroll clip: fade + blur ramps toward the edge. */
+.blora-sidebar-layout[data-sticky] .blora-sidebar-layout__aside,
+.blora-sidebar-layout[data-drawer] .blora-sidebar-layout__aside,
+.blora-sidebar-layout--drawer .blora-sidebar-layout__aside {
+  --blora-sidebar-fade-from: var(--blora-color-surface-default);
+  --blora-sidebar-edge-size: var(--blora-space-8);
+}
+
+.blora-sidebar-layout[data-variant="seamless"][data-sticky]:not(
+    [data-drawer],
+    .blora-sidebar-layout--drawer
+  )
+  .blora-sidebar-layout__aside {
+  --blora-sidebar-fade-from: var(--blora-color-surface-canvas);
+}
+
+.blora-sidebar-layout[data-sticky] .blora-sidebar-layout__aside[data-overflow-start],
+.blora-sidebar-layout[data-drawer] .blora-sidebar-layout__aside[data-overflow-start],
+.blora-sidebar-layout--drawer .blora-sidebar-layout__aside[data-overflow-start] {
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    rgb(0 0 0) var(--blora-sidebar-edge-size),
+    rgb(0 0 0) 100%
+  );
+}
+
+.blora-sidebar-layout[data-sticky] .blora-sidebar-layout__aside[data-overflow-end],
+.blora-sidebar-layout[data-drawer] .blora-sidebar-layout__aside[data-overflow-end],
+.blora-sidebar-layout--drawer .blora-sidebar-layout__aside[data-overflow-end] {
+  mask-image: linear-gradient(
+    to bottom,
+    rgb(0 0 0) 0,
+    rgb(0 0 0) calc(100% - var(--blora-sidebar-edge-size)),
+    transparent 100%
+  );
+}
+
+.blora-sidebar-layout[data-sticky] .blora-sidebar-layout__aside[data-overflow-start][data-overflow-end],
+.blora-sidebar-layout[data-drawer] .blora-sidebar-layout__aside[data-overflow-start][data-overflow-end],
+.blora-sidebar-layout--drawer .blora-sidebar-layout__aside[data-overflow-start][data-overflow-end] {
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    rgb(0 0 0) var(--blora-sidebar-edge-size),
+    rgb(0 0 0) calc(100% - var(--blora-sidebar-edge-size)),
+    transparent 100%
+  );
+}
+
+.blora-sidebar-layout[data-sticky] .blora-sidebar-layout__aside::before,
+.blora-sidebar-layout[data-sticky] .blora-sidebar-layout__aside::after,
+.blora-sidebar-layout[data-drawer] .blora-sidebar-layout__aside::before,
+.blora-sidebar-layout[data-drawer] .blora-sidebar-layout__aside::after,
+.blora-sidebar-layout--drawer .blora-sidebar-layout__aside::before,
+.blora-sidebar-layout--drawer .blora-sidebar-layout__aside::after {
+  display: block;
+  height: var(--blora-sidebar-edge-size);
+  pointer-events: none;
+  opacity: 0;
+  z-index: var(--blora-z-sticky);
+  content: "";
+  transition: opacity var(--blora-duration-fast) var(--blora-easing-standard);
+  backdrop-filter: blur(12px);
+}
+
+.blora-sidebar-layout[data-sticky] .blora-sidebar-layout__aside::before,
+.blora-sidebar-layout[data-drawer] .blora-sidebar-layout__aside::before,
+.blora-sidebar-layout--drawer .blora-sidebar-layout__aside::before {
+  position: sticky;
+  inset-block-start: 0;
+  margin-block-end: calc(-1 * var(--blora-sidebar-edge-size));
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--blora-sidebar-fade-from) 42%, transparent) 0%,
+    color-mix(in srgb, var(--blora-sidebar-fade-from) 12%, transparent) 55%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(to bottom, rgb(0 0 0) 0%, rgb(0 0 0 / 45%) 50%, transparent 100%);
+}
+
+.blora-sidebar-layout[data-sticky] .blora-sidebar-layout__aside::after,
+.blora-sidebar-layout[data-drawer] .blora-sidebar-layout__aside::after,
+.blora-sidebar-layout--drawer .blora-sidebar-layout__aside::after {
+  position: sticky;
+  inset-block-end: 0;
+  margin-block-start: calc(-1 * var(--blora-sidebar-edge-size));
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--blora-sidebar-fade-from) 42%, transparent) 0%,
+    color-mix(in srgb, var(--blora-sidebar-fade-from) 12%, transparent) 55%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(to top, rgb(0 0 0) 0%, rgb(0 0 0 / 45%) 50%, transparent 100%);
+}
+
+.blora-sidebar-layout[data-sticky] .blora-sidebar-layout__aside[data-overflow-start]::before,
+.blora-sidebar-layout[data-drawer] .blora-sidebar-layout__aside[data-overflow-start]::before,
+.blora-sidebar-layout--drawer .blora-sidebar-layout__aside[data-overflow-start]::before,
+.blora-sidebar-layout[data-sticky] .blora-sidebar-layout__aside[data-overflow-end]::after,
+.blora-sidebar-layout[data-drawer] .blora-sidebar-layout__aside[data-overflow-end]::after,
+.blora-sidebar-layout--drawer .blora-sidebar-layout__aside[data-overflow-end]::after {
+  opacity: 1;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .blora-sidebar-layout[data-sticky] .blora-sidebar-layout__aside::before,
+  .blora-sidebar-layout[data-sticky] .blora-sidebar-layout__aside::after,
+  .blora-sidebar-layout[data-drawer] .blora-sidebar-layout__aside::before,
+  .blora-sidebar-layout[data-drawer] .blora-sidebar-layout__aside::after,
+  .blora-sidebar-layout--drawer .blora-sidebar-layout__aside::before,
+  .blora-sidebar-layout--drawer .blora-sidebar-layout__aside::after {
+    backdrop-filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blora-sidebar-layout[data-sticky] .blora-sidebar-layout__aside::before,
+  .blora-sidebar-layout[data-sticky] .blora-sidebar-layout__aside::after,
+  .blora-sidebar-layout[data-drawer] .blora-sidebar-layout__aside::before,
+  .blora-sidebar-layout[data-drawer] .blora-sidebar-layout__aside::after,
+  .blora-sidebar-layout--drawer .blora-sidebar-layout__aside::before,
+  .blora-sidebar-layout--drawer .blora-sidebar-layout__aside::after {
+    transition-duration: 0.01ms;
+  }
+}
+
 /* Shared drawer rules — applied via @container and @media fallback */
 .blora-sidebar-layout--drawer,
 .blora-sidebar-layout[data-drawer] {
@@ -179,6 +306,11 @@ blora-sidebar-layout[compact] {
 
 .blora-sidebar-layout--drawer .blora-sidebar-layout__aside,
 .blora-sidebar-layout[data-drawer] .blora-sidebar-layout__aside {
+  --blora-sidebar-fade-from: var(
+    --blora-sidebar-drawer-aside-background,
+    var(--blora-color-surface-default)
+  );
+
   position: absolute;
   top: 0;
   bottom: 0;

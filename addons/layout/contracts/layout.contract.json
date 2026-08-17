@@ -33,7 +33,8 @@
         "--blora-sidebar-drawer-aside-padding",
         "--blora-sidebar-drawer-aside-background",
         "--blora-sidebar-drawer-content-padding",
-        "--blora-sidebar-toggle-min-height"
+        "--blora-sidebar-toggle-min-height",
+        "--blora-sidebar-edge-size"
       ]
     }
   },

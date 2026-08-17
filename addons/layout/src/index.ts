@@ -134,21 +134,37 @@ function mountSidebarLayout(root: HTMLElement): SidebarLayoutController {
     }
   };
 
+  const EDGE = 1;
+  const syncEdgeFade = () => {
+    const max = Math.max(0, aside.scrollHeight - aside.clientHeight);
+    const canScroll = max > EDGE;
+    aside.toggleAttribute("data-overflow-start", canScroll && aside.scrollTop > EDGE);
+    aside.toggleAttribute("data-overflow-end", canScroll && aside.scrollTop < max - EDGE);
+  };
+
+  const onLayoutChange = () => {
+    syncDrawerMode();
+    syncEdgeFade();
+  };
+
   let ro: ResizeObserver | null = null;
   if (typeof ResizeObserver !== "undefined") {
-    ro = new ResizeObserver(() => syncDrawerMode());
+    ro = new ResizeObserver(onLayoutChange);
     ro.observe(root);
+    ro.observe(aside);
   } else {
-    win.addEventListener("resize", syncDrawerMode);
+    win.addEventListener("resize", onLayoutChange);
   }
 
   toggles.forEach((t) => t.addEventListener("click", onToggle));
   mask.addEventListener("click", onMask);
   aside.addEventListener("click", onAsideClick);
+  aside.addEventListener("scroll", syncEdgeFade, { passive: true });
   doc.addEventListener("keydown", onKey);
   syncDrawerMode();
+  syncEdgeFade();
   /* Hydration often connects while the host is `hidden`; resync after layout. */
-  requestAnimationFrame(() => syncDrawerMode());
+  requestAnimationFrame(onLayoutChange);
 
   return {
     open: () => setOpen(true, false, true),
@@ -157,9 +173,12 @@ function mountSidebarLayout(root: HTMLElement): SidebarLayoutController {
       toggles.forEach((t) => t.removeEventListener("click", onToggle));
       mask!.removeEventListener("click", onMask);
       aside.removeEventListener("click", onAsideClick);
+      aside.removeEventListener("scroll", syncEdgeFade);
       doc.removeEventListener("keydown", onKey);
       ro?.disconnect();
-      win.removeEventListener("resize", syncDrawerMode);
+      win.removeEventListener("resize", onLayoutChange);
+      aside.removeAttribute("data-overflow-start");
+      aside.removeAttribute("data-overflow-end");
       root.classList.remove("is-open", "blora-sidebar-layout--drawer");
       root.removeAttribute("data-open");
       root.removeAttribute("data-drawer");

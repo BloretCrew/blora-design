@@ -65,6 +65,14 @@
 - **改变原因**：bug 修复（页面导航被收进内容卡）
 - **审核状态**：pending
 
+### Sidebar layout - 滚动裁切是渐变模糊边
+
+- **组件**：sidebar-layout
+- **1.x 表现**：sticky / 抽屉侧栏滚出视口时，条目被硬裁切。
+- **2.0 表现**：可滚动 aside 在顶底加渐变模糊（越靠边越糊），只在该方向还有溢出时出现。
+- **改变原因**：可用性（裁切边缘更柔）
+- **审核状态**：pending
+
 ### Sidebar layout - seamless 抽屉开关是左下 FAB
 
 - **组件**：sidebar-layout
