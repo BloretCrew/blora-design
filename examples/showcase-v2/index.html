@@ -204,11 +204,6 @@
         font-size: var(--blora-text-xl);
       }
 
-      .showcase-section__description {
-        margin: calc(var(--blora-space-3) * -1) 0 var(--blora-space-5);
-        color: var(--blora-color-text-muted);
-      }
-
       .showcase-example {
         overflow: clip;
         background: var(--blora-color-surface-default);
@@ -1771,13 +1766,6 @@
             });
             section.append(
               createElement("h2", { id: titleId }, demo.title),
-              createElement(
-                "p",
-                { class: "showcase-section__description" },
-                demos.length > 1
-                  ? "下方 Preview 与 HTML 来自该变体的正式组件声明。"
-                  : "下方 Preview 与 HTML 均来自同一份正式组件声明。",
-              ),
               createExample(name, demo.id, linesForDemo(template, demo, index === 0)),
             );
             article.append(section);
