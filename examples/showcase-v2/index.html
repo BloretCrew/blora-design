@@ -217,6 +217,10 @@
         box-shadow: var(--blora-shadow-1);
       }
 
+      .showcase-example:has(.blora-palette-picker.is-open) {
+        overflow: visible;
+      }
+
       .showcase-preview,
       .showcase-code-panel {
         padding: clamp(var(--blora-space-5), 4vw, var(--blora-space-8));
@@ -227,7 +231,6 @@
         display: grid;
         min-height: 18rem;
         place-items: start center;
-        transition: min-height var(--blora-duration-base) var(--blora-easing-standard);
       }
 
       .showcase-preview > * {
@@ -1765,13 +1768,13 @@
         const componentPanels = [...document.querySelectorAll("[data-component-panel]")];
         const componentNames = new Set(componentPanels.map((panel) => panel.dataset.componentPanel));
 
-        function isFixedOverlay(element, mount) {
-          let current = element;
-          while (current && current !== mount) {
-            if (getComputedStyle(current).position === "fixed") return true;
-            current = current.parentElement;
-          }
-          return false;
+        function isViewportOverlay(element) {
+          const tag = element.localName;
+          if (tag === "blora-dialog" || tag === "blora-drawer") return true;
+          const style = getComputedStyle(element);
+          if (style.position !== "fixed") return false;
+          const rect = element.getBoundingClientRect();
+          return rect.width >= innerWidth * 0.85 && rect.height >= innerHeight * 0.85;
         }
 
         function bindPreviewResize(mount) {
@@ -1781,7 +1784,7 @@
             for (const element of mount.querySelectorAll("*")) {
               const style = getComputedStyle(element);
               if (style.display === "none" || style.visibility === "hidden") continue;
-              if (isFixedOverlay(element, mount)) continue;
+              if (isViewportOverlay(element)) continue;
               requiredBottom = Math.max(requiredBottom, element.getBoundingClientRect().bottom);
             }
             const blockPadding = parseFloat(getComputedStyle(mount).paddingBottom) || 0;
@@ -1796,6 +1799,7 @@
           });
           mount.addEventListener("click", schedulePreviewResize);
           mount.addEventListener("input", schedulePreviewResize);
+          mount.addEventListener("transitionend", schedulePreviewResize);
           schedulePreviewResize();
         }
 

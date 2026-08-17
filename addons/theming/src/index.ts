@@ -321,10 +321,21 @@ function mountPalettePicker(root: HTMLElement): PalettePickerController {
     }
   };
 
+  let placeClearTimer = 0;
+  const finishClosePlace = () => {
+    window.clearTimeout(placeClearTimer);
+    placeClearTimer = 0;
+    if (!root.classList.contains("is-open")) clearMenuPlace();
+  };
+
   const close = (restore = false) => {
     root.classList.remove("is-open");
     trigger.setAttribute("aria-expanded", "false");
-    clearMenuPlace();
+    /* Keep position:fixed through the fade-out. Reverting to absolute while
+       the menu is still visible makes clipped parents jump in height. */
+    menu.addEventListener("transitionend", finishClosePlace, { once: true });
+    window.clearTimeout(placeClearTimer);
+    placeClearTimer = window.setTimeout(finishClosePlace, 320);
     if (restore) trigger.focus();
   };
 
@@ -385,10 +396,12 @@ function mountPalettePicker(root: HTMLElement): PalettePickerController {
   return {
     close: () => close(true),
     destroy() {
+      window.clearTimeout(placeClearTimer);
       trigger.removeEventListener("click", onTrigger);
       trigger.removeEventListener("keydown", onTriggerKey);
       menu!.removeEventListener("click", onMenuClick);
       menu!.removeEventListener("keydown", onMenuKey);
+      menu!.removeEventListener("transitionend", finishClosePlace);
       doc.removeEventListener("click", onDoc);
       doc.documentElement.removeEventListener("blora-theme-change", onTheme);
       window.removeEventListener("resize", onReposition);
