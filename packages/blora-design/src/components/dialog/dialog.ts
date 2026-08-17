@@ -123,6 +123,8 @@ export class BloraDialog extends BloraElement {
   private _footer: HTMLElement | null = null;
   private _footerSlot: HTMLSlotElement | null = null;
   private _backdropInTopLayer = false;
+  private relocating = false;
+  private home: { parent: Node; next: ChildNode | null } | null = null;
 
   protected bindEvents(): void {
     if (!this._closeButton) return;
@@ -190,6 +192,7 @@ export class BloraDialog extends BloraElement {
     if (!beforeOpen) return;
 
     this.visible = true;
+    this.portalToBody();
     this.setAttribute("open", "");
     if (this._backdrop && typeof this._backdrop.showPopover === "function") {
       this._backdrop.showPopover();
@@ -257,12 +260,38 @@ export class BloraDialog extends BloraElement {
       this.removeAttribute("open");
       this.removeAttribute("data-closing");
       this.closeAnimationTimer = null;
+      this.restoreHome();
 
       this.emit<BloraDialogCloseDetail>("blora-close", {
         source: "api",
         reason,
       });
     }, animationDuration);
+  }
+
+  disconnectedCallback(): void {
+    if (this.relocating) return;
+    super.disconnectedCallback();
+  }
+
+  private portalToBody(): void {
+    const doc = this.ownerDocument;
+    if (!this.parentNode || this.parentElement === doc.body) return;
+    this.home = { parent: this.parentNode, next: this.nextSibling };
+    this.relocating = true;
+    doc.body.append(this);
+    this.relocating = false;
+  }
+
+  private restoreHome(): void {
+    if (!this.home) return;
+    const { parent, next } = this.home;
+    this.home = null;
+    if (!parent.isConnected) return;
+    this.relocating = true;
+    if (next && next.parentNode === parent) parent.insertBefore(this, next);
+    else parent.appendChild(this);
+    this.relocating = false;
   }
 
   protected onDisconnect(): void {
@@ -276,6 +305,7 @@ export class BloraDialog extends BloraElement {
       this._backdrop.hidePopover();
       this._backdropInTopLayer = false;
     }
+    this.restoreHome();
   }
 }
 

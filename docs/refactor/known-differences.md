@@ -25,6 +25,14 @@
 - **改变原因**：可用性（加载中仍需知道按钮在做什么）
 - **审核状态**：approved
 
+### Dialog - 打开时挂到 body，遮罩盖满视口
+
+- **组件**：dialog
+- **1.x 表现**：模态挂到 portal / body，遮罩相对视口。
+- **2.0 表现**：`show()` 把 `blora-dialog` 移到 `document.body`，关闭后还原。避免侧栏 `container-type` 把 `position: fixed` 困在目录盒里，滚动到顶时 navbar 从遮罩上方露出。
+- **改变原因**：bug 修复
+- **审核状态**：pending
+
 ### Tooltip - 四向放置
 
 - **组件**：tooltip
