@@ -53,6 +53,7 @@ blora-sidebar-layout[compact] {
   border-radius: 0;
   overflow: visible;
   background: transparent;
+  isolation: auto;
 }
 
 /* Page shell stays a page. Do not wrap it in the demo-card chrome. */
@@ -61,6 +62,7 @@ blora-sidebar-layout[compact] {
   border: 0;
   border-radius: 0;
   background: transparent;
+  isolation: auto;
 }
 
 .blora-sidebar-layout__aside {

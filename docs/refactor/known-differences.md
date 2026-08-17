@@ -53,7 +53,7 @@
 
 - **组件**：sidebar-layout
 - **1.x 表现**：`max-width: 900px` 时 aside / mask 为 `position: fixed`，从视口左侧滑出。
-- **2.0 表现**：`variant="default"` 抽屉仍叠在卡片内部（演示卡 / Storybook）。`variant="seamless"` 页面壳不再套一层圆角卡片，抽屉回到视口 `fixed`。
+- **2.0 表现**：`variant="default"` 抽屉仍叠在卡片内部（演示卡 / Storybook）。`variant="seamless"` 页面壳不再套一层圆角卡片，抽屉回到视口 `fixed`，并取消 `isolation`，使侧栏叠在 navbar 之上。
 - **改变原因**：bug 修复（页面导航被收进内容卡）
 - **审核状态**：pending
 
