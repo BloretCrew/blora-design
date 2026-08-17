@@ -103,7 +103,7 @@ Blora Design 将视觉令牌分为三个基础层：**背景与表面、内容�
 | UI 无衬线 | `--blora-font-sans` | 正文、按钮、表单、UI 文字 |
 | 等宽 | `--blora-font-mono` | 代码、数据、技术标签 |
 
-> 展示与 UI 字体统一采用 `Avenir / Avenir Next`，依次降级至 `Segoe UI / Noto Sans SC / sans-serif`；代码采用 `JetBrains Mono` 等宽栈。
+> 展示与 UI 字体统一采用 `system-ui` 系统栈（Apple 设备为 San Francisco / 苹方，Windows 为 Segoe UI / 微软雅黑，Android 为 Roboto，Linux 为 Noto Sans SC）；代码采用 `JetBrains Mono` 等宽栈。
 
 ### 3.2 字阶 · Type Scale
 

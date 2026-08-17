@@ -4,11 +4,11 @@
     "font": {
       "heading": {
         "$type": "fontFamily",
-        "$value": "Avenir, \"Avenir Next\", \"Segoe UI\", \"Noto Sans SC\", sans-serif"
+        "$value": "system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Noto Sans SC\", \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
       },
       "sans": {
         "$type": "fontFamily",
-        "$value": "Avenir, \"Avenir Next\", \"Segoe UI\", \"Noto Sans SC\", sans-serif"
+        "$value": "system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Noto Sans SC\", \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
       },
       "mono": {
         "$type": "fontFamily",

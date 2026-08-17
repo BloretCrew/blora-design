@@ -57,6 +57,14 @@
 - **改变原因**：bug 修复
 - **审核状态**：pending
 
+### Typography - 放弃 Avenir，改平台系统字体栈
+
+- **组件**：tokens / typography
+- **1.x 表现**：`--blora-font-sans / heading` 栈首位是 `Avenir / Avenir Next`，Apple 设备渲染 Avenir，其他平台各自回退。
+- **2.0 表现**：改为 `system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif`。Apple 设备用 San Francisco / 苹方，Windows 用 Segoe UI / 微软雅黑，Android 用 Roboto，Linux 用 Noto Sans SC。
+- **改变原因**：其他（统一平台原生字体观感）
+- **审核状态**：pending
+
 ### Theming - 2.0 不再提供 Cinnabar / Ocean
 
 - **组件**：theming
