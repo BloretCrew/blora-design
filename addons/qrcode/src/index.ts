@@ -1,7 +1,7 @@
 /**
  * Blora Design 2.0 - QR Code add-on.
  * Spec §9: Add-on package, not bundled into core.
- * Visual baseline: legacy/v1/blora.js lines 5977-6090.
+ * Visual baseline: archived 1.x blora.js lines 5977-6090.
  * @packageDocumentation
  */
 

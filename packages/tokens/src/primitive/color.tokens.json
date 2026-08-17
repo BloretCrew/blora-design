@@ -1,5 +1,5 @@
 {
-  "$description": "Primitive color values extracted from Blora Design 1.x coral palette (legacy/v1/blora.css :root). These are raw materials - components must not use them directly.",
+  "$description": "Primitive color values extracted from Blora Design 1.x coral palette (archived blora.css :root). These are raw materials - components must not use them directly.",
   "color": {
     "coral": {
       "background": { "$type": "color", "$value": "#FAF7F8" },

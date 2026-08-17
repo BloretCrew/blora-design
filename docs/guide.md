@@ -2,7 +2,7 @@
 
 > **面向 2.0（当前 `2.0.0-alpha`）**。推荐写法是：简单组件使用原生 HTML + CSS，结构敏感的复合控件只使用 **Composite Custom Element**；`createXxxController` 仅用于尚未迁为 CE 的 Table / Form 等 headless 能力。不是 1.x 的全局 `Blora.init()` / `Blora.toast`（2.0 已改为 `message`）单体 API。
 > 设计令牌见 [`standards.md`](./standards.md)。组件契约见 `packages/blora-design/contracts/*.contract.json`。交互示例见 **Storybook**。  
-> 1.x 冻结参考：`legacy/showcase-v1.html`、`legacy/v1/`（仅迁移对照，**不是** 2.0 推荐入口）。
+> 1.x 冻结参考：已归档到仓库外 `D:\MyFiles\Documents\projects\blora-design\legacy\`（`showcase-v1.html`、`v1/`，仅迁移对照，**不是** 2.0 推荐入口）。
 
 ---
 
@@ -430,7 +430,7 @@ Markdown 为零依赖子集（标题、列表、代码块等）；**不要**把�
 ### 5.2 没有 1.x 运行时兼容层
 
 2.0 **不提供** `compat/v1`。请直接写 2.0 class、token 和 Composite CE。  
-**冻结副本** `legacy/v1/`、`legacy/showcase-v1.html` 只作视觉与行为基线，不是可调用 API。
+**冻结副本**（归档于仓库外 `D:\MyFiles\Documents\projects\blora-design\legacy\`）只作视觉与行为基线，不是可调用 API。
 
 ### 5.3 从 Bootstrap 等迁移
 
@@ -517,7 +517,7 @@ onBeforeUnmount(() => ctrl?.destroy());
 - [ ] 表格行选使用 **内置** `data-blora-selectable`。  
 - [ ] 动态插入的 checkbox 使用完整 `label.blora-checkbox` 结构。  
 - [ ] 颜色与间距走 token；暗色下可读。  
-- [ ] 对照 Storybook 与（如需要）`legacy/showcase-v1.html` 视觉基线。  
+- [ ] 对照 Storybook 与（如需要）归档基线的 `showcase-v1.html`（`D:\MyFiles\Documents\projects\blora-design\legacy\`）。  
 - [ ] 公开 API 变更已看过对应 `*.contract.json`。
 
 ---
@@ -530,6 +530,6 @@ onBeforeUnmount(() => ctrl?.destroy());
 | [`docs/refactor/component-matrix.md`](./refactor/component-matrix.md) | 组件迁移矩阵 |
 | [`docs/refactor/css-only-resolution.md`](./refactor/css-only-resolution.md) | 有意 CSS-only vs controller |
 | [`docs/ai/migration-rules.md`](./ai/migration-rules.md) | 1.x class 映射（迁移） |
-| `legacy/` | 1.x 冻结源与视觉基线 |
+| `D:\MyFiles\Documents\projects\blora-design\legacy\` | 1.x 冻结源与视觉基线（仓库外归档） |
 
-历史 **1.x 详表**（`Blora.*` 单体 API 罗列）已不再作为 2.0 推荐参考；若需对照旧行为，请看 `legacy/v1/` 与 refactor 清单，而不是把旧 `guide` 段落当现行 API。
+历史 **1.x 详表**（`Blora.*` 单体 API 罗列）已不再作为 2.0 推荐参考；若需对照旧行为，请看归档的 `legacy/v1/` 与 refactor 清单，而不是把旧 `guide` 段落当现行 API。

@@ -9,7 +9,7 @@
 **Status:** Phase 9 complete. **Phase 10 (pre-release) in progress** — Alpha → Beta → RC → Stable.  
 **Master remaining-work checklist:** [`docs/refactor/remaining-work.md`](./docs/refactor/remaining-work.md)
 
-Interactive demos: **[showcase](https://bloretcrew.github.io/blora-design/)** · **Storybook** (`pnpm storybook`). Frozen 1.x reference: `legacy/showcase-v1.html` (not the 2.0 recommended entry).
+Interactive demos: **[showcase](https://bloretcrew.github.io/blora-design/)** · **Storybook** (`pnpm storybook`). Frozen 1.x reference is archived at `D:/MyFiles/Documents/projects/blora-design/legacy/` (not the 2.0 recommended entry).
 
 ---
 
@@ -66,7 +66,7 @@ message.success("已保存");
 ```
 
 > **Not recommended for new 2.0 apps:** global `Blora.init()`, `blora.js` UMD, or `blora-btn blora-btn--primary`.  
-> Those belong to frozen **1.x** (`legacy/v1/`). 2.0 has no runtime compatibility layer. See [migration](./docs/migration/v1-to-v2.md).
+> Those belong to frozen **1.x** (archived at `D:/MyFiles/Documents/projects/blora-design/legacy/`). 2.0 has no runtime compatibility layer. See [migration](./docs/migration/v1-to-v2.md).
 
 Optional add-ons:
 
@@ -91,7 +91,7 @@ Composite CE is the default for complex structure (ADR-015, superseding ADR-013)
 
 ## Visual baseline
 
-2.0 visuals must remain traceable to the locked 1.x showcase baseline (`legacy/`, `docs/refactor/visual-baseline.json`).  
+2.0 visuals must remain traceable to the locked 1.x showcase baseline (archived at `D:/MyFiles/Documents/projects/blora-design/legacy/`, metadata in `docs/refactor/visual-baseline.json`).  
 Use tokens (`--blora-*`); do not invent a second design system.
 
 Human usage guide: [`docs/guide.md`](./docs/guide.md). Tokens: [`docs/standards.md`](./docs/standards.md).
@@ -119,9 +119,12 @@ blora-design-2/
 ├── packages/blora-design/   # core ESM + CSS + contracts + Storybook
 ├── packages/tokens/        # token sources / generators
 ├── addons/                 # markdown, thread, qrcode, effects, layout, theming
-├── legacy/                 # frozen 1.x sources + visual baselines (do not delete)
+├── examples/showcase-v2/   # 2.0 component showcase (+ assets/)
 ├── docs/                   # guide, standards, refactor trackers, migration
 └── pnpm-workspace.yaml
+
+# Frozen 1.x sources + visual baselines were archived outside this repository:
+# D:/MyFiles/Documents/projects/blora-design/legacy/
 ```
 
 ```bash

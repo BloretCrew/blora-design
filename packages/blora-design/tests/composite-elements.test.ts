@@ -912,16 +912,17 @@ describe("Composite Custom Elements", () => {
     expect(navbar.querySelectorAll(".blora-navbar__actions .blora-button")).toHaveLength(1);
     expect(navbar.querySelector(".blora-navbar__cta")?.textContent).toBe("Login");
     expect(navbar.querySelector(".blora-navbar__tools")?.textContent).toBe("Theme");
-    const legacyBrandMark = readFileSync(
-      resolve(import.meta.dirname, "../../../legacy/v1/bloret-mini.svg"),
+    const navbarSource = readFileSync(
+      resolve(import.meta.dirname, "..", "src", "components", "navbar", "navbar.ts"),
       "utf8",
     );
-    const legacyBrandPaths = [...legacyBrandMark.matchAll(/<path d="([^"]+)"/g)].map(
+    const brandPaths = [...navbarSource.matchAll(/"((?:M|L|Q)[0-9][^"]*)"/g)].map(
       ([, pathData]) => pathData,
     );
+    expect(brandPaths.length).toBe(3);
     expect(
       [...navbar.querySelectorAll(".blora-brand-mark path")].map((path) => path.getAttribute("d")),
-    ).toEqual(legacyBrandPaths);
+    ).toEqual(brandPaths);
     expect(
       [...navbar.querySelectorAll(".blora-brand-mark path")].map((path) =>
         path.getAttribute("fill-rule"),

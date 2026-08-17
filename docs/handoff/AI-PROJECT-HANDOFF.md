@@ -11,19 +11,19 @@
 
 按顺序打开，**不要跳过 1–4**：
 
-| 顺序 | 路径                                              | 读什么                                          |
-| ---- | ------------------------------------------------- | ----------------------------------------------- |
-| 1    | **本文件** `docs/handoff/AI-PROJECT-HANDOFF.md`   | 全貌 + 当前任务 + 禁忌                          |
-| 2    | `AGENTS.md`（或根目录 `Agents.md`）               | 贡献/视觉基线铁律                               |
-| 3    | `docs/refactor/remaining-work.md`                 | **进度唯一源**（主跟踪）                        |
-| 4    | `docs/refactor/status.md`                         | 阶段摘要                                        |
-| 5    | `docs/refactor/decisions.md`                      | 已有 ADR（含 **ADR-013**；见下文「方向变更」）  |
-| 6    | `docs/guide.md`                                   | 2.0 **推荐用法**（人类开发者）                  |
-| 7    | `docs/refactor/component-matrix.md`               | 组件迁移矩阵                                    |
-| 8    | `packages/blora-design/contracts/*.contract.json` | 改组件前的 API 合同                             |
-| 9    | `packages/blora-design/stories/*.stories.ts`      | **复合控件的真源 DOM**（比 showcase 更可信）    |
-| 10   | `examples/showcase-v2/index.html`                 | 76/76 核心组件目录（单视图、同源 Preview/HTML） |
-| 11   | `legacy/showcase-v1.html` + `legacy/v1/`          | **冻结** 1.x 视觉/行为母版，**禁止改**          |
+| 顺序 | 路径                                                            | 读什么                                                 |
+| ---- | --------------------------------------------------------------- | ------------------------------------------------------ |
+| 1    | **本文件** `docs/handoff/AI-PROJECT-HANDOFF.md`                 | 全貌 + 当前任务 + 禁忌                                 |
+| 2    | `AGENTS.md`（或根目录 `Agents.md`）                             | 贡献/视觉基线铁律                                      |
+| 3    | `docs/refactor/remaining-work.md`                               | **进度唯一源**（主跟踪）                               |
+| 4    | `docs/refactor/status.md`                                       | 阶段摘要                                               |
+| 5    | `docs/refactor/decisions.md`                                    | 已有 ADR（含 **ADR-013**；见下文「方向变更」）         |
+| 6    | `docs/guide.md`                                                 | 2.0 **推荐用法**（人类开发者）                         |
+| 7    | `docs/refactor/component-matrix.md`                             | 组件迁移矩阵                                           |
+| 8    | `packages/blora-design/contracts/*.contract.json`               | 改组件前的 API 合同                                    |
+| 9    | `packages/blora-design/stories/*.stories.ts`                    | **复合控件的真源 DOM**（比 showcase 更可信）           |
+| 10   | `examples/showcase-v2/index.html`                               | 76/76 核心组件目录（单视图、同源 Preview/HTML）        |
+| 11   | 仓库外归档 `D:\MyFiles\Documents\projects\blora-design\legacy\` | **冻结** 1.x 视觉/行为母版，**禁止改**（已移出本仓库） |
 
 **规格大部头（只作对照，不是现行实现真理）：**
 
@@ -139,9 +139,9 @@
 ### 3.1 视觉母版
 
 - **基准 commit**：`a148715d06ee9551cbee262ffae6ad377b564df6`
-- **冻结展示页**：`legacy/showcase-v1.html`
-- **冻结 1.x 源**：`legacy/v1/`（`blora.css` / `blora.js` / `blora.d.ts` / locales / svg）
-- **基线截图**：`legacy/visual-baseline-light.png`、`legacy/visual-baseline-dark.png`
+- **冻结展示页**：仓库外归档 `D:\MyFiles\Documents\projects\blora-design\legacy\showcase-v1.html`
+- **冻结 1.x 源**：`D:\MyFiles\Documents\projects\blora-design\legacy\v1\`（`blora.css` / `blora.js` / `blora.d.ts` / locales / svg）
+- **基线截图**：`D:\MyFiles\Documents\projects\blora-design\legacy\visual-baseline-light.png`、`visual-baseline-dark.png`（仓库内展示页副本在 `examples/showcase-v2/assets/`）
 - **元数据**：`docs/refactor/visual-baseline.json`
 - **差异登记**：`docs/refactor/known-differences.md`（仅允许登记过的 WCAG/RTL/bug 微调）
 
@@ -155,7 +155,7 @@
 6. 组件 CSS **写死**色/间距/圆角/阴影/时长/z-index（必须用已登记 token）。
 7. 未更新 **contract + API snapshot** 就加公共属性/事件/class/part/token。
 8. 直接改 **生成物**（如 tokens `generated/`、部分 `dist/` 产物应以 build 为准）。
-9. **改 `legacy/` 冻结内容**（除明确的基线流程外视为违规）。
+9. **改归档 `legacy/` 冻结内容**（仓库外 `D:\MyFiles\Documents\projects\blora-design\legacy\`，除明确的基线流程外视为违规）。
 
 ### 3.3 图标约定
 
@@ -205,20 +205,20 @@ Blora 当前大量 **开放 BEM 内部结构给业务手写** → 演示页/AI �
 
 ### 5.1 目录
 
-| 路径                                  | 作用                               | 备注                                          |
-| ------------------------------------- | ---------------------------------- | --------------------------------------------- |
-| `packages/`                           | 可发布包：`blora-design`、`tokens` | 核心                                          |
-| `addons/`                             | 六个 add-on 包源码                 | thread/markdown/qrcode/effects/layout/theming |
-| `docs/`                               | 人类与 AI 文档                     | refactor/guide/migration/ai/handoff           |
-| `examples/`                           | 可运行示例                         | `basic`、`showcase-v2`                        |
-| `legacy/`                             | **冻结** 1.x 基线                  | **勿改业务逻辑/样式**                         |
-| `scripts/`                            | 根级脚本                           | pack-test-addons、publint-addons              |
-| `.github/`                            | CI workflows                       |                                               |
-| `.changeset/`                         | Changesets 发版                    |                                               |
-| `.agents/`                            | Agent 技能等                       | 如 verify skill                               |
-| `.trashes/`                           | 迁移过程废弃物/备份                | **勿当现行 API**                              |
-| `playwright-report/`、`test-results/` | 本地测试产物                       | 可 gitignore 类                               |
-| `node_modules/`                       | 依赖                               | 生成                                          |
+| 路径                                                              | 作用                               | 备注                                          |
+| ----------------------------------------------------------------- | ---------------------------------- | --------------------------------------------- |
+| `packages/`                                                       | 可发布包：`blora-design`、`tokens` | 核心                                          |
+| `addons/`                                                         | 六个 add-on 包源码                 | thread/markdown/qrcode/effects/layout/theming |
+| `docs/`                                                           | 人类与 AI 文档                     | refactor/guide/migration/ai/handoff           |
+| `examples/`                                                       | 可运行示例                         | `basic`、`showcase-v2`                        |
+| 仓库外 `legacy/`（`D:\MyFiles\Documents\projects\blora-design\`） | **冻结** 1.x 基线                  | **勿改业务逻辑/样式**                         |
+| `scripts/`                                                        | 根级脚本                           | pack-test-addons、publint-addons              |
+| `.github/`                                                        | CI workflows                       |                                               |
+| `.changeset/`                                                     | Changesets 发版                    |                                               |
+| `.agents/`                                                        | Agent 技能等                       | 如 verify skill                               |
+| `.trashes/`                                                       | 迁移过程废弃物/备份                | **勿当现行 API**                              |
+| `playwright-report/`、`test-results/`                             | 本地测试产物                       | 可 gitignore 类                               |
+| `node_modules/`                                                   | 依赖                               | 生成                                          |
 
 ### 5.2 根文件
 
@@ -348,7 +348,7 @@ src/components/range/
 | `stories/toast.stories.ts`                          | **已删除**                                      |
 | `contracts/toast.contract.json`                     | **已删除**                                      |
 | 产品名 Toast                                        | **废弃**；用 Message + Notification             |
-| 根级历史 `blora.js` 业务堆叠                        | **禁止**；1.x 只在 `legacy/v1`                  |
+| 根级历史 `blora.js` 业务堆叠                        | **禁止**；1.x 只在归档 `legacy/v1`（仓库外）    |
 | ADR-013「永远 headless 默认」                       | **已由 ADR-015 取代**；手写树为 advanced/compat |
 
 ### 7.5 关键 scripts（`packages/blora-design/scripts/`）
@@ -490,17 +490,19 @@ Story 按 daisyUI 式目录归类（`packages/blora-design/taxonomy.json`）：�
 
 ---
 
-## 12. `legacy/` — 冻结基线（只读）
+## 12. `legacy/` — 冻结基线（只读，已移出本仓库）
 
-| 路径                           | 作用                                      |
-| ------------------------------ | ----------------------------------------- |
-| `legacy/showcase-v1.html`      | 1.x 完整展示页（章节大纲参考 + 视觉母版） |
-| `legacy/v1/blora.css`          | 1.x 样式                                  |
-| `legacy/v1/blora.js`           | 1.x 行为                                  |
-| `legacy/v1/blora.d.ts`         | 1.x 类型                                  |
-| `legacy/v1/locales/`           | 1.x i18n                                  |
-| `legacy/v1/bloret-mini.svg`    | 品牌                                      |
-| `legacy/visual-baseline-*.png` | 基线截图                                  |
+归档位置：`D:\MyFiles\Documents\projects\blora-design\legacy\`
+
+| 路径                    | 作用                                                   |
+| ----------------------- | ------------------------------------------------------ |
+| `showcase-v1.html`      | 1.x 完整展示页（章节大纲参考 + 视觉母版）              |
+| `v1/blora.css`          | 1.x 样式                                               |
+| `v1/blora.js`           | 1.x 行为                                               |
+| `v1/blora.d.ts`         | 1.x 类型                                               |
+| `v1/locales/`           | 1.x i18n                                               |
+| `v1/bloret-mini.svg`    | 品牌                                                   |
+| `visual-baseline-*.png` | 基线截图（仓库内副本：`examples/showcase-v2/assets/`） |
 
 **图标（v1 文案）：** 线性、2px、圆端；建议 SVG 内联；造型对齐 Lucide。
 
@@ -632,14 +634,14 @@ Story 按 daisyUI 式目录归类（`packages/blora-design/taxonomy.json`）：�
 
 ## 16. Storybook vs Showcase vs Legacy（给 AI 的导航）
 
-| 场景                             | 去哪                                           |
-| -------------------------------- | ---------------------------------------------- |
-| 「这个控件正确 DOM 长什么样？」  | `packages/blora-design/stories/<x>.stories.ts` |
-| 「公共 API 允不允许？」          | `contracts/<x>.contract.json`                  |
-| 「全站拼起来什么样？」           | `examples/showcase-v2/`（须 full build）       |
-| 「1.x 视觉母版？」               | `legacy/showcase-v1.html` 渲染结果             |
-| 「进度做到哪？」                 | `docs/refactor/remaining-work.md`              |
-| 「为什么不能改成 Material 风？」 | `AGENTS.md` 视觉基线                           |
+| 场景                             | 去哪                                                                                     |
+| -------------------------------- | ---------------------------------------------------------------------------------------- |
+| 「这个控件正确 DOM 长什么样？」  | `packages/blora-design/stories/<x>.stories.ts`                                           |
+| 「公共 API 允不允许？」          | `contracts/<x>.contract.json`                                                            |
+| 「全站拼起来什么样？」           | `examples/showcase-v2/`（须 full build）                                                 |
+| 「1.x 视觉母版？」               | 归档 `showcase-v1.html` 渲染结果（`D:\MyFiles\Documents\projects\blora-design\legacy\`） |
+| 「进度做到哪？」                 | `docs/refactor/remaining-work.md`                                                        |
+| 「为什么不能改成 Material 风？」 | `AGENTS.md` 视觉基线                                                                     |
 
 **优先级冲突时：**
 视觉基线 > contract > story 真源 DOM > guide 推荐 > showcase 现状 > 规格理想 FA 表 > framework.md 1.x 正文。
@@ -687,7 +689,7 @@ Story 按 daisyUI 式目录归类（`packages/blora-design/taxonomy.json`）：�
 
 - 大刷视觉主题色「更现代」。
 - 重写整库 React 封装当唯一解。
-- 删除 `legacy/`。
+- 删除仓库外归档 `legacy/`（`D:\MyFiles\Documents\projects\blora-design\`）。
 - 只改 showcase 宣称「根治完成」。
 
 ---
@@ -741,7 +743,7 @@ blora-design-2/
 ├── examples/
 │   ├── basic/
 │   └── showcase-v2/          # 全景演示（曾 DOM 分叉）
-├── legacy/                   # 冻结 1.x 基线
+├── examples/showcase-v2/      # 2.0 展示页 + assets/（基线截图副本）
 ├── docs/
 │   ├── guide.md
 │   ├── refactor/             # remaining-work = 进度源

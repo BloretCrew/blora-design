@@ -2,8 +2,8 @@
  * Blora Design 2.0 - Thread and Post add-on.
  * Spec §9: Add-on package, not bundled into core.
  * Spec §17.5: Controller must have destroy().
- * Visual baseline: legacy/v1/blora.js initThread (≈5684-5752)
- *                  + legacy/showcase-v1.html 论坛跟帖 demo.
+ * Visual baseline: archived 1.x blora.js initThread (≈5684-5752)
+ *                  + archived showcase-v1.html 论坛跟帖 demo.
  * @packageDocumentation
  */
 

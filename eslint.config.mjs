@@ -6,7 +6,6 @@ import globals from "globals";
 export default tseslint.config(
   {
     ignores: [
-      "legacy/**",
       "dist/**",
       "node_modules/**",
       ".storybook-static/**",

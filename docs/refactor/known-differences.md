@@ -1,6 +1,6 @@
 # 1.x 与 2.x 已知差异
 
-> 记录 Blora Design 2.0 与 1.x 展示页（`legacy/showcase-v1.html`）之间**有意**或**已审核**的可见视觉/行为差异。  
+> 记录 Blora Design 2.0 与 1.x 展示页（已归档：`D:\MyFiles\Documents\projects\blora-design\legacy\showcase-v1.html`）之间**有意**或**已审核**的可见视觉/行为差异。  
 > 格式：组件、1.x、2.0、原因、审核状态。
 
 ## 格式

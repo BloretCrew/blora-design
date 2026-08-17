@@ -40,7 +40,7 @@ import { setButtonLoading, createTableController, message } from "@bloret-crew/b
 ```
 
 - Prefer **native HTML + CSS** for primitives and **Composite Custom Elements** for structure-sensitive controls. Headless controllers remain advanced APIs.
-- Do **not** treat 1.x global `Blora.*` as the 2.0 API. There is no runtime 1.x compatibility layer — write 2.0 markup and tokens. Visual baseline: `legacy/v1/`.
+- Do **not** treat 1.x global `Blora.*` as the 2.0 API. There is no runtime 1.x compatibility layer — write 2.0 markup and tokens. Visual baseline is archived outside this repo (`D:/MyFiles/Documents/projects/blora-design/legacy/`).
 - Human guide (Chinese): [`docs/guide.md`](../../docs/guide.md)
 
 ## License

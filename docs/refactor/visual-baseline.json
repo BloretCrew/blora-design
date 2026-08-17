@@ -3,27 +3,27 @@
   "description": "Blora Design 2.0 唯一视觉基线元数据。所有 2.0 组件的视觉必须可追溯到此基线。",
   "baselineCommit": "a148715d06ee9551cbee262ffae6ad377b564df6",
   "baselineDate": "2025-07-29",
-  "showcaseFile": "legacy/showcase-v1.html",
+  "showcaseFile": "D:/MyFiles/Documents/projects/blora-design/legacy/showcase-v1.html",
   "v1Sources": {
-    "css": "legacy/v1/blora.css",
-    "js": "legacy/v1/blora.js",
-    "dts": "legacy/v1/blora.d.ts",
-    "locales": "legacy/v1/locales/"
+    "css": "D:/MyFiles/Documents/projects/blora-design/legacy/v1/blora.css",
+    "js": "D:/MyFiles/Documents/projects/blora-design/legacy/v1/blora.js",
+    "dts": "D:/MyFiles/Documents/projects/blora-design/legacy/v1/blora.d.ts",
+    "locales": "D:/MyFiles/Documents/projects/blora-design/legacy/v1/locales/"
   },
   "screenshots": [
     {
       "name": "showcase-light-fullpage",
-      "path": "legacy/visual-baseline-light.png",
+      "path": "D:/MyFiles/Documents/projects/blora-design/legacy/visual-baseline-light.png",
       "mode": "light",
       "viewport": { "width": 1440, "height": 900 },
-      "description": "展示页浅色模式首屏截图"
+      "description": "展示页浅色模式首屏截图；仓库内副本 examples/showcase-v2/assets/visual-baseline-light.png"
     },
     {
       "name": "showcase-dark-fullpage",
-      "path": "legacy/visual-baseline-dark.png",
+      "path": "D:/MyFiles/Documents/projects/blora-design/legacy/visual-baseline-dark.png",
       "mode": "dark",
       "viewport": { "width": 1440, "height": 900 },
-      "description": "展示页深色模式首屏截图"
+      "description": "展示页深色模式首屏截图；仓库内副本 examples/showcase-v2/assets/visual-baseline-dark.png"
     }
   ],
   "browser": {

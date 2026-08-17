@@ -5,7 +5,7 @@
 > **禁止**把那些段落当作 2.0 推荐 API 或复制进新项目。  
 > **2.0 唯一推荐入口**：[`guide.md`](./guide.md)、[`migration/v1-to-v2.md`](./migration/v1-to-v2.md)、`packages/blora-design/contracts/*.contract.json`、Storybook、包 `src/index.ts` 导出。  
 > **进度 / 未完成项**：[`refactor/remaining-work.md`](./refactor/remaining-work.md)。  
-> **视觉令牌** → [`standards.md`](./standards.md)。**1.x 冻结** → `legacy/v1/`。
+> **视觉令牌** → [`standards.md`](./standards.md)。**1.x 冻结** → 仓库外归档 `D:\MyFiles\Documents\projects\blora-design\legacy\`。
 
 ---
 
@@ -37,7 +37,7 @@ Blora Design **1.x** 曾以整包 `blora.css` + `blora.js` 分发。**2.0** 为 
 # 2.0（推荐）
 pnpm add @bloret-crew/blora-design
 
-# 1.x 行为对照请使用仓库 legacy/v1/，不要在新项目复制全局 Blora 单例模式
+# 1.x 行为对照请使用仓库外归档 legacy/v1/（D:\MyFiles\Documents\projects\blora-design\legacy\），不要在新项目复制全局 Blora 单例模式
 ```
 
 **作用域约定（2.0）**

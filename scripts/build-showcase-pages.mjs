@@ -17,8 +17,8 @@ const copies = [
   ["addons/markdown/dist", "addons/markdown/dist"],
   ["addons/qrcode/dist", "addons/qrcode/dist"],
   ["addons/thread/dist", "addons/thread/dist"],
-  ["legacy/visual-baseline-light.png", "legacy/visual-baseline-light.png"],
-  ["legacy/visual-baseline-dark.png", "legacy/visual-baseline-dark.png"],
+  ["examples/showcase-v2/assets/visual-baseline-light.png", "assets/visual-baseline-light.png"],
+  ["examples/showcase-v2/assets/visual-baseline-dark.png", "assets/visual-baseline-dark.png"],
   ["docs/standards.md", "docs/standards.md"],
 ];
 
@@ -34,7 +34,6 @@ let html = readFileSync(showcase, "utf8");
 html = html
   .replaceAll("../../packages/", "packages/")
   .replaceAll("../../addons/", "addons/")
-  .replaceAll("../../legacy/", "legacy/")
   .replaceAll("../../docs/", "docs/");
 writeFileSync(resolve(out, "index.html"), html);
 writeFileSync(resolve(out, ".nojekyll"), "");

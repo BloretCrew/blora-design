@@ -6,8 +6,6 @@ const packageDir = resolve(fileURLToPath(new URL(".", import.meta.url)), "..");
 const repositoryRoot = resolve(packageDir, "..", "..");
 const generatedDir = join(packageDir, "generated");
 const componentSourceDir = join(repositoryRoot, "packages", "blora-design", "src");
-const mappingPath = join(repositoryRoot, "docs", "migration", "token-map-v1-v2.csv");
-const legacyCssPath = join(repositoryRoot, "legacy", "v1", "blora.css");
 
 const requiredLightTokens = [
   "color.surface.canvas",
@@ -64,21 +62,6 @@ function walkFiles(dir) {
   return files;
 }
 
-function extractRootTokenNames(css) {
-  const rootBlock = css.match(/:root\s*\{([\s\S]*?)\n\}/)?.[1];
-  if (!rootBlock) throw new Error("Could not find the v1 :root token block");
-  return [...rootBlock.matchAll(/(--blora-[a-z0-9-]+)\s*:/gi)].map((match) => match[1]);
-}
-
-function parseCsv(csv) {
-  const [header, ...rows] = csv.trim().split(/\r?\n/);
-  const columns = header.split(",");
-  return rows.map((row) => {
-    const values = row.split(",");
-    return Object.fromEntries(columns.map((column, index) => [column, values[index]]));
-  });
-}
-
 export function checkTokenContracts() {
   const errors = [];
   const manifest = JSON.parse(readFileSync(join(generatedDir, "token-manifest.json"), "utf8"));
@@ -105,19 +88,8 @@ export function checkTokenContracts() {
     if (!darkPaths.has(path)) errors.push(`Missing required dark semantic override: ${path}`);
   }
 
-  const mappings = parseCsv(readFileSync(mappingPath, "utf8"));
-  const mappingByV1 = new Map(mappings.map((mapping) => [mapping.v1_token, mapping]));
-  const legacyTokenNames = extractRootTokenNames(readFileSync(legacyCssPath, "utf8"));
-  for (const legacyName of legacyTokenNames) {
-    const mapping = mappingByV1.get(legacyName);
-    if (!mapping) {
-      errors.push(`Missing v1 token mapping: ${legacyName}`);
-      continue;
-    }
-    if (!registeredVariables.has(mapping.v2_token)) {
-      errors.push(`v1 mapping target is not generated: ${legacyName} -> ${mapping.v2_token}`);
-    }
-  }
+  // The frozen 1.x CSS lives outside this repository (moved to
+  // ../blora-design/legacy), so the v1-token mapping check was dropped.
 
   for (const file of walkFiles(componentSourceDir).filter((path) => extname(path) === ".css")) {
     const css = readFileSync(file, "utf8");
@@ -148,7 +120,5 @@ if (isDirectRun) {
     for (const error of errors) console.error(`  - ${error}`);
     process.exit(1);
   }
-  console.log(
-    "[check-token-contracts] Semantic coverage, v1 mapping, and component CSS checks passed.",
-  );
+  console.log("[check-token-contracts] Semantic coverage and component CSS checks passed.");
 }

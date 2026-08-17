@@ -2,7 +2,7 @@
  * Blora Design 2.0 - Markdown rendering add-on.
  * Spec §9: Add-on package, not bundled into core.
  * Spec §17.6: API must require explicit security policy.
- * Visual baseline: legacy/v1/blora.js lines 5755-5900.
+ * Visual baseline: archived 1.x blora.js lines 5755-5900.
  * @packageDocumentation
  */
 

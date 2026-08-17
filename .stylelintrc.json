@@ -27,7 +27,6 @@
     }
   },
   "ignoreFiles": [
-    "legacy/**",
     "dist/**",
     "node_modules/**",
     "coverage/**",
