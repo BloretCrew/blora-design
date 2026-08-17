@@ -25,6 +25,14 @@
 - **改变原因**：可用性（加载中仍需知道按钮在做什么）
 - **审核状态**：approved
 
+### Theming - 深浅色切换后主题仍跟着走
+
+- **组件**：theming
+- **1.x 表现**：配色写在 `:root` / `:root.blora-dark`，切深浅色不会把主题打回默认 Coral。
+- **2.0 表现**：`data-blora-color-scheme` 只留在 `:root`。浅色/深色令牌选择器也只匹配 `:root`，避免写到 `body` 后把 Coral 语义令牌盖在主题上面。
+- **改变原因**：bug 修复
+- **审核状态**：pending
+
 ### Dialog - 打开时挂到 body，遮罩盖满视口
 
 - **组件**：dialog

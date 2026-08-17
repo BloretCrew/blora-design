@@ -74,6 +74,22 @@ export function getColorScheme(el: HTMLElement = document.documentElement): Colo
   return v === "dark" ? "dark" : "light";
 }
 
+function clearMirroredScheme(doc: Document, scheme?: ColorScheme): void {
+  const body = doc.body;
+  if (body) {
+    body.style.backgroundColor = "";
+    body.style.color = "";
+    body.removeAttribute("data-blora-color-scheme");
+    if (scheme) body.style.colorScheme = scheme;
+  }
+  for (const sel of ["#storybook-root", ".sb-show-main", ".docs-story"]) {
+    doc.querySelectorAll<HTMLElement>(sel).forEach((node) => {
+      node.removeAttribute("data-blora-color-scheme");
+      if (scheme) node.style.colorScheme = scheme;
+    });
+  }
+}
+
 /** Explicit light/dark. Always set attribute so OS prefers-color-scheme cannot fight Storybook. */
 export function applyColorScheme(
   scheme: ColorScheme,
@@ -84,20 +100,9 @@ export function applyColorScheme(
   const doc = el.ownerDocument ?? document;
   el.setAttribute("data-blora-color-scheme", scheme);
   el.style.colorScheme = scheme;
-  /* Sync body + Storybook roots so canvas/text tokens actually paint */
-  const body = doc.body;
-  if (body) {
-    body.style.backgroundColor = "";
-    body.style.color = "";
-    body.setAttribute("data-blora-color-scheme", scheme);
-    body.style.colorScheme = scheme;
-  }
-  for (const sel of ["#storybook-root", ".sb-show-main", ".docs-story"]) {
-    doc.querySelectorAll<HTMLElement>(sel).forEach((node) => {
-      node.setAttribute("data-blora-color-scheme", scheme);
-      node.style.colorScheme = scheme;
-    });
-  }
+  /* Keep scheme on :root only. Stamping it on body re-applies the unthemed
+     coral pack there and shadows data-blora-theme on html. */
+  clearMirroredScheme(doc, scheme);
   if (options?.persist !== false) {
     try {
       localStorage.setItem(SCHEME_KEY, scheme);
@@ -123,6 +128,7 @@ export function applyTheme(
   if (typeof document === "undefined") return;
   const key = THEME_PRESETS[theme] ? theme : "coral";
   el.setAttribute("data-blora-theme", key);
+  clearMirroredScheme(el.ownerDocument ?? document);
   /* Keep an explicit scheme so theme packs don't half-apply dark text on light canvas */
   if (!el.hasAttribute("data-blora-color-scheme")) {
     applyColorScheme("light", el, { persist: false, emit: false });
