@@ -57,14 +57,6 @@
 - **改变原因**：bug 修复
 - **审核状态**：pending
 
-### Button - 圆角随高度收缩，小尺寸不再是胶囊
-
-- **组件**：button
-- **1.x 表现**：小尺寸按钮使用固定大圆角，半径超过高度一半时角合并成胶囊（Chrome 的 superellipse 会掩盖）。
-- **2.0 表现**：`--blora-button-radius` 取 `min(--blora-radius-lg, 40% × 按钮高度)`，任何平台、任何尺寸都不会退化成胶囊；lg/xl 保持 18px。图标按钮的 50% 圆角不受影响。
-- **改变原因**：bug 修复（Safari/Firefox 无 superellipse，胶囊感明显）
-- **审核状态**：pending
-
 ### Typography - 放弃 Avenir，改平台系统字体栈
 
 - **组件**：tokens / typography
