@@ -136,12 +136,16 @@ blora-transfer {
 .blora-transfer__actions .blora-button {
   display: inline-grid;
   place-items: center;
+  width: var(--blora-button-height);
+  min-inline-size: var(--blora-button-height);
+  padding: 0;
 }
 
 .blora-transfer__actions .blora-button svg {
   display: block;
   width: 1.125rem;
   height: 1.125rem;
+  margin: auto;
 }
 
 /* Responsive: stack vertically on narrow containers */
@@ -162,7 +166,7 @@ blora-transfer {
     justify-content: center;
   }
 
-  .blora-transfer__actions .blora-button {
+  .blora-transfer__actions .blora-button svg {
     rotate: 90deg;
   }
 }

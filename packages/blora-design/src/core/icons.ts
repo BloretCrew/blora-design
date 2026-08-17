@@ -78,6 +78,7 @@ export function createBloraIcon(
   svg.setAttribute("stroke-linecap", "round");
   svg.setAttribute("stroke-linejoin", "round");
   svg.setAttribute("aria-hidden", "true");
+  svg.setAttribute("data-blora-icon", name);
 
   const nodes: SVGElement[] = [];
   switch (name) {
@@ -113,14 +114,16 @@ export function createBloraIcon(
     case "check":
       nodes.push(svgNode(doc, "path", { d: "M20 6 9 17l-5-5" }));
       break;
+    /* Lucide chevrons sit geometrically centered; the open side makes them
+       look off-axis in a circle. Nudge toward the point so the ink centers. */
     case "chevron-down":
-      nodes.push(svgNode(doc, "path", { d: "m6 9 6 6 6-6" }));
+      nodes.push(svgNode(doc, "path", { d: "m6 9 6 6 6-6", transform: "translate(0 1)" }));
       break;
     case "chevron-left":
-      nodes.push(svgNode(doc, "path", { d: "m15 18-6-6 6-6" }));
+      nodes.push(svgNode(doc, "path", { d: "m15 18-6-6 6-6", transform: "translate(-1 0)" }));
       break;
     case "chevron-right":
-      nodes.push(svgNode(doc, "path", { d: "m9 18 6-6-6-6" }));
+      nodes.push(svgNode(doc, "path", { d: "m9 18 6-6-6-6", transform: "translate(1 0)" }));
       break;
     case "circle-alert":
       nodes.push(
