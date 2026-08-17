@@ -9,7 +9,10 @@ export default defineConfig({
   resolve: {
     alias: {
       /* Bundle current icon source so "menu" exists before core dist rebuilds. */
-      "@bloret-crew/blora-design": resolve(__dirname, "../../packages/blora-design/src/core/icons.ts"),
+      "@bloret-crew/blora-design": resolve(
+        __dirname,
+        "../../packages/blora-design/src/core/icons.ts",
+      ),
     },
   },
   build: {

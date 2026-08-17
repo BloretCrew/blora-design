@@ -1,0 +1,80 @@
+Run pnpm lint:contracts
+
+> @bloret-crew/blora-design-monorepo@2.0.0-alpha.1 lint:contracts /home/runner/work/blora-design/blora-design
+> node packages/blora-design/scripts/check-contracts.mjs && pnpm --filter @bloret-crew/blora-tokens run check:contracts
+
+[check-contracts] All contracts valid.
+
+> @bloret-crew/blora-tokens@2.0.0-alpha.1 check:contracts /home/runner/work/blora-design/blora-design/packages/tokens
+> node scripts/build-tokens.mjs && node scripts/check-token-contracts.mjs
+
+[build:tokens] Generated 168 light tokens and 42 dark overrides in generated.
+[check-token-contracts] 63 error(s):
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/button/button.css: unregistered token variable --blora-button-radius
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/button/button.css: unregistered token variable --blora-button-radius
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/button/button.css: unregistered token variable --blora-button-radius
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/button/button.css: unregistered token variable --blora-button-radius
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/button/button.css: unregistered token variable --blora-button-radius
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/button/button.css: unregistered token variable --blora-button-radius
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/button/button.css: unregistered token variable --blora-button-corner
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/button/button.css: unregistered token variable --blora-button-corner
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/button/button.css: unregistered token variable --blora-button-corner
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/button/button.css: unregistered token variable --blora-button-corner
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/button/button.css: unregistered token variable --blora-button-corner
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/button/button.css: unregistered token variable --blora-button-corner
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/indicator/indicator.css: unregistered token variable --blora-indicator-shift-x
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/indicator/indicator.css: unregistered token variable --blora-indicator-shift-y
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/join/join.css: unregistered token variable --blora-join-height
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/join/join.css: unregistered token variable --blora-join-height
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/pagination/pagination.css: unregistered token variable --blora-pagination-gap
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/pagination/pagination.css: unregistered token variable --blora-pagination-item-size
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/pagination/pagination.css: unregistered token variable --blora-pagination-item-size
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/pagination/pagination.css: unregistered token variable --blora-pagination-item-size
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/pagination/pagination.css: unregistered token variable --blora-pagination-item-size
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/pagination/pagination.css: unregistered token variable --blora-pagination-item-size
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/pagination/pagination.css: unregistered token variable --blora-pagination-hover-scale
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/pagination/pagination.css: unregistered token variable --blora-pagination-item-size
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/pagination/pagination.css: unregistered token variable --blora-pagination-item-size
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/pagination/pagination.css: unregistered token variable --blora-pagination-item-size
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/pagination/pagination.css: unregistered token variable --blora-pagination-window
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/pagination/pagination.css: unregistered token variable --blora-pagination-item-size
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/pagination/pagination.css: unregistered token variable --blora-pagination-window
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/pagination/pagination.css: unregistered token variable --blora-pagination-gap
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/pagination/pagination.css: unregistered token variable --blora-pagination-hover-scale
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/pagination/pagination.css: unregistered token variable --blora-pagination-item-size
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/pagination/pagination.css: unregistered token variable --blora-pagination-hover-scale
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/pagination/pagination.css: unregistered token variable --blora-pagination-item-size
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/pagination/pagination.css: unregistered token variable --blora-pagination-gap
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/pagination/pagination.css: unregistered token variable --blora-pagination-offset
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/pagination/pagination.css: unregistered token variable --blora-pagination-item-size
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/pagination/pagination.css: unregistered token variable --blora-pagination-gap
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/pagination/pagination.css: unregistered token variable --blora-pagination-offset
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/pagination/pagination.css: unregistered token variable --blora-pagination-item-size
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/pagination/pagination.css: unregistered token variable --blora-pagination-gap
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/pagination/pagination.css: unregistered token variable --blora-pagination-item-size
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/pagination/pagination.css: unregistered token variable --blora-pagination-item-size
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/pagination/pagination.css: unregistered token variable --blora-pagination-item-size
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/pagination/pagination.css: unregistered token variable --blora-pagination-item-size
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/progress/progress.css: unregistered token variable --blora-color-text-default
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/swap/swap.css: unregistered token variable --blora-color-border-default
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/tooltip/tooltip.css: unregistered token variable --blora-float-shift-x
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/tooltip/tooltip.css: unregistered token variable --blora-float-shift-y
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/tooltip/tooltip.css: unregistered token variable --blora-float-shift-x
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/tooltip/tooltip.css: unregistered token variable --blora-float-shift-y
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/tooltip/tooltip.css: unregistered token variable --blora-float-shift-x
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/tooltip/tooltip.css: unregistered token variable --blora-float-shift-y
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/tooltip/tooltip.css: unregistered token variable --blora-float-shift-x
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/tooltip/tooltip.css: unregistered token variable --blora-float-shift-y
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/tooltip/tooltip.css: unregistered token variable --blora-float-shift-x
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/tooltip/tooltip.css: unregistered token variable --blora-float-shift-y
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/tooltip/tooltip.css: unregistered token variable --blora-float-shift-x
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/tooltip/tooltip.css: unregistered token variable --blora-float-shift-y
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/tooltip/tooltip.css: unregistered token variable --blora-float-shift-x
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/tooltip/tooltip.css: unregistered token variable --blora-float-shift-y
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/tooltip/tooltip.css: unregistered token variable --blora-float-shift-x
+  - /home/runner/work/blora-design/blora-design/packages/blora-design/src/components/tooltip/tooltip.css: unregistered token variable --blora-float-shift-y
+/home/runner/work/blora-design/blora-design/packages/tokens:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @bloret-crew/blora-tokens@2.0.0-alpha.1 check:contracts: `node scripts/build-tokens.mjs && node scripts/check-token-contracts.mjs`
+Exit status 1
+ ELIFECYCLE  Command failed with exit code 1.
+Error: Process completed with exit code 1.

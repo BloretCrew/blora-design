@@ -27,5 +27,12 @@ export const Default: Story = {
 };
 
 export const TrendVariants: Story = {
-  render: () => html\`<div class="blora-grid blora-grid--2"><blora-chart-container title="增长" trend="+8.3%" trend-variant="success"><div>趋势向上</div></blora-chart-container><blora-chart-container title="下降" trend="-4.1%" trend-variant="danger"><div>趋势向下</div></blora-chart-container></div>\`,
+  render: () =>
+    html`<div class="blora-grid blora-grid--2">
+      <blora-chart-container title="增长" trend="+8.3%" trend-variant="success"
+        ><div>趋势向上</div></blora-chart-container
+      ><blora-chart-container title="下降" trend="-4.1%" trend-variant="danger"
+        ><div>趋势向下</div></blora-chart-container
+      >
+    </div>`,
 };

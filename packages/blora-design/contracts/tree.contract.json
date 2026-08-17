@@ -31,9 +31,7 @@
     "default": "Nested declarative <blora-tree-node value label open selected> definitions; consumed into the official tree."
   },
   "parts": [],
-  "cssProperties": [
-    "--blora-tree-h"
-  ],
+  "cssProperties": ["--blora-tree-h"],
   "accessibilityPattern": "tree",
   "migrationFromV1": "tree.migration.md"
 }

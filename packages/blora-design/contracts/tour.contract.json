@@ -49,9 +49,7 @@
     "default": "Declarative <blora-tour-step title description> definitions wrapping highlighted content; consumed into the official tour tree."
   },
   "parts": [],
-  "cssProperties": [
-    "--blora-tour-pad"
-  ],
+  "cssProperties": ["--blora-tour-pad"],
   "accessibilityPattern": "dialog",
   "migrationFromV1": "tour.migration.md"
 }

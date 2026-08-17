@@ -140,8 +140,10 @@ blora-sidebar-layout[compact] {
   );
 }
 
-.blora-sidebar-layout[data-sticky] .blora-sidebar-layout__aside[data-overflow-start][data-overflow-end],
-.blora-sidebar-layout[data-drawer] .blora-sidebar-layout__aside[data-overflow-start][data-overflow-end],
+.blora-sidebar-layout[data-sticky]
+  .blora-sidebar-layout__aside[data-overflow-start][data-overflow-end],
+.blora-sidebar-layout[data-drawer]
+  .blora-sidebar-layout__aside[data-overflow-start][data-overflow-end],
 .blora-sidebar-layout--drawer .blora-sidebar-layout__aside[data-overflow-start][data-overflow-end] {
   mask-image: linear-gradient(
     to bottom,
@@ -250,7 +252,8 @@ blora-sidebar-layout[compact] {
 
 /* Page chrome: official FAB at the viewport start/bottom, not an in-flow pill. */
 .blora-sidebar-layout[data-variant="seamless"][data-drawer] .blora-sidebar-layout__toggle.blora-fab,
-.blora-sidebar-layout[data-variant="seamless"].blora-sidebar-layout--drawer .blora-sidebar-layout__toggle.blora-fab {
+.blora-sidebar-layout[data-variant="seamless"].blora-sidebar-layout--drawer
+  .blora-sidebar-layout__toggle.blora-fab {
   display: grid;
   place-items: center;
   place-self: start;
@@ -270,15 +273,21 @@ blora-sidebar-layout[compact] {
   z-index: calc(var(--blora-z-drawer) + 1);
 }
 
-[dir="rtl"] .blora-sidebar-layout[data-variant="seamless"][data-drawer] .blora-sidebar-layout__toggle.blora-fab,
-[dir="rtl"] .blora-sidebar-layout[data-variant="seamless"].blora-sidebar-layout--drawer .blora-sidebar-layout__toggle.blora-fab {
+[dir="rtl"]
+  .blora-sidebar-layout[data-variant="seamless"][data-drawer]
+  .blora-sidebar-layout__toggle.blora-fab,
+[dir="rtl"]
+  .blora-sidebar-layout[data-variant="seamless"].blora-sidebar-layout--drawer
+  .blora-sidebar-layout__toggle.blora-fab {
   left: auto;
   right: max(var(--blora-space-5), env(safe-area-inset-right, 0px));
 }
 
 @media (max-width: 560px) {
-  .blora-sidebar-layout[data-variant="seamless"][data-drawer] .blora-sidebar-layout__toggle.blora-fab,
-  .blora-sidebar-layout[data-variant="seamless"].blora-sidebar-layout--drawer .blora-sidebar-layout__toggle.blora-fab {
+  .blora-sidebar-layout[data-variant="seamless"][data-drawer]
+    .blora-sidebar-layout__toggle.blora-fab,
+  .blora-sidebar-layout[data-variant="seamless"].blora-sidebar-layout--drawer
+    .blora-sidebar-layout__toggle.blora-fab {
     inset-inline: max(var(--blora-space-4), env(safe-area-inset-inline-start, 0px)) auto;
     left: max(var(--blora-space-4), env(safe-area-inset-left, 0px));
     bottom: max(var(--blora-space-4), env(safe-area-inset-bottom, 0px));
@@ -288,8 +297,12 @@ blora-sidebar-layout[compact] {
     min-height: 3rem;
   }
 
-  [dir="rtl"] .blora-sidebar-layout[data-variant="seamless"][data-drawer] .blora-sidebar-layout__toggle.blora-fab,
-  [dir="rtl"] .blora-sidebar-layout[data-variant="seamless"].blora-sidebar-layout--drawer .blora-sidebar-layout__toggle.blora-fab {
+  [dir="rtl"]
+    .blora-sidebar-layout[data-variant="seamless"][data-drawer]
+    .blora-sidebar-layout__toggle.blora-fab,
+  [dir="rtl"]
+    .blora-sidebar-layout[data-variant="seamless"].blora-sidebar-layout--drawer
+    .blora-sidebar-layout__toggle.blora-fab {
     left: auto;
     right: max(var(--blora-space-4), env(safe-area-inset-right, 0px));
   }
@@ -381,8 +394,10 @@ blora-sidebar-layout[compact] {
 /* Seamless = app/page chrome. Sheet + mask pin to the viewport like 1.x,
    not to the content column. Sticky must not win over fixed here. */
 .blora-sidebar-layout[data-variant="seamless"][data-drawer] .blora-sidebar-layout__aside,
-.blora-sidebar-layout[data-variant="seamless"][data-drawer][data-sticky] .blora-sidebar-layout__aside,
-.blora-sidebar-layout[data-variant="seamless"].blora-sidebar-layout--drawer .blora-sidebar-layout__aside {
+.blora-sidebar-layout[data-variant="seamless"][data-drawer][data-sticky]
+  .blora-sidebar-layout__aside,
+.blora-sidebar-layout[data-variant="seamless"].blora-sidebar-layout--drawer
+  .blora-sidebar-layout__aside {
   position: fixed;
   top: 0;
   bottom: 0;
@@ -393,7 +408,8 @@ blora-sidebar-layout[compact] {
 }
 
 .blora-sidebar-layout[data-variant="seamless"][data-drawer] .blora-sidebar-layout__mask,
-.blora-sidebar-layout[data-variant="seamless"].blora-sidebar-layout--drawer .blora-sidebar-layout__mask {
+.blora-sidebar-layout[data-variant="seamless"].blora-sidebar-layout--drawer
+  .blora-sidebar-layout__mask {
   position: fixed;
   inset: 0;
   z-index: calc(var(--blora-z-drawer) - 1);

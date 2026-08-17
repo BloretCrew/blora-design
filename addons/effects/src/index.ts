@@ -34,7 +34,16 @@ export interface TextFxOptions {
   clickable?: boolean;
 }
 
-const TEXT_FX: TextFxName[] = ["big", "small", "shake", "nod", "disperse", "ripple", "bloom", "jitter"];
+const TEXT_FX: TextFxName[] = [
+  "big",
+  "small",
+  "shake",
+  "nod",
+  "disperse",
+  "ripple",
+  "bloom",
+  "jitter",
+];
 
 const TEXT_FX_SET = new Set<string>(TEXT_FX);
 
@@ -91,9 +100,7 @@ function handleTextFxCopy(this: HTMLElement, event: ClipboardEvent): void {
   if (!range) return;
   const selected = chars.filter((span) => range.intersectsNode(span));
   if (!selected.length) return;
-  const plain = selected
-    .map((span) => span.textContent?.replace(/\u00a0/g, " ") ?? "")
-    .join("");
+  const plain = selected.map((span) => span.textContent?.replace(/\u00a0/g, " ") ?? "").join("");
   if (!plain) return;
   event.preventDefault();
   event.clipboardData.setData("text/plain", plain);
@@ -101,8 +108,9 @@ function handleTextFxCopy(this: HTMLElement, event: ClipboardEvent): void {
 
 function charSpanAtPoint(el: HTMLElement, x: number, y: number): HTMLElement | null {
   const doc = el.ownerDocument;
-  const fromRange = (doc as Document & { caretRangeFromPoint?: (x: number, y: number) => Range | null })
-    .caretRangeFromPoint?.(x, y);
+  const fromRange = (
+    doc as Document & { caretRangeFromPoint?: (x: number, y: number) => Range | null }
+  ).caretRangeFromPoint?.(x, y);
   if (fromRange?.startContainer?.nodeType === Node.TEXT_NODE) {
     return (
       (fromRange.startContainer.parentElement as HTMLElement | null)?.closest(
@@ -117,9 +125,8 @@ function charSpanAtPoint(el: HTMLElement, x: number, y: number): HTMLElement | n
   ).caretPositionFromPoint?.(x, y);
   if (fromPos?.offsetNode?.nodeType === Node.TEXT_NODE) {
     return (
-      (fromPos.offsetNode.parentElement as HTMLElement | null)?.closest(
-        ".blora-text-fx__ch",
-      ) ?? null
+      (fromPos.offsetNode.parentElement as HTMLElement | null)?.closest(".blora-text-fx__ch") ??
+      null
     );
   }
   return null;

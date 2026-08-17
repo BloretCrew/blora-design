@@ -15,7 +15,13 @@ export const Default: Story = {
       <span slot="author">Rhedar</span>
       <time slot="meta">2 小时前</time>
       这个组件库的设计非常统一，token 系统让主题切换变得很方便。
-      <button slot="actions" type="button" class="blora-button" data-size="xs" data-variant="outline">
+      <button
+        slot="actions"
+        type="button"
+        class="blora-button"
+        data-size="xs"
+        data-variant="outline"
+      >
         回复
       </button>
       <button
@@ -26,8 +32,7 @@ export const Default: Story = {
         data-variant="outline"
         aria-label="赞"
       >
-        ${createBloraIcon("thumbs-up", 12)}
-        12
+        ${createBloraIcon("thumbs-up", 12)} 12
       </button>
     </blora-comment>`,
 };

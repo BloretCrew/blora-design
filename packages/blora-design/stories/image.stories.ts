@@ -57,5 +57,19 @@ export const Preview: Story = {
 };
 
 export const PreviewGroup: Story = {
-  render: () => html\`<div class="blora-grid blora-grid--3"><blora-image src="/visual-baseline-light.png" alt="浅色视觉基线" preview preview-group="baselines"></blora-image><blora-image src="/visual-baseline-dark.png" alt="深色视觉基线" preview preview-group="baselines"></blora-image></div>\`,
+  render: () =>
+    html`<div class="blora-grid blora-grid--3">
+      <blora-image
+        src="/visual-baseline-light.png"
+        alt="浅色视觉基线"
+        preview
+        preview-group="baselines"
+      ></blora-image
+      ><blora-image
+        src="/visual-baseline-dark.png"
+        alt="深色视觉基线"
+        preview
+        preview-group="baselines"
+      ></blora-image>
+    </div>`,
 };

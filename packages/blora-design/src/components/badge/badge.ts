@@ -9,8 +9,7 @@ function badgeGraphemeCount(text: string): number {
   const trimmed = text.replace(/\s+/g, "");
   if (!trimmed) return 0;
   if (typeof Intl !== "undefined" && "Segmenter" in Intl) {
-    return [...new Intl.Segmenter(undefined, { granularity: "grapheme" }).segment(trimmed)]
-      .length;
+    return [...new Intl.Segmenter(undefined, { granularity: "grapheme" }).segment(trimmed)].length;
   }
   return [...trimmed].length;
 }

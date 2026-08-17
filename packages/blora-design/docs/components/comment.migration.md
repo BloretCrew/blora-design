@@ -33,8 +33,20 @@ Authors slot existing components. `author`, `time`, `avatar`, `content`, and `li
   <span slot="author">张三</span>
   <time slot="meta">2 小时前</time>
   正文
-  <button slot="actions" type="button" class="blora-button" data-size="xs" data-variant="outline">回复</button>
-  <button slot="actions" type="button" class="blora-button" data-size="xs" data-variant="outline" data-icon="thumbs-up" aria-label="赞">12</button>
+  <button slot="actions" type="button" class="blora-button" data-size="xs" data-variant="outline">
+    回复
+  </button>
+  <button
+    slot="actions"
+    type="button"
+    class="blora-button"
+    data-size="xs"
+    data-variant="outline"
+    data-icon="thumbs-up"
+    aria-label="赞"
+  >
+    12
+  </button>
 </blora-comment>
 ```
 

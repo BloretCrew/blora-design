@@ -59,7 +59,13 @@
     "default": "Content"
   },
   "parts": [],
-  "cssProperties": [],
+  "cssProperties": [
+    "--blora-pagination-gap",
+    "--blora-pagination-item-size",
+    "--blora-pagination-hover-scale",
+    "--blora-pagination-window",
+    "--blora-pagination-offset"
+  ],
   "accessibilityPattern": "navigation",
   "migrationFromV1": "pagination.migration.md"
 }

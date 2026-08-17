@@ -53,5 +53,9 @@ export const InCard: Story = {
 };
 
 export const Hoverable: Story = {
-  render: () => html\`<div class="blora-list" data-hover><div class="blora-list__item"><div class="blora-list__title">可悬浮条目</div></div><div class="blora-list__item"><div class="blora-list__title">第二条</div></div></div>\`,
+  render: () =>
+    html`<div class="blora-list" data-hover>
+      <div class="blora-list__item"><div class="blora-list__title">可悬浮条目</div></div>
+      <div class="blora-list__item"><div class="blora-list__title">第二条</div></div>
+    </div>`,
 };

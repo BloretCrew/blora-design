@@ -4,9 +4,30 @@
    ========================================================================= */
 
 @layer blora.addons {
-  .blora-text-fx { --blora-fx-dur: 2.4s; display: inline-flex; flex-wrap: wrap; align-items: center; justify-content: center; max-width: 100%; transform: translateZ(0); white-space: pre-wrap; line-height: 1.4; }
-  .blora-text-fx.is-clickable { cursor: pointer; }
-  .blora-text-fx__ch { display: inline-block; transform: translateZ(0); transform-origin: center center; white-space: pre; will-change: transform, opacity, text-shadow; }
+  .blora-text-fx {
+    --blora-fx-dur: 2.4s;
+
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+    transform: translateZ(0);
+    white-space: pre-wrap;
+    line-height: 1.4;
+  }
+
+  .blora-text-fx.is-clickable {
+    cursor: pointer;
+  }
+
+  .blora-text-fx__ch {
+    display: inline-block;
+    transform: translateZ(0);
+    transform-origin: center center;
+    white-space: pre;
+    will-change: transform, opacity, text-shadow;
+  }
 
   /* Split chars overlap while animating; the shared selection token is already
      an opaque, light mix (primary + canvas) so overlaps stay flat. */
@@ -14,29 +35,275 @@
     background: var(--blora-color-action-selection-bg);
     color: var(--blora-color-text-primary);
   }
-  .blora-text-fx--big.is-play { animation: blora-fx-big var(--blora-fx-dur, 2.5s) cubic-bezier(0.12, 0.75, 0.25, 1) infinite; }
-  .blora-text-fx--small.is-play { animation: blora-fx-small var(--blora-fx-dur, 2.5s) cubic-bezier(0.12, 0.75, 0.25, 1) infinite; }
-  .blora-text-fx--shake.is-play { animation: blora-fx-shake-box var(--blora-fx-dur, 2.4s) ease-in-out infinite; }
-  .blora-text-fx--shake.is-play .blora-text-fx__ch { animation: blora-fx-shake-fluid var(--blora-fx-dur, 2.4s) ease-in-out infinite; }
-  .blora-text-fx--nod.is-play { animation: blora-fx-nod-apple var(--blora-fx-dur, 2.4s) cubic-bezier(0.25, 0.1, 0.25, 1) infinite; transform-origin: center bottom; }
-  .blora-text-fx--disperse.is-play .blora-text-fx__ch { animation: blora-fx-disperse var(--blora-fx-dur, 2.4s) cubic-bezier(0.16, 1, 0.3, 1) infinite; }
-  .blora-text-fx--ripple.is-play .blora-text-fx__ch { animation: blora-fx-ripple-apple 1.3s cubic-bezier(0.25, 0.9, 0.4, 1) infinite; animation-delay: calc(var(--i, 0) * 35ms); transform-origin: center bottom; }
-  .blora-text-fx--bloom.is-play .blora-text-fx__ch { animation: blora-fx-bloom-apple 2.2s cubic-bezier(0.25, 1, 0.35, 1) infinite; animation-delay: calc(var(--i, 0) * 28ms); transform-origin: center bottom; }
-  .blora-text-fx--jitter.is-play .blora-text-fx__ch { animation: blora-fx-jitter-apple 80ms steps(2, start) infinite; }
-  .blora-text-fx--jitter.is-play .blora-text-fx__ch:nth-child(2n) { animation-duration: 70ms; animation-direction: reverse; }
-  .blora-text-fx--jitter.is-play .blora-text-fx__ch:nth-child(3n) { animation-duration: 90ms; }
-  .blora-text-fx--jitter.is-play .blora-text-fx__ch:nth-child(5n) { animation-duration: 65ms; }
+
+  .blora-text-fx--big.is-play {
+    animation: blora-fx-big var(--blora-fx-dur, 2.5s) cubic-bezier(0.12, 0.75, 0.25, 1) infinite;
+  }
+
+  .blora-text-fx--small.is-play {
+    animation: blora-fx-small var(--blora-fx-dur, 2.5s) cubic-bezier(0.12, 0.75, 0.25, 1) infinite;
+  }
+
+  .blora-text-fx--shake.is-play {
+    animation: blora-fx-shake-box var(--blora-fx-dur, 2.4s) ease-in-out infinite;
+  }
+
+  .blora-text-fx--shake.is-play .blora-text-fx__ch {
+    animation: blora-fx-shake-fluid var(--blora-fx-dur, 2.4s) ease-in-out infinite;
+  }
+
+  .blora-text-fx--nod.is-play {
+    animation: blora-fx-nod-apple var(--blora-fx-dur, 2.4s) cubic-bezier(0.25, 0.1, 0.25, 1)
+      infinite;
+    transform-origin: center bottom;
+  }
+
+  .blora-text-fx--disperse.is-play .blora-text-fx__ch {
+    animation: blora-fx-disperse var(--blora-fx-dur, 2.4s) cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+
+  .blora-text-fx--ripple.is-play .blora-text-fx__ch {
+    animation: blora-fx-ripple-apple 1.3s cubic-bezier(0.25, 0.9, 0.4, 1) infinite;
+    animation-delay: calc(var(--i, 0) * 35ms);
+    transform-origin: center bottom;
+  }
+
+  .blora-text-fx--bloom.is-play .blora-text-fx__ch {
+    animation: blora-fx-bloom-apple 2.2s cubic-bezier(0.25, 1, 0.35, 1) infinite;
+    animation-delay: calc(var(--i, 0) * 28ms);
+    transform-origin: center bottom;
+  }
+
+  .blora-text-fx--jitter.is-play .blora-text-fx__ch {
+    animation: blora-fx-jitter-apple 80ms steps(2, start) infinite;
+  }
+
+  .blora-text-fx--jitter.is-play .blora-text-fx__ch:nth-child(2n) {
+    animation-duration: 70ms;
+    animation-direction: reverse;
+  }
+
+  .blora-text-fx--jitter.is-play .blora-text-fx__ch:nth-child(3n) {
+    animation-duration: 90ms;
+  }
+
+  .blora-text-fx--jitter.is-play .blora-text-fx__ch:nth-child(5n) {
+    animation-duration: 65ms;
+  }
 }
 
-@keyframes blora-fx-big { 0%, 8% { transform: scale(1); } 30%, 48% { transform: scale(1.28); } 64% { transform: scale(0.97); } 74% { transform: scale(1.01); } 82%, 100% { transform: scale(1); } }
-@keyframes blora-fx-small { 0%, 8% { transform: scale(1); } 30%, 48% { transform: scale(0.74); } 64% { transform: scale(1.03); } 74% { transform: scale(0.99); } 82%, 100% { transform: scale(1); } }
-@keyframes blora-fx-shake-box { 0%, 8%, 42%, 100% { transform: translateX(0); } 13% { transform: translateX(-0.74em); } 21% { transform: translateX(0.63em); } 29% { transform: translateX(-0.42em); } 36% { transform: translateX(0.26em); } }
-@keyframes blora-fx-shake-fluid { 0%, 8%, 42%, 100% { transform: scale(1); opacity: 1; } 13% { transform: scale(calc(0.86 + (1 - var(--fx-ratio, 0.5)) * 0.38), calc(0.92 + (1 - var(--fx-ratio, 0.5)) * 0.22)); opacity: calc(0.65 + (1 - var(--fx-ratio, 0.5)) * 0.35); } 21% { transform: scale(calc(0.86 + var(--fx-ratio, 0.5) * 0.38), calc(0.92 + var(--fx-ratio, 0.5) * 0.22)); opacity: calc(0.65 + var(--fx-ratio, 0.5) * 0.35); } 29% { transform: scale(calc(0.92 + (1 - var(--fx-ratio, 0.5)) * 0.18), calc(0.96 + (1 - var(--fx-ratio, 0.5)) * 0.1)); } 36% { transform: scale(calc(0.92 + var(--fx-ratio, 0.5) * 0.18), calc(0.96 + var(--fx-ratio, 0.5) * 0.1)); } }
-@keyframes blora-fx-nod-apple { 0%, 8% { transform: translateY(0) scale(1); } 16% { transform: translateY(0.42em) scale(1.02, 0.92); } 24% { transform: translateY(-0.1em) scale(0.99, 1.02); } 32% { transform: translateY(0.21em) scale(1.01, 0.96); } 40%, 100% { transform: translateY(0) scale(1); } }
-@keyframes blora-fx-disperse { 0%, 15% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); opacity: 1; } 22% { transform: translate3d(calc(var(--fx-x, 0) * -0.05), calc(var(--fx-y, -1em) * -0.05), 0) scale(0.94); } 38% { transform: translate3d(var(--fx-x, 0.8em), var(--fx-y, -1em), 0) rotate(var(--fx-r, 15deg)) scale(1.3); opacity: 0; } 42% { transform: translate3d(0, 0, 0) scale(0.5); opacity: 0; } 60%, 100% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); opacity: 1; } }
-@keyframes blora-fx-ripple-apple { 0%, 35%, 100% { transform: translate3d(0, 0, 0); } 16% { transform: translate3d(0, -0.34em, 0); } }
-@keyframes blora-fx-bloom-apple { 0%, 25%, 100% { transform: scale(1, 1) translateY(0); opacity: 0.85; text-shadow: none; } 10% { transform: scale(1.13, 1.09) translateY(-0.03em); opacity: 1; text-shadow: 0.2px 0 0 currentcolor, -0.2px 0 0 currentcolor; } }
-@keyframes blora-fx-jitter-apple { 0% { transform: translate3d(0, 0, 0) rotate(0deg); } 25% { transform: translate3d(-0.08em, 0.06em, 0) rotate(-1.5deg); } 50% { transform: translate3d(0.07em, -0.07em, 0) rotate(1.2deg); } 75% { transform: translate3d(-0.06em, -0.06em, 0) rotate(-0.8deg); } 100% { transform: translate3d(0.08em, 0.06em, 0) rotate(1.4deg); } }
+@keyframes blora-fx-big {
+  0%,
+  8% {
+    transform: scale(1);
+  }
+
+  30%,
+  48% {
+    transform: scale(1.28);
+  }
+
+  64% {
+    transform: scale(0.97);
+  }
+
+  74% {
+    transform: scale(1.01);
+  }
+
+  82%,
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes blora-fx-small {
+  0%,
+  8% {
+    transform: scale(1);
+  }
+
+  30%,
+  48% {
+    transform: scale(0.74);
+  }
+
+  64% {
+    transform: scale(1.03);
+  }
+
+  74% {
+    transform: scale(0.99);
+  }
+
+  82%,
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes blora-fx-shake-box {
+  0%,
+  8%,
+  42%,
+  100% {
+    transform: translateX(0);
+  }
+
+  13% {
+    transform: translateX(-0.74em);
+  }
+
+  21% {
+    transform: translateX(0.63em);
+  }
+
+  29% {
+    transform: translateX(-0.42em);
+  }
+
+  36% {
+    transform: translateX(0.26em);
+  }
+}
+@keyframes blora-fx-shake-fluid {
+  0%,
+  8%,
+  42%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  13% {
+    transform: scale(
+      calc(0.86 + (1 - var(--fx-ratio, 0.5)) * 0.38),
+      calc(0.92 + (1 - var(--fx-ratio, 0.5)) * 0.22)
+    );
+    opacity: calc(0.65 + (1 - var(--fx-ratio, 0.5)) * 0.35);
+  }
+
+  21% {
+    transform: scale(
+      calc(0.86 + var(--fx-ratio, 0.5) * 0.38),
+      calc(0.92 + var(--fx-ratio, 0.5) * 0.22)
+    );
+    opacity: calc(0.65 + var(--fx-ratio, 0.5) * 0.35);
+  }
+
+  29% {
+    transform: scale(
+      calc(0.92 + (1 - var(--fx-ratio, 0.5)) * 0.18),
+      calc(0.96 + (1 - var(--fx-ratio, 0.5)) * 0.1)
+    );
+  }
+
+  36% {
+    transform: scale(
+      calc(0.92 + var(--fx-ratio, 0.5) * 0.18),
+      calc(0.96 + var(--fx-ratio, 0.5) * 0.1)
+    );
+  }
+}
+@keyframes blora-fx-nod-apple {
+  0%,
+  8% {
+    transform: translateY(0) scale(1);
+  }
+
+  16% {
+    transform: translateY(0.42em) scale(1.02, 0.92);
+  }
+
+  24% {
+    transform: translateY(-0.1em) scale(0.99, 1.02);
+  }
+
+  32% {
+    transform: translateY(0.21em) scale(1.01, 0.96);
+  }
+
+  40%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes blora-fx-disperse {
+  0%,
+  15% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+
+  22% {
+    transform: translate3d(calc(var(--fx-x, 0) * -0.05), calc(var(--fx-y, -1em) * -0.05), 0)
+      scale(0.94);
+  }
+
+  38% {
+    transform: translate3d(var(--fx-x, 0.8em), var(--fx-y, -1em), 0) rotate(var(--fx-r, 15deg))
+      scale(1.3);
+    opacity: 0;
+  }
+
+  42% {
+    transform: translate3d(0, 0, 0) scale(0.5);
+    opacity: 0;
+  }
+
+  60%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+}
+@keyframes blora-fx-ripple-apple {
+  0%,
+  35%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  16% {
+    transform: translate3d(0, -0.34em, 0);
+  }
+}
+@keyframes blora-fx-bloom-apple {
+  0%,
+  25%,
+  100% {
+    transform: scale(1, 1) translateY(0);
+    opacity: 0.85;
+    text-shadow: none;
+  }
+
+  10% {
+    transform: scale(1.13, 1.09) translateY(-0.03em);
+    opacity: 1;
+    text-shadow:
+      0.2px 0 0 currentcolor,
+      -0.2px 0 0 currentcolor;
+  }
+}
+@keyframes blora-fx-jitter-apple {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+
+  25% {
+    transform: translate3d(-0.08em, 0.06em, 0) rotate(-1.5deg);
+  }
+
+  50% {
+    transform: translate3d(0.07em, -0.07em, 0) rotate(1.2deg);
+  }
+
+  75% {
+    transform: translate3d(-0.06em, -0.06em, 0) rotate(-0.8deg);
+  }
+
+  100% {
+    transform: translate3d(0.08em, 0.06em, 0) rotate(1.4deg);
+  }
+}
 
 /* ===== Migrated effects extras (no @layer 鈥?beat unlayered reset) ===== */
 

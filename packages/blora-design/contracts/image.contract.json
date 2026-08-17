@@ -53,9 +53,7 @@
     "default": "No child structure; src, alt and caption attributes generate the official figure."
   },
   "parts": [],
-  "cssProperties": [
-    "--blora-image-ratio"
-  ],
+  "cssProperties": ["--blora-image-ratio"],
   "accessibilityPattern": "figure",
   "migrationFromV1": "image.migration.md"
 }

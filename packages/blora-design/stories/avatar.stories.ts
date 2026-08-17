@@ -75,5 +75,9 @@ export const StatusDot: Story = {
 };
 
 export const PulseStatus: Story = {
-  render: () => html\`<div class="blora-avatar-wrap"><div class="blora-avatar" data-size="lg" data-variant="primary">AB</div><span class="blora-dot" data-variant="success" data-pulse aria-label="在线"></span></div>\`,
+  render: () =>
+    html`<div class="blora-avatar-wrap">
+      <div class="blora-avatar" data-size="lg" data-variant="primary">AB</div>
+      <span class="blora-dot" data-variant="success" data-pulse aria-label="在线"></span>
+    </div>`,
 };

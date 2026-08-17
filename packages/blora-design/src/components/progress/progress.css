@@ -101,13 +101,21 @@ blora-progress {
   transition: stroke-dashoffset var(--blora-duration-slow) var(--blora-easing-standard);
 }
 
-.blora-progress__ring-fill[data-variant="neutral"] { stroke: var(--blora-color-status-neutral); }
-.blora-progress__ring-fill[data-variant="success"] { stroke: var(--blora-color-status-success); }
-.blora-progress__ring-fill[data-variant="info"] { stroke: var(--blora-color-status-info); }
+.blora-progress__ring-fill[data-variant="neutral"] {
+  stroke: var(--blora-color-status-neutral);
+}
+
+.blora-progress__ring-fill[data-variant="success"] {
+  stroke: var(--blora-color-status-success);
+}
+
+.blora-progress__ring-fill[data-variant="info"] {
+  stroke: var(--blora-color-status-info);
+}
 
 .blora-progress__circular-label {
   position: absolute;
-  color: var(--blora-color-text-default);
+  color: var(--blora-color-text-primary);
   font-size: var(--blora-text-lg);
   font-weight: 700;
   line-height: 1;

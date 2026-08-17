@@ -45,11 +45,7 @@
     "default": "Declarative <blora-deck-card variant front> definitions; consumed into the official deck tree."
   },
   "parts": [],
-  "cssProperties": [
-    "--blora-deck-y",
-    "--blora-deck-scale",
-    "--blora-deck-opacity"
-  ],
+  "cssProperties": ["--blora-deck-y", "--blora-deck-scale", "--blora-deck-opacity"],
   "accessibilityPattern": "listbox",
   "migrationFromV1": "deck.migration.md"
 }

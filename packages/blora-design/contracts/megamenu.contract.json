@@ -38,9 +38,7 @@
     "default": "Declarative <blora-megamenu-section title> definitions containing links; consumed into the official menu grid."
   },
   "parts": [],
-  "cssProperties": [
-    "--blora-megamenu-offset"
-  ],
+  "cssProperties": ["--blora-megamenu-offset"],
   "accessibilityPattern": "menu",
   "migrationFromV1": "megamenu.migration.md"
 }

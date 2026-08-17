@@ -24,5 +24,9 @@ export const Default: Story = {
 };
 
 export const Sizes: Story = {
-  render: () => html\`<div class="blora-row"><blora-switch size="sm">小号</blora-switch><blora-switch>默认</blora-switch><blora-switch size="lg">大号</blora-switch></div>\`,
+  render: () =>
+    html`<div class="blora-row">
+      <blora-switch size="sm">小号</blora-switch><blora-switch>默认</blora-switch
+      ><blora-switch size="lg">大号</blora-switch>
+    </div>`,
 };

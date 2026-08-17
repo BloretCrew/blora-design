@@ -232,5 +232,29 @@ export const VirtualScrollBoth: Story = {
 };
 
 export const Striped: Story = {
-  render: () => html\`<div class="blora-table-wrap"><table class="blora-table" data-striped><thead><tr><th>成员</th><th>状态</th></tr></thead><tbody><tr><td>Alice</td><td>Active</td></tr><tr><td>Bob</td><td>Offline</td></tr><tr><td>Carol</td><td>Pending</td></tr></tbody></table></div>\`,
+  render: () =>
+    html`<div class="blora-table-wrap">
+      <table class="blora-table" data-striped>
+        <thead>
+          <tr>
+            <th>成员</th>
+            <th>状态</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Alice</td>
+            <td>Active</td>
+          </tr>
+          <tr>
+            <td>Bob</td>
+            <td>Offline</td>
+          </tr>
+          <tr>
+            <td>Carol</td>
+            <td>Pending</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>`,
 };

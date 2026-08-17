@@ -155,7 +155,7 @@
     "lint:css": "stylelint \"src/**/*.css\"",
     "typecheck": "tsc --noEmit",
     "test": "pnpm run build && vitest run --config vitest.config.ts",
-    "test:browser": "pnpm run build && playwright test --config ../../playwright.config.ts",
+    "test:browser": "pnpm run build && playwright test --config ../../playwright.config.ts --project=chromium --project=mobile-chromium --project=a11y",
     "build": "node ../tokens/scripts/build-tokens.mjs && vite build && vite build -c vite.global.config.ts && tsc --emitDeclarationOnly && node scripts/copy-tokens.mjs && node scripts/generate-manifests.mjs",
     "build:tokens": "node ../tokens/scripts/build-tokens.mjs",
     "size": "node scripts/check-size.mjs",

@@ -73,15 +73,7 @@
     "header": "Dialog header (title, close button)",
     "footer": "Dialog footer (action buttons)"
   },
-  "parts": [
-    "backdrop",
-    "panel",
-    "header",
-    "title",
-    "close-button",
-    "body",
-    "footer"
-  ],
+  "parts": ["backdrop", "panel", "header", "title", "close-button", "body", "footer"],
   "cssProperties": [
     "--blora-dialog-max-width",
     "--blora-button-bg",

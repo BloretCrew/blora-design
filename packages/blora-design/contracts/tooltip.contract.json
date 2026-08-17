@@ -34,7 +34,7 @@
     "default": "Content"
   },
   "parts": [],
-  "cssProperties": [],
+  "cssProperties": ["--blora-float-shift-x", "--blora-float-shift-y"],
   "accessibilityPattern": "navigation",
   "migrationFromV1": "tooltip.migration.md"
 }

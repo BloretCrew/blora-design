@@ -16,11 +16,7 @@
   "events": {},
   "slots": {},
   "parts": [],
-  "cssProperties": [
-    "--blora-fx-dur",
-    "--blora-diff-position",
-    "--blora-diff-ratio"
-  ],
+  "cssProperties": ["--blora-fx-dur", "--blora-diff-position", "--blora-diff-ratio"],
   "accessibilityPattern": "content",
   "migrationFromV1": "effects.migration.md"
 }

@@ -308,7 +308,9 @@ export class BloraTabs extends BloraElement {
     this.controller?.destroy();
     this.controller = createTabsController(root);
     this.listen(root, "click", (event) => {
-      const tab = (event.target as HTMLElement | null)?.closest<HTMLButtonElement>(".blora-tabs__tab");
+      const tab = (event.target as HTMLElement | null)?.closest<HTMLButtonElement>(
+        ".blora-tabs__tab",
+      );
       if (!tab || !root.contains(tab) || tab.disabled) return;
       this.reflectValue(tab.dataset.value ?? "");
     });

@@ -295,7 +295,8 @@ export class BloraDeck extends BloraElement {
     const field = this.querySelector<HTMLInputElement | HTMLTextAreaElement>("input, textarea");
     if (field) {
       field.disabled = this.hasAttribute("disabled");
-      if (this.hasAttribute("placeholder")) field.placeholder = this.getAttribute("placeholder") ?? "";
+      if (this.hasAttribute("placeholder"))
+        field.placeholder = this.getAttribute("placeholder") ?? "";
       if (this.hasAttribute("value") && this.ownerDocument.activeElement !== field) {
         field.value = this.getAttribute("value") ?? field.value;
       }

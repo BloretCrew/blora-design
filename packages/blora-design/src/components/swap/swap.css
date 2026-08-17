@@ -24,7 +24,7 @@ blora-swap {
   block-size: 2.5rem;
   color: var(--blora-color-text-secondary);
   background: var(--blora-color-surface-raised);
-  border: 1px solid var(--blora-color-border-default);
+  border: 1px solid var(--blora-color-border-subtle);
   border-radius: var(--blora-radius-full);
   transition:
     background var(--blora-duration-fast) var(--blora-easing-standard),

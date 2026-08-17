@@ -15,9 +15,7 @@
     "default": "Content"
   },
   "parts": [],
-  "cssProperties": [
-    "--blora-masonry-cols"
-  ],
+  "cssProperties": ["--blora-masonry-cols"],
   "accessibilityPattern": "section",
   "migrationFromV1": "masonry.migration.md"
 }

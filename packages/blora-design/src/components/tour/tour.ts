@@ -23,7 +23,9 @@ function cssLengthToPx(value: string, axis: number): number {
 
 /** Highlight the lone visual child (tag, button, …), not the wrapping step box. */
 function tourTarget(step: HTMLElement): HTMLElement {
-  const kids = Array.from(step.children).filter((node): node is HTMLElement => node instanceof HTMLElement);
+  const kids = Array.from(step.children).filter(
+    (node): node is HTMLElement => node instanceof HTMLElement,
+  );
   return kids.length === 1 ? kids[0]! : step;
 }
 

@@ -1,0 +1,53 @@
+<!--
+  Migration fixture: Accordion (Collapse)
+  v1 markup (left) vs v2 markup (right) after codemod.
+-->
+<div class="blora-scope" style="display: flex; gap: 2rem; flex-wrap: wrap">
+  <!-- v1 markup (before codemod) -->
+  <div id="v1" style="flex: 1; min-width: 250px">
+    <div class="blora-collapse">
+      <div class="blora-collapse__item is-open">
+        <div class="blora-collapse__head">
+          <span>Section A</span>
+          <span class="blora-collapse__icon">▶</span>
+        </div>
+        <div class="blora-collapse__body">
+          <div class="blora-collapse__content">Content for section A</div>
+        </div>
+      </div>
+      <div class="blora-collapse__item">
+        <div class="blora-collapse__head">
+          <span>Section B</span>
+          <span class="blora-collapse__icon">▶</span>
+        </div>
+        <div class="blora-collapse__body">
+          <div class="blora-collapse__content">Content for section B</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- v2 markup (after codemod) -->
+  <div id="v2" style="flex: 1; min-width: 250px">
+    <div class="blora-accordion">
+      <div class="blora-accordion__item" data-open>
+        <div class="blora-accordion__head">
+          <span>Section A</span>
+          <span class="blora-accordion__icon">▶</span>
+        </div>
+        <div class="blora-accordion__body">
+          <div class="blora-accordion__content">Content for section A</div>
+        </div>
+      </div>
+      <div class="blora-accordion__item">
+        <div class="blora-accordion__head">
+          <span>Section B</span>
+          <span class="blora-accordion__icon">▶</span>
+        </div>
+        <div class="blora-accordion__body">
+          <div class="blora-accordion__content">Content for section B</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

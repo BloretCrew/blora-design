@@ -17,7 +17,8 @@ export const Default: Story = {
 };
 
 export const EllipsisWindow: Story = {
-  render: () => html`<blora-pagination label="分页" page="7" total="12" max-visible="7"></blora-pagination>`,
+  render: () =>
+    html`<blora-pagination label="分页" page="7" total="12" max-visible="7"></blora-pagination>`,
 };
 
 export const Simple: Story = {

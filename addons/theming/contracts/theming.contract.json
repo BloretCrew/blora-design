@@ -7,23 +7,12 @@
   "requiresJavaScript": true,
   "customElements": {
     "blora-palette-picker": {
-      "attributes": [
-        "button-variant",
-        "size"
-      ],
-      "methods": [
-        "open",
-        "close"
-      ]
+      "attributes": ["button-variant", "size"],
+      "methods": ["open", "close"]
     },
     "blora-color-scheme-toggle": {
-      "attributes": [
-        "button-variant",
-        "size"
-      ],
-      "events": [
-        "blora-color-scheme-change"
-      ]
+      "attributes": ["button-variant", "size"],
+      "events": ["blora-color-scheme-change"]
     }
   },
   "methods": {

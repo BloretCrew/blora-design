@@ -7,21 +7,9 @@
   "requiresJavaScript": true,
   "customElements": {
     "blora-sidebar-layout": {
-      "attributes": [
-        "compact",
-        "label",
-        "sticky",
-        "toggle-label",
-        "variant"
-      ],
-      "definitions": [
-        "blora-sidebar-layout-sidebar",
-        "blora-sidebar-layout-content"
-      ],
-      "methods": [
-        "open",
-        "close"
-      ],
+      "attributes": ["compact", "label", "sticky", "toggle-label", "variant"],
+      "definitions": ["blora-sidebar-layout-sidebar", "blora-sidebar-layout-content"],
+      "methods": ["open", "close"],
       "cssProperties": [
         "--blora-sidebar-width",
         "--blora-sidebar-min-height",

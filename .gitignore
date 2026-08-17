@@ -16,11 +16,8 @@ blob-report/
 coverage/
 *.lcov
 
-# Test suites and visual snapshots (kept locally, not published)
-**/tests/
-**/*.test.ts
-**/*.spec.ts
-**/*-snapshots/
+# Platform-specific visual baselines (Linux baselines are committed;
+# win32 renders are generated locally for Windows review)
 **/*-win32.png
 
 # Discarded / unused local scratch
@@ -29,6 +26,7 @@ docs/refactor/showcase-postmortem/
 
 # Temporary files
 _verify_tmp/
+.tmp-vitest/
 *.tmp
 *.zip
 *.orig

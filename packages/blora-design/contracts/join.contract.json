@@ -20,7 +20,7 @@
     "default": "Adjacent buttons, inputs, or other formal controls."
   },
   "parts": [],
-  "cssProperties": [],
+  "cssProperties": ["--blora-join-height"],
   "accessibilityPattern": "group",
   "migrationFromV1": "join.migration.md"
 }

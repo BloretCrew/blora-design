@@ -34,9 +34,7 @@
     "default": "Declarative <blora-segment value selected disabled> definitions; consumed into official radio buttons."
   },
   "parts": [],
-  "cssProperties": [
-    "--blora-segmented-padding"
-  ],
+  "cssProperties": ["--blora-segmented-padding"],
   "accessibilityPattern": "radiogroup",
   "migrationFromV1": "segmented.migration.md"
 }

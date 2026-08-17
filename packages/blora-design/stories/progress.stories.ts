@@ -25,10 +25,10 @@ export const Default: Story = {
 };
 
 export const Circular: Story = {
-  render: () => html\`
+  render: () => html`
     <div class="blora-row">
       <blora-progress shape="circular" label="完成度" value="70"></blora-progress>
       <blora-progress shape="circular" label="同步中" value="40" variant="success"></blora-progress>
     </div>
-  \`,
+  `,
 };

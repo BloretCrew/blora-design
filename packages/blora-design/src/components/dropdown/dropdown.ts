@@ -204,7 +204,9 @@ export class BloraDropdown extends BloraElement {
   }
 
   protected render(): void {
-    const items = Array.from(this.children).filter((item) => item.localName === "blora-dropdown-item");
+    const items = Array.from(this.children).filter(
+      (item) => item.localName === "blora-dropdown-item",
+    );
     if (!this.definitions && !this.contentNodes) {
       if (items.length) {
         this.definitions = items.map((item) => ({

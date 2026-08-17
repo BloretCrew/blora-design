@@ -16,9 +16,7 @@
     "default": "Declarative <blora-collapse-item heading open disabled> definitions; consumed into the official independently-toggleable tree."
   },
   "parts": [],
-  "cssProperties": [
-    "--blora-collapse-h"
-  ],
+  "cssProperties": ["--blora-collapse-h"],
   "accessibilityPattern": "disclosure",
   "migrationFromV1": "collapse.migration.md"
 }

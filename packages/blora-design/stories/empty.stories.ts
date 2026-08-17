@@ -1,6 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/web-components";
 import { html } from "lit";
-const meta = { title: "Data display/Empty", component: "blora-empty", tags: ["autodocs"] } satisfies Meta;
+const meta = {
+  title: "Data display/Empty",
+  component: "blora-empty",
+  tags: ["autodocs"],
+} satisfies Meta;
 export default meta;
 type Story = StoryObj;
 export const Default: Story = {

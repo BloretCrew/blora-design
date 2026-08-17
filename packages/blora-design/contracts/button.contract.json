@@ -80,7 +80,9 @@
     "--blora-button-pad-y",
     "--blora-button-pad-x",
     "--blora-button-height",
-    "--blora-button-icon-size"
+    "--blora-button-icon-size",
+    "--blora-button-radius",
+    "--blora-button-corner"
   ],
   "accessibilityPattern": "button",
   "migrationFromV1": "button.migration.md"

@@ -20,7 +20,7 @@
     "default": "Host content plus .blora-indicator__item for the pinned overlay."
   },
   "parts": [],
-  "cssProperties": [],
+  "cssProperties": ["--blora-indicator-shift-x", "--blora-indicator-shift-y"],
   "accessibilityPattern": "section",
   "migrationFromV1": "indicator.migration.md"
 }

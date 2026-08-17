@@ -16,9 +16,7 @@
   "events": {},
   "slots": {},
   "parts": [],
-  "cssProperties": [
-    "--blora-qr-size"
-  ],
+  "cssProperties": ["--blora-qr-size"],
   "accessibilityPattern": "image",
   "migrationFromV1": "qrcode.migration.md"
 }

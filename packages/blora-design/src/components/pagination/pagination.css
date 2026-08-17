@@ -183,7 +183,8 @@ blora-pagination {
 }
 
 .blora-pagination[data-variant="simple"] .blora-pagination__item:hover:not([disabled]),
-.blora-pagination[data-variant="simple"] .blora-pagination__item[aria-current="page"]:hover:not([disabled]) {
+.blora-pagination[data-variant="simple"]
+  .blora-pagination__item[aria-current="page"]:hover:not([disabled]) {
   transform: none;
   box-shadow: none;
 }

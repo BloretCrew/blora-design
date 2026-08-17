@@ -23,12 +23,12 @@ export const Default: Story = {
 };
 
 export const CompactFilePicker: Story = {
-  render: () => html\`
+  render: () => html`
     <blora-upload
       variant="compact"
       prompt="选择附件"
       hint="支持 PDF / ZIP · 单文件 ≤ 20MB"
       accept=".pdf,.zip"
     ></blora-upload>
-  \`,
+  `,
 };

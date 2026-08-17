@@ -54,10 +54,7 @@
     "default": "No authored internal DOM; the CE generates the official field and wheel panel."
   },
   "parts": [],
-  "cssProperties": [
-    "--blora-tp-item",
-    "--blora-tp-visible"
-  ],
+  "cssProperties": ["--blora-tp-item", "--blora-tp-visible"],
   "accessibilityPattern": "time picker",
   "migrationFromV1": "timepicker.migration.md"
 }

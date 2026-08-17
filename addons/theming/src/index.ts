@@ -259,7 +259,10 @@ function mountPalettePicker(root: HTMLElement): PalettePickerController {
   };
 
   const placeMenu = () => {
-    if (typeof window.matchMedia === "function" && window.matchMedia("(max-width: 560px)").matches) {
+    if (
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(max-width: 560px)").matches
+    ) {
       clearMenuPlace();
       return;
     }

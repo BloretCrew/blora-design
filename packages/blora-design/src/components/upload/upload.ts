@@ -173,7 +173,8 @@ export class BloraUpload extends BloraElement {
     const compact = this.getAttribute("variant") === "compact";
     const disabled = this.hasAttribute("disabled");
     const prompt = this.getAttribute("prompt") ?? (compact ? "选择文件" : "拖拽文件至此");
-    const hintText = this.getAttribute("hint") ?? (compact ? "点击选择或拖拽文件至此" : "选择或拖放文件");
+    const hintText =
+      this.getAttribute("hint") ?? (compact ? "点击选择或拖拽文件至此" : "选择或拖放文件");
     const input = this.ownerDocument.createElement("input");
     input.className = compact ? "blora-file-picker__input" : "blora-dropzone__input";
     input.type = "file";

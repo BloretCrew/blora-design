@@ -11,7 +11,8 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component: "Form-associated combobox with keyboard navigation and single or multiple selection.",
+        component:
+          "Form-associated combobox with keyboard navigation and single or multiple selection.",
       },
     },
   },
@@ -50,7 +51,12 @@ export const Disabled: Story = {
 
 export const Multiple: Story = {
   render: () => html`
-    <blora-select multiple max-tag-count="2" value="design,frontend,product" placeholder="Choose teams">
+    <blora-select
+      multiple
+      max-tag-count="2"
+      value="design,frontend,product"
+      placeholder="Choose teams"
+    >
       <blora-option value="design">Design</blora-option>
       <blora-option value="frontend">Frontend</blora-option>
       <blora-option value="product">Product</blora-option>

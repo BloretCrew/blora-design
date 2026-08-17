@@ -103,15 +103,7 @@
   "slots": {
     "default": "blora-option elements"
   },
-  "parts": [
-    "trigger",
-    "value",
-    "tag",
-    "tag-remove",
-    "popup",
-    "listbox",
-    "option"
-  ],
+  "parts": ["trigger", "value", "tag", "tag-remove", "popup", "listbox", "option"],
   "cssProperties": [
     "--blora-select-popup-max-height",
     "--blora-button-bg",

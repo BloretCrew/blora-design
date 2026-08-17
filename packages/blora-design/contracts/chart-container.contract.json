@@ -30,9 +30,7 @@
     "default": "Chart markup consumed into the official chart body."
   },
   "parts": [],
-  "cssProperties": [
-    "--blora-chart-min-h"
-  ],
+  "cssProperties": ["--blora-chart-min-h"],
   "accessibilityPattern": "section",
   "migrationFromV1": "chart-container.migration.md"
 }
