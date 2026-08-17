@@ -1544,6 +1544,82 @@
           return lines;
         }
 
+        function caseHeading(section) {
+          return section.querySelector(":scope > h3")?.textContent.trim() || "";
+        }
+
+        function caseBodyNodes(section) {
+          const heading = section.querySelector(":scope > h3");
+          return [...section.childNodes].filter((node) => node !== heading);
+        }
+
+        function collectCases(template) {
+          const cases = [...template.content.querySelectorAll("[data-showcase-case]")];
+          if (cases.length <= 1) {
+            return [
+              {
+                id: cases[0]?.getAttribute("data-showcase-case") || "basic",
+                title: "基础用法",
+                whole: true,
+              },
+            ];
+          }
+          return cases.map((section) => ({
+            id: section.getAttribute("data-showcase-case") || "case",
+            title: caseHeading(section) || section.getAttribute("data-showcase-case"),
+            section,
+            whole: false,
+          }));
+        }
+
+        function linesForDemo(template, demo, isFirst) {
+          if (demo.whole) return sourceLines(template);
+          const lines = caseBodyNodes(demo.section).flatMap((node) => serializeNode(node));
+          const extra = isFirst ? sourceScripts[template.dataset.component] : null;
+          if (extra?.length) {
+            if (lines.length) lines.push("");
+            lines.push(...extra);
+          }
+          return lines;
+        }
+
+        function createExample(name, caseId, lines) {
+          const example = createElement("div", {
+            class: "showcase-example",
+            "data-example": name,
+            "data-case": caseId,
+          });
+          const tabs = createElement("blora-tabs", { flush: "" });
+          const previewTab = createElement("blora-tab", {
+            label: "Preview",
+            value: "preview",
+            selected: "",
+          });
+          previewTab.append(
+            createElement("div", {
+              class: "showcase-preview",
+              id: `${name}-${caseId}-preview`,
+              "data-preview-mount": name,
+              "data-case": caseId,
+            }),
+          );
+          const codeTab = createElement("blora-tab", { label: "HTML", value: "html" });
+          const codePanel = createElement("div", { class: "showcase-code-panel" });
+          const mockup = createElement("blora-mockup", {
+            id: `${name}-${caseId}-code`,
+            variant: "code",
+            label: `${name} ${caseId} HTML 示例`,
+          });
+          for (const line of lines) {
+            mockup.append(createElement("blora-mockup-line", {}, line));
+          }
+          codePanel.append(mockup);
+          codeTab.append(codePanel);
+          tabs.append(previewTab, codeTab);
+          example.append(tabs);
+          return example;
+        }
+
         function createElement(tag, attributes = {}, text = "") {
           const element = document.createElement(tag);
           for (const [name, value] of Object.entries(attributes)) {
@@ -1622,7 +1698,6 @@
 
         for (const template of sourceTemplates) {
           const name = template.dataset.component;
-          const titleId = `${name}-basic-title`;
           const article = createElement("article", {
             class: "showcase-panel",
             id: `panel-${name}`,
@@ -1653,53 +1728,28 @@
               template.dataset.kind,
             ),
           );
+          article.append(heading);
 
-          const section = createElement("section", {
-            class: "showcase-section",
-            "aria-labelledby": titleId,
+          const demos = collectCases(template);
+          demos.forEach((demo, index) => {
+            const titleId = `${name}-${demo.id}-title`;
+            const section = createElement("section", {
+              class: "showcase-section",
+              "aria-labelledby": titleId,
+            });
+            section.append(
+              createElement("h2", { id: titleId }, demo.title),
+              createElement(
+                "p",
+                { class: "showcase-section__description" },
+                demos.length > 1
+                  ? "下方 Preview 与 HTML 来自该变体的正式组件声明。"
+                  : "下方 Preview 与 HTML 均来自同一份正式组件声明。",
+              ),
+              createExample(name, demo.id, linesForDemo(template, demo, index === 0)),
+            );
+            article.append(section);
           });
-          section.append(
-            createElement("h2", { id: titleId }, "基础用法"),
-            createElement(
-              "p",
-              { class: "showcase-section__description" },
-              "下方 Preview 与 HTML 均来自同一份正式组件声明。",
-            ),
-          );
-
-          const example = createElement("div", {
-            class: "showcase-example",
-            "data-example": name,
-          });
-          const tabs = createElement("blora-tabs", { flush: "" });
-          const previewTab = createElement("blora-tab", {
-            label: "Preview",
-            value: "preview",
-            selected: "",
-          });
-          previewTab.append(
-            createElement("div", {
-              class: "showcase-preview",
-              id: `${name}-preview`,
-              "data-preview-mount": name,
-            }),
-          );
-          const codeTab = createElement("blora-tab", { label: "HTML", value: "html" });
-          const codePanel = createElement("div", { class: "showcase-code-panel" });
-          const mockup = createElement("blora-mockup", {
-            id: `${name}-code`,
-            variant: "code",
-            label: `${template.dataset.label} HTML 示例`,
-          });
-          for (const line of sourceLines(template)) {
-            mockup.append(createElement("blora-mockup-line", {}, line));
-          }
-          codePanel.append(mockup);
-          codeTab.append(codePanel);
-          tabs.append(previewTab, codeTab);
-          example.append(tabs);
-          section.append(example);
-          article.append(heading, section);
           componentPanelRoot.append(article);
         }
 
@@ -1708,16 +1758,7 @@
         const componentPanels = [...document.querySelectorAll("[data-component-panel]")];
         const componentNames = new Set(componentPanels.map((panel) => panel.dataset.componentPanel));
 
-        function hydratePanel(name) {
-          const panel = document.querySelector(`[data-component-panel="${name}"]`);
-          if (!panel || panel.dataset.hydrated === "true") return;
-          const source = sourceTemplates.find((template) => template.dataset.component === name);
-          const mount = panel.querySelector(`[data-preview-mount="${name}"]`);
-          mount.append(source.content.cloneNode(true));
-          panel.dataset.hydrated = "true";
-          if (typeof Blora.enhanceButtons === "function") Blora.enhanceButtons(mount);
-          if (typeof Blora.enhanceBadges === "function") Blora.enhanceBadges(mount);
-
+        function bindPreviewResize(mount) {
           const resizePreview = () => {
             const previewRect = mount.getBoundingClientRect();
             let requiredBottom = previewRect.top;
@@ -1739,6 +1780,18 @@
           mount.addEventListener("click", schedulePreviewResize);
           mount.addEventListener("input", schedulePreviewResize);
           schedulePreviewResize();
+        }
+
+        function hydrateMount(name, mount, source, demo) {
+          if (demo.whole) mount.append(source.content.cloneNode(true));
+          else {
+            const fragment = document.createDocumentFragment();
+            for (const node of caseBodyNodes(demo.section)) fragment.append(node.cloneNode(true));
+            mount.append(fragment);
+          }
+          if (typeof Blora.enhanceButtons === "function") Blora.enhanceButtons(mount);
+          if (typeof Blora.enhanceBadges === "function") Blora.enhanceBadges(mount);
+          bindPreviewResize(mount);
 
           const messageTarget = mount.querySelector('[data-showcase-service="message"]');
           if (messageTarget) {
@@ -1834,6 +1887,19 @@
               }
             });
           }
+        }
+
+        function hydratePanel(name) {
+          const panel = document.querySelector(`[data-component-panel="${name}"]`);
+          if (!panel || panel.dataset.hydrated === "true") return;
+          const source = sourceTemplates.find((template) => template.dataset.component === name);
+          for (const demo of collectCases(source)) {
+            const mount = panel.querySelector(
+              `[data-preview-mount="${name}"][data-case="${CSS.escape(demo.id)}"]`,
+            );
+            if (mount) hydrateMount(name, mount, source, demo);
+          }
+          panel.dataset.hydrated = "true";
         }
 
         function syncTheme() {
