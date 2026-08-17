@@ -63,7 +63,10 @@ blora-tabs {
     color var(--blora-duration-fast) var(--blora-easing-standard),
     background var(--blora-duration-fast) var(--blora-easing-standard);
   position: relative;
-  z-index: var(--blora-z-sticky);
+
+  /* Above the sliding indicator (same tier, later in DOM) but below page
+     chrome like the sticky navbar, which must keep covering content. */
+  z-index: var(--blora-z-base);
   background: none;
   border-inline-start: none;
   border-inline-end: none;

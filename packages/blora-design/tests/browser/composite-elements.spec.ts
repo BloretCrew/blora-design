@@ -717,6 +717,19 @@ test("showcase catalog routes one of every official component at a time", async 
   expect(navbarGeometry.markHeight).toBeGreaterThanOrEqual(32);
   for (const height of navbarGeometry.controlHeights) expect(height).toBe(32);
 
+  const layerOrder = await page.evaluate(() => {
+    const navbar = document.querySelector<HTMLElement>(".showcase-navbar .blora-navbar")!;
+    const tab = document.querySelector<HTMLElement>(
+      "[data-example='accordion'] .blora-tabs__tab",
+    )!;
+    return {
+      navbarZ: Number(getComputedStyle(navbar).zIndex),
+      tabZ: Number(getComputedStyle(tab).zIndex),
+    };
+  });
+  // Sticky page chrome must paint above example content (tabs tier)
+  expect(layerOrder.navbarZ).toBeGreaterThan(layerOrder.tabZ);
+
   const accordionTabs = page.locator('[data-example="accordion"] .blora-tabs__tab');
   await accordionTabs.filter({ hasText: "HTML" }).click();
   await expect(page.locator('[data-example="accordion"] .blora-mockup')).toBeVisible();
