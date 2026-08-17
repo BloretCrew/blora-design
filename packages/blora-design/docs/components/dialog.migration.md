@@ -78,7 +78,7 @@
 
 - Focus trap (Tab/Shift+Tab does not escape)
 - Focus return to trigger on close
-- Scroll lock with reference counting
+- Scroll lock with reference counting (freezes `body` with `position: fixed`, same as 1.x, so sticky chrome stays in the viewport)
 - Escape key handling
 - Outside click handling
 - Overlay stack management (nested dialogs)

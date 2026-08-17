@@ -32,8 +32,20 @@ interface StackEntry {
   scrollLockCount: number;
 }
 
+interface ScrollLockSnapshot {
+  y: number;
+  position: string;
+  top: string;
+  left: string;
+  right: string;
+  width: string;
+  paddingRight: string;
+  overflow: string;
+}
+
 const stacks = new WeakMap<Document, StackEntry[]>();
 const scrollLockCounts = new WeakMap<Document, number>();
+const scrollLockSnapshots = new WeakMap<Document, ScrollLockSnapshot>();
 const modalCounts = new WeakMap<Document, number>();
 
 function markModalOpen(document: Document): void {
@@ -64,19 +76,85 @@ function getStack(document: Document): StackEntry[] {
 function lockScroll(document: Document): void {
   const count = (scrollLockCounts.get(document) ?? 0) + 1;
   scrollLockCounts.set(document, count);
-  if (count === 1) {
-    document.body.style.overflow = "hidden";
-  }
+  if (count !== 1) return;
+
+  const body = document.body;
+  const root = document.documentElement;
+  if (!body) return;
+
+  const win = document.defaultView;
+  const y = win ? win.scrollY || root.scrollTop || 0 : root.scrollTop || 0;
+  const sbw = win ? Math.max(0, win.innerWidth - root.clientWidth) : 0;
+
+  scrollLockSnapshots.set(document, {
+    y,
+    position: body.style.position,
+    top: body.style.top,
+    left: body.style.left,
+    right: body.style.right,
+    width: body.style.width,
+    paddingRight: body.style.paddingRight,
+    overflow: body.style.overflow,
+  });
+
+  /* Freeze the page in place. `overflow: hidden` makes `body` the sticky
+     containing block, so a scrolled navbar jumps out of the viewport.
+     1.x uses the same position:fixed snapshot for that reason. */
+  root.dataset.bloraScrollLocked = "1";
+  body.style.position = "fixed";
+  body.style.top = `-${y}px`;
+  body.style.left = "0";
+  body.style.right = "0";
+  body.style.width = "100%";
+  body.style.overflow = "visible";
+  if (sbw) body.style.paddingRight = `${sbw}px`;
 }
 
 function unlockScroll(document: Document): void {
   const count = Math.max(0, (scrollLockCounts.get(document) ?? 0) - 1);
-  if (count === 0) {
-    scrollLockCounts.delete(document);
-    document.body.style.overflow = "";
-  } else {
+  if (count > 0) {
     scrollLockCounts.set(document, count);
+    return;
   }
+
+  scrollLockCounts.delete(document);
+  const snapshot = scrollLockSnapshots.get(document);
+  scrollLockSnapshots.delete(document);
+
+  const body = document.body;
+  const root = document.documentElement;
+  delete root.dataset.bloraScrollLocked;
+
+  if (body && snapshot) {
+    body.style.position = snapshot.position;
+    body.style.top = snapshot.top;
+    body.style.left = snapshot.left;
+    body.style.right = snapshot.right;
+    body.style.width = snapshot.width;
+    body.style.paddingRight = snapshot.paddingRight;
+    body.style.overflow = snapshot.overflow;
+  } else if (body) {
+    body.style.position = "";
+    body.style.top = "";
+    body.style.left = "";
+    body.style.right = "";
+    body.style.width = "";
+    body.style.paddingRight = "";
+    if (body.style.overflow === "hidden" || body.style.overflow === "visible") {
+      body.style.overflow = "";
+    }
+  }
+
+  restoreWindowScroll(document, snapshot?.y ?? 0);
+}
+
+function restoreWindowScroll(document: Document, y: number): void {
+  const win = document.defaultView;
+  if (!win || win.navigator.userAgent.includes("jsdom")) {
+    document.documentElement.scrollTop = y;
+    return;
+  }
+  win.scrollTo(0, y);
 }
 
 function getFocusableElements(root: HTMLElement): HTMLElement[] {

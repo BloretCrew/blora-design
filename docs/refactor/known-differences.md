@@ -28,8 +28,8 @@
 ### Dialog - 打开时挂到 body，遮罩盖满视口
 
 - **组件**：dialog
-- **1.x 表现**：模态挂到 portal / body，遮罩相对视口。
-- **2.0 表现**：`show()` 把主机挂到 `document.body` 并 `showPopover()` 进入顶层，遮罩按视口铺满。页面级 sidebar 去掉 `container-type`，避免 `fixed` 困在目录盒里。滚动到顶或滚下去，navbar 都在遮罩后面。
+- **1.x 表现**：模态挂到 portal / body，遮罩相对视口。锁滚动用 `position: fixed` 冻结页面，避免 `overflow: hidden` 打断 sticky 顶栏。
+- **2.0 表现**：`show()` 把主机挂到 `document.body` 并 `showPopover()` 进入顶层，遮罩按视口铺满。滚动锁与 1.x 相同：冻结 `body` 而不是写 `overflow: hidden`。滚动到顶或滚下去，navbar 都留在视口顶部、叠在遮罩后面。
 - **改变原因**：bug 修复
 - **审核状态**：pending
 
