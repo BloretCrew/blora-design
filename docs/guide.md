@@ -89,7 +89,7 @@ console.log(VERSION); // 例如 2.0.0-alpha.1
 import { applyColorScheme, applyTheme } from "@bloret-crew/blora-design-theming";
 
 applyColorScheme("dark"); // light | dark | system（以包 API 为准）
-applyTheme("ocean"); // 多主题名见 theming 包 / Storybook
+applyTheme("indigo"); // coral | indigo | lotus | graphite | mono | circuit | dusk
 ```
 
 也可用 `data-blora-color-scheme` / 主题相关 data 属性（见 theming Story）。

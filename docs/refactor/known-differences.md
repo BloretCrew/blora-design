@@ -49,6 +49,14 @@
 - **改变原因**：bug 修复
 - **审核状态**：pending
 
+### Theming - 2.0 不再提供 Cinnabar / Ocean
+
+- **组件**：theming
+- **1.x 表现**：配色列表含 Cinnabar、Ocean。
+- **2.0 表现**：主题选择器只保留 Coral、Indigo、Lotus、Graphite、Mono、Circuit、Dusk。本地若仍存着已删主题名，会回落到 Coral。
+- **改变原因**：其他
+- **审核状态**：pending
+
 ### Theming - 深浅色切换后主题仍跟着走
 
 - **组件**：theming

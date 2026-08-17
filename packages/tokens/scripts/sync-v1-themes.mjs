@@ -13,10 +13,8 @@ const css = readFileSync(join(repositoryRoot, "legacy", "v1", "blora.css"), "utf
 const themesDir = resolve(scriptDir, "..", "src", "themes");
 
 const palettes = [
-  "cinnabar",
   "indigo",
   "lotus",
-  "ocean",
   "graphite",
   "mono",
   "circuit",

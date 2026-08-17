@@ -17,11 +17,6 @@ export const THEME_PRESETS: Record<string, ThemePreset> = {
     description: "深靛灰与柔和珊瑚红",
     colors: ["#FAF7F8", "#303143", "#9F5964", "#5D6680", "#5B756B"],
   },
-  cinnabar: {
-    name: "Cinnabar",
-    description: "暖白基底与低饱和红",
-    colors: ["#F8F4EC", "#A0392E", "#3D4A5C", "#5A7B6B", "#B89968"],
-  },
   indigo: {
     name: "Indigo",
     description: "冷灰基底与沉静蓝",
@@ -31,11 +26,6 @@ export const THEME_PRESETS: Record<string, ThemePreset> = {
     name: "Lotus",
     description: "柔和粉紫与低饱和绿",
     colors: ["#F8F4F6", "#9A466A", "#55786B", "#526078", "#B28A59"],
-  },
-  ocean: {
-    name: "Ocean",
-    description: "清爽青蓝与低饱和绿",
-    colors: ["#F1F7F6", "#176B78", "#39745F", "#365D78", "#B08A55"],
   },
   graphite: {
     name: "Graphite",

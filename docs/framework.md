@@ -111,7 +111,7 @@ Blora.getConfig();
 
 Blora.message / notify / confirm（1.x 另有 toast，2.0 已移除）
 Blora.openModal / closeModal / openDrawer / closeDrawer
-Blora.applyPalette('ocean');         // coral（默认）| dusk | ocean | indigo | lotus | cinnabar | graphite | mono | circuit | …
+Blora.applyPalette('indigo');        // coral（默认）| dusk | indigo | lotus | graphite | mono | circuit | …
 Blora.applyColorMode('system');      // system | light | dark
 Blora.getPalette(); Blora.getColorMode(); Blora.palettes;
 
@@ -148,11 +148,11 @@ Blora.cls / classPrefix / version   // "1.0.0"
 }
 ```
 
-**唯一视觉标准与配色**：Blora Design 只有一套字体、圆角、阴影、控件尺寸、动效和玻璃表面标准，直接定义在 `:root`，不需要主题属性或主题 API。`Blora.applyPalette('ocean')` 只会写入 `data-blora-palette="ocean"` 并替换语义颜色，不改变组件形态；未设置属性时使用默认 **`coral`** 配色。
+**唯一视觉标准与配色**：Blora Design 只有一套字体、圆角、阴影、控件尺寸、动效和玻璃表面标准，直接定义在 `:root`，不需要主题属性或主题 API。`Blora.applyPalette('indigo')` 只会写入 `data-blora-palette` 并替换语义颜色，不改变组件形态；未设置属性时使用默认 **`coral`** 配色。
 
 **暗色模式**：`<html class="blora-dark">` 即可，所有颜色 token 自动重映射，无需改组件。暗色模式可与任意配色组合。
 
-视觉形态不随配色改变。Coral、Dusk、Cinnabar、Indigo、Lotus、Ocean、Graphite、Mono、Circuit 都只负责颜色映射，其中 **Coral 是默认配色**。
+视觉形态不随配色改变。Coral、Dusk、Indigo、Lotus、Graphite、Mono、Circuit 都只负责颜色映射，其中 **Coral 是默认配色**。
 
 ---
 
