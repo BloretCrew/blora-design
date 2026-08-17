@@ -1,5 +1,9 @@
 /* Blora Design 2.0 - Drawer */
 
+blora-drawer:not([open], [data-open]) {
+  display: none;
+}
+
 blora-drawer {
   display: contents;
 }

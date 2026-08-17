@@ -30,6 +30,13 @@
         --showcase-navbar-offset: 6rem;
       }
 
+      /* Hide unstamped hosts before BloraElement's parser-defer render. */
+      blora-dialog:not([open]),
+      blora-drawer:not([open], [data-open]),
+      blora-tabs > blora-tab:not([selected]) {
+        display: none;
+      }
+
       * {
         box-sizing: border-box;
       }

@@ -3,6 +3,12 @@
    Spec §12: Overlay system, §12.4: Dialog acceptance criteria
    ========================================================================= */
 
+/* Document stylesheet: hide before the CE stamps its shadow tree.
+   `:host { display: none }` only applies after upgrade/render. */
+blora-dialog:not([open]) {
+  display: none;
+}
+
 :host {
   display: none;
 }

@@ -1,5 +1,10 @@
 /* Blora Design 2.0 - Tabs */
 
+/* Before render(), light-DOM <blora-tab> children would all paint. */
+blora-tabs > blora-tab:not([selected]) {
+  display: none;
+}
+
 blora-tabs {
   display: block;
 }
