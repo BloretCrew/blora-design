@@ -7,7 +7,13 @@
   "since": "2.0.0",
   "requiresJavaScript": false,
   "formAssociated": false,
-  "attributes": {},
+  "attributes": {
+    "data-variant": {
+      "type": "\"primary\" | \"surface\"",
+      "default": "primary",
+      "reflects": true
+    }
+  },
   "properties": {},
   "methods": {},
   "events": {},

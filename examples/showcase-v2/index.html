@@ -496,10 +496,17 @@
         <blora-copy text="pnpm add @bloret-crew/blora-design" label="复制安装命令"></blora-copy>
       </template>
       <template data-component="fab" data-label="FAB" data-group="操作" data-eyebrow="Actions" data-kind="CSS-only" data-description="适合页面主操作的浮动按钮视觉表面。">
-        <div data-showcase-center>
-          <button class="blora-fab blora-fab--static" type="button" aria-label="新建项目">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
-          </button>
+        <div data-showcase-cases>
+          <section data-showcase-case="Default"><h3>默认</h3><div data-showcase-center>
+            <button class="blora-fab blora-fab--static" type="button" aria-label="新建项目">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+            </button>
+          </div></section>
+          <section data-showcase-case="Surface"><h3>浅色</h3><div data-showcase-center>
+            <button class="blora-fab blora-fab--static" type="button" data-variant="surface" aria-label="打开菜单">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 5h16"></path><path d="M4 12h16"></path><path d="M4 19h16"></path></svg>
+            </button>
+          </div></section>
         </div>
       </template>
       <template data-component="speed-dial" data-label="Speed Dial" data-group="操作" data-eyebrow="Actions" data-kind="Composite CE" data-description="从主浮动按钮展开一组相关快捷操作。">

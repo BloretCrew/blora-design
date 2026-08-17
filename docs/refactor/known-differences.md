@@ -61,7 +61,7 @@
 
 - **组件**：sidebar-layout
 - **1.x 表现**：窄屏开关是内容区左上角的小 outline 按钮。
-- **2.0 表现**：`variant="seamless"` 使用正式 `.blora-fab`，固定在视口左下；`toggle-label` 作为 `aria-label`。卡片变体仍用 outline 文字钮。
+- **2.0 表现**：`variant="seamless"` 使用正式 `.blora-fab[data-variant="surface"]`，固定在视口左下；`toggle-label` 作为 `aria-label`。卡片变体仍用 outline 文字钮。
 - **改变原因**：可用性（页面级导航开关不应占掉标题行）
 - **审核状态**：pending
 

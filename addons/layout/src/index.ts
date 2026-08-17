@@ -257,6 +257,7 @@ export class BloraSidebarLayout extends LayoutBase {
     toggle.dataset.bloraSidebarToggle = "";
     if ((this.getAttribute("variant") ?? "default") === "seamless") {
       toggle.className = "blora-fab blora-sidebar-layout__toggle";
+      toggle.dataset.variant = "surface";
       toggle.setAttribute("aria-label", toggleLabel);
       toggle.appendChild(createBloraIcon("menu", 22, this.ownerDocument));
     } else {
