@@ -1758,6 +1758,15 @@
         const componentPanels = [...document.querySelectorAll("[data-component-panel]")];
         const componentNames = new Set(componentPanels.map((panel) => panel.dataset.componentPanel));
 
+        function isFixedOverlay(element, mount) {
+          let current = element;
+          while (current && current !== mount) {
+            if (getComputedStyle(current).position === "fixed") return true;
+            current = current.parentElement;
+          }
+          return false;
+        }
+
         function bindPreviewResize(mount) {
           const resizePreview = () => {
             const previewRect = mount.getBoundingClientRect();
@@ -1765,6 +1774,7 @@
             for (const element of mount.querySelectorAll("*")) {
               const style = getComputedStyle(element);
               if (style.display === "none" || style.visibility === "hidden") continue;
+              if (isFixedOverlay(element, mount)) continue;
               requiredBottom = Math.max(requiredBottom, element.getBoundingClientRect().bottom);
             }
             const blockPadding = parseFloat(getComputedStyle(mount).paddingBottom) || 0;
