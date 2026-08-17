@@ -30,6 +30,7 @@ export type BloraIconName =
   | "inbox"
   | "info"
   | "mail"
+  | "menu"
   | "message"
   | "mic"
   | "minus"
@@ -213,6 +214,13 @@ export function createBloraIcon(
         svgNode(doc, "path", { d: "M12 16v-4M12 8h.01" }),
       );
       break;
+    case "menu":
+      nodes.push(
+        svgNode(doc, "path", { d: "M4 5h16" }),
+        svgNode(doc, "path", { d: "M4 12h16" }),
+        svgNode(doc, "path", { d: "M4 19h16" }),
+      );
+      break;
     case "mail":
       nodes.push(
         svgNode(doc, "rect", { x: "3", y: "5", width: "18", height: "14", rx: "2" }),
@@ -362,6 +370,7 @@ const ICON_NAMES = new Set<string>([
   "inbox",
   "info",
   "mail",
+  "menu",
   "message",
   "mic",
   "minus",

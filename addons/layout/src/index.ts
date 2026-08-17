@@ -5,6 +5,8 @@
  * @packageDocumentation
  */
 
+import { createBloraIcon } from "@bloret-crew/blora-design";
+
 export interface Destroyable {
   destroy(): void;
 }
@@ -71,7 +73,15 @@ function mountSidebarLayout(root: HTMLElement): SidebarLayoutController {
     root.classList.toggle("is-open", open);
     if (open) root.setAttribute("data-open", "");
     else root.removeAttribute("data-open");
-    toggles.forEach((toggle) => toggle.setAttribute("aria-expanded", String(open)));
+    toggles.forEach((toggle) => {
+      toggle.setAttribute("aria-expanded", String(open));
+      if (toggle.classList.contains("blora-fab")) {
+        const icon = createBloraIcon(open ? "close" : "menu", 22, doc);
+        const prev = toggle.querySelector("svg");
+        if (prev) prev.replaceWith(icon);
+        else toggle.replaceChildren(icon);
+      }
+    });
     syncA11y();
     if (open && focus) {
       aside
@@ -241,13 +251,20 @@ export class BloraSidebarLayout extends LayoutBase {
     if (this.hasAttribute("compact")) root.classList.add("blora-sidebar-layout--compact");
     if (this.hasAttribute("sticky")) root.dataset.sticky = "";
 
+    const toggleLabel = this.getAttribute("toggle-label") ?? "Menu";
     const toggle = this.ownerDocument.createElement("button");
     toggle.type = "button";
-    toggle.className = "blora-button blora-sidebar-layout__toggle";
-    toggle.dataset.variant = "outline";
-    toggle.dataset.size = "sm";
     toggle.dataset.bloraSidebarToggle = "";
-    toggle.textContent = this.getAttribute("toggle-label") ?? "Menu";
+    if ((this.getAttribute("variant") ?? "default") === "seamless") {
+      toggle.className = "blora-fab blora-sidebar-layout__toggle";
+      toggle.setAttribute("aria-label", toggleLabel);
+      toggle.appendChild(createBloraIcon("menu", 22, this.ownerDocument));
+    } else {
+      toggle.className = "blora-button blora-sidebar-layout__toggle";
+      toggle.dataset.variant = "outline";
+      toggle.dataset.size = "sm";
+      toggle.textContent = toggleLabel;
+    }
 
     const mask = this.ownerDocument.createElement("div");
     mask.className = "blora-sidebar-layout__mask";

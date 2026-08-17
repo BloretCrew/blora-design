@@ -118,6 +118,53 @@ blora-sidebar-layout[compact] {
   z-index: var(--blora-z-base);
 }
 
+/* Page chrome: official FAB at the viewport start/bottom, not an in-flow pill. */
+.blora-sidebar-layout[data-variant="seamless"][data-drawer] .blora-sidebar-layout__toggle.blora-fab,
+.blora-sidebar-layout[data-variant="seamless"].blora-sidebar-layout--drawer .blora-sidebar-layout__toggle.blora-fab {
+  display: grid;
+  place-items: center;
+  place-self: start;
+  box-sizing: border-box;
+  width: 56px;
+  height: 56px;
+  min-width: 56px;
+  min-height: 56px;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  position: fixed;
+  inset-inline: max(var(--blora-space-5), env(safe-area-inset-inline-start, 0px)) auto;
+  right: auto;
+  left: max(var(--blora-space-5), env(safe-area-inset-left, 0px));
+  bottom: max(var(--blora-space-5), env(safe-area-inset-bottom, 0px));
+  z-index: calc(var(--blora-z-drawer) + 1);
+}
+
+[dir="rtl"] .blora-sidebar-layout[data-variant="seamless"][data-drawer] .blora-sidebar-layout__toggle.blora-fab,
+[dir="rtl"] .blora-sidebar-layout[data-variant="seamless"].blora-sidebar-layout--drawer .blora-sidebar-layout__toggle.blora-fab {
+  left: auto;
+  right: max(var(--blora-space-5), env(safe-area-inset-right, 0px));
+}
+
+@media (max-width: 560px) {
+  .blora-sidebar-layout[data-variant="seamless"][data-drawer] .blora-sidebar-layout__toggle.blora-fab,
+  .blora-sidebar-layout[data-variant="seamless"].blora-sidebar-layout--drawer .blora-sidebar-layout__toggle.blora-fab {
+    inset-inline: max(var(--blora-space-4), env(safe-area-inset-inline-start, 0px)) auto;
+    left: max(var(--blora-space-4), env(safe-area-inset-left, 0px));
+    bottom: max(var(--blora-space-4), env(safe-area-inset-bottom, 0px));
+    width: 3rem;
+    height: 3rem;
+    min-width: 3rem;
+    min-height: 3rem;
+  }
+
+  [dir="rtl"] .blora-sidebar-layout[data-variant="seamless"][data-drawer] .blora-sidebar-layout__toggle.blora-fab,
+  [dir="rtl"] .blora-sidebar-layout[data-variant="seamless"].blora-sidebar-layout--drawer .blora-sidebar-layout__toggle.blora-fab {
+    left: auto;
+    right: max(var(--blora-space-4), env(safe-area-inset-right, 0px));
+  }
+}
+
 .blora-sidebar-layout--drawer .blora-sidebar-layout__content,
 .blora-sidebar-layout[data-drawer] .blora-sidebar-layout__content {
   grid-column: 1;

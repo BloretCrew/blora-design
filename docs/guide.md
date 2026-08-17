@@ -399,7 +399,7 @@ import "@bloret-crew/blora-design-theming";
 ```
 
 ```html
-<blora-sidebar-layout toggle-label="菜单" sticky>
+<blora-sidebar-layout variant="seamless" toggle-label="菜单" sticky>
   <blora-sidebar-layout-sidebar>
     <blora-sidebar-nav><!-- groups + links --></blora-sidebar-nav>
   </blora-sidebar-layout-sidebar>

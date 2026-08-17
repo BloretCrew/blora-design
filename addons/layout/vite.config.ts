@@ -6,6 +6,12 @@ import { defineConfig } from "vite";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      /* Bundle current icon source so "menu" exists before core dist rebuilds. */
+      "@bloret-crew/blora-design": resolve(__dirname, "../../packages/blora-design/src/core/icons.ts"),
+    },
+  },
   build: {
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
