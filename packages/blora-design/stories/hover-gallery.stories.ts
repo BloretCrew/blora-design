@@ -42,8 +42,5 @@ export const Default: Story = {
         ></div>
       </div>
     </div>
-    <p class="blora-text-xs" style="color:var(--blora-color-text-subtle);margin-top:0.5rem;">
-      拖拽或方向键切换
-    </p>
   `,
 };
