@@ -4,6 +4,8 @@
  * @packageDocumentation
  */
 
+import { createBloraIcon } from "@bloret-crew/blora-design";
+
 export interface ThemePreset {
   name: string;
   description: string;
@@ -410,48 +412,6 @@ export const BLORA_COLOR_SCHEME_TOGGLE_TAG = "blora-color-scheme-toggle";
 const ThemingBase: typeof HTMLElement =
   typeof HTMLElement !== "undefined" ? HTMLElement : (class {} as typeof HTMLElement);
 
-function createThemingIcon(doc: Document, name: "moon" | "palette" | "sun"): SVGSVGElement {
-  const svg = doc.createElementNS("http://www.w3.org/2000/svg", "svg");
-  svg.setAttribute("width", "18");
-  svg.setAttribute("height", "18");
-  svg.setAttribute("viewBox", "0 0 24 24");
-  svg.setAttribute("fill", "none");
-  svg.setAttribute("stroke", "currentColor");
-  svg.setAttribute("stroke-width", "2");
-  svg.setAttribute("stroke-linecap", "round");
-  svg.setAttribute("stroke-linejoin", "round");
-  svg.setAttribute("aria-hidden", "true");
-  const path = (d: string) => {
-    const node = doc.createElementNS("http://www.w3.org/2000/svg", "path");
-    node.setAttribute("d", d);
-    svg.appendChild(node);
-  };
-  const circle = (cx: string, cy: string, r: string, filled = false) => {
-    const node = doc.createElementNS("http://www.w3.org/2000/svg", "circle");
-    node.setAttribute("cx", cx);
-    node.setAttribute("cy", cy);
-    node.setAttribute("r", r);
-    if (filled) node.setAttribute("fill", "currentColor");
-    svg.appendChild(node);
-  };
-  if (name === "moon") {
-    path("M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z");
-  } else if (name === "sun") {
-    circle("12", "12", "4");
-    path(
-      "M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M17.66 6.34l1.41-1.41",
-    );
-  } else {
-    circle("13.5", "6.5", ".5", true);
-    circle("17.5", "10.5", ".5", true);
-    circle("8.5", "7.5", ".5", true);
-    circle("6.5", "12.5", ".5", true);
-    path("M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z");
-    path("M19.5 15.5c-1.4 0-2.5 1.1-2.5 2.5 0 .7.3 1.3.7 1.8");
-  }
-  return svg;
-}
-
 /** Self-rendering theme palette picker. */
 export class BloraPalettePicker extends ThemingBase {
   private controller: PalettePickerController | null = null;
@@ -492,7 +452,7 @@ export class BloraPalettePicker extends ThemingBase {
     trigger.dataset.variant = this.getAttribute("button-variant") ?? "outline";
     trigger.dataset.size = this.getAttribute("size") ?? "sm";
     trigger.dataset.bloraPaletteTrigger = "";
-    trigger.appendChild(createThemingIcon(this.ownerDocument, "palette"));
+    trigger.appendChild(createBloraIcon("palette", 18, this.ownerDocument));
     const label = this.ownerDocument.createElement("span");
     label.className = "blora-palette-picker__label";
     label.textContent =
@@ -535,7 +495,7 @@ export class BloraColorSchemeToggle extends ThemingBase {
     button.dataset.variant = this.getAttribute("button-variant") ?? "ghost";
     button.dataset.size = this.getAttribute("size") ?? "sm";
     button.setAttribute("aria-label", scheme === "dark" ? "切换为亮色主题" : "切换为暗色主题");
-    button.appendChild(createThemingIcon(this.ownerDocument, scheme === "dark" ? "sun" : "moon"));
+    button.appendChild(createBloraIcon(scheme === "dark" ? "sun" : "moon", 18, this.ownerDocument));
     button.addEventListener("click", () => {
       applyColorScheme(scheme === "dark" ? "light" : "dark", this.ownerDocument.documentElement);
     });

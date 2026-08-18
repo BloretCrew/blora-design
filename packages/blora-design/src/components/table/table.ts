@@ -1,6 +1,8 @@
 /**
  * Table controller: sort, local pagination, column settings, virtual scroll (v1 primary paths).
  */
+import { createBloraIcon } from "../../core/icons.js";
+
 export interface TableColConfig {
   key: string;
   label: string;
@@ -769,25 +771,7 @@ export function createTableController(
       grip.className = "blora-table-cols__grip";
       grip.setAttribute("aria-hidden", "true");
       grip.title = "拖动排序";
-      const gsvg = doc.createElementNS("http://www.w3.org/2000/svg", "svg");
-      gsvg.setAttribute("width", "14");
-      gsvg.setAttribute("height", "14");
-      gsvg.setAttribute("viewBox", "0 0 16 16");
-      gsvg.setAttribute("fill", "currentColor");
-      [
-        [5, 4],
-        [11, 4],
-        [5, 8],
-        [11, 8],
-        [5, 12],
-        [11, 12],
-      ].forEach(([cx, cy]) => {
-        const c = doc.createElementNS("http://www.w3.org/2000/svg", "circle");
-        c.setAttribute("cx", String(cx));
-        c.setAttribute("cy", String(cy));
-        c.setAttribute("r", "1.2");
-        gsvg.appendChild(c);
-      });
+      const gsvg = createBloraIcon("grip", 14, doc);
       grip.appendChild(gsvg);
 
       /* v1 structure: .blora-checkbox > input + .blora-checkbox__box + text */

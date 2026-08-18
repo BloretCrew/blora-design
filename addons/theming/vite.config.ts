@@ -6,6 +6,16 @@ import { defineConfig } from "vite";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      /* Bundle the core icon factory source into this add-on's build so the
+         standalone theming.global.js stays self-contained. */
+      "@bloret-crew/blora-design": resolve(
+        __dirname,
+        "../../packages/blora-design/src/core/icons.ts",
+      ),
+    },
+  },
   build: {
     lib: {
       entry: resolve(__dirname, "src/index.ts"),

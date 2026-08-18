@@ -168,6 +168,7 @@
   },
   "customElements": "./dist/custom-elements.json",
   "devDependencies": {
-    "@bloret-crew/blora-design": "workspace:*"
+    "@bloret-crew/blora-design": "workspace:*",
+    "lucide-static": "^1.31.0"
   }
 }

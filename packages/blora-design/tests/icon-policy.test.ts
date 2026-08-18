@@ -11,7 +11,6 @@ const emojiPattern = /\p{Extended_Pictographic}/u;
 const allowedInlineSvg = new Map<string, string>([
   ["src/components/navbar/navbar.ts", "proprietary brand mark"],
   ["src/components/progress/progress.ts", "progress meter rings"],
-  ["src/components/table/table.ts", "checkbox control painting"],
 ]);
 
 function sourceFiles(directory: string): string[] {

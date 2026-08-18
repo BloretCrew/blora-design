@@ -257,7 +257,6 @@ export {
   BloraBacktop,
   defineBloraBacktop,
   initBackTop,
-  BACKTOP_ARROW_SVG,
   type BackTopOptions,
 } from "./components/backtop/index.js";
 export {

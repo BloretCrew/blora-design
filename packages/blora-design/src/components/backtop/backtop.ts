@@ -1,6 +1,5 @@
 /**
  * BackTop: show after scroll threshold; click scrolls to top (v1 initBackTop / backTop).
- * Icon: v1 lucide-style arrow-up SVG (same path as legacy ensureGlobalBackTopFab).
  */
 import { BloraElement } from "../../core/blora-element.js";
 import { createBloraIcon } from "../../core/icons.js";
@@ -17,13 +16,9 @@ export interface BackTopOptions {
   target?: HTMLElement | Window | null;
 }
 
-/** v1 FAB arrow-up path data (lucide-style). Exported for Story markup if needed. */
-export const BACKTOP_ARROW_SVG =
-  '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>';
-
 /**
- * Inject v1 stroke arrow without innerHTML — innerHTML ejects Lit ChildPart markers
- * when the button is rendered by Storybook/Lit templates.
+ * Inject the official arrow icon without innerHTML — innerHTML ejects Lit
+ * ChildPart markers when the button is rendered by Storybook / Lit templates.
  */
 function ensureBackTopIcon(btn: HTMLElement): void {
   if (btn.querySelector("svg")) return;
