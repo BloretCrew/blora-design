@@ -43,7 +43,6 @@
 
       html {
         scroll-padding-top: var(--showcase-navbar-offset);
-        scrollbar-gutter: stable;
       }
 
       body {
@@ -1963,10 +1962,20 @@
           const next = componentNames.has(name) ? name : "button";
           const componentSidebar = document.getElementById("component-sidebar");
           const sidebarScrollTop = preservedSidebarScrollTop ?? componentSidebar?.scrollTop ?? 0;
+          const pageScrollTop = scrollY;
           preservedSidebarScrollTop = null;
           const restoreSidebarScroll = () => {
             if (componentSidebar) componentSidebar.scrollTop = sidebarScrollTop;
           };
+          const shellTop = showcaseShell.getBoundingClientRect().top + pageScrollTop;
+          if (pageScrollTop > shellTop) {
+            showcaseShell.style.setProperty(
+              "--blora-sidebar-min-height",
+              `${pageScrollTop + innerHeight - shellTop}px`,
+            );
+          } else {
+            showcaseShell.style.removeProperty("--blora-sidebar-min-height");
+          }
           hydratePanel(next);
           componentNavigation.value = next;
           restoreSidebarScroll();
@@ -1979,6 +1988,7 @@
           const title = activePanel.querySelector("h1");
           document.title = `${title.textContent} · Blora Design Components`;
           if (focusHeading) title.focus({ preventScroll: true });
+          if (navigationWasPointerDriven) scrollTo({ top: pageScrollTop, behavior: "instant" });
         }
 
         componentPanelRoot.addEventListener("click", (event) => {
