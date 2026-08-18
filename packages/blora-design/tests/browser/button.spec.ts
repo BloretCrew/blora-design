@@ -205,7 +205,7 @@ test("oversized inner media cannot change button height", async ({ page }) => {
           12
         </button>
         <button class="blora-button" type="button" data-size="xs" data-variant="outline" id="btn-img">
-          <img width="48" height="48" alt="" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" />
+          <span data-test-media style="display:block;width:48px;height:48px"></span>
           图
         </button>
       </div>
@@ -217,13 +217,13 @@ test("oversized inner media cannot change button height", async ({ page }) => {
     const text = box("btn-text");
     const svgBtn = box("btn-svg");
     const imgBtn = box("btn-img");
-    const svg = document.querySelector<SVGElement>("#btn-svg svg")!;
-    const img = document.querySelector<HTMLImageElement>("#btn-img img")!;
+    const media = document.querySelector<HTMLElement>("#btn-svg span")!;
+    const img = document.querySelector<HTMLElement>("#btn-img [data-test-media]")!;
     return {
       textH: text.height,
       svgH: svgBtn.height,
       imgH: imgBtn.height,
-      svgBox: svg.getBoundingClientRect().height,
+      svgBox: media.getBoundingClientRect().height,
       imgBox: img.getBoundingClientRect().height,
     };
   });
