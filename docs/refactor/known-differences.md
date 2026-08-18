@@ -57,6 +57,14 @@
 - **改变原因**：bug 修复
 - **审核状态**：pending
 
+### Button group / Join - 统一焊接规则
+
+- **组件**：button / join
+- **1.x 表现**：`.blora-button-group` 和 `.blora-join` 是两套独立的焊接逻辑，圆角值、纵向支持、高度对齐各写各的。
+- **2.0 表现**：横向按钮的焊接规则（margin、border-radius、corner-shape、等高、hover / focus 提升）统一写在 `button.css`，两个容器共用同一组选择器；Join 继续独有纵向 `data-orientation` 和 button + input 混合能力，`join.css` 只保留非按钮子元素规则。
+- **改变原因**：一致性
+- **审核状态**：pending
+
 ### Typography - 放弃 Avenir，改平台系统字体栈
 
 - **组件**：tokens / typography

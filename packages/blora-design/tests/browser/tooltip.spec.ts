@@ -98,22 +98,44 @@ test("indicator placements pin the overlay to the matching corner", async ({ pag
   expect(geometry.bottomStart).toBe(true);
 });
 
-test("join welds adjacent control borders", async ({ page }) => {
+test("join and button group share button welding geometry", async ({ page }) => {
   await page.setContent(
     htmlPage(`
       <div class="blora-join" id="join">
         <button class="blora-button" type="button" data-variant="outline">左</button>
         <button class="blora-button" type="button" data-variant="outline">右</button>
       </div>
+      <div class="blora-button-group" id="group">
+        <button class="blora-button" type="button" data-variant="outline">左</button>
+        <button class="blora-button" type="button" data-variant="outline">右</button>
+      </div>
     `),
   );
 
-  const welded = await page.evaluate(() => {
-    const buttons = [...document.querySelectorAll("#join .blora-button")];
-    const a = buttons[0]!.getBoundingClientRect();
-    const b = buttons[1]!.getBoundingClientRect();
-    return Math.abs(b.left - a.right) <= 1 && a.height === b.height;
+  const geometry = await page.evaluate(() => {
+    const inspect = (selector: string) => {
+      const buttons = [...document.querySelectorAll<HTMLElement>(`${selector} .blora-button`)];
+      const first = buttons[0]!.getBoundingClientRect();
+      const last = buttons[1]!.getBoundingClientRect();
+      return {
+        welded: Math.abs(last.left - first.right) <= 1,
+        heights: [first.height, last.height],
+        radii: buttons.map((button) => {
+          const style = getComputedStyle(button);
+          return [
+            style.borderStartStartRadius,
+            style.borderStartEndRadius,
+            style.borderEndEndRadius,
+            style.borderEndStartRadius,
+          ];
+        }),
+      };
+    };
+    return { join: inspect("#join"), group: inspect("#group") };
   });
 
-  expect(welded).toBe(true);
+  expect(geometry.join.welded).toBe(true);
+  expect(geometry.group.welded).toBe(true);
+  expect(geometry.join.heights).toEqual(geometry.group.heights);
+  expect(geometry.join.radii).toEqual(geometry.group.radii);
 });

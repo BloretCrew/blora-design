@@ -294,21 +294,50 @@
   overscroll-behavior-inline: contain;
 }
 
-.blora-button-group .blora-button {
+/* Shared with .blora-join: weld adjacent controls, lift on focus */
+.blora-button-group > .blora-button,
+.blora-join > .blora-button {
   border-radius: 0;
   margin-inline-start: -1px;
+  align-self: stretch;
+  height: auto;
+  min-height: var(--blora-join-height, var(--blora-button-height));
+  max-height: none;
 }
 
-.blora-button-group .blora-button:first-child {
-  border-radius: var(--blora-button-radius) 0 0 var(--blora-button-radius);
+.blora-button-group > .blora-button:first-child,
+.blora-join > .blora-button:first-child {
   margin-inline-start: 0;
+  border-start-start-radius: var(--blora-button-radius);
+  border-end-start-radius: var(--blora-button-radius);
 }
 
-.blora-button-group .blora-button:last-child {
-  border-radius: 0 var(--blora-button-radius) var(--blora-button-radius) 0;
+.blora-button-group > .blora-button:last-child,
+.blora-join > .blora-button:last-child {
+  border-start-end-radius: var(--blora-button-radius);
+  border-end-end-radius: var(--blora-button-radius);
 }
 
-.blora-button-group .blora-button:only-child {
+.blora-button-group > .blora-button:only-child,
+.blora-join > .blora-button:only-child {
+  border-radius: var(--blora-button-radius);
+}
+
+.blora-join[data-orientation="vertical"] > .blora-button {
+  margin-inline-start: 0;
+  margin-block-start: -1px;
+}
+
+.blora-join[data-orientation="vertical"] > .blora-button:first-child {
+  margin-block-start: 0;
+  border-radius: var(--blora-button-radius) var(--blora-button-radius) 0 0;
+}
+
+.blora-join[data-orientation="vertical"] > .blora-button:last-child {
+  border-radius: 0 0 var(--blora-button-radius) var(--blora-button-radius);
+}
+
+.blora-join[data-orientation="vertical"] > .blora-button:only-child {
   border-radius: var(--blora-button-radius);
 }
 
@@ -317,30 +346,45 @@
     corner-shape: var(--blora-button-corner);
   }
 
-  .blora-button-group .blora-button {
+  .blora-button-group > .blora-button,
+  .blora-join > .blora-button {
     corner-shape: square;
   }
 
-  .blora-button-group .blora-button:first-child {
+  .blora-button-group > .blora-button:first-child,
+  .blora-join > .blora-button:first-child {
     corner-shape: var(--blora-button-corner) square square var(--blora-button-corner);
   }
 
-  .blora-button-group .blora-button:last-child {
+  .blora-button-group > .blora-button:last-child,
+  .blora-join > .blora-button:last-child {
     corner-shape: square var(--blora-button-corner) var(--blora-button-corner) square;
   }
 
-  .blora-button-group .blora-button:only-child {
+  .blora-button-group > .blora-button:only-child,
+  .blora-join > .blora-button:only-child {
     corner-shape: var(--blora-button-corner);
+  }
+
+  .blora-join[data-orientation="vertical"] > .blora-button:first-child {
+    corner-shape: var(--blora-button-corner) var(--blora-button-corner) square square;
+  }
+
+  .blora-join[data-orientation="vertical"] > .blora-button:last-child {
+    corner-shape: square square var(--blora-button-corner) var(--blora-button-corner);
   }
 }
 
-.blora-button-group .blora-button:hover,
-.blora-button-group .blora-button:active {
+.blora-button-group > .blora-button:hover,
+.blora-button-group > .blora-button:active,
+.blora-join > .blora-button:hover,
+.blora-join > .blora-button:active {
   transform: none;
   box-shadow: none;
 }
 
-.blora-button-group .blora-button:focus-visible {
+.blora-button-group > .blora-button:focus-visible,
+.blora-join > .blora-button:focus-visible {
   z-index: var(--blora-z-sticky);
 }
 
