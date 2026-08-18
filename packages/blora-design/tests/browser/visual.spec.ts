@@ -251,6 +251,14 @@ test.describe("showcase full component catalog", () => {
       element.setAttribute("data-blora-color-scheme", "light");
     });
     await page.locator("blora-sidebar-layout").getByRole("button", { name: "组件导航" }).click();
+    const sidebar = page.locator("#component-sidebar");
+    await sidebar.evaluate((element) => {
+      element.scrollTop = Math.round((element.scrollHeight - element.clientHeight) / 2);
+      element.dispatchEvent(new Event("scroll"));
+    });
+    await expect(sidebar).toHaveAttribute("data-overflow-start", "");
+    await expect(sidebar).toHaveAttribute("data-overflow-end", "");
+    await expect(sidebar).toHaveCSS("mask-image", "none");
     await expect(page).toHaveScreenshot("showcase-prototype-mobile-sidebar.png", {
       animations: "disabled",
       maxDiffPixelRatio: 0.02,
