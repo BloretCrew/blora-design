@@ -10,6 +10,8 @@
 import { BLORA_ICON_DATA, type BloraIconNode } from "./icons.data.js";
 
 export type BloraIconName =
+  | "arrow-down"
+  | "arrow-down-up"
   | "arrow-up"
   | "ban"
   | "calendar"

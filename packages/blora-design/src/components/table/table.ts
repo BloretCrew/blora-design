@@ -72,8 +72,23 @@ function makeBloraCheckbox(
   return label;
 }
 
+function syncSortIcon(th: HTMLElement): void {
+  const icon = th.querySelector<HTMLElement>(".blora-table__sort");
+  if (!icon) return;
+  const name =
+    th.dataset.sortDir === "asc"
+      ? "arrow-up"
+      : th.dataset.sortDir === "desc"
+        ? "arrow-down"
+        : "arrow-down-up";
+  icon.replaceChildren(createBloraIcon(name, 12, th.ownerDocument));
+}
+
 function ensureSortUi(th: HTMLElement): void {
-  if (th.querySelector(".blora-table__sort")) return;
+  if (th.querySelector(".blora-table__sort")) {
+    syncSortIcon(th);
+    return;
+  }
   th.style.cursor = "pointer";
   th.style.userSelect = "none";
   const label = th.textContent?.trim() || "";
@@ -84,6 +99,7 @@ function ensureSortUi(th: HTMLElement): void {
   icon.className = "blora-table__sort";
   icon.setAttribute("aria-hidden", "true");
   th.append(text, icon);
+  syncSortIcon(th);
 }
 
 function storageKey(host: HTMLElement, table: HTMLTableElement): string {
@@ -315,6 +331,7 @@ export function createTableController(
       if (except && h === except) return;
       delete h.dataset.sortDir;
       h.removeAttribute("aria-sort");
+      syncSortIcon(h);
     });
   };
 
@@ -932,6 +949,7 @@ export function createTableController(
     if (next === null) {
       delete th.dataset.sortDir;
       th.removeAttribute("aria-sort");
+      syncSortIcon(th);
       originalOrder.forEach((r) => {
         if (document.contains(r)) tbody.appendChild(r);
       });
@@ -942,6 +960,7 @@ export function createTableController(
 
     th.dataset.sortDir = next;
     th.setAttribute("aria-sort", next === "asc" ? "ascending" : "descending");
+    syncSortIcon(th);
     const rows = snapshotDomRows();
     rows.sort(compareRows(col, next === "asc"));
     rows.forEach((r) => tbody.appendChild(r));

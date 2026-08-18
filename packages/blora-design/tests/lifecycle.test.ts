@@ -35,9 +35,15 @@ describe("controller lifecycle / destroy", () => {
     const wrap = host.querySelector(".blora-table-wrap") as HTMLElement;
     const ctrl = createTableController(wrap);
     const th = wrap.querySelector("th[data-sort]") as HTMLElement;
+    expect(th.querySelector(".blora-table__sort svg")?.getAttribute("data-blora-icon")).toBe(
+      "arrow-down-up",
+    );
     th.click();
     const afterFirst = th.getAttribute("aria-sort") || th.getAttribute("data-sort-dir") || "";
     expect(afterFirst.length).toBeGreaterThan(0);
+    expect(th.querySelector(".blora-table__sort svg")?.getAttribute("data-blora-icon")).toBe(
+      "arrow-up",
+    );
     ctrl.destroy();
     expect(() => ctrl.destroy()).not.toThrow();
     th.click();

@@ -61,21 +61,15 @@
   white-space: nowrap;
 }
 
-/* Default: no arrow. Hover: ⇅. Active sort: ▲ / ▼ */
+/* Default hidden; hover reveals the Lucide cue, active sort stays visible. */
 .blora-table th[data-sort] .blora-table__sort,
 .blora-table th[data-blora-sort] .blora-table__sort {
-  display: inline-block;
+  display: inline-flex;
   margin-inline-start: 0.35em;
   min-width: 0.75em;
   opacity: 0;
-  font-size: 0.7em;
   vertical-align: middle;
   transition: opacity var(--blora-duration-fast) var(--blora-easing-standard);
-}
-
-.blora-table th[data-sort] .blora-table__sort::before,
-.blora-table th[data-blora-sort] .blora-table__sort::before {
-  content: "⇅";
 }
 
 .blora-table th[data-sort]:hover .blora-table__sort,
@@ -87,14 +81,6 @@
 .blora-table th[data-sort-dir="desc"] .blora-table__sort {
   opacity: 1;
   color: var(--blora-color-action-primary-default);
-}
-
-.blora-table th[data-sort-dir="asc"] .blora-table__sort::before {
-  content: "▲";
-}
-
-.blora-table th[data-sort-dir="desc"] .blora-table__sort::before {
-  content: "▼";
 }
 
 /* -- Native table -- */
@@ -152,7 +138,7 @@
   color: var(--blora-color-text-subtle);
 }
 
-/* -- Sortable headers (legacy ::after path; default hidden) -- */
+/* -- Sortable headers -- */
 
 .blora-table-sort,
 th[data-blora-sort] {
@@ -170,52 +156,6 @@ th[data-blora-sort]:hover {
 th[data-blora-sort]:focus-visible {
   outline: 2px solid var(--blora-color-action-primary-default);
   outline-offset: -4px;
-}
-
-/* Default: no glyph. Hover (unsorted): ⇅. Sorted: ↑ / ↓ */
-.blora-table-sort::after,
-th[data-blora-sort]::after {
-  content: "";
-  display: inline-block;
-  margin-inline-start: 0.35em;
-  min-width: 0.75em;
-  font-size: 0.85em;
-  opacity: 0;
-  font-weight: 500;
-  transition: opacity var(--blora-duration-fast) var(--blora-easing-standard);
-}
-
-.blora-table-sort:hover::after,
-th[data-blora-sort]:hover::after {
-  content: "⇅";
-  opacity: 0.7;
-}
-
-.blora-table-sort[aria-sort="ascending"]::after,
-th[data-blora-sort][aria-sort="ascending"]::after,
-.blora-table-sort[aria-sort="ascending"]:hover::after,
-th[data-blora-sort][aria-sort="ascending"]:hover::after {
-  content: "▲";
-  opacity: 1;
-  color: var(--blora-color-action-primary-default);
-}
-
-.blora-table-sort[aria-sort="descending"]::after,
-th[data-blora-sort][aria-sort="descending"]::after,
-.blora-table-sort[aria-sort="descending"]:hover::after,
-th[data-blora-sort][aria-sort="descending"]:hover::after {
-  content: "▼";
-  opacity: 1;
-  color: var(--blora-color-action-primary-default);
-}
-
-/* Prefer .blora-table__sort icon over legacy ::after when both exist */
-th[data-sort]:has(.blora-table__sort)::after,
-th[data-blora-sort]:has(.blora-table__sort)::after {
-  content: none !important;
-  display: none !important;
-  margin: 0 !important;
-  min-width: 0 !important;
 }
 
 /* -- Sticky / fixed columns (advanced) -- */

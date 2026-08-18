@@ -30,11 +30,7 @@ function disclosureMarkup(component: "accordion" | "collapse"): string {
     <div class="blora-${component}__item" data-open>
       <button type="button" class="blora-${component}__head" aria-expanded="true">
         <span>What is Blora Design?</span>
-        <span class="blora-${component}__icon">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-            <path d="m9 18 6-6-6-6"></path>
-          </svg>
-        </span>
+        <span class="blora-${component}__icon"></span>
       </button>
       <div class="blora-${component}__body" style="--blora-collapse-h:48px">
         <div class="blora-${component}__content">Token-driven UI built on Web standards.</div>

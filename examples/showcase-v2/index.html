@@ -525,17 +525,11 @@
       <template data-component="fab" data-label="FAB" data-group="操作" data-eyebrow="Actions" data-kind="CSS-only" data-description="适合页面主操作的浮动按钮视觉表面。">
         <div data-showcase-cases>
           <section data-showcase-case="Default"><h3>默认</h3><div data-showcase-center>
-            <button class="blora-fab blora-fab--static" type="button" aria-label="新建项目">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
-            </button>
+            <button class="blora-fab blora-fab--static" type="button" aria-label="新建项目" data-showcase-icon="plus"></button>
           </div></section>
           <section data-showcase-case="Variants"><h3>变体</h3><div data-showcase-center>
-            <button class="blora-fab blora-fab--static" type="button" aria-label="新建项目">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
-            </button>
-            <button class="blora-fab blora-fab--static" type="button" data-variant="surface" aria-label="打开菜单">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 5h16"></path><path d="M4 12h16"></path><path d="M4 19h16"></path></svg>
-            </button>
+            <button class="blora-fab blora-fab--static" type="button" aria-label="新建项目" data-showcase-icon="plus"></button>
+            <button class="blora-fab blora-fab--static" type="button" data-variant="surface" aria-label="打开菜单" data-showcase-icon="menu"></button>
           </div></section>
         </div>
       </template>
@@ -1840,6 +1834,9 @@
             for (const node of caseBodyNodes(demo.section)) fragment.append(node.cloneNode(true));
             mount.append(fragment);
           }
+          mount.querySelectorAll("[data-showcase-icon]").forEach((host) => {
+            host.replaceChildren(Blora.createBloraIcon(host.dataset.showcaseIcon, 22));
+          });
           if (typeof Blora.enhanceButtons === "function") Blora.enhanceButtons(mount);
           if (typeof Blora.enhanceBadges === "function") Blora.enhanceBadges(mount);
           bindPreviewResize(mount);

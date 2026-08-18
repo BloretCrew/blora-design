@@ -53,6 +53,8 @@ const ICON_MAP = {
   pencil: "pencil",
   phone: "phone",
   plus: "plus",
+  "arrow-down-up": "arrow-down-up",
+  "arrow-down": "arrow-down",
   search: "search",
   settings: "settings",
   share: "share",

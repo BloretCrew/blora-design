@@ -201,11 +201,11 @@ test("oversized inner media cannot change button height", async ({ page }) => {
       <div style="display:flex;align-items:flex-start;gap:8px">
         <button class="blora-button" type="button" data-size="xs" data-variant="outline" id="btn-text">回复</button>
         <button class="blora-button" type="button" data-size="xs" data-variant="outline" id="btn-svg">
-          <svg width="32" height="32" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h18" stroke="currentColor" stroke-width="2"/></svg>
+          <span style="display:block;width:32px;height:32px"></span>
           12
         </button>
         <button class="blora-button" type="button" data-size="xs" data-variant="outline" id="btn-img">
-          <img width="48" height="48" alt="" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'/%3E" />
+          <img width="48" height="48" alt="" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" />
           图
         </button>
       </div>
@@ -259,9 +259,9 @@ test("FAB keeps its circle geometry and static preview stays in flow", async ({ 
     `<!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1">
       <style>${tokensCss}</style><style>${foundationsCss}</style><style>${readFabCss()}</style></head><body>
         <div id="stage" style="width:320px;height:180px;padding:24px;border:1px solid">
-          <button id="static-fab" class="blora-fab blora-fab--static" type="button" aria-label="添加">+</button>
+          <button id="static-fab" class="blora-fab blora-fab--static" type="button" aria-label="添加"></button>
         </div>
-        <button id="floating-fab" class="blora-fab" type="button" aria-label="浮动添加">+</button>
+        <button id="floating-fab" class="blora-fab" type="button" aria-label="浮动添加"></button>
       </body></html>`,
   );
 

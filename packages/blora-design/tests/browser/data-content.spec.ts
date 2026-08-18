@@ -139,40 +139,6 @@ test("table striped variant adds odd-row background", async ({ page }) => {
   expect(firstRowBg).not.toBe("rgba(0, 0, 0, 0)");
 });
 
-test("table sort headers show direction arrows", async ({ page }) => {
-  const css = loadComponentCss("table");
-  await page.setContent(
-    pageWith(
-      css,
-      `
-      <div class="blora-table-wrap">
-        <table class="blora-table">
-          <thead>
-            <tr>
-              <th class="blora-table-sort" aria-sort="ascending">Name</th>
-              <th class="blora-table-sort" aria-sort="descending">Age</th>
-              <th class="blora-table-sort">Email</th>
-            </tr>
-          </thead>
-          <tbody><tr><td>A</td><td>1</td><td>a@b</td></tr></tbody>
-        </table>
-      </div>
-    `,
-    ),
-  );
-
-  const ascAfter = await page
-    .locator('.blora-table-sort[aria-sort="ascending"]')
-    .evaluate((el: HTMLElement) => window.getComputedStyle(el, "::after").content);
-  // Sorted glyphs: filled triangles (hover unsorted uses ⇅)
-  expect(ascAfter).toMatch(/▲|↑/);
-
-  const descAfter = await page
-    .locator('.blora-table-sort[aria-sort="descending"]')
-    .evaluate((el: HTMLElement) => window.getComputedStyle(el, "::after").content);
-  expect(descAfter).toMatch(/▼|↓/);
-});
-
 /* ------------------------------------------------------------------ List */
 
 test("list renders items with hover background", async ({ page }) => {

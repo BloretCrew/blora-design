@@ -7,6 +7,16 @@ export interface BloraIconNode {
 }
 
 export const BLORA_ICON_DATA: Record<string, BloraIconNode[]> = {
+  "arrow-down": [
+    { tag: "path", attrs: { d: "M12 5v14" } },
+    { tag: "path", attrs: { d: "m19 12-7 7-7-7" } },
+  ],
+  "arrow-down-up": [
+    { tag: "path", attrs: { d: "m3 16 4 4 4-4" } },
+    { tag: "path", attrs: { d: "M7 20V4" } },
+    { tag: "path", attrs: { d: "m21 8-4-4-4 4" } },
+    { tag: "path", attrs: { d: "M17 4v16" } },
+  ],
   "arrow-up": [
     { tag: "path", attrs: { d: "m5 12 7-7 7 7" } },
     { tag: "path", attrs: { d: "M12 19V5" } },

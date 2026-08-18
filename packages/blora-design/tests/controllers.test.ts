@@ -7,6 +7,7 @@ import { createSliderController } from "../src/components/slider/slider.js";
 import { createMegamenuController } from "../src/components/megamenu/megamenu.js";
 import { createDockController } from "../src/components/dock/dock.js";
 import { OverlayController } from "../src/controllers/overlay-controller.js";
+import { createBloraIcon } from "../src/core/icons.js";
 
 describe("OverlayController", () => {
   it("locks and unlocks the overlay owner document", () => {
@@ -247,7 +248,7 @@ describe("createRateController", () => {
   it("sets rating when the SVG inside a star is the click target", () => {
     const ctrl = createRateController(root);
     const stars = root.querySelectorAll(".blora-rate__star");
-    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    const svg = createBloraIcon("star");
     stars[4]!.replaceChildren(svg);
     svg.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     expect(root.dataset.value).toBe("5");
