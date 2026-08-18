@@ -163,6 +163,65 @@ test.describe("showcase full component catalog", () => {
     expect(after).toBe(before);
   });
 
+  test("sidebar stays horizontally stable when page overflow changes", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 960 });
+    await page.goto(`${pathToFileURL(showcasePath).href}#copy`);
+    await page.waitForSelector('[data-component-panel="copy"][data-hydrated="true"]');
+
+    const geometry = () =>
+      page.evaluate(() => {
+        const shell = document
+          .querySelector<HTMLElement>("#showcase-shell")!
+          .getBoundingClientRect();
+        const sidebar = document
+          .querySelector<HTMLElement>("#component-sidebar")!
+          .getBoundingClientRect();
+        return {
+          documentWidth: document.documentElement.clientWidth,
+          shellLeft: shell.left,
+          sidebarLeft: sidebar.left,
+        };
+      });
+
+    await expect
+      .poll(() =>
+        page.locator("html").evaluate((element) => getComputedStyle(element).scrollbarGutter),
+      )
+      .toBe("stable");
+    await page.evaluate(() => {
+      const shell = document.querySelector<HTMLElement>("#showcase-shell")!;
+      const panel = document.querySelector<HTMLElement>('[data-component-panel="copy"]')!;
+      shell.style.setProperty("--blora-sidebar-min-height", "0px");
+      shell.style.marginBlock = "0";
+      panel.style.minHeight = "calc(100dvh + 1px)";
+    });
+    await expect
+      .poll(() =>
+        page.evaluate(
+          () => document.documentElement.scrollHeight > document.documentElement.clientHeight,
+        ),
+      )
+      .toBe(true);
+    const withOverflow = await geometry();
+
+    await page.evaluate(() => {
+      const panel = document.querySelector<HTMLElement>('[data-component-panel="copy"]')!;
+      panel.style.minHeight = "0";
+      panel.style.maxHeight = "1px";
+      panel.style.overflow = "hidden";
+    });
+    await expect
+      .poll(() =>
+        page.evaluate(
+          () => document.documentElement.scrollHeight <= document.documentElement.clientHeight,
+        ),
+      )
+      .toBe(true);
+    const withoutOverflow = await geometry();
+
+    expect(withoutOverflow).toEqual(withOverflow);
+  });
+
   test("desktop Accordion catalog", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 960 });
     await page.goto(`${pathToFileURL(showcasePath).href}#accordion`);
