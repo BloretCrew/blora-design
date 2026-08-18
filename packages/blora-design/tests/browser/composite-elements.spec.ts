@@ -910,32 +910,54 @@ test("showcase FAB remains circular and contained by its preview", async ({ page
   );
 
   const geometry = await page.evaluate(() => {
-    const preview = document
-      .querySelector<HTMLElement>('[data-preview-mount="fab"][data-case="Default"]')!
-      .getBoundingClientRect();
-    const fab = document.querySelector<HTMLElement>(
-      '[data-preview-mount="fab"][data-case="Default"] .blora-fab',
-    )!;
-    const rect = fab.getBoundingClientRect();
-    return {
-      position: getComputedStyle(fab).position,
-      width: rect.width,
-      height: rect.height,
-      contained:
-        rect.left >= preview.left &&
-        rect.right <= preview.right &&
-        rect.top >= preview.top &&
-        rect.bottom <= preview.bottom,
-      centered: Math.abs(rect.left + rect.width / 2 - (preview.left + preview.width / 2)) <= 1,
+    const inspect = (caseName: string) => {
+      const preview = document
+        .querySelector<HTMLElement>(`[data-preview-mount="fab"][data-case="${caseName}"]`)!
+        .getBoundingClientRect();
+      const buttons = [
+        ...document.querySelectorAll<HTMLElement>(
+          `[data-preview-mount="fab"][data-case="${caseName}"] .blora-fab`,
+        ),
+      ];
+      const rects = buttons.map((button) => button.getBoundingClientRect());
+      return {
+        positions: buttons.map((button) => getComputedStyle(button).position),
+        sizes: rects.map((rect) => [rect.width, rect.height]),
+        contained: rects.every(
+          (rect) =>
+            rect.left >= preview.left &&
+            rect.right <= preview.right &&
+            rect.top >= preview.top &&
+            rect.bottom <= preview.bottom,
+        ),
+        centered:
+          Math.abs(
+            (rects[0]!.left + rects.at(-1)!.right) / 2 - (preview.left + preview.width / 2),
+          ) <= 1,
+        separated:
+          rects.length < 2 ||
+          rects.every((rect, index) => index === 0 || rect.left > rects[index - 1]!.right),
+      };
     };
+    return { defaultCase: inspect("Default"), variants: inspect("Variants") };
   });
 
-  expect(geometry).toEqual({
-    position: "relative",
-    width: 56,
-    height: 56,
+  expect(geometry.defaultCase).toEqual({
+    positions: ["relative"],
+    sizes: [[56, 56]],
     contained: true,
     centered: true,
+    separated: true,
+  });
+  expect(geometry.variants).toEqual({
+    positions: ["relative", "relative"],
+    sizes: [
+      [56, 56],
+      [56, 56],
+    ],
+    contained: true,
+    centered: true,
+    separated: true,
   });
 });
 
