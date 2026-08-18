@@ -135,6 +135,44 @@ function mountSidebarLayout(root: HTMLElement): SidebarLayoutController {
   };
 
   const EDGE = 1;
+  const sticky = root.hasAttribute("data-sticky");
+  const authoredMinHeight = root.style.minHeight;
+  let lastPageScrollTop = win.scrollY;
+  let preservedPageScrollTop: number | null = null;
+  let preserveFrame = 0;
+
+  const trackPageScroll = () => {
+    lastPageScrollTop = win.scrollY;
+    const rootTop = root.getBoundingClientRect().top + lastPageScrollTop;
+    if (lastPageScrollTop <= rootTop && root.style.minHeight !== authoredMinHeight) {
+      root.style.minHeight = authoredMinHeight;
+      preservedPageScrollTop = null;
+    }
+  };
+
+  const preserveStickyPosition = () => {
+    if (!sticky || drawerMode) return;
+    const currentPageScrollTop = win.scrollY;
+    const pageScrollTop = Math.max(currentPageScrollTop, lastPageScrollTop);
+    const rootTop = root.getBoundingClientRect().top + currentPageScrollTop;
+    if (pageScrollTop <= rootTop) {
+      root.style.minHeight = authoredMinHeight;
+      preservedPageScrollTop = null;
+      return;
+    }
+    const requiredHeight = pageScrollTop + win.innerHeight - rootTop;
+    if (root.getBoundingClientRect().height >= requiredHeight) return;
+    root.style.minHeight = `${requiredHeight}px`;
+    preservedPageScrollTop = pageScrollTop;
+    win.scrollTo({ top: pageScrollTop, behavior: "instant" });
+    cancelAnimationFrame(preserveFrame);
+    preserveFrame = requestAnimationFrame(() => {
+      if (preservedPageScrollTop !== null) {
+        win.scrollTo({ top: preservedPageScrollTop, behavior: "instant" });
+      }
+    });
+  };
+
   const syncEdgeFade = () => {
     const max = Math.max(0, aside.scrollHeight - aside.clientHeight);
     const canScroll = max > EDGE;
@@ -155,9 +193,21 @@ function mountSidebarLayout(root: HTMLElement): SidebarLayoutController {
   } else {
     win.addEventListener("resize", onLayoutChange);
   }
+  let contentObserver: MutationObserver | null = null;
+  const content = root.querySelector<HTMLElement>(".blora-sidebar-layout__content");
+  if (sticky && content && typeof MutationObserver !== "undefined") {
+    contentObserver = new MutationObserver(preserveStickyPosition);
+    contentObserver.observe(content, {
+      attributes: true,
+      childList: true,
+      subtree: true,
+      attributeFilter: ["class", "hidden", "style"],
+    });
+  }
 
   toggles.forEach((t) => t.addEventListener("click", onToggle));
   mask.addEventListener("click", onMask);
+  win.addEventListener("scroll", trackPageScroll, { passive: true });
   aside.addEventListener("click", onAsideClick);
   aside.addEventListener("scroll", syncEdgeFade, { passive: true });
   doc.addEventListener("keydown", onKey);
@@ -176,7 +226,11 @@ function mountSidebarLayout(root: HTMLElement): SidebarLayoutController {
       aside.removeEventListener("scroll", syncEdgeFade);
       doc.removeEventListener("keydown", onKey);
       ro?.disconnect();
+      contentObserver?.disconnect();
+      cancelAnimationFrame(preserveFrame);
       win.removeEventListener("resize", onLayoutChange);
+      win.removeEventListener("scroll", trackPageScroll);
+      root.style.minHeight = authoredMinHeight;
       aside.removeAttribute("data-overflow-start");
       aside.removeAttribute("data-overflow-end");
       root.classList.remove("is-open", "blora-sidebar-layout--drawer");

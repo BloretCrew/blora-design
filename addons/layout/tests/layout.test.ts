@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import { createAffixController, createAnchorController, initSmoothScroll } from "../src/index.js";
 import type { BloraSidebarLayout } from "../src/index.js";
 
@@ -101,6 +101,42 @@ describe("layout add-on", () => {
     aside.dispatchEvent(new Event("scroll"));
     expect(aside.hasAttribute("data-overflow-start")).toBe(true);
     expect(aside.hasAttribute("data-overflow-end")).toBe(false);
+  });
+
+  it("preserves a sticky sidebar position when its content shrinks", async () => {
+    document.body.innerHTML = `
+      <blora-sidebar-layout sticky>
+        <blora-sidebar-layout-sidebar>导航</blora-sidebar-layout-sidebar>
+        <blora-sidebar-layout-content><section id="panel">内容</section></blora-sidebar-layout-content>
+      </blora-sidebar-layout>`;
+    const root = document.querySelector<HTMLElement>(".blora-sidebar-layout")!;
+    let rootHeight = 2400;
+    root.getBoundingClientRect = () =>
+      ({
+        width: 1100,
+        height: rootHeight,
+        top: 100 - window.scrollY,
+        left: 0,
+        bottom: 100 - window.scrollY + rootHeight,
+        right: 1100,
+        x: 0,
+        y: 100 - window.scrollY,
+        toJSON: () => ({}),
+      }) as DOMRect;
+    Object.defineProperty(window, "innerHeight", { configurable: true, value: 800 });
+    Object.defineProperty(window, "scrollY", { configurable: true, writable: true, value: 900 });
+    const scrollTo = vi.spyOn(window, "scrollTo").mockImplementation((options) => {
+      if (typeof options === "object") window.scrollY = Number(options.top ?? 0);
+    });
+    window.dispatchEvent(new Event("scroll"));
+
+    rootHeight = 400;
+    document.querySelector("#panel")!.setAttribute("hidden", "");
+    await Promise.resolve();
+
+    expect(root.style.minHeight).toBe("1600px");
+    expect(scrollTo).toHaveBeenCalledWith({ top: 900, behavior: "instant" });
+    scrollTo.mockRestore();
   });
 
   it("affix controller destroys", () => {
