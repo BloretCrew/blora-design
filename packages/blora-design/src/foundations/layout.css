@@ -140,20 +140,6 @@
     transform var(--blora-duration-base) var(--blora-easing-standard);
 }
 
-.blora-card--hover:hover {
-  box-shadow: var(--blora-shadow-3);
-  transform: translateY(-2px);
-}
-
-.blora-card--flat {
-  box-shadow: none;
-}
-
-.blora-card--inset {
-  background: var(--blora-color-surface-raised);
-  box-shadow: var(--blora-shadow-inset);
-}
-
 .blora-card__title {
   font-family: var(--blora-font-heading);
   font-size: var(--blora-text-lg);
@@ -175,14 +161,6 @@
   position: absolute;
   top: var(--blora-space-4);
   inset-inline-end: var(--blora-space-4);
-}
-
-.blora-card--relative {
-  position: relative;
-}
-
-.blora-card--with-badge {
-  padding-inline-end: 6rem;
 }
 
 /* -- Panel -- */

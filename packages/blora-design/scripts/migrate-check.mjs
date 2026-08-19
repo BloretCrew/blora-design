@@ -207,7 +207,7 @@ const RULES = [
   // Deprecated events
   {
     id: "deprecated-event:blora-colon",
-    pattern: /["']blora:[a-z]+["']/g,
+    pattern: /["']blora:(?!change["'])[a-z]+["']/g,
     message: (m) => `${m} event is deprecated`,
     suggestion: `blora-* event name (no colon)`,
     anchor: "events",

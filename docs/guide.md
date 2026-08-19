@@ -99,9 +99,9 @@ applyTheme("indigo"); // coral | indigo | lotus | graphite | mono | circuit | du
 ## 2. 全局约定
 
 1. **class 前缀** `blora-*`。  
-2. **变体 / 尺寸** 优先 **`data-variant` / `data-size`**，不要用 1.x 的 `blora-btn--primary` 当作 2.0 主写法（兼容层另见 §5）。  
+2. **变体 / 尺寸** 优先 **`data-variant` / `data-size`**，不要用 1.x 的 `blora-btn--primary`；2.0 不提供 runtime compatibility layer。
 3. **按钮** 使用 `.blora-button`（不是 `.blora-btn`）。  
-4. **行为**：结构敏感控件优先使用 Composite CE；controller 仅用于 contract 明确的 advanced/compat 路径。不要假设存在全局 `Blora.table.*`。
+4. **行为**：结构敏感控件优先使用 Composite CE；controller 仅用于 contract 明确的 advanced 路径。不要假设存在全局 `Blora.table.*`。
 5. **浮层** 注意 stacking / portal（Mentions、部分菜单会挂到 `document.body`）。  
 6. **颜色 / 间距 / 圆角 / 阴影** 用 token（`--blora-*`），组件 CSS 内不写死业务色。  
 7. **用户内容** 不要用 `innerHTML` 直接塞不可信字符串。  
@@ -113,7 +113,7 @@ applyTheme("indigo"); // coral | indigo | lotus | graphite | mono | circuit | du
 |------|--------|------|
 | **原生 HTML + CSS** | 展示型、无复杂状态 | Alert、Tag、List、Card |
 | **Composite Custom Element** | 内部 class 树复杂、容易拼错 | Range、Date/Time、Search、Transfer、Accordion、Command、Segmented、Tabs、Select、Dialog |
-| **Headless controller（advanced/compat）** | 业务必须拥有开放数据 DOM | Table、Tree、Form、Drawer |
+| **Headless controller（advanced）** | 业务必须拥有开放数据 DOM | Table、Tree、Form、Drawer |
 
 ADR-015 已用 Composite CE 取代 ADR-013 的默认 headless 推荐。结构封装不等于一次性全员 FA-WC；表单关联能力仍按组件 contract 分阶段补强。
 

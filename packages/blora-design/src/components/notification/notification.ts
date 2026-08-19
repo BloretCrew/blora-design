@@ -7,7 +7,7 @@ import { createStatusIcon } from "../../core/status-icon.js";
 
 export type NotificationPlacement = "top-right" | "top-left" | "bottom-right" | "bottom-left";
 
-export type NotificationType = "success" | "warning" | "danger" | "info";
+type NotificationType = "success" | "warning" | "danger" | "info";
 
 export interface NotificationOptions {
   title?: string;

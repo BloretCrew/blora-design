@@ -24,6 +24,27 @@ describe("public CE-only surface", () => {
     expect("createDropdownController" in Blora).toBe(false);
   });
 
+  it("keeps internal Controller types off CE component public indexes", () => {
+    const keep = new Set(["table", "form", "notification"]);
+    const leaks: string[] = [];
+    for (const name of readdirSync(componentsRoot)) {
+      if (keep.has(name)) continue;
+      const indexPath = resolve(componentsRoot, name, "index.ts");
+      let source = "";
+      try {
+        source = readFileSync(indexPath, "utf8");
+      } catch {
+        continue;
+      }
+      const exported = source.match(/type\s+[A-Z][A-Za-z]+Controller\b/g) ?? [];
+      for (const symbol of exported) leaks.push(`${name}/index.ts:${symbol}`);
+      if (/export\s+type\s+\{[^}]*Controller/s.test(source)) {
+        leaks.push(`${name}/index.ts:export type Controller`);
+      }
+    }
+    expect(leaks).toEqual([]);
+  });
+
   it("keeps create*Controller off CE component public indexes", () => {
     const keep = new Set(["table", "form", "notification"]);
     const leaks: string[] = [];

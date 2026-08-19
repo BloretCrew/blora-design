@@ -4,7 +4,6 @@ export {
   buildPaginationItems,
   defineBloraPagination,
   paginationWindow,
-  type PaginationController,
   type PaginationItem,
   type PaginationWindow,
 } from "./pagination.js";

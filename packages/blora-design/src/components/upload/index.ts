@@ -1,6 +1,1 @@
-export {
-  BLORA_UPLOAD_TAG,
-  BloraUpload,
-  defineBloraUpload,
-  type UploadController,
-} from "./upload.js";
+export { BLORA_UPLOAD_TAG, BloraUpload, defineBloraUpload } from "./upload.js";

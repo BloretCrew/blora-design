@@ -292,7 +292,7 @@
 
 - **组件**：package entry
 - **1.x 表现**：`Blora.init` / `Blora.toast` / `Blora.table.*` 全局对象。
-- **2.0 表现**：ESM 具名导出 + Composite CE；仅 Table / Form 等未迁能力保留 headless controller，兼容层可选。
+- **2.0 表现**：ESM 具名导出 + Composite CE；仅 Table / Form 等开放数据能力保留 headless controller，不提供 1.x runtime compatibility layer。
 - **改变原因**：架构（2.0 重构）
 - **审核状态**：approved
 

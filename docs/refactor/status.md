@@ -24,7 +24,7 @@ Showcase v2 已完成 87/87 核心组件目录：正式 API/CE 示例、单视�
 | Phase 5：核心表单和反馈 | ✅ 完成 | Field/Input/Checkbox/Radio/Switch/Tag/Alert/Badge/Progress/Spinner/Skeleton/Toast |
 | Phase 6：导航与浮层 | ✅ 完成 | Tabs/Breadcrumb/Pagination/Dropdown/Tooltip/Popover/Drawer/Navbar/Sidebar Navigation |
 | Phase 7：数据与内容基础 | ✅ 完成 | Card/Table/List/Accordion/Timeline/Empty/Result/Avatar |
-| Phase 8：兼容层与 Codemod | ✅ 完成 | Token/class 映射、event 别名、warning、codemod、migrate:check、fixtures |
+| Phase 8：迁移工具 | ✅ 完成 | Token/class 映射、codemod、migrate:check、fixtures；早期 runtime compat 后续已撤销 |
 | Phase 9：Add-ons | ✅ 完成 | 六包 API + Story + 单测；核心 v1 缺口补齐（见 addon-core-gaps.md） |
 | Phase 10：预发布 | 🔄 进行中 | Preflight 推进中（门禁/发布链/axe）；清单 remaining-work.md §3.0 |
 

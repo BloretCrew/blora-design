@@ -31,7 +31,6 @@ Feedback: `message` / `message.success` (pill) + `notify` (cards). **No toast AP
 - `./blora.global.js` — IIFE CDN global `Blora`
 - `./custom-elements.json` / `./component-manifest.json` / `./api-snapshot.json`
 - Human guide: `docs/guide.md`
-- **AI handoff (full project brief):** `docs/handoff/AI-PROJECT-HANDOFF.md`
 - Contracts: `packages/blora-design/contracts/*.contract.json`
 - Contract stability policy: `docs/refactor/contract-stability.md`
 - Component matrix: `docs/refactor/component-matrix.md`

@@ -30,7 +30,7 @@
 | Phase 5 表单与反馈 | ✅ | Field…Toast 等 |
 | Phase 6 导航与浮层 | ✅ | Tabs…Drawer/Navbar/Sidebar Navigation |
 | Phase 7 数据与内容 | ✅ | Card/Table/List…；table controller 后在 Phase 9 补齐高级路径 |
-| Phase 8 兼容与 Codemod | ✅ | compat、codemod、migrate:check、fixtures |
+| Phase 8 迁移工具 | ✅ | codemod、migrate:check、fixtures；早期 runtime compat 后续已撤销 |
 | Phase 9 Add-ons | ✅ 自限 | 六包 + 核心 v1 缺口；**规格级 DoD 未勾满** |
 | Phase 10 预发布 | 🔄 | **2026-08-02 进入**；见 §3 |
 
@@ -82,7 +82,7 @@
 > **含义澄清**：进入 Phase 10 = 已打开预发布阶段标签；**不等于** Preflight/Alpha 工作已完成。  
 > 推荐顺序：**§3.0 Preflight 全绿 → §3.1 Alpha 发布 → §3.2–3.4 加深 → Beta → RC → Stable**。  
 > 完成一项时改为 ✅ 并注日期。勿在未更新本表时声称 Alpha/Stable 完成。  
-> 清理记录：`.trashes/phase10-entry-cleanup/`。
+> Phase 10 入口清理已完成；废弃备份不再保留在工作区。
 
 ### 3.0 Phase 10 Preflight（Alpha **之前** · 门禁与发布链）
 
@@ -221,7 +221,7 @@
 - [ ] 2.0 **i18n / locales** 运行时（P9-8）
 - [ ] add-on 独立 Playwright / visual 深矩阵（P9-6）
 - [ ] FA WC 全面化（结构 CE 已默认；form association 仍按 ADR-015 分阶段）
-- [ ] 删除 `legacy/v1` 或拆除 compat（**禁止**过早）
+- [x] runtime compat 已撤销；仓库外 `legacy/v1` 作为冻结基线继续保留
 - [x] 全量 `pnpm verify` 作为发布硬门 — 2026-08-09 单次完整 exit 0，见 §5
 
 ---
@@ -271,7 +271,7 @@
 |------|------|
 | 2026-08-02 | 初版：审计快照 + P9 诚实债关闭表 + Phase 10 全开清单 |
 | 2026-08-02 | P9-1…P9-8 全部关闭或 deferred；typecheck + unit 证据写入 §5 |
-| 2026-08-02 | **进入 Phase 10**；过期 changesets → `.trashes/phase10-entry-cleanup`；迁移指南升格为 monorepo 正文 |
+| 2026-08-02 | **进入 Phase 10**；过期 changesets 已清理；迁移指南升格为 monorepo 正文 |
 | 2026-08-02 | 采纳外部审查：新增 **§3.0 Preflight**（verify/CI/publish/exports/体积/contract 治理）；Alpha 后置 |
 | 2026-08-09 | 75 组件完成 58 CE / 17 intentional non-CE 收口；完整 `pnpm verify` 首次单次全绿 |
 | 2026-08-09 | Showcase 组件目录重构：先交付 Accordion / Collapse 双组件原型，待用户确认后再扩展全量 |

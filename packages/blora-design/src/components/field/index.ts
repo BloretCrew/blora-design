@@ -1,1 +1,1 @@
-export { BLORA_FIELD_TAG, BloraField, defineBloraField, type FieldController } from "./field.js";
+export { BLORA_FIELD_TAG, BloraField, defineBloraField } from "./field.js";

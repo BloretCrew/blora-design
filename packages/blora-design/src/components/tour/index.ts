@@ -1,1 +1,1 @@
-export { BLORA_TOUR_TAG, BloraTour, defineBloraTour, type TourController } from "./tour.js";
+export { BLORA_TOUR_TAG, BloraTour, defineBloraTour } from "./tour.js";

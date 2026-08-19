@@ -1,1 +1,1 @@
-export { BLORA_DECK_TAG, BloraDeck, defineBloraDeck, type DeckController } from "./deck.js";
+export { BLORA_DECK_TAG, BloraDeck, defineBloraDeck } from "./deck.js";

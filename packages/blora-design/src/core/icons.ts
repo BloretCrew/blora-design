@@ -61,10 +61,6 @@ export type BloraIconName =
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 
-export const BLORA_ICON_NAMES: readonly BloraIconName[] = Object.keys(
-  BLORA_ICON_DATA,
-) as BloraIconName[];
-
 function svgNode(
   doc: Document,
   tag: BloraIconNode["tag"],

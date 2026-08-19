@@ -3,7 +3,6 @@ export {
   BloraImage,
   defineBloraImage,
   openImagePreview,
-  type ImageController,
   type ImagePreviewHandle,
   type ImagePreviewItem,
 } from "./image.js";

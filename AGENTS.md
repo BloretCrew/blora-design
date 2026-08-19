@@ -16,7 +16,7 @@ Blora Design 2.0 的唯一视觉母版是重构开始时仓库当前 HEAD 中展
 - **1.x 源码冻结**：`D:\MyFiles\Documents\projects\blora-design\legacy\v1\`（`blora.css` / `blora.js` / …）
 - **视觉基线截图**：`D:\MyFiles\Documents\projects\blora-design\legacy\visual-baseline-light.png`、`visual-baseline-dark.png`；展示页静态副本在 `examples/showcase-v2/assets/`
 - **基线元数据**：`docs/refactor/visual-baseline.json`
-- **勿使用** 仓库根目录旧 `blora.*`（若见过，已迁到 `.trashes/root-v1-leftovers/`）
+- **勿使用** 仓库根目录旧 `blora.*`；1.x 冻结源只认仓库外 `legacy/v1/`
 
 ### 禁止事项
 

@@ -3,7 +3,7 @@
  * text-rotate, countdown, countup, image-diff, hover-gallery, watermark, shortcuts
  */
 
-export interface Destroyable {
+interface Destroyable {
   destroy(): void;
 }
 

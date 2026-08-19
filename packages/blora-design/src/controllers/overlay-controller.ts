@@ -13,7 +13,7 @@ export interface OverlayOptions {
   lockScroll: boolean;
 }
 
-export const defaultOverlayOptions: OverlayOptions = {
+const defaultOverlayOptions: OverlayOptions = {
   modal: true,
   closeOnEscape: true,
   closeOnOutsidePointer: true,

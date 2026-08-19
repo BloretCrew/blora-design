@@ -1,6 +1,1 @@
-export {
-  BLORA_COMMAND_TAG,
-  BloraCommand,
-  defineBloraCommand,
-  type CommandPaletteController,
-} from "./command-palette.js";
+export { BLORA_COMMAND_TAG, BloraCommand, defineBloraCommand } from "./command-palette.js";

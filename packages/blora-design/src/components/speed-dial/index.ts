@@ -1,6 +1,1 @@
-export {
-  BLORA_SPEED_DIAL_TAG,
-  BloraSpeedDial,
-  defineBloraSpeedDial,
-  type SpeedDialController,
-} from "./speed-dial.js";
+export { BLORA_SPEED_DIAL_TAG, BloraSpeedDial, defineBloraSpeedDial } from "./speed-dial.js";

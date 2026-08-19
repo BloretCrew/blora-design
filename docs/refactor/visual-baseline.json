@@ -1,5 +1,4 @@
 {
-  "$schema": "./visual-baseline.schema.json",
   "description": "Blora Design 2.0 唯一视觉基线元数据。所有 2.0 组件的视觉必须可追溯到此基线。",
   "baselineCommit": "a148715d06ee9551cbee262ffae6ad377b564df6",
   "baselineDate": "2025-07-29",

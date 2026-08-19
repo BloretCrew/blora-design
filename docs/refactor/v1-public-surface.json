@@ -7,7 +7,6 @@
 
   "css": {
     "inventoryFile": "docs/refactor/v1-css-inventory.json",
-    "summaryFile": "docs/refactor/v1-css-inventory.md",
     "totalLines": 4499,
     "organization": "无 @layer，靠源码顺序和 :where() 控制优先级",
     "scopeSelectors": [":where(body.blora-page, .blora-scope, .blora-portal)"],
@@ -19,7 +18,7 @@
   },
 
   "js": {
-    "inventoryFile": "docs/refactor/v1-js-inventory.md",
+    "inventoryFile": "docs/refactor/v1-js-inventory.json",
     "totalLines": 6214,
     "modulePattern": "UMD",
     "globalName": "Blora",

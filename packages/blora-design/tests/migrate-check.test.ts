@@ -14,6 +14,14 @@ describe("migrate:check Composite CE gate", () => {
     expect(result.stdout).toContain("composite-ce:sidebar-nav:internal-markup");
   });
 
+  it("accepts the current color-picker blora:change event", () => {
+    const result = spawnSync(process.execPath, [script, fixture("migration-current-event.html")], {
+      encoding: "utf8",
+    });
+    expect(result.status).toBe(0);
+    expect(result.stdout).toContain("No deprecated patterns found");
+  });
+
   it("allows contract-declared CSS-only component classes", () => {
     const result = spawnSync(process.execPath, [script, fixture("migration-css-public.html")], {
       encoding: "utf8",
