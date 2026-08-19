@@ -34,8 +34,7 @@ blora-megamenu {
     visibility 0s linear var(--blora-duration-base);
 }
 
-.blora-megamenu[data-open] .blora-megamenu__panel,
-.blora-megamenu.is-open .blora-megamenu__panel {
+.blora-megamenu[data-open] .blora-megamenu__panel {
   opacity: 1;
   visibility: visible;
   transform: translateY(0) translateX(var(--blora-megamenu-offset, 0));

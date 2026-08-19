@@ -29,17 +29,12 @@ export function createSegmentedController(root: HTMLElement): SegmentedControlle
     indicator!.style.width = `${itemRect.width}px`;
   };
 
-  const enabled = () =>
-    items.filter(
-      (item) =>
-        !item.classList.contains("is-disabled") && item.getAttribute("aria-disabled") !== "true",
-    );
+  const enabled = () => items.filter((item) => item.getAttribute("aria-disabled") !== "true");
 
   const activate = (item: HTMLElement, focus = false, emit = true) => {
     if (!item || !enabled().includes(item)) return;
     items.forEach((candidate) => {
       const active = candidate === item;
-      candidate.classList.toggle("is-active", active);
       candidate.toggleAttribute("data-active", active);
       candidate.setAttribute("aria-checked", String(active));
       if (candidate.getAttribute("aria-disabled") !== "true") {
@@ -61,17 +56,9 @@ export function createSegmentedController(root: HTMLElement): SegmentedControlle
 
   items.forEach((item) => {
     item.setAttribute("role", "radio");
-    const disabled =
-      item.classList.contains("is-disabled") || item.getAttribute("aria-disabled") === "true";
-    item.setAttribute(
-      "aria-checked",
-      String(item.classList.contains("is-active") || item.hasAttribute("data-active")),
-    );
-    item.tabIndex = disabled
-      ? -1
-      : item.classList.contains("is-active") || item.hasAttribute("data-active")
-        ? 0
-        : -1;
+    const disabled = item.getAttribute("aria-disabled") === "true";
+    item.setAttribute("aria-checked", String(item.hasAttribute("data-active")));
+    item.tabIndex = disabled ? -1 : item.hasAttribute("data-active") ? 0 : -1;
     item.addEventListener("click", () => activate(item));
   });
 
@@ -97,16 +84,12 @@ export function createSegmentedController(root: HTMLElement): SegmentedControlle
 
   root.addEventListener("keydown", onKey);
   const onResize = () => {
-    const cur = items.find(
-      (i) => i.classList.contains("is-active") || i.hasAttribute("data-active"),
-    );
+    const cur = items.find((i) => i.hasAttribute("data-active"));
     if (cur) moveIndicator(cur);
   };
   win.addEventListener("resize", onResize);
 
-  const active =
-    items.find((i) => i.classList.contains("is-active") || i.hasAttribute("data-active")) ||
-    enabled()[0];
+  const active = items.find((i) => i.hasAttribute("data-active")) || enabled()[0];
   if (active) {
     activate(active, false, false);
     win.requestAnimationFrame(() => moveIndicator(active));
@@ -185,7 +168,6 @@ export class BloraSegmented extends BloraElement {
       item.disabled = definition.disabled || this.hasAttribute("disabled");
       if (item.disabled) item.setAttribute("aria-disabled", "true");
       if (definition.value === selectedValue) {
-        item.classList.add("is-active");
         item.dataset.active = "";
       }
       root.appendChild(item);

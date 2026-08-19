@@ -45,7 +45,6 @@ export function createCommandPaletteController(root: HTMLElement): CommandPalett
     const list = items().filter((el) => el.style.display !== "none");
     list.forEach((el, i) => {
       el.toggleAttribute("data-active", i === active);
-      el.classList.toggle("is-active", i === active);
     });
   };
 

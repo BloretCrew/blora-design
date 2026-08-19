@@ -59,8 +59,7 @@ blora-accordion {
   color: var(--blora-color-action-primary-default);
 }
 
-.blora-accordion__item[data-open] .blora-accordion__icon,
-.blora-accordion__item.is-open .blora-accordion__icon {
+.blora-accordion__item[data-open] .blora-accordion__icon {
   transform: rotate(90deg);
 }
 
@@ -75,8 +74,7 @@ blora-accordion {
     transform var(--blora-duration-base) var(--blora-easing-standard);
 }
 
-.blora-accordion__item[data-open] .blora-accordion__body,
-.blora-accordion__item.is-open .blora-accordion__body {
+.blora-accordion__item[data-open] .blora-accordion__body {
   max-height: var(--blora-collapse-h);
   opacity: 1;
   transform: translateY(0);

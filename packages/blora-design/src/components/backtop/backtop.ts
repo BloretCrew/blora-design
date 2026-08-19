@@ -73,13 +73,9 @@ export function createBackTopController(
   };
 
   const show = () => {
-    btn.classList.add("is-visible");
-    btn.classList.remove("is-hidden");
     btn.removeAttribute("data-hidden");
   };
   const hide = () => {
-    btn.classList.remove("is-visible");
-    btn.classList.add("is-hidden");
     btn.setAttribute("data-hidden", "");
   };
 

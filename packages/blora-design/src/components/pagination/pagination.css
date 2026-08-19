@@ -106,7 +106,7 @@ blora-pagination {
   color: var(--blora-color-text-subtle);
 }
 
-.blora-pagination__ellipsis.is-inactive {
+.blora-pagination__ellipsis[data-inactive] {
   display: none;
 }
 

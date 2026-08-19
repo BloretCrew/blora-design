@@ -53,7 +53,7 @@ export function createDeckController(root: HTMLElement): DeckController {
 
   let offset = (() => {
     const list = cards();
-    let i = list.findIndex((c) => c.classList.contains("is-front") || c.hasAttribute("data-front"));
+    let i = list.findIndex((c) => c.hasAttribute("data-front"));
     if (i < 0) i = 0;
     return i;
   })();

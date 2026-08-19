@@ -311,7 +311,7 @@ describe("effects extras", () => {
     const ctrl = createTextRotateController(root);
     expect(
       root.querySelector(".blora-text-rotate__item")?.hasAttribute("data-active") ||
-        root.querySelector(".blora-text-rotate__item")?.classList.contains("is-active"),
+        root.querySelector(".blora-text-rotate__item")?.hasAttribute("data-active"),
     ).toBe(true);
     ctrl.destroy();
   });

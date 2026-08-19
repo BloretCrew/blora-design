@@ -122,7 +122,7 @@ blora-image {
   backdrop-filter: blur(6px);
 }
 
-.blora-image-preview.is-open {
+.blora-image-preview[data-open] {
   display: flex;
 }
 

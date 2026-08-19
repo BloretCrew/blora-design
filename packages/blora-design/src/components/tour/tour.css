@@ -18,14 +18,14 @@ blora-tour,
 .blora-tour-mask {
   position: fixed;
   inset: 0;
-  z-index: var(--blora-z-toast);
+  z-index: var(--blora-z-top);
   background: var(--blora-color-overlay-modal);
   pointer-events: auto;
 }
 
 .blora-tour-pop {
   position: fixed;
-  z-index: var(--blora-z-toast);
+  z-index: var(--blora-z-top);
   width: min(20rem, calc(100vw - 2 * var(--blora-space-4)));
   padding: var(--blora-space-4);
   border-radius: var(--blora-radius-lg);
@@ -52,14 +52,14 @@ blora-tour,
 
   position: fixed;
   inset: 0;
-  z-index: var(--blora-z-toast);
+  z-index: var(--blora-z-top);
   pointer-events: none;
   background: color-mix(in srgb, var(--blora-color-text-primary) 45%, transparent);
 }
 
 .blora-tour__tooltip {
   position: fixed;
-  z-index: var(--blora-z-toast);
+  z-index: var(--blora-z-top);
   display: none;
   width: min(20rem, calc(100vw - 2 * var(--blora-space-4)));
   padding: var(--blora-space-4);
@@ -113,6 +113,6 @@ blora-tour,
 
 .blora-tour-target-ring {
   position: fixed;
-  z-index: var(--blora-z-toast);
+  z-index: var(--blora-z-top);
   pointer-events: none;
 }

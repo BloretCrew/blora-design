@@ -115,4 +115,35 @@ describe("Lucide icon policy", () => {
       expect(readFileSync(resolve(workspaceRoot, id), "utf8")).toBeTruthy();
     }
   });
+
+  it("does not use v1 state classes as runtime state", () => {
+    const legacyStates = [
+      "is-open",
+      "is-hidden",
+      "is-selected",
+      "is-active",
+      "is-disabled",
+      "is-error",
+      "is-front",
+      "is-collapsed",
+      "is-danger",
+      "is-today",
+      "is-inactive",
+    ];
+    const violations = auditedFiles().flatMap((file) => {
+      const id = rel(file);
+      if (id === "packages/blora-design/tests/icon-policy.test.ts") return [];
+      const source = readFileSync(file, "utf8");
+      return source.split(/\r?\n/).flatMap((line, index) => {
+        if (!legacyStates.some((state) => line.includes(state))) return [];
+        const isComment =
+          line.trimStart().startsWith("//") ||
+          line.trimStart().startsWith("*") ||
+          line.trimStart().startsWith("#");
+        if (isComment) return [];
+        return [`${id}:${index + 1}: ${line.trim()}`];
+      });
+    });
+    expect(violations, "v1 state classes are not runtime state; use data-* attributes").toEqual([]);
+  });
 });

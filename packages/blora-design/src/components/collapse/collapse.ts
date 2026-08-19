@@ -20,7 +20,7 @@ const HEAD_SEL = ".blora-collapse__head, .blora-accordion__head";
 const BODY_SEL = ".blora-collapse__body, .blora-accordion__body";
 
 function isOpen(item: HTMLElement): boolean {
-  return item.hasAttribute("data-open") || item.classList.contains("is-open");
+  return item.hasAttribute("data-open");
 }
 
 function getBody(item: HTMLElement): HTMLElement | null {
@@ -56,7 +56,6 @@ function openItem(item: HTMLElement): void {
   applyMeasuredHeight(body, h);
 
   item.setAttribute("data-open", "");
-  item.classList.add("is-open");
   head?.setAttribute("aria-expanded", "true");
   body.setAttribute("aria-hidden", "false");
 
@@ -86,7 +85,6 @@ function closeItem(item: HTMLElement): void {
   void body.offsetHeight; /* reflow so browser registers the start height */
 
   item.removeAttribute("data-open");
-  item.classList.remove("is-open");
   head?.setAttribute("aria-expanded", "false");
   body.setAttribute("aria-hidden", "true");
 

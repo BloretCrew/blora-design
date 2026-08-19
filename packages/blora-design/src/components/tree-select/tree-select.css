@@ -42,7 +42,6 @@ blora-tree-select {
     transform var(--blora-duration-fast) var(--blora-easing-standard);
 }
 
-.blora-treeselect.is-open .blora-treeselect__panel,
 .blora-treeselect[data-open] .blora-treeselect__panel {
   opacity: 1;
   pointer-events: auto;
@@ -64,7 +63,7 @@ blora-tree-select {
   background: var(--blora-color-surface-raised);
 }
 
-.blora-treeselect__node.is-selected {
+.blora-treeselect__node[data-selected] {
   background: var(
     --blora-color-action-primary-tint,
     color-mix(in srgb, var(--blora-color-action-primary-default) 12%, transparent)
@@ -73,7 +72,7 @@ blora-tree-select {
   font-weight: 500;
 }
 
-.blora-treeselect__node.is-disabled {
+.blora-treeselect__node[data-disabled] {
   opacity: 0.45;
   pointer-events: none;
 }
@@ -98,7 +97,7 @@ blora-tree-select {
   height: 12px;
 }
 
-.blora-treeselect__toggle.is-open {
+.blora-treeselect__toggle[data-open] {
   transform: rotate(90deg);
 }
 
@@ -107,6 +106,6 @@ blora-tree-select {
   padding-inline-start: 1.1em;
 }
 
-.blora-treeselect__children.is-open {
+.blora-treeselect__children[data-open] {
   display: block;
 }

@@ -173,7 +173,7 @@
   background: var(--blora-color-action-primary-tint);
 }
 
-.blora-post__tools .is-danger:hover {
+.blora-post__tools [data-variant="danger"]:hover {
   color: var(--blora-color-status-danger);
   background: color-mix(in srgb, var(--blora-color-status-danger) 12%, transparent);
 }
@@ -321,7 +321,7 @@
   transform: scale(1.06);
 }
 
-.blora-post__react-btn.is-active {
+.blora-post__react-btn[data-active] {
   border-color: var(--blora-color-action-primary-default);
   background: var(--blora-color-action-primary-tint);
   color: var(--blora-color-action-primary-default);
@@ -349,7 +349,7 @@
     margin var(--blora-duration-base) var(--blora-easing-standard);
 }
 
-.blora-post__replies.is-collapsed .blora-post__replies-body {
+.blora-post__replies[data-collapsed] .blora-post__replies-body {
   max-height: 0 !important;
   opacity: 0;
   transform: translateY(-0.35em);
@@ -386,7 +386,7 @@
     border-color var(--blora-duration-fast) var(--blora-easing-standard);
 }
 
-.blora-post__replies.is-collapsed .blora-post__collapse {
+.blora-post__replies[data-collapsed] .blora-post__collapse {
   margin-top: 0;
 }
 

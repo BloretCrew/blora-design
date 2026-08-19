@@ -38,17 +38,12 @@ export function createDrawerController(root: HTMLElement, host?: HTMLElement): D
       clearLeaving();
       root.setAttribute("data-open", "");
       root.setAttribute("open", "");
-      root.classList.add("is-open");
       panel?.setAttribute("tabindex", "-1");
       panel?.focus({ preventScroll: true });
       return;
     }
     if (closing) return;
-    if (
-      !root.hasAttribute("data-open") &&
-      !root.classList.contains("is-open") &&
-      !root.hasAttribute("open")
-    ) {
+    if (!root.hasAttribute("data-open") && !root.hasAttribute("open")) {
       return;
     }
     closing = true;
@@ -60,7 +55,6 @@ export function createDrawerController(root: HTMLElement, host?: HTMLElement): D
       if (!closing) return;
       root.removeAttribute("data-open");
       root.removeAttribute("open");
-      root.classList.remove("is-open");
       if (surface !== root) {
         surface.removeAttribute("data-open");
         surface.removeAttribute("open");
@@ -89,12 +83,7 @@ export function createDrawerController(root: HTMLElement, host?: HTMLElement): D
     }
   };
   const onKey = (e: KeyboardEvent) => {
-    if (
-      e.key === "Escape" &&
-      (root.hasAttribute("data-open") ||
-        root.classList.contains("is-open") ||
-        root.hasAttribute("open"))
-    ) {
+    if (e.key === "Escape" && (root.hasAttribute("data-open") || root.hasAttribute("open"))) {
       setOpen(false);
     }
   };
@@ -128,7 +117,6 @@ export function bindDrawerTriggers(root: ParentNode = document): () => void {
       else {
         drawer.setAttribute("data-open", "");
         drawer.setAttribute("open", "");
-        drawer.classList.add("is-open");
       }
     };
     btn.addEventListener("click", onClick);
@@ -178,7 +166,6 @@ export class BloraDrawer extends BloraElement {
     if (this.hasAttribute("open")) {
       root.dataset.open = "";
       root.setAttribute("open", "");
-      root.classList.add("is-open");
     }
     const mask = this.ownerDocument.createElement("div");
     mask.className = "blora-drawer__mask";

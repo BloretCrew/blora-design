@@ -29,7 +29,8 @@ export const Default: Story = {
     >
       <div class="blora-hover-gallery__track">
         <div
-          class="blora-hover-gallery__item is-active"
+          class="blora-hover-gallery__item"
+          data-active
           style="background:linear-gradient(135deg,#9F5964,#5D6680);"
         ></div>
         <div

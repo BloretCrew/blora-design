@@ -212,7 +212,7 @@
         box-shadow: var(--blora-shadow-1);
       }
 
-      .showcase-example:has(blora-palette-picker .is-open) {
+      .showcase-example:has(blora-palette-picker[data-open]) {
         overflow: visible;
       }
 
@@ -1186,7 +1186,7 @@
             <div class="showcase-textfx-item"><span data-blora-text-fx="jitter">Shivering frantically in cold weather</span></div>
           </div></section>
           <section data-showcase-case="TextRotate"><h3>文字轮换</h3><div class="blora-text-rotate" data-showcase-text-rotate aria-live="polite">
-            <span class="blora-text-rotate__item is-active">结构统一</span>
+            <span class="blora-text-rotate__item" data-active>结构统一</span>
             <span class="blora-text-rotate__item">令牌驱动</span>
           </div></section>
           <section data-showcase-case="Countdown"><h3>倒计时</h3><div class="blora-countdown" data-blora-countdown data-showcase-countdown data-seconds="86405">
@@ -1198,7 +1198,7 @@
           <section data-showcase-case="CountUp"><h3>数字增长</h3><strong data-showcase-countup data-blora-countup="12847">0</strong></section>
           <section data-showcase-case="ImageDiff"><h3>图片对比</h3><div class="blora-diff" data-showcase-image-diff><div class="blora-diff__item blora-diff__item--before"><div class="showcase-fx-surface"></div></div><div class="blora-diff__item"><div class="showcase-fx-surface" data-tone="success"></div></div><div class="blora-diff__divider" aria-hidden="true"></div><input class="blora-diff__range" type="range" min="0" max="100" value="50" aria-label="对比位置"></div></section>
           <section data-showcase-case="Content"><h3>任意内容</h3><div class="blora-diff" data-showcase-image-diff style="--blora-diff-ratio: 4 / 3"><div class="blora-diff__item blora-diff__item--before"><article class="blora-card" data-variant="flat"><div class="blora-card__title">草稿</div><div class="blora-card__body">标题和说明挤在一起，状态也不清楚。</div><div class="blora-card__foot"><span class="blora-badge" data-variant="neutral">草稿</span></div></article></div><div class="blora-diff__item"><article class="blora-card"><div class="blora-card__title">已发布</div><div class="blora-card__body">层级拆开，用正式标签表达状态。</div><div class="blora-card__foot"><span class="blora-tag" data-variant="success">已发布</span></div></article></div><div class="blora-diff__divider" aria-hidden="true"></div><input class="blora-diff__range" type="range" min="0" max="100" value="50" aria-label="对比位置"></div></section>
-          <section data-showcase-case="HoverGallery"><h3>悬停画廊</h3><div class="blora-hover-gallery blora-hover-gallery--wide" data-showcase-hover-gallery tabindex="0" aria-label="图库"><div class="blora-hover-gallery__track"><div class="blora-hover-gallery__item showcase-fx-surface is-active"></div><div class="blora-hover-gallery__item showcase-fx-surface" data-tone="success"></div><div class="blora-hover-gallery__item showcase-fx-surface" data-tone="info"></div></div></div></section>
+          <section data-showcase-case="HoverGallery"><h3>悬停画廊</h3><div class="blora-hover-gallery blora-hover-gallery--wide" data-showcase-hover-gallery tabindex="0" aria-label="图库"><div class="blora-hover-gallery__track"><div class="blora-hover-gallery__item showcase-fx-surface" data-active></div><div class="blora-hover-gallery__item showcase-fx-surface" data-tone="success"></div><div class="blora-hover-gallery__item showcase-fx-surface" data-tone="info"></div></div></div></section>
           <section data-showcase-case="Watermark"><h3>水印</h3><div class="blora-watermark" data-showcase-watermark data-blora-watermark="BLORA" data-text="BLORA"><p>受保护的预览内容</p></div></section>
           <section data-showcase-case="ShortcutHints"><h3>快捷键提示</h3><p>打开命令：<kbd data-blora-shortcut="mod+k">Ctrl K</kbd></p></section>
         </div>
@@ -1283,7 +1283,7 @@
                 <div class="blora-post__tools">
                   <button type="button">链接</button>
                   <button type="button">回复</button>
-                  <button type="button" class="is-danger">删除</button>
+                  <button type="button" data-variant="danger">删除</button>
                   <button type="button">编辑</button>
                   <button type="button" class="blora-post__more" aria-label="更多"></button>
                 </div>
@@ -1310,7 +1310,7 @@
                       <div class="blora-post__tools">
                         <button type="button">链接</button>
                         <button type="button">回复</button>
-                        <button type="button" class="is-danger">删除</button>
+                        <button type="button" data-variant="danger">删除</button>
                         <button type="button">编辑</button>
                         <button type="button" class="blora-post__more" aria-label="更多"></button>
                       </div>
@@ -1344,7 +1344,7 @@
                       <div class="blora-post__tools">
                         <button type="button">链接</button>
                         <button type="button">回复</button>
-                        <button type="button" class="is-danger">删除</button>
+                        <button type="button" data-variant="danger">删除</button>
                         <button type="button">编辑</button>
                         <button type="button" class="blora-post__more" aria-label="更多"></button>
                       </div>
@@ -1366,7 +1366,7 @@
             </article>
           </div>
         </section>
-        <section data-showcase-case="CollapsedByDefault"><h3>默认收起</h3><div class="blora-thread" data-blora-thread data-showcase-thread><article class="blora-post"><h3 class="blora-post__title">收起态示例</h3><p class="blora-post__body">主帖内容，下方回复默认折叠。</p><div class="blora-post__replies is-collapsed" data-blora-thread-replies><div class="blora-post__replies-body" data-blora-thread-body><article class="blora-post blora-post--reply"><p class="blora-post__body">第一条回复</p></article></div><button class="blora-post__collapse" type="button" data-blora-thread-toggle aria-expanded="false" data-label-collapse="收起评论" data-label-expand="展开评论">展开评论</button></div></article></div></section>
+        <section data-showcase-case="CollapsedByDefault"><h3>默认收起</h3><div class="blora-thread" data-blora-thread data-showcase-thread><article class="blora-post"><h3 class="blora-post__title">收起态示例</h3><p class="blora-post__body">主帖内容，下方回复默认折叠。</p><div class="blora-post__replies" data-collapsed data-blora-thread-replies><div class="blora-post__replies-body" data-blora-thread-body><article class="blora-post blora-post--reply"><p class="blora-post__body">第一条回复</p></article></div><button class="blora-post__collapse" type="button" data-blora-thread-toggle aria-expanded="false" data-label-collapse="收起评论" data-label-expand="展开评论">展开评论</button></div></article></div></section>
         <section data-showcase-case="QuoteOnly"><h3>引用条</h3><div class="blora-thread"><article class="blora-post blora-post--reply"><div class="blora-post__quote"><span class="blora-post__quote-label">回复 @someone</span><span class="blora-post__quote-text">被引用的原文摘要…</span></div><div class="blora-post__body"><p>跟帖正文与引用内容保持清晰层级。</p></div></article></div></section>
         </div>
       </template>

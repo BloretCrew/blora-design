@@ -59,8 +59,7 @@ blora-tree {
     transform var(--blora-duration-base) var(--blora-easing-standard);
 }
 
-.blora-tree__node[data-open] + .blora-tree__children,
-.blora-tree__node.is-open + .blora-tree__children {
+.blora-tree__node[data-open] + .blora-tree__children {
   opacity: 1;
   transform: translateY(0);
 

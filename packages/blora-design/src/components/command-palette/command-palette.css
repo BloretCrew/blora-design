@@ -43,7 +43,6 @@ blora-command {
 
 .blora-cmdk-item:hover,
 .blora-cmdk-item[data-active],
-.blora-cmdk-item.is-active,
 .blora-command__item:hover,
 .blora-command__item[data-active] {
   background: var(--blora-color-surface-raised);

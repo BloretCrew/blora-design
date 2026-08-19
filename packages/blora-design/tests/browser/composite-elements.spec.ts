@@ -756,7 +756,7 @@ test("showcase catalog routes one of every official component at a time", async 
 
   const paletteTrigger = page.locator("[data-blora-palette-trigger]");
   await paletteTrigger.click();
-  await expect(page.locator(".blora-palette-picker")).toHaveClass(/is-open/);
+  await expect(page.locator(".blora-palette-picker")).toHaveAttribute("data-open", "");
   await expect(page.locator("[data-blora-palette-option]")).toHaveCount(7);
   const paletteTextGeometry = await page.evaluate(() => {
     const title = document.querySelector<HTMLElement>(".blora-palette-picker__title")!;
@@ -1094,12 +1094,12 @@ test("showcase Pagination matches the v1 window and keeps active hover colour st
     .locator('[aria-label="下一页"]')
     .evaluate((button) => (button as HTMLButtonElement).click());
   await expect(windowed).toHaveAttribute("page", "8");
-  await expect(windowed.locator(".blora-pagination__ellipsis.is-inactive")).toHaveCount(1);
+  await expect(windowed.locator(".blora-pagination__ellipsis[data-inactive]")).toHaveCount(1);
   await expect(pageButtons()).toHaveText(["1", "6", "7", "8", "9", "10", "11", "12"]);
 
   await windowed.evaluate((host) => host.setAttribute("page", "5"));
   await expect(pageButtons()).toHaveText(["1", "2", "3", "4", "5", "6", "7", "12"]);
-  await expect(windowed.locator('[data-edge="start"]')).toHaveClass(/is-inactive/);
+  await expect(windowed.locator('[data-edge="start"]')).toHaveAttribute("data-inactive", "");
 });
 
 test("every showcase route remains horizontally contained", async ({ page }) => {

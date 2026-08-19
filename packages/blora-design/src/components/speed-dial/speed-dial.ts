@@ -68,10 +68,8 @@ export function createSpeedDialController(root: HTMLElement): SpeedDialControlle
   const setOpen = (open: boolean, focus = false) => {
     if (open) {
       root.setAttribute("data-open", "");
-      root.classList.add("is-open");
     } else {
       root.removeAttribute("data-open");
-      root.classList.remove("is-open");
     }
     trigger.setAttribute("aria-expanded", String(open));
     actions.setAttribute("aria-hidden", String(!open));

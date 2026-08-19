@@ -107,6 +107,6 @@ v1_token,v2_token,status,reason,removal_version
 --blora-z-dropdown,--blora-z-dropdown,mapped,Same name,2.0.0
 --blora-z-drawer,--blora-z-drawer,mapped,Same name,2.0.0
 --blora-z-modal,--blora-z-modal,mapped,Same name,2.0.0
---blora-z-toast,--blora-z-toast,mapped,Same name,2.0.0
+--blora-z-toast,--blora-z-top,mapped,Toast removed; shared top feedback and tour layer,2.0.0
 --blora-background-texture,--blora-texture-background,mapped,Moved to texture namespace,2.0.0
 --blora-background-overlay,--blora-texture-overlay,mapped,Moved to texture namespace,2.0.0

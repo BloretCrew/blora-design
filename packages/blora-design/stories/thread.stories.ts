@@ -51,7 +51,7 @@ export const ForumThread: Story = {
           <div class="blora-post__tools">
             <button type="button">链接</button>
             <button type="button">回复</button>
-            <button type="button" class="is-danger">删除</button>
+            <button type="button" data-variant="danger">删除</button>
             <button type="button">编辑</button>
             <button type="button" class="blora-post__more" aria-label="更多">···</button>
           </div>
@@ -93,7 +93,7 @@ export const ForumThread: Story = {
                 <div class="blora-post__tools">
                   <button type="button">链接</button>
                   <button type="button">回复</button>
-                  <button type="button" class="is-danger">删除</button>
+                  <button type="button" data-variant="danger">删除</button>
                   <button type="button">编辑</button>
                   <button type="button" class="blora-post__more" aria-label="更多">···</button>
                 </div>
@@ -148,7 +148,7 @@ export const ForumThread: Story = {
                 <div class="blora-post__tools">
                   <button type="button">链接</button>
                   <button type="button">回复</button>
-                  <button type="button" class="is-danger">删除</button>
+                  <button type="button" data-variant="danger">删除</button>
                   <button type="button">编辑</button>
                   <button type="button" class="blora-post__more" aria-label="更多">···</button>
                 </div>
@@ -211,7 +211,7 @@ export const CollapsedByDefault: Story = {
         </header>
         <div class="blora-post__title">收起态示例</div>
         <div class="blora-post__body"><p>主帖内容。下方跟帖默认折叠。</p></div>
-        <div class="blora-post__replies is-collapsed" data-blora-thread-replies>
+        <div class="blora-post__replies" data-collapsed data-blora-thread-replies>
           <div class="blora-post__replies-body" data-blora-thread-body>
             <article class="blora-post blora-post--reply">
               <div class="blora-post__body"><p>第一条跟帖</p></div>

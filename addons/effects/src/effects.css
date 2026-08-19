@@ -354,7 +354,6 @@
   pointer-events: none;
 }
 
-.blora-text-rotate__item.is-active,
 .blora-text-rotate__item[data-active] {
   opacity: 1;
   transform: translateY(0);
@@ -524,7 +523,7 @@
   background: color-mix(in srgb, var(--blora-color-text-on-accent) 35%, transparent);
 }
 
-.blora-hover-gallery__progress span.is-active {
+.blora-hover-gallery__progress span[data-active] {
   background: var(--blora-color-text-on-accent);
 }
 

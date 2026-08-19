@@ -49,9 +49,7 @@ blora-popover {
   z-index: var(--blora-z-dropdown);
 }
 
-.blora-popover[data-open] .blora-popover__panel,
-.blora-popover.is-open .blora-popover__panel,
-.blora-popover__panel.is-open {
+.blora-popover[data-open] .blora-popover__panel {
   opacity: 1;
   pointer-events: auto;
   transform: translate(0, 0);

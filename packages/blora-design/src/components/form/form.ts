@@ -33,7 +33,6 @@ function errorSlot(field: HTMLElement): HTMLElement | null {
 function setFieldError(field: HTMLElement, message: string | null): void {
   if (message) {
     field.setAttribute("data-state", "invalid");
-    field.classList.add("is-error");
     const slot = errorSlot(field);
     if (slot) {
       slot.hidden = false;
@@ -41,7 +40,6 @@ function setFieldError(field: HTMLElement, message: string | null): void {
     }
   } else {
     field.removeAttribute("data-state");
-    field.classList.remove("is-error");
     const slot = errorSlot(field);
     if (slot) {
       slot.hidden = true;

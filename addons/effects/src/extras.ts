@@ -19,7 +19,6 @@ export function createTextRotateController(root: HTMLElement): TextRotateControl
   const items = Array.from(root.querySelectorAll<HTMLElement>(".blora-text-rotate__item"));
   if (items.length < 2 || prefersReduced(root)) {
     items.forEach((item, index) => {
-      item.classList.toggle("is-active", index === 0);
       item.toggleAttribute("data-active", index === 0);
       item.setAttribute("aria-hidden", String(index !== 0));
     });
@@ -30,9 +29,7 @@ export function createTextRotateController(root: HTMLElement): TextRotateControl
   const duration = Math.max(1200, Number(root.dataset.interval) || 3200);
   let active = Math.max(
     0,
-    items.findIndex(
-      (item) => item.classList.contains("is-active") || item.hasAttribute("data-active"),
-    ),
+    items.findIndex((item) => item.hasAttribute("data-active")),
   );
   let timer: number | null = null;
 
@@ -40,7 +37,6 @@ export function createTextRotateController(root: HTMLElement): TextRotateControl
     active = ((index % items.length) + items.length) % items.length;
     items.forEach((item, i) => {
       const on = i === active;
-      item.classList.toggle("is-active", on);
       item.toggleAttribute("data-active", on);
       item.setAttribute("aria-hidden", String(!on));
     });
@@ -236,7 +232,7 @@ export function createHoverGalleryController(root: HTMLElement): HoverGalleryCon
   const last = items.length - 1;
   let active = Math.max(
     0,
-    items.findIndex((item) => item.classList.contains("is-active")),
+    items.findIndex((item) => item.hasAttribute("data-active")),
   );
   if (active < 0) active = 0;
 
@@ -258,10 +254,10 @@ export function createHoverGalleryController(root: HTMLElement): HoverGalleryCon
     track!.classList.toggle("is-dragging", !animate);
     track!.style.transform = `translate3d(${-active * 100}%, 0, 0)`;
     items.forEach((item, i) => {
-      item.classList.toggle("is-active", i === active);
+      item.toggleAttribute("data-active", i === active);
       item.setAttribute("aria-hidden", String(i !== active));
     });
-    indicators.forEach((item, i) => item.classList.toggle("is-active", i === active));
+    indicators.forEach((item, i) => item.toggleAttribute("data-active", i === active));
     root.setAttribute("aria-label", `${label}，图片 ${active + 1} / ${items.length}`);
   };
 

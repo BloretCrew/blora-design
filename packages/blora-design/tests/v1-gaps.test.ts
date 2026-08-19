@@ -29,7 +29,7 @@ describe("v1 gaps — Tree Select", () => {
     const root = document.querySelector<HTMLElement>(".blora-treeselect")!;
     const ctrl = createTreeSelectController(root);
     ctrl.open();
-    expect(root.classList.contains("is-open")).toBe(true);
+    expect(root.hasAttribute("data-open")).toBe(true);
     // expand first then click leaf if nested
     const first = root.querySelector(".blora-treeselect__node") as HTMLElement;
     first?.click();
@@ -38,7 +38,7 @@ describe("v1 gaps — Tree Select", () => {
     target?.click();
     expect(ctrl.getValue().length).toBeGreaterThan(0);
     ctrl.destroy();
-    expect(root.classList.contains("is-open")).toBe(false);
+    expect(root.hasAttribute("data-open")).toBe(false);
   });
 });
 
@@ -85,9 +85,9 @@ describe("v1 gaps — BackTop", () => {
     expect(btn.querySelector("svg")).toBeTruthy();
     expect(btn.querySelector("svg path")).toBeTruthy();
     ctrl.show();
-    expect(btn.classList.contains("is-visible")).toBe(true);
+    expect(btn.hasAttribute("data-hidden")).toBe(false);
     ctrl.hide();
-    expect(btn.classList.contains("is-hidden") || btn.hasAttribute("data-hidden")).toBe(true);
+    expect(btn.hasAttribute("data-hidden")).toBe(true);
     ctrl.destroy();
   });
 });
@@ -131,7 +131,7 @@ describe("v1 gaps — Image preview", () => {
       0,
     );
     expect(handle).not.toBeNull();
-    expect(document.querySelector(".blora-image-preview.is-open")).toBeTruthy();
+    expect(document.querySelector(".blora-image-preview[data-open]")).toBeTruthy();
     expect(handle!.el.querySelector(".blora-image-preview__close svg")).not.toBeNull();
     expect(handle!.el.querySelector(".blora-image-preview__btn--prev svg")).not.toBeNull();
     expect(handle!.el.querySelector(".blora-image-preview__btn--next svg")).not.toBeNull();

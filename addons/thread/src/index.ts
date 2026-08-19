@@ -10,12 +10,12 @@
 export interface ThreadOptions {
   /**
    * Label for expand button when collapsed.
-   * Default: `"展开评论"` (v1). Overridden per-button by `data-label-expand`.
+   * Default: `"展开评论"`. Overridden per-button by `data-label-expand`.
    */
   expandLabel?: string;
   /**
    * Label for collapse button when expanded.
-   * Default: `"收起评论"` (v1). Overridden per-button by `data-label-collapse`.
+   * Default: `"收起评论"`. Overridden per-button by `data-label-collapse`.
    */
   collapseLabel?: string;
 }
@@ -41,44 +41,17 @@ function prefersReduced(el: HTMLElement): boolean {
   return !!win?.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 }
 
-function ownerDoc(el: HTMLElement): Document {
-  return el.ownerDocument ?? document;
-}
-
 function ownerWin(el: HTMLElement): Window | null {
   return el.ownerDocument?.defaultView ?? null;
 }
 
-/** Find or synthesize the animated replies body (v1 compatibility). */
-function ensureReplyBody(box: HTMLElement, toggleBtn: HTMLElement | null): HTMLElement | null {
-  let body = box.querySelector<HTMLElement>("[data-blora-thread-body], .blora-post__replies-body");
-  if (body) return body;
-
-  /* v1 兼容：无 body 时把帖子包一层再动画 */
-  const doc = ownerDoc(box);
-  body = doc.createElement("div");
-  body.className = "blora-post__replies-body";
-  body.setAttribute("data-blora-thread-body", "");
-
-  Array.from(box.children).forEach((el) => {
-    if (el === toggleBtn) return;
-    if (el instanceof HTMLElement && el.classList.contains("blora-post")) {
-      body!.appendChild(el);
-    }
-  });
-
-  if (toggleBtn && toggleBtn.parentElement === box) {
-    box.insertBefore(body, toggleBtn);
-  } else {
-    box.appendChild(body);
-  }
-  return body;
+/** Find the required animated replies body. */
+function findReplyBody(box: HTMLElement): HTMLElement | null {
+  return box.querySelector<HTMLElement>("[data-blora-thread-body]");
 }
 
 function findToggleInBox(box: HTMLElement): HTMLElement | null {
-  return (
-    box.querySelector<HTMLElement>("[data-blora-thread-toggle], .blora-post__collapse") ?? null
-  );
+  return box.querySelector<HTMLElement>("[data-blora-thread-toggle]");
 }
 
 function labelsFor(
@@ -103,10 +76,10 @@ function setToggleState(
 
 /**
  * Create a thread controller for expand/collapse of reply sections and post reactions.
- * Matches v1 `initThread` behaviour.
+ * Requires the current data-attribute structure declared by the Thread contract.
  *
- * @param root - Thread container (`.blora-thread` / `[data-blora-thread]`) or any ancestor
- * @param options - Default labels (Chinese v1 defaults)
+ * @param root - Thread container marked with `[data-blora-thread]` or any ancestor
+ * @param options - Default labels
  */
 export function createThreadController(
   root: HTMLElement,
@@ -130,17 +103,18 @@ export function createThreadController(
   const { signal } = abortController;
 
   function doToggleReact(btn: HTMLElement): void {
-    btn.classList.toggle("is-active");
-    btn.setAttribute("aria-pressed", String(btn.classList.contains("is-active")));
+    const active = !btn.hasAttribute("data-active");
+    btn.toggleAttribute("data-active", active);
+    btn.setAttribute("aria-pressed", String(active));
   }
 
   function doExpand(box: HTMLElement): void {
     const btn = findToggleInBox(box);
-    const body = ensureReplyBody(box, btn);
+    const body = findReplyBody(box);
     if (!body) return;
 
     const labels = labelsFor(btn, labelDefaults);
-    box.classList.remove("is-collapsed");
+    box.removeAttribute("data-collapsed");
 
     if (prefersReduced(root)) {
       body.style.maxHeight = "";
@@ -155,7 +129,7 @@ export function createThreadController(
 
     const onEnd = (e: TransitionEvent): void => {
       if (e.propertyName && e.propertyName !== "max-height") return;
-      if (!box.classList.contains("is-collapsed")) {
+      if (!box.hasAttribute("data-collapsed")) {
         body.style.maxHeight = "none";
       }
       body.removeEventListener("transitionend", onEnd);
@@ -163,7 +137,7 @@ export function createThreadController(
     body.addEventListener("transitionend", onEnd, { signal });
 
     ownerWin(root)?.setTimeout(() => {
-      if (!box.classList.contains("is-collapsed")) {
+      if (!box.hasAttribute("data-collapsed")) {
         body.style.maxHeight = "none";
       }
     }, 420);
@@ -171,13 +145,13 @@ export function createThreadController(
 
   function doCollapse(box: HTMLElement): void {
     const btn = findToggleInBox(box);
-    const body = ensureReplyBody(box, btn);
+    const body = findReplyBody(box);
     if (!body) return;
 
     const labels = labelsFor(btn, labelDefaults);
 
     if (prefersReduced(root)) {
-      box.classList.add("is-collapsed");
+      box.setAttribute("data-collapsed", "");
       body.style.maxHeight = "";
       setToggleState(btn, false, labels);
       return;
@@ -186,23 +160,21 @@ export function createThreadController(
     /* 收起：先锁当前高度再收到 0 */
     body.style.maxHeight = `${body.scrollHeight}px`;
     void body.offsetHeight;
-    box.classList.add("is-collapsed");
+    box.setAttribute("data-collapsed", "");
     body.style.maxHeight = "0px";
     setToggleState(btn, false, labels);
   }
 
   function doToggle(box: HTMLElement): void {
-    if (box.classList.contains("is-collapsed")) {
+    if (box.hasAttribute("data-collapsed")) {
       doExpand(box);
     } else {
       doCollapse(box);
     }
   }
 
-  /* —— toggle buttons (v1: [data-blora-thread-toggle]) —— */
-  const toggleButtons = root.querySelectorAll<HTMLElement>(
-    "[data-blora-thread-toggle], .blora-post__collapse",
-  );
+  /* —— toggle buttons —— */
+  const toggleButtons = root.querySelectorAll<HTMLElement>("[data-blora-thread-toggle]");
 
   toggleButtons.forEach((btn) => {
     btn.addEventListener(
@@ -219,7 +191,7 @@ export function createThreadController(
     );
   });
 
-  /* —— post react (v1: [data-blora-post-react]) —— */
+  /* —— post react —— */
   const reactButtons = root.querySelectorAll<HTMLElement>("[data-blora-post-react]");
   reactButtons.forEach((btn) => {
     btn.addEventListener(

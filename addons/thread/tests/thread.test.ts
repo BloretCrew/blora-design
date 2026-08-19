@@ -46,10 +46,10 @@ describe("Thread add-on", () => {
     controller.destroy();
   });
 
-  it("collapse adds is-collapsed class", () => {
+  it("collapse adds data-collapsed", () => {
     const controller = createThreadController(root);
     controller.collapse(replyBox);
-    expect(replyBox.classList.contains("is-collapsed")).toBe(true);
+    expect(replyBox.hasAttribute("data-collapsed")).toBe(true);
     controller.destroy();
   });
 
@@ -61,12 +61,12 @@ describe("Thread add-on", () => {
     controller.destroy();
   });
 
-  it("expand removes is-collapsed and restores collapse label", () => {
+  it("expand removes data-collapsed and restores collapse label", () => {
     const controller = createThreadController(root);
     controller.collapse(replyBox);
-    expect(replyBox.classList.contains("is-collapsed")).toBe(true);
+    expect(replyBox.hasAttribute("data-collapsed")).toBe(true);
     controller.expand(replyBox);
-    expect(replyBox.classList.contains("is-collapsed")).toBe(false);
+    expect(replyBox.hasAttribute("data-collapsed")).toBe(false);
     expect(toggleBtn.getAttribute("aria-expanded")).toBe("true");
     expect(toggleBtn.textContent).toBe("收起评论");
     controller.destroy();
@@ -74,11 +74,11 @@ describe("Thread add-on", () => {
 
   it("toggle switches between collapsed and expanded", () => {
     const controller = createThreadController(root);
-    expect(replyBox.classList.contains("is-collapsed")).toBe(false);
+    expect(replyBox.hasAttribute("data-collapsed")).toBe(false);
     controller.toggle(replyBox);
-    expect(replyBox.classList.contains("is-collapsed")).toBe(true);
+    expect(replyBox.hasAttribute("data-collapsed")).toBe(true);
     controller.toggle(replyBox);
-    expect(replyBox.classList.contains("is-collapsed")).toBe(false);
+    expect(replyBox.hasAttribute("data-collapsed")).toBe(false);
     controller.destroy();
   });
 
@@ -89,11 +89,11 @@ describe("Thread add-on", () => {
 
   it("clicking toggle button triggers toggle", () => {
     createThreadController(root);
-    expect(replyBox.classList.contains("is-collapsed")).toBe(false);
+    expect(replyBox.hasAttribute("data-collapsed")).toBe(false);
     toggleBtn.click();
-    expect(replyBox.classList.contains("is-collapsed")).toBe(true);
+    expect(replyBox.hasAttribute("data-collapsed")).toBe(true);
     toggleBtn.click();
-    expect(replyBox.classList.contains("is-collapsed")).toBe(false);
+    expect(replyBox.hasAttribute("data-collapsed")).toBe(false);
   });
 
   it("uses custom labels from options", () => {
@@ -121,27 +121,27 @@ describe("Thread add-on", () => {
     controller.destroy();
   });
 
-  it("post react click toggles is-active and aria-pressed", () => {
+  it("post react click toggles data-active and aria-pressed", () => {
     createThreadController(root);
-    expect(reactBtn.classList.contains("is-active")).toBe(false);
+    expect(reactBtn.hasAttribute("data-active")).toBe(false);
     reactBtn.click();
-    expect(reactBtn.classList.contains("is-active")).toBe(true);
+    expect(reactBtn.hasAttribute("data-active")).toBe(true);
     expect(reactBtn.getAttribute("aria-pressed")).toBe("true");
     reactBtn.click();
-    expect(reactBtn.classList.contains("is-active")).toBe(false);
+    expect(reactBtn.hasAttribute("data-active")).toBe(false);
     expect(reactBtn.getAttribute("aria-pressed")).toBe("false");
   });
 
   it("toggleReact API matches click behaviour", () => {
     const controller = createThreadController(root);
     controller.toggleReact(reactBtn);
-    expect(reactBtn.classList.contains("is-active")).toBe(true);
+    expect(reactBtn.hasAttribute("data-active")).toBe(true);
     controller.toggleReact(reactBtn);
-    expect(reactBtn.classList.contains("is-active")).toBe(false);
+    expect(reactBtn.hasAttribute("data-active")).toBe(false);
     controller.destroy();
   });
 
-  it("synthesizes replies body when missing (v1 compatibility)", () => {
+  it("does not synthesize a missing replies body", () => {
     root.innerHTML = `
       <article class="blora-post">
         <div class="blora-post__replies" data-blora-thread-replies>
@@ -154,10 +154,8 @@ describe("Thread add-on", () => {
     const box = root.querySelector<HTMLElement>("[data-blora-thread-replies]")!;
     const controller = createThreadController(root);
     controller.collapse(box);
-    const body = box.querySelector("[data-blora-thread-body], .blora-post__replies-body");
-    expect(body).not.toBeNull();
-    expect(body?.querySelector(".blora-post--reply")?.textContent).toBe("R1");
-    expect(box.classList.contains("is-collapsed")).toBe(true);
+    expect(box.querySelector("[data-blora-thread-body]")).toBeNull();
+    expect(box.hasAttribute("data-collapsed")).toBe(false);
     controller.destroy();
   });
 

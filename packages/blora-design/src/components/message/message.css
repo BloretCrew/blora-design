@@ -63,7 +63,7 @@
   inset-block-start: max(var(--blora-space-5), env(safe-area-inset-top, 0px));
   inset-inline-start: 50%;
   transform: translateX(-50%);
-  z-index: var(--blora-z-toast);
+  z-index: var(--blora-z-top);
   display: flex;
   flex-direction: column;
   align-items: center;

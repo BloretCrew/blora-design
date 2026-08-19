@@ -118,7 +118,7 @@ blora-color-scheme-toggle {
     visibility 0s linear var(--blora-duration-base);
 }
 
-.blora-palette-picker.is-open .blora-palette-picker__menu {
+.blora-palette-picker[data-open] .blora-palette-picker__menu {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;

@@ -20,7 +20,13 @@
       "description": "Collapse/expand control for the nearest replies box"
     },
     "data-blora-post-react": {
-      "description": "Post reaction toggle (is-active + aria-pressed)"
+      "description": "Post reaction toggle (data-active + aria-pressed)"
+    },
+    "data-collapsed": {
+      "description": "Collapsed state for a reply list"
+    },
+    "data-active": {
+      "description": "Active state for a reaction button"
     },
     "data-label-expand": {
       "description": "Per-button expand label (default 展开评论)"
@@ -32,7 +38,7 @@
   "properties": {},
   "methods": {
     "createThreadController": {
-      "description": "Create a thread controller: expand/collapse replies + post react (v1 initThread parity)"
+      "description": "Create a thread controller for the declared data-attribute structure: expand/collapse replies and post reactions"
     }
   },
   "events": {},
@@ -64,10 +70,7 @@
     ".blora-post__replies",
     ".blora-post__replies-body",
     ".blora-post__collapse",
-    ".blora-comment",
-    ".is-collapsed",
-    ".is-active",
-    ".is-danger"
+    ".blora-comment"
   ],
   "accessibilityPattern": "list",
   "migrationFromV1": "thread.migration.md"

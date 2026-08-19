@@ -149,10 +149,8 @@ export function createPaginationController(root: HTMLElement): PaginationControl
   const setPage = (btn: HTMLButtonElement) => {
     items().forEach((b) => {
       b.removeAttribute("aria-current");
-      b.classList.remove("is-active");
     });
     btn.setAttribute("aria-current", "page");
-    btn.classList.add("is-active");
     root.dispatchEvent(
       new CustomEvent("blora-change", {
         bubbles: true,
@@ -350,17 +348,16 @@ export class BloraPagination extends BloraElement {
     root.style.setProperty("--blora-pagination-offset", String(window.offset));
     root
       .querySelector('[data-edge="start"]')
-      ?.classList.toggle("is-inactive", !window.showStartEllipsis);
+      ?.toggleAttribute("data-inactive", !window.showStartEllipsis);
     root
       .querySelector('[data-edge="end"]')
-      ?.classList.toggle("is-inactive", !window.showEndEllipsis);
+      ?.toggleAttribute("data-inactive", !window.showEndEllipsis);
     root.querySelectorAll<HTMLButtonElement>("button[data-page]").forEach((button) => {
       const page = Number(button.dataset.page);
       const visible =
         !window.windowed || page === 1 || page === total || window.inner.includes(page);
       if (page === current) button.setAttribute("aria-current", "page");
       else button.removeAttribute("aria-current");
-      button.classList.toggle("is-active", page === current);
       button.tabIndex = visible ? 0 : -1;
       if (visible) button.removeAttribute("aria-hidden");
       else button.setAttribute("aria-hidden", "true");

@@ -6,7 +6,7 @@
     "dropdown": { "$type": "number", "$value": 1000 },
     "drawer": { "$type": "number", "$value": 1100 },
     "modal": { "$type": "number", "$value": 1200 },
-    "toast": { "$type": "number", "$value": 1300 }
+    "top": { "$type": "number", "$value": 1300 }
   },
   "border": {
     "subtle": {

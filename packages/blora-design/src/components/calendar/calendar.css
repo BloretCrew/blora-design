@@ -152,8 +152,7 @@ blora-calendar {
 }
 
 /* v1 selected: hollow outline (not solid fill) — matches legacy inset ring */
-.blora-calendar__day--selected,
-.blora-calendar__day.is-selected {
+.blora-calendar__day--selected {
   background: transparent !important;
   background-color: transparent !important;
   color: var(--blora-color-action-primary-default) !important;
@@ -162,8 +161,7 @@ blora-calendar {
   box-shadow: inset 0 0 0 2px var(--blora-color-action-primary-default);
 }
 
-.blora-calendar__day--selected:hover,
-.blora-calendar__day.is-selected:hover {
+.blora-calendar__day--selected:hover {
   background: var(--blora-color-surface-raised) !important;
   background-color: var(--blora-color-surface-raised) !important;
   color: var(--blora-color-action-primary-default) !important;
@@ -219,9 +217,7 @@ blora-calendar {
  */
 .blora-calendar .blora-calendar__cell[data-selected],
 .blora-calendar .blora-calendar__cell[data-selected][data-today],
-.blora-calendar .blora-calendar__cell.is-selected,
-.blora-calendar__cell[data-selected],
-.blora-calendar__cell.is-selected {
+.blora-calendar__cell[data-selected] {
   background: transparent !important;
   background-color: transparent !important;
   background-image: none !important;
@@ -233,16 +229,14 @@ blora-calendar {
 }
 
 .blora-calendar .blora-calendar__cell[data-selected]:hover,
-.blora-calendar__cell[data-selected]:hover,
-.blora-calendar__cell.is-selected:hover {
+.blora-calendar__cell[data-selected]:hover {
   background: var(--blora-color-surface-raised) !important;
   background-color: var(--blora-color-surface-raised) !important;
   color: var(--blora-color-action-primary-default) !important;
   box-shadow: inset 0 0 0 2px var(--blora-color-action-primary-default);
 }
 
-.blora-calendar__cell[data-selected][data-today]::after,
-.blora-calendar__cell.is-selected.is-today::after {
+.blora-calendar__cell[data-selected][data-today]::after {
   display: none !important;
   content: none !important;
 }

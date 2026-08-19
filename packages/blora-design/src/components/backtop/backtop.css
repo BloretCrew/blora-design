@@ -35,7 +35,6 @@ blora-backtop {
   transform: scale(1);
 }
 
-.blora-backtop:not(.blora-fab).is-hidden,
 .blora-backtop:not(.blora-fab)[data-hidden] {
   opacity: 0;
   pointer-events: none;
@@ -53,7 +52,6 @@ blora-backtop {
   transform: scale(1);
 }
 
-.blora-fab.blora-backtop.is-hidden,
 .blora-fab.blora-backtop[data-hidden] {
   opacity: 0;
   pointer-events: none;

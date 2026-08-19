@@ -57,17 +57,14 @@ export function createMegamenuController(root: HTMLElement): MegamenuController 
         .forEach((other) => {
           if (other === root) return;
           other.removeAttribute("data-open");
-          other.classList.remove("is-open");
           const ot = other.querySelector<HTMLElement>(
             "[data-blora-megamenu-trigger], .blora-megamenu__trigger",
           );
           ot?.setAttribute("aria-expanded", "false");
         });
       root.setAttribute("data-open", "");
-      root.classList.add("is-open");
     } else {
       root.removeAttribute("data-open");
-      root.classList.remove("is-open");
     }
     trigger.setAttribute("aria-expanded", String(open));
     root.dispatchEvent(

@@ -288,26 +288,22 @@ function mountPalettePicker(root: HTMLElement): PalettePickerController {
   };
 
   const open = (focus = false) => {
-    doc
-      .querySelectorAll<HTMLElement>(
-        "[data-blora-palette-picker].is-open, .blora-palette-picker.is-open",
-      )
-      .forEach((other) => {
-        if (other === root) return;
-        other.classList.remove("is-open");
-        other
-          .querySelector("[data-blora-palette-trigger], .blora-palette-picker__trigger")
-          ?.setAttribute("aria-expanded", "false");
-        const otherMenu = other.querySelector<HTMLElement>(".blora-palette-picker__menu");
-        if (!otherMenu) return;
-        otherMenu.style.removeProperty("position");
-        otherMenu.style.removeProperty("top");
-        otherMenu.style.removeProperty("left");
-        otherMenu.style.removeProperty("right");
-        otherMenu.style.removeProperty("width");
-        otherMenu.style.removeProperty("max-width");
-      });
-    root.classList.add("is-open");
+    doc.querySelectorAll<HTMLElement>("[data-blora-palette-picker][data-open]").forEach((other) => {
+      if (other === root) return;
+      other.removeAttribute("data-open");
+      other
+        .querySelector("[data-blora-palette-trigger], .blora-palette-picker__trigger")
+        ?.setAttribute("aria-expanded", "false");
+      const otherMenu = other.querySelector<HTMLElement>(".blora-palette-picker__menu");
+      if (!otherMenu) return;
+      otherMenu.style.removeProperty("position");
+      otherMenu.style.removeProperty("top");
+      otherMenu.style.removeProperty("left");
+      otherMenu.style.removeProperty("right");
+      otherMenu.style.removeProperty("width");
+      otherMenu.style.removeProperty("max-width");
+    });
+    root.setAttribute("data-open", "");
     trigger.setAttribute("aria-expanded", "true");
     placeMenu();
     if (focus) {
@@ -320,11 +316,11 @@ function mountPalettePicker(root: HTMLElement): PalettePickerController {
   const finishClosePlace = () => {
     window.clearTimeout(placeClearTimer);
     placeClearTimer = 0;
-    if (!root.classList.contains("is-open")) clearMenuPlace();
+    if (!root.hasAttribute("data-open")) clearMenuPlace();
   };
 
   const close = (restore = false) => {
-    root.classList.remove("is-open");
+    root.removeAttribute("data-open");
     trigger.setAttribute("aria-expanded", "false");
     /* Keep position:fixed through the fade-out. Reverting to absolute while
        the menu is still visible makes clipped parents jump in height. */
@@ -336,7 +332,7 @@ function mountPalettePicker(root: HTMLElement): PalettePickerController {
 
   const onTrigger = (e: MouseEvent) => {
     e.stopPropagation();
-    if (root.classList.contains("is-open")) close();
+    if (root.hasAttribute("data-open")) close();
     else open();
   };
   const onTriggerKey = (e: KeyboardEvent) => {
@@ -375,7 +371,7 @@ function mountPalettePicker(root: HTMLElement): PalettePickerController {
   };
   const onTheme = () => sync();
   const onReposition = () => {
-    if (root.classList.contains("is-open")) placeMenu();
+    if (root.hasAttribute("data-open")) placeMenu();
   };
 
   trigger.addEventListener("click", onTrigger);

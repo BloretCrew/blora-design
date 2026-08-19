@@ -63,7 +63,7 @@ test.describe("axe a11y smoke", () => {
     await page.goto(`${pathToFileURL(showcasePath).href}#accordion`);
     await page.waitForSelector("#demo-accordion .blora-accordion__head");
     await page.locator("[data-blora-palette-trigger]").click();
-    await page.waitForSelector(".blora-palette-picker.is-open");
+    await page.waitForSelector(".blora-palette-picker[data-open]");
 
     const results = await new AxeBuilder({ page })
       .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])

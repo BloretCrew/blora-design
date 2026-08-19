@@ -235,7 +235,7 @@ test.describe("showcase full component catalog", () => {
       element.setAttribute("data-blora-color-scheme", "light");
     });
     await page.locator("[data-blora-palette-trigger]").click();
-    await expect(page.locator(".blora-palette-picker")).toHaveClass(/is-open/);
+    await expect(page.locator(".blora-palette-picker")).toHaveAttribute("data-open", "");
     await expect(page.locator(".blora-palette-picker__menu")).toHaveScreenshot(
       "showcase-palette-picker-menu-open.png",
       {

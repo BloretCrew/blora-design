@@ -29,12 +29,8 @@ export function createPopoverController(
   const setOpen = (open: boolean) => {
     if (open) {
       root.setAttribute("data-open", "");
-      root.classList.add("is-open");
-      panel.classList.add("is-open");
     } else {
       root.removeAttribute("data-open");
-      root.classList.remove("is-open");
-      panel.classList.remove("is-open");
     }
     trigger.setAttribute("aria-expanded", String(open));
     onOpenChange?.(open);

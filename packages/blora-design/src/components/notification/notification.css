@@ -109,7 +109,7 @@
 /* Multi-placement stacks */
 .blora-notify-container {
   position: fixed;
-  z-index: var(--blora-z-toast);
+  z-index: var(--blora-z-top);
   display: flex;
   flex-direction: column;
   gap: var(--blora-space-2);

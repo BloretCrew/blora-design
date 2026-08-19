@@ -59,18 +59,16 @@ function mountSidebarLayout(root: HTMLElement): SidebarLayoutController {
   };
 
   const syncA11y = () => {
-    const unavailable =
-      drawerMode && !root.classList.contains("is-open") && !root.hasAttribute("data-open");
+    const unavailable = drawerMode && !root.hasAttribute("data-open");
     aside.setAttribute("aria-hidden", String(unavailable));
     if (unavailable) aside.setAttribute("inert", "");
     else aside.removeAttribute("inert");
-    mask!.setAttribute("aria-hidden", String(!root.classList.contains("is-open")));
+    mask!.setAttribute("aria-hidden", String(!root.hasAttribute("data-open")));
   };
 
   const setOpen = (open: boolean, restore = false, focus = false) => {
     /* Ignore open in desktop two-column mode */
     if (open && !drawerMode) return;
-    root.classList.toggle("is-open", open);
     if (open) root.setAttribute("data-open", "");
     else root.removeAttribute("data-open");
     toggles.forEach((toggle) => {
@@ -112,7 +110,7 @@ function mountSidebarLayout(root: HTMLElement): SidebarLayoutController {
     e.preventDefault();
     e.stopPropagation();
     if (!drawerMode) return;
-    setOpen(!root.classList.contains("is-open"), false, true);
+    setOpen(!root.hasAttribute("data-open"), false, true);
   };
   const onMask = (e: Event) => {
     e.preventDefault();
@@ -120,14 +118,14 @@ function mountSidebarLayout(root: HTMLElement): SidebarLayoutController {
     setOpen(false, true);
   };
   const onKey = (e: KeyboardEvent) => {
-    if (e.key === "Escape" && root.classList.contains("is-open")) {
+    if (e.key === "Escape" && root.hasAttribute("data-open")) {
       e.preventDefault();
       setOpen(false, true);
     }
   };
   /* Mobile UX: choosing a nav item closes the drawer */
   const onAsideClick = (e: Event) => {
-    if (!drawerMode || !root.classList.contains("is-open")) return;
+    if (!drawerMode || !root.hasAttribute("data-open")) return;
     const t = e.target as Element | null;
     if (t?.closest?.("a[href], button:not([data-blora-sidebar-toggle])")) {
       setOpen(false, true);
@@ -233,7 +231,7 @@ function mountSidebarLayout(root: HTMLElement): SidebarLayoutController {
       root.style.minHeight = authoredMinHeight;
       aside.removeAttribute("data-overflow-start");
       aside.removeAttribute("data-overflow-end");
-      root.classList.remove("is-open", "blora-sidebar-layout--drawer");
+      root.classList.remove("blora-sidebar-layout--drawer");
       root.removeAttribute("data-open");
       root.removeAttribute("data-drawer");
     },
@@ -526,7 +524,7 @@ export function createAnchorController(root: HTMLElement): AnchorController {
     sections.forEach((s) => {
       if (s.el.offsetTop <= y) active = s;
     });
-    links.forEach((a) => a.classList.toggle("is-active", !!active && a === active.a));
+    links.forEach((a) => a.toggleAttribute("data-active", !!active && a === active.a));
   };
 
   links.forEach((a) => a.classList.add("blora-anchor__link"));
@@ -571,7 +569,7 @@ export function createScrollSpyController(root: HTMLElement): ScrollSpyControlle
       if (s.offsetTop <= y) active = s;
     });
     const id = active?.id || "";
-    links.forEach((l) => l.classList.toggle("is-active", l.getAttribute("href") === `#${id}`));
+    links.forEach((l) => l.toggleAttribute("data-active", l.getAttribute("href") === `#${id}`));
     if (id && id !== lastId) {
       lastId = id;
       const cur = String(win.location.hash || "").replace(/^#/, "");

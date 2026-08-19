@@ -346,10 +346,10 @@ describe("Composite Custom Elements", () => {
         .map((button) => button.dataset.page),
     ).toEqual(["1", "6", "7", "8", "9", "10", "11", "12"]);
     expect(
-      windowedPagination.querySelector('[data-edge="end"]')?.classList.contains("is-inactive"),
+      windowedPagination.querySelector('[data-edge="end"]')?.hasAttribute("data-inactive"),
     ).toBe(true);
     expect(
-      windowedPagination.querySelector('[data-edge="start"]')?.classList.contains("is-inactive"),
+      windowedPagination.querySelector('[data-edge="start"]')?.hasAttribute("data-inactive"),
     ).toBe(false);
 
     windowedPagination.page = 5;
@@ -359,7 +359,7 @@ describe("Composite Custom Elements", () => {
         .map((button) => button.dataset.page),
     ).toEqual(["1", "2", "3", "4", "5", "6", "7", "12"]);
     expect(
-      windowedPagination.querySelector('[data-edge="start"]')?.classList.contains("is-inactive"),
+      windowedPagination.querySelector('[data-edge="start"]')?.hasAttribute("data-inactive"),
     ).toBe(true);
     expect(
       windowedPagination

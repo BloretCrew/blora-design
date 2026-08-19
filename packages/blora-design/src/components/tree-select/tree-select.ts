@@ -76,7 +76,6 @@ export function createTreeSelectController(root: HTMLElement): TreeSelectControl
   let label = input.value || "";
 
   const setOpen = (open: boolean) => {
-    root.classList.toggle("is-open", open);
     root.toggleAttribute("data-open", open);
     input.setAttribute("aria-expanded", String(open));
   };
@@ -100,7 +99,7 @@ export function createTreeSelectController(root: HTMLElement): TreeSelectControl
     const row = doc.createElement("div");
     row.className = "blora-treeselect__node";
     row.dataset.depth = String(depth);
-    if (item.disabled) row.classList.add("is-disabled");
+    row.toggleAttribute("data-disabled", !!item.disabled);
     const hasKids = !!(item.children && item.children.length);
 
     const tog = doc.createElement("span");
@@ -132,13 +131,15 @@ export function createTreeSelectController(root: HTMLElement): TreeSelectControl
       if (item.disabled) return;
       const onToggle = (e.target as HTMLElement).closest(".blora-treeselect__toggle");
       if (hasKids && (onToggle || item.selectable === false)) {
-        kids.classList.toggle("is-open");
-        tog.classList.toggle("is-open");
+        const open = !kids.hasAttribute("data-open");
+        kids.toggleAttribute("data-open", open);
+        tog.toggleAttribute("data-open", open);
         return;
       }
       if (hasKids && item.selectable !== true) {
-        kids.classList.toggle("is-open");
-        tog.classList.toggle("is-open");
+        const open = !kids.hasAttribute("data-open");
+        kids.toggleAttribute("data-open", open);
+        tog.toggleAttribute("data-open", open);
         return;
       }
       selectLeaf(item);
@@ -154,14 +155,14 @@ export function createTreeSelectController(root: HTMLElement): TreeSelectControl
 
   const onInputClick = (e: MouseEvent) => {
     e.stopPropagation();
-    setOpen(!root.classList.contains("is-open"));
+    setOpen(!root.hasAttribute("data-open"));
   };
   const onDoc = (e: MouseEvent) => {
     if (!root.contains(e.target as Node)) setOpen(false);
   };
   const onKey = (e: KeyboardEvent) => {
     if (e.key === "Escape") setOpen(false);
-    if (e.key === "ArrowDown" && !root.classList.contains("is-open")) {
+    if (e.key === "ArrowDown" && !root.hasAttribute("data-open")) {
       e.preventDefault();
       setOpen(true);
     }

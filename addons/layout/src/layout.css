@@ -340,9 +340,7 @@ blora-sidebar-layout[compact] {
   transform: translateX(105%);
 }
 
-.blora-sidebar-layout--drawer.is-open .blora-sidebar-layout__aside,
 .blora-sidebar-layout--drawer[data-open] .blora-sidebar-layout__aside,
-.blora-sidebar-layout[data-drawer].is-open .blora-sidebar-layout__aside,
 .blora-sidebar-layout[data-drawer][data-open] .blora-sidebar-layout__aside {
   transform: translateX(0);
 }
@@ -366,9 +364,7 @@ blora-sidebar-layout[compact] {
     visibility 0s linear var(--blora-duration-base, 0.26s);
 }
 
-.blora-sidebar-layout--drawer.is-open .blora-sidebar-layout__mask,
 .blora-sidebar-layout--drawer[data-open] .blora-sidebar-layout__mask,
-.blora-sidebar-layout[data-drawer].is-open .blora-sidebar-layout__mask,
 .blora-sidebar-layout[data-drawer][data-open] .blora-sidebar-layout__mask {
   opacity: 1;
   visibility: visible;
@@ -482,8 +478,8 @@ blora-sidebar-layout[compact] {
   background: var(--blora-color-surface-raised);
 }
 
-.blora-anchor__link.is-active,
-[data-blora-spy] a.is-active {
+.blora-anchor__link[data-active],
+[data-blora-spy] a[data-active] {
   color: var(--blora-color-action-primary-default);
   background: var(--blora-color-action-primary-tint);
   font-weight: 600;

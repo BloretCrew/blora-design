@@ -7,7 +7,7 @@
   "requiresJavaScript": true,
   "customElements": {
     "blora-palette-picker": {
-      "attributes": ["button-variant", "size"],
+      "attributes": ["button-variant", "size", "data-open"],
       "methods": ["open", "close"]
     },
     "blora-color-scheme-toggle": {

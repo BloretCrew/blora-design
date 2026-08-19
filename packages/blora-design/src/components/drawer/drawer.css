@@ -23,7 +23,6 @@ blora-drawer {
 
 .blora-drawer[open],
 .blora-drawer[data-open],
-.blora-drawer.is-open,
 .blora-drawer.is-leaving {
   display: block;
 }

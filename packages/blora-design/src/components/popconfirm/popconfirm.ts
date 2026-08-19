@@ -20,10 +20,8 @@ export function createPopconfirmController(root: HTMLElement): PopconfirmControl
   const setOpen = (open: boolean) => {
     if (open) {
       root.setAttribute("data-open", "");
-      root.classList.add("is-open");
     } else {
       root.removeAttribute("data-open");
-      root.classList.remove("is-open");
     }
   };
 

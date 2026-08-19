@@ -40,15 +40,15 @@ describe("layout add-on", () => {
       root.hasAttribute("data-drawer") || root.classList.contains("blora-sidebar-layout--drawer"),
     ).toBe(true);
     host.open();
-    expect(root.classList.contains("is-open")).toBe(true);
+    expect(root.hasAttribute("data-open")).toBe(true);
 
     const mask = root.querySelector<HTMLElement>(".blora-sidebar-layout__mask")!;
     mask.click();
-    expect(root.classList.contains("is-open")).toBe(false);
+    expect(root.hasAttribute("data-open")).toBe(false);
 
     host.open();
     root.querySelector("a")!.click();
-    expect(root.classList.contains("is-open")).toBe(false);
+    expect(root.hasAttribute("data-open")).toBe(false);
   });
 
   it("sidebar CE ignores open when wide (desktop columns)", () => {
@@ -74,7 +74,7 @@ describe("layout add-on", () => {
       }) as DOMRect;
     window.dispatchEvent(new Event("resize"));
     host.open();
-    expect(root.classList.contains("is-open")).toBe(false);
+    expect(root.hasAttribute("data-open")).toBe(false);
   });
 
   it("marks overflow edges when the aside can scroll", () => {

@@ -68,7 +68,8 @@ export function openImagePreview(
   let index = Math.max(0, Math.min(start, list.length - 1));
 
   const overlay = doc.createElement("div");
-  overlay.className = "blora-image-preview is-open";
+  overlay.className = "blora-image-preview";
+  overlay.dataset.open = "";
   overlay.setAttribute("role", "dialog");
   overlay.setAttribute("aria-modal", "true");
 
@@ -118,7 +119,7 @@ export function openImagePreview(
   };
 
   const close = () => {
-    overlay.classList.remove("is-open");
+    overlay.removeAttribute("data-open");
     overlay.remove();
     doc.removeEventListener("keydown", onKey);
   };

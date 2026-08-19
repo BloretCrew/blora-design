@@ -16,6 +16,6 @@ describe("BloraDrawer", () => {
     drawer.open();
     expect(drawer.hasAttribute("open")).toBe(true);
     expect(drawer.hasAttribute("data-open")).toBe(true);
-    expect(drawer.querySelector(".blora-drawer")?.classList.contains("is-open")).toBe(true);
+    expect(drawer.querySelector(".blora-drawer")?.hasAttribute("data-open")).toBe(true);
   });
 });
