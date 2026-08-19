@@ -16,8 +16,8 @@ pnpm --filter @bloret-crew/blora-design run migrate:check -- ./src
 ## 2. 安装方式
 
 ```bash
-pnpm add @bloret-crew/blora-design@alpha
-# 钉死版本：@2.0.0-alpha.1
+pnpm add @bloret-crew/blora-design@beta
+# 钉死版本：@2.0.0-beta.0
 ```
 
 ### 2.1 2.0 包入口（摘要）

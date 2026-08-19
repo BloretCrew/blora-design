@@ -31,7 +31,7 @@
 - **1.x 表现**：`.blora-drawer.is-open` 就是可见层。
 - **2.0 表现**：`blora-drawer:not([open])` 在升级前隐藏主机。`open()` 同时给主机和内部 `.blora-drawer` 打上 `open`，否则按钮点了内部已开、页面仍是 `display: none`。
 - **改变原因**：bug 修复
-- **审核状态**：pending
+- **审核状态**：approved（用户人工批准 2026-08-19）
 
 ### Transfer - 箭头在圆形钮里光学居中
 
@@ -39,7 +39,7 @@
 - **1.x 表现**：窄宽时整颗按钮 `rotate: 90deg`，Lucide 开口箭头在圆里会显得偏轴。
 - **2.0 表现**：只旋转 SVG；圆形钮锁成正方形。Chevron 路径向尖端微调，使圆钮里的箭头视觉居中。
 - **改变原因**：bug 修复
-- **审核状态**：pending
+- **审核状态**：approved（用户人工批准 2026-08-19）
 
 ### Indicator - 不被父级宽度拉开
 
@@ -47,7 +47,7 @@
 - **1.x 表现**：指示器跟宿主走，角标钉在角上。
 - **2.0 表现**：`.blora-indicator` 的 `max-width` 锁在 `max-content`，父级再设宽度也不会把角标甩到盒子另一头。
 - **改变原因**：bug 修复
-- **审核状态**：pending
+- **审核状态**：approved（用户人工批准 2026-08-19）
 
 ### Card - content 变体给叠层填满卡面
 
@@ -55,7 +55,7 @@
 - **1.x 表现**：Deck 子项就是一张 `.blora-card`，标题直接写在卡面上，没有再套一层浅底内框。
 - **2.0 表现**：新增 `data-variant="content"`：去掉内边距并裁切溢出，内容铺满卡面。展示页 Deck 用这个变体，不再套 `data-showcase-slide` 浅底框。
 - **改变原因**：bug 修复
-- **审核状态**：pending
+- **审核状态**：approved（用户人工批准 2026-08-19）
 
 ### Button group / Join - 统一焊接规则
 
@@ -63,7 +63,7 @@
 - **1.x 表现**：`.blora-button-group` 和 `.blora-join` 是两套独立的焊接逻辑，圆角值、纵向支持、高度对齐各写各的。
 - **2.0 表现**：横向按钮的焊接规则（margin、border-radius、corner-shape、等高、hover / focus 提升）统一写在 `button.css`，两个容器共用同一组选择器；Join 继续独有纵向 `data-orientation` 和 button + input 混合能力，`join.css` 只保留非按钮子元素规则。
 - **改变原因**：一致性
-- **审核状态**：pending
+- **审核状态**：approved（用户人工批准 2026-08-19）
 
 ### Typography - 放弃 Avenir，改平台系统字体栈
 
@@ -71,7 +71,7 @@
 - **1.x 表现**：`--blora-font-sans / heading` 栈首位是 `Avenir / Avenir Next`，Apple 设备渲染 Avenir，其他平台各自回退。
 - **2.0 表现**：改为 `system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif`。Apple 设备用 San Francisco / 苹方，Windows 用 Segoe UI / 微软雅黑，Android 用 Roboto，Linux 用 Noto Sans SC。
 - **改变原因**：其他（统一平台原生字体观感）
-- **审核状态**：pending
+- **审核状态**：approved（用户人工批准 2026-08-19）
 
 ### Theming - 2.0 不再提供 Cinnabar / Ocean
 
@@ -79,7 +79,7 @@
 - **1.x 表现**：配色列表含 Cinnabar、Ocean。
 - **2.0 表现**：主题选择器只保留 Coral、Indigo、Lotus、Graphite、Mono、Circuit、Dusk。本地若仍存着已删主题名，会回落到 Coral。
 - **改变原因**：其他
-- **审核状态**：pending
+- **审核状态**：approved（用户人工批准 2026-08-19）
 
 ### Theming - 深浅色切换后主题仍跟着走
 
@@ -87,7 +87,7 @@
 - **1.x 表现**：配色写在 `:root` / `:root.blora-dark`，切深浅色不会把主题打回默认 Coral。
 - **2.0 表现**：`data-blora-color-scheme` 只留在 `:root`。浅色/深色令牌选择器也只匹配 `:root`，避免写到 `body` 后把 Coral 语义令牌盖在主题上面。
 - **改变原因**：bug 修复
-- **审核状态**：pending
+- **审核状态**：approved（用户人工批准 2026-08-19）
 
 ### Dialog - 打开时挂到 body，遮罩盖满视口
 
@@ -95,7 +95,7 @@
 - **1.x 表现**：模态挂到 portal / body，遮罩相对视口。锁滚动用 `position: fixed` 冻结页面，避免 `overflow: hidden` 打断 sticky 顶栏。
 - **2.0 表现**：`show()` 把主机挂到 `document.body` 并 `showPopover()` 进入顶层，遮罩按视口铺满。滚动锁与 1.x 相同：冻结 `body` 而不是写 `overflow: hidden`。滚动到顶或滚下去，navbar 都留在视口顶部、叠在遮罩后面。
 - **改变原因**：bug 修复
-- **审核状态**：pending
+- **审核状态**：approved（用户人工批准 2026-08-19）
 
 ### Tooltip - 四向放置
 
@@ -103,7 +103,7 @@
 - **1.x 表现**：浮层主要在触发器上方，靠 JS 做横向避让。
 - **2.0 表现**：`placement` 支持 `top` / `bottom` / `start` / `end`，以及物理 `left` / `right`。
 - **改变原因**：架构（侧向提示是真实能力，不是皮肤）
-- **审核状态**：pending
+- **审核状态**：approved（用户人工批准 2026-08-19）
 
 ### Button - 内部内容无法撑高
 
@@ -111,7 +111,7 @@
 - **1.x 表现**：高度由 padding + 内容决定，大图标或图片会把同尺寸按钮撑得不一样高。
 - **2.0 表现**：高度锁在 `--blora-button-height`（字号 + 上下 padding + 双边框）。图标尺寸走 `--blora-button-icon-size`（默认 `auto`，尊重 `createBloraIcon` 的宽高）；`data-size="icon"` 默认为 `1.125rem`。内部内容不能撑高按钮，但不会被压成 `1em`。
 - **改变原因**：架构（同 `data-size` 必须等高，不因插图/图标变化）
-- **审核状态**：pending
+- **审核状态**：approved（用户人工批准 2026-08-19）
 
 ### Checkbox - 对勾垂直居中微调
 
@@ -127,7 +127,7 @@
 - **1.x 表现**：`max-width: 900px` 时 aside / mask 为 `position: fixed`，从视口左侧滑出。
 - **2.0 表现**：`variant="default"` 抽屉仍叠在卡片内部（演示卡 / Storybook）。`variant="seamless"` 页面壳不再套一层圆角卡片，抽屉回到视口 `fixed`，并取消 `isolation`，使侧栏叠在 navbar 之上。
 - **改变原因**：bug 修复（页面导航被收进内容卡）
-- **审核状态**：pending
+- **审核状态**：approved（用户人工批准 2026-08-19）
 
 ### Sidebar layout - sticky 滚动裁切是渐变模糊边
 
@@ -135,7 +135,7 @@
 - **1.x 表现**：sticky 侧栏滚出视口时，条目被硬裁切。
 - **2.0 表现**：非抽屉的 sticky aside 在顶底加渐变模糊（越靠边越糊），只在该方向还有溢出时出现；移动端抽屉保持完全不透明，滚动后不使用顶底透明过渡。
 - **改变原因**：可用性（裁切边缘更柔）
-- **审核状态**：pending
+- **审核状态**：approved（用户人工批准 2026-08-19）
 
 ### Sidebar layout - seamless 抽屉开关是左下 FAB
 
@@ -143,7 +143,7 @@
 - **1.x 表现**：窄屏开关是内容区左上角的小 outline 按钮。
 - **2.0 表现**：`variant="seamless"` 使用正式 `.blora-fab[data-variant="surface"]`，固定在视口左下；`toggle-label` 作为 `aria-label`。卡片变体仍用 outline 文字钮。
 - **改变原因**：可用性（页面级导航开关不应占掉标题行）
-- **审核状态**：pending
+- **审核状态**：approved（用户人工批准 2026-08-19）
 
 ### Checkbox - 全选组纵向间距
 
@@ -151,7 +151,7 @@
 - **1.x 表现**：选项是 `inline-flex`，放进 `.blora-stack` 后仍会横排贴在一起。
 - **2.0 表现**：`blora-checkbox[data-group]` 内选项纵向排列，间距 `--blora-space-3`。
 - **改变原因**：bug 修复
-- **审核状态**：pending
+- **审核状态**：approved（用户人工批准 2026-08-19）
 
 ### Radio - 内圆点几何居中
 
@@ -159,7 +159,7 @@
 - **1.x 表现**：内圆点用 `inset: 0; margin: auto` + `scale()`，非整倍 DPR / 125% 缩放下会偏 1px。
 - **2.0 表现**：`top/left: 50%` + `translate(-50%, -50%)`，外圈 `box-sizing: border-box` + grid 居中。
 - **改变原因**：bug 修复
-- **审核状态**：pending
+- **审核状态**：approved（用户人工批准 2026-08-19）
 
 ### Pagination - 上一页/下一页按钮放大 50%
 
@@ -175,7 +175,7 @@
 - **1.x 表现**：作者手写 `.blora-comment` 树；2.0 前期 CE 用 `author` / `time` / `likes` 等属性生成固定操作。
 - **2.0 表现**：`<blora-comment>` 只负责布局。头像、作者、时间、正文、操作通过 slot 塞入现有组件。
 - **改变原因**：架构（评论内容因产品而异，不应收成底层属性）
-- **审核状态**：pending
+- **审核状态**：approved（用户人工批准 2026-08-19）
 
 ### Tag - 去掉 solid 变体
 
@@ -183,7 +183,7 @@
 - **1.x 表现**：`.blora-tag--solid` 是深色实心胶囊，和 Badge 文字状态条几乎同形。
 - **2.0 表现**：删除 `solid`。实心状态用 Badge；Tag 只保留浅底描边分类（含可关闭）。
 - **改变原因**：其他（Badge / Tag 职责分开）
-- **审核状态**：pending
+- **审核状态**：approved（用户人工批准 2026-08-19）
 
 ### Badge - 语义文字徽标内边距对齐 Tag
 
@@ -191,7 +191,7 @@
 - **1.x 表现**：所有徽标共用 `height: 1.5em; padding: 0 0.4em`，长单词左右几乎贴边。
 - **2.0 表现**：数字角标 / 圆点 / 圆形仍用 1.x 紧凑尺寸；`neutral` / `info` / `success` / `warning` / `danger` 文字徽标使用与 `.blora-tag` 相同的 `0.2em 0.7em` 内边距。
 - **改变原因**：其他（文字徽标可读性）
-- **审核状态**：pending
+- **审核状态**：approved（用户人工批准 2026-08-19）
 
 ### Pagination - 当前页悬浮反馈弱化
 
@@ -207,7 +207,7 @@
 - **1.x 表现**：`border-radius: 14px` 圆形弧。
 - **2.0 表现**：与按钮同一套 `--blora-radius-lg` + `corner-shape: superellipse(1.2)`。卡片、面板、弹层、下拉、OTP 等矩形壳同样套超椭圆；圆形与胶囊除外。
 - **改变原因**：其他（圆角衔接）
-- **审核状态**：pending
+- **审核状态**：approved（用户人工批准 2026-08-19）
 
 ### Button - 圆角与直线用超椭圆衔接
 
@@ -215,7 +215,7 @@
 - **1.x 表现**：`border-radius: 14px` 圆形弧，接到长边时曲率突变。
 - **2.0 表现**：半径改为 `--blora-radius-lg`（18px），支持时使用 `corner-shape: superellipse(1.2)`，比 14px 超椭圆更圆，仍保持弧线与直线顺接。`data-size="icon"` 与 Speed Dial 圆形触发器强制 `corner-shape: round`，避免被拧成超椭圆。
 - **改变原因**：其他（圆角衔接）
-- **审核状态**：pending
+- **审核状态**：approved（用户人工批准 2026-08-19）
 
 ### Pagination - 单侧省略号改为扩窗补位
 
@@ -223,7 +223,7 @@
 - **1.x 表现**：靠近首页/末页时省略号仍占位（或只藏一页），`1` 与窗口之间留空。
 - **2.0 表现**：省略号若只会藏住紧邻首页/末页的那一页，则不渲染该省略号，固定窗口 +1 补齐，例如 `1 2 3 4 5 6 7 … 12`。
 - **改变原因**：其他（避免空白占位）
-- **审核状态**：pending
+- **审核状态**：approved（用户人工批准 2026-08-19）
 
 ### Tabs - Pills 底部裁切修复
 
@@ -263,7 +263,7 @@
 - **1.x 表现**：`.blora-select-tag` 为灰底小圆角芯片。
 - **2.0 表现**：Shadow 内复用官方 `.blora-tag[data-variant=primary]` / `.blora-tag__close`，与 Tags Input 一致。
 - **改变原因**：与正式 Tag 表面统一（非另造一套芯片）
-- **审核状态**：pending
+- **审核状态**：approved（用户人工批准 2026-08-19）
 
 ### Table - 行选内置
 
@@ -302,7 +302,7 @@
 - **1.x 表现**：菜单提示和配色说明使用低对比度 subtle 文本。
 - **2.0 表现**：提示和说明使用 emphasis 文本，保证白色与选中 tint 背景上的 12px 文字符合 WCAG 2.2 AA。
 - **改变原因**：WCAG / a11y
-- **审核状态**：pending（axe 已验证）
+- **审核状态**：approved（用户人工批准 2026-08-19）
 
 ### Sidebar Navigation - 当前项只高亮文字
 
@@ -318,7 +318,7 @@
 - **1.x 表现**：标题按钮和内容区域没有稳定的双向 ID 关联，关闭内容仍可能留在辅助技术可访问树中。
 - **2.0 表现**：CE 自动生成原生标题按钮、`aria-expanded`、`aria-controls`、内容 `region`、`aria-labelledby` 与同步的 `aria-hidden`。
 - **改变原因**：WCAG / a11y bug 修复
-- **审核状态**：pending（axe 与浏览器交互测试已验证）
+- **审核状态**：approved（用户人工批准 2026-08-19）
 
 ### Palette Picker - 弹层文字使用正常行高
 
@@ -326,7 +326,7 @@
 - **1.x 表现**：无对应 CE 宿主继承问题。
 - **2.0 表现**：CE 宿主和菜单显式使用正式 normal 行高，标题、提示、配色名称与说明保持独立文本行。
 - **改变原因**：修复 `line-height: 0` 从宿主继承到 light DOM 弹层造成的文字重叠。
-- **审核状态**：pending（浏览器几何断言与视觉回归已验证）
+- **审核状态**：approved（用户人工批准 2026-08-19）
 
 ### Tabs - 正式 full-bleed 面板模式
 
@@ -334,7 +334,7 @@
 - **1.x / 2.0 默认表现**：普通面板在导航下保留 `space-5` 顶部间距。
 - **2.0 新增表现**：`<blora-tabs flush>` 移除 CE 自有 panel inset，供 Preview、代码区等自行持有完整背景和间距的内容使用。
 - **改变原因**：避免全宽内容与 Tabs 默认间距叠加形成异色空带，同时不破坏普通文字面板的 v1 视觉基线。
-- **审核状态**：pending（Showcase 浏览器几何断言与视觉回归已验证）
+- **审核状态**：approved（用户人工批准 2026-08-19）
 
 ### Tabs - 指示线与焦点环视觉分离
 

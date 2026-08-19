@@ -1,12 +1,12 @@
 # Blora Design
 
-> **Blora Design 2.0** — token-driven, dark-friendly, **zero runtime dependency** Web UI design system.  
+> **Blora Design 2.0** — token-driven, dark-friendly, **zero runtime dependency** Web UI design system.
 > Brand prefix **Blora**; product name **Blora Design** (`blora-*` classes / package scope).
 
-**Package** `@bloret-crew/blora-design` · **Version** `2.0.0-alpha.1` · **License** Apache-2.0  
+**Package** `@bloret-crew/blora-design` · **Version** `2.0.0-beta.0` · **License** Apache-2.0
 **Repo** [BloretCrew/blora-design](https://github.com/BloretCrew/blora-design)
 
-**Status:** Phase 9 complete. **Phase 10 (pre-release) in progress** — Alpha → Beta → RC → Stable.  
+**Status:** Phase 9 complete. **Phase 10 Beta in progress** — stable-core API frozen; next milestone RC.
 **Master remaining-work checklist:** [`docs/refactor/remaining-work.md`](./docs/refactor/remaining-work.md)
 
 Interactive demos: **[showcase](https://bloretcrew.github.io/blora-design/)** · **Storybook** (`pnpm storybook`). Frozen 1.x reference is archived at `D:/MyFiles/Documents/projects/blora-design/legacy/` (not the 2.0 recommended entry).
@@ -31,7 +31,7 @@ Not a React/Vue runtime library. Use native HTML + CSS for primitives and Compos
 ## 30-second start (2.0)
 
 ```bash
-pnpm add @bloret-crew/blora-design
+pnpm add @bloret-crew/blora-design@beta
 ```
 
 ```js
@@ -44,7 +44,7 @@ import {
   message,
 } from "@bloret-crew/blora-design";
 
-console.log(VERSION); // e.g. 2.0.0-alpha.1
+console.log(VERSION); // e.g. 2.0.0-beta.0
 ```
 
 ```html
@@ -65,7 +65,7 @@ createTableController(document.querySelector(".blora-table-wrap"));
 message.success("已保存");
 ```
 
-> **Not recommended for new 2.0 apps:** global `Blora.init()`, `blora.js` UMD, or `blora-btn blora-btn--primary`.  
+> **Not recommended for new 2.0 apps:** global `Blora.init()`, `blora.js` UMD, or `blora-btn blora-btn--primary`.
 > Those belong to frozen **1.x** (archived at `D:/MyFiles/Documents/projects/blora-design/legacy/`). 2.0 has no runtime compatibility layer. See [migration](./docs/migration/v1-to-v2.md).
 
 Optional add-ons:
@@ -91,7 +91,7 @@ Composite CE is the default for complex structure (ADR-015, superseding ADR-013)
 
 ## Visual baseline
 
-2.0 visuals must remain traceable to the locked 1.x showcase baseline (archived at `D:/MyFiles/Documents/projects/blora-design/legacy/`, metadata in `docs/refactor/visual-baseline.json`).  
+2.0 visuals must remain traceable to the locked 1.x showcase baseline (archived at `D:/MyFiles/Documents/projects/blora-design/legacy/`, metadata in `docs/refactor/visual-baseline.json`).
 Use tokens (`--blora-*`); do not invent a second design system.
 
 Human usage guide: [`docs/guide.md`](./docs/guide.md). Tokens: [`docs/standards.md`](./docs/standards.md).
@@ -154,8 +154,8 @@ AI-oriented skim: [`llms.txt`](./llms.txt).
 
 ## Versioning
 
-- Current line: **`2.0.0-alpha.*`** — API may still change before beta freeze.  
-- 1.x remains available on npm for existing sites; do not treat 1.x CDN `@1` as the 2.0 guide.  
+- Current line: **`2.0.0-beta.*`** — stable-core API is frozen; contracts marked `beta` may still change with migration notes.
+- 1.x remains available on npm for existing sites; do not treat 1.x CDN `@1` as the 2.0 guide.
 - Release automation: see `.github/workflows/` (publish still tied to maintainer process).
 
 ---

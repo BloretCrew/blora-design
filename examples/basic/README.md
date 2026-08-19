@@ -1,4 +1,4 @@
-# Basic HTML example (2.0 alpha)
+# Basic HTML example (2.0 beta)
 
 Requires a prior monorepo build:
 

@@ -1,6 +1,6 @@
-# Push a version tag (e.g. v2.0.0-alpha.1) to publish the monorepo packages.
+# Push a version tag (e.g. v2.0.0-beta.0) to publish the monorepo packages.
 #
-# Trigger: git push origin v2.0.0-alpha.1
+# Trigger: git push origin v2.0.0-beta.0
 # Secret: NPM_TOKEN (npm Automation token with publish rights for @bloret-crew)
 #
 # Version source of truth: packages/blora-design/package.json
@@ -136,7 +136,7 @@ jobs:
             ```js
             import "@bloret-crew/blora-design/tokens.css";
             import "@bloret-crew/blora-design/foundations.css";
-            import { toast, createTableController, defineBloraSelect } from "@bloret-crew/blora-design";
+            import { message, createTableController, defineBloraSelect } from "@bloret-crew/blora-design";
             ```
 
             Optional add-ons: `@bloret-crew/blora-design-markdown`, `-thread`, `-qrcode`, `-effects`, `-layout`, `-theming`.

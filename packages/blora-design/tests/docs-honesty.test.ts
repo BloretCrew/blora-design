@@ -29,9 +29,9 @@ describe("Phase-9 honesty artifacts", () => {
     expect(body).toMatch(/createXxxController|createTableController/);
   });
 
-  it("root README recommends 2.0 alpha and blora-button, not 1.x global Blora as primary", () => {
+  it("root README recommends 2.0 beta and blora-button, not 1.x global Blora as primary", () => {
     const body = read("README.md");
-    expect(body).toMatch(/2\.0\.0-alpha/);
+    expect(body).toMatch(/2\.0\.0-beta/);
     expect(body).toMatch(/blora-button/);
     expect(body).toMatch(/createTableController/);
     // Must not present 1.x package version as current

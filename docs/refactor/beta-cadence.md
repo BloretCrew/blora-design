@@ -2,10 +2,10 @@
 
 ## 缺陷优先
 
-进入 beta 版本线后（`2.0.0-beta.*`）：
+`2.0.0-beta.0` 起进入 beta 版本线：
 
-- **默认只接**：bug、a11y、文档、测试、性能且不改 public API。  
-- **可加**：新可选 API / 新 export，须 changelog。  
+- **默认只接**：bug、a11y、文档、测试、性能且不改 public API。
+- **可加**：新可选 API / 新 export，须 changelog。
 - **禁止默认**：无迁移说明的破坏性变更、把 experimental 写进首页「核心能力」主列表。
 
 详见 [`beta-api-freeze.md`](./beta-api-freeze.md)。
@@ -20,6 +20,6 @@
 
 ## 用户向迁移文档
 
-- 主：`docs/guide.md` + `docs/migration/v1-to-v2.md`  
-- 渠道：`docs/refactor/alpha-install-notes.md`（beta 时增补 dist-tag）  
+- 主：`docs/guide.md` + `docs/migration/v1-to-v2.md`
+- 渠道：`docs/refactor/beta-install-notes.md`（安装演练、dist-tag 与回滚）
 - 变更：`CHANGELOG.md`

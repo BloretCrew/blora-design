@@ -1,19 +1,19 @@
 name: Bug report
-description: Report a problem with Blora Design 2.0 (alpha)
+description: Report a problem with Blora Design 2.0 Beta
 title: "[bug] "
 labels: ["bug"]
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for testing **2.0 alpha**. Please use English or 中文.
-        Install with `pnpm add @bloret-crew/blora-design@alpha`.
+        Thanks for testing **2.0 Beta**. Please use English or 中文.
+        Install with `pnpm add @bloret-crew/blora-design@beta`.
   - type: input
     id: version
     attributes:
       label: Package version
-      description: e.g. 2.0.0-alpha.1
-      placeholder: 2.0.0-alpha.1
+      description: e.g. 2.0.0-beta.0
+      placeholder: 2.0.0-beta.0
     validations:
       required: true
   - type: dropdown

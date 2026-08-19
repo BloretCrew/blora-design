@@ -6,8 +6,8 @@ const meta = {
   tags: ["autodocs"],
   render: () =>
     html`<div style="padding: 2rem; font-family: system-ui">
-      <h1>Blora Design 2.0.0-alpha.0</h1>
-      <p>Workspace and quality gates established. Components pending migration.</p>
+      <h1>Blora Design 2.0.0-beta.0</h1>
+      <p>Stable-core API frozen; RC quality work in progress.</p>
     </div>`,
 } satisfies Meta;
 

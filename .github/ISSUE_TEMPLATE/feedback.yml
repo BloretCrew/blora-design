@@ -1,12 +1,12 @@
-name: Alpha feedback
-description: Questions, API feedback, or migration notes for 2.0 alpha
+name: Beta feedback
+description: Questions, API feedback, or migration notes for 2.0 Beta
 title: "[feedback] "
 labels: ["feedback"]
 body:
   - type: markdown
     attributes:
       value: |
-        Use this for non-bug input while **2.0 is alpha** (API may change).
+        Use this for non-bug input while **2.0 is in Beta**. Stable-core API is frozen; beta contracts may still change with migration notes.
         Docs: `docs/guide.md` · Progress: `docs/refactor/remaining-work.md`
   - type: dropdown
     id: kind

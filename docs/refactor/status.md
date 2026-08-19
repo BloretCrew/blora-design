@@ -5,12 +5,12 @@
 ## 当前阶段
 
 **Phase 9：Add-ons** - ✅ 完成（2026-08-02 收口；诚实债见总表已关）  
-**Phase 10：预发布** - 🔄 **进行中**（Alpha.1 已发 · §3.2–3.4 完成 · **§3.5 政策就绪，等打 `2.0.0-beta.0`**）
+**Phase 10：预发布** - 🔄 **进行中**（`2.0.0-beta.0` 已发布 · stable-core API 已冻结 · 下一阶段 RC）
 
 > **主跟踪文档**：[`remaining-work.md`](./remaining-work.md)  
-> 顺序：**Preflight → Alpha → 包面加深 → Beta 政策 → beta tag 发版 → RC → Stable**。
+> 顺序：**Preflight → Alpha → Beta → RC → Stable**。当前进入 RC 收口。
 
-Showcase v2 已完成 81/81 核心组件目录：正式 API/CE 示例、单视图懒挂载、同源 Preview/HTML，以及 manifest、桌面/移动浏览器和代表性视觉门禁。
+Showcase v2 已完成 87/87 核心组件目录：正式 API/CE 示例、单视图懒挂载、同源 Preview/HTML，以及 manifest、桌面/移动浏览器和代表性视觉门禁。
 
 ## 阶段进度
 
@@ -18,7 +18,7 @@ Showcase v2 已完成 81/81 核心组件目录：正式 API/CE 示例、单视�
 |---|---|---|
 | Phase 0：冻结与基线 | ✅ 完成 | 冻结 1.x 行为事实、捕获公共 API、生成视觉基线 |
 | Phase 1：Workspace 与门禁 | ✅ 完成 | pnpm workspace、TS strict、lint、test、CI、Storybook、publint |
-| Phase 2：Token | ✅ 完成 | DTCG 三层 token、确定性生成器、9 套主题、v1 映射、对比度门禁 |
+| Phase 2：Token | ✅ 完成 | DTCG 三层 token、确定性生成器、7 套主题、v1 映射、对比度门禁 |
 | Phase 3：Foundations | ✅ 完成 | reset、base、layout、utilities、@layer、RTL、reduced-motion |
 | Phase 4：三个试点组件 | ✅ 完成 | Button -> Dialog -> Select |
 | Phase 5：核心表单和反馈 | ✅ 完成 | Field/Input/Checkbox/Radio/Switch/Tag/Alert/Badge/Progress/Spinner/Skeleton/Toast |

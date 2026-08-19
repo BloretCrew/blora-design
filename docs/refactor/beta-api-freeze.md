@@ -1,6 +1,6 @@
 # Beta API freeze policy (pre–beta.0)
 
-**Status:** Adopted for approaching **2.0.0-beta** (not yet released).  
+**Status:** Effective with **2.0.0-beta.0** (release date 2026-08-19).
 **Scope:** `@bloret-crew/blora-design` and public add-ons published under `@bloret-crew/blora-design-*`.
 
 ## 1. Stable-core API freeze (when beta tag ships)
@@ -13,7 +13,7 @@ Once **`2.0.0-beta.0`** (or agreed beta version) is published:
 4. Bug fixes that preserve API surface are always allowed.
 5. New optional exports (new subpaths, new optional options with defaults) are allowed in beta as **additive** only.
 
-Until beta is tagged, master may still adjust alpha APIs; document in CHANGELOG.
+From the Beta tag onward, master follows this freeze and the defect-first cadence in `beta-cadence.md`.
 
 ## 2. Cadence after beta.0
 
@@ -30,10 +30,10 @@ Until beta is tagged, master may still adjust alpha APIs; document in CHANGELOG.
 
 Primary user docs for beta:
 
-- `docs/guide.md` — recommended 2.0 usage  
-- `docs/migration/v1-to-v2.md` — 1.x → 2.0  
-- `docs/refactor/alpha-install-notes.md` — npm channel notes (extend for beta)  
-- `CHANGELOG.md`  
+- `docs/guide.md` — recommended 2.0 usage
+- `docs/migration/v1-to-v2.md` — 1.x → 2.0
+- `docs/refactor/beta-install-notes.md` — Beta package rehearsal, channel and rollback notes
+- `CHANGELOG.md`
 
 There is no `@bloret-crew/blora-design/compat/v1` entry.
 

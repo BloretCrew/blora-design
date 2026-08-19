@@ -41,7 +41,7 @@
 - 文档：`guide.md` 2.0 主路径；`addon-core-gaps` / matrix / css-only-resolution；人眼 visual review 已确认
 - **未**纳入 Phase 9 自限：全量 Playwright / axe / 视觉农场 → Phase 10
 
-包版本现状：`@bloret-crew/blora-design` 与 add-on 目标 **`2.0.0-alpha.1`**（§3.1 正式 prerelease）。
+包版本现状：`@bloret-crew/blora-design` 与六个 add-on 为 **`2.0.0-beta.0`**；stable-core API 冻结，进入 RC 收口。
 ---
 
 ## 2. Phase 9 尾巴 / 诚实债（P9-1…P9-8）
@@ -198,7 +198,7 @@
 - [x] 仅修缺陷的节奏与宣传边界：`docs/refactor/beta-cadence.md`
 - [x] 完整迁移文档用户向基线：`guide.md` + `migration/v1-to-v2.md`（含用户向发布检查）
 - [x] 体积预算扩展落地：`check-size.mjs`（子路径 + global + add-on 合计）
-- [ ] 打 `2.0.0-beta.0`（或约定 beta 版本号）与发布演练 — **下一步手动/单独执行**
+- [x] 打 `2.0.0-beta.0` 与发布演练（2026-08-19；`beta` dist-tag；见 `beta-install-notes.md`）
 
 ### 3.6 RC
 
@@ -217,7 +217,7 @@
 
 ### 3.8 明确非默认 / 后置
 
-- [x] Showcase 核心组件目录：已按 `component-manifest.json` 扩展为 81/81；单视图懒挂载，Preview / HTML 同源生成，并由结构门禁防止清单漂移
+- [x] Showcase 核心组件目录：已按 `component-manifest.json` 扩展为 87/87；单视图懒挂载，Preview / HTML 同源生成，并由结构门禁防止清单漂移
 - [ ] 2.0 **i18n / locales** 运行时（P9-8）
 - [ ] add-on 独立 Playwright / visual 深矩阵（P9-6）
 - [ ] FA WC 全面化（结构 CE 已默认；form association 仍按 ADR-015 分阶段）
@@ -233,7 +233,8 @@
 | 2026-08-02 | **无**。Phase 9 诚实债收口仅文档/ADR/llms/README/migration stub | — | **否** |
 | 2026-08-09 | 结构敏感组件统一为 Composite CE；保持冻结视觉基线，修复 Statistic 展示页结构漂移 | 全部迁移 Story + `showcase-v2` | **已截图复核并通过 visual suite** |
 | 2026-08-09 | `showcase-v2` 由全量长页改为浮动 Navbar + 单视图组件目录原型 | 当前仅 Accordion / Collapse；侧栏、Preview/HTML、桌面/移动路由 | **Agent 已截图复核；待用户确认后扩展** |
-| 2026-08-11 | `showcase-v2` 组件目录扩展为 76/76 核心组件；当前页懒挂载、导航活动项自动定位、Preview / HTML 同源 | `examples/showcase-v2/`；manifest 对齐门禁；桌面/移动全目录浏览器巡检 | **Agent 已审查 Accordion、Statistic、Table、Dialog、Select、代码面板、主题面板及移动侧栏快照** |
+| 2026-08-11 | `showcase-v2` 组件目录扩展并持续与 manifest 对齐；当前为 87/87 核心组件，当前页懒挂载、导航活动项自动定位、Preview / HTML 同源 | `examples/showcase-v2/`；manifest 对齐门禁；桌面/移动全目录浏览器巡检 | **Agent 已审查 Accordion、Statistic、Table、Dialog、Select、代码面板、主题面板及移动侧栏快照** |
+| 2026-08-19 | `known-differences.md` 全部待审核项由项目所有者人工批准 | 全部已登记视觉与行为差异 | **approved** |
 
 若后续为修死链或假声明而改 `packages/**/src` 且影响渲染或交互，必须在此表追加行，并更新 `pending-visual-review.md`。
 
@@ -274,7 +275,7 @@
 | 2026-08-02 | 采纳外部审查：新增 **§3.0 Preflight**（verify/CI/publish/exports/体积/contract 治理）；Alpha 后置 |
 | 2026-08-09 | 75 组件完成 58 CE / 17 intentional non-CE 收口；完整 `pnpm verify` 首次单次全绿 |
 | 2026-08-09 | Showcase 组件目录重构：先交付 Accordion / Collapse 双组件原型，待用户确认后再扩展全量 |
-| 2026-08-11 | Showcase 核心组件目录扩展完成：76/76 manifest 对齐，加入逐页运行时巡检与代表性视觉快照 |
+| 2026-08-11 | Showcase 核心组件目录扩展完成并持续 manifest 对齐；当前 87/87，加入逐页运行时巡检与代表性视觉快照 |
 | 2026-08-02 | Preflight 开场：lint/css/contracts/prettier/attw/CI aggregate/`test:visual` 诚实化；image 预览 token 化 |
 | 2026-08-02 | Preflight 续：publish.yml 2.0、CI publint/attw、pack exports 遍历、size 展平、axe 真 project、QR mock、contract-stability 政策 |
 | 2026-08-02 | Preflight：add-on pack/publint、markdown/qrcode CSS 进 dist、examples/basic、browser sort 测试对齐 ▲▼ |
@@ -282,4 +283,5 @@
 | 2026-08-02 | **2.0.0-alpha.1** 版本对齐 + CHANGELOG；tag `v2.0.0-alpha.1` 触发 monorepo publish |
 | 2026-08-02 | npm 七包核验 + 安装演练；Issue 模板；`./auto` CE 入口 |
 | 2026-08-02 | **Pre-Beta 包面**：JS 子路径、IIFE global、CEM/manifest/api-snapshot、llms、provenance opt-in；**未进入 §3.5 Beta 发版** |
-| 2026-08-02 | §3.4 visual + lifecycle；§3.5 冻结/节奏/迁移/体积；**停在 beta.0 tag 前** |
+| 2026-08-02 | §3.4 visual + lifecycle；§3.5 冻结/节奏/迁移/体积；完成 Beta 发布准备 |
+| 2026-08-19 | known differences 全部人工批准；版本统一为 `2.0.0-beta.0`；完成 Beta 发布演练并打 tag |

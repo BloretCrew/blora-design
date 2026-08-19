@@ -1,28 +1,30 @@
-# Contract status policy (Phase 10 Preflight)
+# Contract status policy (2.0 Beta)
 
-> Until §26 DoD farms catch up, **do not treat every `status: "stable"` in `*.contract.json` as “ship-ready stable”.**
+> Effective with `2.0.0-beta.0`. Contract status is part of the public Beta communication and must remain aligned with the API snapshot and migration documentation.
 
-## Meanings (working)
+## Meanings
 
-| Status | Meaning for 2.0 alpha / preflight |
-|--------|-------------------------------------|
-| **stable** (in file today) | *Aspirational / implemented surface* — API+CSS+Story exist; **not** full Playwright/axe/visual DoD |
-| **beta** | Explicitly unstable or subset path; may change |
-| **experimental** | May be removed or redesigned |
+| Status | Meaning in 2.0 Beta |
+|--------|---------------------|
+| **stable** | Implemented, documented and covered by the current release gates. Its documented public attributes, events, methods, classes, CSS properties and parts are frozen for the 2.0 Beta line. |
+| **beta** | Available for evaluation but may still change before Stable. Any breaking adjustment requires a changelog entry and migration note. |
+| **experimental** | May be redesigned or removed and must not be marketed as stable core. |
 
-## Governance until Beta freeze
+## Beta freeze rules
 
-1. **Marketing / README “stable core”** lists only packages/components that pass Preflight + documented browser smoke (expand over time). Default public claim: **2.0.0-alpha**, not “all contracts stable”.
-2. **Do not mass-rewrite 42 contracts in one PR** without a scripted audit; prefer:
-   - Keep file `status` as-is for now, **or**
-   - Batch demote components without unit/browser coverage to `beta` in a dedicated PR.
-3. **component-matrix.md** `✅` means “implemented available”, **not** §26 DoD.
-4. Promotion to true **stable** requires: unit + browser interaction (or intentional CSS-only) + axe smoke where interactive + contract review.
+1. The 53 contracts currently marked `stable` form the stable-core contract set for `2.0.0-beta.0`.
+2. The 34 contracts marked `beta` remain explicitly non-frozen beyond the general prerelease compatibility promise.
+3. Stable contract changes after Beta must be additive or defect fixes that preserve documented behavior. Removing or renaming public surface requires a future major-version plan.
+4. `component-matrix.md` `✅` continues to mean implemented and available; contract status communicates the compatibility promise.
+5. Package exports and `dist/api-snapshot.json` are reviewed at each prerelease. Unexpected removals fail the release review.
+6. Promotion from `beta` to `stable` requires contract review plus relevant unit/browser coverage; interactive components also require accessibility evidence.
 
-## Next actions
+## Marketing boundary
 
-- [ ] Optional script: list contracts with `stable` and no matching `tests/**` coverage → candidates for demotion  
-- [ ] After Preflight green, publish Alpha with honest status wording  
-- [ ] Before Beta API freeze, align contract status with DoD checklist in `remaining-work.md` §3.4  
+The project may state **“2.0 Beta; stable-core API frozen”**. It must not state that every component has completed the full cross-browser, visual and manual accessibility matrix before RC.
 
-See also: `remaining-work.md` §3.0.6, ADR-013.
+See also:
+
+- [`beta-api-freeze.md`](./beta-api-freeze.md)
+- [`beta-cadence.md`](./beta-cadence.md)
+- [`remaining-work.md`](./remaining-work.md)
