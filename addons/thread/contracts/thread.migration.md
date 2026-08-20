@@ -42,7 +42,16 @@ Token 映射到 v2 semantic tokens；暗色用 `:root[data-blora-color-scheme="d
     <div class="blora-post__body">正文…</div>
     <div class="blora-post__replies" data-blora-thread-replies>
       <div data-blora-thread-body>…</div>
-      <button type="button" class="blora-button" data-variant="outline" data-size="sm" style="width:100%" data-blora-thread-toggle>展开评论</button>
+      <button
+        type="button"
+        class="blora-button"
+        data-variant="outline"
+        data-size="sm"
+        style="width:100%"
+        data-blora-thread-toggle
+      >
+        展开评论
+      </button>
     </div>
   </article>
 </div>
