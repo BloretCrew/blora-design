@@ -43,6 +43,10 @@ gpt-reply.md
 Blora-Design-2.0-Refactor-Spec.md
 apple_text_effects.html
 
+# BBS model + standalone replica (local demo files)
+bbbs-model.html
+bbbs-blora.html
+
 # Generated token outputs
 packages/tokens/generated/
 
