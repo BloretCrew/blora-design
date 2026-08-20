@@ -59,31 +59,42 @@ export class BloraTimeline extends BloraElement {
       }
       item.appendChild(dot);
 
-      const time = this.ownerDocument.createElement("div");
-      time.className = "blora-timeline__time";
-      time.textContent = definition.time;
-      item.appendChild(time);
-
-      if (definition.title) {
-        const title = this.ownerDocument.createElement("div");
-        title.className = "blora-timeline__title";
-        title.textContent = definition.title;
-        item.appendChild(title);
-      }
-
-      if (definition.description) {
-        const description = this.ownerDocument.createElement("div");
-        description.className = "blora-timeline__desc";
-        description.textContent = definition.description;
-        item.appendChild(description);
-      }
-
       if (definition.nodes.length) {
+        /* Custom-content mode: content (+ optional time) inline after the node,
+           so an activity row reads "icon · text · time" on one line. */
         for (const node of definition.nodes) node.parentNode?.removeChild(node);
+        const row = this.ownerDocument.createElement("div");
+        row.className = "blora-timeline__row";
         const content = this.ownerDocument.createElement("div");
         content.className = "blora-timeline__content";
         content.append(...definition.nodes);
-        item.appendChild(content);
+        row.appendChild(content);
+        if (definition.time) {
+          const time = this.ownerDocument.createElement("div");
+          time.className = "blora-timeline__time";
+          time.textContent = definition.time;
+          row.appendChild(time);
+        }
+        item.appendChild(row);
+      } else {
+        const time = this.ownerDocument.createElement("div");
+        time.className = "blora-timeline__time";
+        time.textContent = definition.time;
+        item.appendChild(time);
+
+        if (definition.title) {
+          const title = this.ownerDocument.createElement("div");
+          title.className = "blora-timeline__title";
+          title.textContent = definition.title;
+          item.appendChild(title);
+        }
+
+        if (definition.description) {
+          const description = this.ownerDocument.createElement("div");
+          description.className = "blora-timeline__desc";
+          description.textContent = definition.description;
+          item.appendChild(description);
+        }
       }
 
       root.appendChild(item);
