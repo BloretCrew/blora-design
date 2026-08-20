@@ -17,7 +17,7 @@
       "description": "Animated body inside the reply list"
     },
     "data-blora-thread-toggle": {
-      "description": "Collapse/expand control for the nearest replies box"
+      "description": "Collapse/expand control for the nearest replies box (use a regular blora-button with data-variant=\"outline\")"
     },
     "data-blora-post-react": {
       "description": "Post reaction toggle (data-active + aria-pressed)"
@@ -55,8 +55,7 @@
     ".blora-post__react",
     ".blora-post__react-btn",
     ".blora-post__replies",
-    ".blora-post__replies-body",
-    ".blora-post__collapse"
+    ".blora-post__replies-body"
   ],
   "accessibilityPattern": "list",
   "migrationFromV1": "thread.migration.md"

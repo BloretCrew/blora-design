@@ -202,45 +202,16 @@
   pointer-events: none;
 }
 
-.blora-post__collapse {
-  display: block;
-  box-sizing: border-box;
+/* Collapse toggle is a regular blora-button in markup (outline); only
+   layout and collapsed-state spacing live here so it inherits the
+   button's corner-shape, focus ring, and hover exactly. */
+.blora-post__replies [data-blora-thread-toggle].blora-button {
   width: 100%;
   margin-top: var(--blora-space-3);
-  padding: 0.65em 1em;
-  border-width: 1px;
-  border-style: solid;
-  border-color: var(--blora-color-border-subtle);
-  border-radius: var(--blora-radius-md);
-  background: var(--blora-color-surface-default);
-  background-color: var(--blora-color-surface-default);
-  color: var(--blora-color-action-primary-default);
-  font-family: var(--blora-font-sans);
-  font-size: var(--blora-text-sm);
-  font-weight: 500;
-  line-height: 1.4;
-  cursor: pointer;
-  text-align: center;
-  appearance: none;
-  transition:
-    background var(--blora-duration-fast) var(--blora-easing-standard),
-    color var(--blora-duration-fast) var(--blora-easing-standard),
-    border-color var(--blora-duration-fast) var(--blora-easing-standard);
 }
 
-.blora-post__replies[data-collapsed] .blora-post__collapse {
+.blora-post__replies[data-collapsed] [data-blora-thread-toggle].blora-button {
   margin-top: 0;
-}
-
-.blora-post__collapse:hover {
-  background: var(--blora-color-action-primary-tint);
-  background-color: var(--blora-color-action-primary-tint);
-  border-color: color-mix(
-    in srgb,
-    var(--blora-color-action-primary-default) 35%,
-    var(--blora-color-border-subtle)
-  );
-  color: var(--blora-color-action-primary-default);
 }
 
 .blora-post--reply .blora-post__replies {
@@ -261,10 +232,6 @@
 
   .blora-post__react-btn:hover {
     transform: none;
-  }
-
-  .blora-post__collapse {
-    transition: none;
   }
 }
 

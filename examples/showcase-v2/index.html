@@ -1267,8 +1267,7 @@
       </template>
       <template data-addon="thread" data-label="Thread" data-group="数据展示" data-eyebrow="Data display" data-kind="Headless" data-description="论坛主题、回复折叠和回应状态的完整线程结构。">
         <div data-showcase-cases data-showcase-addon-thread>
-        <section data-showcase-case="ForumThread"><h3>论坛跟帖（头部自写，壳不预设业务字段）</h3>
-          <p style="margin:0 0 var(--blora-space-3); color:var(--blora-color-text-subtle); font-size:var(--blora-text-sm)">头部/作者/地点/徽章/工具栏均由消费者用 tokens 与现有组件自拼，thread 仅提供卡片壳与折叠能力。</p>
+        <section data-showcase-case="ForumThread"><h3>论坛跟帖</h3>
           <div class="blora-thread" data-blora-thread data-showcase-thread>
             <article class="blora-post">
               <header class="blora-post__head">
@@ -1355,13 +1354,13 @@
                     </div>
                   </article>
                 </div>
-                <button class="blora-post__collapse" type="button" data-blora-thread-toggle aria-expanded="true" data-label-collapse="收起评论" data-label-expand="展开评论">收起评论</button>
+                <button type="button" class="blora-button" data-variant="outline" data-size="sm" style="width:100%; margin-top:var(--blora-space-3)" data-blora-thread-toggle aria-expanded="true" data-label-collapse="收起评论" data-label-expand="展开评论">收起评论</button>
               </div>
             </article>
           </div>
         </section>
-        <section data-showcase-case="CollapsedByDefault"><h3>默认收起</h3><div class="blora-thread" data-blora-thread data-showcase-thread><article class="blora-post"><h3 style="font-family:var(--blora-font-heading); font-size:var(--blora-text-xl); font-weight:600; margin:0 0 var(--blora-space-3)">收起态示例</h3><p class="blora-post__body">主帖内容，下方回复默认折叠。</p><div class="blora-post__replies" data-collapsed data-blora-thread-replies><div class="blora-post__replies-body" data-blora-thread-body><article class="blora-post blora-post--reply"><p class="blora-post__body">第一条回复</p></article></div><button class="blora-post__collapse" type="button" data-blora-thread-toggle aria-expanded="false" data-label-collapse="收起评论" data-label-expand="展开评论">展开评论</button></div></article></div></section>
-        <section data-showcase-case="QuoteOnly"><h3>引用条（壳不规定 label/正文样式）</h3><div class="blora-thread"><article class="blora-post blora-post--reply"><div class="blora-post__quote"><span style="font-weight:500; color:var(--blora-color-text-emphasis)">回复 @someone</span><span style="color:var(--blora-color-text-subtle)">被引用的原文摘要…</span></div><div class="blora-post__body"><p>跟帖正文与引用内容保持清晰层级。</p></div></article></div></section>
+        <section data-showcase-case="CollapsedByDefault"><h3>默认收起</h3><div class="blora-thread" data-blora-thread data-showcase-thread><article class="blora-post"><h3 style="font-family:var(--blora-font-heading); font-size:var(--blora-text-xl); font-weight:600; margin:0 0 var(--blora-space-3)">收起态示例</h3><p class="blora-post__body">主帖内容，下方回复默认折叠。</p><div class="blora-post__replies" data-collapsed data-blora-thread-replies><div class="blora-post__replies-body" data-blora-thread-body><article class="blora-post blora-post--reply"><p class="blora-post__body">第一条回复</p></article></div><button type="button" class="blora-button" data-variant="outline" data-size="sm" style="width:100%" data-blora-thread-toggle aria-expanded="false" data-label-collapse="收起评论" data-label-expand="展开评论">展开评论</button></div></article></div></section>
+        <section data-showcase-case="QuoteOnly"><h3>引用条</h3><div class="blora-thread"><article class="blora-post blora-post--reply"><div class="blora-post__quote"><span style="font-weight:500; color:var(--blora-color-text-emphasis)">回复 @someone</span><span style="color:var(--blora-color-text-subtle)">被引用的原文摘要…</span></div><div class="blora-post__body"><p>跟帖正文与引用内容保持清晰层级。</p></div></article></div></section>
         </div>
       </template>
     </div>

@@ -11,7 +11,7 @@
 | v1                                                          | 2.0                                                               |
 | ----------------------------------------------------------- | ----------------------------------------------------------------- |
 | `Blora.init()` / 自动 `initThread`                          | 显式 `createThreadController(root)`                               |
-| 收起/展开 `[data-blora-thread-toggle]`                      | 同                                                                |
+| 收起/展开 `[data-blora-thread-toggle]`                      | 同；按钮为普通 `blora-button[data-variant="outline"]`             |
 | 默认文案「展开评论 / 收起评论」                             | 同；可用 `options` 或 `data-label-expand` / `data-label-collapse` |
 | `[data-blora-post-react]` 切换 `is-active` + `aria-pressed` | 同（`toggleReact` API）                                           |
 | 无 body 时自动包一层 `.blora-post__replies-body`            | 2.0 不再自动合成，需显式写 `data-blora-thread-body`               |
@@ -20,12 +20,12 @@
 
 ## 样式 class（2.0 最小壳）
 
-- **保留**：`.blora-thread`、`.blora-post`、`.blora-post--reply`、`.blora-post__head`、`.blora-post__body`、`.blora-post__quote`、`.blora-post__react` / `__react-btn`、`.blora-post__replies` / `__replies-body` / `__collapse`。
-- **已移除**（不再由 add-on 提供样式，需由消费者自写，参考 `comment` 做法）：`.blora-post__identity`、`__who`、`__author-row`、`__author`、`__badge`、`__reply-to`、`__sub`、`__loc`、`__tools`、`__more`、`__title`、`__quote-label`、`__quote-text`。用 `avatar` + `tag` + `button` + tokens 自拼头部/引用/工具栏。
+- **保留**：`.blora-thread`、`.blora-post`、`.blora-post--reply`、`.blora-post__head`、`.blora-post__body`、`.blora-post__quote`、`.blora-post__react` / `__react-btn`、`.blora-post__replies` / `__replies-body`。
+- **已移除**（不再由 add-on 提供样式，需由消费者自写，参考 `comment` 做法）：`.blora-post__identity`、`__who`、`__author-row`、`__author`、`__badge`、`__reply-to`、`__sub`、`__loc`、`__tools`、`__more`、`__title`、`__quote-label`、`__quote-text`、`__collapse`（改用普通 `blora-button`）。用 `avatar` + `tag` + `button` + tokens 自拼头部/引用/工具栏与折叠按钮。
 
 Token 映射到 v2 semantic tokens；暗色用 `:root[data-blora-color-scheme="dark"]`（不再依赖 `.blora-dark` 祖先）。
 
-## 示例（头部自写）
+## 示例（头部自写，折叠按钮为普通按钮）
 
 ```html
 <link rel="stylesheet" href="blora.css" />
@@ -42,7 +42,7 @@ Token 映射到 v2 semantic tokens；暗色用 `:root[data-blora-color-scheme="d
     <div class="blora-post__body">正文…</div>
     <div class="blora-post__replies" data-blora-thread-replies>
       <div data-blora-thread-body>…</div>
-      <button data-blora-thread-toggle>展开评论</button>
+      <button type="button" class="blora-button" data-variant="outline" data-size="sm" style="width:100%" data-blora-thread-toggle>展开评论</button>
     </div>
   </article>
 </div>
