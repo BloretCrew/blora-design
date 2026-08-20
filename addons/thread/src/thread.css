@@ -241,16 +241,33 @@
 }
 
 /* =========================================================================
-   Comment stream (Bloret BBS post page anatomy)
-   Comments and timeline events alternate inside .blora-thread-comments.
+   Comment stream — forum-thread visual language with a connecting rail
+   (like Timeline). Reproduces Bloret BBS comment functionality (side avatar,
+   reactions, long-comment fold, activity events, composer) without copying
+   its card chrome: cards match .blora-post and the vertical rail runs
+   through the stream with every avatar / event node sitting on it.
    ========================================================================= */
 
 .blora-thread-comments {
+  --blora-thread-rail: 1.05rem;
+
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--blora-space-4);
-  padding-inline-start: var(--blora-space-8); /* room for the side avatar */
+  gap: var(--blora-space-6);
+  padding-inline-start: var(--blora-space-8); /* rail lane */
   margin-top: var(--blora-space-2);
+}
+
+/* Vertical connecting rail (like .blora-timeline::before). */
+.blora-thread-comments::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: var(--blora-thread-rail);
+  top: 0.5rem;
+  bottom: 0.5rem;
+  width: 1px;
+  background: var(--blora-color-border-subtle);
 }
 
 /* -- Comment entry -- */
@@ -259,18 +276,22 @@
   position: relative;
 }
 
-/* Side avatar, pinned to the card's left, outside it (like BBS). */
+/* Side avatar is the comment's node on the rail (centered on it). */
 .blora-thread-comment [data-blora-thread-avatar] {
   position: absolute;
-  inset-inline-start: calc(-1 * var(--blora-space-8));
-  top: 0;
+  inset-inline-start: calc(-1 * var(--blora-space-8) + var(--blora-thread-rail) - 0.9rem);
+  top: 0.15em;
   z-index: var(--blora-z-base);
+  border: 2px solid var(--blora-color-surface-canvas);
+  box-shadow: 0 0 0 1px var(--blora-color-border-subtle);
 }
 
+/* Comment card shares the forum-post card language (.blora-post). */
 .blora-thread-comment__card {
   border: 1px solid var(--blora-color-border-subtle);
-  border-radius: var(--blora-radius-md);
+  border-radius: var(--blora-radius-lg);
   background: var(--blora-color-surface-default);
+  box-shadow: var(--blora-shadow-1);
   overflow: hidden;
 }
 
@@ -280,9 +301,7 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: var(--blora-space-3);
-  padding: var(--blora-space-2) var(--blora-space-3);
-  background: var(--blora-color-surface-sunken);
-  border-bottom: 1px solid var(--blora-color-border-subtle);
+  padding: var(--blora-space-4) var(--blora-space-5) 0;
   font-size: var(--blora-text-sm);
 }
 
@@ -304,7 +323,7 @@
 }
 
 .blora-thread-comment__body {
-  padding: var(--blora-space-3);
+  padding: var(--blora-space-2) var(--blora-space-5) var(--blora-space-4);
   font-size: var(--blora-text-sm);
   color: var(--blora-color-text-emphasis);
   line-height: 1.7;
@@ -358,7 +377,7 @@
   flex-wrap: wrap;
   align-items: center;
   gap: var(--blora-space-2);
-  padding: 0 var(--blora-space-3) var(--blora-space-3);
+  padding: 0 var(--blora-space-5) var(--blora-space-4);
 }
 
 .blora-thread-comment__react [data-blora-thread-react] {
@@ -398,24 +417,26 @@
   color: var(--blora-color-text-muted);
 }
 
+/* Event node on the rail, like a timeline dot. */
 .blora-thread-event__icon {
   position: absolute;
-  inset-inline-start: calc(-1 * var(--blora-space-8));
+  inset-inline-start: calc(-1 * var(--blora-space-8) + var(--blora-thread-rail) - 0.7rem);
   top: 50%;
   transform: translateY(-50%);
   display: grid;
   place-items: center;
-  width: var(--blora-space-6);
-  height: var(--blora-space-6);
+  width: 1.4rem;
+  height: 1.4rem;
   border-radius: 50%;
   background: var(--blora-color-surface-default);
-  border: 2px solid var(--blora-color-surface-sunken);
+  border: 2px solid var(--blora-color-surface-canvas);
+  box-shadow: 0 0 0 1px var(--blora-color-border-subtle);
   color: var(--blora-color-text-muted);
 }
 
 .blora-thread-event__icon svg {
-  width: 0.9rem;
-  height: 0.9rem;
+  width: 0.85rem;
+  height: 0.85rem;
 }
 
 .blora-thread-event__text {
@@ -562,11 +583,14 @@
   }
 
   .blora-thread-comments {
-    padding-inline-start: var(--blora-space-6);
+    padding-inline-start: var(--blora-space-7);
   }
 
-  .blora-thread-comment [data-blora-thread-avatar],
+  .blora-thread-comment [data-blora-thread-avatar] {
+    inset-inline-start: calc(-1 * var(--blora-space-7) + var(--blora-thread-rail) - 0.9rem);
+  }
+
   .blora-thread-event__icon {
-    inset-inline-start: calc(-1 * var(--blora-space-6));
+    inset-inline-start: calc(-1 * var(--blora-space-7) + var(--blora-thread-rail) - 0.7rem);
   }
 }
