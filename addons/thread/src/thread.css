@@ -204,10 +204,27 @@
 
 /* Collapse toggle is a regular blora-button in markup (outline); only
    layout and collapsed-state spacing live here so it inherits the
-   button's corner-shape, focus ring, and hover exactly. */
+   button's corner-shape, focus ring, and hover exactly.
+   Thread outline matches the post card border (subtle) with primary text. */
 .blora-post__replies [data-blora-thread-toggle].blora-button {
   width: 100%;
   margin-top: var(--blora-space-3);
+}
+
+.blora-post__replies [data-blora-thread-toggle].blora-button[data-variant="outline"] {
+  --blora-button-bd: var(--blora-color-border-subtle);
+  --blora-button-fg: var(--blora-color-action-primary-default);
+
+  color: var(--blora-color-action-primary-default);
+}
+
+.blora-post__replies [data-blora-thread-toggle].blora-button[data-variant="outline"]:hover {
+  --blora-button-bg: var(--blora-color-action-primary-tint);
+  --blora-button-bd: color-mix(
+    in srgb,
+    var(--blora-color-action-primary-default) 35%,
+    var(--blora-color-border-subtle)
+  );
 }
 
 .blora-post__replies[data-collapsed] [data-blora-thread-toggle].blora-button {
