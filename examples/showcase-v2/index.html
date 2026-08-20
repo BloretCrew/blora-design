@@ -1267,28 +1267,28 @@
       </template>
       <template data-addon="thread" data-label="Thread" data-group="数据展示" data-eyebrow="Data display" data-kind="Headless" data-description="论坛主题、回复折叠和回应状态的完整线程结构。">
         <div data-showcase-cases data-showcase-addon-thread>
-        <section data-showcase-case="ForumThread"><h3>论坛跟帖</h3>
+        <section data-showcase-case="ForumThread"><h3>论坛跟帖（头部自写，壳不预设业务字段）</h3>
+          <p style="margin:0 0 var(--blora-space-3); color:var(--blora-color-text-subtle); font-size:var(--blora-text-sm)">头部/作者/地点/徽章/工具栏均由消费者用 tokens 与现有组件自拼，thread 仅提供卡片壳与折叠能力。</p>
           <div class="blora-thread" data-blora-thread data-showcase-thread>
             <article class="blora-post">
               <header class="blora-post__head">
-                <div class="blora-post__identity">
+                <div style="display:flex; align-items:center; gap:var(--blora-space-3); min-width:0; flex:1 1 12rem">
                   <span class="blora-avatar" data-size="lg" data-variant="primary">D</span>
-                  <div class="blora-post__who">
-                    <div class="blora-post__author-row">
-                      <a class="blora-post__author" href="#thread">diddy123</a>
+                  <div style="min-width:0; display:flex; flex-direction:column; gap:0.15em">
+                    <div style="display:flex; flex-wrap:wrap; align-items:center; gap:0.35em 0.55em">
+                      <a href="#thread" style="font-weight:600; font-size:var(--blora-text-sm); color:var(--blora-color-text-primary); text-decoration:none">diddy123</a>
                     </div>
-                    <div class="blora-post__sub">评论于 <time datetime="2026-07-17">10 天前</time> · <span class="blora-post__loc">江苏</span></div>
+                    <div style="font-size:var(--blora-text-xs); color:var(--blora-color-text-subtle); font-family:var(--blora-font-mono)">评论于 <time datetime="2026-07-17">10 天前</time> · 江苏</div>
                   </div>
                 </div>
-                <div class="blora-post__tools">
-                  <button type="button">链接</button>
-                  <button type="button">回复</button>
-                  <button type="button" data-variant="danger">删除</button>
-                  <button type="button">编辑</button>
-                  <button type="button" class="blora-post__more" aria-label="更多"></button>
+                <div style="display:flex; flex-wrap:wrap; align-items:center; gap:0.15em 0.1em; margin-inline-start:auto">
+                  <button type="button" class="blora-button" data-variant="ghost" data-size="xs">链接</button>
+                  <button type="button" class="blora-button" data-variant="ghost" data-size="xs">回复</button>
+                  <button type="button" class="blora-button" data-variant="ghost" data-size="xs">删除</button>
+                  <button type="button" class="blora-button" data-variant="ghost" data-size="xs">编辑</button>
                 </div>
               </header>
-              <div class="blora-post__title">妈妈</div>
+              <div style="font-family:var(--blora-font-heading); font-size:var(--blora-text-xl); font-weight:600; color:var(--blora-color-text-primary); margin:0 0 var(--blora-space-3)">妈妈</div>
               <div class="blora-post__react">
                 <button type="button" class="blora-post__react-btn" data-blora-post-react aria-label="添加表情" title="表情" aria-pressed="false"></button>
               </div>
@@ -1296,28 +1296,25 @@
                 <div class="blora-post__replies-body" data-blora-thread-body>
                   <article class="blora-post blora-post--reply">
                     <header class="blora-post__head">
-                      <div class="blora-post__identity">
+                      <div style="display:flex; align-items:center; gap:var(--blora-space-3); min-width:0; flex:1 1 12rem">
                         <span class="blora-avatar" data-size="sm" data-variant="neutral">De</span>
-                        <div class="blora-post__who">
-                          <div class="blora-post__author-row">
-                            <a class="blora-post__author" href="#thread">Detrital</a>
-                            <span class="blora-post__badge">何意味</span>
-                            <span class="blora-post__reply-to">回复 <a href="#thread">@diddy123</a></span>
+                        <div style="min-width:0; display:flex; flex-direction:column; gap:0.15em">
+                          <div style="display:flex; flex-wrap:wrap; align-items:center; gap:0.35em 0.55em">
+                            <a href="#thread" style="font-weight:600; font-size:var(--blora-text-sm); color:var(--blora-color-text-primary); text-decoration:none">Detrital</a>
+                            <span class="blora-tag" data-variant="warning" data-size="sm">何意味</span>
+                            <span style="font-size:var(--blora-text-xs); color:var(--blora-color-text-muted)">回复 <a href="#thread" style="color:var(--blora-color-action-primary-default); text-decoration:none">@diddy123</a></span>
                           </div>
-                          <div class="blora-post__sub">评论于 <time datetime="2026-07-17">10 天前</time> · <span class="blora-post__loc">浙江</span></div>
+                          <div style="font-size:var(--blora-text-xs); color:var(--blora-color-text-subtle); font-family:var(--blora-font-mono)">评论于 <time datetime="2026-07-17">10 天前</time> · 浙江</div>
                         </div>
                       </div>
-                      <div class="blora-post__tools">
-                        <button type="button">链接</button>
-                        <button type="button">回复</button>
-                        <button type="button" data-variant="danger">删除</button>
-                        <button type="button">编辑</button>
-                        <button type="button" class="blora-post__more" aria-label="更多"></button>
+                      <div style="display:flex; flex-wrap:wrap; align-items:center; gap:0.15em 0.1em; margin-inline-start:auto">
+                        <button type="button" class="blora-button" data-variant="ghost" data-size="xs">链接</button>
+                        <button type="button" class="blora-button" data-variant="ghost" data-size="xs">回复</button>
                       </div>
                     </header>
                     <div class="blora-post__quote">
-                      <span class="blora-post__quote-label">回复 @diddy123</span>
-                      <span class="blora-post__quote-text">## 妈妈</span>
+                      <span style="font-weight:500; color:var(--blora-color-text-emphasis)">回复 @diddy123</span>
+                      <span style="color:var(--blora-color-text-subtle)">## 妈妈</span>
                     </div>
                     <div class="blora-post__body">
                       <p>这个帖子仅以一个二级标题「妈妈」作为内容，没有正文。在论坛中，<strong>这种极简发帖通常是为了引发情感共鸣或作为一个开放话题，让网友围绕「母亲」展开讨论</strong>——比如分享与妈妈的暖心故事、求助与妈妈的矛盾、或者单纯表达思念。</p>
@@ -1330,23 +1327,20 @@
                   </article>
                   <article class="blora-post blora-post--reply">
                     <header class="blora-post__head">
-                      <div class="blora-post__identity">
+                      <div style="display:flex; align-items:center; gap:var(--blora-space-3); min-width:0; flex:1 1 12rem">
                         <span class="blora-avatar" data-size="sm" data-variant="primary">De</span>
-                        <div class="blora-post__who">
-                          <div class="blora-post__author-row">
-                            <a class="blora-post__author" href="#thread">Detrital</a>
-                            <span class="blora-post__badge">何意味</span>
-                            <span class="blora-post__reply-to">回复 <a href="#thread">@Detrital</a></span>
+                        <div style="min-width:0; display:flex; flex-direction:column; gap:0.15em">
+                          <div style="display:flex; flex-wrap:wrap; align-items:center; gap:0.35em 0.55em">
+                            <a href="#thread" style="font-weight:600; font-size:var(--blora-text-sm); color:var(--blora-color-text-primary); text-decoration:none">Detrital</a>
+                            <span class="blora-tag" data-variant="warning" data-size="sm">何意味</span>
+                            <span style="font-size:var(--blora-text-xs); color:var(--blora-color-text-muted)">回复 <a href="#thread" style="color:var(--blora-color-action-primary-default); text-decoration:none">@Detrital</a></span>
                           </div>
-                          <div class="blora-post__sub">评论于 <time datetime="2026-07-17">10 天前</time> · <span class="blora-post__loc">浙江</span></div>
+                          <div style="font-size:var(--blora-text-xs); color:var(--blora-color-text-subtle); font-family:var(--blora-font-mono)">评论于 <time datetime="2026-07-17">10 天前</time> · 浙江</div>
                         </div>
                       </div>
-                      <div class="blora-post__tools">
-                        <button type="button">链接</button>
-                        <button type="button">回复</button>
-                        <button type="button" data-variant="danger">删除</button>
-                        <button type="button">编辑</button>
-                        <button type="button" class="blora-post__more" aria-label="更多"></button>
+                      <div style="display:flex; flex-wrap:wrap; align-items:center; gap:0.15em 0.1em; margin-inline-start:auto">
+                        <button type="button" class="blora-button" data-variant="ghost" data-size="xs">链接</button>
+                        <button type="button" class="blora-button" data-variant="ghost" data-size="xs">回复</button>
                       </div>
                     </header>
                     <div class="blora-post__body">
@@ -1366,8 +1360,8 @@
             </article>
           </div>
         </section>
-        <section data-showcase-case="CollapsedByDefault"><h3>默认收起</h3><div class="blora-thread" data-blora-thread data-showcase-thread><article class="blora-post"><h3 class="blora-post__title">收起态示例</h3><p class="blora-post__body">主帖内容，下方回复默认折叠。</p><div class="blora-post__replies" data-collapsed data-blora-thread-replies><div class="blora-post__replies-body" data-blora-thread-body><article class="blora-post blora-post--reply"><p class="blora-post__body">第一条回复</p></article></div><button class="blora-post__collapse" type="button" data-blora-thread-toggle aria-expanded="false" data-label-collapse="收起评论" data-label-expand="展开评论">展开评论</button></div></article></div></section>
-        <section data-showcase-case="QuoteOnly"><h3>引用条</h3><div class="blora-thread"><article class="blora-post blora-post--reply"><div class="blora-post__quote"><span class="blora-post__quote-label">回复 @someone</span><span class="blora-post__quote-text">被引用的原文摘要…</span></div><div class="blora-post__body"><p>跟帖正文与引用内容保持清晰层级。</p></div></article></div></section>
+        <section data-showcase-case="CollapsedByDefault"><h3>默认收起</h3><div class="blora-thread" data-blora-thread data-showcase-thread><article class="blora-post"><h3 style="font-family:var(--blora-font-heading); font-size:var(--blora-text-xl); font-weight:600; margin:0 0 var(--blora-space-3)">收起态示例</h3><p class="blora-post__body">主帖内容，下方回复默认折叠。</p><div class="blora-post__replies" data-collapsed data-blora-thread-replies><div class="blora-post__replies-body" data-blora-thread-body><article class="blora-post blora-post--reply"><p class="blora-post__body">第一条回复</p></article></div><button class="blora-post__collapse" type="button" data-blora-thread-toggle aria-expanded="false" data-label-collapse="收起评论" data-label-expand="展开评论">展开评论</button></div></article></div></section>
+        <section data-showcase-case="QuoteOnly"><h3>引用条（壳不规定 label/正文样式）</h3><div class="blora-thread"><article class="blora-post blora-post--reply"><div class="blora-post__quote"><span style="font-weight:500; color:var(--blora-color-text-emphasis)">回复 @someone</span><span style="color:var(--blora-color-text-subtle)">被引用的原文摘要…</span></div><div class="blora-post__body"><p>跟帖正文与引用内容保持清晰层级。</p></div></article></div></section>
         </div>
       </template>
     </div>

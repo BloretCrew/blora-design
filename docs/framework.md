@@ -1033,16 +1033,15 @@ Blora.markdown("**hi**", { inline: true });
 Blora.renderMarkdown("#el", "## 标题\n正文"); // 别名 Blora.md
 ```
 
-**论坛跟帖 Thread**（结构以展示页为准）
+**论坛跟帖 Thread**（最小壳；头部/引用工具均自写，见展示页 Thread）
 
 ```html
 <div class="blora-thread" data-blora-thread>
   <article class="blora-post">
-    <header class="blora-post__head">…</header>
-    <div class="blora-post__title" data-blora-md>## 标题</div>
-    <div class="blora-post__body" data-blora-md><script type="text/markdown">正文</script></div>
-    <div class="blora-post__tools">…</div>
-    <div class="blora-post__replies">…嵌套 .blora-post…</div>
+    <header class="blora-post__head"><!-- 自写：avatar + author + tag + time + ghost buttons --></header>
+    <div class="blora-post__body"><p>正文…</p></div>
+    <div class="blora-post__quote"><span>回复 @someone</span> 被引用摘要…</div>
+    <div class="blora-post__replies" data-blora-thread-replies><div data-blora-thread-body>…嵌套 .blora-post…</div><button data-blora-thread-toggle>展开评论</button></div>
   </article>
 </div>
 ```
