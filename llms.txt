@@ -27,6 +27,7 @@ Feedback: `message` / `message.success` (pill) + `notify` (cards). **No toast AP
 
 - Package: `@bloret-crew/blora-design` (`2.0.0-alpha.1`+)
 - `./auto` — register the default Composite CE surface (range, date/time, search, transfer, accordion/collapse, command, segmented, tabs, select, dialog)
+- `./icons-full` (`icons-full.global.js`) — opt-in: registers **every** Lucide icon into `createBloraIcon`, so any icon name works without a framework rebuild. Default bundle ships a curated set only (size).
 - `./button` `./select` `./dialog` `./table` — JS subpaths (toast **removed**)
 - `./blora.global.js` — IIFE CDN global `Blora`
 - `./custom-elements.json` / `./component-manifest.json` / `./api-snapshot.json`

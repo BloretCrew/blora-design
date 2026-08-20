@@ -27,6 +27,10 @@
       "types": "./dist/auto.d.ts",
       "import": "./dist/auto.js"
     },
+    "./icons-full": {
+      "types": "./dist/icons-full.d.ts",
+      "import": "./dist/icons-full.js"
+    },
     "./button": {
       "types": "./dist/components/button/index.d.ts",
       "import": "./dist/components/button/index.js"
@@ -44,6 +48,7 @@
       "import": "./dist/components/table/index.js"
     },
     "./blora.global.js": "./dist/blora.global.js",
+    "./icons-full.global.js": "./dist/icons-full.global.js",
     "./custom-elements.json": "./dist/custom-elements.json",
     "./component-manifest.json": "./dist/component-manifest.json",
     "./api-snapshot.json": "./dist/api-snapshot.json",
@@ -156,7 +161,7 @@
     "typecheck": "tsc --noEmit",
     "test": "pnpm run build && vitest run --config vitest.config.ts",
     "test:browser": "pnpm run build && playwright test --config ../../playwright.config.ts --project=chromium --project=mobile-chromium --project=a11y",
-    "build": "node ../tokens/scripts/build-tokens.mjs && vite build && vite build -c vite.global.config.ts && tsc --emitDeclarationOnly && node scripts/copy-tokens.mjs && node scripts/generate-manifests.mjs",
+    "build": "node ../tokens/scripts/build-tokens.mjs && vite build && vite build -c vite.global.config.ts && vite build -c vite.icons-global.config.ts && tsc --emitDeclarationOnly && node scripts/copy-tokens.mjs && node scripts/generate-manifests.mjs",
     "build:tokens": "node ../tokens/scripts/build-tokens.mjs",
     "size": "node scripts/check-size.mjs",
     "pack:test": "node scripts/pack-test.mjs",

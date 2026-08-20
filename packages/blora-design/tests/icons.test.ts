@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { createBloraIcon } from "../src/core/icons.js";
+import { createBloraIcon, isBloraIconName, registerBloraIcons } from "../src/core/icons.js";
+import { BLORA_ICON_FULL_DATA } from "../src/core/icons-full.data.js";
 
 describe("internal composite icon factory", () => {
   it.each(["home", "search", "user", "settings", "check", "info", "inbox", "thumbs-up"] as const)(
@@ -16,4 +17,21 @@ describe("internal composite icon factory", () => {
       expect(icon.childElementCount).toBeGreaterThan(0);
     },
   );
+});
+
+describe("opt-in full Lucide table", () => {
+  it("registers every lucide icon under its canonical name", () => {
+    expect(BLORA_ICON_FULL_DATA["rocket"]).toBeDefined();
+    expect(BLORA_ICON_FULL_DATA["zap"]).toBeDefined();
+    expect(Object.keys(BLORA_ICON_FULL_DATA).length).toBeGreaterThan(1000);
+  });
+
+  it("renders a non-curated icon after registration", () => {
+    expect(isBloraIconName("rocket")).toBe(false);
+    registerBloraIcons(BLORA_ICON_FULL_DATA);
+    expect(isBloraIconName("rocket")).toBe(true);
+    const icon = createBloraIcon("rocket", 16);
+    expect(icon.getAttribute("data-blora-icon")).toBe("rocket");
+    expect(icon.childElementCount).toBeGreaterThan(0);
+  });
 });

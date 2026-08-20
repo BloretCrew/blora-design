@@ -105,7 +105,7 @@ applyTheme("indigo"); // coral | indigo | lotus | graphite | mono | circuit | du
 5. **浮层** 注意 stacking / portal（Mentions、部分菜单会挂到 `document.body`）。  
 6. **颜色 / 间距 / 圆角 / 阴影** 用 token（`--blora-*`），组件 CSS 内不写死业务色。  
 7. **用户内容** 不要用 `innerHTML` 直接塞不可信字符串。  
-8. **图标** 内联 SVG + `currentColor`；勿依赖 emoji 当唯一图标。
+8. **图标** 一律走 `createBloraIcon()`（Lucide 数据，`currentColor`）；勿依赖 emoji 当图标。默认包带精选集；需要任意 Lucide 图标时引入 `@bloret-crew/blora-design/icons-full`（或 `icons-full.global.js`）注册一次即可，之后任意图标名可用，无需改框架。
 
 ### 2.1 架构选择（2.0）
 

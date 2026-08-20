@@ -13,6 +13,7 @@ export default defineConfig({
       entry: {
         index: resolve(__dirname, "src/index.ts"),
         auto: resolve(__dirname, "src/auto.ts"),
+        "icons-full": resolve(__dirname, "src/icons-full.ts"),
         "components/button/index": resolve(__dirname, "src/entries/button.ts"),
         "components/select/index": resolve(__dirname, "src/entries/select.ts"),
         "components/dialog/index": resolve(__dirname, "src/entries/dialog.ts"),

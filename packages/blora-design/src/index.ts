@@ -16,7 +16,12 @@ export function isBrowser(): boolean {
 
 // Core
 export { BloraElement } from "./core/blora-element.js";
-export { createBloraIcon, isBloraIconName, type BloraIconName } from "./core/icons.js";
+export {
+  createBloraIcon,
+  isBloraIconName,
+  registerBloraIcons,
+  type BloraIconName,
+} from "./core/icons.js";
 
 // Controllers
 export { OverlayController, type OverlayOptions } from "./controllers/overlay-controller.js";

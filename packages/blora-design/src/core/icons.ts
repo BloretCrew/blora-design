@@ -3,12 +3,19 @@
  *
  * Every UI/status/navigation glyph is built from `BLORA_ICON_DATA`, which is
  * generated verbatim from lucide-static (ISC) — there is only one source of
- * truth for icon geometry. Add a name to the map in `scripts/gen-icons.mjs`
- * and regenerate. Brand marks (navbar logo) and non-icon drawings (progress
- * rings) are the only hand-authored SVGs in components.
+ * truth for icon geometry. The default core bundle carries a curated set.
+ * For any other Lucide icon, load the opt-in full table
+ * (`@bloret-crew/blora-design/icons-full` / `icons-full.global.js`) once;
+ * `registerBloraIcons` merges it in, after which any Lucide name works without
+ * a framework rebuild. Brand marks (navbar logo) and non-icon drawings
+ * (progress rings) are the only hand-authored SVGs in components.
  */
 import { BLORA_ICON_DATA, type BloraIconNode } from "./icons.data.js";
+import { hasExtraIcon, lookupExtraIcon } from "./icons-registry.js";
 
+export { registerBloraIcons } from "./icons-registry.js";
+
+/** Curated names (autocompleted) plus any string — full set arrives at runtime. */
 export type BloraIconName =
   | "arrow-down"
   | "arrow-down-up"
@@ -52,15 +59,16 @@ export type BloraIconName =
   | "search"
   | "settings"
   | "share"
-  | "sparkles"
   | "smile"
+  | "sparkles"
   | "star"
   | "sun"
   | "thumbs-up"
   | "trash"
   | "triangle-alert"
   | "upload"
-  | "user";
+  | "user"
+  | (string & {});
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 
@@ -92,7 +100,7 @@ export function createBloraIcon(
   svg.setAttribute("aria-hidden", "true");
   svg.setAttribute("data-blora-icon", name);
 
-  const nodes = BLORA_ICON_DATA[name];
+  const nodes = BLORA_ICON_DATA[name] ?? lookupExtraIcon(name);
   if (nodes) {
     for (const node of nodes) {
       const el = svgNode(doc, node.tag, node.attrs);
@@ -104,5 +112,5 @@ export function createBloraIcon(
 }
 
 export function isBloraIconName(name: string): name is BloraIconName {
-  return Object.prototype.hasOwnProperty.call(BLORA_ICON_DATA, name);
+  return Object.prototype.hasOwnProperty.call(BLORA_ICON_DATA, name) || hasExtraIcon(name);
 }
