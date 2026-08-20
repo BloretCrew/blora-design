@@ -276,14 +276,25 @@
   position: relative;
 }
 
-/* Side avatar is the comment's node on the rail (centered on it). */
-.blora-thread-comment [data-blora-thread-avatar] {
+/* Comment node on the rail (a comment icon, like event nodes). */
+.blora-thread-comment__node {
   position: absolute;
-  inset-inline-start: calc(-1 * var(--blora-space-8) + var(--blora-thread-rail) - 0.9rem);
-  top: 0.15em;
-  z-index: var(--blora-z-base);
+  inset-inline-start: calc(-1 * var(--blora-space-8) + var(--blora-thread-rail) - 0.7rem);
+  top: 0.35em;
+  display: grid;
+  place-items: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 50%;
+  background: var(--blora-color-surface-default);
   border: 2px solid var(--blora-color-surface-canvas);
   box-shadow: 0 0 0 1px var(--blora-color-border-subtle);
+  color: var(--blora-color-text-muted);
+}
+
+.blora-thread-comment__node svg {
+  width: 0.85rem;
+  height: 0.85rem;
 }
 
 /* Comment card shares the forum-post card language (.blora-post). */
@@ -295,11 +306,12 @@
   overflow: hidden;
 }
 
+/* Head mirrors .blora-post__head: avatar sits inside the card, followed by
+   identity/meta and actions. */
 .blora-thread-comment__head {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
-  justify-content: space-between;
   gap: var(--blora-space-3);
   padding: var(--blora-space-4) var(--blora-space-5) 0;
   font-size: var(--blora-text-sm);
@@ -586,10 +598,7 @@
     padding-inline-start: var(--blora-space-7);
   }
 
-  .blora-thread-comment [data-blora-thread-avatar] {
-    inset-inline-start: calc(-1 * var(--blora-space-7) + var(--blora-thread-rail) - 0.9rem);
-  }
-
+  .blora-thread-comment__node,
   .blora-thread-event__icon {
     inset-inline-start: calc(-1 * var(--blora-space-7) + var(--blora-thread-rail) - 0.7rem);
   }
