@@ -18,7 +18,6 @@ const allowedInlineSvg = new Map<string, string>([
 /** Declarative SVGs that are data visualizations, not interface icons. */
 const allowedSvgMarkup = new Map<string, string>([
   ["examples/showcase-v2/index.html", "chart data visualization"],
-  ["packages/blora-design/stories/chart-container.stories.ts", "chart data visualization"],
   ["packages/blora-design/tests/browser/composite-elements.spec.ts", "empty chart slot fixture"],
 ]);
 
@@ -39,7 +38,6 @@ const auditedRoots = [
   resolve(workspaceRoot, "addons"),
   resolve(workspaceRoot, "examples"),
   resolve(workspaceRoot, "packages/blora-design/src"),
-  resolve(workspaceRoot, "packages/blora-design/stories"),
   resolve(workspaceRoot, "packages/blora-design/tests"),
 ];
 

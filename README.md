@@ -9,7 +9,7 @@
 **Status:** Phase 9 complete. **Phase 10 Beta in progress** — stable-core API frozen; next milestone RC.
 **Master remaining-work checklist:** [`docs/refactor/remaining-work.md`](./docs/refactor/remaining-work.md)
 
-Interactive demos: **[showcase](https://bloretcrew.github.io/blora-design/)** · **Storybook** (`pnpm storybook`). Frozen 1.x reference is archived at `D:/MyFiles/Documents/projects/blora-design/legacy/` (not the 2.0 recommended entry).
+Interactive demos: **[showcase](https://bloretcrew.github.io/blora-design/)**. Frozen 1.x reference is archived at `D:/MyFiles/Documents/projects/blora-design/legacy/` (not the 2.0 recommended entry).
 
 ---
 
@@ -116,7 +116,7 @@ Component migration status: [`docs/refactor/component-matrix.md`](./docs/refacto
 
 ```
 blora-design-2/
-├── packages/blora-design/   # core ESM + CSS + contracts + Storybook
+├── packages/blora-design/   # core ESM + CSS + contracts
 ├── packages/tokens/        # token sources / generators
 ├── addons/                 # markdown, thread, qrcode, effects, layout, theming
 ├── examples/showcase-v2/   # 2.0 component showcase (+ assets/)
@@ -132,7 +132,6 @@ pnpm install
 pnpm build:tokens
 pnpm --filter @bloret-crew/blora-design run typecheck
 pnpm --filter @bloret-crew/blora-design exec vitest run
-pnpm storybook
 ```
 
 ---

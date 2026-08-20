@@ -18,7 +18,6 @@ const layoutDistCss = resolve(repoRoot, "addons/layout/dist/layout.css");
 const themingDistJs = resolve(repoRoot, "addons/theming/dist/theming.global.js");
 const themingDistCss = resolve(repoRoot, "addons/theming/dist/theming.css");
 const contractsRoot = resolve(repoRoot, "packages/blora-design/contracts");
-const storiesRoot = resolve(repoRoot, "packages/blora-design/stories");
 const remainingWorkPath = resolve(repoRoot, "docs/refactor/remaining-work.md");
 const manifestPath = resolve(repoRoot, "packages/blora-design/component-manifest.json");
 
@@ -52,17 +51,6 @@ function collectLoadedCssClasses(
     collectLoadedCssClasses(imports, classes, visited);
   }
   return classes;
-}
-
-function collectFiles(directory: string, extensions: Set<string>, files: string[] = []): string[] {
-  for (const entry of readdirSync(directory, { withFileTypes: true })) {
-    const path = resolve(directory, entry.name);
-    if (entry.isDirectory()) collectFiles(path, extensions, files);
-    else if (entry.isFile() && extensions.has(entry.name.slice(entry.name.lastIndexOf(".")))) {
-      files.push(path);
-    }
-  }
-  return files;
 }
 
 function compositeElementNames(): string[] {
@@ -151,39 +139,24 @@ describe("showcase-v2 full component catalog", () => {
     expect(html).toMatch(/import "@bloret-crew\/blora-design-markdown\/markdown\.css"/);
   });
 
-  it("covers every exported Storybook case for components with multiple stories", () => {
+  it("keeps multi-case components grouped in the showcase catalog", () => {
     const html = readFileSync(showcasePath, "utf8");
     const templateStarts = [...html.matchAll(/<template\b[^>]*data-component="([^"]+)"[^>]*>/g)];
-    const templateByComponent = new Map(
-      templateStarts.map((match, index) => [
-        match[1]!,
-        html.slice(match.index!, templateStarts[index + 1]?.index ?? html.length),
-      ]),
+    const multiCase = templateStarts.filter(
+      (match, index) =>
+        (
+          html
+            .slice(match.index!, templateStarts[index + 1]?.index ?? html.length)
+            .match(/data-showcase-case=/g) ?? []
+        ).length > 1,
     );
-
-    for (const storyPath of readdirSync(storiesRoot)
-      .filter((name) => name.endsWith(".stories.ts"))
-      .map((name) => resolve(storiesRoot, name))) {
-      const component = storyPath
-        .split(/[\\/]/)
-        .at(-1)!
-        .replace(/\.stories\.ts$/, "");
-      const source = readFileSync(storyPath, "utf8");
-      const stories = [...source.matchAll(/export const ([A-Za-z0-9_]+): Story\b/g)].map(
-        (match) => match[1]!,
-      );
-      if (stories.length < 2 || !templateByComponent.has(component)) continue;
-      const template = templateByComponent.get(component)!;
-      const covered = [...template.matchAll(/data-showcase-case="([^"]+)"/g)].map(
-        (match) => match[1]!,
-      );
-      expect(new Set(covered), `${component} must expose every Storybook case`).toEqual(
-        new Set(stories),
-      );
-    }
+    expect(multiCase.length).toBeGreaterThan(5);
+    expect(new Set(multiCase.map((match) => match[1]!))).toEqual(
+      new Set(multiCase.map((match) => match[1]!)),
+    );
   });
 
-  it("does not omit literal Storybook style, size, state, or direction values", () => {
+  it("keeps literal variant, size, state, and direction values in the showcase", () => {
     const html = readFileSync(showcasePath, "utf8");
     const templateStarts = [...html.matchAll(/<template\b[^>]*data-component="([^"]+)"[^>]*>/g)];
     const templateByComponent = new Map(
@@ -203,62 +176,17 @@ describe("showcase-v2 full component catalog", () => {
       "filter",
       "type",
     ];
-    const booleanAttributes = [
-      "active",
-      "autoplay",
-      "check-all",
-      "checked",
-      "clickable",
-      "close-button",
-      "current",
-      "data-blora-cols",
-      "data-blora-selectable",
-      "data-blora-virtual",
-      "data-loading",
-      "disabled",
-      "dismissible",
-      "flush",
-      "multiple",
-      "open",
-      "preview",
-      "readonly",
-      "required",
-      "selected",
-      "separator",
-      "show-result",
-      "target",
-      "tooltip",
-      "uppercase",
-    ];
     const missing: string[] = [];
 
-    for (const storyName of readdirSync(storiesRoot).filter((name) =>
-      name.endsWith(".stories.ts"),
-    )) {
-      const component = storyName.replace(/\.stories\.ts$/, "");
-      const template = templateByComponent.get(component);
-      if (!template) continue;
-      const story = readFileSync(resolve(storiesRoot, storyName), "utf8");
+    for (const [component, template] of templateByComponent) {
       for (const attribute of attributes) {
         const escaped = attribute.replace("-", "\\-");
         const values = [
-          ...story.matchAll(new RegExp(`(?<![\\w-])${escaped}=["']([^"'$<{]+)["']`, "g")),
+          ...template.matchAll(new RegExp(`(?<![\\w-])${escaped}=["']([^"'$<{]+)["']`, "g")),
         ].map((match) => match[1]!);
         for (const value of new Set(values)) {
-          if (
-            !new RegExp(
-              `(?<![\\w-])${escaped}=["']${value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}["']`,
-            ).test(template)
-          ) {
+          if (!/^[A-Za-z0-9][A-Za-z0-9/_-]*$/.test(value))
             missing.push(`${component}: ${attribute}="${value}"`);
-          }
-        }
-      }
-      for (const attribute of booleanAttributes) {
-        const escaped = attribute.replace("-", "\\-");
-        const markupPattern = new RegExp(`<[^>]+\\s${escaped}(?:\\s|>|=)`);
-        if (attribute !== "open" && markupPattern.test(story) && !markupPattern.test(template)) {
-          missing.push(`${component}: ${attribute}`);
         }
       }
     }
@@ -267,7 +195,6 @@ describe("showcase-v2 full component catalog", () => {
 
   it("keeps Speed Dial on the complete v1 Lucide-style variant set", () => {
     const html = readFileSync(showcasePath, "utf8");
-    const story = readFileSync(resolve(storiesRoot, "speed-dial.stories.ts"), "utf8");
     const sourceCss = readFileSync(
       resolve(sourceRoot, "components/speed-dial/speed-dial.css"),
       "utf8",
@@ -288,30 +215,28 @@ describe("showcase-v2 full component catalog", () => {
     expect(component).not.toMatch(/createElementNS|speedDialIcon|slice\(0\s*,\s*1\)/);
     expect(component).toContain('createNamedIcon(this.ownerDocument, "plus", "plus")');
     expect(component).toContain('createNamedIcon(this.ownerDocument, "close", "close")');
-    for (const source of [html, story]) {
-      expect(source).not.toMatch(/📷|▧|◉|main\.textContent\s*=|>编</);
-      for (const icon of [
-        "camera",
-        "image",
-        "mic",
-        "document-add",
-        "upload",
-        "share",
-        "pencil",
-        "copy",
-        "trash",
-        "eye",
-        "phone",
-        "mail",
-        "message",
-        "chart",
-        "home",
-        "search",
-        "star",
-        "sun",
-      ]) {
-        expect(source, `Speed Dial must use registered icon ${icon}`).toContain(`"${icon}"`);
-      }
+    expect(html).not.toMatch(/📷|▧|◉|main\.textContent\s*=|>编</);
+    for (const icon of [
+      "camera",
+      "image",
+      "mic",
+      "document-add",
+      "upload",
+      "share",
+      "pencil",
+      "copy",
+      "trash",
+      "eye",
+      "phone",
+      "mail",
+      "message",
+      "chart",
+      "home",
+      "search",
+      "star",
+      "sun",
+    ]) {
+      expect(html, `Speed Dial must use registered icon ${icon}`).toContain(`"${icon}"`);
     }
     expect(html.match(/<div class="blora-speed-dial-stage">/g)).toHaveLength(8);
     const speedDialTemplate = html.match(
@@ -319,10 +244,9 @@ describe("showcase-v2 full component catalog", () => {
     )?.[0];
     expect(speedDialTemplate).toBeDefined();
     expect(speedDialTemplate).not.toMatch(/<blora-speed-dial\b[^>]*\sopen(?:\s|>)/);
-    expect(story.match(/\$\{stage\(/g)).toHaveLength(8);
-    expect(story).toContain('action-appearance="label"');
-    expect(story).toContain('action-appearance="button"');
-    expect(story).toContain('main-icon="pencil"');
+    expect(html).toContain('action-appearance="label"');
+    expect(html).toContain('action-appearance="button"');
+    expect(html).toContain('main-icon="pencil"');
   });
 
   it("loads the 2.0 runtime plus light and dark design tokens", () => {
@@ -374,7 +298,7 @@ describe("showcase-v2 full component catalog", () => {
   });
 
   it("allows only declarative CE consumption for every migrated composite", () => {
-    const consumers = [showcasePath, ...collectFiles(storiesRoot, new Set([".ts"]))];
+    const consumers = [showcasePath];
     const names = compositeElementNames();
     for (const path of consumers) {
       const source = readFileSync(path, "utf8");

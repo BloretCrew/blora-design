@@ -162,9 +162,7 @@
     "pack:test": "node scripts/pack-test.mjs",
     "migrate:check": "node scripts/migrate-check.mjs",
     "codemod": "node scripts/codemod.mjs",
-    "generate:manifests": "node scripts/generate-manifests.mjs",
-    "storybook": "storybook dev -p 6006 -h 0.0.0.0",
-    "build-storybook": "storybook build"
+    "generate:manifests": "node scripts/generate-manifests.mjs"
   },
   "customElements": "./dist/custom-elements.json",
   "devDependencies": {

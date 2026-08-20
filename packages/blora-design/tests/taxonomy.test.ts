@@ -20,18 +20,6 @@ describe("component taxonomy", () => {
     }
   });
 
-  it("keeps Storybook titles on the official category paths", () => {
-    for (const file of readdirSync(resolve(packageRoot, "stories")).filter((name) =>
-      name.endsWith(".stories.ts"),
-    )) {
-      const key = file.replace(/\.stories\.ts$/, "");
-      if (key === "version") continue;
-      const source = readFileSync(resolve(packageRoot, "stories", file), "utf8");
-      const title = source.match(/title:\s*"([^"]+)"/)?.[1];
-      expect(title, key).toBe(taxonomy.stories[key]);
-    }
-  });
-
   it("keeps the showcase catalog on the same groups as contracts", () => {
     const html = readFileSync(resolve(repoRoot, "examples/showcase-v2/index.html"), "utf8");
     const labels = Object.fromEntries(

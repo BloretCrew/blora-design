@@ -1,14 +1,7 @@
 /* Blora Design 2.0 - Theming add-on (palette picker + scheme helpers) */
 
-/*
- * Explicit scheme must repaint Storybook chrome (#storybook-root, .sb-show-main)
- * or light docs canvas will sit under dark tokens (or the reverse) → unreadable text.
- */
 html[data-blora-color-scheme="dark"],
 html[data-blora-color-scheme="dark"] body,
-html[data-blora-color-scheme="dark"] #storybook-root,
-html[data-blora-color-scheme="dark"] .sb-show-main,
-html[data-blora-color-scheme="dark"] .docs-story,
 html[data-blora-color-scheme="dark"] .blora-scope {
   background-color: var(--blora-color-surface-canvas) !important;
   color: var(--blora-color-text-secondary);
@@ -20,9 +13,6 @@ html[data-blora-color-scheme="dark"] .blora-scope {
 
 html[data-blora-color-scheme="light"],
 html[data-blora-color-scheme="light"] body,
-html[data-blora-color-scheme="light"] #storybook-root,
-html[data-blora-color-scheme="light"] .sb-show-main,
-html[data-blora-color-scheme="light"] .docs-story,
 html[data-blora-color-scheme="light"] .blora-scope {
   background-color: var(--blora-color-surface-canvas);
   color: var(--blora-color-text-secondary);

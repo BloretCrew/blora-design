@@ -74,11 +74,9 @@ function clearMirroredScheme(doc: Document, scheme?: ColorScheme): void {
     body.removeAttribute("data-blora-color-scheme");
     if (scheme) body.style.colorScheme = scheme;
   }
-  for (const sel of ["#storybook-root", ".sb-show-main", ".docs-story"]) {
-    doc.querySelectorAll<HTMLElement>(sel).forEach((node) => {
-      node.removeAttribute("data-blora-color-scheme");
-      if (scheme) node.style.colorScheme = scheme;
-    });
+  for (const node of doc.querySelectorAll<HTMLElement>(".blora-scope")) {
+    node.removeAttribute("data-blora-color-scheme");
+    if (scheme) node.style.colorScheme = scheme;
   }
 }
 

@@ -37,7 +37,6 @@ Feedback: `message` / `message.success` (pill) + `notify` (cards). **No toast AP
 - **Remaining work:** `docs/refactor/remaining-work.md` (stop before Beta until checklist)
 - Migration: `docs/migration/v1-to-v2.md`
 - Showcase: `examples/showcase-v2/` (requires full package build)
-- Story DOM source of truth: `packages/blora-design/stories/*.stories.ts`
 - Token map CSV: `docs/migration/token-map-v1-v2.csv`
 - Alpha install notes: `docs/refactor/alpha-install-notes.md`
 - 1.x freeze: `legacy/v1/`, `legacy/showcase-v1.html`
