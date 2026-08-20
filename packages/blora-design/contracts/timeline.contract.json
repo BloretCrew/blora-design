@@ -11,6 +11,11 @@
     "icon": {
       "type": "string",
       "description": "Optional Lucide icon name on a blora-timeline-item; renders an icon node instead of a plain dot"
+    },
+    "content-layout": {
+      "type": "\"inline\" | \"block\"",
+      "default": "inline",
+      "description": "Layout for custom child content: inline keeps time directly after event text; block makes content fill the timeline column (e.g. comment cards)"
     }
   },
   "properties": {},

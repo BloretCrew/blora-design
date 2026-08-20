@@ -9,6 +9,7 @@ interface TimelineDefinition {
   title: string;
   variant: string;
   icon: string;
+  contentLayout: "inline" | "block";
   /** Custom child nodes (arbitrary content such as a comment card). */
   nodes: Node[];
 }
@@ -37,6 +38,7 @@ export class BloraTimeline extends BloraElement {
               item.getAttribute("title") ?? (nodes.length ? "" : (item.textContent?.trim() ?? "")),
             variant: item.getAttribute("variant") ?? "",
             icon: item.getAttribute("icon") ?? "",
+            contentLayout: item.getAttribute("content-layout") === "block" ? "block" : "inline",
             nodes,
           };
         });
@@ -65,6 +67,7 @@ export class BloraTimeline extends BloraElement {
         for (const node of definition.nodes) node.parentNode?.removeChild(node);
         const row = this.ownerDocument.createElement("div");
         row.className = "blora-timeline__row";
+        row.dataset.layout = definition.contentLayout;
         const content = this.ownerDocument.createElement("div");
         content.className = "blora-timeline__content";
         content.append(...definition.nodes);

@@ -976,7 +976,11 @@ describe("Composite Custom Elements", () => {
 
   it("timeline renders icon nodes and arbitrary child content", () => {
     const timeline = document.createElement("blora-timeline");
-    const item = definition("blora-timeline-item", "", { time: "· 6个月前", icon: "message" });
+    const item = definition("blora-timeline-item", "", {
+      time: "· 6个月前",
+      icon: "message",
+      "content-layout": "block",
+    });
     const card = document.createElement("div");
     card.className = "blora-thread-comment__card";
     card.textContent = "comment card";
@@ -990,6 +994,9 @@ describe("Composite Custom Elements", () => {
     expect(dot?.querySelector("svg")?.getAttribute("data-blora-icon")).toBe("message");
     const content = timeline.querySelector<HTMLElement>(".blora-timeline__content");
     expect(content?.textContent).toBe("comment card");
+    expect(timeline.querySelector(".blora-timeline__row")?.getAttribute("data-layout")).toBe(
+      "block",
+    );
     expect(timeline.querySelector(".blora-thread-comment__card")).not.toBeNull();
   });
 });
