@@ -82,43 +82,43 @@
   margin-bottom: 0;
 }
 
-/* Long content is folded only after the controller has measured it. */
+/* Long content is folded only after the controller has measured it. The
+   content itself progressively fades at the lower edge, matching Sidebar and
+   Time Picker edge fades — no opaque overlay strip or backdrop blur. */
 .blora-thread-comment[data-collapsible][data-collapsed] .blora-thread-comment__body {
   max-height: var(--blora-thread-collapse-height);
   overflow: hidden;
+  mask-image: linear-gradient(
+    to bottom,
+    rgb(0 0 0) 0%,
+    rgb(0 0 0) calc(100% - var(--blora-space-7)),
+    transparent 100%
+  );
 }
 
-/* Generated fold affordance: overlaps the body's lower edge with a soft
-   surface gradient + blur, with a standard button floating on top. */
+/* Generated fold affordance: a compact standard button floats over the faded
+   content edge. The fold container itself is transparent. */
 .blora-thread-comment__fold {
   position: relative;
   z-index: var(--blora-z-base);
   display: grid;
-  place-items: end center;
-  min-height: var(--blora-space-9);
-  margin-top: calc(-1 * var(--blora-space-9));
-  padding: var(--blora-space-7) var(--blora-space-5) var(--blora-space-4);
+  place-items: center;
+  height: var(--blora-space-7);
+  margin-top: calc(-1 * var(--blora-space-7));
+  padding-inline: var(--blora-space-5);
   pointer-events: none;
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    color-mix(in srgb, var(--blora-color-surface-default) 72%, transparent),
-    var(--blora-color-surface-default)
-  );
-  backdrop-filter: blur(var(--blora-space-2));
 }
 
 .blora-thread-comment:not([data-collapsed]) .blora-thread-comment__fold {
-  min-height: auto;
+  height: auto;
   margin-top: 0;
   padding: 0 var(--blora-space-5) var(--blora-space-4);
-  background: transparent;
-  backdrop-filter: none;
 }
 
 .blora-thread-comment__fold .blora-button {
   pointer-events: auto;
 
+  --blora-button-bg: var(--blora-color-surface-default);
   --blora-button-bd: var(--blora-color-border-subtle);
   --blora-button-fg: var(--blora-color-action-primary-default);
 }
@@ -269,10 +269,4 @@
 .blora-thread-composer[data-tab="preview"] .blora-thread-composer__toolbar,
 .blora-thread-composer[data-tab="preview"] .blora-thread-composer__input {
   display: none;
-}
-
-@media (prefers-reduced-transparency: reduce) {
-  .blora-thread-comment__fold {
-    backdrop-filter: none;
-  }
 }
