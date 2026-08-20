@@ -973,4 +973,23 @@ describe("Composite Custom Elements", () => {
     document.body.appendChild(timeline);
     expect(timeline.querySelectorAll(".blora-timeline__item")).toHaveLength(1);
   });
+
+  it("timeline renders icon nodes and arbitrary child content", () => {
+    const timeline = document.createElement("blora-timeline");
+    const item = definition("blora-timeline-item", "", { time: "· 6个月前", icon: "message" });
+    const card = document.createElement("div");
+    card.className = "blora-thread-comment__card";
+    card.textContent = "comment card";
+    item.append(card);
+    timeline.append(item);
+    document.body.appendChild(timeline);
+
+    const dot = timeline.querySelector<HTMLElement>(".blora-timeline__dot--icon");
+    expect(dot).not.toBeNull();
+    expect(dot?.querySelector("svg")).not.toBeNull();
+    expect(dot?.querySelector("svg")?.getAttribute("data-blora-icon")).toBe("message");
+    const content = timeline.querySelector<HTMLElement>(".blora-timeline__content");
+    expect(content?.textContent).toBe("comment card");
+    expect(timeline.querySelector(".blora-thread-comment__card")).not.toBeNull();
+  });
 });

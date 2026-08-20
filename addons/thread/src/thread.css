@@ -241,61 +241,13 @@
 }
 
 /* =========================================================================
-   Comment stream — forum-thread visual language with a connecting rail
-   (like Timeline). Reproduces Bloret BBS comment functionality (side avatar,
-   reactions, long-comment fold, activity events, composer) without copying
-   its card chrome: cards match .blora-post and the vertical rail runs
-   through the stream with every avatar / event node sitting on it.
+   Comment stream — forum-thread comment cards.
+   The connecting rail, comment icon nodes and event rows are provided by the
+   core `blora-timeline` component; this add-on supplies the comment card
+   chrome (matching .blora-post) plus long-comment fold, reactions and the
+   composer. Reproduces Bloret BBS comment functionality without copying its
+   card chrome.
    ========================================================================= */
-
-.blora-thread-comments {
-  --blora-thread-rail: 1.05rem;
-
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: var(--blora-space-6);
-  padding-inline-start: var(--blora-space-8); /* rail lane */
-  margin-top: var(--blora-space-2);
-}
-
-/* Vertical connecting rail (like .blora-timeline::before). */
-.blora-thread-comments::before {
-  content: "";
-  position: absolute;
-  inset-inline-start: var(--blora-thread-rail);
-  top: 0.5rem;
-  bottom: 0.5rem;
-  width: 1px;
-  background: var(--blora-color-border-subtle);
-}
-
-/* -- Comment entry -- */
-
-.blora-thread-comment {
-  position: relative;
-}
-
-/* Comment node on the rail (a comment icon, like event nodes). */
-.blora-thread-comment__node {
-  position: absolute;
-  inset-inline-start: calc(-1 * var(--blora-space-8) + var(--blora-thread-rail) - 0.7rem);
-  top: 0.35em;
-  display: grid;
-  place-items: center;
-  width: 1.4rem;
-  height: 1.4rem;
-  border-radius: 50%;
-  background: var(--blora-color-surface-default);
-  border: 2px solid var(--blora-color-surface-canvas);
-  box-shadow: 0 0 0 1px var(--blora-color-border-subtle);
-  color: var(--blora-color-text-muted);
-}
-
-.blora-thread-comment__node svg {
-  width: 0.85rem;
-  height: 0.85rem;
-}
 
 /* Comment card shares the forum-post card language (.blora-post). */
 .blora-thread-comment__card {
@@ -415,49 +367,6 @@
   border-color: var(--blora-color-action-primary-default);
   color: var(--blora-color-action-primary-default);
   background: var(--blora-color-action-primary-tint);
-}
-
-/* -- Timeline event (like / edit / reply activity between comments) -- */
-
-.blora-thread-event {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: var(--blora-space-2);
-  margin-block: var(--blora-space-1);
-  font-size: var(--blora-text-sm);
-  color: var(--blora-color-text-muted);
-}
-
-/* Event node on the rail, like a timeline dot. */
-.blora-thread-event__icon {
-  position: absolute;
-  inset-inline-start: calc(-1 * var(--blora-space-8) + var(--blora-thread-rail) - 0.7rem);
-  top: 50%;
-  transform: translateY(-50%);
-  display: grid;
-  place-items: center;
-  width: 1.4rem;
-  height: 1.4rem;
-  border-radius: 50%;
-  background: var(--blora-color-surface-default);
-  border: 2px solid var(--blora-color-surface-canvas);
-  box-shadow: 0 0 0 1px var(--blora-color-border-subtle);
-  color: var(--blora-color-text-muted);
-}
-
-.blora-thread-event__icon svg {
-  width: 0.85rem;
-  height: 0.85rem;
-}
-
-.blora-thread-event__text {
-  color: var(--blora-color-text-secondary);
-}
-
-.blora-thread-event__time {
-  font-size: var(--blora-text-xs);
-  color: var(--blora-color-text-subtle);
 }
 
 /* -- Composer (write a comment) -- */
@@ -592,14 +501,5 @@
 @media (max-width: 560px) {
   .blora-post {
     padding: var(--blora-space-3) var(--blora-space-4);
-  }
-
-  .blora-thread-comments {
-    padding-inline-start: var(--blora-space-7);
-  }
-
-  .blora-thread-comment__node,
-  .blora-thread-event__icon {
-    inset-inline-start: calc(-1 * var(--blora-space-7) + var(--blora-thread-rail) - 0.7rem);
   }
 }

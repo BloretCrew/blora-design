@@ -7,12 +7,27 @@
   "since": "2.0.0",
   "requiresJavaScript": true,
   "formAssociated": false,
-  "attributes": {},
+  "attributes": {
+    "icon": {
+      "type": "string",
+      "description": "Optional Lucide icon name on a blora-timeline-item; renders an icon node instead of a plain dot"
+    }
+  },
   "properties": {},
   "methods": {},
   "events": {},
   "slots": {
-    "default": "Declarative <blora-timeline-item time title description variant> definitions; consumed into the official list tree."
+    "default": "Declarative <blora-timeline-item time title description variant icon> definitions; consumed into the official list tree. Items may also carry child content (e.g. a comment card), rendered in .blora-timeline__content."
+  },
+  "classes": {
+    "blora-timeline": "Root rail container.",
+    "blora-timeline__item": "Single timeline item.",
+    "blora-timeline__dot": "Node on the rail (plain dot or icon node).",
+    "blora-timeline__dot--icon": "Icon node variant holding a Lucide icon.",
+    "blora-timeline__time": "Time text.",
+    "blora-timeline__title": "Title text.",
+    "blora-timeline__desc": "Description text.",
+    "blora-timeline__content": "Arbitrary child content block."
   },
   "parts": [],
   "cssProperties": [],
