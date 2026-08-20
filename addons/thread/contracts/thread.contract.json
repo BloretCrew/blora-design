@@ -8,22 +8,10 @@
   "formAssociated": false,
   "attributes": {
     "data-blora-thread": {
-      "description": "Marks a thread root (optional; class .blora-thread is enough for styling)"
+      "description": "Marks a thread root for comment reactions, automatic long-content folding and composer tabs"
     },
-    "data-blora-thread-replies": {
-      "description": "Reply list container that can be collapsed"
-    },
-    "data-blora-thread-body": {
-      "description": "Animated body inside the reply list"
-    },
-    "data-blora-thread-toggle": {
-      "description": "Collapse/expand control for the nearest replies box (use a regular blora-button with data-variant=\"outline\")"
-    },
-    "data-blora-post-react": {
-      "description": "Post reaction toggle (data-active + aria-pressed)"
-    },
-    "data-blora-thread-comment-fold": {
-      "description": "Toggle for a long comment body: collapses the nearest .blora-thread-comment (data-collapsed)"
+    "data-blora-thread-comment": {
+      "description": "Marks a forum comment card; .blora-thread-comment is also accepted"
     },
     "data-blora-thread-react": {
       "description": "Comment reaction toggle (data-active + aria-pressed) inside .blora-thread-comment__react"
@@ -31,45 +19,43 @@
     "data-blora-thread-tab": {
       "description": "Composer tab (data-tab=\"edit\"|\"preview\"); toggles data-active and the composer's data-tab state"
     },
+    "data-collapse-height": {
+      "description": "Per-comment collapsed body height in pixels; defaults to controller option collapseHeight (158)"
+    },
+    "data-collapsible": {
+      "description": "Controller-written when the comment body exceeds the collapsed height"
+    },
     "data-collapsed": {
-      "description": "Collapsed state for a reply list or comment body"
+      "description": "Controller-written long-comment collapsed state"
     },
     "data-active": {
-      "description": "Active state for a reaction button or tab"
+      "description": "Active state for a reaction button or composer tab"
     },
     "data-label-expand": {
-      "description": "Per-button expand label (default 展开评论)"
+      "description": "Per-comment expand label (default 展开评论)"
     },
     "data-label-collapse": {
-      "description": "Per-button collapse label (default 收起评论)"
+      "description": "Per-comment collapse label (default 收起评论)"
     }
   },
   "properties": {},
   "methods": {
     "createThreadController": {
-      "description": "Create a thread controller for the declared data-attribute structure: expand/collapse replies and long comments, post + comment reactions, and composer tabs"
+      "description": "Create a comment-stream controller: auto-detect and fold long comment bodies, toggle reactions, and switch composer tabs"
     }
   },
   "events": {},
   "slots": {},
   "parts": [],
-  "cssProperties": [],
+  "cssProperties": ["--blora-thread-collapse-height"],
   "classes": [
     ".blora-thread",
-    ".blora-post",
-    ".blora-post--reply",
-    ".blora-post__head",
-    ".blora-post__body",
-    ".blora-post__quote",
-    ".blora-post__react",
-    ".blora-post__react-btn",
-    ".blora-post__replies",
-    ".blora-post__replies-body",
     ".blora-thread-comment",
     ".blora-thread-comment__card",
     ".blora-thread-comment__head",
     ".blora-thread-comment__meta",
     ".blora-thread-comment__actions",
+    ".blora-thread-comment__quote",
     ".blora-thread-comment__body",
     ".blora-thread-comment__fold",
     ".blora-thread-comment__react",

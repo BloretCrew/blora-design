@@ -1,70 +1,82 @@
-# Thread / Post · 1.x → 2.0 迁移
+# Thread · 1.x → 2.0 迁移
 
 ## 包
 
-- **2.0**：`@bloret-crew/blora-design-thread`（**不进核心包**）
+- **2.0**：`@bloret-crew/blora-design-thread`（不进核心包）
 - CSS：`@bloret-crew/blora-design-thread/thread.css`
 - API：`createThreadController(root, options?)`
+- 顺序 / 连线 / 节点：核心 `<blora-timeline>`
 
-## 行为对等（v1 `initThread`）
+## 2.0 职责
 
-| v1                                                          | 2.0                                                               |
-| ----------------------------------------------------------- | ----------------------------------------------------------------- |
-| `Blora.init()` / 自动 `initThread`                          | 显式 `createThreadController(root)`                               |
-| 收起/展开 `[data-blora-thread-toggle]`                      | 同；按钮为普通 `blora-button[data-variant="outline"]`             |
-| 默认文案「展开评论 / 收起评论」                             | 同；可用 `options` 或 `data-label-expand` / `data-label-collapse` |
-| `[data-blora-post-react]` 切换 `is-active` + `aria-pressed` | 同（`toggleReact` API）                                           |
-| 无 body 时自动包一层 `.blora-post__replies-body`            | 2.0 不再自动合成，需显式写 `data-blora-thread-body`               |
-| `prefers-reduced-motion`                                    | 同                                                                |
-| `destroy`                                                   | `controller.destroy()`（AbortController）                         |
+Thread 不再提供 1.x 的 `.blora-post*` 主帖 + replies 双层结构。论坛页面用两套正交能力组合：
 
-## 样式 class（2.0 最小壳）
+1. 核心 `blora-timeline`：评论 / 活动事件的顺序、垂直连线、Lucide 图标节点、任意内容承载。
+2. Thread add-on：论坛评论卡片、反应区、长内容自动折叠、编辑 / 预览撰写区。
 
-- **保留**：`.blora-thread`、`.blora-post`、`.blora-post--reply`、`.blora-post__head`、`.blora-post__body`、`.blora-post__quote`、`.blora-post__react` / `__react-btn`、`.blora-post__replies` / `__replies-body`。
-- **已移除**（不再由 add-on 提供样式，需由消费者自写，参考 `comment` 做法）：`.blora-post__identity`、`__who`、`__author-row`、`__author`、`__badge`、`__reply-to`、`__sub`、`__loc`、`__tools`、`__more`、`__title`、`__quote-label`、`__quote-text`、`__collapse`（改用普通 `blora-button`）。用 `avatar` + `tag` + `button` + tokens 自拼头部/引用/工具栏与折叠按钮。
+作者、头像、徽章、时间、回复对象、操作按钮和表情统计均由消费者填写。
 
-Token 映射到 v2 semantic tokens；暗色用 `:root[data-blora-color-scheme="dark"]`（不再依赖 `.blora-dark` 祖先）。
+## 行为变化
 
-## 示例（头部自写，折叠按钮为普通按钮）
+| 1.x                                | 2.0                                                                 |
+| ---------------------------------- | ------------------------------------------------------------------- |
+| `Blora.init()` / 自动 `initThread` | 显式 `createThreadController(root)`                                 |
+| replies 整组展开 / 收起            | 删除；每条长评论根据正文的实际渲染高度独立折叠                      |
+| 手写 `.comment-fold-btn`           | controller 仅在正文超过阈值时自动生成渐变虚化层 + 浮动 Blora Button |
+| 固定折叠高度                       | `options.collapseHeight`（默认 158px）或每条 `data-collapse-height` |
+| 评论反应 class                     | `[data-blora-thread-react]` 切换 `data-active` + `aria-pressed`     |
+| 评论编辑 / 预览                    | `[data-blora-thread-tab][data-tab="edit                             | preview"]` |
+| 销毁                               | `controller.destroy()`；清理监听、观察器、生成按钮和测量状态        |
+
+## 示例
 
 ```html
 <link rel="stylesheet" href="blora.css" />
-<link rel="stylesheet" href="node_modules/@bloret-crew/blora-design-thread/thread.css" />
+<link rel="stylesheet" href="thread.css" />
 
 <div class="blora-thread" data-blora-thread id="thread">
-  <article class="blora-post">
-    <header class="blora-post__head">
-      <!-- 头部完全自写 -->
-      <span class="blora-avatar" data-size="sm">D</span>
-      <a style="font-weight:600">diddy123</a>
-      <span class="blora-tag" data-variant="warning" data-size="sm">何意味</span>
-    </header>
-    <div class="blora-post__body">正文…</div>
-    <div class="blora-post__replies" data-blora-thread-replies>
-      <div data-blora-thread-body>…</div>
-      <button
-        type="button"
-        class="blora-button"
-        data-variant="outline"
-        data-size="sm"
-        style="width:100%"
-        data-blora-thread-toggle
-      >
-        展开评论
-      </button>
-    </div>
-  </article>
+  <blora-timeline>
+    <blora-timeline-item icon="thumbs-up" time="· 6个月前">
+      <b class="blora-text-primary">Detrital</b> 点赞了帖子
+    </blora-timeline-item>
+
+    <blora-timeline-item icon="message" content-layout="block">
+      <div class="blora-thread-comment" data-collapse-height="158">
+        <div class="blora-thread-comment__card">
+          <div class="blora-thread-comment__head">
+            <span class="blora-avatar" data-size="sm">D</span>
+            <div class="blora-thread-comment__meta">
+              <b>Detrital</b>
+              <span class="blora-tag">何意味</span>
+              <span class="blora-text-muted">评论于 6个月前</span>
+            </div>
+            <div class="blora-thread-comment__actions">
+              <button class="blora-button" data-variant="ghost" data-size="xs">回复</button>
+            </div>
+          </div>
+          <div class="blora-thread-comment__quote">## 妈妈</div>
+          <div class="blora-thread-comment__body">
+            <p>评论正文。超过阈值时自动折叠。</p>
+          </div>
+          <div class="blora-thread-comment__react">
+            <button data-blora-thread-react aria-label="添加表情"></button>
+          </div>
+        </div>
+      </div>
+    </blora-timeline-item>
+  </blora-timeline>
 </div>
 
 <script type="module">
   import { createThreadController } from "@bloret-crew/blora-design-thread";
-  const root = document.getElementById("thread");
-  const ctrl = createThreadController(root);
-  // ctrl.destroy() when unmounting
+  const controller = createThreadController(document.getElementById("thread"));
+  // controller.destroy() when unmounting
 </script>
 ```
 
 ## 注意
 
-- Markdown 正文（`data-blora-md`）属于 **Markdown add-on**，不在本包内。
-- Comment 简易样式本包不再提供，核心包 `comment.css` 为独立组件。
+- 必须同时加载核心 Timeline 与 Thread CSS / JS。
+- 短评论不会生成折叠控件。
+- Markdown 正文属于 Markdown add-on，不在本包内。
+- 用户表情（例如 `😂 2`）是内容；UI 图标仍须走 `createBloraIcon()`。

@@ -1033,20 +1033,29 @@ Blora.markdown("**hi**", { inline: true });
 Blora.renderMarkdown("#el", "## 标题\n正文"); // 别名 Blora.md
 ```
 
-**论坛跟帖 Thread**（最小壳；头部/引用工具均自写，见展示页 Thread）
+**论坛评论流 Thread**（核心 Timeline + Thread 评论卡片）
 
 ```html
 <div class="blora-thread" data-blora-thread>
-  <article class="blora-post">
-    <header class="blora-post__head"><!-- 自写：avatar + author + tag + time + ghost buttons --></header>
-    <div class="blora-post__body"><p>正文…</p></div>
-    <div class="blora-post__quote"><span>回复 @someone</span> 被引用摘要…</div>
-    <div class="blora-post__replies" data-blora-thread-replies><div data-blora-thread-body>…嵌套 .blora-post…</div><button data-blora-thread-toggle>展开评论</button></div>
-  </article>
+  <blora-timeline>
+    <blora-timeline-item icon="thumbs-up" time="· 6个月前">
+      <b class="blora-text-primary">Detrital</b> 点赞了帖子
+    </blora-timeline-item>
+    <blora-timeline-item icon="message" content-layout="block">
+      <div class="blora-thread-comment" data-collapse-height="158">
+        <div class="blora-thread-comment__card">
+          <div class="blora-thread-comment__head">…头像 / 作者 / 时间 / 操作…</div>
+          <div class="blora-thread-comment__quote">## 被回复的内容</div>
+          <div class="blora-thread-comment__body">长评论正文…</div>
+          <div class="blora-thread-comment__react">…表情统计与添加按钮…</div>
+        </div>
+      </div>
+    </blora-timeline-item>
+  </blora-timeline>
 </div>
 ```
 
-轻量评论用 `<blora-comment>` 做布局壳，头像、作者、时间、操作都通过 slot 塞入现有组件；也可以直接写 `.blora-comment` 结构。发帖区可用 textarea + Mentions + 工具按钮拼装（见 `guide.md`）。
+Thread 会测量每条评论正文；只有超过阈值的评论默认折叠，并自动生成底部渐变虚化层与浮动展开按钮。短评论没有折叠控件。轻量、非时间线评论仍可使用 `<blora-comment>`。
 
 ```html
 <blora-comment>

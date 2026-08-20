@@ -1,255 +1,17 @@
 /* =========================================================================
-   Blora Design 2.0 - Thread and Post add-on (forum thread)
-   Visual baseline: legacy/v1/blora.css lines 3310-3632 + Bloret BBS post page.
+   Blora Design 2.0 - Thread add-on (forum comment stream)
 
-   The add-on provides structural shells and token-driven layout. Business
-   fields (author names, badges, times, reaction emoji, toolbar buttons) are
-   authored by the consumer with slots / direct markup, like `comment`.
+   The core Timeline owns ordering, connecting rail and event/comment nodes.
+   Thread owns one forum-comment card pattern, long-content folding, reactions
+   and the comment composer. Business text/avatars/badges/actions are authored
+   by the consumer with existing Blora components.
    ========================================================================= */
 
-/* -- Thread root -- */
-
 .blora-thread {
-  display: flex;
-  flex-direction: column;
-  gap: var(--blora-space-4);
   max-width: 48rem;
 }
 
-/* -- Post / reply card shell -- */
-
-.blora-post {
-  position: relative;
-  padding: var(--blora-space-4) var(--blora-space-5);
-  border: 1px solid var(--blora-color-border-subtle);
-  border-radius: var(--blora-radius-lg);
-  background: var(--blora-color-surface-default);
-  box-shadow: var(--blora-shadow-1);
-}
-
-.blora-post + .blora-post {
-  margin-top: var(--blora-space-3);
-}
-
-.blora-post--reply {
-  background: color-mix(
-    in srgb,
-    var(--blora-color-surface-default) 88%,
-    var(--blora-color-surface-raised)
-  );
-  box-shadow: none;
-  border-color: var(--blora-color-border-subtle);
-}
-
-:root[data-blora-color-scheme="dark"] .blora-post--reply,
-.blora-scope[data-blora-color-scheme="dark"] .blora-post--reply {
-  background: color-mix(
-    in srgb,
-    var(--blora-color-surface-default) 70%,
-    var(--blora-color-surface-raised)
-  );
-}
-
-/* Minimal header container — consumers compose identity/tools inside */
-.blora-post__head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  gap: var(--blora-space-3);
-  margin-bottom: var(--blora-space-4);
-}
-
-/* -- Post body (generic content) -- */
-
-.blora-post__body {
-  font-size: var(--blora-text-sm);
-  color: var(--blora-color-text-emphasis);
-  line-height: 1.7;
-  overflow-wrap: anywhere;
-}
-
-.blora-post__body p {
-  margin: 0 0 0.75em;
-}
-
-.blora-post__body p:last-child {
-  margin-bottom: 0;
-}
-
-.blora-post__body strong {
-  color: var(--blora-color-text-primary);
-  font-weight: 600;
-}
-
-.blora-post__body ul,
-.blora-post__body ol {
-  margin: 0.4em 0 0.75em;
-  padding-inline-start: 1.35em;
-}
-
-.blora-post__body ul {
-  list-style: disc;
-}
-
-.blora-post__body ol {
-  list-style: decimal;
-}
-
-.blora-post__body li {
-  margin: 0.2em 0;
-}
-
-/* -- Quote shell (left accent only; label/text authored by consumer) -- */
-
-.blora-post__quote {
-  position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.35em 0.65em;
-  margin: 0 0 var(--blora-space-3);
-  padding: 0.15em 0 0.15em 0.9em;
-  background: transparent;
-  font-size: var(--blora-text-sm);
-  color: var(--blora-color-text-muted);
-}
-
-.blora-post__quote::before {
-  content: "";
-  position: absolute;
-  inset-inline-start: 0;
-  top: 0.15em;
-  bottom: 0.15em;
-  width: 3px;
-  border-radius: var(--blora-radius-full);
-  background: var(--blora-color-action-primary-default);
-}
-
-/* -- Post reactions (icon button toggled via [data-blora-post-react]) -- */
-
-.blora-post__react {
-  margin-top: var(--blora-space-4);
-}
-
-.blora-post__react-btn svg {
-  display: block;
-  width: 1.05rem;
-  height: 1.05rem;
-}
-
-.blora-post__react-btn {
-  display: inline-grid;
-  place-items: center;
-  box-sizing: border-box;
-  width: 2.1rem;
-  height: 2.1rem;
-  min-width: 2.1rem;
-  min-height: 2.1rem;
-  padding: 0;
-  border: 1px solid var(--blora-color-border-subtle);
-  border-radius: 50%;
-  background: var(--blora-color-surface-default);
-  color: var(--blora-color-text-muted);
-  cursor: pointer;
-  font-family: var(--blora-font-sans);
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1;
-  transition:
-    border-color var(--blora-duration-fast) var(--blora-easing-standard),
-    color var(--blora-duration-fast) var(--blora-easing-standard),
-    background var(--blora-duration-fast) var(--blora-easing-standard),
-    transform var(--blora-duration-fast) var(--blora-easing-standard);
-}
-
-.blora-post__react-btn:hover {
-  border-color: var(--blora-color-action-primary-default);
-  color: var(--blora-color-action-primary-default);
-  background: var(--blora-color-action-primary-tint);
-  transform: scale(1.06);
-}
-
-.blora-post__react-btn[data-active] {
-  border-color: var(--blora-color-action-primary-default);
-  background: var(--blora-color-action-primary-tint);
-  color: var(--blora-color-action-primary-default);
-}
-
-/* -- Post replies (collapsible) -- */
-
-.blora-post__replies {
-  margin-top: var(--blora-space-4);
-  padding-top: var(--blora-space-3);
-  border-top: 1px solid var(--blora-color-border-subtle);
-}
-
-.blora-post__replies-body {
-  display: grid;
-  gap: var(--blora-space-3);
-  overflow: hidden;
-  opacity: 1;
-  transform: translateY(0);
-  max-height: none;
-  transition:
-    max-height var(--blora-duration-base) var(--blora-easing-standard),
-    opacity var(--blora-duration-base) var(--blora-easing-standard),
-    transform var(--blora-duration-base) var(--blora-easing-standard),
-    margin var(--blora-duration-base) var(--blora-easing-standard);
-}
-
-.blora-post__replies[data-collapsed] .blora-post__replies-body {
-  max-height: 0 !important;
-  opacity: 0;
-  transform: translateY(-0.35em);
-  margin-bottom: 0;
-  pointer-events: none;
-}
-
-/* Collapse toggle is a regular blora-button in markup (outline); only
-   layout and collapsed-state spacing live here so it inherits the
-   button's corner-shape, focus ring, and hover exactly.
-   Thread outline matches the post card border (subtle) with primary text. */
-.blora-post__replies [data-blora-thread-toggle].blora-button {
-  width: 100%;
-  margin-top: var(--blora-space-3);
-  margin-bottom: 0;
-}
-
-.blora-post__replies [data-blora-thread-toggle].blora-button[data-variant="outline"] {
-  --blora-button-bd: var(--blora-color-border-subtle);
-  --blora-button-fg: var(--blora-color-action-primary-default);
-
-  color: var(--blora-color-action-primary-default);
-}
-
-.blora-post__replies [data-blora-thread-toggle].blora-button[data-variant="outline"]:hover {
-  --blora-button-bg: var(--blora-color-action-primary-tint);
-  --blora-button-bd: color-mix(
-    in srgb,
-    var(--blora-color-action-primary-default) 35%,
-    var(--blora-color-border-subtle)
-  );
-}
-
-.blora-post__replies[data-collapsed] [data-blora-thread-toggle].blora-button {
-  margin-top: 0;
-}
-
-.blora-post--reply .blora-post__replies {
-  margin-top: var(--blora-space-4);
-  padding-top: var(--blora-space-3);
-}
-
-/* =========================================================================
-   Comment stream — forum-thread comment cards.
-   The connecting rail, comment icon nodes and event rows are provided by the
-   core `blora-timeline` component; this add-on supplies the comment card
-   chrome (matching .blora-post) plus long-comment fold, reactions and the
-   composer. Reproduces Bloret BBS comment functionality without copying its
-   card chrome.
-   ========================================================================= */
-
-/* Comment card shares the forum-post card language (.blora-post). */
+/* Comment card follows the former forum-reply visual language. */
 .blora-thread-comment__card {
   border: 1px solid var(--blora-color-border-subtle);
   border-radius: var(--blora-radius-lg);
@@ -258,8 +20,6 @@
   overflow: hidden;
 }
 
-/* Head mirrors .blora-post__head: avatar sits inside the card, followed by
-   identity/meta and actions. */
 .blora-thread-comment__head {
   display: flex;
   flex-wrap: wrap;
@@ -286,7 +46,27 @@
   flex-shrink: 0;
 }
 
+.blora-thread-comment__quote {
+  position: relative;
+  margin: var(--blora-space-4) var(--blora-space-5) 0;
+  padding-inline-start: var(--blora-space-3);
+  color: var(--blora-color-text-muted);
+  font-size: var(--blora-text-sm);
+}
+
+.blora-thread-comment__quote::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  border-radius: var(--blora-radius-full);
+  background: var(--blora-color-action-primary-default);
+}
+
 .blora-thread-comment__body {
+  position: relative;
   padding: var(--blora-space-2) var(--blora-space-5) var(--blora-space-4);
   font-size: var(--blora-text-sm);
   color: var(--blora-color-text-emphasis);
@@ -302,39 +82,50 @@
   margin-bottom: 0;
 }
 
-/* Long-comment fold: full-width strip button under the body. */
-.blora-thread-comment__fold {
-  display: block;
-  width: 100%;
-  border: 0;
-  border-top: 1px solid var(--blora-color-border-subtle);
-  border-radius: 0;
-  background: transparent;
-  color: var(--blora-color-action-primary-default);
-  font-family: var(--blora-font-sans);
-  font-size: var(--blora-text-sm);
-  font-weight: 500;
-  line-height: 1.4;
-  padding: 0.5em 1em;
-  cursor: pointer;
-  text-align: center;
-  transition:
-    background var(--blora-duration-fast) var(--blora-easing-standard),
-    color var(--blora-duration-fast) var(--blora-easing-standard);
-}
-
-.blora-thread-comment__fold:hover {
-  background: var(--blora-color-action-primary-tint);
-}
-
-.blora-thread-comment[data-collapsed] .blora-thread-comment__body {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
+/* Long content is folded only after the controller has measured it. */
+.blora-thread-comment[data-collapsible][data-collapsed] .blora-thread-comment__body {
+  max-height: var(--blora-thread-collapse-height);
   overflow: hidden;
 }
 
-/* -- Comment reactions (emoji tallies + add button) -- */
+/* Generated fold affordance: overlaps the body's lower edge with a soft
+   surface gradient + blur, with a standard button floating on top. */
+.blora-thread-comment__fold {
+  position: relative;
+  z-index: var(--blora-z-base);
+  display: grid;
+  place-items: end center;
+  min-height: var(--blora-space-9);
+  margin-top: calc(-1 * var(--blora-space-9));
+  padding: var(--blora-space-7) var(--blora-space-5) var(--blora-space-4);
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    color-mix(in srgb, var(--blora-color-surface-default) 72%, transparent),
+    var(--blora-color-surface-default)
+  );
+  backdrop-filter: blur(var(--blora-space-2));
+}
+
+.blora-thread-comment:not([data-collapsed]) .blora-thread-comment__fold {
+  min-height: auto;
+  margin-top: 0;
+  padding: 0 var(--blora-space-5) var(--blora-space-4);
+  background: transparent;
+  backdrop-filter: none;
+}
+
+.blora-thread-comment__fold .blora-button {
+  pointer-events: auto;
+
+  --blora-button-bd: var(--blora-color-border-subtle);
+  --blora-button-fg: var(--blora-color-action-primary-default);
+}
+
+.blora-thread-comment__fold .blora-button:hover {
+  --blora-button-bg: var(--blora-color-action-primary-tint);
+}
 
 .blora-thread-comment__react {
   display: flex;
@@ -369,7 +160,7 @@
   background: var(--blora-color-action-primary-tint);
 }
 
-/* -- Composer (write a comment) -- */
+/* -- Composer -- */
 
 .blora-thread-composer {
   margin-top: var(--blora-space-5);
@@ -480,26 +271,8 @@
   display: none;
 }
 
-/* -- Reduced motion -- */
-
-@media (prefers-reduced-motion: reduce) {
-  .blora-post__replies-body {
-    transition: none;
-  }
-
-  .blora-post__react-btn {
-    transition: none;
-  }
-
-  .blora-post__react-btn:hover {
-    transform: none;
-  }
-}
-
-/* -- Responsive -- */
-
-@media (max-width: 560px) {
-  .blora-post {
-    padding: var(--blora-space-3) var(--blora-space-4);
+@media (prefers-reduced-transparency: reduce) {
+  .blora-thread-comment__fold {
+    backdrop-filter: none;
   }
 }
