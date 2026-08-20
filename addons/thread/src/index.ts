@@ -1,9 +1,9 @@
 /**
- * Blora Design 2.0 - Thread and Post add-on.
+ * Blora Design 2.0 - Thread and Post add-on (forum thread).
  * Spec §9: Add-on package, not bundled into core.
  * Spec §17.5: Controller must have destroy().
  * Visual baseline: archived 1.x blora.js initThread (≈5684-5752)
- *                  + archived showcase-v1.html 论坛跟帖 demo.
+ *                  + Bloret BBS post page comment stream.
  * @packageDocumentation
  */
 
@@ -27,8 +27,12 @@ export interface ThreadController {
   expand(replyBox: HTMLElement): void;
   /** Collapse a reply box */
   collapse(replyBox: HTMLElement): void;
-  /** Toggle a post reaction button (`data-blora-post-react`) */
+  /** Toggle a reaction button (`data-blora-post-react` / `data-blora-thread-react`) */
   toggleReact(btn: HTMLElement): void;
+  /** Toggle a long comment body between expanded and collapsed */
+  toggleCommentFold(commentCard: HTMLElement): void;
+  /** Switch the composer between its tabs (edit / preview) */
+  setComposerTab(composer: HTMLElement, tab: string): void;
   /** Destroy the controller, removing all event listeners */
   destroy(): void;
 }
@@ -75,8 +79,9 @@ function setToggleState(
 }
 
 /**
- * Create a thread controller for expand/collapse of reply sections and post reactions.
- * Requires the current data-attribute structure declared by the Thread contract.
+ * Create a thread controller for the declared data-attribute structure:
+ * expand/collapse of reply sections and long comments, post + comment
+ * reactions, and composer tabs.
  *
  * @param root - Thread container marked with `[data-blora-thread]` or any ancestor
  * @param options - Default labels
@@ -91,6 +96,8 @@ export function createThreadController(
       expand: () => {},
       collapse: () => {},
       toggleReact: () => {},
+      toggleCommentFold: () => {},
+      setComposerTab: () => {},
       destroy: () => {},
     };
   }
@@ -173,7 +180,7 @@ export function createThreadController(
     }
   }
 
-  /* —— toggle buttons —— */
+  /* —— reply toggle buttons —— */
   const toggleButtons = root.querySelectorAll<HTMLElement>("[data-blora-thread-toggle]");
 
   toggleButtons.forEach((btn) => {
@@ -191,8 +198,30 @@ export function createThreadController(
     );
   });
 
-  /* —— post react —— */
-  const reactButtons = root.querySelectorAll<HTMLElement>("[data-blora-post-react]");
+  /* —— long-comment fold —— */
+  function doToggleCommentFold(comment: HTMLElement): void {
+    comment.toggleAttribute("data-collapsed");
+  }
+
+  const commentFoldButtons = root.querySelectorAll<HTMLElement>("[data-blora-thread-comment-fold]");
+  commentFoldButtons.forEach((btn) => {
+    btn.addEventListener(
+      "click",
+      () => {
+        const comment =
+          btn.closest<HTMLElement>(".blora-thread-comment") ??
+          btn.closest<HTMLElement>("[data-blora-thread-comment]");
+        if (!comment) return;
+        doToggleCommentFold(comment);
+      },
+      { signal },
+    );
+  });
+
+  /* —— post + comment reactions —— */
+  const reactButtons = root.querySelectorAll<HTMLElement>(
+    "[data-blora-post-react], [data-blora-thread-react]",
+  );
   reactButtons.forEach((btn) => {
     btn.addEventListener(
       "click",
@@ -203,11 +232,36 @@ export function createThreadController(
     );
   });
 
+  /* —— composer tabs —— */
+  function doSetComposerTab(composer: HTMLElement, tab: string): void {
+    composer.setAttribute("data-tab", tab);
+    for (const t of composer.querySelectorAll<HTMLElement>("[data-blora-thread-tab]")) {
+      t.toggleAttribute("data-active", t.getAttribute("data-tab") === tab);
+      t.setAttribute("aria-selected", String(t.getAttribute("data-tab") === tab));
+    }
+  }
+
+  const composerTabs = root.querySelectorAll<HTMLElement>("[data-blora-thread-tab]");
+  composerTabs.forEach((tab) => {
+    tab.addEventListener(
+      "click",
+      () => {
+        const composer = tab.closest<HTMLElement>(".blora-thread-composer");
+        const name = tab.getAttribute("data-tab") || "edit";
+        if (!composer) return;
+        doSetComposerTab(composer, name);
+      },
+      { signal },
+    );
+  });
+
   return {
     toggle: doToggle,
     expand: doExpand,
     collapse: doCollapse,
     toggleReact: doToggleReact,
+    toggleCommentFold: doToggleCommentFold,
+    setComposerTab: doSetComposerTab,
     destroy: () => {
       abortController.abort();
     },

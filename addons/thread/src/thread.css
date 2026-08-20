@@ -1,19 +1,22 @@
 /* =========================================================================
-   Blora Design 2.0 - Thread and Post add-on (minimal shell)
-   Visual baseline: legacy/v1/blora.css lines 3310-3632 — slimmed to forum
-   shell only. Business fields (loc, author, badge, reply-to, tools, title)
-   are authored by the consumer with tokens and existing components, like
-   `comment` (slots), not baked into this add-on.
+   Blora Design 2.0 - Thread and Post add-on (forum thread)
+   Visual baseline: legacy/v1/blora.css lines 3310-3632 + Bloret BBS post page.
+
+   The add-on provides structural shells and token-driven layout. Business
+   fields (author names, badges, times, reaction emoji, toolbar buttons) are
+   authored by the consumer with slots / direct markup, like `comment`.
    ========================================================================= */
 
-/* -- Thread / Post shell -- */
+/* -- Thread root -- */
 
 .blora-thread {
   display: flex;
   flex-direction: column;
-  gap: var(--blora-space-3);
+  gap: var(--blora-space-4);
   max-width: 48rem;
 }
+
+/* -- Post / reply card shell -- */
 
 .blora-post {
   position: relative;
@@ -237,6 +240,304 @@
   padding-top: var(--blora-space-3);
 }
 
+/* =========================================================================
+   Comment stream (Bloret BBS post page anatomy)
+   Comments and timeline events alternate inside .blora-thread-comments.
+   ========================================================================= */
+
+.blora-thread-comments {
+  display: flex;
+  flex-direction: column;
+  gap: var(--blora-space-4);
+  padding-inline-start: var(--blora-space-8); /* room for the side avatar */
+  margin-top: var(--blora-space-2);
+}
+
+/* -- Comment entry -- */
+
+.blora-thread-comment {
+  position: relative;
+}
+
+/* Side avatar, pinned to the card's left, outside it (like BBS). */
+.blora-thread-comment [data-blora-thread-avatar] {
+  position: absolute;
+  inset-inline-start: calc(-1 * var(--blora-space-8));
+  top: 0;
+  z-index: var(--blora-z-base);
+}
+
+.blora-thread-comment__card {
+  border: 1px solid var(--blora-color-border-subtle);
+  border-radius: var(--blora-radius-md);
+  background: var(--blora-color-surface-default);
+  overflow: hidden;
+}
+
+.blora-thread-comment__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--blora-space-3);
+  padding: var(--blora-space-2) var(--blora-space-3);
+  background: var(--blora-color-surface-sunken);
+  border-bottom: 1px solid var(--blora-color-border-subtle);
+  font-size: var(--blora-text-sm);
+}
+
+.blora-thread-comment__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--blora-space-2);
+  min-width: 0;
+  flex: 1;
+}
+
+.blora-thread-comment__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--blora-space-2);
+  flex-shrink: 0;
+}
+
+.blora-thread-comment__body {
+  padding: var(--blora-space-3);
+  font-size: var(--blora-text-sm);
+  color: var(--blora-color-text-emphasis);
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.blora-thread-comment__body p {
+  margin: 0 0 0.75em;
+}
+
+.blora-thread-comment__body p:last-child {
+  margin-bottom: 0;
+}
+
+/* Long-comment fold: full-width strip button under the body. */
+.blora-thread-comment__fold {
+  display: block;
+  width: 100%;
+  border: 0;
+  border-top: 1px solid var(--blora-color-border-subtle);
+  border-radius: 0;
+  background: transparent;
+  color: var(--blora-color-action-primary-default);
+  font-family: var(--blora-font-sans);
+  font-size: var(--blora-text-sm);
+  font-weight: 500;
+  line-height: 1.4;
+  padding: 0.5em 1em;
+  cursor: pointer;
+  text-align: center;
+  transition:
+    background var(--blora-duration-fast) var(--blora-easing-standard),
+    color var(--blora-duration-fast) var(--blora-easing-standard);
+}
+
+.blora-thread-comment__fold:hover {
+  background: var(--blora-color-action-primary-tint);
+}
+
+.blora-thread-comment[data-collapsed] .blora-thread-comment__body {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+/* -- Comment reactions (emoji tallies + add button) -- */
+
+.blora-thread-comment__react {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--blora-space-2);
+  padding: 0 var(--blora-space-3) var(--blora-space-3);
+}
+
+.blora-thread-comment__react [data-blora-thread-react] {
+  display: inline-grid;
+  place-items: center;
+  box-sizing: border-box;
+  width: 1.9rem;
+  height: 1.9rem;
+  padding: 0;
+  border: 1px dashed var(--blora-color-border-subtle);
+  border-radius: var(--blora-radius-full);
+  background: transparent;
+  color: var(--blora-color-text-muted);
+  cursor: pointer;
+  transition:
+    border-color var(--blora-duration-fast) var(--blora-easing-standard),
+    color var(--blora-duration-fast) var(--blora-easing-standard),
+    background var(--blora-duration-fast) var(--blora-easing-standard);
+}
+
+.blora-thread-comment__react [data-blora-thread-react]:hover,
+.blora-thread-comment__react [data-blora-thread-react][data-active] {
+  border-color: var(--blora-color-action-primary-default);
+  color: var(--blora-color-action-primary-default);
+  background: var(--blora-color-action-primary-tint);
+}
+
+/* -- Timeline event (like / edit / reply activity between comments) -- */
+
+.blora-thread-event {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--blora-space-2);
+  margin-block: var(--blora-space-1);
+  font-size: var(--blora-text-sm);
+  color: var(--blora-color-text-muted);
+}
+
+.blora-thread-event__icon {
+  position: absolute;
+  inset-inline-start: calc(-1 * var(--blora-space-8));
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: var(--blora-space-6);
+  height: var(--blora-space-6);
+  border-radius: 50%;
+  background: var(--blora-color-surface-default);
+  border: 2px solid var(--blora-color-surface-sunken);
+  color: var(--blora-color-text-muted);
+}
+
+.blora-thread-event__icon svg {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+.blora-thread-event__text {
+  color: var(--blora-color-text-secondary);
+}
+
+.blora-thread-event__time {
+  font-size: var(--blora-text-xs);
+  color: var(--blora-color-text-subtle);
+}
+
+/* -- Composer (write a comment) -- */
+
+.blora-thread-composer {
+  margin-top: var(--blora-space-5);
+}
+
+.blora-thread-composer__tabs {
+  display: flex;
+  gap: var(--blora-space-2);
+  margin-bottom: var(--blora-space-2);
+}
+
+.blora-thread-composer__tabs [data-blora-thread-tab] {
+  border: 0;
+  background: transparent;
+  color: var(--blora-color-text-muted);
+  font-family: var(--blora-font-sans);
+  font-size: var(--blora-text-sm);
+  font-weight: 500;
+  padding: 0.4em 0.8em;
+  border-radius: var(--blora-radius-sm);
+  cursor: pointer;
+  transition:
+    background var(--blora-duration-fast) var(--blora-easing-standard),
+    color var(--blora-duration-fast) var(--blora-easing-standard);
+}
+
+.blora-thread-composer__tabs [data-blora-thread-tab]:hover {
+  background: var(--blora-color-surface-raised);
+}
+
+.blora-thread-composer__tabs [data-blora-thread-tab][data-active] {
+  background: var(--blora-color-surface-sunken);
+  color: var(--blora-color-text-primary);
+  font-weight: 600;
+}
+
+.blora-thread-composer__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--blora-space-1);
+  padding: var(--blora-space-1);
+  border: 1px solid var(--blora-color-border-subtle);
+  border-bottom: 0;
+  border-radius: var(--blora-radius-md) var(--blora-radius-md) 0 0;
+  background: var(--blora-color-surface-sunken);
+}
+
+.blora-thread-composer__toolbar :is(button, a) {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.9rem;
+  height: 1.9rem;
+  padding: 0 var(--blora-space-1);
+  border: 1px solid transparent;
+  border-radius: var(--blora-radius-sm);
+  background: transparent;
+  color: var(--blora-color-text-secondary);
+  font-family: var(--blora-font-sans);
+  font-size: var(--blora-text-sm);
+  cursor: pointer;
+  transition:
+    background var(--blora-duration-fast) var(--blora-easing-standard),
+    border-color var(--blora-duration-fast) var(--blora-easing-standard);
+}
+
+.blora-thread-composer__toolbar :is(button, a):hover {
+  background: var(--blora-color-surface-default);
+  border-color: var(--blora-color-border-subtle);
+}
+
+.blora-thread-composer__toolbar svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.blora-thread-composer__input {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 6.5rem;
+  resize: vertical;
+  padding: var(--blora-space-3);
+  border: 1px solid var(--blora-color-border-subtle);
+  border-radius: 0 0 var(--blora-radius-md) var(--blora-radius-md);
+  background: var(--blora-color-surface-default);
+  color: var(--blora-color-text-secondary);
+  font-family: var(--blora-font-sans);
+  font-size: var(--blora-text-sm);
+  line-height: 1.6;
+}
+
+.blora-thread-composer__input:focus {
+  outline: none;
+  border-color: var(--blora-color-action-primary-default);
+  box-shadow: var(--blora-focus-ring-default);
+}
+
+.blora-thread-composer__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--blora-space-3);
+  margin-top: var(--blora-space-3);
+}
+
+.blora-thread-composer[data-tab="preview"] .blora-thread-composer__toolbar,
+.blora-thread-composer[data-tab="preview"] .blora-thread-composer__input {
+  display: none;
+}
+
 /* -- Reduced motion -- */
 
 @media (prefers-reduced-motion: reduce) {
@@ -258,5 +559,14 @@
 @media (max-width: 560px) {
   .blora-post {
     padding: var(--blora-space-3) var(--blora-space-4);
+  }
+
+  .blora-thread-comments {
+    padding-inline-start: var(--blora-space-6);
+  }
+
+  .blora-thread-comment [data-blora-thread-avatar],
+  .blora-thread-event__icon {
+    inset-inline-start: calc(-1 * var(--blora-space-6));
   }
 }

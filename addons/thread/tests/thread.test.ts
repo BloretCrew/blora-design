@@ -188,4 +188,95 @@ describe("Thread add-on", () => {
     expect(btnB.textContent).toBe("收起B");
     controller.destroy();
   });
+
+  describe("comment stream", () => {
+    let comment: HTMLElement;
+    let foldBtn: HTMLElement;
+    let reactBtn: HTMLElement;
+
+    beforeEach(() => {
+      document.body.innerHTML = "";
+      root = document.createElement("div");
+      root.className = "blora-thread";
+      root.setAttribute("data-blora-thread", "");
+      root.innerHTML = `
+        <div class="blora-thread-comments">
+          <div class="blora-thread-comment">
+            <div class="blora-thread-comment__card">
+              <div class="blora-thread-comment__body">Long comment body</div>
+              <button type="button" class="blora-thread-comment__fold" data-blora-thread-comment-fold>展开</button>
+              <div class="blora-thread-comment__react">
+                <button type="button" data-blora-thread-react aria-label="添加表情">＋</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(root);
+      comment = root.querySelector(".blora-thread-comment")!;
+      foldBtn = root.querySelector("[data-blora-thread-comment-fold]")!;
+      reactBtn = root.querySelector("[data-blora-thread-react]")!;
+    });
+
+    it("toggles a long comment body with data-collapsed", () => {
+      const controller = createThreadController(root);
+      expect(comment.hasAttribute("data-collapsed")).toBe(false);
+      foldBtn.click();
+      expect(comment.hasAttribute("data-collapsed")).toBe(true);
+      foldBtn.click();
+      expect(comment.hasAttribute("data-collapsed")).toBe(false);
+      controller.destroy();
+    });
+
+    it("exposes toggleCommentFold API matching the fold button", () => {
+      const controller = createThreadController(root);
+      controller.toggleCommentFold(comment);
+      expect(comment.hasAttribute("data-collapsed")).toBe(true);
+      controller.toggleCommentFold(comment);
+      expect(comment.hasAttribute("data-collapsed")).toBe(false);
+      controller.destroy();
+    });
+
+    it("toggles a comment reaction with data-active and aria-pressed", () => {
+      const controller = createThreadController(root);
+      reactBtn.click();
+      expect(reactBtn.hasAttribute("data-active")).toBe(true);
+      expect(reactBtn.getAttribute("aria-pressed")).toBe("true");
+      reactBtn.click();
+      expect(reactBtn.hasAttribute("data-active")).toBe(false);
+      controller.destroy();
+    });
+  });
+
+  describe("composer tabs", () => {
+    it("switches tabs and sets data-active / aria-selected", () => {
+      document.body.innerHTML = "";
+      root = document.createElement("div");
+      root.className = "blora-thread";
+      root.setAttribute("data-blora-thread", "");
+      root.innerHTML = `
+        <div class="blora-thread-composer">
+          <div class="blora-thread-composer__tabs">
+            <button type="button" data-blora-thread-tab data-tab="edit" data-active>编辑</button>
+            <button type="button" data-blora-thread-tab data-tab="preview">预览</button>
+          </div>
+          <div class="blora-thread-composer__input"></div>
+        </div>
+      `;
+      document.body.appendChild(root);
+      const composer = root.querySelector(".blora-thread-composer")!;
+      const editTab = root.querySelector('[data-blora-thread-tab][data-tab="edit"]')!;
+      const previewTab = root.querySelector('[data-blora-thread-tab][data-tab="preview"]')!;
+      const controller = createThreadController(root);
+      previewTab.click();
+      expect(composer.getAttribute("data-tab")).toBe("preview");
+      expect(editTab.hasAttribute("data-active")).toBe(false);
+      expect(previewTab.hasAttribute("data-active")).toBe(true);
+      expect(previewTab.getAttribute("aria-selected")).toBe("true");
+      editTab.click();
+      expect(composer.getAttribute("data-tab")).toBe("edit");
+      expect(editTab.hasAttribute("data-active")).toBe(true);
+      controller.destroy();
+    });
+  });
 });

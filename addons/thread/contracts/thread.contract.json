@@ -22,11 +22,20 @@
     "data-blora-post-react": {
       "description": "Post reaction toggle (data-active + aria-pressed)"
     },
+    "data-blora-thread-comment-fold": {
+      "description": "Toggle for a long comment body: collapses the nearest .blora-thread-comment (data-collapsed)"
+    },
+    "data-blora-thread-react": {
+      "description": "Comment reaction toggle (data-active + aria-pressed) inside .blora-thread-comment__react"
+    },
+    "data-blora-thread-tab": {
+      "description": "Composer tab (data-tab=\"edit\"|\"preview\"); toggles data-active and the composer's data-tab state"
+    },
     "data-collapsed": {
-      "description": "Collapsed state for a reply list"
+      "description": "Collapsed state for a reply list or comment body"
     },
     "data-active": {
-      "description": "Active state for a reaction button"
+      "description": "Active state for a reaction button or tab"
     },
     "data-label-expand": {
       "description": "Per-button expand label (default 展开评论)"
@@ -38,7 +47,7 @@
   "properties": {},
   "methods": {
     "createThreadController": {
-      "description": "Create a thread controller for the declared data-attribute structure: expand/collapse replies and post reactions"
+      "description": "Create a thread controller for the declared data-attribute structure: expand/collapse replies and long comments, post + comment reactions, and composer tabs"
     }
   },
   "events": {},
@@ -55,7 +64,25 @@
     ".blora-post__react",
     ".blora-post__react-btn",
     ".blora-post__replies",
-    ".blora-post__replies-body"
+    ".blora-post__replies-body",
+    ".blora-thread-comments",
+    ".blora-thread-comment",
+    ".blora-thread-comment__card",
+    ".blora-thread-comment__head",
+    ".blora-thread-comment__meta",
+    ".blora-thread-comment__actions",
+    ".blora-thread-comment__body",
+    ".blora-thread-comment__fold",
+    ".blora-thread-comment__react",
+    ".blora-thread-event",
+    ".blora-thread-event__icon",
+    ".blora-thread-event__text",
+    ".blora-thread-event__time",
+    ".blora-thread-composer",
+    ".blora-thread-composer__tabs",
+    ".blora-thread-composer__toolbar",
+    ".blora-thread-composer__input",
+    ".blora-thread-composer__footer"
   ],
   "accessibilityPattern": "list",
   "migrationFromV1": "thread.migration.md"
