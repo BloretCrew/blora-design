@@ -86,7 +86,7 @@ function parseSvg(name, file) {
   while ((m = re.exec(src))) {
     const tag = m[1];
     const attrs = {};
-    for (const attr of m[2].matchAll(/([a-zA-Z-]+)="([^"]*)"/g)) {
+    for (const attr of m[2].matchAll(/([a-zA-Z][a-zA-Z0-9-]*)="([^"]*)"/g)) {
       attrs[attr[1]] = attr[2];
     }
     // Keep only presentation-relevant attributes.

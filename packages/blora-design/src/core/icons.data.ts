@@ -52,8 +52,8 @@ export const BLORA_ICON_DATA: Record<string, BloraIconNode[]> = {
   "chevron-right": [{ tag: "path", attrs: { d: "m9 18 6-6-6-6" } }],
   "circle-alert": [
     { tag: "circle", attrs: { cx: "12", cy: "12", r: "10" } },
-    { tag: "line", attrs: {} },
-    { tag: "line", attrs: {} },
+    { tag: "line", attrs: { x1: "12", y1: "8", x2: "12", y2: "12" } },
+    { tag: "line", attrs: { x1: "12", y1: "16", x2: "12.01", y2: "16" } },
   ],
   "circle-check": [
     { tag: "circle", attrs: { cx: "12", cy: "12", r: "10" } },

@@ -19,9 +19,6 @@
     "data-blora-thread-tab": {
       "description": "Composer tab (data-tab=\"edit\"|\"preview\"); toggles data-active and the composer's data-tab state"
     },
-    "data-blora-thread-command": {
-      "description": "Composer Markdown command: bold, italic, code, link, quote or mention; applies to the nearest .blora-thread-composer__input selection"
-    },
     "data-collapse-height": {
       "description": "Per-comment collapsed body height in pixels; defaults to controller option collapseHeight (158)"
     },
