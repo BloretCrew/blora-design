@@ -3,7 +3,7 @@
  *
  * Business fields remain consumer-authored. The controller owns only:
  * - automatic long-comment folding by rendered height;
- * - the gradient/blur fold affordance and floating button;
+ * - the mask-based fold affordance and floating button;
  * - comment reaction state;
  * - composer edit / preview tabs.
  * @packageDocumentation
@@ -149,6 +149,7 @@ export function createThreadController(
     if (fullHeight <= collapseHeight + 1) {
       comment.removeAttribute("data-collapsible");
       comment.removeAttribute("data-collapsed");
+      body.style.removeProperty("--blora-thread-content-height");
       states.get(comment)?.fold.remove();
       states.delete(comment);
       return;
@@ -156,6 +157,7 @@ export function createThreadController(
 
     comment.setAttribute("data-collapsible", "");
     body.style.setProperty("--blora-thread-collapse-height", `${collapseHeight}px`);
+    body.style.setProperty("--blora-thread-content-height", `${fullHeight}px`);
     const state = ensureFold(comment, body);
     if (wasCollapsed || !initialized.has(comment)) {
       comment.setAttribute("data-collapsed", "");
@@ -254,6 +256,7 @@ export function createThreadController(
       for (const [comment, state] of states) {
         state.fold.remove();
         state.body.style.removeProperty("--blora-thread-collapse-height");
+        state.body.style.removeProperty("--blora-thread-content-height");
         comment.removeAttribute("data-collapsible");
         comment.removeAttribute("data-collapsed");
       }

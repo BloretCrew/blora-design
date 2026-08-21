@@ -70,6 +70,7 @@ describe("Thread add-on", () => {
     expect(longComment.hasAttribute("data-collapsible")).toBe(true);
     expect(longComment.hasAttribute("data-collapsed")).toBe(true);
     expect(longBody.style.getPropertyValue("--blora-thread-collapse-height")).toBe("158px");
+    expect(longBody.style.getPropertyValue("--blora-thread-content-height")).toBe("320px");
     const fold = longComment.querySelector<HTMLElement>(".blora-thread-comment__fold")!;
     expect(fold).not.toBeNull();
     expect(fold.hasAttribute("data-blora-generated")).toBe(true);
@@ -147,5 +148,6 @@ describe("Thread add-on", () => {
     expect(longComment.hasAttribute("data-collapsible")).toBe(false);
     expect(longComment.hasAttribute("data-collapsed")).toBe(false);
     expect(longBody.style.getPropertyValue("--blora-thread-collapse-height")).toBe("");
+    expect(longBody.style.getPropertyValue("--blora-thread-content-height")).toBe("");
   });
 });

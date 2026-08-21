@@ -85,9 +85,14 @@
 /* Long content is folded only after the controller has measured it. The
    content itself progressively fades at the lower edge, matching Sidebar and
    Time Picker edge fades — no opaque overlay strip or backdrop blur. */
+.blora-thread-comment[data-collapsible] .blora-thread-comment__body {
+  max-height: var(--blora-thread-content-height);
+  overflow: hidden;
+  transition: max-height var(--blora-duration-base) var(--blora-easing-standard);
+}
+
 .blora-thread-comment[data-collapsible][data-collapsed] .blora-thread-comment__body {
   max-height: var(--blora-thread-collapse-height);
-  overflow: hidden;
   mask-image: linear-gradient(
     to bottom,
     rgb(0 0 0) 0%,
@@ -164,73 +169,91 @@
 /* -- Composer -- */
 
 .blora-thread-composer {
+  display: grid;
+  gap: var(--blora-space-3);
   margin-top: var(--blora-space-5);
 }
 
 .blora-thread-composer__tabs {
-  display: flex;
-  gap: var(--blora-space-2);
-  margin-bottom: var(--blora-space-2);
+  display: inline-flex;
+  justify-self: start;
+  gap: 0;
+  padding: var(--blora-space-1);
+  border-radius: var(--blora-radius-full);
+  background: var(--blora-color-surface-sunken);
 }
 
 .blora-thread-composer__tabs [data-blora-thread-tab] {
   border: 0;
+  border-radius: var(--blora-radius-full);
   background: transparent;
   color: var(--blora-color-text-muted);
   font-family: var(--blora-font-sans);
   font-size: var(--blora-text-sm);
   font-weight: 500;
-  padding: 0.4em 0.8em;
-  border-radius: var(--blora-radius-sm);
+  padding: 0.45em 1em;
   cursor: pointer;
   transition:
-    background var(--blora-duration-fast) var(--blora-easing-standard),
+    background var(--blora-duration-base) var(--blora-easing-standard),
+    box-shadow var(--blora-duration-base) var(--blora-easing-standard),
     color var(--blora-duration-fast) var(--blora-easing-standard);
 }
 
 .blora-thread-composer__tabs [data-blora-thread-tab]:hover {
-  background: var(--blora-color-surface-raised);
+  color: var(--blora-color-text-primary);
+}
+
+.blora-thread-composer__tabs [data-blora-thread-tab]:focus-visible,
+.blora-thread-composer__toolbar :is(button, a):focus-visible {
+  outline: var(--blora-focus-ring-width) solid var(--blora-color-action-primary-default);
+  outline-offset: var(--blora-focus-ring-offset);
 }
 
 .blora-thread-composer__tabs [data-blora-thread-tab][data-active] {
-  background: var(--blora-color-surface-sunken);
-  color: var(--blora-color-text-primary);
+  background: var(--blora-color-surface-default);
+  box-shadow: var(--blora-shadow-1);
+  color: var(--blora-color-text-emphasis);
   font-weight: 600;
 }
 
 .blora-thread-composer__toolbar {
-  display: flex;
+  display: inline-flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-self: start;
   gap: var(--blora-space-1);
   padding: var(--blora-space-1);
   border: 1px solid var(--blora-color-border-subtle);
-  border-bottom: 0;
-  border-radius: var(--blora-radius-md) var(--blora-radius-md) 0 0;
-  background: var(--blora-color-surface-sunken);
+  border-radius: var(--blora-radius-full);
+  background: var(--blora-color-surface-default);
+  box-shadow: var(--blora-shadow-1);
 }
 
 .blora-thread-composer__toolbar :is(button, a) {
   display: inline-grid;
   place-items: center;
-  min-width: 1.9rem;
-  height: 1.9rem;
-  padding: 0 var(--blora-space-1);
-  border: 1px solid transparent;
-  border-radius: var(--blora-radius-sm);
+  box-sizing: border-box;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--blora-radius-full);
   background: transparent;
   color: var(--blora-color-text-secondary);
-  font-family: var(--blora-font-sans);
-  font-size: var(--blora-text-sm);
   cursor: pointer;
   transition:
     background var(--blora-duration-fast) var(--blora-easing-standard),
-    border-color var(--blora-duration-fast) var(--blora-easing-standard);
+    color var(--blora-duration-fast) var(--blora-easing-standard),
+    transform var(--blora-duration-fast) var(--blora-easing-standard);
 }
 
 .blora-thread-composer__toolbar :is(button, a):hover {
-  background: var(--blora-color-surface-default);
-  border-color: var(--blora-color-border-subtle);
+  background: var(--blora-color-action-primary-tint);
+  color: var(--blora-color-action-primary-default);
+}
+
+.blora-thread-composer__toolbar :is(button, a):active {
+  transform: scale(0.94);
 }
 
 .blora-thread-composer__toolbar svg {
@@ -241,16 +264,28 @@
 .blora-thread-composer__input {
   box-sizing: border-box;
   width: 100%;
-  min-height: 6.5rem;
+  min-height: 7rem;
   resize: vertical;
-  padding: var(--blora-space-3);
+  padding: var(--blora-space-3) var(--blora-space-4);
   border: 1px solid var(--blora-color-border-subtle);
-  border-radius: 0 0 var(--blora-radius-md) var(--blora-radius-md);
+  border-radius: var(--blora-radius-lg);
   background: var(--blora-color-surface-default);
   color: var(--blora-color-text-secondary);
   font-family: var(--blora-font-sans);
   font-size: var(--blora-text-sm);
-  line-height: 1.6;
+  line-height: var(--blora-leading-normal);
+  transition:
+    border-color var(--blora-duration-fast) var(--blora-easing-standard),
+    box-shadow var(--blora-duration-fast) var(--blora-easing-standard),
+    background var(--blora-duration-fast) var(--blora-easing-standard);
+}
+
+.blora-thread-composer__input::placeholder {
+  color: var(--blora-color-text-disabled);
+}
+
+.blora-thread-composer__input:hover {
+  border-color: var(--blora-color-text-subtle);
 }
 
 .blora-thread-composer__input:focus {
@@ -264,7 +299,6 @@
   flex-wrap: wrap;
   align-items: center;
   gap: var(--blora-space-3);
-  margin-top: var(--blora-space-3);
 }
 
 .blora-thread-composer[data-tab="preview"] .blora-thread-composer__toolbar,

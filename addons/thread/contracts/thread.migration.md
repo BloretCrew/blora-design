@@ -18,15 +18,15 @@ Thread 不再提供 1.x 的 `.blora-post*` 主帖 + replies 双层结构。论�
 
 ## 行为变化
 
-| 1.x                                | 2.0                                                                             |
-| ---------------------------------- | ------------------------------------------------------------------------------- |
-| `Blora.init()` / 自动 `initThread` | 显式 `createThreadController(root)`                                             |
-| replies 整组展开 / 收起            | 删除；每条长评论根据正文的实际渲染高度独立折叠                                  |
-| 手写 `.comment-fold-btn`           | controller 仅在正文超过阈值时启用正文底边 `mask-image` 渐隐 + 浮动 Blora Button |
-| 固定折叠高度                       | `options.collapseHeight`（默认 158px）或每条 `data-collapse-height`             |
-| 评论反应 class                     | `[data-blora-thread-react]` 切换 `data-active` + `aria-pressed`                 |
-| 评论编辑 / 预览                    | `[data-blora-thread-tab][data-tab="edit                                         | preview"]` |
-| 销毁                               | `controller.destroy()`；清理监听、观察器、生成按钮和测量状态                    |
+| 1.x                                | 2.0                                                                                          |
+| ---------------------------------- | -------------------------------------------------------------------------------------------- |
+| `Blora.init()` / 自动 `initThread` | 显式 `createThreadController(root)`                                                          |
+| replies 整组展开 / 收起            | 删除；每条长评论根据正文的实际渲染高度独立折叠                                               |
+| 手写 `.comment-fold-btn`           | controller 仅在正文超过阈值时启用正文底边 `mask-image` 渐隐、平滑高度过渡和浮动 Blora Button |
+| 固定折叠高度                       | `options.collapseHeight`（默认 158px）或每条 `data-collapse-height`                          |
+| 评论反应 class                     | `[data-blora-thread-react]` 切换 `data-active` + `aria-pressed`                              |
+| 评论编辑 / 预览                    | `[data-blora-thread-tab][data-tab="edit                                                      | preview"]` |
+| 销毁                               | `controller.destroy()`；清理监听、观察器、生成按钮和测量状态                                 |
 
 ## 示例
 

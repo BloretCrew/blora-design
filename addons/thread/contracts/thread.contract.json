@@ -47,7 +47,7 @@
   "events": {},
   "slots": {},
   "parts": [],
-  "cssProperties": ["--blora-thread-collapse-height"],
+  "cssProperties": ["--blora-thread-collapse-height", "--blora-thread-content-height"],
   "classes": [
     ".blora-thread",
     ".blora-thread-comment",
