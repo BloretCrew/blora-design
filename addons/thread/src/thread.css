@@ -115,7 +115,7 @@
   padding: 0 var(--blora-space-5) var(--blora-space-4);
 }
 
-.blora-thread-comment__fold .blora-button {
+.blora-thread-comment__fold .blora-button[data-variant="outline"] {
   pointer-events: auto;
 
   --blora-button-bg: var(--blora-color-surface-default);
@@ -123,7 +123,8 @@
   --blora-button-fg: var(--blora-color-action-primary-default);
 }
 
-.blora-thread-comment__fold .blora-button:hover {
+.blora-thread-comment__fold .blora-button[data-variant="outline"]:hover,
+.blora-thread-comment__fold .blora-button[data-variant="outline"]:active {
   --blora-button-bg: var(--blora-color-action-primary-tint);
 }
 
