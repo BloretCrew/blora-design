@@ -249,7 +249,9 @@
         place-items: start stretch;
       }
 
-      .showcase-preview > [data-showcase-addon-thread] {
+      .showcase-preview > [data-showcase-addon-thread],
+      .showcase-preview > blora-thread-comment,
+      .showcase-preview > blora-thread-composer {
         width: min(48rem, 100%);
       }
 
@@ -1262,7 +1264,72 @@
       </template>
       <template data-addon="thread" data-label="Thread" data-group="数据展示" data-eyebrow="Data display" data-kind="Composite CE" data-description="基于 Timeline 的论坛评论卡片、开放撰写区与长内容自动折叠。">
         <div data-showcase-cases data-showcase-addon-thread>
-        <section data-showcase-case="CommentStream"><h3>评论流</h3>
+        <section data-showcase-case="CommentCard"><h3>评论卡片</h3>
+          <blora-thread-comment>
+            <div slot="head">
+              <span class="blora-avatar" data-size="sm" data-variant="neutral">De</span>
+              <div class="blora-thread-comment__meta" style="display:block">
+                <div style="display:flex; align-items:center; gap:var(--blora-space-2)">
+                  <a href="#thread" class="blora-text-primary" style="font-weight:600">Detrital</a>
+                  <span class="blora-tag" data-variant="warning" data-size="sm">何意味</span>
+                </div>
+                <div class="blora-text-muted" style="font-size:var(--blora-text-xs); margin-top:var(--blora-space-1)">10 天前 · 浙江 · 回复 @diddy123</div>
+              </div>
+              <div class="blora-thread-comment__actions">
+                <button type="button" class="blora-button" data-variant="ghost" data-size="xs">回复</button>
+              </div>
+            </div>
+            <div slot="quote">## 妈妈</div>
+            <p>极简发帖通常是为了引发情感共鸣或作为开放话题。</p>
+            <div slot="reactions">
+              <button type="button" data-blora-thread-react aria-label="添加表情" title="表情"><span data-ic="smile" data-ic-size="16"></span></button>
+            </div>
+          </blora-thread-comment>
+        </section>
+        <section data-showcase-case="LongCommentFold"><h3>长评论折叠</h3>
+          <blora-thread-comment collapse-height="96">
+            <div slot="head">
+              <span class="blora-avatar" data-size="sm" data-variant="info">N</span>
+              <div class="blora-thread-comment__meta" style="display:block">
+                <div style="display:flex; align-items:center; gap:var(--blora-space-2)">
+                  <a href="#thread" class="blora-text-primary" style="font-weight:600">NBF</a>
+                  <span class="blora-tag" data-variant="primary" data-size="sm">牛比发</span>
+                </div>
+                <div class="blora-text-muted" style="font-size:var(--blora-text-xs); margin-top:var(--blora-space-1)">评论于 6个月前 · 江苏</div>
+              </div>
+              <div class="blora-thread-comment__actions">
+                <button type="button" class="blora-button" data-variant="ghost" data-size="xs">回复</button>
+              </div>
+            </div>
+            <p>在一个活跃的论坛中，讨论会随着回复不断积累。长评论应当保持可读性，但不应该在页面中占据过多垂直空间。</p>
+            <p>因此 Thread 会在渲染后测量正文高度：只有超过阈值的评论才会自动折叠，短评论不会生成任何多余控件。</p>
+            <p>折叠后的底部使用透明渐隐提示内容仍有后续，展开按钮浮在渐隐边缘；展开和收起时正文高度会平滑过渡。</p>
+            <div slot="reactions">
+              <button type="button" data-blora-thread-react aria-label="添加表情" title="表情"><span data-ic="smile" data-ic-size="16"></span></button>
+            </div>
+          </blora-thread-comment>
+        </section>
+        <section data-showcase-case="Composer"><h3>撰写区</h3>
+          <blora-thread-composer>
+            <div slot="toolbar" aria-label="评论格式工具">
+              <button type="button" aria-label="粗体" title="粗体"><span data-ic="bold" data-ic-size="16"></span></button>
+              <button type="button" aria-label="斜体" title="斜体"><span data-ic="italic" data-ic-size="16"></span></button>
+              <button type="button" aria-label="行内代码" title="行内代码"><span data-ic="code" data-ic-size="16"></span></button>
+              <button type="button" aria-label="链接" title="链接"><span data-ic="link" data-ic-size="16"></span></button>
+              <button type="button" aria-label="引用" title="引用"><span data-ic="quote" data-ic-size="16"></span></button>
+              <button type="button" aria-label="提及用户" title="提及用户"><span data-ic="at-sign" data-ic-size="16"></span></button>
+              <button type="button" aria-label="表情" title="表情"><span data-ic="smile" data-ic-size="16"></span></button>
+              <button type="button" aria-label="图片" title="图片"><span data-ic="image" data-ic-size="16"></span></button>
+            </div>
+            <textarea placeholder="撰写评论... 支持 Markdown，可 @ 提及用户"></textarea>
+            <div slot="preview" class="blora-text-muted">预览内容由消费者或 Markdown add-on 渲染。</div>
+            <div slot="actions">
+              <button type="button" class="blora-button" data-variant="primary" data-size="sm">发表评论</button>
+              <button type="button" class="blora-button" data-variant="outline" data-size="sm">定时发送</button>
+            </div>
+          </blora-thread-composer>
+        </section>
+        <section data-showcase-case="CommentStream"><h3>完整评论流</h3>
           <div class="blora-thread" data-showcase-thread>
             <blora-timeline>
               <blora-timeline-item icon="thumbs-up" time="· 6个月前">
