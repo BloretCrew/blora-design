@@ -16,6 +16,14 @@ blora-thread-composer {
   display: block;
 }
 
+/* The element upgrade is deferred by BloraElement, so the raw light-DOM tree
+   would paint for one frame before render() restructures it. Hide hosts until
+   the first render stamps data-blora-ready. */
+blora-thread-comment:not([data-blora-ready]),
+blora-thread-composer:not([data-blora-ready]) {
+  visibility: hidden;
+}
+
 /* Comment card follows the former forum-reply visual language. */
 .blora-thread-comment__card {
   border: 1px solid var(--blora-color-border-subtle);

@@ -118,6 +118,7 @@ export class BloraThreadComment extends BloraElement {
     }
 
     this.replaceChildren(card);
+    this.setAttribute("data-blora-ready", "");
   }
 
   protected bindEvents(): void {
@@ -358,6 +359,7 @@ export class BloraThreadComposer extends BloraElement {
       this.append(actions);
     }
 
+    this.setAttribute("data-blora-ready", "");
     this.syncLabels();
     this.setTab(this.tab, false);
   }

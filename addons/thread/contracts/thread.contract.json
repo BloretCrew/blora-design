@@ -13,7 +13,8 @@
         "label-expand",
         "label-collapse",
         "data-collapsible",
-        "data-collapsed"
+        "data-collapsed",
+        "data-blora-ready"
       ],
       "properties": ["collapsible", "collapsed"],
       "methods": ["refresh", "expand", "collapse", "toggle"],
@@ -21,7 +22,7 @@
       "cssProperties": ["--blora-thread-collapse-height", "--blora-thread-content-height"]
     },
     "blora-thread-composer": {
-      "attributes": ["tab", "edit-label", "preview-label", "data-tab"],
+      "attributes": ["tab", "edit-label", "preview-label", "data-tab", "data-blora-ready"],
       "properties": ["tab"],
       "methods": ["setTab"],
       "events": ["blora-thread-tab-change"],

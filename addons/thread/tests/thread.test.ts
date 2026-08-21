@@ -42,6 +42,15 @@ describe("Thread composite custom elements", () => {
     expect(customElements.get(BLORA_THREAD_COMPOSER_TAG)).toBe(BloraThreadComposer);
   });
 
+  it("stamps data-blora-ready after the first render so hosts stay hidden pre-upgrade", async () => {
+    const comment = createComment();
+    const composer = document.createElement(BLORA_THREAD_COMPOSER_TAG);
+    document.body.append(comment, composer);
+    await settle();
+    expect(comment.hasAttribute("data-blora-ready")).toBe(true);
+    expect(composer.hasAttribute("data-blora-ready")).toBe(true);
+  });
+
   it("renders an open consumer-authored comment card", async () => {
     const comment = createComment();
     await settle();
