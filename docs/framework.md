@@ -1036,26 +1036,31 @@ Blora.renderMarkdown("#el", "## 标题\n正文"); // 别名 Blora.md
 **论坛评论流 Thread**（核心 Timeline + Thread 评论卡片）
 
 ```html
-<div class="blora-thread" data-blora-thread>
+<div class="blora-thread">
   <blora-timeline>
     <blora-timeline-item icon="thumbs-up" time="· 6个月前">
       <b class="blora-text-primary">Detrital</b> 点赞了帖子
     </blora-timeline-item>
     <blora-timeline-item icon="message" content-layout="block">
-      <div class="blora-thread-comment" data-collapse-height="158">
-        <div class="blora-thread-comment__card">
-          <div class="blora-thread-comment__head">…头像 / 作者 / 时间 / 操作…</div>
-          <div class="blora-thread-comment__quote">## 被回复的内容</div>
-          <div class="blora-thread-comment__body">长评论正文…</div>
-          <div class="blora-thread-comment__react">…表情统计与添加按钮…</div>
-        </div>
-      </div>
+      <blora-thread-comment collapse-height="158">
+        <div slot="head">…头像 / 作者 / 时间 / 操作…</div>
+        <div slot="quote">## 被回复的内容</div>
+        <p>长评论正文…</p>
+        <div slot="reactions">…表情统计与添加按钮…</div>
+      </blora-thread-comment>
     </blora-timeline-item>
   </blora-timeline>
+
+  <blora-thread-composer>
+    <div slot="toolbar">…消费者自定义工具按钮…</div>
+    <textarea placeholder="撰写评论"></textarea>
+    <div slot="preview">…消费者提供的预览…</div>
+    <div slot="actions">…发表评论 / 定时发送…</div>
+  </blora-thread-composer>
 </div>
 ```
 
-Thread 会测量每条评论正文；只有超过阈值的评论默认折叠，并自动生成底部渐变虚化层与浮动展开按钮。短评论没有折叠控件。轻量、非时间线评论仍可使用 `<blora-comment>`。
+`<blora-thread-comment>` 会测量自己的正文；只有超过阈值时才默认折叠，并自动生成底部渐隐与浮动展开按钮。`<blora-thread-composer>` 只负责开放式撰写布局和编辑 / 预览切换。短评论没有折叠控件；轻量、非时间线评论仍可使用 `<blora-comment>`。
 
 ```html
 <blora-comment>

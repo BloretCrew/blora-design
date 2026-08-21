@@ -1,266 +1,425 @@
 /**
- * Blora Design 2.0 - Thread add-on (forum comment stream).
+ * Blora Design 2.0 - Thread add-on.
  *
- * Business fields remain consumer-authored. The controller owns only:
- * - automatic long-comment folding by rendered height;
- * - the mask-based fold affordance and floating button;
- * - comment reaction state;
- * - composer edit / preview tabs.
+ * Timeline owns comment-stream ordering and its connecting rail. This add-on
+ * provides two open composite custom elements: one comment card with automatic
+ * long-content folding, and one comment composer shell.
  * @packageDocumentation
  */
 
-import { createBloraIcon } from "@bloret-crew/blora-design";
+import { BloraElement, createBloraIcon } from "@bloret-crew/blora-design";
 
-export interface ThreadOptions {
-  /** Collapsed comment-body height in pixels. Default: 158. */
-  collapseHeight?: number;
-  /** Default label for a collapsed long comment. Default: 展开评论. */
-  expandLabel?: string;
-  /** Default label for an expanded long comment. Default: 收起评论. */
-  collapseLabel?: string;
-}
-
-export interface ThreadController {
-  /** Re-measure all comments and add/remove automatic fold controls. */
-  refresh(): void;
-  /** Expand one long comment. */
-  expandComment(comment: HTMLElement): void;
-  /** Collapse one long comment. */
-  collapseComment(comment: HTMLElement): void;
-  /** Toggle one long comment between expanded and collapsed. */
-  toggleComment(comment: HTMLElement): void;
-  /** Toggle a reaction button (`data-blora-thread-react`). */
-  toggleReact(btn: HTMLElement): void;
-  /** Switch the composer between edit / preview tabs. */
-  setComposerTab(composer: HTMLElement, tab: string): void;
-  /** Remove listeners, generated controls and inline measurement state. */
-  destroy(): void;
-}
+export const BLORA_THREAD_COMMENT_TAG = "blora-thread-comment";
+export const BLORA_THREAD_COMPOSER_TAG = "blora-thread-composer";
 
 const DEFAULT_COLLAPSE_HEIGHT = 158;
 const DEFAULT_EXPAND = "展开评论";
 const DEFAULT_COLLAPSE = "收起评论";
 
-interface CommentState {
-  body: HTMLElement;
-  fold: HTMLElement;
-  button: HTMLButtonElement;
+interface CommentAssigned {
+  body: Node[];
+  head: Node[];
+  quote: Node[];
+  reactions: Node[];
 }
 
-function commentsIn(root: HTMLElement): HTMLElement[] {
-  return Array.from(
-    root.querySelectorAll<HTMLElement>(".blora-thread-comment, [data-blora-thread-comment]"),
-  );
+function commentSlot(node: Node): keyof CommentAssigned {
+  if (node.nodeType !== Node.ELEMENT_NODE) return "body";
+  const slot = (node as HTMLElement).getAttribute("slot");
+  if (slot === "head" || slot === "quote") return slot;
+  if (slot === "reactions" || slot === "react") return "reactions";
+  return "body";
 }
 
-function labelsFor(
-  comment: HTMLElement,
-  options: Required<Pick<ThreadOptions, "expandLabel" | "collapseLabel">>,
-): { expand: string; collapse: string } {
-  return {
-    expand: comment.getAttribute("data-label-expand") || options.expandLabel,
-    collapse: comment.getAttribute("data-label-collapse") || options.collapseLabel,
-  };
-}
+/** One forum-style comment card with automatic per-comment long-content folding. */
+export class BloraThreadComment extends BloraElement {
+  private assigned: CommentAssigned | null = null;
+  private body: HTMLElement | null = null;
+  private fold: HTMLElement | null = null;
+  private foldButton: HTMLButtonElement | null = null;
+  private initialized = false;
+  private resizeObserver: ResizeObserver | null = null;
+  private mutationObserver: MutationObserver | null = null;
+  private refreshQueued = false;
 
-/** Create a comment-stream controller. */
-export function createThreadController(
-  root: HTMLElement,
-  options?: ThreadOptions,
-): ThreadController {
-  if (typeof document === "undefined") {
-    return {
-      refresh: () => {},
-      expandComment: () => {},
-      collapseComment: () => {},
-      toggleComment: () => {},
-      toggleReact: () => {},
-      setComposerTab: () => {},
-      destroy: () => {},
-    };
+  static get observedAttributes(): string[] {
+    return ["collapse-height", "label-expand", "label-collapse"];
   }
 
-  const defaults = {
-    collapseHeight: Math.max(1, options?.collapseHeight ?? DEFAULT_COLLAPSE_HEIGHT),
-    expandLabel: options?.expandLabel ?? DEFAULT_EXPAND,
-    collapseLabel: options?.collapseLabel ?? DEFAULT_COLLAPSE,
-  };
-  const doc = root.ownerDocument;
-  const abortController = new AbortController();
-  const { signal } = abortController;
-  const states = new Map<HTMLElement, CommentState>();
-  const initialized = new WeakSet<HTMLElement>();
-  let refreshQueued = false;
-  let mutationObserver: MutationObserver | null = null;
-
-  function bodyFor(comment: HTMLElement): HTMLElement | null {
-    return comment.querySelector<HTMLElement>(".blora-thread-comment__body");
+  attributeChangedCallback(): void {
+    if (this.isConnectedInternal) this.scheduleRefresh();
   }
 
-  function heightFor(comment: HTMLElement): number {
-    const raw = Number(comment.getAttribute("data-collapse-height"));
-    return Number.isFinite(raw) && raw > 0 ? raw : defaults.collapseHeight;
+  get collapsible(): boolean {
+    return this.hasAttribute("data-collapsible");
   }
 
-  function setButtonContent(comment: HTMLElement, button: HTMLButtonElement): void {
-    const labels = labelsFor(comment, defaults);
-    const expanded = !comment.hasAttribute("data-collapsed");
-    button.replaceChildren(
-      createBloraIcon(expanded ? "arrow-up" : "chevron-down", 16, doc),
-      doc.createTextNode(expanded ? labels.collapse : labels.expand),
-    );
-    button.setAttribute("aria-expanded", String(expanded));
+  get collapsed(): boolean {
+    return this.hasAttribute("data-collapsed");
   }
 
-  function ensureFold(comment: HTMLElement, body: HTMLElement): CommentState {
-    const existing = states.get(comment);
-    if (existing) return existing;
+  refresh(): void {
+    this.measure();
+  }
 
-    const fold = doc.createElement("div");
+  expand(): void {
+    if (!this.collapsible) return;
+    this.removeAttribute("data-collapsed");
+    this.syncFoldButton();
+  }
+
+  collapse(): void {
+    if (!this.collapsible) return;
+    this.setAttribute("data-collapsed", "");
+    this.syncFoldButton();
+  }
+
+  toggle(): void {
+    if (this.collapsed) this.expand();
+    else this.collapse();
+  }
+
+  protected render(): void {
+    this.classList.add("blora-thread-comment");
+    const assigned = this.takeAssigned();
+    const doc = this.ownerDocument;
+    const card = doc.createElement("article");
+    card.className = "blora-thread-comment__card";
+    card.dataset.bloraGenerated = "";
+
+    if (assigned.head.length) {
+      const head = doc.createElement("header");
+      head.className = "blora-thread-comment__head";
+      head.append(...this.take(assigned.head));
+      card.append(head);
+    }
+
+    if (assigned.quote.length) {
+      const quote = doc.createElement("div");
+      quote.className = "blora-thread-comment__quote";
+      quote.append(...this.take(assigned.quote));
+      card.append(quote);
+    }
+
+    const body = doc.createElement("div");
+    body.className = "blora-thread-comment__body";
+    body.id = this.id
+      ? `${this.id}-body`
+      : `blora-thread-body-${Math.random().toString(36).slice(2, 9)}`;
+    body.append(...this.take(assigned.body));
+    card.append(body);
+    this.body = body;
+
+    if (assigned.reactions.length) {
+      const reactions = doc.createElement("div");
+      reactions.className = "blora-thread-comment__react";
+      reactions.append(...this.take(assigned.reactions));
+      card.append(reactions);
+    }
+
+    this.replaceChildren(card);
+  }
+
+  protected bindEvents(): void {
+    this.listen(this, "click", (event) => {
+      const target = event.target as Element | null;
+      const fold = target?.closest<HTMLElement>("[data-blora-thread-comment-fold]");
+      if (fold && this.contains(fold)) {
+        this.toggle();
+        return;
+      }
+      const reaction = target?.closest<HTMLElement>("[data-blora-thread-react]");
+      if (!reaction || !this.contains(reaction)) return;
+      const active = !reaction.hasAttribute("data-active");
+      reaction.toggleAttribute("data-active", active);
+      reaction.setAttribute("aria-pressed", String(active));
+    });
+
+    this.resizeObserver?.disconnect();
+    this.mutationObserver?.disconnect();
+    if (typeof ResizeObserver !== "undefined") {
+      this.resizeObserver = new ResizeObserver(() => this.scheduleRefresh());
+      this.resizeObserver.observe(this);
+    }
+    if (this.body && typeof MutationObserver !== "undefined") {
+      this.mutationObserver = new MutationObserver(() => this.scheduleRefresh());
+      this.mutationObserver.observe(this.body, {
+        attributes: true,
+        characterData: true,
+        childList: true,
+        subtree: true,
+      });
+    }
+    this.ownerDocument.defaultView?.addEventListener("load", () => this.scheduleRefresh(), {
+      signal: this.abortController.signal,
+    });
+    this.scheduleRefresh();
+  }
+
+  protected onDisconnect(): void {
+    this.resizeObserver?.disconnect();
+    this.mutationObserver?.disconnect();
+  }
+
+  private takeAssigned(): CommentAssigned {
+    if (!this.assigned) {
+      const assigned: CommentAssigned = { body: [], head: [], quote: [], reactions: [] };
+      for (const node of Array.from(this.childNodes)) {
+        if (
+          node.nodeType === Node.ELEMENT_NODE &&
+          (node as HTMLElement).hasAttribute("data-blora-generated")
+        ) {
+          continue;
+        }
+        if (node.nodeType === Node.TEXT_NODE && !node.textContent?.trim()) continue;
+        assigned[commentSlot(node)].push(node);
+      }
+      this.assigned = assigned;
+    }
+    return this.assigned;
+  }
+
+  private take(nodes: Node[]): Node[] {
+    for (const node of nodes) node.parentNode?.removeChild(node);
+    return nodes;
+  }
+
+  private scheduleRefresh(): void {
+    if (this.refreshQueued) return;
+    this.refreshQueued = true;
+    queueMicrotask(() => {
+      this.refreshQueued = false;
+      this.measure();
+    });
+  }
+
+  private collapseHeight(): number {
+    const value = Number(this.getAttribute("collapse-height"));
+    return Number.isFinite(value) && value > 0 ? value : DEFAULT_COLLAPSE_HEIGHT;
+  }
+
+  private measure(): void {
+    const body = this.body;
+    if (!body) return;
+    const fullHeight = body.scrollHeight;
+    const collapseHeight = this.collapseHeight();
+
+    if (fullHeight <= collapseHeight + 1) {
+      this.removeAttribute("data-collapsible");
+      this.removeAttribute("data-collapsed");
+      body.style.removeProperty("--blora-thread-collapse-height");
+      body.style.removeProperty("--blora-thread-content-height");
+      this.fold?.remove();
+      this.fold = null;
+      this.foldButton = null;
+      return;
+    }
+
+    this.setAttribute("data-collapsible", "");
+    body.style.setProperty("--blora-thread-collapse-height", `${collapseHeight}px`);
+    body.style.setProperty("--blora-thread-content-height", `${fullHeight}px`);
+    this.ensureFold();
+    if (!this.initialized) this.setAttribute("data-collapsed", "");
+    this.initialized = true;
+    this.syncFoldButton();
+  }
+
+  private ensureFold(): void {
+    if (this.fold || !this.body) return;
+    const fold = this.ownerDocument.createElement("div");
     fold.className = "blora-thread-comment__fold";
     fold.dataset.bloraGenerated = "";
-
-    const button = doc.createElement("button");
+    const button = this.ownerDocument.createElement("button");
     button.type = "button";
     button.className = "blora-button";
     button.dataset.variant = "outline";
     button.dataset.size = "sm";
     button.dataset.bloraThreadCommentFold = "";
-    button.addEventListener("click", () => toggleComment(comment), { signal });
-    fold.appendChild(button);
-
-    body.insertAdjacentElement("afterend", fold);
-    const state = { body, fold, button };
-    states.set(comment, state);
-    return state;
+    button.setAttribute("aria-controls", this.body.id);
+    fold.append(button);
+    this.body.insertAdjacentElement("afterend", fold);
+    this.fold = fold;
+    this.foldButton = button;
   }
 
-  function measureComment(comment: HTMLElement): void {
-    const body = bodyFor(comment);
-    if (!body) return;
-    const collapseHeight = heightFor(comment);
+  private syncFoldButton(): void {
+    if (!this.foldButton) return;
+    const expanded = !this.collapsed;
+    const label = expanded
+      ? this.getAttribute("label-collapse") || DEFAULT_COLLAPSE
+      : this.getAttribute("label-expand") || DEFAULT_EXPAND;
+    this.foldButton.replaceChildren(
+      createBloraIcon(expanded ? "arrow-up" : "chevron-down", 16, this.ownerDocument),
+      this.ownerDocument.createTextNode(label),
+    );
+    this.foldButton.setAttribute("aria-expanded", String(expanded));
+  }
+}
 
-    // Temporarily remove the clamp so scrollHeight reflects the complete body.
-    const wasCollapsed = comment.hasAttribute("data-collapsed");
-    comment.removeAttribute("data-collapsed");
-    body.style.removeProperty("--blora-thread-collapse-height");
-    const fullHeight = body.scrollHeight;
+interface ComposerAssigned {
+  actions: Node[];
+  editor: Node[];
+  preview: Node[];
+  toolbar: Node[];
+}
 
-    if (fullHeight <= collapseHeight + 1) {
-      comment.removeAttribute("data-collapsible");
-      comment.removeAttribute("data-collapsed");
-      body.style.removeProperty("--blora-thread-content-height");
-      states.get(comment)?.fold.remove();
-      states.delete(comment);
-      return;
-    }
+function composerSlot(node: Node): keyof ComposerAssigned {
+  if (node.nodeType !== Node.ELEMENT_NODE) return "editor";
+  const slot = (node as HTMLElement).getAttribute("slot");
+  if (slot === "toolbar" || slot === "actions" || slot === "preview") return slot;
+  return "editor";
+}
 
-    comment.setAttribute("data-collapsible", "");
-    body.style.setProperty("--blora-thread-collapse-height", `${collapseHeight}px`);
-    body.style.setProperty("--blora-thread-content-height", `${fullHeight}px`);
-    const state = ensureFold(comment, body);
-    if (wasCollapsed || !initialized.has(comment)) {
-      comment.setAttribute("data-collapsed", "");
-    }
-    initialized.add(comment);
-    setButtonContent(comment, state.button);
+/** Open comment composer shell; consumers own toolbar and submit behavior. */
+export class BloraThreadComposer extends BloraElement {
+  private assigned: ComposerAssigned | null = null;
+
+  static get observedAttributes(): string[] {
+    return ["tab", "edit-label", "preview-label"];
   }
 
-  function doRefresh(): void {
-    mutationObserver?.disconnect();
-    commentsIn(root).forEach(measureComment);
-    mutationObserver?.observe(root, { childList: true, characterData: true, subtree: true });
+  attributeChangedCallback(name: string): void {
+    if (!this.isConnectedInternal) return;
+    if (name === "tab") this.setTab(this.getAttribute("tab") || "edit", false);
+    else this.syncLabels();
   }
 
-  function doExpandComment(comment: HTMLElement): void {
-    if (!comment.hasAttribute("data-collapsible")) return;
-    comment.removeAttribute("data-collapsed");
-    const state = states.get(comment);
-    if (state) setButtonContent(comment, state.button);
+  get tab(): string {
+    return this.getAttribute("tab") === "preview" ? "preview" : "edit";
   }
 
-  function doCollapseComment(comment: HTMLElement): void {
-    if (!comment.hasAttribute("data-collapsible")) return;
-    comment.setAttribute("data-collapsed", "");
-    const state = states.get(comment);
-    if (state) setButtonContent(comment, state.button);
+  set tab(value: string) {
+    this.setAttribute("tab", value === "preview" ? "preview" : "edit");
   }
 
-  function toggleComment(comment: HTMLElement): void {
-    if (comment.hasAttribute("data-collapsed")) doExpandComment(comment);
-    else doCollapseComment(comment);
-  }
-
-  function doToggleReact(btn: HTMLElement): void {
-    const active = !btn.hasAttribute("data-active");
-    btn.toggleAttribute("data-active", active);
-    btn.setAttribute("aria-pressed", String(active));
-  }
-
-  root.querySelectorAll<HTMLElement>("[data-blora-thread-react]").forEach((btn) => {
-    btn.addEventListener("click", () => doToggleReact(btn), { signal });
-  });
-
-  function doSetComposerTab(composer: HTMLElement, tab: string): void {
-    composer.setAttribute("data-tab", tab);
-    for (const item of composer.querySelectorAll<HTMLElement>("[data-blora-thread-tab]")) {
-      const active = item.getAttribute("data-tab") === tab;
+  setTab(tab: string, emit = true): void {
+    const next = tab === "preview" ? "preview" : "edit";
+    if (this.getAttribute("tab") !== next) this.setAttribute("tab", next);
+    this.dataset.tab = next;
+    for (const item of this.querySelectorAll<HTMLElement>("[data-blora-thread-tab]")) {
+      const active = item.dataset.tab === next;
       item.toggleAttribute("data-active", active);
       item.setAttribute("aria-selected", String(active));
+      item.tabIndex = active ? 0 : -1;
     }
+    const preview = this.querySelector<HTMLElement>(".blora-thread-composer__preview");
+    if (preview) preview.hidden = next !== "preview";
+    if (emit) this.emit("blora-thread-tab-change", { tab: next });
   }
 
-  root.querySelectorAll<HTMLElement>("[data-blora-thread-tab]").forEach((tab) => {
-    tab.addEventListener(
-      "click",
-      () => {
-        const composer = tab.closest<HTMLElement>(".blora-thread-composer");
-        if (composer) doSetComposerTab(composer, tab.getAttribute("data-tab") || "edit");
-      },
-      { signal },
-    );
-  });
+  protected render(): void {
+    this.classList.add("blora-thread-composer");
+    const assigned = this.takeAssigned();
+    const doc = this.ownerDocument;
 
-  function scheduleRefresh(): void {
-    if (refreshQueued) return;
-    refreshQueued = true;
-    queueMicrotask(() => {
-      refreshQueued = false;
-      doRefresh();
+    if (assigned.toolbar.length) {
+      const toolbar = doc.createElement("div");
+      toolbar.className = "blora-thread-composer__toolbar";
+      toolbar.dataset.bloraGenerated = "";
+      toolbar.append(...this.take(assigned.toolbar));
+      this.append(toolbar);
+    }
+
+    const tabs = doc.createElement("div");
+    tabs.className = "blora-thread-composer__tabs";
+    tabs.dataset.bloraGenerated = "";
+    tabs.setAttribute("role", "tablist");
+    for (const tab of ["edit", "preview"]) {
+      const button = doc.createElement("button");
+      button.type = "button";
+      button.dataset.bloraThreadTab = "";
+      button.dataset.tab = tab;
+      button.setAttribute("role", "tab");
+      tabs.append(button);
+    }
+    this.append(tabs);
+
+    for (const node of this.take(assigned.editor)) {
+      if (node.nodeType === Node.ELEMENT_NODE && (node as HTMLElement).localName === "textarea") {
+        (node as HTMLElement).classList.add("blora-thread-composer__input");
+      }
+      this.append(node);
+    }
+
+    if (assigned.preview.length) {
+      const preview = doc.createElement("div");
+      preview.className = "blora-thread-composer__preview";
+      preview.dataset.bloraGenerated = "";
+      preview.setAttribute("role", "tabpanel");
+      preview.append(...this.take(assigned.preview));
+      this.append(preview);
+    }
+
+    if (assigned.actions.length) {
+      const actions = doc.createElement("div");
+      actions.className = "blora-thread-composer__footer";
+      actions.dataset.bloraGenerated = "";
+      actions.append(...this.take(assigned.actions));
+      this.append(actions);
+    }
+
+    this.syncLabels();
+    this.setTab(this.tab, false);
+  }
+
+  protected bindEvents(): void {
+    this.listen(this, "click", (event) => {
+      const target = (event.target as Element | null)?.closest<HTMLElement>(
+        "[data-blora-thread-tab]",
+      );
+      if (target && this.contains(target)) this.setTab(target.dataset.tab || "edit");
+    });
+    this.listen(this, "keydown", (event) => {
+      const keyEvent = event as KeyboardEvent;
+      const target = (keyEvent.target as Element | null)?.closest<HTMLElement>(
+        "[data-blora-thread-tab]",
+      );
+      if (!target || !["ArrowLeft", "ArrowRight"].includes(keyEvent.key)) return;
+      keyEvent.preventDefault();
+      const next = keyEvent.key === "ArrowRight" ? "preview" : "edit";
+      this.setTab(next);
+      this.querySelector<HTMLElement>(`[data-blora-thread-tab][data-tab="${next}"]`)?.focus();
     });
   }
 
-  const win = doc.defaultView;
-  const resizeObserver =
-    typeof ResizeObserver !== "undefined" ? new ResizeObserver(scheduleRefresh) : null;
-  // Observe the thread width, not each folded body: observing body height would
-  // feed the controller's own max-height change back into another measurement.
-  resizeObserver?.observe(root);
-  mutationObserver =
-    typeof MutationObserver !== "undefined" ? new MutationObserver(scheduleRefresh) : null;
-  mutationObserver?.observe(root, { childList: true, characterData: true, subtree: true });
-  win?.addEventListener("load", scheduleRefresh, { signal });
-  scheduleRefresh();
-
-  return {
-    refresh: doRefresh,
-    expandComment: doExpandComment,
-    collapseComment: doCollapseComment,
-    toggleComment,
-    toggleReact: doToggleReact,
-    setComposerTab: doSetComposerTab,
-    destroy: () => {
-      resizeObserver?.disconnect();
-      mutationObserver?.disconnect();
-      abortController.abort();
-      for (const [comment, state] of states) {
-        state.fold.remove();
-        state.body.style.removeProperty("--blora-thread-collapse-height");
-        state.body.style.removeProperty("--blora-thread-content-height");
-        comment.removeAttribute("data-collapsible");
-        comment.removeAttribute("data-collapsed");
+  private takeAssigned(): ComposerAssigned {
+    if (!this.assigned) {
+      const assigned: ComposerAssigned = { actions: [], editor: [], preview: [], toolbar: [] };
+      for (const node of Array.from(this.childNodes)) {
+        if (
+          node.nodeType === Node.ELEMENT_NODE &&
+          (node as HTMLElement).hasAttribute("data-blora-generated")
+        ) {
+          continue;
+        }
+        if (node.nodeType === Node.TEXT_NODE && !node.textContent?.trim()) continue;
+        assigned[composerSlot(node)].push(node);
       }
-      states.clear();
-    },
-  };
+      this.assigned = assigned;
+    }
+    return this.assigned;
+  }
+
+  private take(nodes: Node[]): Node[] {
+    for (const node of nodes) node.parentNode?.removeChild(node);
+    return nodes;
+  }
+
+  private syncLabels(): void {
+    const edit = this.querySelector<HTMLElement>('[data-blora-thread-tab][data-tab="edit"]');
+    const preview = this.querySelector<HTMLElement>('[data-blora-thread-tab][data-tab="preview"]');
+    if (edit) edit.textContent = this.getAttribute("edit-label") || "编辑";
+    if (preview) preview.textContent = this.getAttribute("preview-label") || "预览";
+  }
 }
+
+export function defineBloraThreadElements(registry: CustomElementRegistry = customElements): void {
+  if (!registry.get(BLORA_THREAD_COMMENT_TAG)) {
+    registry.define(BLORA_THREAD_COMMENT_TAG, BloraThreadComment);
+  }
+  if (!registry.get(BLORA_THREAD_COMPOSER_TAG)) {
+    registry.define(BLORA_THREAD_COMPOSER_TAG, BloraThreadComposer);
+  }
+}
+
+if (typeof customElements !== "undefined") defineBloraThreadElements(customElements);

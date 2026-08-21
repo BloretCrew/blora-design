@@ -11,6 +11,11 @@
   max-width: 48rem;
 }
 
+blora-thread-comment,
+blora-thread-composer {
+  display: block;
+}
+
 /* Comment card follows the former forum-reply visual language. */
 .blora-thread-comment__card {
   border: 1px solid var(--blora-color-border-subtle);
@@ -27,6 +32,13 @@
   gap: var(--blora-space-3);
   padding: var(--blora-space-4) var(--blora-space-5) 0;
   font-size: var(--blora-text-sm);
+}
+
+.blora-thread-comment__head > [slot="head"],
+.blora-thread-comment__react > [slot="reactions"],
+.blora-thread-composer__toolbar > [slot="toolbar"],
+.blora-thread-composer__footer > [slot="actions"] {
+  display: contents;
 }
 
 .blora-thread-comment__meta {
@@ -327,6 +339,17 @@
   flex-wrap: wrap;
   align-items: center;
   gap: var(--blora-space-3);
+}
+
+.blora-thread-composer__preview {
+  order: 3;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 7rem;
+  padding: var(--blora-space-3) var(--blora-space-4);
+  border: 1px solid var(--blora-color-border-subtle);
+  border-radius: var(--blora-radius-lg);
+  background: var(--blora-color-surface-default);
 }
 
 .blora-thread-composer[data-tab="preview"] .blora-thread-composer__toolbar,

@@ -324,7 +324,7 @@
 
 - **组件**：thread add-on
 - **1.x / 早期 2.0 表现**：同时提供 `.blora-post*` 主帖 + replies 整组折叠和评论流两套高度重合的结构；折叠按钮控制整组回复。
-- **当前 2.0 表现**：删除旧主帖 / replies 模式；Thread 仅提供 Timeline 中的论坛评论卡片、反应区、撰写区。每条评论按正文实际渲染高度独立判断，只有超过阈值时才默认折叠；正文底边通过 `mask-image` 渐隐，展开 / 收起使用平滑高度过渡，标准 Blora Button 浮在渐隐边缘上。撰写区将浮动工具胶囊与紧凑分段切换放在同一行并统一高度，输入区域使用标准圆角表面；工具胶囊仅提供可自由放置任意控件的布局，按钮内容和点击行为由消费者定义。
+- **当前 2.0 表现**：删除旧主帖 / replies 模式和根 Headless controller；Thread 由 `<blora-thread-comment>` 与 `<blora-thread-composer>` 两个开放 Composite CE 组成，继续复用核心 Timeline。评论 CE 按正文实际高度独立折叠，正文底边使用 `mask-image` 渐隐和高度动画；Composer CE 提供同行工具胶囊、编辑 / 预览切换、标准输入表面和操作区，工具与提交行为由消费者定义。
 - **改变原因**：产品职责收口；匹配 Bloret BBS 长评论阅读行为，同时复用核心 Timeline 的顺序、连线和图标节点。
 - **审核状态**：approved（用户确认 2026-08-20）
 

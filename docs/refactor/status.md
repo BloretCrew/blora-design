@@ -34,7 +34,7 @@ Showcase v2 已完成 87/87 核心组件目录：正式 API/CE 示例、单视�
 
 | 包 | API | Story | 单测 |
 |----|-----|-------|------|
-| thread | `createThreadController` | Data display/Thread | ✅ |
+| thread | `<blora-thread-comment>` / `<blora-thread-composer>` | Data display/Thread | ✅ |
 | markdown | `renderMarkdown` / `createMarkdownController` / `initMarkdown` | Data display/Markdown | ✅ |
 | qrcode | `renderQRCode` / `createQRCodeController` / `initQRCode` | Data display/QR Code | ✅ |
 | effects | textFx + extras controllers | Data display/* | ✅ |

@@ -1,172 +1,178 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { createThreadController } from "../src/index.js";
+import {
+  BLORA_THREAD_COMMENT_TAG,
+  BLORA_THREAD_COMPOSER_TAG,
+  BloraThreadComment,
+  BloraThreadComposer,
+  defineBloraThreadElements,
+} from "../src/index.js";
 
 function setScrollHeight(el: HTMLElement, value: number): void {
   Object.defineProperty(el, "scrollHeight", { configurable: true, value });
 }
 
-describe("Thread add-on", () => {
-  let root: HTMLElement;
-  let shortComment: HTMLElement;
-  let shortBody: HTMLElement;
-  let longComment: HTMLElement;
-  let longBody: HTMLElement;
-  let reactBtn: HTMLElement;
+async function settle(): Promise<void> {
+  await Promise.resolve();
+  await Promise.resolve();
+}
 
+function createComment(bodyText = "Comment body"): BloraThreadComment {
+  const comment = document.createElement(BLORA_THREAD_COMMENT_TAG) as BloraThreadComment;
+  const head = document.createElement("div");
+  head.slot = "head";
+  head.textContent = "Author";
+  const body = document.createElement("p");
+  body.textContent = bodyText;
+  const reactions = document.createElement("div");
+  reactions.slot = "reactions";
+  reactions.innerHTML = '<button type="button" data-blora-thread-react></button>';
+  comment.append(head, body, reactions);
+  document.body.append(comment);
+  return comment;
+}
+
+describe("Thread composite custom elements", () => {
   beforeEach(() => {
     document.body.innerHTML = "";
-    root = document.createElement("div");
-    root.className = "blora-thread";
-    root.setAttribute("data-blora-thread", "");
-    root.innerHTML = `
-      <div class="blora-thread-comment" id="short">
-        <div class="blora-thread-comment__card">
-          <div class="blora-thread-comment__body">Short comment</div>
-          <div class="blora-thread-comment__react">
-            <button type="button" data-blora-thread-react aria-label="添加表情"></button>
-          </div>
-        </div>
-      </div>
-      <div class="blora-thread-comment" id="long" data-label-expand="阅读全文" data-label-collapse="收起全文">
-        <div class="blora-thread-comment__card">
-          <div class="blora-thread-comment__body">Long comment body</div>
-        </div>
-      </div>
-    `;
-    document.body.appendChild(root);
-    shortComment = root.querySelector("#short")!;
-    shortBody = shortComment.querySelector(".blora-thread-comment__body")!;
-    longComment = root.querySelector("#long")!;
-    longBody = longComment.querySelector(".blora-thread-comment__body")!;
-    reactBtn = shortComment.querySelector("[data-blora-thread-react]")!;
-    setScrollHeight(shortBody, 80);
-    setScrollHeight(longBody, 320);
+    defineBloraThreadElements(customElements);
   });
 
-  it("returns the focused comment-stream controller surface", () => {
-    const controller = createThreadController(root);
-    expect(typeof controller.refresh).toBe("function");
-    expect(typeof controller.expandComment).toBe("function");
-    expect(typeof controller.collapseComment).toBe("function");
-    expect(typeof controller.toggleComment).toBe("function");
-    expect(typeof controller.toggleReact).toBe("function");
-    expect(typeof controller.setComposerTab).toBe("function");
-    expect(typeof controller.destroy).toBe("function");
-    controller.destroy();
+  it("registers the public comment and composer elements", () => {
+    expect(customElements.get(BLORA_THREAD_COMMENT_TAG)).toBe(BloraThreadComment);
+    expect(customElements.get(BLORA_THREAD_COMPOSER_TAG)).toBe(BloraThreadComposer);
   });
 
-  it("does not fold short comments or create a fold control", () => {
-    const controller = createThreadController(root);
-    controller.refresh();
-    expect(shortComment.hasAttribute("data-collapsible")).toBe(false);
-    expect(shortComment.hasAttribute("data-collapsed")).toBe(false);
-    expect(shortComment.querySelector(".blora-thread-comment__fold")).toBeNull();
-    controller.destroy();
+  it("renders an open consumer-authored comment card", async () => {
+    const comment = createComment();
+    await settle();
+    expect(comment.querySelector(".blora-thread-comment__card")).not.toBeNull();
+    expect(comment.querySelector(".blora-thread-comment__head")?.textContent).toContain("Author");
+    expect(comment.querySelector(".blora-thread-comment__body")?.textContent).toContain(
+      "Comment body",
+    );
+    expect(comment.querySelector(".blora-thread-comment__react")).not.toBeNull();
   });
 
-  it("auto-folds long comments and generates the gradient floating control", () => {
-    const controller = createThreadController(root, { collapseHeight: 158 });
-    controller.refresh();
-    expect(longComment.hasAttribute("data-collapsible")).toBe(true);
-    expect(longComment.hasAttribute("data-collapsed")).toBe(true);
-    expect(longBody.style.getPropertyValue("--blora-thread-collapse-height")).toBe("158px");
-    expect(longBody.style.getPropertyValue("--blora-thread-content-height")).toBe("320px");
-    const fold = longComment.querySelector<HTMLElement>(".blora-thread-comment__fold")!;
-    expect(fold).not.toBeNull();
-    expect(fold.hasAttribute("data-blora-generated")).toBe(true);
-    const button = fold.querySelector<HTMLButtonElement>(".blora-button")!;
-    expect(button.textContent).toContain("阅读全文");
+  it("does not fold a short comment", async () => {
+    const comment = createComment();
+    await settle();
+    const body = comment.querySelector<HTMLElement>(".blora-thread-comment__body")!;
+    setScrollHeight(body, 80);
+    comment.refresh();
+    expect(comment.collapsible).toBe(false);
+    expect(comment.querySelector(".blora-thread-comment__fold")).toBeNull();
+  });
+
+  it("auto-folds a long comment and honors collapse-height", async () => {
+    const comment = createComment("Long comment");
+    comment.setAttribute("collapse-height", "96");
+    await settle();
+    const body = comment.querySelector<HTMLElement>(".blora-thread-comment__body")!;
+    setScrollHeight(body, 320);
+    comment.refresh();
+    expect(comment.collapsible).toBe(true);
+    expect(comment.collapsed).toBe(true);
+    expect(body.style.getPropertyValue("--blora-thread-collapse-height")).toBe("96px");
+    expect(body.style.getPropertyValue("--blora-thread-content-height")).toBe("320px");
+    const button = comment.querySelector<HTMLButtonElement>("[data-blora-thread-comment-fold]")!;
     expect(button.getAttribute("aria-expanded")).toBe("false");
     expect(button.querySelector('svg[data-blora-icon="chevron-down"]')).not.toBeNull();
-    controller.destroy();
   });
 
-  it("honors a per-comment collapsed height", () => {
-    longComment.setAttribute("data-collapse-height", "96");
-    const controller = createThreadController(root);
-    controller.refresh();
-    expect(longBody.style.getPropertyValue("--blora-thread-collapse-height")).toBe("96px");
-    controller.destroy();
-  });
-
-  it("expands and collapses a long comment through button and API", () => {
-    const controller = createThreadController(root);
-    controller.refresh();
-    const button = longComment.querySelector<HTMLButtonElement>(".blora-button")!;
+  it("expands and collapses through methods and the generated button", async () => {
+    const comment = createComment();
+    await settle();
+    const body = comment.querySelector<HTMLElement>(".blora-thread-comment__body")!;
+    setScrollHeight(body, 320);
+    comment.refresh();
+    const button = comment.querySelector<HTMLButtonElement>("[data-blora-thread-comment-fold]")!;
     button.click();
-    expect(longComment.hasAttribute("data-collapsed")).toBe(false);
-    expect(button.textContent).toContain("收起全文");
+    expect(comment.collapsed).toBe(false);
     expect(button.getAttribute("aria-expanded")).toBe("true");
-    expect(button.querySelector('svg[data-blora-icon="arrow-up"]')).not.toBeNull();
-    controller.collapseComment(longComment);
-    expect(longComment.hasAttribute("data-collapsed")).toBe(true);
-    controller.expandComment(longComment);
-    expect(longComment.hasAttribute("data-collapsed")).toBe(false);
-    controller.toggleComment(longComment);
-    expect(longComment.hasAttribute("data-collapsed")).toBe(true);
-    controller.destroy();
+    comment.collapse();
+    expect(comment.collapsed).toBe(true);
+    comment.expand();
+    expect(comment.collapsed).toBe(false);
+    comment.toggle();
+    expect(comment.collapsed).toBe(true);
   });
 
-  it("toggles a comment reaction with data-active and aria-pressed", () => {
-    const controller = createThreadController(root);
-    reactBtn.click();
-    expect(reactBtn.hasAttribute("data-active")).toBe(true);
-    expect(reactBtn.getAttribute("aria-pressed")).toBe("true");
-    controller.toggleReact(reactBtn);
-    expect(reactBtn.hasAttribute("data-active")).toBe(false);
-    controller.destroy();
+  it("toggles optional reaction state without prescribing reaction content", async () => {
+    const comment = createComment();
+    await settle();
+    const reaction = comment.querySelector<HTMLButtonElement>("[data-blora-thread-react]")!;
+    reaction.click();
+    expect(reaction.hasAttribute("data-active")).toBe(true);
+    expect(reaction.getAttribute("aria-pressed")).toBe("true");
+    reaction.click();
+    expect(reaction.hasAttribute("data-active")).toBe(false);
   });
 
-  it("switches composer tabs and exposes the API", () => {
-    root.insertAdjacentHTML(
-      "beforeend",
-      `<div class="blora-thread-composer">
-        <div class="blora-thread-composer__tabs">
-          <button type="button" data-blora-thread-tab data-tab="edit" data-active>编辑</button>
-          <button type="button" data-blora-thread-tab data-tab="preview">预览</button>
-        </div>
-        <textarea class="blora-thread-composer__input"></textarea>
-      </div>`,
-    );
-    const composer = root.querySelector<HTMLElement>(".blora-thread-composer")!;
-    const preview = root.querySelector<HTMLButtonElement>('[data-tab="preview"]')!;
-    const controller = createThreadController(root);
-    preview.click();
-    expect(composer.getAttribute("data-tab")).toBe("preview");
-    expect(preview.hasAttribute("data-active")).toBe(true);
-    controller.setComposerTab(composer, "edit");
-    expect(composer.getAttribute("data-tab")).toBe("edit");
-    controller.destroy();
-  });
+  it("renders composer definitions and leaves toolbar actions consumer-controlled", async () => {
+    const composer = document.createElement(BLORA_THREAD_COMPOSER_TAG) as BloraThreadComposer;
+    const toolbar = document.createElement("div");
+    toolbar.slot = "toolbar";
+    const custom = document.createElement("button");
+    custom.type = "button";
+    custom.textContent = "Custom";
+    toolbar.append(custom);
+    const editor = document.createElement("textarea");
+    const preview = document.createElement("div");
+    preview.slot = "preview";
+    preview.textContent = "Preview content";
+    const actions = document.createElement("div");
+    actions.slot = "actions";
+    actions.innerHTML = '<button type="button">Submit</button>';
+    composer.append(toolbar, editor, preview, actions);
+    document.body.append(composer);
+    await settle();
 
-  it("leaves consumer-authored toolbar button behavior untouched", () => {
-    root.insertAdjacentHTML(
-      "beforeend",
-      `<div class="blora-thread-composer">
-        <div class="blora-thread-composer__toolbar">
-          <button type="button" data-consumer-action="custom">自定义</button>
-        </div>
-      </div>`,
-    );
-    const button = root.querySelector<HTMLButtonElement>("[data-consumer-action]")!;
     let clicks = 0;
-    button.addEventListener("click", () => clicks++);
-    const controller = createThreadController(root);
-    button.click();
+    custom.addEventListener("click", () => clicks++);
+    custom.click();
     expect(clicks).toBe(1);
-    expect(button.attributes).toHaveLength(2);
-    controller.destroy();
+    expect(composer.querySelector(".blora-thread-composer__toolbar")?.contains(custom)).toBe(true);
+    expect(editor.classList.contains("blora-thread-composer__input")).toBe(true);
+    expect(composer.querySelector(".blora-thread-composer__footer")?.textContent).toContain(
+      "Submit",
+    );
   });
 
-  it("destroy removes generated controls and measurement state", () => {
-    const controller = createThreadController(root);
-    controller.refresh();
-    expect(longComment.querySelector(".blora-thread-comment__fold")).not.toBeNull();
-    controller.destroy();
-    expect(longComment.querySelector(".blora-thread-comment__fold")).toBeNull();
-    expect(longComment.hasAttribute("data-collapsible")).toBe(false);
-    expect(longComment.hasAttribute("data-collapsed")).toBe(false);
-    expect(longBody.style.getPropertyValue("--blora-thread-collapse-height")).toBe("");
-    expect(longBody.style.getPropertyValue("--blora-thread-content-height")).toBe("");
+  it("switches edit and preview with attributes, methods and keyboard", async () => {
+    const composer = document.createElement(BLORA_THREAD_COMPOSER_TAG) as BloraThreadComposer;
+    const editor = document.createElement("textarea");
+    const preview = document.createElement("div");
+    preview.slot = "preview";
+    preview.textContent = "Preview";
+    composer.append(editor, preview);
+    document.body.append(composer);
+    await settle();
+
+    const tabs = composer.querySelectorAll<HTMLButtonElement>("[data-blora-thread-tab]");
+    expect(composer.tab).toBe("edit");
+    tabs[1]!.click();
+    expect(composer.tab).toBe("preview");
+    expect(editor.getClientRects).toBeDefined();
+    expect(composer.querySelector<HTMLElement>(".blora-thread-composer__preview")?.hidden).toBe(
+      false,
+    );
+
+    tabs[1]!.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowLeft", bubbles: true }));
+    expect(composer.tab).toBe("edit");
+    composer.setTab("preview");
+    expect(composer.getAttribute("data-tab")).toBe("preview");
+  });
+
+  it("emits the composer tab change event", async () => {
+    const composer = document.createElement(BLORA_THREAD_COMPOSER_TAG) as BloraThreadComposer;
+    composer.append(document.createElement("textarea"));
+    document.body.append(composer);
+    await settle();
+    let detail: unknown;
+    composer.addEventListener("blora-thread-tab-change", (event) => {
+      detail = (event as CustomEvent).detail;
+    });
+    composer.setTab("preview");
+    expect(detail).toEqual({ tab: "preview" });
   });
 });

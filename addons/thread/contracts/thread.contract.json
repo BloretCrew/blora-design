@@ -2,48 +2,42 @@
   "name": "thread",
   "category": "data-display",
   "status": "beta",
-  "kind": "headless",
+  "kind": "composite-custom-elements",
   "since": "2.0.0",
   "requiresJavaScript": true,
   "formAssociated": false,
+  "customElements": {
+    "blora-thread-comment": {
+      "attributes": [
+        "collapse-height",
+        "label-expand",
+        "label-collapse",
+        "data-collapsible",
+        "data-collapsed"
+      ],
+      "properties": ["collapsible", "collapsed"],
+      "methods": ["refresh", "expand", "collapse", "toggle"],
+      "definitions": ["slot=head", "slot=quote", "default body", "slot=reactions"],
+      "cssProperties": ["--blora-thread-collapse-height", "--blora-thread-content-height"]
+    },
+    "blora-thread-composer": {
+      "attributes": ["tab", "edit-label", "preview-label", "data-tab"],
+      "properties": ["tab"],
+      "methods": ["setTab"],
+      "events": ["blora-thread-tab-change"],
+      "definitions": ["slot=toolbar", "default editor", "slot=preview", "slot=actions"]
+    }
+  },
   "attributes": {
-    "data-blora-thread": {
-      "description": "Marks a thread root for comment reactions, automatic long-content folding and composer tabs"
-    },
-    "data-blora-thread-comment": {
-      "description": "Marks a forum comment card; .blora-thread-comment is also accepted"
-    },
     "data-blora-thread-react": {
-      "description": "Comment reaction toggle (data-active + aria-pressed) inside .blora-thread-comment__react"
-    },
-    "data-blora-thread-tab": {
-      "description": "Composer tab (data-tab=\"edit\"|\"preview\"); toggles data-active and the composer's data-tab state"
-    },
-    "data-collapse-height": {
-      "description": "Per-comment collapsed body height in pixels; defaults to controller option collapseHeight (158)"
-    },
-    "data-collapsible": {
-      "description": "Controller-written when the comment body exceeds the collapsed height"
-    },
-    "data-collapsed": {
-      "description": "Controller-written long-comment collapsed state"
+      "description": "Optional reaction toggle inside blora-thread-comment; toggles data-active and aria-pressed"
     },
     "data-active": {
-      "description": "Active state for a reaction button or composer tab"
-    },
-    "data-label-expand": {
-      "description": "Per-comment expand label (default 展开评论)"
-    },
-    "data-label-collapse": {
-      "description": "Per-comment collapse label (default 收起评论)"
+      "description": "Controller-written active state for a reaction or generated composer tab"
     }
   },
   "properties": {},
-  "methods": {
-    "createThreadController": {
-      "description": "Create a comment-stream controller: auto-detect and fold long comment bodies, toggle reactions, and switch composer tabs"
-    }
-  },
+  "methods": {},
   "events": {},
   "slots": {},
   "parts": [],
@@ -63,6 +57,7 @@
     ".blora-thread-composer__tabs",
     ".blora-thread-composer__toolbar",
     ".blora-thread-composer__input",
+    ".blora-thread-composer__preview",
     ".blora-thread-composer__footer"
   ],
   "accessibilityPattern": "list",

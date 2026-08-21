@@ -1,7 +1,7 @@
 {
   "name": "@bloret-crew/blora-design-thread",
   "version": "2.0.0-beta.0",
-  "description": "Forum comment-stream, reactions and long-content folding add-on for Blora Design 2.0.",
+  "description": "Forum comment and composer composite custom elements for Blora Design 2.0.",
   "license": "Apache-2.0",
   "type": "module",
   "author": "RhedarLiu <rhedarliu@outlook.com>",

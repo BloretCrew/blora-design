@@ -220,6 +220,7 @@
 - [x] Showcase 核心组件目录：已按 `component-manifest.json` 扩展为 87/87；单视图懒挂载，Preview / HTML 同源生成，并由结构门禁防止清单漂移
 - [ ] 2.0 **i18n / locales** 运行时（P9-8）
 - [ ] add-on 独立 Playwright / visual 深矩阵（P9-6）
+- [ ] add-on Composite CE 后续迁移：QRCode、Effects、Layout/Markdown 适配项（审查见 `addon-composite-ce-audit.md`；Thread 已完成，Theming 无需重写）
 - [ ] FA WC 全面化（结构 CE 已默认；form association 仍按 ADR-015 分阶段）
 - [x] runtime compat 已撤销；仓库外 `legacy/v1` 作为冻结基线继续保留
 - [x] 全量 `pnpm verify` 作为发布硬门 — 2026-08-09 单次完整 exit 0，见 §5

@@ -124,7 +124,9 @@ describe("showcase-v2 full component catalog", () => {
 
   it("appends complete add-on and service scripts after serialized markup", () => {
     const html = readFileSync(showcasePath, "utf8");
-    expect(html).toMatch(/querySelectorAll\("\[data-blora-thread\]"\)/);
+    expect(html).toContain("<blora-thread-comment");
+    expect(html).toContain("<blora-thread-composer>");
+    expect(html).not.toContain("createThreadController");
     expect(html).toContain("createCountUpController");
     expect(html).toContain("createHoverGalleryController");
     expect(html).toContain("createWatermarkController");
