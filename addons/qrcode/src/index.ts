@@ -2,6 +2,8 @@
  * Blora Design 2.0 - QR Code add-on.
  * Spec §9: Add-on package, not bundled into core.
  * Visual baseline: archived 1.x blora.js lines 5977-6090.
+ * Composite CE: `<blora-qrcode>` owns the canvas; `buildQRMatrix()` and
+ * `renderQRCode()` remain pure/imperative services.
  * @packageDocumentation
  */
 
@@ -229,3 +231,68 @@ export function initQRCode(
     });
   return () => ctrls.forEach((c) => c.destroy());
 }
+
+export const BLORA_QRCODE_TAG = "blora-qrcode";
+
+const QrBase: typeof HTMLElement =
+  typeof HTMLElement !== "undefined" ? HTMLElement : (class {} as typeof HTMLElement);
+
+/**
+ * Composite CE host for a rendered QR code canvas.
+ * Consumers provide `value` (or default text content); the element owns the
+ * canvas lifecycle and re-renders when attributes change.
+ */
+export class BloraQRCode extends QrBase {
+  static get observedAttributes(): string[] {
+    return ["value", "size", "label"];
+  }
+
+  private connectScheduled = false;
+
+  connectedCallback(): void {
+    this.classList.add("blora-qrcode");
+    if (this.ownerDocument?.readyState === "loading") {
+      if (this.connectScheduled) return;
+      this.connectScheduled = true;
+      setTimeout(() => {
+        this.connectScheduled = false;
+        if (this.isConnected) this.render();
+      }, 0);
+      return;
+    }
+    this.render();
+  }
+
+  attributeChangedCallback(): void {
+    if (this.isConnected) this.render();
+  }
+
+  /** Current encoded text: `value` attribute, else trimmed text content. */
+  get value(): string {
+    return this.getAttribute("value") || this.textContent?.trim() || "";
+  }
+
+  set value(text: string) {
+    this.setAttribute("value", text);
+  }
+
+  render(): void {
+    const size = Number(this.getAttribute("size")) || 148;
+    renderQRCode(this, this.value, { size });
+    const label = this.getAttribute("label");
+    if (label) {
+      this.setAttribute("role", "img");
+      this.setAttribute("aria-label", label);
+    } else {
+      this.removeAttribute("role");
+      this.removeAttribute("aria-label");
+    }
+  }
+}
+
+export function defineBloraQRCode(registry: CustomElementRegistry = customElements): void {
+  if (!registry || registry.get(BLORA_QRCODE_TAG)) return;
+  registry.define(BLORA_QRCODE_TAG, BloraQRCode);
+}
+
+if (typeof customElements !== "undefined") defineBloraQRCode(customElements);

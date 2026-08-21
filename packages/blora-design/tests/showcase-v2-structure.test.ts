@@ -111,9 +111,9 @@ describe("showcase-v2 full component catalog", () => {
     expect(html).toMatch(/data-addon="thread"[\s\S]*class="blora-thread"/);
     expect(html).toMatch(/data-addon="layout"[\s\S]*<blora-sidebar-layout\b/);
     expect(html).toMatch(/data-addon="markdown"[\s\S]*type="text\/markdown"/);
-    expect(html).toMatch(/data-addon="effects"[\s\S]*data-blora-text-fx="big"/);
+    expect(html).toMatch(/data-addon="effects"[\s\S]*<blora-text-fx effect="big"/);
     expect(html).toMatch(
-      /data-addon="qrcode"[\s\S]*data-blora-qrcode[\s\S]*data-text="https:\/\/blora\.design\/components"/,
+      /data-addon="qrcode"[\s\S]*<blora-qrcode\b[^>]*value="https:\/\/blora\.design\/components"/,
     );
     expect(html).toMatch(/data-addon="theming"[\s\S]*<blora-palette-picker\b/);
     expect(html).toMatch(/function sourceLines\(template\) \{[\s\S]*serializeNode\(node\)/);
@@ -127,11 +127,13 @@ describe("showcase-v2 full component catalog", () => {
     expect(html).toContain("<blora-thread-comment");
     expect(html).toContain("<blora-thread-composer>");
     expect(html).not.toContain("createThreadController");
-    expect(html).toContain("createCountUpController");
-    expect(html).toContain("createHoverGalleryController");
-    expect(html).toContain("createWatermarkController");
+    expect(html).toContain("<blora-text-fx");
+    expect(html).toContain("<blora-count-up");
+    expect(html).toContain("<blora-diff");
+    expect(html).toContain("<blora-hover-gallery");
+    expect(html).toContain("<blora-watermark");
     expect(html).toContain("initShortcutHints");
-    expect(html).toContain("createQRCodeController");
+    expect(html).toContain("<blora-qrcode");
     expect(html).toContain("bootThemeFromStorage");
     expect(html).toContain("createMessageElement");
     expect(html).toContain("createNotificationElement");

@@ -2,13 +2,23 @@
   "name": "qrcode",
   "category": "data-display",
   "status": "beta",
-  "kind": "service",
+  "kind": "composite-custom-elements-and-service",
   "since": "2.0.0",
   "requiresJavaScript": true,
   "formAssociated": false,
+  "customElements": {
+    "blora-qrcode": {
+      "attributes": ["value", "size", "label"],
+      "properties": ["value"],
+      "methods": ["render"]
+    }
+  },
   "attributes": {},
   "properties": {},
   "methods": {
+    "buildQRMatrix": {
+      "description": "Pure QR matrix builder (beta simplified encoder)"
+    },
     "renderQRCode": {
       "description": "Render a QR code into a container element"
     }

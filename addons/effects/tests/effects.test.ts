@@ -7,8 +7,19 @@ import {
   createTextRotateController,
   createImageDiffController,
   formatShortcut,
+  BLORA_COUNTDOWN_TAG,
+  BLORA_DIFF_TAG,
+  BLORA_HOVER_GALLERY_TAG,
+  BLORA_TEXT_FX_TAG,
+  BLORA_TEXT_ROTATE_TAG,
+  BLORA_WATERMARK_TAG,
+  BloraCountUp,
   type TextFxName,
 } from "../src/index.js";
+
+async function settle(): Promise<void> {
+  await Promise.resolve();
+}
 
 describe("Effects add-on", () => {
   beforeEach(() => {
@@ -337,5 +348,141 @@ describe("effects extras", () => {
     const ctrl = createImageDiffController(root);
     expect(root.style.getPropertyValue("--blora-diff-position")).toBe("30%");
     ctrl.destroy();
+  });
+});
+
+describe("effects composite custom elements", () => {
+  beforeEach(() => {
+    document.body.innerHTML = "";
+  });
+
+  it("blora-text-fx applies the declared effect to its own content", async () => {
+    const el = document.createElement(BLORA_TEXT_FX_TAG);
+    el.setAttribute("effect", "disperse");
+    el.textContent = "ABC";
+    document.body.append(el);
+    await settle();
+    expect(el.classList.contains("blora-text-fx--disperse")).toBe(true);
+    expect(el.querySelectorAll(".blora-text-fx__ch").length).toBe(3);
+  });
+
+  it("blora-text-rotate wraps consumer children as items", async () => {
+    const el = document.createElement(BLORA_TEXT_ROTATE_TAG);
+    el.setAttribute("interval", "99999");
+    for (const text of ["A", "B"]) {
+      const item = document.createElement("span");
+      item.textContent = text;
+      el.append(item);
+    }
+    document.body.append(el);
+    await settle();
+    expect(el.classList.contains("blora-text-rotate")).toBe(true);
+    expect(el.querySelectorAll(".blora-text-rotate__item").length).toBe(2);
+    expect(el.querySelector(".blora-text-rotate__item")?.hasAttribute("data-active")).toBe(true);
+  });
+
+  it("blora-countdown generates localized units and a timer role", async () => {
+    const el = document.createElement(BLORA_COUNTDOWN_TAG);
+    el.setAttribute("seconds", "86405");
+    document.body.append(el);
+    await settle();
+    expect(el.getAttribute("role")).toBe("timer");
+    expect(el.querySelectorAll(".blora-countdown__unit").length).toBe(4);
+    /* The public `seconds` attribute must drive the timer (1 day + 5s). */
+    expect(el.querySelector('[data-unit="days"]')?.textContent).toBe("1");
+    expect(el.querySelector('[data-unit="seconds"]')?.textContent).toBe("05");
+  });
+
+  it("blora-text-rotate translates the interval attribute for its controller", async () => {
+    const el = document.createElement(BLORA_TEXT_ROTATE_TAG);
+    el.setAttribute("interval", "99999");
+    el.innerHTML = "<span>A</span><span>B</span>";
+    document.body.append(el);
+    await settle();
+    expect(el.dataset.interval).toBe("99999");
+  });
+
+  it("blora-count-up translates duration/decimals/prefix/suffix attributes", () => {
+    const el = document.createElement("blora-count-up") as BloraCountUp;
+    el.setAttribute("value", "12.5");
+    el.setAttribute("duration", "2000");
+    el.setAttribute("decimals", "1");
+    el.setAttribute("prefix", "$");
+    el.setAttribute("suffix", "k");
+    document.body.append(el);
+    expect(el.dataset.duration).toBe("2000");
+    expect(el.dataset.decimals).toBe("1");
+    expect(el.dataset.prefix).toBe("$");
+    expect(el.dataset.suffix).toBe("k");
+  });
+
+  it("blora-count-up exposes the value property", () => {
+    const el = document.createElement("blora-count-up") as BloraCountUp;
+    el.setAttribute("value", "12847");
+    expect(el.value).toBe(12847);
+    el.value = 42;
+    expect(el.getAttribute("value")).toBe("42");
+  });
+
+  it("blora-diff builds panes, divider and range from definition children", async () => {
+    const el = document.createElement(BLORA_DIFF_TAG) as import("../src/index.js").BloraDiff;
+    const before = document.createElement("blora-diff-before");
+    before.innerHTML = "<p>before</p>";
+    const after = document.createElement("blora-diff-after");
+    after.innerHTML = "<p>after</p>";
+    el.append(before, after);
+    document.body.append(el);
+    await settle();
+
+    expect(el.querySelectorAll(".blora-diff__item").length).toBe(2);
+    expect(el.querySelector(".blora-diff__divider")).not.toBeNull();
+    const input = el.querySelector<HTMLInputElement>(".blora-diff__range")!;
+    expect(input.value).toBe("50");
+    input.value = "25";
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+    expect(el.style.getPropertyValue("--blora-diff-position")).toBe("25%");
+    el.value = 70;
+    expect(input.value).toBe("70");
+  });
+
+  it("blora-hover-gallery wraps arbitrary children into items with progress dots", async () => {
+    const el = document.createElement(BLORA_HOVER_GALLERY_TAG);
+    for (const tone of ["a", "b", "c"]) {
+      const pane = document.createElement("div");
+      pane.dataset.tone = tone;
+      el.append(pane);
+    }
+    document.body.append(el);
+    await settle();
+    expect(el.classList.contains("blora-hover-gallery")).toBe(true);
+    expect(el.querySelectorAll(".blora-hover-gallery__item").length).toBe(3);
+    expect(el.querySelectorAll(".blora-hover-gallery__progress span").length).toBe(3);
+  });
+
+  it("blora-hover-gallery stays idempotent across repeated connects", async () => {
+    const el = document.createElement(BLORA_HOVER_GALLERY_TAG);
+    for (let i = 0; i < 3; i++) el.append(document.createElement("div"));
+    document.body.append(el);
+    await settle();
+    el.remove();
+    document.body.append(el);
+    await settle();
+    el.remove();
+    document.body.append(el);
+    await settle();
+    expect(el.querySelectorAll(".blora-hover-gallery__item").length).toBe(3);
+    expect(el.querySelectorAll(".blora-hover-gallery__progress span").length).toBe(3);
+  });
+
+  it("blora-watermark paints an aria-hidden overlay from the text attribute", async () => {
+    const el = document.createElement(BLORA_WATERMARK_TAG);
+    el.setAttribute("text", "BLORA");
+    el.innerHTML = "<p>受保护的预览内容</p>";
+    document.body.append(el);
+    await settle();
+    expect(el.classList.contains("blora-watermark")).toBe(true);
+    const layer = el.querySelector<HTMLElement>(".blora-watermark__canvas")!;
+    expect(layer.getAttribute("aria-hidden")).toBe("true");
+    expect(layer.style.backgroundImage).toContain("url(");
   });
 });

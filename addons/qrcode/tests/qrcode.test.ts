@@ -1,5 +1,12 @@
 import { describe, it, expect } from "vitest";
-import { renderQRCode, buildQRMatrix, createQRCodeController, initQRCode } from "../src/index.js";
+import {
+  renderQRCode,
+  buildQRMatrix,
+  createQRCodeController,
+  initQRCode,
+  BLORA_QRCODE_TAG,
+  BloraQRCode,
+} from "../src/index.js";
 
 describe("QRCode add-on", () => {
   it("buildQRMatrix returns a 2D boolean array", () => {
@@ -104,5 +111,32 @@ describe("QRCode add-on", () => {
     const off = initQRCode(document, { size: 64 });
     expect(document.querySelector("canvas")).toBeTruthy();
     off();
+  });
+
+  it("blora-qrcode renders a canvas from value and syncs the label", () => {
+    const el = document.createElement(BLORA_QRCODE_TAG) as BloraQRCode;
+    el.setAttribute("value", "https://example.com");
+    el.setAttribute("size", "120");
+    el.setAttribute("label", "示例二维码");
+    document.body.append(el);
+
+    expect(el.classList.contains("blora-qrcode")).toBe(true);
+    const canvas = el.querySelector("canvas");
+    expect(canvas).toBeTruthy();
+    expect(el.style.getPropertyValue("--blora-qr-size")).toBe("120px");
+    expect(el.getAttribute("role")).toBe("img");
+    expect(el.getAttribute("aria-label")).toBe("示例二维码");
+
+    el.removeAttribute("label");
+    expect(el.hasAttribute("role")).toBe(false);
+  });
+
+  it("blora-qrcode re-renders when value changes and reuses the canvas", () => {
+    const el = document.createElement(BLORA_QRCODE_TAG) as BloraQRCode;
+    el.setAttribute("value", "first");
+    document.body.append(el);
+    const canvas = el.querySelector("canvas")!;
+    el.value = "second";
+    expect(el.querySelector("canvas")).toBe(canvas);
   });
 });

@@ -2,16 +2,55 @@
   "name": "effects",
   "category": "data-display",
   "status": "beta",
-  "kind": "service",
+  "kind": "composite-custom-elements-and-service",
   "since": "2.0.0",
   "requiresJavaScript": true,
   "formAssociated": false,
+  "customElements": {
+    "blora-text-fx": {
+      "attributes": ["effect", "loop", "clickable"],
+      "properties": ["effect"],
+      "methods": ["apply"]
+    },
+    "blora-text-rotate": {
+      "attributes": ["interval"],
+      "definitions": [".blora-text-rotate__item children (consumer content)"]
+    },
+    "blora-countdown": {
+      "attributes": ["target", "seconds", "label"],
+      "events": ["blora:complete"],
+      "classes": [".blora-countdown__unit", ".blora-countdown__value", ".blora-countdown__label"]
+    },
+    "blora-count-up": {
+      "attributes": ["value", "duration", "decimals", "prefix", "suffix"],
+      "properties": ["value"]
+    },
+    "blora-diff": {
+      "attributes": ["value", "label"],
+      "properties": ["value"],
+      "definitions": ["blora-diff-before", "blora-diff-after"],
+      "cssProperties": ["--blora-diff-position", "--blora-diff-ratio"]
+    },
+    "blora-hover-gallery": {
+      "attributes": ["aria-label"],
+      "definitions": [".blora-hover-gallery__item children (consumer content)"],
+      "classes": [".blora-hover-gallery__track", ".blora-hover-gallery__progress"]
+    },
+    "blora-watermark": {
+      "attributes": ["text"],
+      "properties": ["text"],
+      "classes": [".blora-watermark__canvas"]
+    }
+  },
   "attributes": {},
   "properties": {},
   "methods": {
     "textFx": {
-      "description": "Apply one of the eight Apple-style text effects: big, small, shake, nod, disperse, ripple, bloom, or jitter."
-    }
+      "description": "Imperative text effect for arbitrary elements or explicit replay"
+    },
+    "initShortcutHints": {},
+    "formatShortcut": {},
+    "getShortcutPlatform": {}
   },
   "events": {},
   "slots": {},

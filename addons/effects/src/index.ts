@@ -1,8 +1,9 @@
 /**
  * Blora Design 2.0 - Effects add-on.
  * Spec §9: Add-on package, not bundled into core.
- * Includes textFx + text-rotate / countdown / countup / diff / hover-gallery /
- * watermark / shortcut hints (migrated from core 2026-08).
+ * Composite CEs own the DOM lifecycles (text-fx, rotate, countdown, countup,
+ * diff, hover-gallery, watermark); controllers and shortcut helpers remain
+ * imperative services.
  * @packageDocumentation
  */
 
@@ -16,6 +17,24 @@ export {
   initShortcutHints,
   formatShortcut,
   getShortcutPlatform,
+  textFx,
+  BloraTextFx,
+  BloraTextRotate,
+  BloraCountdown,
+  BloraCountUp,
+  BloraDiff,
+  BloraHoverGallery,
+  BloraWatermark,
+  defineBloraEffectsElements,
+  BLORA_TEXT_FX_TAG,
+  BLORA_TEXT_ROTATE_TAG,
+  BLORA_COUNTDOWN_TAG,
+  BLORA_COUNT_UP_TAG,
+  BLORA_DIFF_TAG,
+  BLORA_HOVER_GALLERY_TAG,
+  BLORA_WATERMARK_TAG,
+  type TextFxName,
+  type TextFxOptions,
   type TextRotateController,
   type CountdownController,
   type CountUpController,
@@ -23,281 +42,3 @@ export {
   type HoverGalleryController,
   type WatermarkController,
 } from "./extras.js";
-
-export type TextFxName =
-  "big" | "small" | "shake" | "nod" | "disperse" | "ripple" | "bloom" | "jitter";
-
-export interface TextFxOptions {
-  /** Loop the animation (default: false) */
-  loop?: boolean;
-  /** Make the element clickable (default: false) */
-  clickable?: boolean;
-}
-
-const TEXT_FX: TextFxName[] = [
-  "big",
-  "small",
-  "shake",
-  "nod",
-  "disperse",
-  "ripple",
-  "bloom",
-  "jitter",
-];
-
-const TEXT_FX_SET = new Set<string>(TEXT_FX);
-
-const TEXT_FX_SPLIT: TextFxName[] = ["shake", "disperse", "ripple", "bloom", "jitter"];
-
-function textFxNameFromEl(el: HTMLElement): string {
-  const raw = (el.getAttribute("data-blora-text-fx") || "").trim().toLowerCase();
-  if (TEXT_FX_SET.has(raw)) return raw;
-  for (const fx of TEXT_FX) {
-    if (el.classList.contains(`blora-text-fx--${fx}`)) return fx;
-  }
-  return "";
-}
-
-function prefersReduced(el: HTMLElement): boolean {
-  const win = el.ownerDocument?.defaultView;
-  return !!win?.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-}
-
-function layoutTextFxPhysics(el: HTMLElement, name: string): void {
-  const chars = el.querySelectorAll(".blora-text-fx__ch");
-  const n = chars.length || 1;
-
-  chars.forEach((span, i) => {
-    const charSpan = span as HTMLElement;
-    const ratio = n <= 1 ? 0.5 : i / (n - 1);
-    charSpan.style.setProperty("--i", String(i));
-    charSpan.style.setProperty("--fx-ratio", ratio.toFixed(3));
-
-    if (name === "disperse") {
-      const angle = (ratio - 0.5) * 1.6 + (Math.random() - 0.5) * 0.5;
-      const dist = 1.4 + Math.random() * 1.1;
-      const x = Math.sin(angle) * dist;
-      const y = -Math.cos(angle) * dist - Math.random() * 0.5;
-      const r = (Math.random() - 0.5) * 50;
-      charSpan.style.setProperty("--fx-x", `${x.toFixed(2)}em`);
-      charSpan.style.setProperty("--fx-y", `${y.toFixed(2)}em`);
-      charSpan.style.setProperty("--fx-r", `${r.toFixed(1)}deg`);
-    } else {
-      charSpan.style.removeProperty("--fx-x");
-      charSpan.style.removeProperty("--fx-y");
-      charSpan.style.removeProperty("--fx-r");
-      charSpan.style.removeProperty("--fx-center-delay");
-    }
-  });
-}
-
-function handleTextFxCopy(this: HTMLElement, event: ClipboardEvent): void {
-  const selection = this.ownerDocument.getSelection();
-  if (!selection || selection.isCollapsed || !event.clipboardData) return;
-  const chars = Array.from(this.querySelectorAll<HTMLElement>(".blora-text-fx__ch"));
-  if (!chars.length) return;
-  const range = selection.rangeCount ? selection.getRangeAt(0) : null;
-  if (!range) return;
-  const selected = chars.filter((span) => range.intersectsNode(span));
-  if (!selected.length) return;
-  const plain = selected.map((span) => span.textContent?.replace(/\u00a0/g, " ") ?? "").join("");
-  if (!plain) return;
-  event.preventDefault();
-  event.clipboardData.setData("text/plain", plain);
-}
-
-function charSpanAtPoint(el: HTMLElement, x: number, y: number): HTMLElement | null {
-  const doc = el.ownerDocument;
-  const fromRange = (
-    doc as Document & { caretRangeFromPoint?: (x: number, y: number) => Range | null }
-  ).caretRangeFromPoint?.(x, y);
-  if (fromRange?.startContainer?.nodeType === Node.TEXT_NODE) {
-    return (
-      (fromRange.startContainer.parentElement as HTMLElement | null)?.closest(
-        ".blora-text-fx__ch",
-      ) ?? null
-    );
-  }
-  const fromPos = (
-    doc as Document & {
-      caretPositionFromPoint?: (x: number, y: number) => { offsetNode: Node } | null;
-    }
-  ).caretPositionFromPoint?.(x, y);
-  if (fromPos?.offsetNode?.nodeType === Node.TEXT_NODE) {
-    return (
-      (fromPos.offsetNode.parentElement as HTMLElement | null)?.closest(".blora-text-fx__ch") ??
-      null
-    );
-  }
-  return null;
-}
-
-function selectTextFxForEvent(el: HTMLElement, event: MouseEvent): void {
-  /* Split chars are independent inline-block boxes, so the browser's native
-     word/triple-click selection does not apply. Restore it: double click
-     selects the word (contiguous non-space chars), triple click the line.
-     Runs on mouseup (detail>=2) so the browser's per-char selection is
-     prevented before it sticks, and again on dblclick as a fallback. */
-  if (event.detail < 2) return;
-  event.preventDefault();
-  const doc = el.ownerDocument;
-  const selection = doc.getSelection();
-  if (!selection) return;
-
-  const range = doc.createRange();
-  const chars = Array.from(el.querySelectorAll<HTMLElement>(".blora-text-fx__ch"));
-  if (event.detail >= 3 || !chars.length) {
-    range.selectNodeContents(el);
-  } else {
-    /* Animated chars move under the cursor, so the click target may be the
-       container or a gap. Fall back to the char nearest the click point, then
-       to the whole line — never leave the browser's single-char selection. */
-    const target = event.target as HTMLElement;
-    const clicked =
-      target.closest<HTMLElement>(".blora-text-fx__ch") ??
-      charSpanAtPoint(el, event.clientX, event.clientY);
-    const idx = clicked ? chars.indexOf(clicked) : -1;
-    if (idx < 0) {
-      range.selectNodeContents(el);
-    } else {
-      const isSpace = (span: HTMLElement) =>
-        span.textContent === "\u00a0" || span.textContent?.trim() === "";
-      let start = idx;
-      let end = idx;
-      while (start > 0 && !isSpace(chars[start - 1]!)) start--;
-      while (end < chars.length - 1 && !isSpace(chars[end + 1]!)) end++;
-      if (isSpace(chars[idx]!)) {
-        range.selectNode(chars[idx]!);
-      } else {
-        range.setStartBefore(chars[start]!);
-        range.setEndAfter(chars[end]!);
-      }
-    }
-  }
-  selection.removeAllRanges();
-  selection.addRange(range);
-}
-
-function handleTextFxMouseUp(this: HTMLElement, event: MouseEvent): void {
-  selectTextFxForEvent(this, event);
-}
-
-function handleTextFxDblClick(this: HTMLElement, event: MouseEvent): void {
-  selectTextFxForEvent(this, event);
-}
-
-function splitTextFxLetters(el: HTMLElement): void {
-  if (el.dataset.bloraFxSplit === "1") {
-    layoutTextFxPhysics(el, textFxNameFromEl(el));
-    return;
-  }
-
-  const text = el.textContent || "";
-  el.textContent = "";
-
-  Array.from(text).forEach((ch, i) => {
-    const span = document.createElement("span");
-    span.className = "blora-text-fx__ch";
-    span.style.setProperty("--i", String(i));
-    span.textContent = ch === " " ? "\u00a0" : ch;
-    el.appendChild(span);
-  });
-
-  el.dataset.bloraFxSplit = "1";
-  el.dataset.bloraFxText = text;
-  el.addEventListener("copy", handleTextFxCopy);
-  el.addEventListener("mouseup", handleTextFxMouseUp);
-  el.addEventListener("dblclick", handleTextFxDblClick);
-  layoutTextFxPhysics(el, textFxNameFromEl(el));
-}
-
-function unsplitTextFxLetters(el: HTMLElement): void {
-  if (el.dataset.bloraFxSplit !== "1") return;
-
-  const text = el.dataset.bloraFxText ?? "";
-  el.textContent = text;
-  el.removeAttribute("data-blora-fx-split");
-  el.removeAttribute("data-blora-fx-text");
-  el.removeEventListener("copy", handleTextFxCopy);
-  el.removeEventListener("mouseup", handleTextFxMouseUp);
-  el.removeEventListener("dblclick", handleTextFxDblClick);
-}
-
-function applyTextFxName(el: HTMLElement, name: TextFxName): boolean {
-  if (!TEXT_FX_SET.has(name)) return false;
-
-  el.classList.add("blora-text-fx");
-
-  for (const fx of TEXT_FX) {
-    el.classList.remove(`blora-text-fx--${fx}`);
-  }
-  el.classList.add(`blora-text-fx--${name}`);
-
-  el.setAttribute("data-blora-text-fx", name);
-
-  if (TEXT_FX_SPLIT.includes(name)) {
-    splitTextFxLetters(el);
-    layoutTextFxPhysics(el, name);
-  } else {
-    unsplitTextFxLetters(el);
-  }
-
-  return true;
-}
-
-function restartTextFxAnimation(el: HTMLElement): void {
-  el.classList.remove("is-play");
-  el.querySelectorAll(".blora-text-fx__ch").forEach((ch) => {
-    (ch as HTMLElement).style.animation = "none";
-  });
-  // Force reflow
-  void el.offsetWidth;
-  el.querySelectorAll(".blora-text-fx__ch").forEach((ch) => {
-    (ch as HTMLElement).style.animation = "";
-  });
-  el.classList.add("is-play");
-}
-
-/**
- * Apply a text effect to a target element.
- *
- * @param target - The element to apply the effect to
- * @param name - Effect name (big, small, shake, nod, disperse, ripple, bloom, jitter)
- * @param options - Loop and clickable options
- * @returns The element if successful, null otherwise
- */
-export function textFx(
-  target: HTMLElement,
-  name?: TextFxName,
-  options?: TextFxOptions,
-): HTMLElement | null {
-  if (typeof document === "undefined") return null;
-  if (!target) return null;
-
-  if (name) {
-    if (!applyTextFxName(target, name)) return null;
-  } else {
-    if (!textFxNameFromEl(target)) return null;
-    layoutTextFxPhysics(target, textFxNameFromEl(target));
-  }
-
-  if (options?.loop) {
-    target.classList.add("is-loop");
-  } else {
-    target.classList.remove("is-loop");
-  }
-
-  if (options?.clickable) {
-    target.classList.add("is-clickable");
-  } else {
-    target.classList.remove("is-clickable");
-  }
-
-  if (prefersReduced(target)) {
-    target.classList.add("is-play");
-    return target;
-  }
-
-  restartTextFxAnimation(target);
-  return target;
-}

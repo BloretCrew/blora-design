@@ -127,7 +127,7 @@
         padding: var(--blora-space-3) var(--blora-space-4);
       }
 
-      .showcase-textfx-item [data-blora-text-fx] {
+      .showcase-textfx-item blora-text-fx {
         font-size: 19px;
         font-weight: 500;
         line-height: 1.4;
@@ -1173,33 +1173,28 @@
           <blora-splitter-pane style="display: grid; place-items: center; padding: var(--blora-space-4);">右栏 · 自适应</blora-splitter-pane>
         </blora-splitter>
       </template>
-      <template data-addon="effects" data-label="Effects" data-group="数据展示" data-eyebrow="Data display" data-kind="Service" data-description="文字动效、轮换、倒计时、数字增长、双边对比、悬停画廊、水印和快捷键提示。">
+      <template data-addon="effects" data-label="Effects" data-group="数据展示" data-eyebrow="Data display" data-kind="Composite CE" data-description="文字动效、轮换、倒计时、数字增长、双边对比、悬停画廊、水印和快捷键提示。">
         <div data-showcase-cases data-showcase-addon-effects>
           <section data-showcase-case="TextFx"><h3>文字动效</h3><div class="showcase-textfx-list">
-            <div class="showcase-textfx-item"><span data-blora-text-fx="big">Make It Noticeable And Loud!</span></div>
-            <div class="showcase-textfx-item"><span data-blora-text-fx="small">Whisper very quietly in secret...</span></div>
-            <div class="showcase-textfx-item"><span data-blora-text-fx="shake">Earthquake rocking left to right</span></div>
-            <div class="showcase-textfx-item"><span data-blora-text-fx="nod">Yes! Absolutely agree with that!</span></div>
-            <div class="showcase-textfx-item"><span data-blora-text-fx="disperse">Disintegrate and scatter into the wind</span></div>
-            <div class="showcase-textfx-item"><span data-blora-text-fx="ripple">Rippling waves across the deep ocean</span></div>
-            <div class="showcase-textfx-item"><span data-blora-text-fx="bloom">Special Text Effects Showcase</span></div>
-            <div class="showcase-textfx-item"><span data-blora-text-fx="jitter">Shivering frantically in cold weather</span></div>
+            <div class="showcase-textfx-item"><blora-text-fx effect="big" loop>Make It Noticeable And Loud!</blora-text-fx></div>
+            <div class="showcase-textfx-item"><blora-text-fx effect="small" loop>Whisper very quietly in secret...</blora-text-fx></div>
+            <div class="showcase-textfx-item"><blora-text-fx effect="shake" loop>Earthquake rocking left to right</blora-text-fx></div>
+            <div class="showcase-textfx-item"><blora-text-fx effect="nod" loop>Yes! Absolutely agree with that!</blora-text-fx></div>
+            <div class="showcase-textfx-item"><blora-text-fx effect="disperse" loop>Disintegrate and scatter into the wind</blora-text-fx></div>
+            <div class="showcase-textfx-item"><blora-text-fx effect="ripple" loop>Rippling waves across the deep ocean</blora-text-fx></div>
+            <div class="showcase-textfx-item"><blora-text-fx effect="bloom" loop>Special Text Effects Showcase</blora-text-fx></div>
+            <div class="showcase-textfx-item"><blora-text-fx effect="jitter" loop>Shivering frantically in cold weather</blora-text-fx></div>
           </div></section>
-          <section data-showcase-case="TextRotate"><h3>文字轮换</h3><div class="blora-text-rotate" data-showcase-text-rotate aria-live="polite">
-            <span class="blora-text-rotate__item" data-active>结构统一</span>
-            <span class="blora-text-rotate__item">令牌驱动</span>
-          </div></section>
-          <section data-showcase-case="Countdown"><h3>倒计时</h3><div class="blora-countdown" data-blora-countdown data-showcase-countdown data-seconds="86405">
-            <span class="blora-countdown__unit"><strong class="blora-countdown__value" data-unit="days">1</strong><span class="blora-countdown__label">天</span></span>
-            <span class="blora-countdown__unit"><strong class="blora-countdown__value" data-unit="hours">00</strong><span class="blora-countdown__label">时</span></span>
-            <span class="blora-countdown__unit"><strong class="blora-countdown__value" data-unit="minutes">00</strong><span class="blora-countdown__label">分</span></span>
-            <span class="blora-countdown__unit"><strong class="blora-countdown__value" data-unit="seconds">05</strong><span class="blora-countdown__label">秒</span></span>
-          </div></section>
-          <section data-showcase-case="CountUp"><h3>数字增长</h3><strong data-showcase-countup data-blora-countup="12847">0</strong></section>
-          <section data-showcase-case="ImageDiff"><h3>图片对比</h3><div class="blora-diff" data-showcase-image-diff><div class="blora-diff__item blora-diff__item--before"><div class="showcase-fx-surface"></div></div><div class="blora-diff__item"><div class="showcase-fx-surface" data-tone="success"></div></div><div class="blora-diff__divider" aria-hidden="true"></div><input class="blora-diff__range" type="range" min="0" max="100" value="50" aria-label="对比位置"></div></section>
-          <section data-showcase-case="Content"><h3>任意内容</h3><div class="blora-diff" data-showcase-image-diff style="--blora-diff-ratio: 4 / 3"><div class="blora-diff__item blora-diff__item--before"><article class="blora-card" data-variant="flat"><div class="blora-card__title">草稿</div><div class="blora-card__body">标题和说明挤在一起，状态也不清楚。</div><div class="blora-card__foot"><span class="blora-badge" data-variant="neutral">草稿</span></div></article></div><div class="blora-diff__item"><article class="blora-card"><div class="blora-card__title">已发布</div><div class="blora-card__body">层级拆开，用正式标签表达状态。</div><div class="blora-card__foot"><span class="blora-tag" data-variant="success">已发布</span></div></article></div><div class="blora-diff__divider" aria-hidden="true"></div><input class="blora-diff__range" type="range" min="0" max="100" value="50" aria-label="对比位置"></div></section>
-          <section data-showcase-case="HoverGallery"><h3>悬停画廊</h3><div class="blora-hover-gallery blora-hover-gallery--wide" data-showcase-hover-gallery tabindex="0" aria-label="图库"><div class="blora-hover-gallery__track"><div class="blora-hover-gallery__item showcase-fx-surface" data-active></div><div class="blora-hover-gallery__item showcase-fx-surface" data-tone="success"></div><div class="blora-hover-gallery__item showcase-fx-surface" data-tone="info"></div></div></div></section>
-          <section data-showcase-case="Watermark"><h3>水印</h3><div class="blora-watermark" data-showcase-watermark data-blora-watermark="BLORA" data-text="BLORA"><p>受保护的预览内容</p></div></section>
+          <section data-showcase-case="TextRotate"><h3>文字轮换</h3><blora-text-rotate data-showcase-text-rotate interval="3200">
+            <span>结构统一</span>
+            <span>令牌驱动</span>
+          </blora-text-rotate></section>
+          <section data-showcase-case="Countdown"><h3>倒计时</h3><blora-countdown data-showcase-countdown seconds="86405"></blora-countdown></section>
+          <section data-showcase-case="CountUp"><h3>数字增长</h3><blora-count-up data-showcase-countup value="12847">0</blora-count-up></section>
+          <section data-showcase-case="ImageDiff"><h3>图片对比</h3><blora-diff data-showcase-image-diff><blora-diff-before><div class="showcase-fx-surface"></div></blora-diff-before><blora-diff-after><div class="showcase-fx-surface" data-tone="success"></div></blora-diff-after></blora-diff></section>
+          <section data-showcase-case="Content"><h3>任意内容</h3><blora-diff data-showcase-image-diff style="--blora-diff-ratio: 4 / 3"><blora-diff-before><article class="blora-card" data-variant="flat"><div class="blora-card__title">草稿</div><div class="blora-card__body">标题和说明挤在一起，状态也不清楚。</div><div class="blora-card__foot"><span class="blora-badge" data-variant="neutral">草稿</span></div></article></blora-diff-before><blora-diff-after><article class="blora-card"><div class="blora-card__title">已发布</div><div class="blora-card__body">层级拆开，用正式标签表达状态。</div><div class="blora-card__foot"><span class="blora-tag" data-variant="success">已发布</span></div></article></blora-diff-after></blora-diff></section>
+          <section data-showcase-case="HoverGallery"><h3>悬停画廊</h3><blora-hover-gallery class="blora-hover-gallery--wide" data-showcase-hover-gallery aria-label="图库"><div class="showcase-fx-surface"></div><div class="showcase-fx-surface" data-tone="success"></div><div class="showcase-fx-surface" data-tone="info"></div></blora-hover-gallery></section>
+          <section data-showcase-case="Watermark"><h3>水印</h3><blora-watermark data-showcase-watermark text="BLORA"><p>受保护的预览内容</p></blora-watermark></section>
           <section data-showcase-case="ShortcutHints"><h3>快捷键提示</h3><p>打开命令：<kbd data-blora-shortcut="mod+k">Ctrl K</kbd></p></section>
         </div>
       </template>
@@ -1256,9 +1251,9 @@
 - 支持列表与 `inline code`</script>
         </article>
       </template>
-      <template data-addon="qrcode" data-label="QR Code" data-group="数据展示" data-eyebrow="Data display" data-kind="Service" data-description="将文本或链接渲染为带无障碍标签的二维码画布。">
+      <template data-addon="qrcode" data-label="QR Code" data-group="数据展示" data-eyebrow="Data display" data-kind="Composite CE" data-description="将文本或链接渲染为带无障碍标签的二维码画布。">
         <figure>
-          <div data-blora-qrcode data-showcase-qrcode data-text="https://blora.design/components" aria-label="Blora Design 文档二维码"></div>
+          <blora-qrcode data-showcase-qrcode value="https://blora.design/components" size="180" label="Blora Design 文档二维码"></blora-qrcode>
           <figcaption>blora.design/components</figcaption>
         </figure>
       </template>
@@ -1414,27 +1409,9 @@
           ],
           effects: [
             'import "@bloret-crew/blora-design-effects/effects.css";',
-            "import {",
-            "  textFx,",
-            "  createTextRotateController,",
-            "  createCountdownController,",
-            "  createCountUpController,",
-            "  createImageDiffController,",
-            "  createHoverGalleryController,",
-            "  createWatermarkController,",
-            "  initShortcutHints,",
-            '} from "@bloret-crew/blora-design-effects";',
+            'import "@bloret-crew/blora-design-effects";',
             "",
-            'document.querySelectorAll("[data-blora-text-fx]").forEach((el) => {',
-            '  textFx(el, el.getAttribute("data-blora-text-fx"), { loop: true });',
-            "});",
-            'createTextRotateController(document.querySelector(".blora-text-rotate"));',
-            'createCountdownController(document.querySelector(".blora-countdown"));',
-            'createCountUpController(document.querySelector("[data-blora-countup]"));',
-            'createImageDiffController(document.querySelector(".blora-diff"));',
-            'createHoverGalleryController(document.querySelector(".blora-hover-gallery"));',
-            'createWatermarkController(document.querySelector(".blora-watermark"));',
-            "initShortcutHints(document);",
+            'initShortcutHints(document);',
           ],
           layout: [
             'import "@bloret-crew/blora-design-layout/layout.css";',
@@ -1453,9 +1430,9 @@
             "renderMarkdownTo(host, source);",
           ],
           qrcode: [
-            'import { createQRCodeController } from "@bloret-crew/blora-design-qrcode";',
+            'import "@bloret-crew/blora-design-qrcode";',
             "",
-            'createQRCodeController(document.querySelector("[data-blora-qrcode]"), { size: 180 });',
+            "/* <blora-qrcode value=\"…\" size=\"180\" label=\"…\"> renders on connect. */",
           ],
           theming: [
             'import "@bloret-crew/blora-design-theming/theming.css";',
@@ -1860,19 +1837,8 @@
             form.addEventListener("submit", (event) => event.preventDefault());
           });
           if (name === "effects") {
-            mount.querySelectorAll("[data-blora-text-fx], [data-fx]").forEach((target) => {
-              window.BloraEffects.textFx(
-                target,
-                target.getAttribute("data-blora-text-fx") || target.dataset.fx,
-                { loop: true },
-              );
-            });
-            mount.querySelectorAll("[data-showcase-text-rotate]").forEach((target) => window.BloraEffects.createTextRotateController(target));
-            mount.querySelectorAll("[data-showcase-countdown]").forEach((target) => window.BloraEffects.createCountdownController(target));
-            mount.querySelectorAll("[data-showcase-countup]").forEach((target) => window.BloraEffects.createCountUpController(target));
-            mount.querySelectorAll("[data-showcase-image-diff]").forEach((target) => window.BloraEffects.createImageDiffController(target));
-            mount.querySelectorAll("[data-showcase-hover-gallery]").forEach((target) => window.BloraEffects.createHoverGalleryController(target));
-            mount.querySelectorAll("[data-showcase-watermark]").forEach((target) => window.BloraEffects.createWatermarkController(target));
+            /* text-fx / rotate / countdown / countup / diff / gallery /
+               watermark are composite CEs and self-mount on connect. */
             window.BloraEffects.initShortcutHints(mount);
           }
           if (name === "layout") {
@@ -1887,11 +1853,7 @@
             window.BloraMarkdown.renderMarkdownTo(target, source);
           }
           if (name === "qrcode") {
-            window.BloraQRCode.renderQRCode(
-              mount.querySelector("[data-blora-qrcode], [data-showcase-qrcode]"),
-              "https://blora.design/components",
-              { size: 180 },
-            );
+            /* <blora-qrcode> renders itself on connect. */
           }
           if (name === "thread") {
             mount.querySelectorAll("[data-ic]").forEach((host) => {

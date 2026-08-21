@@ -9,8 +9,8 @@
 | --- | --- | --- | --- |
 | Thread | 已迁移 | `<blora-thread-comment>`、`<blora-thread-composer>`；Timeline 继续使用核心组件 | 已完成 |
 | Theming | 当前混合形态正确 | Palette Picker、Color Scheme Toggle 保持 CE；主题读写保持 service | 无需迁移 |
-| QR Code | UI 适合 CE，算法保留纯函数 | `<blora-qrcode>` + `buildQRMatrix()` | P1，编码正确性前置 |
-| Effects | 不能整体改成单一 CE，应按能力拆分 | Diff、Hover Gallery、Countdown、Rotate、CountUp、Watermark 优先；Text FX 可保留命令式重播 | P1 |
+| QR Code | 已迁移 | `<blora-qrcode>` + `buildQRMatrix()` / `renderQRCode()` 纯函数保留 | 已完成 |
+| Effects | 已按能力拆分迁移 | 7 个 CE + `textFx()` 重播 service + 快捷键 service | 已完成 |
 | Layout | 当前混合方向正确 | Sidebar 已是 CE；Affix 可迁；Anchor/ScrollSpy 需合并设计；Smooth Scroll 保留 service | P2 |
 | Markdown | 纯渲染器必须保留 service | 可增加安全默认的 `<blora-markdown>` 便利宿主，`renderMarkdown()` 保留 | P2 |
 
@@ -34,18 +34,23 @@ Thread 已从根 Headless controller 改为两个开放 Composite CE：
 
 ## QR Code
 
-Canvas 宿主与重绘生命周期非常适合 `<blora-qrcode>`，但当前矩阵实现是 beta 简化算法。迁移前必须先证明二维码编码、容量、纠错和扫描正确性。`buildQRMatrix()` 仍应保留纯函数入口。
+已迁移为 `<blora-qrcode>`：连接时渲染，`value`、`size`、`label` 变化时重绘，`label` 写入 `role="img"` 与 `aria-label`。`buildQRMatrix()` 与 `renderQRCode()` 保留为纯函数/命令式入口，供 SSR 或自定义宿主使用。
+
+注意：当前矩阵实现仍是 beta 简化编码器（固定版本、输入截断），生产级扫描场景需自行验证，正式发布前应替换为完整编码器或引入成熟实现。
 
 ## Effects
 
-Effects 包包含多种不同能力，不能统一包装成一个元素：
+已按能力拆分为 7 个 Composite CE：
 
-- 强 CE 候选：Image Diff、Hover Gallery、Countdown、Text Rotate。
-- 适合 CE：CountUp、Watermark。
-- CE + service 双层：Text FX，声明式宿主管理字符拆分和生命周期，命令式 API 用于任意元素重播。
-- 保留 service：快捷键平台识别与格式化。
+- `<blora-text-fx>`：声明式文字动效；`textFx()` 保留为任意元素重播的命令式入口。
+- `<blora-text-rotate>`：子元素自动成为轮换项。
+- `<blora-countdown>`：自动生成四个单位，完成时派发 `blora:complete`。
+- `<blora-count-up>`：进入视口后播放。
+- `<blora-diff>`：消费者提供 `blora-diff-before` / `blora-diff-after` 两个 pane，CE 生成 divider 与 range。
+- `<blora-hover-gallery>`：子元素自动包装为 item，CE 生成 track 与进度点。
+- `<blora-watermark>`：生成 `aria-hidden` 平铺层。
 
-迁移前先补齐 effects contract，目前 contract 未完整登记实际公开能力。
+快捷键平台识别与格式化保留 service（`initShortcutHints()`、`formatShortcut()`）。
 
 ## Layout
 
@@ -60,9 +65,7 @@ Effects 包包含多种不同能力，不能统一包装成一个元素：
 
 ## 推荐后续顺序
 
-1. QR Code 编码正确性审查，之后迁 `<blora-qrcode>`。
-2. Effects：Diff、Hover Gallery、Countdown、Rotate。
-3. Effects：CountUp、Watermark、Text FX。
-4. Layout：Affix，并统一设计 Anchor/ScrollSpy。
-5. Markdown：安全 contract 完成后增加便利 CE。
-6. Theming 不做结构重写，只补 contract 真值。
+1. Layout：Affix，并统一设计 Anchor/ScrollSpy。
+2. Markdown：安全 contract 完成后增加便利 CE。
+3. Theming 不做结构重写，只补 contract 真值。
+4. QR Code 编码正确性在正式发布前收口。
