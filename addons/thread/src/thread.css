@@ -130,7 +130,11 @@
 
 .blora-thread-comment__fold .blora-button[data-variant="outline"]:hover,
 .blora-thread-comment__fold .blora-button[data-variant="outline"]:active {
-  --blora-button-bg: var(--blora-color-action-primary-tint);
+  --blora-button-bg: color-mix(
+    in srgb,
+    var(--blora-color-action-primary-default) 8%,
+    var(--blora-color-surface-default)
+  );
 }
 
 .blora-thread-comment__react {
