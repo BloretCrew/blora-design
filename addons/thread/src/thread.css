@@ -173,14 +173,20 @@
 /* -- Composer -- */
 
 .blora-thread-composer {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   gap: var(--blora-space-3);
   margin-top: var(--blora-space-5);
 }
 
 .blora-thread-composer__tabs {
+  order: 2;
   display: inline-flex;
-  justify-self: start;
+  align-items: center;
+  box-sizing: border-box;
+  height: 2.625rem;
+  margin-inline-start: auto;
   gap: 0;
   padding: var(--blora-space-1);
   border-radius: var(--blora-radius-full);
@@ -188,6 +194,9 @@
 }
 
 .blora-thread-composer__tabs [data-blora-thread-tab] {
+  display: inline-flex;
+  align-items: center;
+  height: 2rem;
   border: 0;
   border-radius: var(--blora-radius-full);
   background: transparent;
@@ -221,10 +230,12 @@
 }
 
 .blora-thread-composer__toolbar {
+  order: 1;
   display: inline-flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-self: start;
+  box-sizing: border-box;
+  height: 2.625rem;
   gap: var(--blora-space-1);
   padding: var(--blora-space-1);
   border: 1px solid var(--blora-color-border-subtle);
@@ -266,6 +277,7 @@
 }
 
 .blora-thread-composer__input {
+  order: 3;
   box-sizing: border-box;
   width: 100%;
   min-height: 7rem;
@@ -299,7 +311,9 @@
 }
 
 .blora-thread-composer__footer {
+  order: 4;
   display: flex;
+  flex-basis: 100%;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--blora-space-3);
