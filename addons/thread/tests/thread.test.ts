@@ -51,6 +51,7 @@ describe("Thread add-on", () => {
     expect(typeof controller.toggleComment).toBe("function");
     expect(typeof controller.toggleReact).toBe("function");
     expect(typeof controller.setComposerTab).toBe("function");
+    expect(typeof controller.applyComposerCommand).toBe("function");
     expect(typeof controller.destroy).toBe("function");
     controller.destroy();
   });
@@ -136,6 +137,71 @@ describe("Thread add-on", () => {
     expect(preview.hasAttribute("data-active")).toBe(true);
     controller.setComposerTab(composer, "edit");
     expect(composer.getAttribute("data-tab")).toBe("edit");
+    controller.destroy();
+  });
+
+  it("applies Markdown commands to the composer selection", () => {
+    root.insertAdjacentHTML(
+      "beforeend",
+      `<div class="blora-thread-composer">
+        <div class="blora-thread-composer__toolbar">
+          <button type="button" data-blora-thread-command="bold">粗体</button>
+          <button type="button" data-blora-thread-command="italic">斜体</button>
+          <button type="button" data-blora-thread-command="code">代码</button>
+          <button type="button" data-blora-thread-command="link">链接</button>
+          <button type="button" data-blora-thread-command="quote">引用</button>
+          <button type="button" data-blora-thread-command="mention">提及</button>
+        </div>
+        <textarea class="blora-thread-composer__input">hello world</textarea>
+      </div>`,
+    );
+    const composer = root.querySelector<HTMLElement>(".blora-thread-composer")!;
+    const field = composer.querySelector<HTMLTextAreaElement>("textarea")!;
+    const controller = createThreadController(root);
+    let inputEvents = 0;
+    field.addEventListener("input", () => inputEvents++);
+
+    field.setSelectionRange(0, 5);
+    composer.querySelector<HTMLButtonElement>('[data-blora-thread-command="bold"]')!.click();
+    expect(field.value).toBe("**hello** world");
+    expect(field.selectionStart).toBe(2);
+    expect(field.selectionEnd).toBe(7);
+
+    field.value = "word";
+    field.setSelectionRange(0, 4);
+    controller.applyComposerCommand(composer, "italic");
+    expect(field.value).toBe("*word*");
+
+    field.value = "const value";
+    field.setSelectionRange(0, 5);
+    controller.applyComposerCommand(composer, "code");
+    expect(field.value).toBe("`const` value");
+
+    field.setSelectionRange(field.value.length, field.value.length);
+    controller.applyComposerCommand(composer, "mention");
+    expect(field.value).toBe("`const` value@");
+    expect(field.selectionStart).toBe(field.value.length);
+
+    field.value = "target";
+    field.setSelectionRange(0, 6);
+    controller.applyComposerCommand(composer, "link");
+    expect(field.value).toBe("[target](https://)");
+    expect(field.value.slice(field.selectionStart, field.selectionEnd)).toBe("https://");
+
+    field.value = "line";
+    field.setSelectionRange(4, 4);
+    controller.applyComposerCommand(composer, "quote");
+    expect(field.value).toBe("line\n> 引用内容");
+    expect(inputEvents).toBe(6);
+    controller.destroy();
+  });
+
+  it("ignores composer commands when no textarea is present", () => {
+    const composer = document.createElement("div");
+    composer.className = "blora-thread-composer";
+    root.appendChild(composer);
+    const controller = createThreadController(root);
+    expect(() => controller.applyComposerCommand(composer, "bold")).not.toThrow();
     controller.destroy();
   });
 

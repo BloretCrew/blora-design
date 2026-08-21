@@ -232,22 +232,32 @@
 .blora-thread-composer__toolbar {
   order: 1;
   display: inline-flex;
-  flex-wrap: wrap;
+  flex: 0 1 auto;
+  flex-wrap: nowrap;
   align-items: center;
   box-sizing: border-box;
+  max-width: calc(100% - 7.5rem - var(--blora-space-3));
   height: 2.625rem;
   gap: var(--blora-space-1);
   padding: var(--blora-space-1);
+  overflow: auto hidden;
+  overscroll-behavior-inline: contain;
   border: 1px solid var(--blora-color-border-subtle);
   border-radius: var(--blora-radius-full);
   background: var(--blora-color-surface-default);
   box-shadow: var(--blora-shadow-1);
+  scrollbar-width: none;
+}
+
+.blora-thread-composer__toolbar::-webkit-scrollbar {
+  display: none;
 }
 
 .blora-thread-composer__toolbar :is(button, a) {
   display: inline-grid;
   place-items: center;
   box-sizing: border-box;
+  flex: none;
   width: 2rem;
   height: 2rem;
   padding: 0;

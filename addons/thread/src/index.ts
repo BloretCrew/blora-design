@@ -5,7 +5,7 @@
  * - automatic long-comment folding by rendered height;
  * - the mask-based fold affordance and floating button;
  * - comment reaction state;
- * - composer edit / preview tabs.
+ * - composer edit / preview tabs and Markdown editing commands.
  * @packageDocumentation
  */
 
@@ -33,6 +33,8 @@ export interface ThreadController {
   toggleReact(btn: HTMLElement): void;
   /** Switch the composer between edit / preview tabs. */
   setComposerTab(composer: HTMLElement, tab: string): void;
+  /** Apply one Markdown editing command to a composer's textarea selection. */
+  applyComposerCommand(composer: HTMLElement, command: string): void;
   /** Remove listeners, generated controls and inline measurement state. */
   destroy(): void;
 }
@@ -76,6 +78,7 @@ export function createThreadController(
       toggleComment: () => {},
       toggleReact: () => {},
       setComposerTab: () => {},
+      applyComposerCommand: () => {},
       destroy: () => {},
     };
   }
@@ -221,6 +224,75 @@ export function createThreadController(
     );
   });
 
+  function doApplyComposerCommand(composer: HTMLElement, command: string): void {
+    const field = composer.querySelector<HTMLTextAreaElement>(".blora-thread-composer__input");
+    if (!field) return;
+
+    const start = field.selectionStart ?? field.value.length;
+    const end = field.selectionEnd ?? start;
+    const selected = field.value.slice(start, end);
+    const lineStart = field.value.lastIndexOf("\n", Math.max(0, start - 1)) + 1;
+    let replacement = selected;
+    let selectionStart = start;
+    let selectionEnd = end;
+
+    const wrap = (before: string, after = before, placeholder = "文本"): void => {
+      const content = selected || placeholder;
+      replacement = `${before}${content}${after}`;
+      selectionStart = start + before.length;
+      selectionEnd = selectionStart + content.length;
+    };
+
+    switch (command) {
+      case "bold":
+        wrap("**", "**", "粗体文本");
+        break;
+      case "italic":
+        wrap("*", "*", "斜体文本");
+        break;
+      case "code":
+        wrap("`", "`", "代码");
+        break;
+      case "link":
+        replacement = `[${selected || "链接文本"}](https://)`;
+        selectionStart = start + replacement.lastIndexOf("https://");
+        selectionEnd = selectionStart + "https://".length;
+        break;
+      case "quote": {
+        const prefix = start === lineStart ? "> " : "\n> ";
+        replacement = `${prefix}${selected || "引用内容"}`;
+        selectionStart = start + prefix.length;
+        selectionEnd = selectionStart + (selected || "引用内容").length;
+        break;
+      }
+      case "mention":
+        replacement = `@${selected}`;
+        selectionStart = start + 1;
+        selectionEnd = selectionStart + selected.length;
+        break;
+      default:
+        return;
+    }
+
+    field.setRangeText(replacement, start, end, "end");
+    field.setSelectionRange(selectionStart, selectionEnd);
+    field.focus();
+    field.dispatchEvent(new Event("input", { bubbles: true }));
+  }
+
+  root.querySelectorAll<HTMLElement>("[data-blora-thread-command]").forEach((button) => {
+    button.addEventListener(
+      "click",
+      () => {
+        const composer = button.closest<HTMLElement>(".blora-thread-composer");
+        if (composer) {
+          doApplyComposerCommand(composer, button.getAttribute("data-blora-thread-command") || "");
+        }
+      },
+      { signal },
+    );
+  });
+
   function scheduleRefresh(): void {
     if (refreshQueued) return;
     refreshQueued = true;
@@ -249,6 +321,7 @@ export function createThreadController(
     toggleComment,
     toggleReact: doToggleReact,
     setComposerTab: doSetComposerTab,
+    applyComposerCommand: doApplyComposerCommand,
     destroy: () => {
       resizeObserver?.disconnect();
       mutationObserver?.disconnect();
