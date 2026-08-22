@@ -1448,6 +1448,13 @@
           return;
         }
         const root = document.documentElement;
+        /* pushState clones the live scroll offset onto the new entry and the
+           browser restores it, pinning short pages at the old offset. */
+        try {
+          history.scrollRestoration = "manual";
+        } catch {
+          /* older engines */
+        }
         const showcaseShell = document.getElementById("showcase-shell");
         const componentNavigationMount = document.getElementById("component-navigation-mount");
         const componentPanelRoot = document.getElementById("component-panel-root");
@@ -1986,6 +1993,13 @@
           componentPanels.forEach((panel) => {
             panel.toggleAttribute("data-active", panel.dataset.componentPanel === next);
           });
+          /* A shorter page must not inherit the previous scroll offset. The
+             synchronous scroll event updates the sticky sidebar's remembered
+             offset before its mutation observer can force the old one back. */
+          if (window.scrollY > 0) {
+            window.scrollTo({ top: 0, behavior: "instant" });
+            window.dispatchEvent(new Event("scroll"));
+          }
           const activePanel = document.querySelector(`[data-component-panel="${next}"]`);
           const title = activePanel.querySelector("h1");
           document.title = `${title.textContent} · Blora Design Components`;
@@ -2026,9 +2040,26 @@
           navigationWasPointerDriven = true;
           preservedSidebarScrollTop = document.getElementById("component-sidebar")?.scrollTop ?? 0;
         }, true);
+        /* The nav owns routing; a native fragment jump would re-scroll after
+           the panel swap and pin short pages at the old offset. Links live
+           inside the nav item shadow roots, so match via composedPath(). */
+        const resetWindowScroll = () => {
+          if (window.scrollY > 0) window.scrollTo({ top: 0, behavior: "instant" });
+        };
+        document.addEventListener(
+          "click",
+          (event) => {
+            const anchor = event
+              .composedPath()
+              .find((node) => node instanceof Element && node.matches?.('a[href^="#"]'));
+            if (anchor && componentNavigation.contains(anchor)) event.preventDefault();
+          },
+          true,
+        );
         componentNavigation.addEventListener("blora-change", (event) => {
           history.pushState(null, "", `#${event.detail.value}`);
           selectComponent(event.detail.value, { focusHeading: !navigationWasPointerDriven });
+          requestAnimationFrame(resetWindowScroll);
           navigationWasPointerDriven = false;
         });
         new MutationObserver(() => {

@@ -894,6 +894,37 @@ test("showcase catalog drops the previous panel from layout on switch", async ({
   expect(layout.headingTop).toBeLessThan(layout.nextTop + 160);
 });
 
+test("showcase catalog resets window scroll when the next page is shorter", async ({ page }) => {
+  const showcase = resolve(import.meta.dirname, "../../../..", "examples/showcase-v2/index.html");
+  await page.goto(`${pathToFileURL(showcase).href}#thread`);
+  await page.waitForFunction(() => customElements.get("blora-sidebar-nav"));
+  await expect(page.locator("#panel-thread")).toBeVisible();
+
+  const mobileMenu = page.locator("#showcase-shell .blora-sidebar-layout__toggle");
+  if (await mobileMenu.isVisible()) await mobileMenu.click();
+
+  await page.evaluate(() =>
+    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "instant" }),
+  );
+  const scrolled = await page.evaluate(() => window.scrollY);
+  expect(scrolled).toBeGreaterThan(400);
+
+  await page
+    .locator("#component-navigation .blora-sidebar-nav__link")
+    .filter({ hasText: "Copy" })
+    .click();
+  await expect(page.locator("#panel-copy")).toBeVisible();
+
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+  const geometry = await page.evaluate(() => ({
+    copyHeight: document.querySelector<HTMLElement>("#panel-copy")!.getBoundingClientRect().height,
+    docHeight: document.documentElement.scrollHeight,
+    viewport: window.innerHeight,
+  }));
+  expect(geometry.copyHeight).toBeGreaterThan(0);
+  expect(geometry.docHeight).toBeLessThanOrEqual(geometry.viewport + geometry.copyHeight);
+});
+
 test("showcase catalog mounts all component previews without runtime errors", async ({ page }) => {
   const showcase = resolve(import.meta.dirname, "../../../..", "examples/showcase-v2/index.html");
   const pageErrors: string[] = [];
