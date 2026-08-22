@@ -113,7 +113,6 @@ blora-tour,
   opacity: 1;
   transform: none;
   transition-property: opacity, transform, display, top, left;
-  transition-timing-function: var(--blora-easing-overshoot);
 }
 
 @starting-style {
