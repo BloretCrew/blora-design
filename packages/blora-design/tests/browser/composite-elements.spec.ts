@@ -859,10 +859,14 @@ test("showcase catalog drops the previous panel from layout on switch", async ({
   await page.waitForFunction(() => customElements.get("blora-sidebar-nav"));
   await expect(page.locator("#panel-autocomplete")).toBeVisible();
 
+  const mobileMenu = page.locator("#showcase-shell .blora-sidebar-layout__toggle");
+  if (await mobileMenu.isVisible()) await mobileMenu.click();
+
   await page
     .locator("#component-navigation .blora-sidebar-nav__link")
     .filter({ hasText: "Cascader" })
     .click();
+  await expect(page.locator("#panel-cascader")).toBeVisible();
 
   const layout = await page.evaluate(() => {
     const previous = document.querySelector<HTMLElement>("#panel-autocomplete")!;

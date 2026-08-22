@@ -128,7 +128,8 @@ if (existsSync(themesPath)) {
 // Report add-on dist sizes from monorepo (informational + soft budgets)
 const repoRoot = resolve(import.meta.dirname, "..", "..", "..");
 const addonNames = ["markdown", "thread", "qrcode", "effects", "layout", "theming"];
-const ADDON_TOTAL_GZIP_BUDGET = 80 * 1024;
+/* Locale catalogs now ship inside add-on IIFEs that call `t()`. */
+const ADDON_TOTAL_GZIP_BUDGET = 128 * 1024;
 let addonTotal = 0;
 for (const name of addonNames) {
   const base = resolve(repoRoot, "addons", name, "dist");
