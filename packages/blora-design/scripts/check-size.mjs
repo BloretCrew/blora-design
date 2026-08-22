@@ -128,8 +128,10 @@ if (existsSync(themesPath)) {
 // Report add-on dist sizes from monorepo (informational + soft budgets)
 const repoRoot = resolve(import.meta.dirname, "..", "..", "..");
 const addonNames = ["markdown", "thread", "qrcode", "effects", "layout", "theming"];
-/* Locale catalogs now ship inside add-on IIFEs that call `t()`. */
-const ADDON_TOTAL_GZIP_BUDGET = 128 * 1024;
+/* Add-on dist grows with locale catalogs, the QR encoder (versions 1–40)
+   and the composite CEs (Affix/Anchor/Markdown). 136KiB documents the
+   post-RC baseline; shrink only by removing surface, not by silent cuts. */
+const ADDON_TOTAL_GZIP_BUDGET = 136 * 1024;
 let addonTotal = 0;
 for (const name of addonNames) {
   const base = resolve(repoRoot, "addons", name, "dist");

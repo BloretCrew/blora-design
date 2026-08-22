@@ -288,5 +288,5 @@
 | 2026-08-02 | §3.4 visual + lifecycle；§3.5 冻结/节奏/迁移/体积；完成 Beta 发布准备 |
 | 2026-08-19 | known differences 全部人工批准；版本统一为 `2.0.0-beta.0`；完成 Beta 发布演练并打 tag |
 | 2026-08-22 | 核心 i18n：`t()` + `en` / `zh-CN`；浮层走 OverlayController（含 slot 焦点）；文档入口改为 Showcase |
-| 2026-08-22 | 产品缺口收口：i18n 热更新、Drawer popover、QR 全版本编码器、Affix/Anchor/Markdown CE、部分 FA、framework.md 2.0、浏览器/a11y 记录 |
+| 2026-08-22 | 产品缺口收口：i18n 热更新、Drawer popover、QR 全版本编码器、Affix/Anchor/Markdown CE、部分 FA、framework.md 2.0、浏览器/a11y 记录；add-on 体积预算提至 136KiB（编码器 + 新 CE + locale 目录） |
 | 2026-08-22 | 产品缺口收口：i18n 热更新、Drawer popover、QR 1–40 编码器、Affix/Anchor/Markdown CE、FA 主机、framework.md 2.0、浏览器/a11y 记录 |
