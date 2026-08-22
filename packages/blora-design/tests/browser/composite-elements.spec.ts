@@ -540,9 +540,7 @@ test("Remaining controller-backed CEs own structure and reflect state", async ({
   await expect(page.locator("#tour")).toHaveAttribute("open", "");
   await expect(page.locator(".blora-tour__tooltip")).toBeVisible();
   await page.locator(".blora-tour__tooltip .blora-tour__next").click();
-  await expect(page.locator(".blora-tour__tooltip .blora-tour__counter")).toHaveText(
-    "2 / 2",
-  );
+  await expect(page.locator(".blora-tour__tooltip .blora-tour__counter")).toHaveText("2 / 2");
   await page.locator(".blora-tour__tooltip .blora-tour__next").click();
   await expect(page.locator(".blora-tour__tooltip")).toHaveCount(0);
 });
@@ -853,6 +851,42 @@ test("showcase catalog routes one of every official component at a time", async 
   expect(narrowLayout.documentWidth).toBeLessThanOrEqual(narrowLayout.viewportWidth);
   expect(narrowLayout.accordionRight).toBeLessThanOrEqual(narrowLayout.viewportWidth);
   expect(narrowLayout.previewTopGap).toBeLessThanOrEqual(40);
+});
+
+test("showcase catalog drops the previous panel from layout on switch", async ({ page }) => {
+  const showcase = resolve(import.meta.dirname, "../../../..", "examples/showcase-v2/index.html");
+  await page.goto(`${pathToFileURL(showcase).href}#autocomplete`);
+  await page.waitForFunction(() => customElements.get("blora-sidebar-nav"));
+  await expect(page.locator("#panel-autocomplete")).toBeVisible();
+
+  await page
+    .locator("#component-navigation .blora-sidebar-nav__link")
+    .filter({ hasText: "Cascader" })
+    .click();
+
+  const layout = await page.evaluate(() => {
+    const previous = document.querySelector<HTMLElement>("#panel-autocomplete")!;
+    const next = document.querySelector<HTMLElement>("#panel-cascader")!;
+    const visible = [...document.querySelectorAll<HTMLElement>("[data-component-panel]")].filter(
+      (panel) => getComputedStyle(panel).display !== "none",
+    );
+    return {
+      previousDisplay: getComputedStyle(previous).display,
+      previousHeight: previous.getBoundingClientRect().height,
+      nextDisplay: getComputedStyle(next).display,
+      nextTop: next.getBoundingClientRect().top,
+      headingTop: next.querySelector("h1")!.getBoundingClientRect().top,
+      visibleIds: visible.map((panel) => panel.id),
+      transitionProperty: getComputedStyle(previous).transitionProperty,
+    };
+  });
+
+  expect(layout.previousDisplay).toBe("none");
+  expect(layout.previousHeight).toBe(0);
+  expect(layout.nextDisplay).toBe("block");
+  expect(layout.visibleIds).toEqual(["panel-cascader"]);
+  expect(layout.transitionProperty).not.toMatch(/display/);
+  expect(layout.headingTop).toBeLessThan(layout.nextTop + 160);
 });
 
 test("showcase catalog mounts all component previews without runtime errors", async ({ page }) => {

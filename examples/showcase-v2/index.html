@@ -96,22 +96,18 @@
         font-weight: 600;
       }
 
+      /* Do not delay `display: none` — outgoing pages must leave the flow. */
       .showcase-panel {
         display: none;
-        opacity: 0;
-        transition-property: opacity, display;
-        transition-duration: var(--blora-duration-base);
-        transition-timing-function: var(--blora-easing-standard);
-        transition-behavior: allow-discrete;
       }
 
       .showcase-panel[data-active] {
         display: block;
-        opacity: 1;
+        animation: showcase-panel-enter var(--blora-duration-base) var(--blora-easing-standard);
       }
 
-      @starting-style {
-        .showcase-panel[data-active] {
+      @keyframes showcase-panel-enter {
+        from {
           opacity: 0;
         }
       }
