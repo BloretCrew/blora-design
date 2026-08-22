@@ -780,7 +780,8 @@ test("showcase catalog routes one of every official component at a time", async 
   expect(paletteTextGeometry.menuLineHeight).toBeGreaterThan(0);
   await page.locator('[data-blora-palette-option="indigo"]').click();
   await expect(page.locator("html")).toHaveAttribute("data-blora-theme", "indigo");
-  await expect(paletteTrigger.locator(".blora-palette-picker__label")).toHaveText("Indigo");
+  const indigoLabel = await page.evaluate(() => window.Blora.t("theme.name.indigo"));
+  await expect(paletteTrigger.locator(".blora-palette-picker__label")).toHaveText(indigoLabel);
 
   const startedInDrawerMode = await mobileMenu.isVisible();
   if (startedInDrawerMode) {
