@@ -25,20 +25,26 @@ blora-megamenu {
   border-radius: var(--blora-radius-lg);
   background: var(--blora-color-surface-default);
   box-shadow: var(--blora-shadow-3);
+  display: none;
   opacity: 0;
-  visibility: hidden;
   transform: translateY(-0.4rem) translateX(var(--blora-megamenu-offset, 0));
-  transition:
-    opacity var(--blora-duration-fast) var(--blora-easing-standard),
-    transform var(--blora-duration-base) var(--blora-easing-standard),
-    visibility 0s linear var(--blora-duration-base);
+  transition-property: opacity, transform, display;
+  transition-duration: var(--blora-duration-base);
+  transition-timing-function: var(--blora-easing-standard);
+  transition-behavior: allow-discrete;
 }
 
 .blora-megamenu[data-open] .blora-megamenu__panel {
+  display: block;
   opacity: 1;
-  visibility: visible;
   transform: translateY(0) translateX(var(--blora-megamenu-offset, 0));
-  transition-delay: 0s;
+}
+
+@starting-style {
+  .blora-megamenu[data-open] .blora-megamenu__panel {
+    opacity: 0;
+    transform: translateY(-0.4rem) translateX(var(--blora-megamenu-offset, 0));
+  }
 }
 
 .blora-megamenu__grid {

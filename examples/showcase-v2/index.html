@@ -96,8 +96,24 @@
         font-weight: 600;
       }
 
-      .showcase-panel[hidden] {
+      .showcase-panel {
         display: none;
+        opacity: 0;
+        transition-property: opacity, display;
+        transition-duration: var(--blora-duration-base);
+        transition-timing-function: var(--blora-easing-standard);
+        transition-behavior: allow-discrete;
+      }
+
+      .showcase-panel[data-active] {
+        display: block;
+        opacity: 1;
+      }
+
+      @starting-style {
+        .showcase-panel[data-active] {
+          opacity: 0;
+        }
       }
 
       .showcase-preview-row {
@@ -1009,11 +1025,23 @@
         </blora-breadcrumb>
       </template>
       <template data-component="command-palette" data-label="Command Palette" data-group="导航" data-eyebrow="Navigation" data-kind="Composite CE" data-description="快速搜索并执行命令的键盘优先界面。">
-        <blora-command placeholder="输入命令或搜索…">
-          <blora-command-item value="new" icon="document" shortcut="⌘N">新建文档</blora-command-item>
-          <blora-command-item value="open" icon="folder" shortcut="⌘O">打开文件</blora-command-item>
-          <blora-command-item value="settings" icon="settings" shortcut="⌘,">设置</blora-command-item>
-        </blora-command>
+        <div data-showcase-cases>
+          <section data-showcase-case="Inline"><h3>内嵌面板</h3>
+            <blora-command placeholder="输入命令或搜索…">
+              <blora-command-item value="new" icon="document" shortcut="⌘N">新建文档</blora-command-item>
+              <blora-command-item value="open" icon="folder" shortcut="⌘O">打开文件</blora-command-item>
+              <blora-command-item value="settings" icon="settings" shortcut="⌘,">设置</blora-command-item>
+            </blora-command>
+          </section>
+          <section data-showcase-case="Overlay"><h3>浮层打开</h3>
+            <button type="button" class="blora-button" data-variant="primary" data-showcase-action="command">打开命令面板</button>
+            <blora-command data-overlay placeholder="输入命令或搜索…">
+              <blora-command-item value="new" icon="document" shortcut="⌘N">新建文档</blora-command-item>
+              <blora-command-item value="open" icon="folder" shortcut="⌘O">打开文件</blora-command-item>
+              <blora-command-item value="settings" icon="settings" shortcut="⌘,">设置</blora-command-item>
+            </blora-command>
+          </section>
+        </div>
       </template>
       <template data-component="dock" data-label="Dock" data-group="导航" data-eyebrow="Navigation" data-kind="Composite CE" data-description="适用于移动端或紧凑应用的主导航栏。">
         <blora-dock label="底部导航" static>
@@ -1742,7 +1770,7 @@
             id: `panel-${name}`,
             "data-component-panel": name,
           });
-          if (name !== "button") article.hidden = true;
+          if (name === "button") article.setAttribute("data-active", "");
 
           const heading = createElement("header", { class: "showcase-heading" });
           const headingCopy = createElement("div");
@@ -1965,7 +1993,7 @@
           queueMicrotask(restoreSidebarScroll);
           requestAnimationFrame(restoreSidebarScroll);
           componentPanels.forEach((panel) => {
-            panel.hidden = panel.dataset.componentPanel !== next;
+            panel.toggleAttribute("data-active", panel.dataset.componentPanel === next);
           });
           const activePanel = document.querySelector(`[data-component-panel="${next}"]`);
           const title = activePanel.querySelector("h1");
@@ -1982,6 +2010,7 @@
             ? panel.querySelector(`#${CSS.escape(trigger.dataset.showcaseTarget)}`)
             : null;
           if (action === "dialog") (target ?? panel.querySelector("blora-dialog"))?.show();
+          if (action === "command") (target ?? panel.querySelector("blora-command[data-overlay]"))?.show();
           if (action === "drawer") (target ?? panel.querySelector("blora-drawer"))?.open();
           if (action === "message") {
             const type = trigger.dataset.showcaseMessage;

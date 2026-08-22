@@ -40,6 +40,12 @@ blora-mentions {
   border-radius: var(--blora-radius-lg);
   box-shadow: var(--blora-shadow-3);
   display: none;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition-property: opacity, transform, display;
+  transition-duration: var(--blora-duration-fast);
+  transition-timing-function: var(--blora-easing-standard);
+  transition-behavior: allow-discrete;
 
   /* Park off-screen until positioned — fixed+no coords = top-left ghost */
   left: -9999px;
@@ -51,6 +57,15 @@ blora-mentions {
 .blora-mentions__menu[data-open] {
   display: block;
   pointer-events: auto;
+  opacity: 1;
+  transform: none;
+}
+
+@starting-style {
+  .blora-mentions__menu[data-open] {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
 }
 
 .blora-mentions__menu--rich {

@@ -12,10 +12,21 @@
     "placeholder": {
       "type": "string",
       "default": "输入命令或搜索..."
+    },
+    "open": {
+      "type": "boolean",
+      "description": "Overlay open state; pairs with data-overlay for a modal command surface"
+    },
+    "data-overlay": {
+      "type": "boolean",
+      "description": "Render as a viewport overlay instead of an inline panel"
     }
   },
   "properties": {},
-  "methods": {},
+  "methods": {
+    "show": { "description": "Open as an overlay and focus the search field" },
+    "close": { "description": "Dismiss the overlay" }
+  },
   "events": {
     "blora:command": {
       "detail": "{ label: string }",

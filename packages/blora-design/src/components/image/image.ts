@@ -3,6 +3,7 @@
  */
 import { BloraElement } from "../../core/blora-element.js";
 import { createBloraIcon } from "../../core/icons.js";
+import { whenMotionDone } from "../../core/motion.js";
 
 export const BLORA_IMAGE_TAG = "blora-image";
 
@@ -119,9 +120,10 @@ export function openImagePreview(
   };
 
   const close = () => {
+    if (!overlay.isConnected) return;
     overlay.removeAttribute("data-open");
-    overlay.remove();
     doc.removeEventListener("keydown", onKey);
+    whenMotionDone(overlay, () => overlay.remove());
   };
   const next = () => {
     index = (index + 1) % list.length;

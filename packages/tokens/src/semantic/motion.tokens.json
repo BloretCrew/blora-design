@@ -1,5 +1,5 @@
 {
-  "$description": "Semantic motion mappings. Easing and duration tokens.",
+  "$description": "Semantic motion mappings. Easing and duration tokens. `--blora-dur-*` / `--blora-ease*` are 1.x-compatible aliases of `--blora-duration-*` / `--blora-easing-*`.",
   "easing": {
     "standard": { "$type": "easing", "$value": "cubic-bezier(0.25, 0.8, 0.25, 1)" },
     "soft": { "$type": "easing", "$value": "cubic-bezier(0.4, 0, 0.2, 1)" },
@@ -11,5 +11,14 @@
     "slow": { "$type": "duration", "$value": "{primitive.duration.slow}" },
     "emphasis": { "$type": "duration", "$value": "{primitive.duration.emphasis}" },
     "tabsFade": { "$type": "duration", "$value": "{primitive.duration.tabsFade}" }
+  },
+  "ease": { "$type": "easing", "$value": "{easing.standard}" },
+  "easeSoft": { "$type": "easing", "$value": "{easing.soft}" },
+  "easeOvershoot": { "$type": "easing", "$value": "{easing.overshoot}" },
+  "dur": {
+    "fast": { "$type": "duration", "$value": "{duration.fast}" },
+    "base": { "$type": "duration", "$value": "{duration.base}" },
+    "slow": { "$type": "duration", "$value": "{duration.slow}" },
+    "emphasis": { "$type": "duration", "$value": "{duration.emphasis}" }
   }
 }

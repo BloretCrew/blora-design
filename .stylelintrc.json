@@ -5,7 +5,14 @@
     "property-no-unknown": null,
     "custom-property-pattern": "^blora-[a-z0-9-]+$",
     "selector-class-pattern": "(^blora-[a-z0-9_-]+$)|(^is-[a-z0-9-]+$)",
-    "at-rule-no-unknown": [true, { "ignoreAtRules": ["layer", "container", "import"] }],
+    "at-rule-no-unknown": [
+      true,
+      { "ignoreAtRules": ["layer", "container", "import", "starting-style"] }
+    ],
+    "declaration-property-value-disallowed-list": {
+      "transition": ["/^all\\b/"],
+      "transition-property": ["/^all$/"]
+    },
     "color-hex-length": "short",
     "import-notation": ["string", { "except": ["url"] }],
     "selector-no-vendor-prefix": null,

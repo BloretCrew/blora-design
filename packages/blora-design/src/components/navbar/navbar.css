@@ -139,7 +139,9 @@ blora-navbar > .blora-navbar {
   color: var(--blora-color-text-emphasis);
   border-radius: var(--blora-radius-md);
   text-decoration: none;
-  transition: all var(--blora-duration-fast) var(--blora-easing-standard);
+  transition:
+    color var(--blora-duration-fast) var(--blora-easing-standard),
+    background-color var(--blora-duration-fast) var(--blora-easing-standard);
 }
 
 .blora-navbar__link:hover {

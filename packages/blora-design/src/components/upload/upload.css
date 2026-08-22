@@ -53,7 +53,10 @@ blora-upload {
   border-radius: var(--blora-radius-lg);
   color: var(--blora-color-text-muted);
   cursor: pointer;
-  transition: all var(--blora-duration-base) var(--blora-easing-standard);
+  transition:
+    border-color var(--blora-duration-base) var(--blora-easing-standard),
+    color var(--blora-duration-base) var(--blora-easing-standard),
+    background-color var(--blora-duration-base) var(--blora-easing-standard);
 }
 
 .blora-dropzone:hover,

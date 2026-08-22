@@ -89,7 +89,9 @@ blora-transfer {
   border-radius: var(--blora-radius-xs);
   background: var(--blora-color-surface-default);
   display: inline-block;
-  transition: all var(--blora-duration-fast) var(--blora-easing-standard);
+  transition:
+    background-color var(--blora-duration-fast) var(--blora-easing-standard),
+    border-color var(--blora-duration-fast) var(--blora-easing-standard);
   position: relative;
   box-sizing: border-box;
   flex-shrink: 0;
@@ -109,7 +111,9 @@ blora-transfer {
   opacity: 0;
   transform: translate(-50%, -60%) rotate(45deg) scale(0.4);
   transform-origin: center center;
-  transition: all var(--blora-duration-fast) var(--blora-easing-overshoot);
+  transition:
+    opacity var(--blora-duration-fast) var(--blora-easing-overshoot),
+    transform var(--blora-duration-fast) var(--blora-easing-overshoot);
 }
 
 .blora-transfer__row input:checked + .blora-transfer__check {

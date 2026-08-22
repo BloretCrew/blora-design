@@ -123,12 +123,24 @@ export class BloraCommand extends BloraElement {
   private definitions: CommandItemDefinition[] | null = null;
 
   static get observedAttributes(): string[] {
-    return ["placeholder"];
+    return ["placeholder", "open"];
   }
 
-  attributeChangedCallback(): void {
+  attributeChangedCallback(name: string): void {
     if (!this.isConnectedInternal) return;
+    if (name === "open") return;
     this.sync();
+  }
+
+  show(): void {
+    this.setAttribute("data-overlay", "");
+    this.setAttribute("open", "");
+    const input = this.querySelector<HTMLInputElement>("input");
+    input?.focus();
+  }
+
+  close(): void {
+    this.removeAttribute("open");
   }
 
   protected render(): void {
@@ -216,6 +228,15 @@ export class BloraCommand extends BloraElement {
     this.searchController?.destroy();
     this.controller = createCommandPaletteController(root);
     if (search) this.searchController = createSearchController(search);
+    this.listen(this, "pointerdown", (event) => {
+      if (event.target === this && this.hasAttribute("open")) this.close();
+    });
+    this.listen(this, "keydown", (event) => {
+      if ((event as KeyboardEvent).key === "Escape" && this.hasAttribute("open")) {
+        (event as KeyboardEvent).preventDefault();
+        this.close();
+      }
+    });
   }
 
   protected onDisconnect(): void {

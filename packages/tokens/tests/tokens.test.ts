@@ -70,6 +70,8 @@ describe("generated outputs", () => {
     expect(lightCss).toContain("--blora-color-action-primary-default");
     expect(lightCss).toContain("--blora-space-4");
     expect(lightCss).toContain("--blora-duration-fast");
+    expect(lightCss).toContain("--blora-dur-fast: var(--blora-duration-fast)");
+    expect(lightCss).toContain("--blora-ease: var(--blora-easing-standard)");
     expect(lightCss).not.toMatch(/(--blora-[a-z0-9-]+):\s*var\(\1\)/);
 
     expect(darkCss).toContain(':root[data-blora-color-scheme="dark"]');

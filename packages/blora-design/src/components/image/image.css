@@ -64,6 +64,11 @@ blora-image {
   .blora-image[data-loading]::before {
     animation: none;
   }
+
+  .blora-image-preview,
+  .blora-image-preview__stage {
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* Hover zoom */
@@ -120,10 +125,22 @@ blora-image {
   padding: var(--blora-space-5);
   background: var(--blora-color-overlay-modal);
   backdrop-filter: blur(6px);
+  opacity: 0;
+  transition-property: opacity, display;
+  transition-duration: var(--blora-duration-base);
+  transition-timing-function: var(--blora-easing-standard);
+  transition-behavior: allow-discrete;
 }
 
 .blora-image-preview[data-open] {
   display: flex;
+  opacity: 1;
+}
+
+@starting-style {
+  .blora-image-preview[data-open] {
+    opacity: 0;
+  }
 }
 
 .blora-image-preview__stage {
@@ -132,6 +149,23 @@ blora-image {
   max-height: min(88dvh, 900px);
   display: grid;
   place-items: center;
+  opacity: 0;
+  transform: scale(0.96);
+  transition:
+    opacity var(--blora-duration-base) var(--blora-easing-standard),
+    transform var(--blora-duration-base) var(--blora-easing-overshoot);
+}
+
+.blora-image-preview[data-open] .blora-image-preview__stage {
+  opacity: 1;
+  transform: none;
+}
+
+@starting-style {
+  .blora-image-preview[data-open] .blora-image-preview__stage {
+    opacity: 0;
+    transform: scale(0.96);
+  }
 }
 
 .blora-image-preview__img {

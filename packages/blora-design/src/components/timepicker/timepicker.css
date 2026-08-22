@@ -61,7 +61,9 @@ blora-timepicker {
   opacity: 0;
   pointer-events: none;
   transform: translateY(-4px);
-  transition: all var(--blora-duration-fast) var(--blora-easing-standard);
+  transition:
+    opacity var(--blora-duration-fast) var(--blora-easing-standard),
+    transform var(--blora-duration-fast) var(--blora-easing-standard);
 }
 
 .blora-timepicker__panel[data-open] {

@@ -219,18 +219,22 @@ Blora Design 采用 12 级非线性间距，组件与布局必须优先使用对
 
 | Token | 曲线 | 用途 |
 |-------|------|------|
-| `--blora-ease` | `cubic-bezier(.25,.8,.25,1)` | **默认** — 柔和快速收束 |
-| `--blora-ease-soft` | `cubic-bezier(.4,0,.2,1)` | 柔和 |
-| `--blora-ease-overshoot` | `cubic-bezier(.34,1.56,.64,1)` | 微弹 — 仅 FAB/Message 等 |
+| `--blora-easing-standard` | `cubic-bezier(.25,.8,.25,1)` | **默认** — 柔和快速收束 |
+| `--blora-easing-soft` | `cubic-bezier(.4,0,.2,1)` | 柔和 |
+| `--blora-easing-overshoot` | `cubic-bezier(.34,1.56,.64,1)` | 微弹 — 仅 FAB/Message 等 |
+
+`--blora-ease`、`--blora-ease-soft`、`--blora-ease-overshoot` 是以上令牌的 1.x 别名。
 
 ### 7.2 时长 · Duration
 
 | Token | 时长 | 用途 |
 |-------|------|------|
-| `--blora-dur-fast` | 160ms | 颜色/边框/hover |
-| `--blora-dur-base` | 260ms | 位移/显隐默认 |
-| `--blora-dur-slow` | 420ms | 抽屉/折叠 |
-| `--blora-dur-emphasis` | 700ms | 需要额外关注的强调动画 |
+| `--blora-duration-fast` | 160ms | 颜色/边框/hover |
+| `--blora-duration-base` | 260ms | 位移/显隐默认 |
+| `--blora-duration-slow` | 420ms | 抽屉/折叠 |
+| `--blora-duration-emphasis` | 700ms | 需要额外关注的强调动画 |
+
+`--blora-dur-fast` / `--blora-dur-base` / `--blora-dur-slow` / `--blora-dur-emphasis` 是以上令牌的 1.x 别名。组件 CSS 一律写 `--blora-duration-*`，禁止 `transition: all`。
 
 ### 7.3 组件动效
 

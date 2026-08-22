@@ -70,7 +70,9 @@ blora-calendar {
   cursor: pointer;
   font-size: var(--blora-text-lg);
   flex: none;
-  transition: all var(--blora-duration-fast) var(--blora-easing-standard);
+  transition:
+    background-color var(--blora-duration-fast) var(--blora-easing-standard),
+    color var(--blora-duration-fast) var(--blora-easing-standard);
 }
 
 .blora-calendar__nav:hover {
@@ -120,7 +122,9 @@ blora-calendar {
   font-size: var(--blora-text-sm);
   color: var(--blora-color-text-emphasis);
   cursor: pointer;
-  transition: all var(--blora-duration-fast) var(--blora-easing-standard);
+  transition:
+    background-color var(--blora-duration-fast) var(--blora-easing-standard),
+    color var(--blora-duration-fast) var(--blora-easing-standard);
   user-select: none;
 }
 
@@ -181,7 +185,9 @@ blora-calendar {
   font-size: var(--blora-text-sm);
   color: var(--blora-color-text-emphasis);
   cursor: pointer;
-  transition: all var(--blora-duration-fast) var(--blora-easing-standard);
+  transition:
+    background-color var(--blora-duration-fast) var(--blora-easing-standard),
+    color var(--blora-duration-fast) var(--blora-easing-standard);
   user-select: none;
   position: relative;
 }

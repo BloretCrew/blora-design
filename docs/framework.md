@@ -143,7 +143,7 @@ Blora.cls / classPrefix / version   // "1.0.0"
   /* Spacing */ --blora-space-0 .. --blora-space-12
   /* Radius */ --blora-radius-xs .. --blora-radius-full
   /* Shadow */ --blora-shadow-1..4, --blora-shadow-inset, --blora-shadow-primary
-  /* Motion */ --blora-ease, --blora-ease-soft, --blora-ease-overshoot, --blora-dur-fast/base/slow/emphasis
+  /* Motion */ --blora-easing-standard/soft/overshoot, --blora-duration-fast/base/slow/emphasis
   /* Z-index */ --blora-z-sticky/dropdown/drawer/modal/toast
 }
 ```

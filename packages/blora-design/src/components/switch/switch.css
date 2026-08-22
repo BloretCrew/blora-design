@@ -31,7 +31,9 @@ blora-switch,
   border: 1px solid var(--blora-color-border-subtle);
   border-radius: var(--blora-radius-full);
   position: relative;
-  transition: all var(--blora-duration-base) var(--blora-easing-standard);
+  transition:
+    background-color var(--blora-duration-base) var(--blora-easing-standard),
+    border-color var(--blora-duration-base) var(--blora-easing-standard);
 }
 
 .blora-switch__track::after {

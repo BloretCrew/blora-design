@@ -3,6 +3,7 @@
  * Steps through highlighted elements with a tooltip.
  */
 import { BloraElement } from "../../core/blora-element.js";
+import { whenMotionDone } from "../../core/motion.js";
 
 export const BLORA_TOUR_TAG = "blora-tour";
 
@@ -141,6 +142,7 @@ export function createTourController(root: HTMLElement): TourController {
     overlay = doc.createElement("div");
     overlay.className = "blora-tour__overlay";
     doc.body.appendChild(overlay);
+    overlay.setAttribute("data-open", "");
 
     tooltip = doc.createElement("div");
     tooltip.className = "blora-tour__tooltip";
@@ -228,11 +230,19 @@ export function createTourController(root: HTMLElement): TourController {
     window.removeEventListener("resize", onReposition);
     window.removeEventListener("scroll", onReposition, true);
     doc.documentElement.removeAttribute("data-blora-tour-open");
-    overlay?.remove();
-    tooltip?.remove();
+    const overlayNode = overlay;
+    const tooltipNode = tooltip;
     overlay = null;
     tooltip = null;
     current = -1;
+    overlayNode?.removeAttribute("data-open");
+    tooltipNode?.removeAttribute("data-open");
+    const removeNodes = () => {
+      overlayNode?.remove();
+      tooltipNode?.remove();
+    };
+    if (tooltipNode) whenMotionDone(tooltipNode, removeNodes);
+    else removeNodes();
     if (wasOpen) root.dispatchEvent(new CustomEvent("blora-tour-end", { bubbles: true }));
   };
 

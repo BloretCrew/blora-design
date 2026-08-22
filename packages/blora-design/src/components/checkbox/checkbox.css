@@ -47,7 +47,9 @@ blora-checkbox[data-group] [role="group"] > * + * {
   border-radius: var(--blora-radius-xs);
   background: var(--blora-color-surface-default);
   display: inline-block;
-  transition: all var(--blora-duration-fast) var(--blora-easing-standard);
+  transition:
+    background-color var(--blora-duration-fast) var(--blora-easing-standard),
+    border-color var(--blora-duration-fast) var(--blora-easing-standard);
   position: relative;
 
   /* Keep box geometry independent of line-height / flex stretch */
@@ -81,7 +83,9 @@ blora-checkbox[data-group] [role="group"] > * + * {
   opacity: 0;
   transform: translate(-50%, -60%) rotate(45deg) scale(0.4);
   transform-origin: center center;
-  transition: all var(--blora-duration-fast) var(--blora-easing-overshoot);
+  transition:
+    opacity var(--blora-duration-fast) var(--blora-easing-overshoot),
+    transform var(--blora-duration-fast) var(--blora-easing-overshoot);
 }
 
 .blora-checkbox > input:checked + .blora-checkbox__box {

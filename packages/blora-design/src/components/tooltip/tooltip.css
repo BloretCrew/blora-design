@@ -30,7 +30,9 @@ blora-tooltip {
   overflow-wrap: anywhere;
   opacity: 0;
   pointer-events: none;
-  transition: all var(--blora-duration-fast) var(--blora-easing-standard);
+  transition:
+    opacity var(--blora-duration-fast) var(--blora-easing-standard),
+    transform var(--blora-duration-fast) var(--blora-easing-standard);
   z-index: var(--blora-z-dropdown);
   box-shadow: var(--blora-shadow-3);
 }

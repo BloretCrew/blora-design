@@ -18,62 +18,28 @@ export function createDrawerController(root: HTMLElement, host?: HTMLElement): D
   const doc = root.ownerDocument;
   const surface = host ?? (root.closest("blora-drawer") as HTMLElement | null) ?? root;
   const panel = root.querySelector<HTMLElement>(".blora-drawer__panel");
-  const mask = root.querySelector<HTMLElement>(".blora-drawer__mask");
-  let closing = false;
-  let closeTimer = 0;
-
-  const clearLeaving = () => {
-    root.classList.remove("is-leaving");
-    mask?.classList.remove("is-leaving");
-    panel?.classList.remove("is-leaving");
-  };
+  let syncing = false;
 
   const setOpen = (open: boolean) => {
-    if (open) {
-      if (closeTimer) {
-        window.clearTimeout(closeTimer);
-        closeTimer = 0;
+    if (syncing) return;
+    syncing = true;
+    try {
+      if (open) {
+        root.setAttribute("data-open", "");
+        root.setAttribute("open", "");
+        panel?.setAttribute("tabindex", "-1");
+        panel?.focus({ preventScroll: true });
+        return;
       }
-      closing = false;
-      clearLeaving();
-      root.setAttribute("data-open", "");
-      root.setAttribute("open", "");
-      panel?.setAttribute("tabindex", "-1");
-      panel?.focus({ preventScroll: true });
-      return;
-    }
-    if (closing) return;
-    if (!root.hasAttribute("data-open") && !root.hasAttribute("open")) {
-      return;
-    }
-    closing = true;
-    root.classList.add("is-leaving");
-    mask?.classList.add("is-leaving");
-    panel?.classList.add("is-leaving");
-
-    const finish = () => {
-      if (!closing) return;
       root.removeAttribute("data-open");
       root.removeAttribute("open");
       if (surface !== root) {
         surface.removeAttribute("data-open");
         surface.removeAttribute("open");
       }
-      clearLeaving();
-      closing = false;
-      if (closeTimer) {
-        window.clearTimeout(closeTimer);
-        closeTimer = 0;
-      }
-      panel?.removeEventListener("animationend", onEnd);
-    };
-    const onEnd = (e: AnimationEvent) => {
-      if (e.target !== panel && e.target !== mask) return;
-      finish();
-    };
-    panel?.addEventListener("animationend", onEnd);
-    /* Fallback if animation disabled / reduced motion */
-    closeTimer = window.setTimeout(finish, 400);
+    } finally {
+      syncing = false;
+    }
   };
 
   const onClick = (e: MouseEvent) => {

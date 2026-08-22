@@ -4,6 +4,34 @@ blora-command {
   display: block;
 }
 
+blora-command[data-overlay] {
+  position: fixed;
+  inset: 0;
+  z-index: var(--blora-z-modal);
+  display: none;
+  place-items: start center;
+  padding: 15vh var(--blora-space-5) var(--blora-space-5);
+  margin: 0;
+  background: var(--blora-color-overlay-modal);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  transition-property: opacity, display, overlay;
+  transition-duration: var(--blora-duration-base);
+  transition-timing-function: var(--blora-easing-standard);
+  transition-behavior: allow-discrete;
+}
+
+blora-command[data-overlay][open] {
+  display: grid;
+  opacity: 1;
+}
+
+@starting-style {
+  blora-command[data-overlay][open] {
+    opacity: 0;
+  }
+}
+
 .blora-command,
 .blora-cmdk {
   max-width: 480px;
@@ -13,6 +41,23 @@ blora-command {
   border-radius: var(--blora-radius-lg);
   box-shadow: var(--blora-shadow-4);
   overflow: hidden;
+}
+
+blora-command[data-overlay][open] .blora-command,
+blora-command[data-overlay][open] .blora-cmdk {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--blora-duration-base) var(--blora-easing-standard),
+    transform var(--blora-duration-base) var(--blora-easing-overshoot);
+}
+
+@starting-style {
+  blora-command[data-overlay][open] .blora-command,
+  blora-command[data-overlay][open] .blora-cmdk {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
 }
 
 .blora-command__search,
@@ -47,6 +92,14 @@ blora-command {
 .blora-command__item[data-active] {
   background: var(--blora-color-surface-raised);
   color: var(--blora-color-text-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  blora-command[data-overlay],
+  blora-command[data-overlay][open] .blora-command,
+  blora-command[data-overlay][open] .blora-cmdk {
+    transition-duration: 0.01ms !important;
+  }
 }
 
 .blora-cmdk-item__kbd,

@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import {
   defineBloraDialog,
   BloraDialog,
@@ -12,13 +12,13 @@ describe("BloraDialog", () => {
   });
 
   it("defines the custom element", () => {
-    expect(customElements.get(BLORA_DIALOG_TAG)).toBe(BloraDialog);
+    expect(customElements.get(BLORA_DIALOG_TAG)?.name).toBe("BloraDialog");
   });
 
   it("defineBloraDialog is idempotent", () => {
     defineBloraDialog();
     defineBloraDialog();
-    expect(customElements.get(BLORA_DIALOG_TAG)).toBe(BloraDialog);
+    expect(customElements.get(BLORA_DIALOG_TAG)?.name).toBe("BloraDialog");
   });
 
   it("show() sets open attribute and emits blora-open", () => {
@@ -36,8 +36,7 @@ describe("BloraDialog", () => {
     expect(opened).toBe(true);
   });
 
-  it("close() removes open attribute and emits blora-close", async () => {
-    vi.useFakeTimers();
+  it("close() removes open immediately without a data-closing flag", () => {
     const dialog = document.createElement("blora-dialog") as BloraDialog;
     document.body.appendChild(dialog);
 
@@ -50,11 +49,10 @@ describe("BloraDialog", () => {
     });
 
     dialog.close();
-    vi.advanceTimersByTime(300);
 
     expect(dialog.hasAttribute("open")).toBe(false);
+    expect(dialog.hasAttribute("data-closing")).toBe(false);
     expect(closed).toBe(true);
-    vi.useRealTimers();
   });
 
   it("blora-before-open is cancelable", () => {
@@ -71,7 +69,6 @@ describe("BloraDialog", () => {
   });
 
   it("blora-before-close is cancelable", () => {
-    vi.useFakeTimers();
     const dialog = document.createElement("blora-dialog") as BloraDialog;
     document.body.appendChild(dialog);
 
@@ -82,10 +79,8 @@ describe("BloraDialog", () => {
     });
 
     dialog.close();
-    vi.advanceTimersByTime(300);
 
     expect(dialog.hasAttribute("open")).toBe(true);
-    vi.useRealTimers();
   });
 
   it("opens from a declarative open attribute", () => {

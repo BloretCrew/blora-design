@@ -30,6 +30,12 @@ blora-cascader {
   z-index: var(--blora-z-dropdown);
   display: none;
   flex-direction: row;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition-property: opacity, transform, display;
+  transition-duration: var(--blora-duration-fast);
+  transition-timing-function: var(--blora-easing-standard);
+  transition-behavior: allow-discrete;
   background: var(--blora-color-surface-default);
   border: var(--blora-border-subtle);
   border-radius: var(--blora-radius-md);
@@ -48,6 +54,15 @@ blora-cascader {
 
 .blora-cascader__panel[data-open] {
   display: flex;
+  opacity: 1;
+  transform: none;
+}
+
+@starting-style {
+  .blora-cascader__panel[data-open] {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
 }
 
 .blora-cascader__column {

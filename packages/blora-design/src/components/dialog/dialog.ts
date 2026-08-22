@@ -5,6 +5,7 @@
 import { BloraElement } from "../../core/blora-element.js";
 import { OverlayController, type OverlayOptions } from "../../controllers/overlay-controller.js";
 import { createBloraIcon } from "../../core/icons.js";
+import { whenMotionDone } from "../../core/motion.js";
 
 import dialogStyles from "./dialog.css?inline";
 
@@ -23,7 +24,7 @@ export interface BloraDialogCloseDetail {
 
 export class BloraDialog extends BloraElement {
   private overlay: OverlayController | null = null;
-  private closeAnimationTimer: ReturnType<typeof setTimeout> | null = null;
+  private cancelCloseMotion: (() => void) | null = null;
   private visible = false;
 
   static get observedAttributes(): string[] {
@@ -241,27 +242,19 @@ export class BloraDialog extends BloraElement {
     if (!beforeClose) return;
 
     this.visible = false;
-    // Release overlay immediately (scroll lock, focus, listeners)
     this.overlay?.close();
     this.overlay = null;
-
-    // Start closing animation
-    this.setAttribute("data-closing", "");
-
-    const animationDuration = 260;
-
-    this.closeAnimationTimer = setTimeout(() => {
-      this.dismissTopLayer();
-      this.removeAttribute("open");
-      this.removeAttribute("data-closing");
-      this.closeAnimationTimer = null;
+    this.cancelCloseMotion?.();
+    this.removeAttribute("open");
+    this.dismissTopLayer();
+    this.cancelCloseMotion = whenMotionDone(this, () => {
+      this.cancelCloseMotion = null;
       this.restoreHome();
-
       this.emit<BloraDialogCloseDetail>("blora-close", {
         source: "api",
         reason,
       });
-    }, animationDuration);
+    });
   }
 
   disconnectedCallback(): void {
@@ -290,10 +283,8 @@ export class BloraDialog extends BloraElement {
   }
 
   protected onDisconnect(): void {
-    if (this.closeAnimationTimer) {
-      clearTimeout(this.closeAnimationTimer);
-      this.closeAnimationTimer = null;
-    }
+    this.cancelCloseMotion?.();
+    this.cancelCloseMotion = null;
     this.overlay?.destroy();
     this.overlay = null;
     this.dismissTopLayer();

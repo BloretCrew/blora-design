@@ -87,6 +87,8 @@ defineBloraSelect();
 | `--blora-ease`       | `--blora-easing-standard`              |
 | `--blora-dur-fast`   | `--blora-duration-fast`                |
 
+`--blora-ease*` / `--blora-dur-*` 仍作为 CSS 变量别名生成，但组件与新代码应使用 `--blora-easing-*` / `--blora-duration-*`。
+
 2.0 **没有**运行时 1.x 兼容层。请把旧 token / class 改成上表和 [`token-map-v1-v2.csv`](./token-map-v1-v2.csv) 中的 2.0 名称。
 
 ## 6. Class 映射

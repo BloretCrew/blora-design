@@ -102,10 +102,21 @@ blora-tree-select {
 }
 
 .blora-treeselect__children {
-  display: none;
+  display: grid;
+  grid-template-rows: 0fr;
   padding-inline-start: 1.1em;
+  opacity: 0;
+  transition:
+    grid-template-rows var(--blora-duration-base) var(--blora-easing-standard),
+    opacity var(--blora-duration-base) var(--blora-easing-standard);
+}
+
+.blora-treeselect__children > * {
+  overflow: hidden;
+  min-height: 0;
 }
 
 .blora-treeselect__children[data-open] {
-  display: block;
+  grid-template-rows: 1fr;
+  opacity: 1;
 }

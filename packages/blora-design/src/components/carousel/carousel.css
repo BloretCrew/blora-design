@@ -81,7 +81,10 @@ blora-carousel {
   border-radius: 50%;
   background: var(--blora-color-overlay-media-indicator);
   cursor: pointer;
-  transition: all var(--blora-duration-fast) var(--blora-easing-standard);
+  transition:
+    background-color var(--blora-duration-fast) var(--blora-easing-standard),
+    width var(--blora-duration-fast) var(--blora-easing-standard),
+    border-radius var(--blora-duration-fast) var(--blora-easing-standard);
 }
 
 .blora-carousel__dot[data-active] {
