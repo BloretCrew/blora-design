@@ -1,4 +1,5 @@
 import { BloraElement } from "../../core/blora-element.js";
+import { t } from "../../core/i18n.js";
 import { createBloraIcon, type BloraIconName } from "../../core/icons.js";
 
 export const BLORA_SWAP_TAG = "blora-swap";
@@ -41,7 +42,7 @@ export class BloraSwap extends BloraElement {
     const text = doc.createElement("span");
     text.className = "blora-swap__label";
     text.textContent =
-      this.getAttribute(on ? "on-label" : "off-label") ?? (on ? "已开启" : "已关闭");
+      this.getAttribute(on ? "on-label" : "off-label") ?? (on ? t("swap.on") : t("swap.off"));
     label.append(input, visual, text);
     this.replaceChildren(label);
   }
@@ -66,7 +67,7 @@ export class BloraSwap extends BloraElement {
     const text = this.querySelector<HTMLElement>(".blora-swap__label");
     if (text) {
       text.textContent =
-        this.getAttribute(on ? "on-label" : "off-label") ?? (on ? "已开启" : "已关闭");
+        this.getAttribute(on ? "on-label" : "off-label") ?? (on ? t("swap.on") : t("swap.off"));
     }
   }
 

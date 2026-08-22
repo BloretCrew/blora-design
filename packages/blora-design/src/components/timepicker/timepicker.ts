@@ -4,6 +4,7 @@
  */
 
 import { BloraElement } from "../../core/blora-element.js";
+import { t } from "../../core/i18n.js";
 import { createBloraIcon } from "../../core/icons.js";
 
 export const BLORA_TIMEPICKER_TAG = "blora-timepicker";
@@ -252,7 +253,7 @@ export function createTimepickerController(root: HTMLElement): TimepickerControl
     hScroll.className = "blora-timepicker__scroll";
     hScroll.setAttribute("data-scroll", "h");
     hScroll.setAttribute("role", "listbox");
-    hScroll.setAttribute("aria-label", "时");
+    hScroll.setAttribute("aria-label", t("timepicker.hour"));
     fillWheel(hScroll, 24, "h");
 
     const sep = document.createElement("span");
@@ -264,7 +265,7 @@ export function createTimepickerController(root: HTMLElement): TimepickerControl
     mScroll.className = "blora-timepicker__scroll";
     mScroll.setAttribute("data-scroll", "m");
     mScroll.setAttribute("role", "listbox");
-    mScroll.setAttribute("aria-label", "分");
+    mScroll.setAttribute("aria-label", t("timepicker.minute"));
     fillWheel(mScroll, 60, "m");
 
     cols.append(hScroll, sep, mScroll);
@@ -279,14 +280,14 @@ export function createTimepickerController(root: HTMLElement): TimepickerControl
     nowBtn.setAttribute("data-variant", "ghost");
     nowBtn.setAttribute("data-size", "sm");
     nowBtn.setAttribute("data-now", "");
-    nowBtn.textContent = "此刻";
+    nowBtn.textContent = t("common.now");
     const okBtn = document.createElement("button");
     okBtn.type = "button";
     okBtn.className = "blora-button";
     okBtn.setAttribute("data-variant", "ghost");
     okBtn.setAttribute("data-size", "sm");
     okBtn.setAttribute("data-confirm", "");
-    okBtn.textContent = "确定";
+    okBtn.textContent = t("common.confirm");
     foot.append(nowBtn, okBtn);
     panel!.appendChild(foot);
 
@@ -423,7 +424,7 @@ export class BloraTimepicker extends BloraElement {
     button.type = "button";
     button.tabIndex = -1;
     button.disabled = input.disabled;
-    button.setAttribute("aria-label", "选择时间");
+    button.setAttribute("aria-label", t("timepicker.pick"));
     button.appendChild(createBloraIcon("clock"));
 
     root.append(input, button);

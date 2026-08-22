@@ -3,6 +3,7 @@
  * Moves checked items between source and target panels.
  */
 import { BloraElement } from "../../core/blora-element.js";
+import { t } from "../../core/i18n.js";
 import { createBloraIcon } from "../../core/icons.js";
 
 export const BLORA_TRANSFER_TAG = "blora-transfer";
@@ -26,11 +27,11 @@ export function createTransferController(root: HTMLElement): TransferController 
     const targetHead = targetPanel.querySelector(".blora-transfer__head");
     if (sourceHead) {
       const count = sourceList?.querySelectorAll(".blora-transfer__row").length ?? 0;
-      sourceHead.textContent = `候选 · ${count}`;
+      sourceHead.textContent = t("transfer.sourceCount", { n: count });
     }
     if (targetHead) {
       const count = targetList?.querySelectorAll(".blora-transfer__row").length ?? 0;
-      targetHead.textContent = `已选 · ${count}`;
+      targetHead.textContent = t("transfer.targetCount", { n: count });
     }
   };
 
@@ -164,7 +165,7 @@ export class BloraTransfer extends BloraElement {
     right.dataset.transfer = "right";
     right.type = "button";
     right.disabled = this.hasAttribute("disabled");
-    right.setAttribute("aria-label", "右移");
+    right.setAttribute("aria-label", t("transfer.moveRight"));
     right.appendChild(createBloraIcon("chevron-right", 18, this.ownerDocument));
     const left = document.createElement("button");
     left.className = "blora-button";
@@ -173,14 +174,14 @@ export class BloraTransfer extends BloraElement {
     left.dataset.transfer = "left";
     left.type = "button";
     left.disabled = this.hasAttribute("disabled");
-    left.setAttribute("aria-label", "左移");
+    left.setAttribute("aria-label", t("transfer.moveLeft"));
     left.appendChild(createBloraIcon("chevron-left", 18, this.ownerDocument));
     actions.append(right, left);
 
     root.append(
-      createPanel(this.getAttribute("source-label") ?? "候选", source),
+      createPanel(this.getAttribute("source-label") ?? t("transfer.source"), source),
       actions,
-      createPanel(this.getAttribute("target-label") ?? "已选", target),
+      createPanel(this.getAttribute("target-label") ?? t("transfer.target"), target),
     );
     this.replaceChildren(root);
   }

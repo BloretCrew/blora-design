@@ -216,7 +216,7 @@ Codemod 处理安全子集：class 重命名、modifier → data 属性等。复
 - `Blora.configure()` → 逐组件配置
 - `Blora.validate()` → `createFormController` / 原生约束验证
 - `Blora.toast()` / `Blora.message()` → `import { message } from "@bloret-crew/blora-design"`（Ant 味顶部胶囊；无 toast API）
-- 复杂 DOM（Select / Table）→ Storybook + `createTableController` / `defineBloraSelect`
+- 复杂 DOM（Select / Table）→ Showcase + `createTableController` / `defineBloraSelect`
 
 ## 11. 常见错误
 

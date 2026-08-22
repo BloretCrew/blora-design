@@ -1,6 +1,7 @@
 /**
  * Table controller: sort, local pagination, column settings, virtual scroll (v1 primary paths).
  */
+import { t } from "../../core/i18n.js";
 import { createBloraIcon } from "../../core/icons.js";
 
 export interface TableColConfig {
@@ -359,7 +360,7 @@ export function createTableController(
       th.appendChild(
         makeBloraCheckbox(doc, {
           className: "blora-table-check",
-          attrs: 'data-blora-select-all aria-label="全选"',
+          attrs: `data-blora-select-all aria-label="${t("table.selectAll")}"`,
         }),
       );
       theadRow.insertBefore(th, theadRow.firstChild);
@@ -374,7 +375,7 @@ export function createTableController(
       const cb = makeBloraCheckbox(doc, {
         className: "blora-table-check",
         checked: selectedKeys.has(key),
-        attrs: `data-blora-row-select aria-label="选择行" data-row-key="${key.replace(/"/g, "")}"`,
+        attrs: `data-blora-row-select aria-label="${t("table.selectRow")}" data-row-key="${key.replace(/"/g, "")}"`,
       });
       td.appendChild(cb);
       tr.insertBefore(td, tr.firstChild);
@@ -399,7 +400,7 @@ export function createTableController(
       clearBtn.setAttribute("data-variant", "ghost");
       clearBtn.setAttribute("data-size", "sm");
       clearBtn.setAttribute("data-blora-clear-selection", "");
-      clearBtn.textContent = "清除选择";
+      clearBtn.textContent = t("table.clearSelection");
       const slot = doc.createElement("span");
       slot.className = "blora-table-bulk__slot";
       slot.setAttribute("data-blora-bulk-actions", "");
@@ -437,7 +438,7 @@ export function createTableController(
     if (bulk) {
       bulk.hidden = selected.length === 0;
       const count = bulk.querySelector(".blora-table-bulk__count");
-      if (count) count.textContent = `已选 ${selected.length} 项`;
+      if (count) count.textContent = t("table.selected", { n: selected.length });
     }
     host.classList.toggle("has-selection", selected.length > 0);
     table.dispatchEvent(
@@ -647,7 +648,7 @@ export function createTableController(
       thSel.appendChild(
         makeBloraCheckbox(doc, {
           className: "blora-table-check",
-          attrs: 'data-blora-select-all aria-label="全选"',
+          attrs: `data-blora-select-all aria-label="${t("table.selectAll")}"`,
         }),
       );
       headFrag.appendChild(thSel);
@@ -703,7 +704,7 @@ export function createTableController(
           makeBloraCheckbox(doc, {
             className: "blora-table-check",
             checked: selectedKeys.has(key),
-            attrs: `data-blora-row-select aria-label="选择行" data-row-key="${key}"`,
+            attrs: `data-blora-row-select aria-label="${t("table.selectRow")}" data-row-key="${key}"`,
           }),
         );
         tr.appendChild(td);
@@ -787,7 +788,7 @@ export function createTableController(
       const grip = doc.createElement("span");
       grip.className = "blora-table-cols__grip";
       grip.setAttribute("aria-hidden", "true");
-      grip.title = "拖动排序";
+      grip.title = t("table.colDrag");
       const gsvg = createBloraIcon("grip", 14, doc);
       grip.appendChild(gsvg);
 
@@ -822,7 +823,7 @@ export function createTableController(
       btn.setAttribute("data-variant", "outline");
       btn.setAttribute("data-size", "sm");
       btn.setAttribute("data-blora-cols-toggle", "");
-      btn.textContent = "列设置";
+      btn.textContent = t("table.cols");
       colsBar.appendChild(btn);
       parent.insertBefore(colsBar, host);
     }
@@ -840,7 +841,7 @@ export function createTableController(
       reset.setAttribute("data-variant", "ghost");
       reset.setAttribute("data-size", "sm");
       reset.setAttribute("data-blora-cols-reset", "");
-      reset.textContent = "重置列";
+      reset.textContent = t("table.colsReset");
       foot.appendChild(reset);
       colsPanel.append(list, foot);
       parent.insertBefore(colsPanel, host);

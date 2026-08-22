@@ -3,6 +3,7 @@
  * Stays in core (product decision). Baseline: v1 initSpeedDial.
  */
 import { BloraElement } from "../../core/blora-element.js";
+import { t } from "../../core/i18n.js";
 import { createBloraIcon, type BloraIconName } from "../../core/icons.js";
 
 export const BLORA_SPEED_DIAL_TAG = "blora-speed-dial";
@@ -245,7 +246,7 @@ export class BloraSpeedDial extends BloraElement {
     trigger.dataset.variant = "primary";
     trigger.dataset.bloraSpeedDialTrigger = "";
     trigger.type = "button";
-    trigger.setAttribute("aria-label", this.getAttribute("label") ?? "操作");
+    trigger.setAttribute("aria-label", this.getAttribute("label") ?? t("speedDial.label"));
     trigger.appendChild(createNamedIcon(this.ownerDocument, "plus", "plus"));
     root.appendChild(trigger);
     if (this.hasAttribute("close-button")) {
@@ -255,7 +256,7 @@ export class BloraSpeedDial extends BloraElement {
       close.dataset.variant = "danger";
       close.dataset.bloraSpeedDialClose = "";
       close.type = "button";
-      close.setAttribute("aria-label", "关闭");
+      close.setAttribute("aria-label", t("common.close"));
       close.appendChild(createNamedIcon(this.ownerDocument, "close", "close"));
       root.appendChild(close);
     }

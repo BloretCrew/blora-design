@@ -1,4 +1,5 @@
 import { BloraElement } from "../../core/blora-element.js";
+import { t } from "../../core/i18n.js";
 
 export const BLORA_BREADCRUMB_TAG = "blora-breadcrumb";
 
@@ -23,7 +24,7 @@ export class BloraBreadcrumb extends BloraElement {
     const root = this.ownerDocument.createElement("nav");
     root.className = "blora-breadcrumb";
     root.dataset.bloraGenerated = "";
-    root.setAttribute("aria-label", "面包屑");
+    root.setAttribute("aria-label", t("breadcrumb.label"));
     this.definitions.forEach((definition, index) => {
       if (index) {
         const separator = this.ownerDocument.createElement("span");

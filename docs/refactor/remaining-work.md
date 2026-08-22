@@ -3,7 +3,7 @@
 > **用途**：从本文件起，直到整个 2.0 重构完成，**以本清单为唯一进度源**（`status.md` 只摘要并链接此处）。  
 > **建立日期**：2026-08-02  
 > **审计基线**：对照 `Blora-Design-2.0-Refactor-Spec.md` §25–26 / §31 与仓库自限收口（Phase 9 DoD 缩窄版）。  
-> **本文件不替代** contract / Storybook；只跟踪阶段与诚实债。
+> **本文件不替代** contract / Showcase；只跟踪阶段与诚实债。
 
 ---
 
@@ -58,7 +58,7 @@
 | **P9-5** | 规格偏 FA WC，实现多为 headless controller | 历史由 ADR-013 关闭；2026-08-08 ADR-015 改为 Composite CE 默认、FA 分阶段 | ✅ 已由新 ADR 更新 |
 | **P9-6** | add-on 无 Playwright / visual 农场；qrcode jsdom canvas 噪音 | **Deferred → Phase 10** 质量农场；非诚实债阻塞 | ✅ 已处置（deferred） |
 | **P9-7** | 全量 `pnpm verify` 未作 Phase 9 硬门 | 本收口以 typecheck + unit 为证；全量 verify **Deferred → Phase 10 / CI**（见 §5） | ✅ 已处置（deferred + 证据） |
-| **P9-8** | 2.0 核心 i18n / locales 对等缺失 | **Deferred → Phase 10**（规格若仍要求再立项）；1.x 见 `legacy/v1/locales` | ✅ 已处置（deferred） |
+| **P9-8** | 2.0 核心 i18n / locales 对等缺失 | `t()` + `en` / `zh-CN` 目录；chrome 走 locale pack | ✅ |
 
 ### 2.1 包名与实现形态诚实说明（P9-4）
 
@@ -218,7 +218,7 @@
 ### 3.8 明确非默认 / 后置
 
 - [x] Showcase 核心组件目录：已按 `component-manifest.json` 扩展为 87/87；单视图懒挂载，Preview / HTML 同源生成，并由结构门禁防止清单漂移
-- [ ] 2.0 **i18n / locales** 运行时（P9-8）
+- [x] 2.0 **i18n / locales** 运行时（P9-8）— `t()` + `en` / `zh-CN` 目录；组件 chrome 不再硬编码语言
 - [ ] add-on 独立 Playwright / visual 深矩阵（P9-6）
 - [ ] add-on Composite CE 后续迁移：Layout/Markdown 适配项（审查见 `addon-composite-ce-audit.md`；Thread、QRCode、Effects 已完成，Theming 无需重写）
 - [ ] FA WC 全面化（结构 CE 已默认；form association 仍按 ADR-015 分阶段）
@@ -236,6 +236,7 @@
 | 2026-08-09 | `showcase-v2` 由全量长页改为浮动 Navbar + 单视图组件目录原型 | 当前仅 Accordion / Collapse；侧栏、Preview/HTML、桌面/移动路由 | **Agent 已截图复核；待用户确认后扩展** |
 | 2026-08-11 | `showcase-v2` 组件目录扩展并持续与 manifest 对齐；当前为 87/87 核心组件，当前页懒挂载、导航活动项自动定位、Preview / HTML 同源 | `examples/showcase-v2/`；manifest 对齐门禁；桌面/移动全目录浏览器巡检 | **Agent 已审查 Accordion、Statistic、Table、Dialog、Select、代码面板、主题面板及移动侧栏快照** |
 | 2026-08-19 | `known-differences.md` 全部待审核项由项目所有者人工批准 | 全部已登记视觉与行为差异 | **approved** |
+| 2026-08-22 | 组件 chrome 改走 locale pack；dialog/command/tour/drawer/image 接入 OverlayController（焦点陷阱含 slot） | Showcase 浮层与分页/日历等 chrome | **否**（文案跟 `html lang`；视觉母版仍是冻结基线） |
 
 若后续为修死链或假声明而改 `packages/**/src` 且影响渲染或交互，必须在此表追加行，并更新 `pending-visual-review.md`。
 
@@ -286,3 +287,4 @@
 | 2026-08-02 | **Pre-Beta 包面**：JS 子路径、IIFE global、CEM/manifest/api-snapshot、llms、provenance opt-in；**未进入 §3.5 Beta 发版** |
 | 2026-08-02 | §3.4 visual + lifecycle；§3.5 冻结/节奏/迁移/体积；完成 Beta 发布准备 |
 | 2026-08-19 | known differences 全部人工批准；版本统一为 `2.0.0-beta.0`；完成 Beta 发布演练并打 tag |
+| 2026-08-22 | 核心 i18n：`t()` + `en` / `zh-CN`；浮层走 OverlayController（含 slot 焦点）；文档入口改为 Showcase |

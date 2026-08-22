@@ -1,7 +1,7 @@
 # Blora Design 2.0 · 使用与迁移指南
 
 > **面向 2.0（当前 `2.0.0-beta`）**。推荐写法是：简单组件使用原生 HTML + CSS，结构敏感的复合控件只使用 **Composite Custom Element**；`createXxxController` 仅用于尚未迁为 CE 的 Table / Form 等 headless 能力。不是 1.x 的全局 `Blora.init()` / `Blora.toast`（2.0 已改为 `message`）单体 API。
-> 设计令牌见 [`standards.md`](./standards.md)。组件契约见 `packages/blora-design/contracts/*.contract.json`。交互示例见 **Storybook**。  
+> 设计令牌见 [`standards.md`](./standards.md)。组件契约见 `packages/blora-design/contracts/*.contract.json`。交互示例见 `examples/showcase-v2/`。  
 > 1.x 冻结参考：已归档到仓库外 `D:\MyFiles\Documents\projects\blora-design\legacy\`（`showcase-v1.html`、`v1/`，仅迁移对照，**不是** 2.0 推荐入口）。
 
 ---
@@ -92,7 +92,7 @@ applyColorScheme("dark"); // light | dark | system（以包 API 为准）
 applyTheme("indigo"); // coral | indigo | lotus | graphite | mono | circuit | dusk
 ```
 
-也可用 `data-blora-color-scheme` / 主题相关 data 属性（见 theming Story）。
+也可用 `data-blora-color-scheme` / 主题相关 data 属性（见 theming 包与 Showcase 主题面板）。
 
 ---
 
@@ -106,22 +106,44 @@ applyTheme("indigo"); // coral | indigo | lotus | graphite | mono | circuit | du
 6. **颜色 / 间距 / 圆角 / 阴影** 用 token（`--blora-*`），组件 CSS 内不写死业务色。  
 7. **用户内容** 不要用 `innerHTML` 直接塞不可信字符串。  
 8. **图标** 一律走 `createBloraIcon()`（Lucide 数据，`currentColor`）；勿依赖 emoji 当图标。默认包带精选集；需要任意 Lucide 图标时引入 `@bloret-crew/blora-design/icons-full`（或 `icons-full.global.js`）注册一次即可，之后任意图标名可用，无需改框架。
+9. **语言**：组件自己生成的 chrome（按钮、aria-label、空状态、校验提示）走 `t()`，跟页面 `html lang`。正文仍由业务自己翻。
 
 ### 2.1 架构选择（2.0）
 
 | 形态 | 何时用 | 示例 |
 |------|--------|------|
 | **原生 HTML + CSS** | 展示型、无复杂状态 | Alert、Tag、List、Card |
-| **Composite Custom Element** | 内部 class 树复杂、容易拼错 | Range、Date/Time、Search、Transfer、Accordion、Command、Segmented、Tabs、Select、Dialog |
-| **Headless controller（advanced）** | 业务必须拥有开放数据 DOM | Table、Tree、Form、Drawer |
+| **Composite Custom Element** | 内部 class 树复杂、容易拼错 | Range、Date/Time、Search、Transfer、Accordion、Command、Segmented、Tabs、Select、Dialog、Drawer |
+| **Headless controller（advanced）** | 业务必须拥有开放数据 DOM | Table、Tree、Form |
 
 ADR-015 已用 Composite CE 取代 ADR-013 的默认 headless 推荐。结构封装不等于一次性全员 FA-WC；表单关联能力仍按组件 contract 分阶段补强。
+
+### 2.2 组件 chrome 的语言
+
+`import "@bloret-crew/blora-design/auto"` 会读 `document.documentElement.lang`：`zh*` 用 `zh-CN`，其余回落到 `en`。不要在组件源码里写死某一种语言。
+
+```js
+import { setLocale, t, registerLocale } from "@bloret-crew/blora-design";
+
+setLocale("en");
+t("common.close"); // "Close"
+
+registerLocale("ja-JP", {
+  collator: "ja",
+  months: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
+  dow: ["日", "月", "火", "水", "木", "金", "土"],
+  messages: { "common.close": "閉じる" },
+});
+setLocale("ja-JP");
+```
+
+页面正文、Showcase 示例文案、业务 `placeholder` 仍由站点自己负责。
 
 ---
 
 ## 3. 常用组件写法
 
-下列为 **2.0 推荐**；细节以 Storybook 与 contract 为准。
+下列为 **2.0 推荐**；细节以 Showcase 与 contract 为准。
 
 ### 3.1 按钮
 
@@ -167,7 +189,7 @@ import { defineBloraSelect } from "@bloret-crew/blora-design";
 defineBloraSelect();
 ```
 
-具体属性 / 选项 API 以 Select contract 与 Storybook 为准（支持原生 form 关联路径）。
+具体属性 / 选项 API 以 Select contract 与 Showcase 为准（支持原生 form 关联路径）。
 
 ### 3.4 结构敏感的 Composite CE
 
@@ -517,7 +539,7 @@ onBeforeUnmount(() => ctrl?.destroy());
 - [ ] 表格行选使用 **内置** `data-blora-selectable`。  
 - [ ] 动态插入的 checkbox 使用完整 `label.blora-checkbox` 结构。  
 - [ ] 颜色与间距走 token；暗色下可读。  
-- [ ] 对照 Storybook 与（如需要）归档基线的 `showcase-v1.html`（`D:\MyFiles\Documents\projects\blora-design\legacy\`）。  
+- [ ] 对照 `examples/showcase-v2/` 与（如需要）归档基线的 `showcase-v1.html`（`D:\MyFiles\Documents\projects\blora-design\legacy\`）。  
 - [ ] 公开 API 变更已看过对应 `*.contract.json`。
 
 ---

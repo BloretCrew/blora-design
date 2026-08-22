@@ -16,7 +16,7 @@
 |--------|--------|
 | 2.0 beta；API 趋向稳定 | 「生产 stable / 全部组件 DoD」 |
 | 安装 `@bloret-crew/blora-design@beta` | 把 contract 里仍为 beta 的组件当冻结 |
-| Storybook + guide 为主文档 | 1.x `Blora.init` 为推荐 |
+| Showcase + guide 为主文档 | 1.x `Blora.init` 为推荐 |
 
 ## 用户向迁移文档
 

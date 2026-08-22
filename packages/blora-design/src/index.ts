@@ -17,6 +17,20 @@ export function isBrowser(): boolean {
 // Core
 export { BloraElement } from "./core/blora-element.js";
 export {
+  t,
+  setLocale,
+  getLocale,
+  applyDocumentLocale,
+  registerLocale,
+  localeMonths,
+  localeDow,
+  localeCollator,
+  type BloraLocalePack,
+  type BloraMessages,
+} from "./core/i18n.js";
+export { en as localeEn } from "./locales/en.js";
+export { zhCN as localeZhCN } from "./locales/zh-CN.js";
+export {
   createBloraIcon,
   isBloraIconName,
   registerBloraIcons,

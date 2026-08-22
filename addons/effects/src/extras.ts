@@ -3,6 +3,7 @@
  * text-rotate, countdown, countup, image-diff, hover-gallery, watermark, shortcuts,
  * plus the composite custom elements that own their DOM lifecycles.
  */
+import { t } from "@bloret-crew/blora-design";
 
 interface Destroyable {
   destroy(): void;
@@ -101,7 +102,12 @@ export function createCountdownController(root: HTMLElement): CountdownControlle
     });
     root.setAttribute(
       "aria-label",
-      `${values.days} 天 ${values.hours} 小时 ${values.minutes} 分 ${values.seconds} 秒`,
+      t("countdown.aria", {
+        days: values.days,
+        hours: values.hours,
+        minutes: values.minutes,
+        seconds: values.seconds,
+      }),
     );
     if (!remaining && timer != null) {
       win.clearInterval(timer);
@@ -218,7 +224,7 @@ export function createHoverGalleryController(root: HTMLElement): HoverGalleryCon
     items = Array.from(track.querySelectorAll(".blora-hover-gallery__item"));
   }
 
-  const label = root.getAttribute("aria-label") || "图片库";
+  const label = root.getAttribute("aria-label") || t("gallery.label");
   root.setAttribute("role", "group");
   let progress = root.querySelector<HTMLElement>(".blora-hover-gallery__progress");
   if (!progress) {
@@ -261,7 +267,10 @@ export function createHoverGalleryController(root: HTMLElement): HoverGalleryCon
       item.setAttribute("aria-hidden", String(i !== active));
     });
     indicators.forEach((item, i) => item.toggleAttribute("data-active", i === active));
-    root.setAttribute("aria-label", `${label}，图片 ${active + 1} / ${items.length}`);
+    root.setAttribute(
+      "aria-label",
+      t("gallery.slide", { label, current: active + 1, total: items.length }),
+    );
   };
 
   const go = (index: number) => {
@@ -795,7 +804,6 @@ export function textFx(
   }
 
   if (prefersReduced(target)) {
-    target.classList.add("is-play");
     return target;
   }
 
@@ -934,12 +942,12 @@ export class BloraCountdown extends EffectsBase {
   }
 
   protected renderUnits(): { unit: string; label: string }[] {
-    const labels = (this.getAttribute("label") || "天,时,分,秒").split(",");
+    const labels = (this.getAttribute("label") || "").split(",");
     return [
-      { unit: "days", label: labels[0] || "天" },
-      { unit: "hours", label: labels[1] || "时" },
-      { unit: "minutes", label: labels[2] || "分" },
-      { unit: "seconds", label: labels[3] || "秒" },
+      { unit: "days", label: labels[0]?.trim() || t("countdown.days") },
+      { unit: "hours", label: labels[1]?.trim() || t("countdown.hours") },
+      { unit: "minutes", label: labels[2]?.trim() || t("countdown.minutes") },
+      { unit: "seconds", label: labels[3]?.trim() || t("countdown.seconds") },
     ];
   }
 
@@ -1094,7 +1102,7 @@ export class BloraDiff extends EffectsBase {
       input.value = this.getAttribute("value") || "50";
       input.className = "blora-diff__range";
       input.dataset.bloraGenerated = "";
-      input.setAttribute("aria-label", this.getAttribute("label") || "对比位置");
+      input.setAttribute("aria-label", this.getAttribute("label") || t("diff.position"));
       this.append(input);
     }
   }

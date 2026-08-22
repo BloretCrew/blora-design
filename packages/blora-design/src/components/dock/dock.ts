@@ -3,6 +3,7 @@
  * Megamenu → components/megamenu; Speed Dial → components/speed-dial.
  */
 import { BloraElement } from "../../core/blora-element.js";
+import { t } from "../../core/i18n.js";
 import { createBloraIcon, type BloraIconName } from "../../core/icons.js";
 
 export const BLORA_DOCK_TAG = "blora-dock";
@@ -147,7 +148,7 @@ export class BloraDock extends BloraElement {
     root.className = "blora-dock";
     if (this.hasAttribute("static")) root.classList.add("blora-dock--static");
     root.dataset.bloraGenerated = "";
-    root.setAttribute("aria-label", this.getAttribute("label") ?? "底部导航");
+    root.setAttribute("aria-label", this.getAttribute("label") ?? t("dock.label"));
     this.definitions.forEach((definition, index) => {
       const item = this.ownerDocument.createElement("a");
       item.className = "blora-dock__item";

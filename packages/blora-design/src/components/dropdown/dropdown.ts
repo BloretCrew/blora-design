@@ -9,6 +9,7 @@
  * and item-click-to-close behavior.
  */
 import { BloraElement } from "../../core/blora-element.js";
+import { t } from "../../core/i18n.js";
 import { createBloraIcon } from "../../core/icons.js";
 
 export const BLORA_DROPDOWN_TAG = "blora-dropdown";
@@ -235,7 +236,7 @@ export class BloraDropdown extends BloraElement {
     trigger.className = "blora-button";
     trigger.dataset.dropdownTrigger = "";
     trigger.disabled = this.hasAttribute("disabled");
-    const labelText = this.getAttribute("label") ?? "Menu";
+    const labelText = this.getAttribute("label") ?? t("dropdown.label");
     if (this.isHelper()) {
       trigger.dataset.variant = "ghost";
       trigger.dataset.size = "icon";
@@ -284,7 +285,7 @@ export class BloraDropdown extends BloraElement {
     if (!root || !trigger) return;
     root.dataset.align = this.alignValue();
     trigger.disabled = this.hasAttribute("disabled");
-    const labelText = this.getAttribute("label") ?? "Menu";
+    const labelText = this.getAttribute("label") ?? t("dropdown.label");
     const label = trigger.querySelector<HTMLElement>(".blora-dropdown__label");
     if (label) label.textContent = labelText;
     if (this.isHelper()) trigger.setAttribute("aria-label", labelText);

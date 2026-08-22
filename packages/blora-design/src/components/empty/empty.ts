@@ -1,4 +1,5 @@
 import { BloraElement } from "../../core/blora-element.js";
+import { t } from "../../core/i18n.js";
 import { createBloraIcon } from "../../core/icons.js";
 
 export const BLORA_EMPTY_TAG = "blora-empty";
@@ -24,7 +25,7 @@ export class BloraEmpty extends BloraElement {
     icon.appendChild(svg);
     const title = this.ownerDocument.createElement("div");
     title.className = "blora-empty__title";
-    title.textContent = this.getAttribute("title") ?? "暂无数据";
+    title.textContent = this.getAttribute("title") ?? t("empty.title");
     const description = this.ownerDocument.createElement("div");
     description.className = "blora-empty__desc";
     description.textContent = this.getAttribute("description") ?? "";
@@ -45,7 +46,7 @@ export class BloraEmpty extends BloraElement {
 
   protected override sync(): void {
     const title = this.querySelector(".blora-empty__title");
-    if (title) title.textContent = this.getAttribute("title") ?? "暂无数据";
+    if (title) title.textContent = this.getAttribute("title") ?? t("empty.title");
     const description = this.querySelector(".blora-empty__desc");
     if (description) description.textContent = this.getAttribute("description") ?? "";
     const actionLabel = this.getAttribute("action-label");

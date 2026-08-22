@@ -2,6 +2,7 @@
  * Popover toggle (v1 simplified, no portal required).
  */
 import { BloraElement } from "../../core/blora-element.js";
+import { t } from "../../core/i18n.js";
 
 export const BLORA_POPOVER_TAG = "blora-popover";
 export interface PopoverController {
@@ -119,7 +120,7 @@ export class BloraPopover extends BloraElement {
     trigger.dataset.variant = "outline";
     trigger.dataset.bloraPopover = "";
     trigger.disabled = this.hasAttribute("disabled");
-    trigger.textContent = this.getAttribute("trigger") ?? "Open Popover";
+    trigger.textContent = this.getAttribute("trigger") ?? t("popover.trigger");
     const panel = this.ownerDocument.createElement("div");
     panel.className = "blora-popover__panel";
     panel.setAttribute("role", "dialog");
@@ -132,7 +133,7 @@ export class BloraPopover extends BloraElement {
     close.className = "blora-button";
     close.dataset.size = "sm";
     close.dataset.bloraClose = "";
-    close.textContent = this.getAttribute("close-label") ?? "Close";
+    close.textContent = this.getAttribute("close-label") ?? t("common.close");
     panel.append(content, close);
     root.append(trigger, panel);
     this.replaceChildren(root);
@@ -143,13 +144,13 @@ export class BloraPopover extends BloraElement {
     if (!root) return;
     const trigger = root.querySelector<HTMLButtonElement>(".blora-popover__trigger");
     if (trigger) {
-      trigger.textContent = this.getAttribute("trigger") ?? "Open Popover";
+      trigger.textContent = this.getAttribute("trigger") ?? t("popover.trigger");
       trigger.disabled = this.hasAttribute("disabled");
     }
     const content = root.querySelector<HTMLElement>(".blora-popover__content");
     if (content && !this.contentNodes) content.textContent = this.getAttribute("content") ?? "";
     const close = root.querySelector<HTMLElement>("[data-blora-close]");
-    if (close) close.textContent = this.getAttribute("close-label") ?? "Close";
+    if (close) close.textContent = this.getAttribute("close-label") ?? t("common.close");
   }
 
   protected bindEvents(): void {

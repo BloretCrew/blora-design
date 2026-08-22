@@ -3,6 +3,7 @@
  * Text-rotate lives in @bloret-crew/blora-design-effects — not here.
  */
 import { BloraElement } from "../../core/blora-element.js";
+import { t } from "../../core/i18n.js";
 import { createBloraIcon } from "../../core/icons.js";
 
 export const BLORA_COPY_TAG = "blora-copy";
@@ -33,20 +34,23 @@ export function createCopyController(root: HTMLElement): CopyController {
       btn.dataset.copyText ||
       root.textContent?.trim() ||
       "";
+    let copied = false;
     try {
       await view?.navigator.clipboard.writeText(text);
+      copied = true;
     } catch {
       const ta = doc.createElement("textarea");
       ta.value = text;
       doc.body.appendChild(ta);
       ta.select();
       try {
-        doc.execCommand("copy");
+        copied = doc.execCommand("copy");
       } catch {
-        // noop
+        copied = false;
       }
       ta.remove();
     }
+    if (!copied) return;
 
     originalNodes = Array.from(btn.childNodes);
     btn.replaceChildren(createCheckmark());
@@ -99,7 +103,7 @@ export class BloraCopy extends BloraElement {
     const button = this.ownerDocument.createElement("button");
     button.type = "button";
     button.className = "blora-copy__btn blora-typo-copy__btn";
-    button.setAttribute("aria-label", this.getAttribute("label") ?? "复制");
+    button.setAttribute("aria-label", this.getAttribute("label") ?? t("common.copy"));
     button.appendChild(createBloraIcon("copy", 14, this.ownerDocument));
     root.append(code, button);
     this.replaceChildren(root);
@@ -113,7 +117,7 @@ export class BloraCopy extends BloraElement {
     const code = root.querySelector("code");
     if (code) code.textContent = text;
     const button = root.querySelector<HTMLButtonElement>(".blora-copy__btn");
-    if (button) button.setAttribute("aria-label", this.getAttribute("label") ?? "复制");
+    if (button) button.setAttribute("aria-label", this.getAttribute("label") ?? t("common.copy"));
   }
 
   protected bindEvents(): void {

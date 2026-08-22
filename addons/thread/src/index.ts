@@ -7,14 +7,14 @@
  * @packageDocumentation
  */
 
-import { BloraElement, createBloraIcon } from "@bloret-crew/blora-design";
+import { BloraElement, createBloraIcon, t } from "@bloret-crew/blora-design";
 
 export const BLORA_THREAD_COMMENT_TAG = "blora-thread-comment";
 export const BLORA_THREAD_COMPOSER_TAG = "blora-thread-composer";
 
 const DEFAULT_COLLAPSE_HEIGHT = 158;
-const DEFAULT_EXPAND = "展开评论";
-const DEFAULT_COLLAPSE = "收起评论";
+const DEFAULT_EXPAND = () => t("thread.expand");
+const DEFAULT_COLLAPSE = () => t("thread.collapse");
 
 interface CommentAssigned {
   body: Node[];
@@ -247,8 +247,8 @@ export class BloraThreadComment extends BloraElement {
     if (!this.foldButton) return;
     const expanded = !this.collapsed;
     const label = expanded
-      ? this.getAttribute("label-collapse") || DEFAULT_COLLAPSE
-      : this.getAttribute("label-expand") || DEFAULT_EXPAND;
+      ? this.getAttribute("label-collapse") || DEFAULT_COLLAPSE()
+      : this.getAttribute("label-expand") || DEFAULT_EXPAND();
     this.foldButton.replaceChildren(
       createBloraIcon(expanded ? "arrow-up" : "chevron-down", 16, this.ownerDocument),
       this.ownerDocument.createTextNode(label),
@@ -410,8 +410,8 @@ export class BloraThreadComposer extends BloraElement {
   private syncLabels(): void {
     const edit = this.querySelector<HTMLElement>('[data-blora-thread-tab][data-tab="edit"]');
     const preview = this.querySelector<HTMLElement>('[data-blora-thread-tab][data-tab="preview"]');
-    if (edit) edit.textContent = this.getAttribute("edit-label") || "编辑";
-    if (preview) preview.textContent = this.getAttribute("preview-label") || "预览";
+    if (edit) edit.textContent = this.getAttribute("edit-label") || t("thread.edit");
+    if (preview) preview.textContent = this.getAttribute("preview-label") || t("thread.preview");
   }
 }
 

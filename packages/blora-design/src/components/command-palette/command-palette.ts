@@ -4,6 +4,7 @@
  */
 import { OverlayController } from "../../controllers/overlay-controller.js";
 import { BloraElement } from "../../core/blora-element.js";
+import { t } from "../../core/i18n.js";
 import { createBloraIcon, type BloraIconName } from "../../core/icons.js";
 import { whenMotionDone } from "../../core/motion.js";
 import { createSearchController, type SearchController } from "../search/search.js";
@@ -47,7 +48,10 @@ export function createCommandPaletteController(root: HTMLElement): CommandPalett
     const list = items().filter((el) => el.style.display !== "none");
     list.forEach((el, i) => {
       el.toggleAttribute("data-active", i === active);
+      el.setAttribute("aria-selected", i === active ? "true" : "false");
     });
+    const selected = list[active];
+    if (input && selected?.id) input.setAttribute("aria-activedescendant", selected.id);
   };
 
   const filter = () => {
@@ -117,6 +121,7 @@ interface CommandItemDefinition {
 }
 
 const COMMAND_ICONS = new Set<BloraIconName>(["document", "folder", "search", "settings"]);
+let commandListSeq = 0;
 
 /** Composite CE that owns the command search and official result item tree. */
 export class BloraCommand extends BloraElement {
@@ -141,6 +146,8 @@ export class BloraCommand extends BloraElement {
 
   show(): void {
     this.setAttribute("data-overlay", "");
+    this.setAttribute("role", "dialog");
+    this.setAttribute("aria-modal", "true");
     this.cancelCloseMotion?.();
     this.cancelCloseMotion = null;
     this.portalToBody();
@@ -157,18 +164,22 @@ export class BloraCommand extends BloraElement {
     });
     this.overlay.open();
     const input = this.querySelector<HTMLInputElement>("input");
+    input?.setAttribute("aria-expanded", "true");
     input?.focus();
   }
 
   close(): void {
     if (!this.hasAttribute("open")) return;
     this.removeAttribute("open");
-    this.overlay?.close();
-    this.overlay = null;
-    this.dismissTopLayer();
+    this.removeAttribute("role");
+    this.removeAttribute("aria-modal");
+    this.querySelector("input")?.setAttribute("aria-expanded", "false");
     this.cancelCloseMotion?.();
     this.cancelCloseMotion = whenMotionDone(this, () => {
       this.cancelCloseMotion = null;
+      this.overlay?.close();
+      this.overlay = null;
+      this.dismissTopLayer();
       this.restoreHome();
     });
   }
@@ -209,21 +220,30 @@ export class BloraCommand extends BloraElement {
     const input = document.createElement("input");
     input.className = "blora-input";
     input.type = "search";
-    input.placeholder = this.getAttribute("placeholder") ?? "输入命令或搜索...";
+    input.setAttribute("role", "combobox");
+    input.setAttribute("aria-autocomplete", "list");
+    input.setAttribute("aria-expanded", this.hasAttribute("open") ? "true" : "false");
+    input.placeholder = this.getAttribute("placeholder") ?? t("command.placeholder");
     const clear = document.createElement("button");
     clear.className = "blora-search__clear";
     clear.type = "button";
     clear.hidden = true;
-    clear.setAttribute("aria-label", "清除");
+    clear.setAttribute("aria-label", t("command.clear"));
     clear.appendChild(createBloraIcon("close"));
     search.append(icon, input, clear);
     searchWrap.appendChild(search);
 
     const results = document.createElement("div");
     results.className = "blora-cmdk-results blora-command__results";
+    results.id = `blora-command-list-${++commandListSeq}`;
+    results.setAttribute("role", "listbox");
+    input.setAttribute("aria-controls", results.id);
     this.definitions.forEach((definition, index) => {
       const item = document.createElement("div");
       item.className = "blora-cmdk-item blora-command__item";
+      item.id = `${results.id}-opt-${index}`;
+      item.setAttribute("role", "option");
+      item.setAttribute("aria-selected", index === 0 ? "true" : "false");
       item.dataset.value = definition.value;
       if (index === 0) item.dataset.active = "";
       if (definition.disabled) {
@@ -252,7 +272,7 @@ export class BloraCommand extends BloraElement {
 
   protected override sync(): void {
     const input = this.querySelector<HTMLInputElement>(".blora-search .blora-input, .blora-input");
-    if (input) input.placeholder = this.getAttribute("placeholder") ?? input.placeholder;
+    if (input) input.placeholder = this.getAttribute("placeholder") ?? t("command.placeholder");
   }
 
   protected bindEvents(): void {

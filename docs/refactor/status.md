@@ -4,8 +4,7 @@
 
 ## 当前阶段
 
-**Phase 9：Add-ons** - ✅ 完成（2026-08-02 收口；诚实债见总表已关）  
-**Phase 10：预发布** - 🔄 **进行中**（`2.0.0-beta.0` 已发布 · stable-core API 已冻结 · 下一阶段 RC）
+**Phase 10：预发布 / RC 收口** - 🔄 **进行中**（`2.0.0-beta.0` 已发布 · stable-core API 已冻结）
 
 > **主跟踪文档**：[`remaining-work.md`](./remaining-work.md)  
 > 顺序：**Preflight → Alpha → Beta → RC → Stable**。当前进入 RC 收口。
@@ -17,16 +16,16 @@ Showcase v2 已完成 87/87 核心组件目录：正式 API/CE 示例、单视�
 | 阶段 | 状态 | 说明 |
 |---|---|---|
 | Phase 0：冻结与基线 | ✅ 完成 | 冻结 1.x 行为事实、捕获公共 API、生成视觉基线 |
-| Phase 1：Workspace 与门禁 | ✅ 完成 | pnpm workspace、TS strict、lint、test、CI、Storybook、publint |
+| Phase 1：Workspace 与门禁 | ✅ 完成 | pnpm workspace、TS strict、lint、test、CI、Showcase、publint |
 | Phase 2：Token | ✅ 完成 | DTCG 三层 token、确定性生成器、7 套主题、v1 映射、对比度门禁 |
 | Phase 3：Foundations | ✅ 完成 | reset、base、layout、utilities、@layer、RTL、reduced-motion |
 | Phase 4：三个试点组件 | ✅ 完成 | Button -> Dialog -> Select |
-| Phase 5：核心表单和反馈 | ✅ 完成 | Field/Input/Checkbox/Radio/Switch/Tag/Alert/Badge/Progress/Spinner/Skeleton/Toast |
+| Phase 5：核心表单和反馈 | ✅ 完成 | Field/Input/Checkbox/Radio/Switch/Tag/Alert/Badge/Progress/Spinner/Skeleton/Message |
 | Phase 6：导航与浮层 | ✅ 完成 | Tabs/Breadcrumb/Pagination/Dropdown/Tooltip/Popover/Drawer/Navbar/Sidebar Navigation |
 | Phase 7：数据与内容基础 | ✅ 完成 | Card/Table/List/Accordion/Timeline/Empty/Result/Avatar |
 | Phase 8：迁移工具 | ✅ 完成 | Token/class 映射、codemod、migrate:check、fixtures；早期 runtime compat 后续已撤销 |
-| Phase 9：Add-ons | ✅ 完成 | 六包 API + Story + 单测；核心 v1 缺口补齐（见 addon-core-gaps.md） |
-| Phase 10：预发布 | 🔄 进行中 | Preflight 推进中（门禁/发布链/axe）；清单 remaining-work.md §3.0 |
+| Phase 9：Add-ons | ✅ 完成 | 六包 API + Showcase 示例 + 单测；核心 v1 缺口补齐（见 addon-core-gaps.md） |
+| Phase 10：预发布 | 🔄 进行中 | `2.0.0-beta.0` 已发布；RC 收口见 remaining-work.md §3.6 |
 
 ## Phase 9 收口摘要（2026-08-02）
 

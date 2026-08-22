@@ -1,4 +1,5 @@
 import { BloraElement } from "../../core/blora-element.js";
+import { t } from "../../core/i18n.js";
 
 export const BLORA_NAVBAR_TAG = "blora-navbar";
 
@@ -73,7 +74,7 @@ export class BloraNavbar extends BloraElement {
     mark.appendChild(logo);
     const title = this.ownerDocument.createElement("span");
     title.className = "blora-navbar__title";
-    title.textContent = this.getAttribute("title") ?? "Blora Design";
+    title.textContent = this.getAttribute("title") ?? t("navbar.title");
     brand.append(mark, title);
     const menu = this.ownerDocument.createElement("div");
     menu.className = "blora-navbar__menu";
@@ -118,7 +119,7 @@ export class BloraNavbar extends BloraElement {
     }
     if (brand instanceof HTMLAnchorElement && brandHref) brand.href = brandHref;
     const title = root.querySelector(".blora-navbar__title");
-    if (title) title.textContent = this.getAttribute("title") ?? "Blora Design";
+    if (title) title.textContent = this.getAttribute("title") ?? t("navbar.title");
     root.dataset.variant = this.getAttribute("variant") ?? "floating";
   }
 

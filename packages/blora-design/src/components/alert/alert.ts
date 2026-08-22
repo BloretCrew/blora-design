@@ -1,4 +1,5 @@
 import { BloraElement } from "../../core/blora-element.js";
+import { t } from "../../core/i18n.js";
 import { createBloraIcon } from "../../core/icons.js";
 import { createStatusIcon, type StatusIconVariant } from "../../core/status-icon.js";
 
@@ -42,7 +43,7 @@ export class BloraAlert extends BloraElement {
       const close = this.ownerDocument.createElement("button");
       close.className = "blora-alert__close";
       close.type = "button";
-      close.setAttribute("aria-label", "关闭");
+      close.setAttribute("aria-label", t("common.close"));
       close.appendChild(createBloraIcon("close", 16, this.ownerDocument));
       root.appendChild(close);
     }

@@ -6,6 +6,7 @@
  * There is no separate Toast product API in Blora 2.0.
  */
 
+import { whenMotionDone } from "../../core/motion.js";
 import { createStatusIcon } from "../../core/status-icon.js";
 
 export type MessageType = "info" | "success" | "warning" | "danger";
@@ -96,10 +97,10 @@ function openMessage(opts: MessageOptions): MessageHandle | null {
     if (closed) return;
     closed = true;
     el.classList.add("is-leaving");
-    window.setTimeout(() => {
+    whenMotionDone(el, () => {
       el.remove();
       if (container.childElementCount === 0) container.remove();
-    }, 200);
+    });
   };
 
   const ms = opts.duration == null ? 3000 : opts.duration;

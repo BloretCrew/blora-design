@@ -1,7 +1,9 @@
 /**
  * Image: skeleton loading + optional lightbox preview (v1 initImagePreview).
  */
+import { OverlayController } from "../../controllers/overlay-controller.js";
 import { BloraElement } from "../../core/blora-element.js";
+import { t } from "../../core/i18n.js";
 import { createBloraIcon } from "../../core/icons.js";
 import { whenMotionDone } from "../../core/motion.js";
 
@@ -73,6 +75,7 @@ export function openImagePreview(
   overlay.dataset.open = "";
   overlay.setAttribute("role", "dialog");
   overlay.setAttribute("aria-modal", "true");
+  overlay.setAttribute("aria-label", t("preview.label"));
 
   const stage = doc.createElement("div");
   stage.className = "blora-image-preview__stage";
@@ -90,24 +93,33 @@ export function openImagePreview(
   const closeBtn = doc.createElement("button");
   closeBtn.type = "button";
   closeBtn.className = "blora-image-preview__close";
-  closeBtn.setAttribute("aria-label", "关闭");
+  closeBtn.setAttribute("aria-label", t("preview.close"));
   closeBtn.appendChild(createBloraIcon("close", 18));
 
   const prevBtn = doc.createElement("button");
   prevBtn.type = "button";
   prevBtn.className = "blora-image-preview__btn blora-image-preview__btn--prev";
-  prevBtn.setAttribute("aria-label", "上一张");
+  prevBtn.setAttribute("aria-label", t("preview.prev"));
   prevBtn.appendChild(createBloraIcon("chevron-left", 20));
 
   const nextBtn = doc.createElement("button");
   nextBtn.type = "button";
   nextBtn.className = "blora-image-preview__btn blora-image-preview__btn--next";
-  nextBtn.setAttribute("aria-label", "下一张");
+  nextBtn.setAttribute("aria-label", t("preview.next"));
   nextBtn.appendChild(createBloraIcon("chevron-right", 20));
 
   stage.append(img, cap);
   overlay.append(count, closeBtn, prevBtn, nextBtn, stage);
   doc.body.appendChild(overlay);
+  const stack = new OverlayController(overlay, {
+    modal: true,
+    closeOnEscape: false,
+    closeOnOutsidePointer: false,
+    restoreFocus: true,
+    trapFocus: true,
+    lockScroll: true,
+  });
+  stack.open();
 
   const render = () => {
     const item = list[index]!;
@@ -123,7 +135,10 @@ export function openImagePreview(
     if (!overlay.isConnected) return;
     overlay.removeAttribute("data-open");
     doc.removeEventListener("keydown", onKey);
-    whenMotionDone(overlay, () => overlay.remove());
+    whenMotionDone(overlay, () => {
+      stack.close();
+      overlay.remove();
+    });
   };
   const next = () => {
     index = (index + 1) % list.length;

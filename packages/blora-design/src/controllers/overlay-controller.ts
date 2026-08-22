@@ -163,20 +163,57 @@ function restoreWindowScroll(document: Document, y: number): void {
   win.scrollTo(0, y);
 }
 
-function getFocusableElements(root: HTMLElement): HTMLElement[] {
-  const selector = [
-    "a[href]",
-    "button:not([disabled])",
-    "input:not([disabled])",
-    "textarea:not([disabled])",
-    "select:not([disabled])",
-    '[tabindex]:not([tabindex="-1"])',
-    "[contenteditable]",
-  ].join(", ");
+const FOCUSABLE_SELECTOR = [
+  "a[href]",
+  "button:not([disabled])",
+  "input:not([disabled])",
+  "textarea:not([disabled])",
+  "select:not([disabled])",
+  '[tabindex]:not([tabindex="-1"])',
+  "[contenteditable]",
+].join(", ");
 
-  return Array.from(root.querySelectorAll<HTMLElement>(selector)).filter(
-    (el) => el.offsetParent !== null || el === root.ownerDocument.activeElement,
-  );
+function isVisibleFocusable(el: HTMLElement): boolean {
+  if (el.matches("[disabled]") || el.getAttribute("aria-hidden") === "true") return false;
+  if (!el.matches(FOCUSABLE_SELECTOR)) return false;
+  if (el.getClientRects().length > 0) return true;
+  return el === el.ownerDocument.activeElement;
+}
+
+/** Tree order, including shadow trees and slotted light DOM. */
+function getFocusableElements(root: HTMLElement): HTMLElement[] {
+  const out: HTMLElement[] = [];
+  const visit = (node: Node): void => {
+    if (node instanceof HTMLElement && isVisibleFocusable(node)) out.push(node);
+    if (node instanceof HTMLElement && node.shadowRoot) {
+      node.shadowRoot.childNodes.forEach(visit);
+      return;
+    }
+    if (node instanceof HTMLSlotElement) {
+      node.assignedNodes({ flatten: true }).forEach(visit);
+      return;
+    }
+    node.childNodes.forEach(visit);
+  };
+  if (root.shadowRoot) root.shadowRoot.childNodes.forEach(visit);
+  else root.childNodes.forEach(visit);
+  return out;
+}
+
+function nodeInOverlay(overlay: HTMLElement, node: Node | null): boolean {
+  if (!node) return false;
+  if (overlay === node || overlay.contains(node)) return true;
+  if (node instanceof Element && overlay.shadowRoot?.contains(node)) return true;
+  const root = node.getRootNode();
+  if (root instanceof ShadowRoot) {
+    let host: Element | null = root.host;
+    while (host) {
+      if (host === overlay) return true;
+      const next = host.getRootNode();
+      host = next instanceof ShadowRoot ? next.host : null;
+    }
+  }
+  return false;
 }
 
 function trapTabKey(e: KeyboardEvent, overlay: HTMLElement): void {
@@ -190,12 +227,12 @@ function trapTabKey(e: KeyboardEvent, overlay: HTMLElement): void {
   const active = overlay.ownerDocument.activeElement;
 
   if (e.shiftKey) {
-    if (active === first || !overlay.contains(active)) {
+    if (active === first || !nodeInOverlay(overlay, active)) {
       e.preventDefault();
       last.focus();
     }
   } else {
-    if (active === last || !overlay.contains(active)) {
+    if (active === last || !nodeInOverlay(overlay, active)) {
       e.preventDefault();
       first.focus();
     }

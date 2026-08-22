@@ -373,7 +373,7 @@ test("Action and status composite CEs own structure and update state", async ({ 
     host.setAttribute("total", "12");
   });
   await expect(page.locator("#pagination .blora-pagination__ellipsis")).toHaveCount(2);
-  await page.locator('#pagination [aria-label="下一页"]').click();
+  await page.locator('#pagination [data-direction="next"]').click();
   await expect(page.locator("#pagination")).toHaveAttribute("page", "8");
   await page
     .locator("#picker .blora-color-swatch")
@@ -538,13 +538,13 @@ test("Remaining controller-backed CEs own structure and reflect state", async ({
   await expect(page.locator("#splitter")).not.toHaveAttribute("position", "50");
   await page.locator("#tour [data-tour-start]").click();
   await expect(page.locator("#tour")).toHaveAttribute("open", "");
-  await expect(page.locator("body > .blora-tour__tooltip")).toBeVisible();
-  await page.locator("body > .blora-tour__tooltip .blora-tour__next").click();
-  await expect(page.locator("body > .blora-tour__tooltip .blora-tour__counter")).toHaveText(
+  await expect(page.locator(".blora-tour__tooltip")).toBeVisible();
+  await page.locator(".blora-tour__tooltip .blora-tour__next").click();
+  await expect(page.locator(".blora-tour__tooltip .blora-tour__counter")).toHaveText(
     "2 / 2",
   );
-  await page.locator("body > .blora-tour__tooltip .blora-tour__next").click();
-  await expect(page.locator("body > .blora-tour__tooltip")).toHaveCount(0);
+  await page.locator(".blora-tour__tooltip .blora-tour__next").click();
+  await expect(page.locator(".blora-tour__tooltip")).toHaveCount(0);
 });
 
 test("Fixed composite CEs generate their official internal trees", async ({ page }) => {
@@ -1091,7 +1091,7 @@ test("showcase Pagination matches the v1 window and keeps active hover colour st
   expect(hoverOverflow!.rootGutter).toBe(0);
 
   await windowed
-    .locator('[aria-label="下一页"]')
+    .locator('[data-direction="next"]')
     .evaluate((button) => (button as HTMLButtonElement).click());
   await expect(windowed).toHaveAttribute("page", "8");
   await expect(windowed.locator(".blora-pagination__ellipsis[data-inactive]")).toHaveCount(1);

@@ -3,6 +3,7 @@
  * Wires up the clear button visibility and click-to-clear behavior.
  */
 import { BloraElement } from "../../core/blora-element.js";
+import { t } from "../../core/i18n.js";
 import { createBloraIcon } from "../../core/icons.js";
 
 export const BLORA_SEARCH_TAG = "blora-search";
@@ -74,14 +75,14 @@ export class BloraSearch extends BloraElement {
     const search = document.createElement("button");
     search.className = "blora-search__icon";
     search.type = "button";
-    search.setAttribute("aria-label", this.getAttribute("label") ?? "搜索");
+    search.setAttribute("aria-label", this.getAttribute("label") ?? t("search.label"));
     search.appendChild(createBloraIcon("search"));
 
     const input = document.createElement("input");
     input.className = "blora-input";
     input.type = "search";
     input.value = this.getAttribute("value") ?? "";
-    input.placeholder = this.getAttribute("placeholder") ?? "搜索…";
+    input.placeholder = this.getAttribute("placeholder") ?? t("search.placeholder");
     input.disabled = this.hasAttribute("disabled");
     input.required = this.hasAttribute("required");
     if (this.hasAttribute("name")) input.name = this.getAttribute("name") ?? "";
@@ -91,7 +92,7 @@ export class BloraSearch extends BloraElement {
     clear.type = "button";
     clear.hidden = input.value.length === 0;
     clear.disabled = input.disabled;
-    clear.setAttribute("aria-label", "清除");
+    clear.setAttribute("aria-label", t("common.clear"));
     clear.appendChild(createBloraIcon("close"));
 
     root.append(search, input, clear);
@@ -102,7 +103,7 @@ export class BloraSearch extends BloraElement {
     const input = this.querySelector<HTMLInputElement>(".blora-input");
     if (!input) return;
     if (document.activeElement !== input) input.value = this.getAttribute("value") ?? input.value;
-    input.placeholder = this.getAttribute("placeholder") ?? "搜索…";
+    input.placeholder = this.getAttribute("placeholder") ?? t("search.placeholder");
     input.disabled = this.hasAttribute("disabled");
     input.required = this.hasAttribute("required");
     if (this.hasAttribute("name")) input.name = this.getAttribute("name") ?? "";
@@ -112,7 +113,7 @@ export class BloraSearch extends BloraElement {
       clear.disabled = input.disabled;
     }
     const search = this.querySelector<HTMLButtonElement>(".blora-search__icon");
-    if (search) search.setAttribute("aria-label", this.getAttribute("label") ?? "搜索");
+    if (search) search.setAttribute("aria-label", this.getAttribute("label") ?? t("search.label"));
   }
 
   protected bindEvents(): void {

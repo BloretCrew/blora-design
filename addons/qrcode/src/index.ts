@@ -18,12 +18,15 @@ export interface QRCodeOptions {
  * @internal
  */
 export function buildQRMatrix(text: string): boolean[][] {
-  const truncated = text.slice(0, 60);
-  try {
-    return qrMatrixFromText(truncated);
-  } catch {
-    return fallbackMatrix(text);
+  let bytes = 0;
+  for (let i = 0; i < text.length; i++) {
+    const code = text.charCodeAt(i);
+    bytes += code < 128 ? 1 : code < 2048 ? 2 : 3;
   }
+  if (bytes > 80) {
+    throw new Error("QR_TOO_LONG");
+  }
+  return qrMatrixFromText(text);
 }
 
 function qrMatrixFromText(text: string): boolean[][] {
@@ -111,28 +114,6 @@ function qrMatrixFromText(text: string): boolean[][] {
   return result;
 }
 
-function fallbackMatrix(text: string): boolean[][] {
-  const n = 25;
-  const m: boolean[][] = Array.from({ length: n }, () => Array<boolean>(n).fill(false));
-  for (let i = 0; i < n; i++) {
-    m[0]![i] = true;
-    m[n - 1]![i] = true;
-    m[i]![0] = true;
-    m[i]![n - 1] = true;
-  }
-  let h = 0;
-  for (let i = 0; i < text.length; i++) {
-    h = (h * 33 + text.charCodeAt(i)) >>> 0;
-  }
-  for (let r = 2; r < n - 2; r++) {
-    for (let c = 2; c < n - 2; c++) {
-      h = (h * 1103515245 + 12345) >>> 0;
-      m[r]![c] = (h & 7) < 3;
-    }
-  }
-  return m;
-}
-
 /**
  * Render a QR code into a container element using Canvas.
  *
@@ -157,7 +138,16 @@ export function renderQRCode(
     container.appendChild(canvas);
   }
 
-  const modules = buildQRMatrix(String(text || ""));
+  let modules: boolean[][];
+  try {
+    modules = buildQRMatrix(String(text || ""));
+    container.removeAttribute("data-invalid");
+  } catch {
+    container.setAttribute("data-invalid", "");
+    canvas.width = 0;
+    canvas.height = 0;
+    return;
+  }
   const n = modules.length;
   const cell = Math.floor(size / (n + 2));
   const px = cell * (n + 2);

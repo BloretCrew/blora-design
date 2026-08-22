@@ -1,4 +1,5 @@
 import { BloraElement } from "../../core/blora-element.js";
+import { t } from "../../core/i18n.js";
 
 export const BLORA_SIDEBAR_NAV_TAG = "blora-sidebar-nav";
 
@@ -33,7 +34,7 @@ export class BloraSidebarNav extends BloraElement {
     if (name === "label") {
       this.querySelector(".blora-sidebar-nav")?.setAttribute(
         "aria-label",
-        this.getAttribute("label") ?? "Sidebar navigation",
+        this.getAttribute("label") ?? t("sidebar.label"),
       );
       return;
     }
@@ -75,7 +76,7 @@ export class BloraSidebarNav extends BloraElement {
     const nav = this.ownerDocument.createElement("nav");
     nav.className = "blora-sidebar-nav";
     nav.dataset.bloraGenerated = "";
-    nav.setAttribute("aria-label", this.getAttribute("label") ?? "Sidebar navigation");
+    nav.setAttribute("aria-label", this.getAttribute("label") ?? t("sidebar.label"));
 
     for (const definition of this.definitions) {
       const group = this.ownerDocument.createElement("div");

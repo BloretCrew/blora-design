@@ -6,31 +6,20 @@
 
 | Component | Rationale |
 |-----------|-----------|
-| Alert | Static status banner; no v1 init |
 | Avatar | Presentational |
 | Badge | Presentational |
-| Banner | Presentational strip |
-| Breadcrumb | Static nav trail (links only) |
 | Card | Layout chrome |
-| Chart Container | Host shell for charts |
-| Chat | Markup/CSS shell (messages as content) |
-| Comment | Markup/CSS shell |
 | Descriptions | Definition list styling |
-| Empty | Empty state illustration/text |
 | Input | Native enhanced by Field/Form |
 | List | Row dividers; compose with Card for chrome |
 | Message | Static pill + `message()` top-center service |
-| Mockup | Decorative device frame |
-| Navbar | Structural header CSS |
-| Radio | Native + CSS (group via form) |
-| Result | Status page layout |
 | Skeleton | Loading placeholder |
 | Spinner | Loading indicator |
-| Statistic | Number display |
-| Switch | Native checkbox + CSS |
 | Tag | Presentational chip |
 | Textarea | Native + Field/Form |
-| Timeline | Static vertical list |
+| FAB | Presentational action control |
+| Media Container | Presentational frame |
+| Indicator / Hero / Footer / Join / Divider / Menu | Page chrome; no required JS |
 
 ## Composite CE / Controller API present (v1 had JS or interactive path)
 

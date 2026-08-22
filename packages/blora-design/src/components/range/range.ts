@@ -3,6 +3,7 @@
  * Optional tooltip-on-drag via data-tooltip attribute (v1 default behavior).
  */
 import { BloraElement } from "../../core/blora-element.js";
+import { t } from "../../core/i18n.js";
 
 export const BLORA_RANGE_TAG = "blora-range";
 
@@ -184,7 +185,7 @@ export class BloraRange extends BloraElement {
     value.className = "blora-range__value";
     value.textContent = `${low} – ${high}`;
 
-    root.append(track, makeThumb(low, "最小值"), makeThumb(high, "最大值"), value);
+    root.append(track, makeThumb(low, t("common.min")), makeThumb(high, t("common.max")), value);
     this.replaceChildren(root);
   }
 

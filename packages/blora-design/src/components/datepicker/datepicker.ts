@@ -4,6 +4,7 @@
  * + custom Blora panel opened by the trailing icon button.
  */
 import { BloraElement } from "../../core/blora-element.js";
+import { localeDow, localeMonths, t } from "../../core/i18n.js";
 import { createBloraIcon } from "../../core/icons.js";
 
 export const BLORA_DATEPICKER_TAG = "blora-datepicker";
@@ -12,21 +13,8 @@ export interface DatepickerController {
   destroy(): void;
 }
 
-const MONTHS = [
-  "1月",
-  "2月",
-  "3月",
-  "4月",
-  "5月",
-  "6月",
-  "7月",
-  "8月",
-  "9月",
-  "10月",
-  "11月",
-  "12月",
-];
-const DOW = ["日", "一", "二", "三", "四", "五", "六"];
+const MONTHS = () => localeMonths();
+const DOW = () => localeDow();
 
 const setChevron = (el: HTMLElement, dir: "prev" | "next") => {
   el.replaceChildren(
@@ -115,22 +103,27 @@ export function createDatepickerController(root: HTMLElement): DatepickerControl
     const prev = el("button", "blora-datepicker__nav");
     prev.setAttribute("type", "button");
     prev.setAttribute("data-nav", "prev");
+    prev.setAttribute("aria-label", t("calendar.prev"));
     setChevron(prev, "prev");
     const next = el("button", "blora-datepicker__nav");
     next.setAttribute("type", "button");
     next.setAttribute("data-nav", "next");
+    next.setAttribute("aria-label", t("calendar.next"));
     setChevron(next, "next");
     let titleText = "";
     let zoom: string | null = null;
     if (viewMode === "days") {
-      titleText = `${viewYear}年 ${MONTHS[viewMonth]}`;
+      titleText = t("calendar.monthYear", {
+        year: viewYear,
+        month: MONTHS()[viewMonth] ?? "",
+      });
       zoom = "months";
     } else if (viewMode === "months") {
-      titleText = `${viewYear}年`;
+      titleText = t("calendar.year", { year: viewYear });
       zoom = "years";
     } else {
       const dec = Math.floor(viewYear / 10) * 10;
-      titleText = `${dec}–${dec + 9}年`;
+      titleText = t("calendar.decade", { start: dec, end: dec + 9 });
     }
     const title = el("span", "blora-datepicker__title", titleText);
     if (zoom) title.setAttribute("data-zoom", zoom);
@@ -139,7 +132,7 @@ export function createDatepickerController(root: HTMLElement): DatepickerControl
 
     if (viewMode === "days") {
       const grid = el("div", "blora-datepicker__grid");
-      DOW.forEach((d) => grid.appendChild(el("div", "blora-datepicker__dow", d)));
+      DOW().forEach((d) => grid.appendChild(el("div", "blora-datepicker__dow", d)));
       const first = new Date(viewYear, viewMonth, 1);
       const startDay = first.getDay();
       const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
@@ -169,7 +162,7 @@ export function createDatepickerController(root: HTMLElement): DatepickerControl
       panel!.appendChild(grid);
     } else if (viewMode === "months") {
       const grid = el("div", "blora-datepicker__grid blora-datepicker__grid--months");
-      MONTHS.forEach((name, m) => {
+      MONTHS().forEach((name, m) => {
         const c = el("div", "blora-datepicker__cell blora-datepicker__cell--month", name);
         c.setAttribute("data-month", String(m));
         if (selected && viewYear === selected.getFullYear() && m === selected.getMonth())
@@ -199,13 +192,13 @@ export function createDatepickerController(root: HTMLElement): DatepickerControl
     clearBtn.setAttribute("data-variant", "ghost");
     clearBtn.setAttribute("data-size", "sm");
     clearBtn.setAttribute("data-clear", "");
-    clearBtn.textContent = "清除";
+    clearBtn.textContent = t("common.clear");
     const todayBtn = el("button", "blora-button");
     todayBtn.setAttribute("type", "button");
     todayBtn.setAttribute("data-variant", "ghost");
     todayBtn.setAttribute("data-size", "sm");
     todayBtn.setAttribute("data-today", "");
-    todayBtn.textContent = "今天";
+    todayBtn.textContent = t("common.today");
     foot.append(clearBtn, todayBtn);
     panel!.appendChild(foot);
   };
@@ -386,7 +379,7 @@ export class BloraDatepicker extends BloraElement {
     button.type = "button";
     button.tabIndex = -1;
     button.disabled = input.disabled;
-    button.setAttribute("aria-label", "选择日期");
+    button.setAttribute("aria-label", t("datepicker.pick"));
     button.appendChild(createBloraIcon("calendar"));
 
     root.append(input, button);

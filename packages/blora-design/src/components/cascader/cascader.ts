@@ -3,6 +3,7 @@
  * Multi-level selection dropdown with nested options.
  */
 import { BloraElement } from "../../core/blora-element.js";
+import { t } from "../../core/i18n.js";
 import { createBloraIcon } from "../../core/icons.js";
 
 export const BLORA_CASCADER_TAG = "blora-cascader";
@@ -34,7 +35,7 @@ export function createCascaderController(root: HTMLElement): CascaderController 
     trigger = doc.createElement("button");
     trigger.className = "blora-cascader__trigger blora-input";
     trigger.type = "button";
-    trigger.textContent = "请选择";
+    trigger.textContent = t("cascader.placeholder");
     root.prepend(trigger);
   }
 
@@ -74,8 +75,8 @@ export function createCascaderController(root: HTMLElement): CascaderController 
   };
 
   const updatePath = () => {
-    trigger!.textContent = selectedPath.length ? selectedPath.join(" / ") : "请选择";
-    if (result) result.textContent = `已选：${selectedPath.join(" / ")}`;
+    trigger!.textContent = selectedPath.length ? selectedPath.join(" / ") : t("cascader.placeholder");
+    if (result) result.textContent = `${t("cascader.selectedPrefix")}${selectedPath.join(" / ")}`;
   };
 
   const open = () => {
@@ -220,7 +221,7 @@ export class BloraCascader extends BloraElement {
     trigger.type = "button";
     trigger.disabled = this.hasAttribute("disabled");
     trigger.textContent =
-      this.getAttribute("value") || this.getAttribute("placeholder") || "请选择";
+      this.getAttribute("value") || this.getAttribute("placeholder") || t("cascader.placeholder");
     const panel = this.ownerDocument.createElement("div");
     panel.className = "blora-cascader__panel";
     panel.setAttribute("role", "listbox");
@@ -228,7 +229,7 @@ export class BloraCascader extends BloraElement {
     if (this.hasAttribute("show-result")) {
       const result = this.ownerDocument.createElement("output");
       result.className = "blora-cascader__result";
-      if (this.value) result.textContent = `已选：${this.value}`;
+      if (this.value) result.textContent = `${t("cascader.selectedPrefix")}${this.value}`;
       root.appendChild(result);
     }
     this.replaceChildren(root);

@@ -216,17 +216,17 @@ blora-image {
 }
 
 .blora-image-preview__btn--prev {
-  left: max(var(--blora-space-3), env(safe-area-inset-left, 0px));
+  inset-inline-start: max(var(--blora-space-3), env(safe-area-inset-inline-start, 0px));
 }
 
 .blora-image-preview__btn--next {
-  right: max(var(--blora-space-3), env(safe-area-inset-right, 0px));
+  inset-inline-end: max(var(--blora-space-3), env(safe-area-inset-inline-end, 0px));
 }
 
 .blora-image-preview__close {
   position: absolute;
   top: max(var(--blora-space-3), env(safe-area-inset-top, 0px));
-  right: max(var(--blora-space-3), env(safe-area-inset-right, 0px));
+  inset-inline-end: max(var(--blora-space-3), env(safe-area-inset-inline-end, 0px));
   width: 2.5rem;
   height: 2.5rem;
   border: 0;

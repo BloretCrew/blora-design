@@ -2,7 +2,9 @@
  * Notification service with multi-placement stacks.
  * Visual must match Feedback/Notification Storybook (SVG icons + close stroke).
  */
+import { t } from "../../core/i18n.js";
 import { createBloraIcon } from "../../core/icons.js";
+import { whenMotionDone } from "../../core/motion.js";
 import { createStatusIcon } from "../../core/status-icon.js";
 
 export type NotificationPlacement = "top-right" | "top-left" | "bottom-right" | "bottom-left";
@@ -60,7 +62,7 @@ function appendCloseButton(doc: Document, host: HTMLElement): HTMLButtonElement 
   const closeBtn = doc.createElement("button");
   closeBtn.type = "button";
   closeBtn.className = "blora-notification__close";
-  closeBtn.setAttribute("aria-label", "关闭");
+  closeBtn.setAttribute("aria-label", t("common.close"));
   closeBtn.appendChild(createBloraIcon("close", 16, doc));
   host.appendChild(closeBtn);
   return closeBtn;
@@ -110,8 +112,7 @@ export function notify(opts: NotificationOptions | string): NotificationHandle |
 
   const close = () => {
     el.classList.add("is-leaving");
-    /* Match --blora-duration-fast leave animation (~160ms) + buffer */
-    setTimeout(() => el.remove(), 220);
+    whenMotionDone(el, () => el.remove());
   };
   el.querySelector(".blora-notification__close")?.addEventListener("click", close);
   container.appendChild(el);
@@ -129,7 +130,7 @@ export function createNotificationController(root: HTMLElement): { destroy(): vo
   const onClose = () => {
     root.classList.add("is-leaving");
     root.dispatchEvent(new CustomEvent("blora-notification-close", { bubbles: true }));
-    setTimeout(() => root.remove(), 220);
+    whenMotionDone(root, () => root.remove());
   };
   btn.addEventListener("click", onClose);
   return {

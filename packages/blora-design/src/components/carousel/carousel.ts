@@ -3,6 +3,7 @@
  * Arrows/dots + pointer/touch drag swipe (v1 parity).
  */
 import { BloraElement } from "../../core/blora-element.js";
+import { t } from "../../core/i18n.js";
 import { createBloraIcon } from "../../core/icons.js";
 
 export const BLORA_CAROUSEL_TAG = "blora-carousel";
@@ -223,7 +224,7 @@ function carouselArrow(doc: Document, direction: "prev" | "next"): HTMLButtonEle
   const button = doc.createElement("button");
   button.className = `blora-carousel__arrow blora-carousel__arrow--${direction}`;
   button.type = "button";
-  button.setAttribute("aria-label", direction === "prev" ? "上一张" : "下一张");
+  button.setAttribute("aria-label", direction === "prev" ? t("carousel.prev") : t("carousel.next"));
   button.appendChild(
     createBloraIcon(direction === "prev" ? "chevron-left" : "chevron-right", 18, doc),
   );
@@ -278,7 +279,7 @@ export class BloraCarousel extends BloraElement {
     root.className = "blora-carousel";
     root.dataset.bloraGenerated = "";
     root.setAttribute("role", "region");
-    root.setAttribute("aria-label", this.getAttribute("label") ?? "轮播图");
+    root.setAttribute("aria-label", this.getAttribute("label") ?? t("carousel.label"));
     if (this.hasAttribute("autoplay")) root.dataset.autoplay = "";
     const track = this.ownerDocument.createElement("div");
     track.className = "blora-carousel__track";
@@ -299,7 +300,7 @@ export class BloraCarousel extends BloraElement {
       const dot = this.ownerDocument.createElement("button");
       dot.className = "blora-carousel__dot";
       dot.type = "button";
-      dot.setAttribute("aria-label", `转到第 ${index + 1} 张`);
+      dot.setAttribute("aria-label", t("carousel.goto", { n: index + 1 }));
       dots.appendChild(dot);
     });
     root.append(

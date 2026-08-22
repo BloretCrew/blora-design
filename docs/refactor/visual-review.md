@@ -28,7 +28,7 @@ pnpm test:visual
 
 ## 2026-08-11 Showcase full catalog review
 
-- `examples/showcase-v2/` now covers all 76 core manifest components.
+- `examples/showcase-v2/` now covers all 87 core manifest components.
 - Reviewed actual headless-Chrome renders for the desktop catalog, mobile sidebar, Accordion,
   Collapse HTML panel, palette picker, FAB, Statistic, Table, Dialog, and Select.
 - FAB review confirms the official static docs modifier keeps the control 56×56, circular, centered,

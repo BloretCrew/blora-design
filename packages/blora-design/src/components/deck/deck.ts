@@ -3,6 +3,7 @@
  * Stacked cards with drag/wheel navigation (v1 parity).
  */
 import { BloraElement } from "../../core/blora-element.js";
+import { t } from "../../core/i18n.js";
 
 export const BLORA_DECK_TAG = "blora-deck";
 
@@ -279,7 +280,7 @@ export class BloraDeck extends BloraElement {
     root.className = "blora-deck";
     root.dataset.bloraGenerated = "";
     root.tabIndex = 0;
-    root.setAttribute("aria-label", this.getAttribute("label") ?? "卡片叠层");
+    root.setAttribute("aria-label", this.getAttribute("label") ?? t("deck.label"));
     this.definitions.forEach((definition, index) => {
       const card = this.ownerDocument.createElement("article");
       card.className = "blora-card";

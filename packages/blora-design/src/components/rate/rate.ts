@@ -3,6 +3,7 @@
  * Click stars to set rating, hover to preview.
  */
 import { BloraElement } from "../../core/blora-element.js";
+import { t } from "../../core/i18n.js";
 import { createBloraIcon } from "../../core/icons.js";
 
 export const BLORA_RATE_TAG = "blora-rate";
@@ -102,7 +103,7 @@ export class BloraRate extends BloraElement {
     root.dataset.bloraGenerated = "";
     root.dataset.value = String(value);
     root.setAttribute("role", "radiogroup");
-    root.setAttribute("aria-label", this.getAttribute("label") ?? "Rating");
+    root.setAttribute("aria-label", this.getAttribute("label") ?? t("rate.label"));
     if (this.hasAttribute("readonly")) root.dataset.readonly = "";
     for (let index = 1; index <= max; index += 1) {
       const star = this.ownerDocument.createElement("span");
@@ -111,7 +112,7 @@ export class BloraRate extends BloraElement {
       star.dataset.value = String(index);
       star.setAttribute("role", "radio");
       star.setAttribute("aria-checked", String(index === value));
-      star.setAttribute("aria-label", `${index} of ${max}`);
+      star.setAttribute("aria-label", t("rate.of", { n: index, max }));
       star.tabIndex = this.hasAttribute("readonly") ? -1 : index === Math.max(1, value) ? 0 : -1;
       if (index <= value) star.dataset.active = "";
       root.appendChild(star);
@@ -125,7 +126,7 @@ export class BloraRate extends BloraElement {
     const max = Math.max(1, Number(this.getAttribute("max") ?? 5));
     const value = Math.min(max, Math.max(0, Number(this.getAttribute("value") ?? 0)));
     root.dataset.value = String(value);
-    root.setAttribute("aria-label", this.getAttribute("label") ?? "Rating");
+    root.setAttribute("aria-label", this.getAttribute("label") ?? t("rate.label"));
     root.toggleAttribute("data-readonly", this.hasAttribute("readonly"));
     root.querySelectorAll<HTMLElement>(".blora-rate__star").forEach((star, index) => {
       const n = index + 1;

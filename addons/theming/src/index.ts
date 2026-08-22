@@ -4,7 +4,7 @@
  * @packageDocumentation
  */
 
-import { createBloraIcon } from "@bloret-crew/blora-design";
+import { createBloraIcon, t } from "@bloret-crew/blora-design";
 
 export interface ThemePreset {
   name: string;
@@ -16,37 +16,37 @@ export interface ThemePreset {
 export const THEME_PRESETS: Record<string, ThemePreset> = {
   coral: {
     name: "Coral",
-    description: "深靛灰与柔和珊瑚红",
+    description: "",
     colors: ["#FAF7F8", "#303143", "#9F5964", "#5D6680", "#5B756B"],
   },
   indigo: {
     name: "Indigo",
-    description: "冷灰基底与沉静蓝",
+    description: "",
     colors: ["#F4F5F8", "#405D87", "#55756F", "#A74B52", "#AF8A55"],
   },
   lotus: {
     name: "Lotus",
-    description: "柔和粉紫与低饱和绿",
+    description: "",
     colors: ["#F8F4F6", "#9A466A", "#55786B", "#526078", "#B28A59"],
   },
   graphite: {
     name: "Graphite",
-    description: "冷灰界面与低饱和钢蓝",
+    description: "",
     colors: ["#F6F7F8", "#171A1F", "#4F6578", "#596A86", "#5B756B"],
   },
   mono: {
     name: "Mono",
-    description: "纯中性灰与近黑主色",
+    description: "",
     colors: ["#FAFAF9", "#111110", "#34363A", "#5E6672", "#616D67"],
   },
   circuit: {
     name: "Circuit",
-    description: "碳灰界面与克制青色",
+    description: "",
     colors: ["#F4F5F5", "#161A1A", "#3E6C70", "#536D7D", "#4F7368"],
   },
   dusk: {
     name: "Dusk",
-    description: "暮色灰紫",
+    description: "",
     colors: ["#F6F4F8", "#3A3548", "#7A6B8A", "#5A6B7A", "#8A7A6A"],
   },
 };
@@ -190,17 +190,17 @@ function mountPalettePicker(root: HTMLElement): PalettePickerController {
   trigger.setAttribute("aria-haspopup", "listbox");
   trigger.setAttribute("aria-expanded", "false");
   menu.setAttribute("role", "listbox");
-  menu.setAttribute("aria-label", "主题配色");
+  menu.setAttribute("aria-label", t("palette.label"));
 
   if (!menu.querySelector("[data-blora-palette-option]")) {
     const head = doc.createElement("div");
     head.className = "blora-palette-picker__head";
     const title = doc.createElement("span");
     title.className = "blora-palette-picker__title";
-    title.textContent = "主题配色";
+    title.textContent = t("palette.title");
     const hint = doc.createElement("span");
     hint.className = "blora-palette-picker__hint";
-    hint.textContent = "选择一套调色板";
+    hint.textContent = t("palette.hint");
     head.append(title, hint);
     const list = doc.createElement("div");
     list.className = "blora-palette-picker__list";
@@ -214,10 +214,10 @@ function mountPalettePicker(root: HTMLElement): PalettePickerController {
       copy.className = "blora-palette-card__copy";
       const name = doc.createElement("span");
       name.className = "blora-palette-card__name";
-      name.textContent = preset.name;
+      name.textContent = t(`theme.name.${key}`);
       const desc = doc.createElement("span");
       desc.className = "blora-palette-card__desc";
-      desc.textContent = preset.description;
+      desc.textContent = t(`theme.${key}`);
       copy.append(name, desc);
       const colors = doc.createElement("span");
       colors.className = "blora-palette-card__colors";
@@ -246,7 +246,7 @@ function mountPalettePicker(root: HTMLElement): PalettePickerController {
       ),
     );
     const label = trigger.querySelector(".blora-palette-picker__label");
-    if (label && THEME_PRESETS[current]) label.textContent = THEME_PRESETS[current]!.name;
+    if (label && THEME_PRESETS[current]) label.textContent = t(`theme.name.${current}`);
   };
 
   const clearMenuPlace = () => {
@@ -449,8 +449,7 @@ export class BloraPalettePicker extends ThemingBase {
     trigger.appendChild(createBloraIcon("palette", 18, this.ownerDocument));
     const label = this.ownerDocument.createElement("span");
     label.className = "blora-palette-picker__label";
-    label.textContent =
-      THEME_PRESETS[getTheme(this.ownerDocument.documentElement)]?.name ?? "Coral";
+    label.textContent = t(`theme.name.${getTheme(this.ownerDocument.documentElement)}`);
     trigger.appendChild(label);
     const menu = this.ownerDocument.createElement("div");
     menu.className = "blora-palette-picker__menu";
@@ -488,7 +487,10 @@ export class BloraColorSchemeToggle extends ThemingBase {
     button.className = "blora-button blora-color-scheme-toggle__button";
     button.dataset.variant = this.getAttribute("button-variant") ?? "ghost";
     button.dataset.size = this.getAttribute("size") ?? "sm";
-    button.setAttribute("aria-label", scheme === "dark" ? "切换为亮色主题" : "切换为暗色主题");
+    button.setAttribute(
+      "aria-label",
+      scheme === "dark" ? t("colorMode.switchToLight") : t("colorMode.switchToDark"),
+    );
     button.appendChild(createBloraIcon(scheme === "dark" ? "sun" : "moon", 18, this.ownerDocument));
     button.addEventListener("click", () => {
       applyColorScheme(scheme === "dark" ? "light" : "dark", this.ownerDocument.documentElement);

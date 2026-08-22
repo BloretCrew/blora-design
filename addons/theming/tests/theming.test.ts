@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
+import { applyDocumentLocale, t } from "@bloret-crew/blora-design";
 import {
   applyTheme,
   getTheme,
@@ -9,6 +10,8 @@ import {
 
 describe("theming add-on", () => {
   beforeEach(() => {
+    document.documentElement.lang = "zh-CN";
+    applyDocumentLocale();
     document.body.innerHTML = "";
     document.documentElement.removeAttribute("data-blora-theme");
     document.documentElement.removeAttribute("data-blora-color-scheme");
@@ -30,8 +33,8 @@ describe("theming add-on", () => {
     document.body.innerHTML = `<blora-palette-picker></blora-palette-picker>`;
     const picker = document.querySelector("blora-palette-picker")!;
     expect(picker.querySelectorAll("[data-blora-palette-option]").length).toBeGreaterThan(3);
-    expect(picker.querySelector(".blora-palette-picker__title")?.textContent).toBe("主题配色");
-    expect(picker.querySelector(".blora-palette-picker__hint")?.textContent).toBe("选择一套调色板");
+    expect(picker.querySelector(".blora-palette-picker__title")?.textContent).toBe(t("palette.title"));
+    expect(picker.querySelector(".blora-palette-picker__hint")?.textContent).toBe(t("palette.hint"));
   });
 
   it("palette menu is fixed and start-aligned when there is room", () => {

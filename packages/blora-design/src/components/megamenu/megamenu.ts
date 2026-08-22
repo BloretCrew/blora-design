@@ -3,6 +3,7 @@
  * Stays in core (product decision). Baseline: v1 initMegamenu.
  */
 import { BloraElement } from "../../core/blora-element.js";
+import { t } from "../../core/i18n.js";
 
 export const BLORA_MEGAMENU_TAG = "blora-megamenu";
 
@@ -171,7 +172,7 @@ export class BloraMegamenu extends BloraElement {
     trigger.type = "button";
     trigger.dataset.variant = "outline";
     trigger.dataset.bloraMegamenuTrigger = "";
-    trigger.textContent = this.getAttribute("label") ?? "浏览产品";
+    trigger.textContent = this.getAttribute("label") ?? t("megamenu.label");
     const panel = this.ownerDocument.createElement("div");
     panel.className = "blora-megamenu__panel";
     const grid = this.ownerDocument.createElement("div");

@@ -3,6 +3,7 @@
  * Month/year navigation, day selection, zoom levels (days → months → years).
  */
 import { BloraElement } from "../../core/blora-element.js";
+import { localeDow, localeMonths, t } from "../../core/i18n.js";
 import { createBloraIcon } from "../../core/icons.js";
 
 export const BLORA_CALENDAR_TAG = "blora-calendar";
@@ -11,21 +12,8 @@ export interface CalendarController {
   destroy(): void;
 }
 
-const MONTHS = [
-  "1月",
-  "2月",
-  "3月",
-  "4月",
-  "5月",
-  "6月",
-  "7月",
-  "8月",
-  "9月",
-  "10月",
-  "11月",
-  "12月",
-];
-const DOW = ["日", "一", "二", "三", "四", "五", "六"];
+const MONTHS = () => localeMonths();
+const DOW = () => localeDow();
 
 const setChevron = (el: HTMLElement, dir: "prev" | "next") => {
   el.replaceChildren(
@@ -60,27 +48,29 @@ export function createCalendarController(root: HTMLElement): CalendarController 
     const prev = el("button", "blora-calendar__nav");
     prev.setAttribute("type", "button");
     prev.setAttribute("data-nav", "prev");
-    prev.setAttribute("aria-label", "上一个");
+    prev.setAttribute("aria-label", t("calendar.prev"));
     setChevron(prev, "prev");
     const next = el("button", "blora-calendar__nav");
     next.setAttribute("type", "button");
     next.setAttribute("data-nav", "next");
-    next.setAttribute("aria-label", "下一个");
+    next.setAttribute("aria-label", t("calendar.next"));
     setChevron(next, "next");
     navRow.append(prev, next);
 
     let titleText = "";
     let zoom: string | null = null;
     if (viewMode === "days") {
-      /* No space — avoids "2026年 8 / 月" wrap on narrow hosts */
-      titleText = `${viewYear}年${MONTHS[viewMonth]}`;
+      titleText = t("calendar.monthYear", {
+        year: viewYear,
+        month: MONTHS()[viewMonth] ?? "",
+      });
       zoom = "months";
     } else if (viewMode === "months") {
-      titleText = `${viewYear}年`;
+      titleText = t("calendar.year", { year: viewYear });
       zoom = "years";
     } else {
       const decStart = Math.floor(viewYear / 10) * 10;
-      titleText = `${decStart}–${decStart + 9}年`;
+      titleText = t("calendar.decade", { start: decStart, end: decStart + 9 });
     }
     const title = el("div", "blora-calendar__title", titleText);
     if (zoom) title.setAttribute("data-zoom", zoom);
@@ -90,14 +80,14 @@ export function createCalendarController(root: HTMLElement): CalendarController 
     todayBtn.setAttribute("data-variant", "outline");
     todayBtn.setAttribute("data-size", "sm");
     todayBtn.setAttribute("data-today", "");
-    todayBtn.textContent = "今天";
+    todayBtn.textContent = t("common.today");
 
     head.append(navRow, title, todayBtn);
     root.appendChild(head);
 
     if (viewMode === "days") {
       const grid = el("div", "blora-calendar__grid");
-      DOW.forEach((d) => grid.appendChild(el("div", "blora-calendar__dow", d)));
+      DOW().forEach((d) => grid.appendChild(el("div", "blora-calendar__dow", d)));
       const first = new Date(viewYear, viewMonth, 1);
       const startDay = first.getDay();
       const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
@@ -126,7 +116,7 @@ export function createCalendarController(root: HTMLElement): CalendarController 
       root.appendChild(grid);
     } else if (viewMode === "months") {
       const grid = el("div", "blora-calendar__grid blora-calendar__grid--months");
-      MONTHS.forEach((name, m) => {
+      MONTHS().forEach((name, m) => {
         const cell = el("div", "blora-calendar__cell blora-calendar__cell--month", name);
         cell.setAttribute("data-month", String(m));
         if (selected && viewYear === selected.getFullYear() && m === selected.getMonth())

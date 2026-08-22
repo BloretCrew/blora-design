@@ -2,7 +2,9 @@
  * Blora Design 2.0 - Tour controller
  * Steps through highlighted elements with a tooltip.
  */
+import { OverlayController } from "../../controllers/overlay-controller.js";
 import { BloraElement } from "../../core/blora-element.js";
+import { t } from "../../core/i18n.js";
 import { whenMotionDone } from "../../core/motion.js";
 
 export const BLORA_TOUR_TAG = "blora-tour";
@@ -95,19 +97,23 @@ export function createTourController(root: HTMLElement): TourController {
   let current = -1;
   let overlay: HTMLElement | null = null;
   let tooltip: HTMLElement | null = null;
+  let stack: OverlayController | null = null;
 
   const createOverlay = () => {
     overlay = doc.createElement("div");
     overlay.className = "blora-tour__overlay";
+    overlay.setAttribute("popover", "manual");
     const ring = doc.createElement("div");
     ring.className = "blora-tour__ring";
     overlay.appendChild(ring);
-    doc.body.appendChild(overlay);
 
     tooltip = doc.createElement("div");
     tooltip.className = "blora-tour__tooltip";
+    tooltip.setAttribute("role", "dialog");
+    tooltip.setAttribute("aria-modal", "true");
     const title = doc.createElement("div");
     title.className = "blora-tour__title";
+    title.id = "blora-tour-title";
     const desc = doc.createElement("div");
     desc.className = "blora-tour__desc";
     const footer = doc.createElement("div");
@@ -126,13 +132,20 @@ export function createTourController(root: HTMLElement): TourController {
       return el;
     };
     buttons.append(
-      button("blora-tour__skip", "跳过", "outline"),
-      button("blora-tour__prev", "上一步", "outline"),
-      button("blora-tour__next", "下一步", "primary"),
+      button("blora-tour__skip", t("common.skip"), "outline"),
+      button("blora-tour__prev", t("common.prev"), "outline"),
+      button("blora-tour__next", t("common.next"), "primary"),
     );
     footer.append(counter, buttons);
     tooltip.append(title, desc, footer);
-    doc.body.appendChild(tooltip);
+    tooltip.setAttribute("aria-labelledby", title.id);
+    overlay.appendChild(tooltip);
+    doc.body.appendChild(overlay);
+    try {
+      overlay.showPopover?.();
+    } catch {
+      /* UA without popover */
+    }
 
     tooltip.querySelector(".blora-tour__skip")!.addEventListener("click", end);
     tooltip.querySelector(".blora-tour__prev")!.addEventListener("click", () => goTo(current - 1));
@@ -140,14 +153,34 @@ export function createTourController(root: HTMLElement): TourController {
       if (current < steps.length - 1) goTo(current + 1);
       else end();
     });
+    overlay.addEventListener("blora-close-request", end);
   };
 
   const placeOverlay = () => {
     if (!overlay || !tooltip || current < 0) return;
     const step = steps[current]!;
-    const { pad, rect } = fitTourOverlay(overlay, tourTarget(step));
-    tooltip.style.top = `${rect.bottom + pad + 12}px`;
-    tooltip.style.left = `${Math.max(8, rect.left - pad)}px`;
+    const target = tourTarget(step);
+    const win = doc.defaultView;
+    const reduced = win?.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (typeof target.scrollIntoView === "function") {
+      target.scrollIntoView({
+        block: "center",
+        inline: "nearest",
+        behavior: reduced ? "auto" : "smooth",
+      });
+    }
+    const { pad, rect } = fitTourOverlay(overlay, target);
+    const tipH = tooltip.offsetHeight || 140;
+    const tipW = tooltip.offsetWidth || 280;
+    const vh = win?.innerHeight ?? 800;
+    const vw = win?.innerWidth ?? 1200;
+    let top = rect.bottom + pad + 12;
+    if (top + tipH > vh - 12) top = rect.top - pad - 12 - tipH;
+    if (top < 12) top = 12;
+    let left = Math.max(8, rect.left - pad);
+    if (left + tipW > vw - 8) left = Math.max(8, vw - tipW - 8);
+    tooltip.style.top = `${top}px`;
+    tooltip.style.left = `${left}px`;
   };
 
   const onReposition = () => placeOverlay();
@@ -158,11 +191,13 @@ export function createTourController(root: HTMLElement): TourController {
 
     tooltip!.querySelector(".blora-tour__title")!.textContent = step.dataset.tourTitle ?? "";
     tooltip!.querySelector(".blora-tour__desc")!.textContent = step.dataset.tourDesc ?? "";
-    tooltip!.querySelector(".blora-tour__counter")!.textContent =
-      `${current + 1} / ${steps.length}`;
+    tooltip!.querySelector(".blora-tour__counter")!.textContent = t("tour.step", {
+      current: current + 1,
+      total: steps.length,
+    });
 
     const nextBtn = tooltip!.querySelector<HTMLElement>(".blora-tour__next")!;
-    nextBtn.textContent = current < steps.length - 1 ? "下一步" : "完成";
+    nextBtn.textContent = current < steps.length - 1 ? t("common.next") : t("common.done");
     tooltip!.querySelector<HTMLElement>(".blora-tour__prev")!.style.visibility =
       current > 0 ? "visible" : "hidden";
 
@@ -180,6 +215,17 @@ export function createTourController(root: HTMLElement): TourController {
     end();
     createOverlay();
     doc.documentElement.setAttribute("data-blora-tour-open", "");
+    if (overlay) {
+      stack = new OverlayController(overlay, {
+        modal: true,
+        closeOnEscape: true,
+        closeOnOutsidePointer: false,
+        restoreFocus: true,
+        trapFocus: true,
+        lockScroll: true,
+      });
+      stack.open();
+    }
     window.addEventListener("resize", onReposition);
     window.addEventListener("scroll", onReposition, true);
     goTo(0);
@@ -201,14 +247,21 @@ export function createTourController(root: HTMLElement): TourController {
     doc.documentElement.removeAttribute("data-blora-tour-open");
     const overlayNode = overlay;
     const tooltipNode = tooltip;
+    const stackNode = stack;
     overlay = null;
     tooltip = null;
+    stack = null;
     current = -1;
     overlayNode?.removeAttribute("data-open");
     tooltipNode?.removeAttribute("data-open");
     const removeNodes = () => {
+      stackNode?.close();
+      try {
+        overlayNode?.hidePopover?.();
+      } catch {
+        /* already closed */
+      }
       overlayNode?.remove();
-      tooltipNode?.remove();
     };
     if (tooltipNode) whenMotionDone(tooltipNode, removeNodes);
     else removeNodes();
@@ -284,7 +337,7 @@ export class BloraTour extends BloraElement {
     start.dataset.variant = "primary";
     start.dataset.tourStart = "";
     start.type = "button";
-    start.textContent = this.getAttribute("label") ?? "开始漫游";
+    start.textContent = this.getAttribute("label") ?? t("tour.start");
     root.appendChild(start);
     const steps = this.ownerDocument.createElement("div");
     steps.className = "blora-tour__steps";
@@ -302,7 +355,7 @@ export class BloraTour extends BloraElement {
 
   protected override sync(): void {
     const start = this.querySelector<HTMLButtonElement>("[data-tour-start]");
-    if (start) start.textContent = this.getAttribute("label") ?? "开始漫游";
+    if (start) start.textContent = this.getAttribute("label") ?? t("tour.start");
     if (this.hasAttribute("open")) this.controller?.start();
     else this.controller?.end();
   }

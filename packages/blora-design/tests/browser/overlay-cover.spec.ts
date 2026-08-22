@@ -81,7 +81,7 @@ test("tour spotlight ring contains the target and spreads a page dimmer", async 
   const overlay = page.locator("body > .blora-tour__overlay");
   const ring = overlay.locator(".blora-tour__ring");
   await expect(overlay).toHaveAttribute("data-open", "");
-  await expect(page.locator("body > .blora-tour__tooltip")).toBeVisible();
+  await expect(page.locator(".blora-tour__tooltip")).toBeVisible();
 
   const [ringBox, targetBox, paint] = await Promise.all([
     ring.boundingBox(),

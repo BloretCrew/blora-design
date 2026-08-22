@@ -2,6 +2,7 @@
  * Pagination: keyboard/click active page + prev/next.
  */
 import { BloraElement } from "../../core/blora-element.js";
+import { t } from "../../core/i18n.js";
 import { createBloraIcon, type BloraIconName } from "../../core/icons.js";
 
 export const BLORA_PAGINATION_TAG = "blora-pagination";
@@ -166,7 +167,7 @@ export function createPaginationController(root: HTMLElement): PaginationControl
     );
     const total = Number(root.dataset.total ?? items().at(-1)?.dataset.page ?? 1);
     const prev = root.querySelector<HTMLButtonElement>(
-      '.blora-pagination__nav[aria-label*="上一"], .blora-pagination__nav:first-of-type',
+      '.blora-pagination__nav[data-direction="prev"], .blora-pagination__nav:first-of-type',
     );
     const next = root.querySelectorAll<HTMLButtonElement>(".blora-pagination__nav");
     const nextBtn = next[next.length - 1];
@@ -189,11 +190,8 @@ export function createPaginationController(root: HTMLElement): PaginationControl
       root.querySelector<HTMLButtonElement>('[aria-current="page"]')?.dataset.page ?? 1,
     );
     const total = Number(root.dataset.total ?? 1);
-    const label = (nav.getAttribute("aria-label") || "").toLowerCase();
     const isPrev =
-      label.includes("上") ||
-      label.includes("prev") ||
-      nav === root.querySelector(".blora-pagination__nav");
+      nav.dataset.direction === "prev" || nav === root.querySelector(".blora-pagination__nav");
     const target = isPrev ? current - 1 : current + 1;
     if (target < 1 || target > total) return;
     root.dispatchEvent(
@@ -255,18 +253,18 @@ export class BloraPagination extends BloraElement {
     root.dataset.bloraGenerated = "";
     root.dataset.total = String(total);
     root.dataset.variant = this.layout();
-    root.setAttribute("aria-label", this.getAttribute("label") ?? "Pagination");
+    root.setAttribute("aria-label", this.getAttribute("label") ?? t("pagination.nav"));
     if (this.layout() === "simple") {
       root.append(
-        this.createNav("上一页", "chevron-left"),
+        this.createNav("prev", "chevron-left"),
         this.createStatus(current),
-        this.createNav("下一页", "chevron-right"),
+        this.createNav("next", "chevron-right"),
       );
       this.replaceChildren(root);
       this.applyWindow(root, window, current, total);
       return;
     }
-    root.appendChild(this.createNav("上一页", "chevron-left"));
+    root.appendChild(this.createNav("prev", "chevron-left"));
     if (window.windowed) {
       root.appendChild(this.createPageButton(1, current));
       root.appendChild(this.createEllipsis("start"));
@@ -286,7 +284,7 @@ export class BloraPagination extends BloraElement {
         if (item !== "ellipsis") root.appendChild(this.createPageButton(item, current));
       }
     }
-    root.appendChild(this.createNav("下一页", "chevron-right"));
+    root.appendChild(this.createNav("next", "chevron-right"));
     this.replaceChildren(root);
     this.applyWindow(root, window, current, total);
     requestAnimationFrame(() => root.classList.add("is-animated"));
@@ -338,11 +336,11 @@ export class BloraPagination extends BloraElement {
   ): void {
     root.dataset.total = String(total);
     root.dataset.variant = this.layout();
-    root.setAttribute("aria-label", this.getAttribute("label") ?? "Pagination");
+    root.setAttribute("aria-label", this.getAttribute("label") ?? t("pagination.nav"));
     const status = root.querySelector<HTMLElement>(".blora-pagination__status");
     if (status) {
       status.dataset.page = String(current);
-      status.textContent = `第 ${current} 页`;
+      status.textContent = t("pagination.page", { n: current });
     }
     root.style.setProperty("--blora-pagination-window", String(window.windowSize));
     root.style.setProperty("--blora-pagination-offset", String(window.offset));
@@ -363,10 +361,10 @@ export class BloraPagination extends BloraElement {
       else button.setAttribute("aria-hidden", "true");
     });
     const prev = root.querySelector<HTMLButtonElement>(
-      '.blora-pagination__nav[aria-label="上一页"]',
+      '.blora-pagination__nav[data-direction="prev"]',
     );
     const next = root.querySelector<HTMLButtonElement>(
-      '.blora-pagination__nav[aria-label="下一页"]',
+      '.blora-pagination__nav[data-direction="next"]',
     );
     if (prev) prev.disabled = this.hasAttribute("disabled") || current <= 1;
     if (next) next.disabled = this.hasAttribute("disabled") || current >= total;
@@ -377,7 +375,7 @@ export class BloraPagination extends BloraElement {
     status.className = "blora-pagination__status";
     status.dataset.page = String(page);
     status.setAttribute("aria-current", "page");
-    status.textContent = `第 ${page} 页`;
+    status.textContent = t("pagination.page", { n: page });
     return status;
   }
 
@@ -387,7 +385,7 @@ export class BloraPagination extends BloraElement {
     button.className = "blora-pagination__item";
     button.textContent = String(page);
     button.dataset.page = String(page);
-    button.setAttribute("aria-label", `第 ${page} 页`);
+    button.setAttribute("aria-label", t("pagination.page", { n: page }));
     button.disabled = this.hasAttribute("disabled");
     if (page === current) button.setAttribute("aria-current", "page");
     return button;
@@ -402,11 +400,15 @@ export class BloraPagination extends BloraElement {
     return ellipsis;
   }
 
-  private createNav(label: string, iconName: BloraIconName): HTMLButtonElement {
+  private createNav(direction: "prev" | "next", iconName: BloraIconName): HTMLButtonElement {
     const button = this.ownerDocument.createElement("button");
     button.type = "button";
     button.className = "blora-pagination__item blora-pagination__nav";
-    button.setAttribute("aria-label", label);
+    button.dataset.direction = direction;
+    button.setAttribute(
+      "aria-label",
+      direction === "prev" ? t("pagination.prev") : t("pagination.next"),
+    );
     button.disabled = this.hasAttribute("disabled");
     button.appendChild(createBloraIcon(iconName, 18, this.ownerDocument));
     return button;

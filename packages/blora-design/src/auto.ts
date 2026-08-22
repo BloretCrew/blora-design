@@ -11,6 +11,7 @@
  * @packageDocumentation
  */
 
+import { applyDocumentLocale } from "./core/i18n.js";
 import { defineBloraDialog } from "./components/dialog/index.js";
 import { defineBloraAccordion } from "./components/accordion/index.js";
 import { defineBloraCollapse } from "./components/collapse/index.js";
@@ -74,6 +75,7 @@ import { defineBloraResult } from "./components/result/index.js";
 import { defineBloraTimeline } from "./components/timeline/index.js";
 
 export function defineAllBloraElements(registry: CustomElementRegistry = customElements): void {
+  applyDocumentLocale();
   defineBloraAccordion(registry);
   defineBloraCollapse(registry);
   defineBloraCommand(registry);

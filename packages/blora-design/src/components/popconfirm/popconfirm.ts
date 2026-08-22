@@ -2,6 +2,7 @@
  * Popconfirm: confirm before action.
  */
 import { BloraElement } from "../../core/blora-element.js";
+import { t } from "../../core/i18n.js";
 
 export const BLORA_POPCONFIRM_TAG = "blora-popconfirm";
 export interface PopconfirmController {
@@ -91,13 +92,13 @@ export class BloraPopconfirm extends BloraElement {
     trigger.dataset.variant = "danger";
     trigger.dataset.bloraPopconfirmTrigger = "";
     trigger.disabled = this.hasAttribute("disabled");
-    trigger.textContent = this.getAttribute("trigger") ?? "Delete";
+    trigger.textContent = this.getAttribute("trigger") ?? t("popconfirm.trigger");
     const panel = this.ownerDocument.createElement("div");
     panel.className = "blora-popconfirm__panel";
     panel.setAttribute("role", "alertdialog");
     const title = this.ownerDocument.createElement("p");
     title.className = "blora-popconfirm__title";
-    title.textContent = this.getAttribute("message") ?? "Are you sure?";
+    title.textContent = this.getAttribute("message") ?? t("popconfirm.message");
     const actions = this.ownerDocument.createElement("div");
     actions.className = "blora-popconfirm__actions";
     const cancel = this.ownerDocument.createElement("button");
@@ -106,14 +107,14 @@ export class BloraPopconfirm extends BloraElement {
     cancel.dataset.size = "sm";
     cancel.dataset.variant = "ghost";
     cancel.dataset.cancel = "";
-    cancel.textContent = this.getAttribute("cancel-label") ?? "Cancel";
+    cancel.textContent = this.getAttribute("cancel-label") ?? t("common.cancel");
     const confirm = this.ownerDocument.createElement("button");
     confirm.type = "button";
     confirm.className = "blora-button";
     confirm.dataset.size = "sm";
     confirm.dataset.variant = "danger";
     confirm.dataset.confirm = "";
-    confirm.textContent = this.getAttribute("confirm-label") ?? "Confirm";
+    confirm.textContent = this.getAttribute("confirm-label") ?? t("common.confirm");
     actions.append(cancel, confirm);
     panel.append(title, actions);
     root.append(trigger, panel);
@@ -123,15 +124,15 @@ export class BloraPopconfirm extends BloraElement {
   protected override sync(): void {
     const trigger = this.querySelector<HTMLButtonElement>(".blora-popconfirm__trigger");
     if (trigger) {
-      trigger.textContent = this.getAttribute("trigger") ?? "Delete";
+      trigger.textContent = this.getAttribute("trigger") ?? t("popconfirm.trigger");
       trigger.disabled = this.hasAttribute("disabled");
     }
     const title = this.querySelector(".blora-popconfirm__title");
-    if (title) title.textContent = this.getAttribute("message") ?? "Are you sure?";
+    if (title) title.textContent = this.getAttribute("message") ?? t("popconfirm.message");
     const cancel = this.querySelector<HTMLElement>("[data-cancel]");
-    if (cancel) cancel.textContent = this.getAttribute("cancel-label") ?? "Cancel";
+    if (cancel) cancel.textContent = this.getAttribute("cancel-label") ?? t("common.cancel");
     const confirm = this.querySelector<HTMLElement>("[data-confirm]");
-    if (confirm) confirm.textContent = this.getAttribute("confirm-label") ?? "Confirm";
+    if (confirm) confirm.textContent = this.getAttribute("confirm-label") ?? t("common.confirm");
   }
 
   protected bindEvents(): void {

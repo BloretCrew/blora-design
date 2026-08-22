@@ -1,6 +1,8 @@
 /**
  * Form validation (v1 initForms primary path): novalidate + field required/pattern/custom.
  */
+import { t } from "../../core/i18n.js";
+
 export interface FormValidateResult {
   valid: boolean;
   errors: Array<{ name: string; message: string; field: HTMLElement }>;
@@ -50,18 +52,18 @@ function setFieldError(field: HTMLElement, message: string | null): void {
 
 function messageFor(control: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement): string {
   if (control.validity.valueMissing) {
-    return control.getAttribute("data-blora-required-message") || "此字段为必填项";
+    return control.getAttribute("data-blora-required-message") || t("validate.required");
   }
   if (control.validity.typeMismatch || control.validity.patternMismatch) {
-    return control.getAttribute("data-blora-pattern-message") || "格式不正确";
+    return control.getAttribute("data-blora-pattern-message") || t("validate.pattern");
   }
   if (control.validity.tooShort) {
-    return `至少 ${control.getAttribute("minlength")} 个字符`;
+    return t("validate.minlength", { n: control.getAttribute("minlength") ?? "" });
   }
   if (control.validity.tooLong) {
-    return `最多 ${control.getAttribute("maxlength")} 个字符`;
+    return t("validate.maxlength", { n: control.getAttribute("maxlength") ?? "" });
   }
-  return control.validationMessage || "无效输入";
+  return control.validationMessage || t("validate.invalid");
 }
 
 export function getFormValues(form: HTMLFormElement): Record<string, string | boolean | string[]> {
@@ -113,7 +115,7 @@ export function createFormController(form: HTMLFormElement): FormController {
       let msg = "";
       if (custom === "email" && control.value) {
         ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(control.value);
-        if (!ok) msg = control.getAttribute("data-blora-pattern-message") || "请输入有效邮箱";
+        if (!ok) msg = control.getAttribute("data-blora-pattern-message") || t("validate.email");
       }
       if (!ok) {
         msg = msg || messageFor(control);

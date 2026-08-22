@@ -1,8 +1,11 @@
 /**
  * Drawer open/close with enter/leave animations.
  */
+import { OverlayController } from "../../controllers/overlay-controller.js";
 import { BloraElement } from "../../core/blora-element.js";
+import { t } from "../../core/i18n.js";
 import { createBloraIcon } from "../../core/icons.js";
+import { whenMotionDone } from "../../core/motion.js";
 
 export const BLORA_DRAWER_TAG = "blora-drawer";
 export interface DrawerController {
@@ -15,20 +18,39 @@ export function createDrawerController(root: HTMLElement, host?: HTMLElement): D
   if (typeof document === "undefined") {
     return { open: () => {}, close: () => {}, destroy: () => {} };
   }
-  const doc = root.ownerDocument;
   const surface = host ?? (root.closest("blora-drawer") as HTMLElement | null) ?? root;
   const panel = root.querySelector<HTMLElement>(".blora-drawer__panel");
   let syncing = false;
+  let overlay: OverlayController | null = null;
+  let cancelMotion: (() => void) | null = null;
+
+  const onRequest = () => setOpen(false);
 
   const setOpen = (open: boolean) => {
     if (syncing) return;
     syncing = true;
     try {
       if (open) {
+        cancelMotion?.();
+        cancelMotion = null;
         root.setAttribute("data-open", "");
         root.setAttribute("open", "");
+        if (surface !== root) {
+          surface.setAttribute("data-open", "");
+          surface.setAttribute("open", "");
+        }
         panel?.setAttribute("tabindex", "-1");
-        panel?.focus({ preventScroll: true });
+        overlay?.close();
+        overlay = new OverlayController(root, {
+          modal: true,
+          closeOnEscape: true,
+          closeOnOutsidePointer: false,
+          restoreFocus: true,
+          trapFocus: true,
+          lockScroll: true,
+        });
+        overlay.open();
+        root.addEventListener("blora-close-request", onRequest);
         return;
       }
       root.removeAttribute("data-open");
@@ -37,32 +59,37 @@ export function createDrawerController(root: HTMLElement, host?: HTMLElement): D
         surface.removeAttribute("data-open");
         surface.removeAttribute("open");
       }
+      root.removeEventListener("blora-close-request", onRequest);
+      const stack = overlay;
+      overlay = null;
+      cancelMotion?.();
+      cancelMotion = whenMotionDone(root, () => {
+        cancelMotion = null;
+        stack?.close();
+      });
     } finally {
       syncing = false;
     }
   };
 
   const onClick = (e: MouseEvent) => {
-    const t = e.target as HTMLElement;
-    if (t.closest("[data-blora-close]") || t.classList.contains("blora-drawer__mask")) {
-      setOpen(false);
-    }
-  };
-  const onKey = (e: KeyboardEvent) => {
-    if (e.key === "Escape" && (root.hasAttribute("data-open") || root.hasAttribute("open"))) {
+    const node = e.target as HTMLElement;
+    if (node.closest("[data-blora-close]") || node.classList.contains("blora-drawer__mask")) {
       setOpen(false);
     }
   };
 
   root.addEventListener("click", onClick);
-  doc.addEventListener("keydown", onKey);
 
   return {
     open: () => setOpen(true),
     close: () => setOpen(false),
     destroy() {
       root.removeEventListener("click", onClick);
-      doc.removeEventListener("keydown", onKey);
+      root.removeEventListener("blora-close-request", onRequest);
+      overlay?.destroy();
+      overlay = null;
+      cancelMotion?.();
     },
   };
 }
@@ -77,7 +104,7 @@ export function bindDrawerTriggers(root: ParentNode = document): () => void {
     const onClick = () => {
       const drawer = document.getElementById(id);
       if (!drawer) return;
-      /* Prefer existing controller if story attached one */
+      /* Prefer an existing controller if the host already bound one */
       const any = drawer as HTMLElement & { __ctrl?: { open: () => void } };
       if (any.__ctrl?.open) any.__ctrl.open();
       else {
@@ -95,6 +122,8 @@ export function bindDrawerTriggers(root: ParentNode = document): () => void {
 export class BloraDrawer extends BloraElement {
   private controller: DrawerController | null = null;
   private contentNodes: Node[] | null = null;
+  private relocating = false;
+  private home: { parent: Node; next: ChildNode | null } | null = null;
 
   static get observedAttributes(): string[] {
     return ["title", "position", "open", "close-label"];
@@ -103,8 +132,14 @@ export class BloraDrawer extends BloraElement {
   attributeChangedCallback(name: string): void {
     if (!this.isConnectedInternal) return;
     if (name === "open") {
-      if (this.hasAttribute("open")) this.controller?.open();
-      else this.controller?.close();
+      if (this.hasAttribute("open")) {
+        this.portalToBody();
+        this.controller?.open();
+      } else {
+        this.controller?.close();
+        const layer = this.querySelector<HTMLElement>(".blora-drawer") ?? this;
+        whenMotionDone(layer, () => this.restoreHome());
+      }
       return;
     }
     this.sync();
@@ -113,11 +148,11 @@ export class BloraDrawer extends BloraElement {
   open(): void {
     this.setAttribute("open", "");
     this.setAttribute("data-open", "");
-    this.controller?.open();
   }
 
   close(): void {
-    this.controller?.close();
+    this.removeAttribute("open");
+    this.removeAttribute("data-open");
   }
 
   protected render(): void {
@@ -143,12 +178,12 @@ export class BloraDrawer extends BloraElement {
     header.className = "blora-drawer__header";
     const title = this.ownerDocument.createElement("h3");
     title.className = "blora-drawer__title";
-    title.textContent = this.getAttribute("title") ?? "Drawer";
+    title.textContent = this.getAttribute("title") ?? t("drawer.title");
     const close = this.ownerDocument.createElement("button");
     close.type = "button";
     close.className = "blora-drawer__close";
     close.dataset.bloraClose = "";
-    close.setAttribute("aria-label", this.getAttribute("close-label") ?? "Close");
+    close.setAttribute("aria-label", this.getAttribute("close-label") ?? t("common.close"));
     close.appendChild(createBloraIcon("close", 18, this.ownerDocument));
     header.append(title, close);
     const body = this.ownerDocument.createElement("div");
@@ -167,9 +202,10 @@ export class BloraDrawer extends BloraElement {
     if (!root) return;
     root.dataset.position = this.getAttribute("position") ?? "right";
     const title = root.querySelector<HTMLElement>(".blora-drawer__title");
-    if (title) title.textContent = this.getAttribute("title") ?? "Drawer";
+    if (title) title.textContent = this.getAttribute("title") ?? t("drawer.title");
     const close = root.querySelector<HTMLElement>(".blora-drawer__close");
-    if (close) close.setAttribute("aria-label", this.getAttribute("close-label") ?? "Close");
+    if (close)
+      close.setAttribute("aria-label", this.getAttribute("close-label") ?? t("common.close"));
   }
 
   protected bindEvents(): void {
@@ -178,9 +214,35 @@ export class BloraDrawer extends BloraElement {
     this.controller = root ? createDrawerController(root, this) : null;
   }
 
+  disconnectedCallback(): void {
+    if (this.relocating) return;
+    super.disconnectedCallback();
+  }
+
   protected onDisconnect(): void {
     this.controller?.destroy();
     this.controller = null;
+    this.restoreHome();
+  }
+
+  private portalToBody(): void {
+    const doc = this.ownerDocument;
+    if (!this.parentNode || this.parentElement === doc.body) return;
+    this.home = { parent: this.parentNode, next: this.nextSibling };
+    this.relocating = true;
+    doc.body.append(this);
+    this.relocating = false;
+  }
+
+  private restoreHome(): void {
+    if (!this.home) return;
+    const { parent, next } = this.home;
+    this.home = null;
+    if (!parent.isConnected) return;
+    this.relocating = true;
+    if (next && next.parentNode === parent) parent.insertBefore(this, next);
+    else parent.appendChild(this);
+    this.relocating = false;
   }
 }
 

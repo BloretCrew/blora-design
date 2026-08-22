@@ -2,6 +2,7 @@
  * Blora Design 2.0 - Color Picker (HSV spectrum + hex sync, v1 parity)
  */
 import { BloraElement } from "../../core/blora-element.js";
+import { t } from "../../core/i18n.js";
 
 export const BLORA_COLOR_PICKER_TAG = "blora-color-picker";
 export interface ColorPickerController {
@@ -88,7 +89,7 @@ export function createColorPickerController(root: HTMLElement): ColorPickerContr
     spectrum.className = "blora-color-spectrum";
     spectrum.tabIndex = 0;
     spectrum.setAttribute("role", "slider");
-    spectrum.setAttribute("aria-label", "颜色饱和度与明度");
+    spectrum.setAttribute("aria-label", t("color.spectrum"));
     const cursor = document.createElement("span");
     cursor.className = "blora-color-spectrum__cursor";
     cursor.setAttribute("aria-hidden", "true");
@@ -105,7 +106,7 @@ export function createColorPickerController(root: HTMLElement): ColorPickerContr
     hueInput.min = "0";
     hueInput.max = "359";
     hueInput.step = "1";
-    hueInput.setAttribute("aria-label", "色相");
+    hueInput.setAttribute("aria-label", t("color.hue"));
     spectrum.insertAdjacentElement("afterend", hueInput);
   }
 
@@ -145,7 +146,7 @@ export function createColorPickerController(root: HTMLElement): ColorPickerContr
     current = hsvToHex(hsv);
     swatch.style.background = current;
     swatch.dataset.color = current;
-    swatch.setAttribute("aria-label", `选择颜色，当前 ${current}`);
+    swatch.setAttribute("aria-label", t("color.swatch", { color: current }));
     applySpectrumStyles();
     hueInput!.value = String(Math.round(hsv.h));
     cursor.style.left = hsv.s * 100 + "%";
@@ -285,7 +286,10 @@ export class BloraColorPicker extends BloraElement {
     swatch.className = "blora-color-swatch";
     swatch.dataset.color = value;
     swatch.style.background = value;
-    swatch.setAttribute("aria-label", this.getAttribute("label") ?? `选择颜色，当前 ${value}`);
+    swatch.setAttribute(
+      "aria-label",
+      this.getAttribute("label") ?? t("color.swatch", { color: value }),
+    );
     if (this.hasAttribute("disabled")) swatch.setAttribute("aria-disabled", "true");
     const panel = this.ownerDocument.createElement("div");
     panel.className = "blora-color-panel";
@@ -294,7 +298,7 @@ export class BloraColorPicker extends BloraElement {
     spectrum.className = "blora-color-spectrum";
     spectrum.tabIndex = 0;
     spectrum.setAttribute("role", "slider");
-    spectrum.setAttribute("aria-label", "颜色饱和度与明度");
+    spectrum.setAttribute("aria-label", t("color.spectrum"));
     const cursor = this.ownerDocument.createElement("span");
     cursor.className = "blora-color-spectrum__cursor";
     cursor.setAttribute("aria-hidden", "true");
@@ -305,7 +309,7 @@ export class BloraColorPicker extends BloraElement {
     hue.min = "0";
     hue.max = "359";
     hue.step = "1";
-    hue.setAttribute("aria-label", "色相");
+    hue.setAttribute("aria-label", t("color.hue"));
     const custom = this.ownerDocument.createElement("div");
     custom.className = "blora-color-custom";
     const preview = this.ownerDocument.createElement("span");

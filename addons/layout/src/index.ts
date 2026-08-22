@@ -5,7 +5,7 @@
  * @packageDocumentation
  */
 
-import { createBloraIcon } from "@bloret-crew/blora-design";
+import { createBloraIcon, t } from "@bloret-crew/blora-design";
 
 export interface Destroyable {
   destroy(): void;
@@ -322,7 +322,7 @@ export class BloraSidebarLayout extends LayoutBase {
     if (this.hasAttribute("compact")) root.classList.add("blora-sidebar-layout--compact");
     if (this.hasAttribute("sticky")) root.dataset.sticky = "";
 
-    const toggleLabel = this.getAttribute("toggle-label") ?? "Menu";
+    const toggleLabel = this.getAttribute("toggle-label") ?? t("layout.menu");
     const toggle = this.ownerDocument.createElement("button");
     toggle.type = "button";
     toggle.dataset.bloraSidebarToggle = "";

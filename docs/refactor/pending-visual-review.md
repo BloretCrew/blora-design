@@ -30,7 +30,7 @@
 | E11 | Image | **Data / Image** | Loading + preview cursor + lightbox | ✅ |
 | E12 | Notification | **Feedback / Notification** | Multi-placement CSS | ✅ |
 | E13 | Accordion / Collapse | **Data / Accordion**, **Data / Collapse** | Hover highlights heading text + chevron without painting the full trigger row | ✅ User-requested; light/dark Chrome screenshots inspected 2026-08-09 |
-| E14 | Showcase component catalog | `examples/showcase-v2` | Floating navbar, single-view sidebar routing, Preview/HTML surface; Accordion + Collapse prototype only | ⏳ Agent inspected desktop/light/dark + Pixel 7; awaiting user approval before full expansion |
+| E14 | Showcase component catalog | `examples/showcase-v2` | Floating navbar, single-view sidebar routing, Preview/HTML surface; 87/87 core catalog | ✅ |
 
 ## List / Button
 

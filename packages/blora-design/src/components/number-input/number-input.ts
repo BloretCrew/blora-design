@@ -1,4 +1,5 @@
 import { BloraElement } from "../../core/blora-element.js";
+import { t } from "../../core/i18n.js";
 import { createBloraIcon } from "../../core/icons.js";
 
 export const BLORA_NUMBER_INPUT_TAG = "blora-number-input";
@@ -58,8 +59,8 @@ export class BloraNumberInput extends BloraElement {
     input.disabled = this.hasAttribute("disabled");
     const controls = doc.createElement("div");
     controls.className = "blora-number-input__actions";
-    const down = this.makeButton("减少", "minus", -1);
-    const up = this.makeButton("增加", "plus", 1);
+    const down = this.makeButton(t("number.decrease"), "minus", -1);
+    const up = this.makeButton(t("number.increase"), "plus", 1);
     controls.append(down, up);
     control.append(input, controls);
     root.appendChild(control);

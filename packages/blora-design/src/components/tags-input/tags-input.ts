@@ -3,6 +3,7 @@
  * Enter/comma adds tags; close button removes.
  */
 import { BloraElement } from "../../core/blora-element.js";
+import { t } from "../../core/i18n.js";
 
 export const BLORA_TAGS_INPUT_TAG = "blora-tags-input";
 export interface TagsInputController {
@@ -24,7 +25,7 @@ export function createTagsInputController(root: HTMLElement): TagsInputControlle
     const close = doc.createElement("button");
     close.type = "button";
     close.className = "blora-tag__close";
-    close.setAttribute("aria-label", "移除");
+    close.setAttribute("aria-label", t("tags.removeNamed", { label: value }));
     tag.appendChild(close);
     root.insertBefore(tag, input);
     input.value = "";
@@ -93,7 +94,7 @@ export class BloraTagsInput extends BloraElement {
     root.className = "blora-tags-input";
     root.dataset.bloraGenerated = "";
     root.setAttribute("role", "group");
-    root.setAttribute("aria-label", this.getAttribute("label") ?? "Tags");
+    root.setAttribute("aria-label", this.getAttribute("label") ?? t("tags.label"));
     for (const value of values) {
       const tag = this.ownerDocument.createElement("span");
       tag.className = "blora-tag";
@@ -102,7 +103,7 @@ export class BloraTagsInput extends BloraElement {
       const close = this.ownerDocument.createElement("button");
       close.type = "button";
       close.className = "blora-tag__close";
-      close.setAttribute("aria-label", `Remove ${value}`);
+      close.setAttribute("aria-label", t("tags.removeNamed", { label: value }));
       close.disabled = this.hasAttribute("disabled");
       tag.appendChild(close);
       root.appendChild(tag);
@@ -116,6 +117,8 @@ export class BloraTagsInput extends BloraElement {
   }
 
   protected override sync(): void {
+    const root = this.querySelector<HTMLElement>(".blora-tags-input");
+    if (root) root.setAttribute("aria-label", this.getAttribute("label") ?? t("tags.label"));
     const field = this.querySelector<HTMLInputElement | HTMLTextAreaElement>("input, textarea");
     if (field) {
       field.disabled = this.hasAttribute("disabled");

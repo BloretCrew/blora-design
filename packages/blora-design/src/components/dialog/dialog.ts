@@ -2,14 +2,17 @@
  * Blora Design 2.0 - Dialog Web Component
  * Spec §12: Overlay system, §12.4: Dialog acceptance criteria
  */
-import { BloraElement } from "../../core/blora-element.js";
 import { OverlayController, type OverlayOptions } from "../../controllers/overlay-controller.js";
+import { BloraElement } from "../../core/blora-element.js";
+import { t } from "../../core/i18n.js";
 import { createBloraIcon } from "../../core/icons.js";
 import { whenMotionDone } from "../../core/motion.js";
 
 import dialogStyles from "./dialog.css?inline";
 
 export const BLORA_DIALOG_TAG = "blora-dialog";
+
+let dialogTitleSeq = 0;
 
 export interface BloraDialogOpenDetail {
   source: string;
@@ -74,15 +77,17 @@ export class BloraDialog extends BloraElement {
     const titleSpan = document.createElement("h2");
     titleSpan.className = "blora-dialog__title";
     titleSpan.setAttribute("part", "title");
+    titleSpan.id = `blora-dialog-title-${++dialogTitleSeq}`;
     const titleSlot = document.createElement("slot");
     titleSlot.name = "title";
     titleSpan.appendChild(titleSlot);
     header.appendChild(titleSpan);
+    panel.setAttribute("aria-labelledby", titleSpan.id);
 
     const closeButton = document.createElement("button");
     closeButton.className = "blora-dialog__close-button";
     closeButton.setAttribute("part", "close-button");
-    closeButton.setAttribute("aria-label", "Close dialog");
+    closeButton.setAttribute("aria-label", t("common.closeDialog"));
     closeButton.type = "button";
     closeButton.appendChild(createBloraIcon("close", 18, this.ownerDocument));
     header.appendChild(closeButton);
@@ -110,16 +115,12 @@ export class BloraDialog extends BloraElement {
     shadow.appendChild(backdrop);
 
     // Store references
-    this._shadow = shadow;
-    this._panel = panel;
     this._backdrop = backdrop;
     this._closeButton = closeButton;
     this._footer = footer;
     this._footerSlot = footerSlot;
   }
 
-  private _shadow: ShadowRoot | null = null;
-  private _panel: HTMLElement | null = null;
   private _backdrop: HTMLElement | null = null;
   private _closeButton: HTMLButtonElement | null = null;
   private _footer: HTMLElement | null = null;
@@ -201,25 +202,14 @@ export class BloraDialog extends BloraElement {
     const options: Partial<OverlayOptions> = {
       modal: true,
       closeOnEscape: this.getAttribute("close-on-escape") !== "false",
-      closeOnOutsidePointer: this.getAttribute("close-on-outside-click") !== "false",
+      closeOnOutsidePointer: false,
       restoreFocus: true,
       trapFocus: true,
       lockScroll: true,
     };
 
-    if (this._panel) {
-      this.overlay = new OverlayController(this._panel, options);
-      this.overlay.open();
-
-      // Set aria-labelledby if title slot has content
-      const titleSlot = this._shadow?.querySelector<HTMLSlotElement>('slot[name="title"]');
-      if (titleSlot) {
-        const assigned = titleSlot.assignedElements();
-        if (assigned.length > 0 && assigned[0]!.id) {
-          this._panel.setAttribute("aria-labelledby", assigned[0]!.id);
-        }
-      }
-    }
+    this.overlay = new OverlayController(this, options);
+    this.overlay.open();
 
     this.emit<BloraDialogOpenDetail>("blora-open", {
       source: "api",
@@ -242,13 +232,13 @@ export class BloraDialog extends BloraElement {
     if (!beforeClose) return;
 
     this.visible = false;
-    this.overlay?.close();
-    this.overlay = null;
     this.cancelCloseMotion?.();
     this.removeAttribute("open");
-    this.dismissTopLayer();
     this.cancelCloseMotion = whenMotionDone(this, () => {
       this.cancelCloseMotion = null;
+      this.overlay?.close();
+      this.overlay = null;
+      this.dismissTopLayer();
       this.restoreHome();
       this.emit<BloraDialogCloseDetail>("blora-close", {
         source: "api",

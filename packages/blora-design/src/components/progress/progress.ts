@@ -2,6 +2,7 @@
  * Progress: set value via data-value or API.
  */
 import { BloraElement } from "../../core/blora-element.js";
+import { t } from "../../core/i18n.js";
 
 export const BLORA_PROGRESS_TAG = "blora-progress";
 export interface ProgressController {
@@ -82,7 +83,7 @@ export class BloraProgress extends BloraElement {
     root.setAttribute("aria-valuenow", String(value));
     const shape = this.getAttribute("shape") ?? "linear";
     root.dataset.shape = shape;
-    root.setAttribute("aria-label", this.getAttribute("label") ?? "Progress");
+    root.setAttribute("aria-label", this.getAttribute("label") ?? t("progress.label"));
     if (shape === "circular") {
       root.classList.add("blora-progress--circular");
       const ring = this.ownerDocument.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -114,7 +115,7 @@ export class BloraProgress extends BloraElement {
     const label = this.ownerDocument.createElement("div");
     label.className = "blora-progress__label";
     const labelText = this.ownerDocument.createElement("span");
-    labelText.textContent = this.getAttribute("label") ?? "Progress";
+    labelText.textContent = this.getAttribute("label") ?? t("progress.label");
     const output = this.ownerDocument.createElement("span");
     output.dataset.progressLabel = "";
     output.textContent = `${Math.round(value)}%`;
@@ -134,7 +135,7 @@ export class BloraProgress extends BloraElement {
     const root = this.querySelector<HTMLElement>(".blora-progress");
     if (!root) return;
     const value = Math.max(0, Math.min(100, Number(this.getAttribute("value") ?? 0)));
-    root.setAttribute("aria-label", this.getAttribute("label") ?? "Progress");
+    root.setAttribute("aria-label", this.getAttribute("label") ?? t("progress.label"));
     const variant = this.getAttribute("variant");
     const fill =
       root.querySelector<HTMLElement>(".blora-progress__fill") ??
@@ -144,7 +145,7 @@ export class BloraProgress extends BloraElement {
       else delete fill.dataset.variant;
     }
     const labelText = root.querySelector(".blora-progress__label span:not([data-progress-label])");
-    if (labelText) labelText.textContent = this.getAttribute("label") ?? "Progress";
+    if (labelText) labelText.textContent = this.getAttribute("label") ?? t("progress.label");
     this.controller?.setValue(value);
   }
 

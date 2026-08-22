@@ -3,6 +3,7 @@
  * Auto-advance, backspace, paste, mode filtering, uppercase.
  */
 import { BloraElement } from "../../core/blora-element.js";
+import { t } from "../../core/i18n.js";
 
 export const BLORA_OTP_TAG = "blora-otp";
 export interface OtpController {
@@ -120,7 +121,7 @@ export class BloraOtp extends BloraElement {
     root.dataset.bloraGenerated = "";
     root.dataset.mode = this.getAttribute("mode") ?? "numeric";
     root.setAttribute("role", "group");
-    root.setAttribute("aria-label", this.getAttribute("label") ?? "One-time password");
+    root.setAttribute("aria-label", this.getAttribute("label") ?? t("otp.label"));
     if (this.hasAttribute("uppercase")) root.dataset.uppercase = "";
     for (let index = 0; index < length; index += 1) {
       const input = this.ownerDocument.createElement("input");
@@ -131,7 +132,7 @@ export class BloraOtp extends BloraElement {
       input.autocomplete = index === 0 ? "one-time-code" : "off";
       input.disabled = this.hasAttribute("disabled");
       input.value = value[index] ?? "";
-      input.setAttribute("aria-label", `Character ${index + 1} of ${length}`);
+      input.setAttribute("aria-label", t("otp.char", { n: index + 1, total: length }));
       root.appendChild(input);
     }
     this.replaceChildren(root);
@@ -148,7 +149,7 @@ export class BloraOtp extends BloraElement {
     }
     root.dataset.mode = this.getAttribute("mode") ?? "numeric";
     root.toggleAttribute("data-uppercase", this.hasAttribute("uppercase"));
-    root.setAttribute("aria-label", this.getAttribute("label") ?? "One-time password");
+    root.setAttribute("aria-label", this.getAttribute("label") ?? t("otp.label"));
     const chars = Array.from(this.getAttribute("value") ?? "");
     inputs.forEach((input, index) => {
       input.disabled = this.hasAttribute("disabled");

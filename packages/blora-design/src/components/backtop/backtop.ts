@@ -2,6 +2,7 @@
  * BackTop: show after scroll threshold; click scrolls to top (v1 initBackTop / backTop).
  */
 import { BloraElement } from "../../core/blora-element.js";
+import { t } from "../../core/i18n.js";
 import { createBloraIcon } from "../../core/icons.js";
 
 export const BLORA_BACKTOP_TAG = "blora-backtop";
@@ -18,7 +19,7 @@ export interface BackTopOptions {
 
 /**
  * Inject the official arrow icon without innerHTML — innerHTML ejects Lit
- * ChildPart markers when the button is rendered by Storybook / Lit templates.
+ * ChildPart markers when the button is rendered by Lit templates.
  */
 function ensureBackTopIcon(btn: HTMLElement): void {
   if (btn.querySelector("svg")) return;
@@ -52,7 +53,7 @@ export function createBackTopController(
   }
   btn.classList.add("blora-backtop");
   ensureBackTopIcon(btn);
-  if (!btn.getAttribute("aria-label")) btn.setAttribute("aria-label", "回到顶部");
+  if (!btn.getAttribute("aria-label")) btn.setAttribute("aria-label", t("common.backTop"));
   const attrAfter = Number(
     btn.getAttribute("data-show-after") || btn.getAttribute("data-blora-backtop") || "",
   );
@@ -74,9 +75,11 @@ export function createBackTopController(
 
   const show = () => {
     btn.removeAttribute("data-hidden");
+    btn.classList.add("is-visible");
   };
   const hide = () => {
     btn.setAttribute("data-hidden", "");
+    btn.classList.remove("is-visible");
   };
 
   const sync = () => {
@@ -143,7 +146,7 @@ export class BloraBacktop extends BloraElement {
     button.type = "button";
     button.className = "blora-backtop";
     button.dataset.bloraGenerated = "";
-    button.setAttribute("aria-label", this.getAttribute("label") ?? "回到顶部");
+    button.setAttribute("aria-label", this.getAttribute("label") ?? t("common.backTop"));
     const showAfter = this.getAttribute("show-after");
     if (showAfter) button.dataset.showAfter = showAfter;
     const target = this.getAttribute("target");
@@ -154,7 +157,7 @@ export class BloraBacktop extends BloraElement {
   protected override sync(): void {
     const button = this.querySelector<HTMLElement>(".blora-backtop");
     if (!button) return;
-    button.setAttribute("aria-label", this.getAttribute("label") ?? "回到顶部");
+    button.setAttribute("aria-label", this.getAttribute("label") ?? t("common.backTop"));
     const showAfter = this.getAttribute("show-after");
     if (showAfter) button.dataset.showAfter = showAfter;
     else delete button.dataset.showAfter;

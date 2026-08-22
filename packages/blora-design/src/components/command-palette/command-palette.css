@@ -37,7 +37,8 @@ blora-command[data-overlay]:popover-open {
 }
 
 @starting-style {
-  blora-command[data-overlay][open] {
+  blora-command[data-overlay][open],
+  blora-command[data-overlay]:popover-open {
     opacity: 0;
   }
 }
@@ -54,7 +55,9 @@ blora-command[data-overlay]:popover-open {
 }
 
 blora-command[data-overlay][open] .blora-command,
-blora-command[data-overlay][open] .blora-cmdk {
+blora-command[data-overlay][open] .blora-cmdk,
+blora-command[data-overlay]:popover-open .blora-command,
+blora-command[data-overlay]:popover-open .blora-cmdk {
   opacity: 1;
   transform: none;
   transition:
@@ -64,7 +67,9 @@ blora-command[data-overlay][open] .blora-cmdk {
 
 @starting-style {
   blora-command[data-overlay][open] .blora-command,
-  blora-command[data-overlay][open] .blora-cmdk {
+  blora-command[data-overlay][open] .blora-cmdk,
+  blora-command[data-overlay]:popover-open .blora-command,
+  blora-command[data-overlay]:popover-open .blora-cmdk {
     opacity: 0;
     transform: scale(0.96) translateY(8px);
   }

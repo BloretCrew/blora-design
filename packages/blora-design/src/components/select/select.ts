@@ -2,8 +2,9 @@
  * Blora Design 2.0 - Select Web Component
  * Spec §17.2: Form-associated combobox, §11.2: ElementInternals
  */
-import { BloraElement } from "../../core/blora-element.js";
 import { OverlayController } from "../../controllers/overlay-controller.js";
+import { BloraElement } from "../../core/blora-element.js";
+import { t } from "../../core/i18n.js";
 
 import tagStyles from "../tag/tag.css?inline";
 import selectStyles from "./select.css?inline";
@@ -285,7 +286,7 @@ export class BloraSelect extends BloraElement {
     if (this._options.length === 0) {
       const empty = document.createElement("div");
       empty.className = "blora-select__empty";
-      empty.textContent = "No options";
+      empty.textContent = t("select.empty");
       this._listbox.appendChild(empty);
       return;
     }
@@ -333,7 +334,7 @@ export class BloraSelect extends BloraElement {
         remove.type = "button";
         remove.className = "blora-tag__close";
         remove.setAttribute("part", "tag-remove");
-        remove.setAttribute("aria-label", `Remove ${option.label}`);
+        remove.setAttribute("aria-label", t("select.remove", { label: option.label }));
         remove.addEventListener("pointerdown", (event) => {
           event.preventDefault();
           event.stopPropagation();
@@ -346,7 +347,7 @@ export class BloraSelect extends BloraElement {
         const overflow = document.createElement("span");
         overflow.className = "blora-tag";
         overflow.dataset.variant = "primary";
-        overflow.textContent = `+${selected.length - maxTagCount}`;
+        overflow.textContent = t("select.more", { n: selected.length - maxTagCount });
         valueSpan.appendChild(overflow);
       }
       this._trigger.removeAttribute("data-placeholder");

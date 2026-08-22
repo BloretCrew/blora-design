@@ -15,37 +15,6 @@ blora-tour,
   gap: var(--blora-space-3);
 }
 
-.blora-tour-mask {
-  position: fixed;
-  inset: 0;
-  z-index: var(--blora-z-top);
-  background: var(--blora-color-overlay-modal);
-  pointer-events: auto;
-}
-
-.blora-tour-pop {
-  position: fixed;
-  z-index: var(--blora-z-top);
-  width: min(20rem, calc(100vw - 2 * var(--blora-space-4)));
-  padding: var(--blora-space-4);
-  border-radius: var(--blora-radius-lg);
-  background: var(--blora-color-surface-default);
-  border: var(--blora-border-subtle);
-  box-shadow: var(--blora-shadow-4);
-}
-
-.blora-tour-pop__title {
-  font-weight: 600;
-  font-size: var(--blora-text-sm);
-  margin-bottom: 0.35em;
-}
-
-.blora-tour-pop__body {
-  font-size: var(--blora-text-sm);
-  color: var(--blora-color-text-muted);
-  line-height: 1.5;
-}
-
 /* Tour overlay and tooltip (created by createTourController).
    Hole is a radius-matched cutout — dim spread only, no stroke. Keep
    overflow visible so the spread covers the classic scrollbar gutter. */
@@ -62,7 +31,7 @@ blora-tour,
   border: none;
   overflow: visible;
   z-index: var(--blora-z-top);
-  pointer-events: none;
+  pointer-events: auto;
   background: transparent;
   opacity: 0;
   transition: opacity var(--blora-duration-base) var(--blora-easing-standard);
@@ -81,6 +50,7 @@ blora-tour,
 .blora-tour__ring {
   position: absolute;
   box-sizing: border-box;
+  pointer-events: none;
   box-shadow: 0 0 0 9999px color-mix(in srgb, var(--blora-color-text-primary) 45%, transparent);
 }
 
@@ -91,6 +61,7 @@ blora-tour,
 }
 
 .blora-tour__tooltip {
+  pointer-events: auto;
   position: fixed;
   z-index: var(--blora-z-top);
   display: none;
@@ -152,18 +123,6 @@ blora-tour,
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: var(--blora-space-2);
-}
-
-.blora-tour-pop__steps {
-  font-size: var(--blora-text-xs);
-  color: var(--blora-color-text-subtle);
-  font-family: var(--blora-font-mono);
-}
-
-.blora-tour-target-ring {
-  position: fixed;
-  z-index: var(--blora-z-top);
-  pointer-events: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

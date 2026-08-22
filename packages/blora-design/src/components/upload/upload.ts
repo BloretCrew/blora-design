@@ -3,6 +3,7 @@
  * Click dropzone opens file picker; lists selected file names.
  */
 import { BloraElement } from "../../core/blora-element.js";
+import { t } from "../../core/i18n.js";
 import { createBloraIcon } from "../../core/icons.js";
 
 export const BLORA_UPLOAD_TAG = "blora-upload";
@@ -172,9 +173,8 @@ export class BloraUpload extends BloraElement {
     root.dataset.bloraGenerated = "";
     const compact = this.getAttribute("variant") === "compact";
     const disabled = this.hasAttribute("disabled");
-    const prompt = this.getAttribute("prompt") ?? (compact ? "选择文件" : "拖拽文件至此");
-    const hintText =
-      this.getAttribute("hint") ?? (compact ? "点击选择或拖拽文件至此" : "选择或拖放文件");
+    const prompt = this.getAttribute("prompt") ?? (compact ? t("upload.choose") : t("upload.drop"));
+    const hintText = this.getAttribute("hint") ?? (compact ? t("upload.hint") : t("upload.drop"));
     const input = this.ownerDocument.createElement("input");
     input.className = compact ? "blora-file-picker__input" : "blora-dropzone__input";
     input.type = "file";
@@ -209,8 +209,8 @@ export class BloraUpload extends BloraElement {
       clear.type = "button";
       clear.className = "blora-file-clear";
       clear.hidden = true;
-      clear.setAttribute("aria-label", "移除已选文件");
-      clear.title = "移除已选文件";
+      clear.setAttribute("aria-label", t("file.clear"));
+      clear.title = t("file.clear");
       clear.appendChild(createBloraIcon("close", 14, this.ownerDocument));
       status.append(statusName, clear);
       picker.append(input, trigger, empty, status);
@@ -231,7 +231,7 @@ export class BloraUpload extends BloraElement {
       const strong = this.ownerDocument.createElement("strong");
       strong.textContent = prompt;
       const action = this.ownerDocument.createElement("span");
-      action.textContent = " 或 点击选择";
+      action.textContent = ` ${t("upload.or")} ${t("upload.browse")}`;
       content.append(strong, action);
       const hint = this.ownerDocument.createElement("div");
       hint.className = "blora-upload__hint";
@@ -256,11 +256,10 @@ export class BloraUpload extends BloraElement {
       input.multiple = this.hasAttribute("multiple");
       input.disabled = disabled;
     }
-    const prompt = this.getAttribute("prompt") ?? (compact ? "选择文件" : "拖拽文件至此");
-    const hintText =
-      this.getAttribute("hint") ?? (compact ? "点击选择或拖拽文件至此" : "选择或拖放文件");
+    const prompt = this.getAttribute("prompt") ?? (compact ? t("upload.choose") : t("upload.drop"));
+    const hintText = this.getAttribute("hint") ?? (compact ? t("upload.hint") : t("upload.drop"));
     const strong = root.querySelector<HTMLElement>(".blora-upload__content strong");
-    if (strong) strong.textContent = this.getAttribute("prompt") ?? "拖拽文件至此";
+    if (strong) strong.textContent = this.getAttribute("prompt") ?? t("upload.drop");
     const hint = root.querySelector<HTMLElement>(".blora-upload__hint");
     if (hint) hint.textContent = hintText;
     const trigger = root.querySelector<HTMLButtonElement>(".blora-file-picker__trigger");

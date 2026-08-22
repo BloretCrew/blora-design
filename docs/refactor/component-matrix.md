@@ -58,7 +58,7 @@
 |---|---|
 | Tokens + themes | ✅ |
 | Reset / base / layout / utilities | ✅ |
-| Workspace / CI / Storybook / verify 脚本 | ✅ |
+| Workspace / CI / Showcase / verify 脚本 | ✅ |
 
 ## DoD 清单（每个组件理想态）
 

@@ -10,6 +10,7 @@ export default defineConfig({
   },
   test: {
     environment: "jsdom",
+    setupFiles: ["./tests/setup-locale.ts"],
     passWithNoTests: true,
     include: ["tests/**/*.test.ts"],
     exclude: ["tests/browser/**", "node_modules/**", "dist/**"],

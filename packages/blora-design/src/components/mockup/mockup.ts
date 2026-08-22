@@ -1,4 +1,5 @@
 import { BloraElement } from "../../core/blora-element.js";
+import { t } from "../../core/i18n.js";
 import { createBloraIcon } from "../../core/icons.js";
 
 export const BLORA_MOCKUP_TAG = "blora-mockup";
@@ -26,7 +27,7 @@ export class BloraMockup extends BloraElement {
     const root = this.ownerDocument.createElement("section");
     root.className = `blora-mockup blora-mockup--${variant}`;
     root.dataset.bloraGenerated = "";
-    root.setAttribute("aria-label", this.getAttribute("label") ?? `${variant} mockup`);
+    root.setAttribute("aria-label", this.getAttribute("label") ?? t("mockup.label", { variant }));
     if (variant === "code") {
       this.content.forEach((node) => {
         if (node instanceof Element && node.localName === "blora-mockup-line") {
@@ -73,7 +74,7 @@ export class BloraMockup extends BloraElement {
           this.ownerDocument.createTextNode(this.getAttribute("address") ?? "about:blank"),
         );
       } else {
-        heading.textContent = this.getAttribute("title") ?? "Window";
+        heading.textContent = this.getAttribute("title") ?? t("mockup.window");
       }
       toolbar.appendChild(heading);
       const body = this.ownerDocument.createElement("div");
@@ -89,7 +90,8 @@ export class BloraMockup extends BloraElement {
     if (!root) return;
     root.setAttribute(
       "aria-label",
-      this.getAttribute("label") ?? `${this.getAttribute("variant") ?? "browser"} mockup`,
+      this.getAttribute("label") ??
+        t("mockup.label", { variant: this.getAttribute("variant") ?? "browser" }),
     );
     const address = root.querySelector(".blora-mockup__address");
     if (address) {
@@ -99,7 +101,7 @@ export class BloraMockup extends BloraElement {
       );
     }
     const title = root.querySelector(".blora-mockup__title");
-    if (title) title.textContent = this.getAttribute("title") ?? "Window";
+    if (title) title.textContent = this.getAttribute("title") ?? t("mockup.window");
   }
 
   protected bindEvents(): void {}
