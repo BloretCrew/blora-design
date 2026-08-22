@@ -69,8 +69,10 @@ describe("overlay motion — discrete CSS path", () => {
     expect(tour).toContain(".blora-tour__ring");
     expect(tour).toContain("9999px");
     expect(tour).toContain("@starting-style");
+    expect(tour).toContain("left, top, width, height, border-radius");
     expect(tour).not.toContain("mask-image");
     expect(tour).not.toContain(".blora-tour__dim");
+    expect(tour).not.toContain("action-primary-default");
 
     expect(command).toContain("overflow: visible");
     expect(command).toContain("border: none");
@@ -143,7 +145,7 @@ describe("overlay motion — discrete CSS path", () => {
     expect(command.parentElement).toBe(wrap);
   });
 
-  it("tour start stamps overlay/tooltip open and punches a highlight hole", () => {
+  it("tour start stamps overlay/tooltip open and punches a highlight hole", async () => {
     document.body.innerHTML = `
       <div data-blora-tour>
         <button data-tour-start type="button">start</button>
@@ -153,6 +155,9 @@ describe("overlay motion — discrete CSS path", () => {
     const target = root.querySelector<HTMLElement>("[data-tour-step] > *")!;
     const tour = createTourController(root);
     tour.start();
+    await new Promise<void>((resolve) => {
+      requestAnimationFrame(() => resolve());
+    });
     const overlay = document.querySelector<HTMLElement>(".blora-tour__overlay");
     const ring = overlay?.querySelector<HTMLElement>(".blora-tour__ring");
     expect(overlay?.hasAttribute("data-open")).toBe(true);

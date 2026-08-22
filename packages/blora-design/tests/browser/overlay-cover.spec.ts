@@ -103,5 +103,6 @@ test("tour spotlight ring contains the target and spreads a page dimmer", async 
   expect(ringBox!.x + ringBox!.width).toBeGreaterThanOrEqual(targetBox!.x + targetBox!.width - 1);
   expect(ringBox!.y + ringBox!.height).toBeGreaterThanOrEqual(targetBox!.y + targetBox!.height - 1);
   expect(paint.boxShadow).toContain("9999px");
+  expect(paint.boxShadow).not.toMatch(/0px 0px 0px 3px/);
   expect(paint.overlayMask === "none" || paint.overlayMask === "").toBe(true);
 });

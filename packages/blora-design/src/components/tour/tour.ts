@@ -60,8 +60,8 @@ function clampCornerRadii(
   };
 }
 
-/** 1.x spotlight: size the ring to the padded target; the 9999px spread
- *  paints the dimmer. No mask-image, no four panes. */
+/** Size the ring to the padded target. The 9999px spread is the dimmer —
+ *  a radius-matched cutout, no stroke. */
 function fitTourOverlay(overlay: HTMLElement, target: HTMLElement): { pad: number; rect: DOMRect } {
   const rect = target.getBoundingClientRect();
   const style = getComputedStyle(target);
@@ -103,7 +103,6 @@ export function createTourController(root: HTMLElement): TourController {
     ring.className = "blora-tour__ring";
     overlay.appendChild(ring);
     doc.body.appendChild(overlay);
-    overlay.setAttribute("data-open", "");
 
     tooltip = doc.createElement("div");
     tooltip.className = "blora-tour__tooltip";
@@ -167,8 +166,8 @@ export function createTourController(root: HTMLElement): TourController {
     tooltip!.querySelector<HTMLElement>(".blora-tour__prev")!.style.visibility =
       current > 0 ? "visible" : "hidden";
 
-    tooltip!.setAttribute("data-open", "");
     placeOverlay();
+    if (overlay?.hasAttribute("data-open")) tooltip!.setAttribute("data-open", "");
     root.dispatchEvent(
       new CustomEvent("blora-tour-change", {
         bubbles: true,
@@ -184,6 +183,15 @@ export function createTourController(root: HTMLElement): TourController {
     window.addEventListener("resize", onReposition);
     window.addEventListener("scroll", onReposition, true);
     goTo(0);
+    overlay?.offsetWidth;
+    tooltip?.offsetWidth;
+    const win = doc.defaultView;
+    const reveal = () => {
+      overlay?.setAttribute("data-open", "");
+      tooltip?.setAttribute("data-open", "");
+    };
+    if (win) win.requestAnimationFrame(reveal);
+    else reveal();
   };
 
   const end = () => {
