@@ -158,8 +158,13 @@ function mountSidebarLayout(root: HTMLElement): SidebarLayoutController {
       preservedPageScrollTop = null;
       return;
     }
+    if (currentPageScrollTop !== lastPageScrollTop) {
+      /* The user is scrolling right now — never fight the momentum. */
+      return;
+    }
+    const heightNow = root.getBoundingClientRect().height;
     const requiredHeight = pageScrollTop + win.innerHeight - rootTop;
-    if (root.getBoundingClientRect().height >= requiredHeight) return;
+    if (heightNow >= requiredHeight) return;
     root.style.minHeight = `${requiredHeight}px`;
     preservedPageScrollTop = pageScrollTop;
     win.scrollTo({ top: pageScrollTop, behavior: "instant" });
