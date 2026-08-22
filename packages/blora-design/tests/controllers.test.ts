@@ -74,12 +74,14 @@ describe("OverlayController", () => {
     expect(document.body.style.position).toBe("fixed");
     expect(document.body.style.top).toMatch(/^-?\d+(\.\d+)?px$/);
     expect(document.body.style.overflow).toBe("visible");
+    expect(document.documentElement.style.overflow).toBe("hidden");
     expect(document.documentElement.dataset.bloraScrollLocked).toBe("1");
 
     controller.close();
     expect(document.body.style.position).toBe("");
     expect(document.body.style.top).toBe("");
     expect(document.body.style.overflow).toBe(previousOverflow);
+    expect(document.documentElement.style.overflow).toBe("");
     expect(document.documentElement.dataset.bloraScrollLocked).toBeUndefined();
     overlay.remove();
   });

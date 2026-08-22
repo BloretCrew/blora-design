@@ -4,6 +4,8 @@ blora-command {
   display: block;
 }
 
+/* Beat UA popover `fit-content` + `overflow: auto` + `border`. Overflow:auto
+   is the classic-scrollbar gutter on the right of the mask. */
 blora-command[data-overlay] {
   position: fixed;
   inset: 0;
@@ -16,6 +18,8 @@ blora-command[data-overlay] {
   place-items: start center;
   padding: 15vh var(--blora-space-5) var(--blora-space-5);
   margin: 0;
+  border: none;
+  overflow: visible;
   box-sizing: border-box;
   background: var(--blora-color-overlay-modal);
   backdrop-filter: blur(4px);
@@ -26,7 +30,8 @@ blora-command[data-overlay] {
   transition-behavior: allow-discrete;
 }
 
-blora-command[data-overlay][open] {
+blora-command[data-overlay][open],
+blora-command[data-overlay]:popover-open {
   display: grid;
   opacity: 1;
 }

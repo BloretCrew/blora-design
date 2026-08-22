@@ -66,9 +66,14 @@ describe("overlay motion — discrete CSS path", () => {
     const tour = readCss("components/tour/tour.css");
     expect(tour).toContain(".blora-tour__overlay[data-open]");
     expect(tour).toContain(".blora-tour__tooltip[data-open]");
+    expect(tour).toContain(".blora-tour__ring");
+    expect(tour).toContain("9999px");
     expect(tour).toContain("@starting-style");
-    /* Opacity on the masked overlay collapses the highlight hole. */
-    expect(tour).not.toMatch(/\.blora-tour__overlay\s*\{[^}]*\bopacity\s*:/);
+    expect(tour).not.toContain("mask-image");
+    expect(tour).not.toContain(".blora-tour__dim");
+
+    expect(command).toContain("overflow: visible");
+    expect(command).toContain("border: none");
   });
 
   it("popup menus and megamenu no longer snap via display-only toggles", () => {
@@ -132,6 +137,7 @@ describe("overlay motion — discrete CSS path", () => {
     expect(command.parentElement).toBe(document.body);
     expect(command.hasAttribute("open")).toBe(true);
     expect(command.hasAttribute("data-overlay")).toBe(true);
+    expect(document.documentElement.dataset.bloraScrollLocked).toBe("1");
     command.close();
     expect(command.hasAttribute("open")).toBe(false);
     expect(command.parentElement).toBe(wrap);
@@ -141,16 +147,22 @@ describe("overlay motion — discrete CSS path", () => {
     document.body.innerHTML = `
       <div data-blora-tour>
         <button data-tour-start type="button">start</button>
-        <div data-tour-step data-tour-title="A" data-tour-desc="one"><span>A</span></div>
+        <div data-tour-step data-tour-title="A" data-tour-desc="one"><span style="display:inline-block;width:40px;height:40px">A</span></div>
       </div>`;
     const root = document.querySelector<HTMLElement>("[data-blora-tour]")!;
+    const target = root.querySelector<HTMLElement>("[data-tour-step] > *")!;
     const tour = createTourController(root);
     tour.start();
     const overlay = document.querySelector<HTMLElement>(".blora-tour__overlay");
+    const ring = overlay?.querySelector<HTMLElement>(".blora-tour__ring");
     expect(overlay?.hasAttribute("data-open")).toBe(true);
+    expect(overlay?.querySelectorAll(".blora-tour__dim").length).toBe(0);
     expect(document.querySelector(".blora-tour__tooltip")?.hasAttribute("data-open")).toBe(true);
-    const mask = overlay?.style.maskImage || overlay?.style.webkitMaskImage || "";
-    expect(mask).toContain("url(");
+    expect(ring).not.toBeNull();
+    expect(parseFloat(ring!.style.width)).toBeGreaterThan(0);
+    expect(parseFloat(ring!.style.height)).toBeGreaterThan(0);
+    expect(overlay!.style.maskImage || overlay!.style.webkitMaskImage || "").toBe("");
+    expect(target.isConnected).toBe(true);
     tour.end();
     expect(document.querySelector(".blora-tour__overlay")).toBeNull();
     tour.destroy();

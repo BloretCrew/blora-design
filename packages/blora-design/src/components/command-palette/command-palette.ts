@@ -2,6 +2,7 @@
  * Blora Design 2.0 - Command Palette controller
  * Filter items, keyboard nav, adaptive ⌘/Ctrl shortcuts.
  */
+import { OverlayController } from "../../controllers/overlay-controller.js";
 import { BloraElement } from "../../core/blora-element.js";
 import { createBloraIcon, type BloraIconName } from "../../core/icons.js";
 import { whenMotionDone } from "../../core/motion.js";
@@ -125,6 +126,8 @@ export class BloraCommand extends BloraElement {
   private relocating = false;
   private home: { parent: Node; next: ChildNode | null } | null = null;
   private cancelCloseMotion: (() => void) | null = null;
+  private overlay: OverlayController | null = null;
+  private hostInTopLayer = false;
 
   static get observedAttributes(): string[] {
     return ["placeholder", "open"];
@@ -142,6 +145,17 @@ export class BloraCommand extends BloraElement {
     this.cancelCloseMotion = null;
     this.portalToBody();
     this.setAttribute("open", "");
+    this.promoteToTopLayer();
+    this.overlay?.close();
+    this.overlay = new OverlayController(this, {
+      modal: true,
+      closeOnEscape: false,
+      closeOnOutsidePointer: false,
+      restoreFocus: true,
+      trapFocus: true,
+      lockScroll: true,
+    });
+    this.overlay.open();
     const input = this.querySelector<HTMLInputElement>("input");
     input?.focus();
   }
@@ -149,6 +163,9 @@ export class BloraCommand extends BloraElement {
   close(): void {
     if (!this.hasAttribute("open")) return;
     this.removeAttribute("open");
+    this.overlay?.close();
+    this.overlay = null;
+    this.dismissTopLayer();
     this.cancelCloseMotion?.();
     this.cancelCloseMotion = whenMotionDone(this, () => {
       this.cancelCloseMotion = null;
@@ -260,11 +277,41 @@ export class BloraCommand extends BloraElement {
   protected onDisconnect(): void {
     this.cancelCloseMotion?.();
     this.cancelCloseMotion = null;
+    this.overlay?.close();
+    this.overlay = null;
+    this.dismissTopLayer();
     this.controller?.destroy();
     this.searchController?.destroy();
     this.controller = null;
     this.searchController = null;
     this.restoreHome();
+  }
+
+  private promoteToTopLayer(): void {
+    if (typeof this.showPopover !== "function") return;
+    this.setAttribute("popover", "manual");
+    if (this.matches(":popover-open")) {
+      this.hostInTopLayer = true;
+      return;
+    }
+    try {
+      this.showPopover();
+      this.hostInTopLayer = true;
+    } catch {
+      this.hostInTopLayer = false;
+    }
+  }
+
+  private dismissTopLayer(): void {
+    if (this.hostInTopLayer && typeof this.hidePopover === "function") {
+      try {
+        this.hidePopover();
+      } catch {
+        /* already closed */
+      }
+    }
+    this.hostInTopLayer = false;
+    if (this.getAttribute("popover") === "manual") this.removeAttribute("popover");
   }
 
   private portalToBody(): void {

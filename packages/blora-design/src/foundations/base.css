@@ -31,6 +31,12 @@ html:has(body.blora-page) {
   scrollbar-color: var(--blora-color-border-subtle) var(--blora-color-surface-default);
 }
 
+/* OverlayController stamps this while a modal is open. Hide the classic
+   window scrollbar so the mask can own the full viewport. */
+html[data-blora-scroll-locked] {
+  overflow: hidden;
+}
+
 /* -- 标题 -- */
 .blora-h1,
 .blora-h2,

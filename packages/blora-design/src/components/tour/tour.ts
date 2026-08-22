@@ -60,51 +60,8 @@ function clampCornerRadii(
   };
 }
 
-function roundedRectPath(
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-  radii: { bl: number; br: number; tl: number; tr: number },
-): string {
-  const { bl, br, tl, tr } = clampCornerRadii(width, height, radii);
-  return [
-    `M ${x + tl} ${y}`,
-    `H ${x + width - tr}`,
-    `A ${tr} ${tr} 0 0 1 ${x + width} ${y + tr}`,
-    `V ${y + height - br}`,
-    `A ${br} ${br} 0 0 1 ${x + width - br} ${y + height}`,
-    `H ${x + bl}`,
-    `A ${bl} ${bl} 0 0 1 ${x} ${y + height - bl}`,
-    `V ${y + tl}`,
-    `A ${tl} ${tl} 0 0 1 ${x + tl} ${y}`,
-    "Z",
-  ].join(" ");
-}
-
-/** Full-viewport dimmer with a punched hole. Avoids a 9999px box-shadow that
- *  seams through the navbar's backdrop-filter as a vertical shadow line. */
-function applyTourHoleMask(
-  overlay: HTMLElement,
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-  radii: { bl: number; br: number; tl: number; tr: number },
-): void {
-  const vw = Math.max(1, window.innerWidth);
-  const vh = Math.max(1, window.innerHeight);
-  const path = roundedRectPath(x, y, width, height, radii);
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${vw}" height="${vh}"><rect width="100%" height="100%" fill="white"/><path d="${path}" fill="black"/></svg>`;
-  const image = `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
-  overlay.style.maskImage = image;
-  overlay.style.webkitMaskImage = image;
-  overlay.style.maskSize = "100% 100%";
-  overlay.style.webkitMaskSize = "100% 100%";
-  overlay.style.maskRepeat = "no-repeat";
-  overlay.style.webkitMaskRepeat = "no-repeat";
-}
-
+/** 1.x spotlight: size the ring to the padded target; the 9999px spread
+ *  paints the dimmer. No mask-image, no four panes. */
 function fitTourOverlay(overlay: HTMLElement, target: HTMLElement): { pad: number; rect: DOMRect } {
   const rect = target.getBoundingClientRect();
   const style = getComputedStyle(target);
@@ -113,17 +70,18 @@ function fitTourOverlay(overlay: HTMLElement, target: HTMLElement): { pad: numbe
   const y = rect.top - pad;
   const width = Math.max(0, rect.width + pad * 2);
   const height = Math.max(0, rect.height + pad * 2);
-  overlay.style.inset = "0";
-  overlay.style.width = "auto";
-  overlay.style.height = "auto";
-  overlay.style.borderRadius = "0";
-  overlay.style.removeProperty("corner-shape");
-  applyTourHoleMask(overlay, x, y, width, height, {
+  const radii = clampCornerRadii(width, height, {
     tl: cornerRadius(style.borderTopLeftRadius, rect.width, pad),
     tr: cornerRadius(style.borderTopRightRadius, rect.width, pad),
     br: cornerRadius(style.borderBottomRightRadius, rect.width, pad),
     bl: cornerRadius(style.borderBottomLeftRadius, rect.width, pad),
   });
+  const ring = overlay.querySelector<HTMLElement>(".blora-tour__ring")!;
+  ring.style.left = `${x}px`;
+  ring.style.top = `${y}px`;
+  ring.style.width = `${width}px`;
+  ring.style.height = `${height}px`;
+  ring.style.borderRadius = `${radii.tl}px ${radii.tr}px ${radii.br}px ${radii.bl}px`;
   return { pad, rect };
 }
 
@@ -141,6 +99,9 @@ export function createTourController(root: HTMLElement): TourController {
   const createOverlay = () => {
     overlay = doc.createElement("div");
     overlay.className = "blora-tour__overlay";
+    const ring = doc.createElement("div");
+    ring.className = "blora-tour__ring";
+    overlay.appendChild(ring);
     doc.body.appendChild(overlay);
     overlay.setAttribute("data-open", "");
 

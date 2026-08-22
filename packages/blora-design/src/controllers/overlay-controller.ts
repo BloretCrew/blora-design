@@ -41,6 +41,7 @@ interface ScrollLockSnapshot {
   width: string;
   paddingRight: string;
   overflow: string;
+  rootOverflow: string;
 }
 
 const stacks = new WeakMap<Document, StackEntry[]>();
@@ -95,12 +96,15 @@ function lockScroll(document: Document): void {
     width: body.style.width,
     paddingRight: body.style.paddingRight,
     overflow: body.style.overflow,
+    rootOverflow: root.style.overflow,
   });
 
-  /* Freeze the page in place. `overflow: hidden` makes `body` the sticky
+  /* Freeze the page in place. `overflow: hidden` on `body` makes it the sticky
      containing block, so a scrolled navbar jumps out of the viewport.
-     1.x uses the same position:fixed snapshot for that reason. */
+     1.x uses the same position:fixed snapshot for that reason.
+     Hide the root scrollbar separately so the mask covers the classic gutter. */
   root.dataset.bloraScrollLocked = "1";
+  root.style.overflow = "hidden";
   body.style.position = "fixed";
   body.style.top = `-${y}px`;
   body.style.left = "0";
@@ -126,6 +130,7 @@ function unlockScroll(document: Document): void {
   delete root.dataset.bloraScrollLocked;
 
   if (body && snapshot) {
+    root.style.overflow = snapshot.rootOverflow;
     body.style.position = snapshot.position;
     body.style.top = snapshot.top;
     body.style.left = snapshot.left;
@@ -134,6 +139,7 @@ function unlockScroll(document: Document): void {
     body.style.paddingRight = snapshot.paddingRight;
     body.style.overflow = snapshot.overflow;
   } else if (body) {
+    root.style.overflow = "";
     body.style.position = "";
     body.style.top = "";
     body.style.left = "";
