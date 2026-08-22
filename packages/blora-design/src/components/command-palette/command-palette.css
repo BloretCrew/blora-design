@@ -7,11 +7,16 @@ blora-command {
 blora-command[data-overlay] {
   position: fixed;
   inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
   z-index: var(--blora-z-modal);
   display: none;
   place-items: start center;
   padding: 15vh var(--blora-space-5) var(--blora-space-5);
   margin: 0;
+  box-sizing: border-box;
   background: var(--blora-color-overlay-modal);
   backdrop-filter: blur(4px);
   opacity: 0;

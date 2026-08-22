@@ -4,6 +4,7 @@
  */
 import { BloraElement } from "../../core/blora-element.js";
 import { createBloraIcon, type BloraIconName } from "../../core/icons.js";
+import { whenMotionDone } from "../../core/motion.js";
 import { createSearchController, type SearchController } from "../search/search.js";
 
 export const BLORA_COMMAND_TAG = "blora-command";
@@ -121,6 +122,9 @@ export class BloraCommand extends BloraElement {
   private controller: CommandPaletteController | null = null;
   private searchController: SearchController | null = null;
   private definitions: CommandItemDefinition[] | null = null;
+  private relocating = false;
+  private home: { parent: Node; next: ChildNode | null } | null = null;
+  private cancelCloseMotion: (() => void) | null = null;
 
   static get observedAttributes(): string[] {
     return ["placeholder", "open"];
@@ -134,13 +138,27 @@ export class BloraCommand extends BloraElement {
 
   show(): void {
     this.setAttribute("data-overlay", "");
+    this.cancelCloseMotion?.();
+    this.cancelCloseMotion = null;
+    this.portalToBody();
     this.setAttribute("open", "");
     const input = this.querySelector<HTMLInputElement>("input");
     input?.focus();
   }
 
   close(): void {
+    if (!this.hasAttribute("open")) return;
     this.removeAttribute("open");
+    this.cancelCloseMotion?.();
+    this.cancelCloseMotion = whenMotionDone(this, () => {
+      this.cancelCloseMotion = null;
+      this.restoreHome();
+    });
+  }
+
+  disconnectedCallback(): void {
+    if (this.relocating) return;
+    super.disconnectedCallback();
   }
 
   protected render(): void {
@@ -240,10 +258,33 @@ export class BloraCommand extends BloraElement {
   }
 
   protected onDisconnect(): void {
+    this.cancelCloseMotion?.();
+    this.cancelCloseMotion = null;
     this.controller?.destroy();
     this.searchController?.destroy();
     this.controller = null;
     this.searchController = null;
+    this.restoreHome();
+  }
+
+  private portalToBody(): void {
+    const doc = this.ownerDocument;
+    if (!this.parentNode || this.parentElement === doc.body) return;
+    this.home = { parent: this.parentNode, next: this.nextSibling };
+    this.relocating = true;
+    doc.body.append(this);
+    this.relocating = false;
+  }
+
+  private restoreHome(): void {
+    if (!this.home) return;
+    const { parent, next } = this.home;
+    this.home = null;
+    if (!parent.isConnected) return;
+    this.relocating = true;
+    if (next && next.parentNode === parent) parent.insertBefore(this, next);
+    else parent.appendChild(this);
+    this.relocating = false;
   }
 }
 

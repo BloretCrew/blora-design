@@ -54,19 +54,14 @@ blora-tour,
   inset: 0;
   z-index: var(--blora-z-top);
   pointer-events: none;
-  background: color-mix(in srgb, var(--blora-color-text-primary) 45%, transparent);
-  opacity: 0;
-  transition: opacity var(--blora-duration-base) var(--blora-easing-standard);
+
+  /* Opacity on this node kills the hole mask in Chromium; fade the fill instead. */
+  background: transparent;
+  transition: background-color var(--blora-duration-base) var(--blora-easing-standard);
 }
 
 .blora-tour__overlay[data-open] {
-  opacity: 1;
-}
-
-@starting-style {
-  .blora-tour__overlay[data-open] {
-    opacity: 0;
-  }
+  background: color-mix(in srgb, var(--blora-color-text-primary) 45%, transparent);
 }
 
 .blora-tour__tooltip {
