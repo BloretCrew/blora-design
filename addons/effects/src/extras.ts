@@ -88,7 +88,7 @@ export function createCountdownController(root: HTMLElement): CountdownControlle
   const render = () => {
     const remaining = Math.max(0, target - Date.now());
     const totalSeconds = Math.ceil(remaining / 1000);
-    const values: Record<string, number> = {
+    const values = {
       days: Math.floor(totalSeconds / 86400),
       hours: Math.floor(totalSeconds / 3600) % 24,
       minutes: Math.floor(totalSeconds / 60) % 60,

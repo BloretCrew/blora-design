@@ -75,7 +75,9 @@ export function createCascaderController(root: HTMLElement): CascaderController 
   };
 
   const updatePath = () => {
-    trigger!.textContent = selectedPath.length ? selectedPath.join(" / ") : t("cascader.placeholder");
+    trigger!.textContent = selectedPath.length
+      ? selectedPath.join(" / ")
+      : t("cascader.placeholder");
     if (result) result.textContent = `${t("cascader.selectedPrefix")}${selectedPath.join(" / ")}`;
   };
 

@@ -8,10 +8,10 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 export default defineConfig({
   resolve: {
     alias: {
-      /* Bundle current icon source so "menu" exists before core dist rebuilds. */
+      /* Bundle icon factory + i18n so layout.global.js stays self-contained. */
       "@bloret-crew/blora-design": resolve(
         __dirname,
-        "../../packages/blora-design/src/core/icons.ts",
+        "../../packages/blora-design/src/core/addon-exports.ts",
       ),
     },
   },

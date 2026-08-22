@@ -33,8 +33,12 @@ describe("theming add-on", () => {
     document.body.innerHTML = `<blora-palette-picker></blora-palette-picker>`;
     const picker = document.querySelector("blora-palette-picker")!;
     expect(picker.querySelectorAll("[data-blora-palette-option]").length).toBeGreaterThan(3);
-    expect(picker.querySelector(".blora-palette-picker__title")?.textContent).toBe(t("palette.title"));
-    expect(picker.querySelector(".blora-palette-picker__hint")?.textContent).toBe(t("palette.hint"));
+    expect(picker.querySelector(".blora-palette-picker__title")?.textContent).toBe(
+      t("palette.title"),
+    );
+    expect(picker.querySelector(".blora-palette-picker__hint")?.textContent).toBe(
+      t("palette.hint"),
+    );
   });
 
   it("palette menu is fixed and start-aligned when there is room", () => {

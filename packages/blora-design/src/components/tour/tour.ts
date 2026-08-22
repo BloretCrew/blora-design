@@ -229,8 +229,8 @@ export function createTourController(root: HTMLElement): TourController {
     window.addEventListener("resize", onReposition);
     window.addEventListener("scroll", onReposition, true);
     goTo(0);
-    overlay?.offsetWidth;
-    tooltip?.offsetWidth;
+    void overlay?.offsetWidth;
+    void tooltip?.offsetWidth;
     const win = doc.defaultView;
     const reveal = () => {
       overlay?.setAttribute("data-open", "");
