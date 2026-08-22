@@ -4,6 +4,7 @@ import {
   renderMarkdownTo,
   createMarkdownController,
   initMarkdown,
+  BLORA_MARKDOWN_TAG,
 } from "../src/index.js";
 
 describe("Markdown add-on", () => {
@@ -158,6 +159,18 @@ describe("Markdown add-on", () => {
     const ctrl = createMarkdownController(el);
     expect(el.innerHTML).toContain("<strong>hi</strong>");
     ctrl.destroy();
+  });
+
+  it("blora-markdown renders a script source", () => {
+    const el = document.createElement(BLORA_MARKDOWN_TAG);
+    const script = document.createElement("script");
+    script.type = "text/markdown";
+    script.textContent = "# Hello";
+    el.append(script);
+    document.body.append(el);
+    expect(el.innerHTML).toContain("blora-md__h1");
+    expect(el.innerHTML).toContain("Hello");
+    el.remove();
   });
 
   it("initMarkdown binds nodes", () => {

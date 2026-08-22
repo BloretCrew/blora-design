@@ -1,9 +1,12 @@
 import { BloraElement } from "../../core/blora-element.js";
+import { attachFormInternals, setHostFormValue } from "../../core/form-associated.js";
 
 export const BLORA_SWITCH_TAG = "blora-switch";
 
 /** Switch CE backed by a real light-DOM checkbox. */
 export class BloraSwitch extends BloraElement {
+  static formAssociated = true;
+  private internals: ElementInternals | null = null;
   private initialLabel: string | null = null;
   private reflecting = false;
 
@@ -36,7 +39,12 @@ export class BloraSwitch extends BloraElement {
     this.querySelector<HTMLInputElement>('input[type="checkbox"]')?.focus(options);
   }
 
+  private syncFormValue(): void {
+    setHostFormValue(this.internals, this.checked ? this.value : null);
+  }
+
   protected render(): void {
+    this.internals ??= attachFormInternals(this);
     if (this.initialLabel === null) this.initialLabel = this.textContent?.trim() ?? "";
     const doc = this.ownerDocument;
     const label = doc.createElement("label");
@@ -46,7 +54,7 @@ export class BloraSwitch extends BloraElement {
     if (size === "sm" || size === "lg") label.dataset.size = size;
     const input = doc.createElement("input");
     input.type = "checkbox";
-    input.name = this.getAttribute("name") ?? "";
+    input.name = this.internals ? "" : (this.getAttribute("name") ?? "");
     input.value = this.value;
     input.checked = this.hasAttribute("checked");
     input.disabled = this.hasAttribute("disabled");
@@ -56,6 +64,7 @@ export class BloraSwitch extends BloraElement {
     track.setAttribute("aria-hidden", "true");
     label.append(input, track, doc.createTextNode(this.getAttribute("label") ?? this.initialLabel));
     this.replaceChildren(label);
+    this.syncFormValue();
   }
 
   protected override sync(): void {
@@ -65,7 +74,7 @@ export class BloraSwitch extends BloraElement {
     const size = this.getAttribute("size");
     if (size === "sm" || size === "lg") label.dataset.size = size;
     else delete label.dataset.size;
-    input.name = this.getAttribute("name") ?? "";
+    input.name = this.internals ? "" : (this.getAttribute("name") ?? "");
     input.value = this.value;
     input.checked = this.hasAttribute("checked");
     input.disabled = this.hasAttribute("disabled");
@@ -74,6 +83,7 @@ export class BloraSwitch extends BloraElement {
     if (last?.nodeType === Node.TEXT_NODE) {
       last.textContent = this.getAttribute("label") ?? this.initialLabel ?? "";
     }
+    this.syncFormValue();
   }
 
   protected bindEvents(): void {
@@ -83,6 +93,7 @@ export class BloraSwitch extends BloraElement {
       this.reflecting = true;
       this.toggleAttribute("checked", input.checked);
       this.reflecting = false;
+      this.syncFormValue();
     });
   }
 }

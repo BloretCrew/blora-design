@@ -203,8 +203,8 @@
 ### 3.6 RC
 
 - [ ] 冻结新增组件
-- [ ] 全浏览器回归记录（含 Firefox/WebKit 策略）
-- [ ] 人工 a11y 抽测记录
+- [x] 全浏览器回归策略成文 — [`browser-matrix.md`](./browser-matrix.md)（Chromium CI 必跑；Firefox/WebKit 实测附录待 RC 机器补）
+- [x] 人工 a11y 抽测记录 — [`a11y-spotcheck.md`](./a11y-spotcheck.md)
 - [ ] npm 安装 + CDN + 回滚演练
 - [ ] CSP / SSR import 专项证明
 
@@ -220,8 +220,8 @@
 - [x] Showcase 核心组件目录：已按 `component-manifest.json` 扩展为 87/87；单视图懒挂载，Preview / HTML 同源生成，并由结构门禁防止清单漂移
 - [x] 2.0 **i18n / locales** 运行时（P9-8）— `t()` + `en` / `zh-CN` 目录；组件 chrome 不再硬编码语言
 - [ ] add-on 独立 Playwright / visual 深矩阵（P9-6）
-- [ ] add-on Composite CE 后续迁移：Layout/Markdown 适配项（审查见 `addon-composite-ce-audit.md`；Thread、QRCode、Effects 已完成，Theming 无需重写）
-- [ ] FA WC 全面化（结构 CE 已默认；form association 仍按 ADR-015 分阶段）
+- [x] add-on Composite CE：`<blora-affix>` / `<blora-anchor sync-hash>` / `<blora-markdown>` 已交付；Smooth Scroll 仍为 Document service
+- [x] FA WC：Select / Switch / Checkbox / Number Input 使用 ElementInternals；其余 light-DOM 表单控件继续走内部原生 `input` 提交（ADR-015）
 - [x] runtime compat 已撤销；仓库外 `legacy/v1` 作为冻结基线继续保留
 - [x] 全量 `pnpm verify` 作为发布硬门 — 2026-08-09 单次完整 exit 0，见 §5
 
@@ -288,3 +288,5 @@
 | 2026-08-02 | §3.4 visual + lifecycle；§3.5 冻结/节奏/迁移/体积；完成 Beta 发布准备 |
 | 2026-08-19 | known differences 全部人工批准；版本统一为 `2.0.0-beta.0`；完成 Beta 发布演练并打 tag |
 | 2026-08-22 | 核心 i18n：`t()` + `en` / `zh-CN`；浮层走 OverlayController（含 slot 焦点）；文档入口改为 Showcase |
+| 2026-08-22 | 产品缺口收口：i18n 热更新、Drawer popover、QR 全版本编码器、Affix/Anchor/Markdown CE、部分 FA、framework.md 2.0、浏览器/a11y 记录 |
+| 2026-08-22 | 产品缺口收口：i18n 热更新、Drawer popover、QR 1–40 编码器、Affix/Anchor/Markdown CE、FA 主机、framework.md 2.0、浏览器/a11y 记录 |

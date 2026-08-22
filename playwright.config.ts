@@ -45,5 +45,10 @@ export default defineConfig({
       testMatch: /visual\.spec\.ts/,
       use: { ...devices["Desktop Chrome"] },
     },
+    {
+      name: "firefox",
+      testIgnore: /a11y\.spec\.ts|visual\.spec\.ts/,
+      use: { ...devices["Desktop Firefox"] },
+    },
   ],
 });

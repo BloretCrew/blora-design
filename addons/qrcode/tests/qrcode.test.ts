@@ -17,22 +17,20 @@ describe("QRCode add-on", () => {
     expect(typeof matrix[0]![0]).toBe("boolean");
   });
 
-  it("buildQRMatrix has correct size for QR version 3", () => {
+  it("buildQRMatrix size follows 21 + 4*(version-1)", () => {
     const matrix = buildQRMatrix("test");
-    expect(matrix.length).toBe(29);
-    expect(matrix[0]!.length).toBe(29);
+    expect(matrix.length).toBe(matrix[0]!.length);
+    expect((matrix.length - 21) % 4).toBe(0);
+    expect(matrix.length).toBeGreaterThanOrEqual(21);
   });
 
   it("buildQRMatrix has finder patterns at corners", () => {
     const matrix = buildQRMatrix("test");
-    // Top-left finder pattern: 7x7 block starting at (0,0)
-    // Top-left corner of finder should be solid
+    const size = matrix.length;
     expect(matrix[0]![0]).toBe(true);
     expect(matrix[6]![6]).toBe(true);
-    // Top-right finder pattern: starts at (size-7, 0)
-    expect(matrix[0]![22]).toBe(true);
-    // Bottom-left finder pattern: starts at (0, size-7)
-    expect(matrix[22]![0]).toBe(true);
+    expect(matrix[0]![size - 7]).toBe(true);
+    expect(matrix[size - 7]![0]).toBe(true);
   });
 
   it("buildQRMatrix produces different output for different text", () => {
@@ -91,10 +89,16 @@ describe("QRCode add-on", () => {
     expect(container.querySelector("canvas")).toBeTruthy();
   });
 
-  it("renderQRCode handles long text by truncating", () => {
+  it("renderQRCode encodes payloads longer than the old 80-byte cap", () => {
     const longText = "a".repeat(200);
     const container = document.createElement("div");
     expect(() => renderQRCode(container, longText, { size: 100 })).not.toThrow();
+    expect(container.hasAttribute("data-invalid")).toBe(false);
+    expect(container.querySelector("canvas")?.width).toBeGreaterThan(0);
+  });
+
+  it("buildQRMatrix throws only when the payload exceeds version 40", () => {
+    expect(() => buildQRMatrix("a".repeat(4000))).toThrow(/QR_TOO_LONG/);
   });
 
   it("createQRCodeController renders from data-text", () => {

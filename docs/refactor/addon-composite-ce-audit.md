@@ -11,8 +11,8 @@
 | Theming | 当前混合形态正确 | Palette Picker、Color Scheme Toggle 保持 CE；主题读写保持 service | 无需迁移 |
 | QR Code | 已迁移 | `<blora-qrcode>` + `buildQRMatrix()` / `renderQRCode()` 纯函数保留 | 已完成 |
 | Effects | 已按能力拆分迁移 | 7 个 CE + `textFx()` 重播 service + 快捷键 service | 已完成 |
-| Layout | 当前混合方向正确 | Sidebar 已是 CE；Affix 可迁；Anchor/ScrollSpy 需合并设计；Smooth Scroll 保留 service | P2 |
-| Markdown | 纯渲染器必须保留 service | 可增加安全默认的 `<blora-markdown>` 便利宿主，`renderMarkdown()` 保留 | P2 |
+| Layout | 已迁 Affix / Anchor | Sidebar + Affix + Anchor（`sync-hash` 合并 ScrollSpy）；Smooth Scroll 保留 service | 已完成 |
+| Markdown | 已迁宿主 | `<blora-markdown>` + `renderMarkdown()` 纯函数保留 | 已完成 |
 
 ## Thread
 
@@ -36,7 +36,7 @@ Thread 已从根 Headless controller 改为两个开放 Composite CE：
 
 已迁移为 `<blora-qrcode>`：连接时渲染，`value`、`size`、`label` 变化时重绘，`label` 写入 `role="img"` 与 `aria-label`。`buildQRMatrix()` 与 `renderQRCode()` 保留为纯函数/命令式入口，供 SSR 或自定义宿主使用。
 
-注意：当前矩阵实现仍是 beta 简化编码器（固定版本、输入截断），生产级扫描场景需自行验证，正式发布前应替换为完整编码器或引入成熟实现。
+编码器为 byte 模式、版本 1–40、L/M/Q/H（默认 M）。超出版本 40 容量时抛 `QR_TOO_LONG`。
 
 ## Effects
 
@@ -54,18 +54,15 @@ Thread 已从根 Headless controller 改为两个开放 Composite CE：
 
 ## Layout
 
-- Sidebar Layout 已经是 Composite CE，保持现状。
-- Affix 有明确宿主和滚动监听生命周期，可迁为 `<blora-affix>`。
-- Anchor 与 ScrollSpy 行为重叠，应先合并公共设计，再决定使用一个带 `sync-hash` 的 CE，避免两个重复组件。
-- Smooth Scroll 是 Document 级策略，没有稳定单一宿主，必须保持 service。
+- Sidebar Layout、`<blora-affix>`、`<blora-anchor>` 已是 Composite CE。
+- Anchor 的 `sync-hash` 承担原 ScrollSpy 写 hash 的职责。
+- Smooth Scroll 仍是 Document 级 service。
 
 ## Markdown
 
-`renderMarkdown()` 是可用于 SSR、预览和字符串处理的纯函数，不能被 CE 取代。可新增 `<blora-markdown>` 作为安全默认的声明式宿主，但必须先收紧并记录 raw HTML、安全策略和 source 生命周期。
+`<blora-markdown>` 已交付。源来自 `source` 属性或子级 `script[type=text/markdown]`。默认转义 HTML；`allow-html` 才放行原文。`renderMarkdown()` 仍用于 SSR 和字符串处理。
 
 ## 推荐后续顺序
 
-1. Layout：Affix，并统一设计 Anchor/ScrollSpy。
-2. Markdown：安全 contract 完成后增加便利 CE。
-3. Theming 不做结构重写，只补 contract 真值。
-4. QR Code 编码正确性在正式发布前收口。
+1. Theming 只补 contract 真值，不做结构重写。
+2. RC 前在 Linux 补 Firefox / WebKit 实测附录。

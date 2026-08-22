@@ -48,6 +48,8 @@ describe("overlay motion — discrete CSS path", () => {
     const drawer = readCss("components/drawer/drawer.css");
     expect(drawer).toContain("@starting-style");
     expect(drawer).toContain("allow-discrete");
+    expect(drawer).toContain(":popover-open");
+    expect(drawer).toContain("overflow: visible");
     expect(drawer).not.toContain("is-leaving");
     expect(drawer).not.toMatch(/@keyframes\s+blora-drawer-/);
 

@@ -294,3 +294,44 @@ export function initMarkdown(root: ParentNode = document, options?: MarkdownOpti
     });
   return () => ctrls.forEach((c) => c.destroy());
 }
+
+export const BLORA_MARKDOWN_TAG = "blora-markdown";
+
+const MarkdownBase: typeof HTMLElement =
+  typeof HTMLElement !== "undefined" ? HTMLElement : (class {} as typeof HTMLElement);
+
+/** Declarative markdown host. Source is `source` or a `script[type=text/markdown]` child. */
+export class BloraMarkdown extends MarkdownBase {
+  static get observedAttributes(): string[] {
+    return ["source", "allow-html", "inline"];
+  }
+
+  private source = "";
+
+  connectedCallback(): void {
+    const script = this.querySelector("script[type='text/markdown']");
+    this.source = this.getAttribute("source") ?? script?.textContent ?? "";
+    this.draw();
+  }
+
+  attributeChangedCallback(): void {
+    if (!this.isConnected) return;
+    if (this.hasAttribute("source")) this.source = this.getAttribute("source") ?? "";
+    this.draw();
+  }
+
+  private draw(): void {
+    this.classList.add("blora-md");
+    renderMarkdownTo(this, this.source, {
+      allowHtml: this.hasAttribute("allow-html"),
+      inline: this.hasAttribute("inline"),
+    });
+  }
+}
+
+export function defineBloraMarkdown(registry: CustomElementRegistry = customElements): void {
+  if (!registry || registry.get(BLORA_MARKDOWN_TAG)) return;
+  registry.define(BLORA_MARKDOWN_TAG, BloraMarkdown);
+}
+
+if (typeof customElements !== "undefined") defineBloraMarkdown(customElements);

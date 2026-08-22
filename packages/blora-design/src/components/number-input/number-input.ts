@@ -1,10 +1,13 @@
 import { BloraElement } from "../../core/blora-element.js";
+import { attachFormInternals, setHostFormValue } from "../../core/form-associated.js";
 import { t } from "../../core/i18n.js";
 import { createBloraIcon } from "../../core/icons.js";
 
 export const BLORA_NUMBER_INPUT_TAG = "blora-number-input";
 
 export class BloraNumberInput extends BloraElement {
+  static formAssociated = true;
+  private internals: ElementInternals | null = null;
   private reflecting = false;
 
   static get observedAttributes(): string[] {
@@ -31,6 +34,7 @@ export class BloraNumberInput extends BloraElement {
   }
 
   protected render(): void {
+    this.internals ??= attachFormInternals(this);
     const doc = this.ownerDocument;
     const root = doc.createElement("div");
     root.className = "blora-number-input";
@@ -50,7 +54,7 @@ export class BloraNumberInput extends BloraElement {
     input.id = fieldId;
     input.className = "blora-input blora-number-input__field";
     input.type = "number";
-    input.name = this.getAttribute("name") ?? "";
+    input.name = this.internals ? "" : (this.getAttribute("name") ?? "");
     input.value = this.getAttribute("value") ?? "0";
     for (const name of ["min", "max", "step"] as const) {
       const value = this.getAttribute(name);
@@ -65,6 +69,7 @@ export class BloraNumberInput extends BloraElement {
     control.append(input, controls);
     root.appendChild(control);
     this.replaceChildren(root);
+    setHostFormValue(this.internals, String(this.value));
   }
 
   private makeButton(label: string, icon: "minus" | "plus", direction: -1 | 1): HTMLButtonElement {
@@ -81,7 +86,7 @@ export class BloraNumberInput extends BloraElement {
   protected override sync(): void {
     const input = this.querySelector<HTMLInputElement>("input");
     if (!input) return;
-    input.name = this.getAttribute("name") ?? "";
+    input.name = this.internals ? "" : (this.getAttribute("name") ?? "");
     if (document.activeElement !== input) input.value = this.getAttribute("value") ?? input.value;
     for (const name of ["min", "max", "step"] as const) {
       const value = this.getAttribute(name);
@@ -94,6 +99,7 @@ export class BloraNumberInput extends BloraElement {
     this.querySelectorAll<HTMLButtonElement>(".blora-number-input__button").forEach((button) => {
       button.disabled = this.hasAttribute("disabled");
     });
+    setHostFormValue(this.internals, String(this.value));
   }
 
   protected bindEvents(): void {
@@ -114,6 +120,7 @@ export class BloraNumberInput extends BloraElement {
     this.reflecting = true;
     this.setAttribute("value", input.value);
     this.reflecting = false;
+    setHostFormValue(this.internals, input.value);
     this.dispatchEvent(new Event("change", { bubbles: true }));
   }
 }

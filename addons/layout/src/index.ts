@@ -690,3 +690,83 @@ export function initSmoothScroll(doc: Document = document): () => void {
   };
   return smoothCleanup;
 }
+
+export const BLORA_AFFIX_TAG = "blora-affix";
+export const BLORA_ANCHOR_TAG = "blora-anchor";
+
+/** Pins its contents while scrolling. */
+export class BloraAffix extends LayoutBase {
+  private controller: AffixController | null = null;
+
+  static get observedAttributes(): string[] {
+    return ["offset"];
+  }
+
+  connectedCallback(): void {
+    this.classList.add("blora-affix");
+    if (this.hasAttribute("offset")) this.setAttribute("data-offset", this.getAttribute("offset")!);
+    this.controller = createAffixController(this);
+  }
+
+  disconnectedCallback(): void {
+    this.controller?.destroy();
+    this.controller = null;
+  }
+
+  attributeChangedCallback(): void {
+    if (!this.isConnected) return;
+    if (this.hasAttribute("offset")) this.setAttribute("data-offset", this.getAttribute("offset")!);
+    this.controller?.destroy();
+    this.controller = createAffixController(this);
+  }
+}
+
+/** In-page section nav. `sync-hash` also writes the location hash like scroll-spy. */
+export class BloraAnchor extends LayoutBase {
+  private controllers: Destroyable[] = [];
+
+  static get observedAttributes(): string[] {
+    return ["offset", "sync-hash"];
+  }
+
+  connectedCallback(): void {
+    this.mount();
+  }
+
+  disconnectedCallback(): void {
+    this.controllers.forEach((c) => c.destroy());
+    this.controllers = [];
+  }
+
+  attributeChangedCallback(): void {
+    if (this.isConnected) this.mount();
+  }
+
+  private mount(): void {
+    this.controllers.forEach((c) => c.destroy());
+    this.controllers = [];
+    this.classList.add("blora-anchor");
+    if (this.hasAttribute("offset")) this.setAttribute("data-offset", this.getAttribute("offset")!);
+    this.controllers.push(createAnchorController(this));
+    if (this.hasAttribute("sync-hash")) {
+      if (this.hasAttribute("offset"))
+        this.setAttribute("data-blora-spy", this.getAttribute("offset")!);
+      this.controllers.push(createScrollSpyController(this));
+    }
+  }
+}
+
+export function defineBloraAffix(registry: CustomElementRegistry = customElements): void {
+  if (!registry || registry.get(BLORA_AFFIX_TAG)) return;
+  registry.define(BLORA_AFFIX_TAG, BloraAffix);
+}
+
+export function defineBloraAnchor(registry: CustomElementRegistry = customElements): void {
+  if (!registry || registry.get(BLORA_ANCHOR_TAG)) return;
+  registry.define(BLORA_ANCHOR_TAG, BloraAnchor);
+}
+
+if (typeof customElements !== "undefined") {
+  defineBloraAffix(customElements);
+  defineBloraAnchor(customElements);
+}

@@ -14,6 +14,28 @@ export interface DrawerController {
   destroy(): void;
 }
 
+function promoteDrawerLayer(root: HTMLElement): void {
+  if (typeof root.showPopover !== "function") return;
+  root.setAttribute("popover", "manual");
+  if (root.matches(":popover-open")) return;
+  try {
+    root.showPopover();
+  } catch {
+    /* UA without popover top-layer */
+  }
+}
+
+function dismissDrawerLayer(root: HTMLElement): void {
+  if (typeof root.hidePopover === "function") {
+    try {
+      root.hidePopover();
+    } catch {
+      /* already closed */
+    }
+  }
+  if (root.getAttribute("popover") === "manual") root.removeAttribute("popover");
+}
+
 export function createDrawerController(root: HTMLElement, host?: HTMLElement): DrawerController {
   if (typeof document === "undefined") {
     return { open: () => {}, close: () => {}, destroy: () => {} };
@@ -51,6 +73,7 @@ export function createDrawerController(root: HTMLElement, host?: HTMLElement): D
         });
         overlay.open();
         root.addEventListener("blora-close-request", onRequest);
+        promoteDrawerLayer(root);
         return;
       }
       root.removeAttribute("data-open");
@@ -66,6 +89,7 @@ export function createDrawerController(root: HTMLElement, host?: HTMLElement): D
       cancelMotion = whenMotionDone(root, () => {
         cancelMotion = null;
         stack?.close();
+        dismissDrawerLayer(root);
       });
     } finally {
       syncing = false;
@@ -90,6 +114,7 @@ export function createDrawerController(root: HTMLElement, host?: HTMLElement): D
       overlay?.destroy();
       overlay = null;
       cancelMotion?.();
+      dismissDrawerLayer(root);
     },
   };
 }

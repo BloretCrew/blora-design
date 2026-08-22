@@ -7,111 +7,22 @@
  * @packageDocumentation
  */
 
+import { encodeQRMatrix, type QrEcLevel } from "./encode.js";
+
+export type { QrEcLevel };
+
 export interface QRCodeOptions {
   /** Pixel size of the QR code (default: 148) */
   size?: number;
+  /** Error correction level (default M). */
+  ecLevel?: QrEcLevel;
 }
 
 /**
- * Build a QR code matrix from text.
- * Simplified implementation (beta quality) - uses finder patterns + data bits.
- * @internal
+ * Build a QR code matrix from text (byte mode, versions 1–40).
  */
-export function buildQRMatrix(text: string): boolean[][] {
-  let bytes = 0;
-  for (let i = 0; i < text.length; i++) {
-    const code = text.charCodeAt(i);
-    bytes += code < 128 ? 1 : code < 2048 ? 2 : 3;
-  }
-  if (bytes > 80) {
-    throw new Error("QR_TOO_LONG");
-  }
-  return qrMatrixFromText(text);
-}
-
-function qrMatrixFromText(text: string): boolean[][] {
-  const bytes: number[] = [];
-  for (let i = 0; i < text.length; i++) {
-    const code = text.charCodeAt(i);
-    if (code < 128) {
-      bytes.push(code);
-    } else if (code < 2048) {
-      bytes.push(192 | (code >> 6), 128 | (code & 63));
-    } else {
-      bytes.push(224 | (code >> 12), 128 | ((code >> 6) & 63), 128 | (code & 63));
-    }
-  }
-
-  const size = 29;
-  const m: (boolean | null)[][] = Array.from({ length: size }, () =>
-    Array<boolean | null>(size).fill(null),
-  );
-
-  const placeFinder = (x: number, y: number): void => {
-    for (let r = -1; r <= 7; r++) {
-      for (let c = -1; c <= 7; c++) {
-        const rr = y + r;
-        const cc = x + c;
-        if (rr < 0 || cc < 0 || rr >= size || cc >= size) continue;
-        const on =
-          r === -1 ||
-          c === -1 ||
-          r === 7 ||
-          c === 7 ||
-          (r >= 0 &&
-            r <= 6 &&
-            c >= 0 &&
-            c <= 6 &&
-            (r === 0 || r === 6 || c === 0 || c === 6 || (r >= 2 && r <= 4 && c >= 2 && c <= 4)));
-        m[rr]![cc] = on;
-      }
-    }
-  };
-
-  placeFinder(0, 0);
-  placeFinder(size - 7, 0);
-  placeFinder(0, size - 7);
-
-  for (let i = 8; i < size - 8; i++) {
-    if (m[6]![i] == null) m[6]![i] = i % 2 === 0;
-    if (m[i]![6] == null) m[i]![6] = i % 2 === 0;
-  }
-
-  let bit = 0;
-  const bits: number[] = [];
-  bits.push(0, 1, 0, 0); // byte mode
-  const len = bytes.length;
-  for (let i = 7; i >= 0; i--) bits.push((len >> i) & 1);
-  bytes.forEach((b) => {
-    for (let i = 7; i >= 0; i--) bits.push((b >> i) & 1);
-  });
-  while (bits.length % 8) bits.push(0);
-
-  let dir = -1;
-  let col = size - 1;
-  while (col > 0) {
-    if (col === 6) col--;
-    for (let i = 0; i < size; i++) {
-      const r = dir < 0 ? size - 1 - i : i;
-      for (let c = 0; c < 2; c++) {
-        const cc = col - c;
-        if (m[r]![cc] != null) continue;
-        const v = bit < bits.length ? bits[bit++]! : 0;
-        const mask = (r + cc) % 2 === 0;
-        m[r]![cc] = mask ? !v : !!v;
-      }
-    }
-    dir = -dir;
-    col -= 2;
-  }
-
-  const result: boolean[][] = Array.from({ length: size }, () => Array<boolean>(size).fill(false));
-  for (let r = 0; r < size; r++) {
-    for (let c = 0; c < size; c++) {
-      result[r]![c] = m[r]![c] ?? false;
-    }
-  }
-  return result;
+export function buildQRMatrix(text: string, ecLevel: QrEcLevel = "M"): boolean[][] {
+  return encodeQRMatrix(String(text ?? ""), ecLevel);
 }
 
 /**
@@ -140,7 +51,10 @@ export function renderQRCode(
 
   let modules: boolean[][];
   try {
-    modules = buildQRMatrix(String(text || ""));
+    modules = buildQRMatrix(
+      String(text || ""),
+      typeof options === "number" ? "M" : (options?.ecLevel ?? "M"),
+    );
     container.removeAttribute("data-invalid");
   } catch {
     container.setAttribute("data-invalid", "");

@@ -53,6 +53,7 @@ export abstract class BloraElement extends DOMBaseClass {
       this.sync();
     }
     this.bindEvents();
+    this.listen(this.ownerDocument, "blora-locale-change", () => this.onLocaleChange());
   }
 
   disconnectedCallback(): void {
@@ -88,6 +89,11 @@ export abstract class BloraElement extends DOMBaseClass {
   protected abstract bindEvents(): void;
   /** Patch the existing official tree after reconnect or a non-structural attribute change. */
   protected sync(): void {}
+  /** Chrome strings follow `setLocale` / `html lang` without remounting. */
+  protected onLocaleChange(): void {
+    if (!this._mounted) return;
+    this.sync();
+  }
   protected onDisconnect(): void {}
 
   /** Re-attach listeners/controllers without rebuilding the official tree. */

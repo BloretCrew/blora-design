@@ -377,6 +377,22 @@ function mountPalettePicker(root: HTMLElement): PalettePickerController {
   menu.addEventListener("click", onMenuClick);
   menu.addEventListener("keydown", onMenuKey);
   doc.addEventListener("click", onDoc);
+  const onLocale = () => {
+    menu?.querySelectorAll<HTMLElement>("[data-blora-palette-option]").forEach((option) => {
+      const key = option.getAttribute("data-blora-palette-option");
+      if (!key) return;
+      const name = option.querySelector(".blora-palette-card__name");
+      const desc = option.querySelector(".blora-palette-card__desc");
+      if (name) name.textContent = t(`theme.name.${key}`);
+      if (desc) desc.textContent = t(`theme.${key}`);
+    });
+    const title = menu?.querySelector(".blora-palette-picker__title");
+    const hint = menu?.querySelector(".blora-palette-picker__hint");
+    if (title) title.textContent = t("palette.title");
+    if (hint) hint.textContent = t("palette.hint");
+    sync();
+  };
+  doc.addEventListener("blora-locale-change", onLocale);
   doc.documentElement.addEventListener("blora-theme-change", onTheme);
   window.addEventListener("resize", onReposition);
   window.addEventListener("scroll", onReposition, true);
@@ -392,6 +408,7 @@ function mountPalettePicker(root: HTMLElement): PalettePickerController {
       menu!.removeEventListener("keydown", onMenuKey);
       menu!.removeEventListener("transitionend", finishClosePlace);
       doc.removeEventListener("click", onDoc);
+      doc.removeEventListener("blora-locale-change", onLocale);
       doc.documentElement.removeEventListener("blora-theme-change", onTheme);
       window.removeEventListener("resize", onReposition);
       window.removeEventListener("scroll", onReposition, true);

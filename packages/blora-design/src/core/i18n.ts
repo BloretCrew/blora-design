@@ -41,14 +41,16 @@ export function setLocale(tag: string, pack?: BloraLocalePack): void {
   if (pack) registerLocale(tag, pack);
   explicit = true;
   currentTag = normalizeTag(tag);
-  if (typeof document !== "undefined") {
-    document.dispatchEvent(new CustomEvent("blora-locale-change", { bubbles: true }));
-  }
+  if (typeof document !== "undefined") emitLocaleChange(document);
 }
 
 export function getLocale(): string {
   bindDocumentLocale();
   return currentTag;
+}
+
+function emitLocaleChange(doc: Document): void {
+  doc.dispatchEvent(new CustomEvent("blora-locale-change", { bubbles: true }));
 }
 
 export function applyDocumentLocale(
@@ -57,6 +59,7 @@ export function applyDocumentLocale(
   if (!doc) return;
   explicit = false;
   currentTag = normalizeTag(doc.documentElement.lang || "");
+  emitLocaleChange(doc);
 }
 
 function bindDocumentLocale(): void {

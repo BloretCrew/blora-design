@@ -2,6 +2,7 @@
  * Checkbox group: data-blora-checkall master toggle (v1 initCheckbox).
  */
 import { BloraElement } from "../../core/blora-element.js";
+import { attachFormInternals, setHostFormValue } from "../../core/form-associated.js";
 
 export const BLORA_CHECKBOX_TAG = "blora-checkbox";
 export interface CheckboxController {
@@ -59,6 +60,8 @@ interface CheckboxDefinition {
 
 /** Native checkbox CE; optional child definitions create a check-all group. */
 export class BloraCheckbox extends BloraElement {
+  static formAssociated = true;
+  private internals: ElementInternals | null = null;
   private controller: CheckboxController | null = null;
   private definitions: CheckboxDefinition[] | null = null;
   private initialLabel: string | null = null;
@@ -94,7 +97,16 @@ export class BloraCheckbox extends BloraElement {
     this.querySelector<HTMLInputElement>('input[type="checkbox"]')?.focus(options);
   }
 
+  private syncFormValue(): void {
+    if (this.definitions) {
+      setHostFormValue(this.internals, null);
+      return;
+    }
+    setHostFormValue(this.internals, this.checked ? (this.getAttribute("value") ?? "on") : null);
+  }
+
   protected render(): void {
+    this.internals ??= attachFormInternals(this);
     if (this.initialLabel === null) this.initialLabel = this.textContent?.trim() ?? "";
     if (!this.definitions) {
       const options = Array.from(this.children).filter(
@@ -135,9 +147,10 @@ export class BloraCheckbox extends BloraElement {
           label: this.getAttribute("label") ?? this.initialLabel,
           value: this.getAttribute("value") ?? "on",
         },
-        this.getAttribute("name") ?? "",
+        this.internals ? "" : (this.getAttribute("name") ?? ""),
       ),
     );
+    this.syncFormValue();
   }
 
   protected override sync(): void {
@@ -163,7 +176,7 @@ export class BloraCheckbox extends BloraElement {
       return;
     }
     const input = inputs[0]!;
-    input.name = name;
+    input.name = this.internals ? "" : name;
     input.value = this.getAttribute("value") ?? "on";
     input.checked = this.hasAttribute("checked");
     input.disabled = this.hasAttribute("disabled");
@@ -174,6 +187,7 @@ export class BloraCheckbox extends BloraElement {
       const last = label.lastChild;
       if (last?.nodeType === Node.TEXT_NODE) last.textContent = text;
     }
+    this.syncFormValue();
   }
 
   protected bindEvents(): void {
@@ -188,6 +202,7 @@ export class BloraCheckbox extends BloraElement {
         this.reflecting = false;
       }
       this.syncIndeterminate(root);
+      this.syncFormValue();
     };
     this.listen(root, "change", (event) => sync(event.target as HTMLInputElement));
     this.syncIndeterminate(root);

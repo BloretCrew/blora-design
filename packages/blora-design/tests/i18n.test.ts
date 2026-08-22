@@ -31,6 +31,18 @@ describe("i18n", () => {
     expect(t("tour.start")).toBe("Start tour");
   });
 
+  it("notifies mounted custom elements when the locale changes", async () => {
+    const { defineBloraEmpty, BLORA_EMPTY_TAG } = await import("../src/components/empty/empty.js");
+    defineBloraEmpty();
+    setLocale("en", en);
+    const el = document.createElement(BLORA_EMPTY_TAG);
+    document.body.append(el);
+    expect(el.querySelector(".blora-empty__title")?.textContent).toBe("No data");
+    setLocale("zh-CN", zhCN);
+    expect(el.querySelector(".blora-empty__title")?.textContent).toBe("暂无数据");
+    el.remove();
+  });
+
   it("keeps en and zh-CN catalogs on the same keys", () => {
     const enKeys = Object.keys(en.messages).sort();
     const zhKeys = Object.keys(zhCN.messages).sort();

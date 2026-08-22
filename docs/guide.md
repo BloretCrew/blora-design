@@ -120,7 +120,7 @@ ADR-015 已用 Composite CE 取代 ADR-013 的默认 headless 推荐。结构封
 
 ### 2.2 组件 chrome 的语言
 
-`import "@bloret-crew/blora-design/auto"` 会读 `document.documentElement.lang`：`zh*` 用 `zh-CN`，其余回落到 `en`。不要在组件源码里写死某一种语言。
+`import "@bloret-crew/blora-design/auto"` 会读 `document.documentElement.lang`：`zh*` 用 `zh-CN`，其余回落到 `en`。`setLocale()` 会让已经挂上的 CE 刷新自己生成的文案。不要在组件源码里写死某一种语言。
 
 ```js
 import { setLocale, t, registerLocale } from "@bloret-crew/blora-design";

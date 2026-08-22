@@ -1263,19 +1263,19 @@
               </blora-sidebar-layout-content>
             </blora-sidebar-layout>
           </section>
-          <section data-showcase-case="Affix"><h3>吸附</h3><div class="blora-affix" data-showcase-affix><div class="blora-affix__inner"><button class="blora-button" type="button">吸附操作</button></div></div></section>
-          <section data-showcase-case="Anchor"><h3>锚点与滚动监听</h3><div data-showcase-anchor-layout><nav class="blora-anchor" data-showcase-anchor data-offset="80"><a class="blora-anchor__link" href="#showcase-anchor-a">Section A</a><a class="blora-anchor__link" href="#showcase-anchor-b">Section B</a><a class="blora-anchor__link" href="#showcase-anchor-c">Section C</a></nav><div data-showcase-anchor-content><section id="showcase-anchor-a"><h4>Section A</h4><p>平滑滚动与活动项同步。</p></section><section id="showcase-anchor-b"><h4>Section B</h4><p>滚动监听会更新导航状态。</p></section><section id="showcase-anchor-c"><h4>Section C</h4><p>键盘和链接语义保持原生。</p></section></div></div></section>
+          <section data-showcase-case="Affix"><h3>吸附</h3><blora-affix offset="12"><button class="blora-button" type="button">吸附操作</button></blora-affix></section>
+          <section data-showcase-case="Anchor"><h3>锚点与滚动监听</h3><div data-showcase-anchor-layout><blora-anchor offset="80" sync-hash><a class="blora-anchor__link" href="#showcase-anchor-a">Section A</a><a class="blora-anchor__link" href="#showcase-anchor-b">Section B</a><a class="blora-anchor__link" href="#showcase-anchor-c">Section C</a></blora-anchor><div data-showcase-anchor-content><section id="showcase-anchor-a"><h4>Section A</h4><p>平滑滚动与活动项同步。</p></section><section id="showcase-anchor-b"><h4>Section B</h4><p>滚动监听会更新导航状态。</p></section><section id="showcase-anchor-c"><h4>Section C</h4><p>键盘和链接语义保持原生。</p></section></div></div></section>
         </div>
       </template>
-      <template data-addon="markdown" data-label="Markdown" data-group="数据展示" data-eyebrow="Data display" data-kind="Service" data-description="默认安全转义并渲染标题、强调、列表、引用、链接和代码块。">
-        <article data-blora-markdown data-showcase-markdown>
+      <template data-addon="markdown" data-label="Markdown" data-group="数据展示" data-eyebrow="Data display" data-kind="Composite CE" data-description="默认安全转义并渲染标题、强调、列表、引用、链接和代码块。">
+        <blora-markdown>
           <script type="text/markdown"># Blora Design
 
 > 安全、可组合、令牌驱动。
 
 - **默认转义 HTML**
 - 支持列表与 `inline code`</script>
-        </article>
+        </blora-markdown>
       </template>
       <template data-addon="qrcode" data-label="QR Code" data-group="数据展示" data-eyebrow="Data display" data-kind="Composite CE" data-description="将文本或链接渲染为带无障碍标签的二维码画布。">
         <figure>
@@ -1933,15 +1933,10 @@
             window.BloraEffects.initShortcutHints(mount);
           }
           if (name === "layout") {
-            mount.querySelectorAll("[data-showcase-affix]").forEach((target) => window.BloraLayout.createAffixController(target));
             window.BloraLayout.initSmoothScroll(mount.ownerDocument);
-            mount.querySelectorAll("[data-showcase-anchor]").forEach((target) => window.BloraLayout.createAnchorController(target));
           }
           if (name === "markdown") {
-            const target = mount.querySelector("[data-blora-markdown], [data-showcase-markdown]");
-            const script = target.querySelector("script[type='text/markdown']");
-            const source = (script?.textContent || target.textContent || "").trim();
-            window.BloraMarkdown.renderMarkdownTo(target, source);
+            /* <blora-markdown> renders itself on connect. */
           }
           if (name === "qrcode") {
             /* <blora-qrcode> renders itself on connect. */

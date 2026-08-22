@@ -157,6 +157,22 @@ describe("layout add-on", () => {
     ctrl.destroy();
   });
 
+  it("blora-affix owns the inner wrap", () => {
+    document.body.innerHTML = `<blora-affix offset="8"><span>Hi</span></blora-affix>`;
+    const el = document.querySelector("blora-affix")!;
+    expect(el.classList.contains("blora-affix")).toBe(true);
+    expect(el.querySelector(".blora-affix__inner")).not.toBeNull();
+  });
+
+  it("blora-anchor marks links", () => {
+    document.body.innerHTML = `
+      <div id="s1"></div>
+      <blora-anchor offset="80"><a href="#s1">一</a></blora-anchor>`;
+    const el = document.querySelector("blora-anchor")!;
+    expect(el.classList.contains("blora-anchor")).toBe(true);
+    expect(el.querySelector("a")?.classList.contains("blora-anchor__link")).toBe(true);
+  });
+
   it("initSmoothScroll installs once", () => {
     const off = initSmoothScroll(document);
     expect(typeof off).toBe("function");
