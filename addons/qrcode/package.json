@@ -29,5 +29,9 @@
   },
   "peerDependencies": {
     "@bloret-crew/blora-design": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/qrcode": "^1.5.6",
+    "qrcode": "^1.5.4"
   }
 }

@@ -287,6 +287,7 @@
 | 2026-08-02 | **Pre-Beta 包面**：JS 子路径、IIFE global、CEM/manifest/api-snapshot、llms、provenance opt-in；**未进入 §3.5 Beta 发版** |
 | 2026-08-02 | §3.4 visual + lifecycle；§3.5 冻结/节奏/迁移/体积；完成 Beta 发布准备 |
 | 2026-08-19 | known differences 全部人工批准；版本统一为 `2.0.0-beta.0`；完成 Beta 发布演练并打 tag |
+| 2026-08-22 | 发版前收口批次：① QR 编码器升级为多分段（numeric/alphanumeric/kanji + ECI/mask 选项，DP 最优分段），对照参考实现全 mask 逐位一致；修掉旧编码器三个从未被验证的缺陷（finder 分隔环涂反、format 第二副本横/纵条位序错）；② form-associated 铺满 range/slider/search/upload/tags-input/otp（ElementInternals，内层原生控件在可用时不占名）；③ 覆盖层滚动锁从 body `position:fixed` 快照改为 `html{overflow:hidden}`（修复 Firefox 下 position:sticky 头部失去 scrollport 跳出的真实缺陷）；④ Speed Dial 触发激活改为宿主级事件委托 + 子树重建自愈（MutationObserver→rebind）+ 事件实例去重（修 Chromium 重复绑定导致的双重开合）；⑤ Firefox/WebKit 本地实测补录到 browser-matrix.md 附录；⑥ Thread 撰写区「编辑/预览」切换新增 segmented 同款滑动指示器（替换原静态背景切换）。门禁维持 Chromium 三 project 不变。 |
 | 2026-08-22 | 核心 i18n：`t()` + `en` / `zh-CN`；浮层走 OverlayController（含 slot 焦点）；文档入口改为 Showcase |
 | 2026-08-22 | 产品缺口收口：i18n 热更新、Drawer popover、QR 全版本编码器、Affix/Anchor/Markdown CE、部分 FA、framework.md 2.0、浏览器/a11y 记录；add-on 体积预算提至 136KiB（编码器 + 新 CE + locale 目录） |
 | 2026-08-22 | 产品缺口收口：i18n 热更新、Drawer popover、QR 1–40 编码器、Affix/Anchor/Markdown CE、FA 主机、framework.md 2.0、浏览器/a11y 记录 |

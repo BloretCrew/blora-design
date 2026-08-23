@@ -3,6 +3,7 @@
  * Click dropzone opens file picker; lists selected file names.
  */
 import { BloraElement } from "../../core/blora-element.js";
+import { attachFormInternals, setHostFormValue } from "../../core/form-associated.js";
 import { t } from "../../core/i18n.js";
 import { createBloraIcon } from "../../core/icons.js";
 
@@ -137,7 +138,25 @@ export function createUploadController(root: HTMLElement): UploadController {
 
 /** File upload CE that owns dropzone, file input and selected-file list. */
 export class BloraUpload extends BloraElement {
+  static formAssociated = true;
+
   private controller: UploadController | null = null;
+  private internals: ElementInternals | null = null;
+
+  /** Submitted as File entries under `name` via ElementInternals. */
+  private syncFormValue(): void {
+    if (!this.internals) return;
+    const input = this.querySelector<HTMLInputElement>('input[type="file"]');
+    const files = input?.files;
+    if (!files || files.length === 0) {
+      setHostFormValue(this.internals, null);
+      return;
+    }
+    const name = this.getAttribute("name") ?? "";
+    const data = new FormData();
+    for (const file of Array.from(files)) data.append(name, file, file.name);
+    setHostFormValue(this.internals, data);
+  }
 
   static get observedAttributes(): string[] {
     return ["prompt", "hint", "accept", "multiple", "name", "disabled", "variant"];
@@ -168,6 +187,7 @@ export class BloraUpload extends BloraElement {
   }
 
   protected render(): void {
+    this.internals ??= attachFormInternals(this);
     const root = this.ownerDocument.createElement("div");
     root.className = "blora-upload";
     root.dataset.bloraGenerated = "";
@@ -178,7 +198,7 @@ export class BloraUpload extends BloraElement {
     const input = this.ownerDocument.createElement("input");
     input.className = compact ? "blora-file-picker__input" : "blora-dropzone__input";
     input.type = "file";
-    input.name = this.getAttribute("name") ?? "";
+    input.name = this.internals ? "" : (this.getAttribute("name") ?? "");
     input.accept = this.getAttribute("accept") ?? "";
     input.multiple = this.hasAttribute("multiple");
     input.disabled = disabled;
@@ -242,6 +262,7 @@ export class BloraUpload extends BloraElement {
       root.append(zone, input, list);
     }
     this.replaceChildren(root);
+    this.syncFormValue();
   }
 
   protected override sync(): void {
@@ -251,7 +272,7 @@ export class BloraUpload extends BloraElement {
     const disabled = this.hasAttribute("disabled");
     const input = root.querySelector<HTMLInputElement>('input[type="file"]');
     if (input) {
-      input.name = this.getAttribute("name") ?? "";
+      input.name = this.internals ? "" : (this.getAttribute("name") ?? "");
       input.accept = this.getAttribute("accept") ?? "";
       input.multiple = this.hasAttribute("multiple");
       input.disabled = disabled;
@@ -283,6 +304,7 @@ export class BloraUpload extends BloraElement {
     this.controller?.destroy();
     this.controller = null;
     if (root && !this.hasAttribute("disabled")) this.controller = createUploadController(root);
+    if (root) this.listen(root, "change", () => this.syncFormValue());
   }
 
   protected onDisconnect(): void {

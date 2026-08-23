@@ -290,33 +290,39 @@ test("dialog locks body scroll when open", async ({ page }) => {
   );
 
   const lockBefore = await page.evaluate(() => ({
-    position: document.body.style.position,
     locked: document.documentElement.dataset.bloraScrollLocked ?? "",
+    rootOverflow: document.documentElement.style.overflow,
+    bodyPosition: document.body.style.position,
   }));
-  expect(lockBefore.position).not.toBe("fixed");
   expect(lockBefore.locked).toBe("");
+  expect(lockBefore.rootOverflow).not.toBe("hidden");
+  expect(lockBefore.bodyPosition).not.toBe("fixed");
 
   await page
     .locator("#dialog")
     .evaluate((el: HTMLElement) => (el as unknown as { show: () => void }).show());
   await page.waitForTimeout(50);
   const lockDuring = await page.evaluate(() => ({
-    position: document.body.style.position,
     locked: document.documentElement.dataset.bloraScrollLocked ?? "",
-    overflow: document.body.style.overflow,
+    rootOverflow: document.documentElement.style.overflow,
+    bodyPosition: document.body.style.position,
   }));
-  expect(lockDuring.position).toBe("fixed");
+  /* Lock freezes the viewport via html overflow; the body stays in flow so
+     position:sticky headers keep working (Firefox loses them under fixed). */
   expect(lockDuring.locked).toBe("1");
-  expect(lockDuring.overflow).not.toBe("hidden");
+  expect(lockDuring.rootOverflow).toBe("hidden");
+  expect(lockDuring.bodyPosition).not.toBe("fixed");
 
   await page.keyboard.press("Escape");
   await page.waitForTimeout(300);
   const lockAfter = await page.evaluate(() => ({
-    position: document.body.style.position,
     locked: document.documentElement.dataset.bloraScrollLocked ?? "",
+    rootOverflow: document.documentElement.style.overflow,
+    bodyPosition: document.body.style.position,
   }));
-  expect(lockAfter.position).not.toBe("fixed");
   expect(lockAfter.locked).toBe("");
+  expect(lockAfter.rootOverflow).not.toBe("hidden");
+  expect(lockAfter.bodyPosition).not.toBe("fixed");
 });
 
 test("dialog scroll lock keeps a sticky navbar in the viewport", async ({ page }) => {
@@ -350,20 +356,20 @@ test("dialog scroll lock keeps a sticky navbar in the viewport", async ({ page }
   await page
     .locator("#dialog")
     .evaluate((el: HTMLElement) => (el as unknown as { show: () => void }).show());
-  expect(await navbarTop()).toBeGreaterThanOrEqual(0);
-  expect(await navbarTop()).toBeLessThan(2);
+  await expect.poll(navbarTop).toBeGreaterThanOrEqual(0);
+  await expect.poll(navbarTop).toBeLessThan(2);
   await page.keyboard.press("Escape");
   await page.waitForTimeout(300);
 
   await page.evaluate(() => window.scrollTo(0, 480));
   await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(400);
-  expect(await navbarTop()).toBeGreaterThanOrEqual(0);
-  expect(await navbarTop()).toBeLessThan(2);
+  await expect.poll(navbarTop).toBeGreaterThanOrEqual(0);
+  await expect.poll(navbarTop).toBeLessThan(2);
 
   await page
     .locator("#dialog")
     .evaluate((el: HTMLElement) => (el as unknown as { show: () => void }).show());
-  expect(await navbarTop()).toBeGreaterThanOrEqual(0);
-  expect(await navbarTop()).toBeLessThan(2);
+  await expect.poll(navbarTop).toBeGreaterThanOrEqual(0);
+  await expect.poll(navbarTop).toBeLessThan(2);
   await expect(page.locator("html")).toHaveAttribute("data-blora-scroll-locked", "1");
 });

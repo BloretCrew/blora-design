@@ -274,6 +274,7 @@ function composerSlot(node: Node): keyof ComposerAssigned {
 /** Open comment composer shell; consumers own toolbar and submit behavior. */
 export class BloraThreadComposer extends BloraElement {
   private assigned: ComposerAssigned | null = null;
+  private indicatorObserver: ResizeObserver | null = null;
 
   static get observedAttributes(): string[] {
     return ["tab", "edit-label", "preview-label"];
@@ -305,7 +306,22 @@ export class BloraThreadComposer extends BloraElement {
     }
     const preview = this.querySelector<HTMLElement>(".blora-thread-composer__preview");
     if (preview) preview.hidden = next !== "preview";
+    this.moveTabIndicator();
     if (emit) this.emit("blora-thread-tab-change", { tab: next });
+  }
+
+  /** Slide the tab pill to the active option, mirroring the segmented control. */
+  private moveTabIndicator(): void {
+    const tabs = this.querySelector<HTMLElement>(".blora-thread-composer__tabs");
+    const active = tabs?.querySelector<HTMLElement>('[data-blora-thread-tab][data-active]');
+    const indicator = tabs?.querySelector<HTMLElement>(
+      ".blora-thread-composer__tabs-indicator",
+    );
+    if (!tabs || !active || !indicator) return;
+    const tabsRect = tabs.getBoundingClientRect();
+    const activeRect = active.getBoundingClientRect();
+    indicator.style.left = `${activeRect.left - tabsRect.left}px`;
+    indicator.style.width = `${activeRect.width}px`;
   }
 
   protected render(): void {
@@ -325,6 +341,10 @@ export class BloraThreadComposer extends BloraElement {
     tabs.className = "blora-thread-composer__tabs";
     tabs.dataset.bloraGenerated = "";
     tabs.setAttribute("role", "tablist");
+    const indicator = doc.createElement("span");
+    indicator.className = "blora-thread-composer__tabs-indicator";
+    indicator.setAttribute("aria-hidden", "true");
+    tabs.appendChild(indicator);
     for (const tab of ["edit", "preview"]) {
       const button = doc.createElement("button");
       button.type = "button";
@@ -365,6 +385,12 @@ export class BloraThreadComposer extends BloraElement {
   }
 
   protected bindEvents(): void {
+    const tabs = this.querySelector<HTMLElement>(".blora-thread-composer__tabs");
+    if (tabs && typeof ResizeObserver !== "undefined") {
+      this.indicatorObserver?.disconnect();
+      this.indicatorObserver = new ResizeObserver(() => this.moveTabIndicator());
+      this.indicatorObserver.observe(tabs);
+    }
     this.listen(this, "click", (event) => {
       const target = (event.target as Element | null)?.closest<HTMLElement>(
         "[data-blora-thread-tab]",
@@ -382,6 +408,11 @@ export class BloraThreadComposer extends BloraElement {
       this.setTab(next);
       this.querySelector<HTMLElement>(`[data-blora-thread-tab][data-tab="${next}"]`)?.focus();
     });
+  }
+
+  protected onDisconnect(): void {
+    this.indicatorObserver?.disconnect();
+    this.indicatorObserver = null;
   }
 
   private takeAssigned(): ComposerAssigned {

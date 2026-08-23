@@ -20,13 +20,28 @@ function createNamedIcon(
 export interface SpeedDialController {
   open(): void;
   close(): void;
+  /** Flip open state; used by host-level delegation so re-rendered subtrees stay live. */
+  toggle(): void;
   destroy(): void;
 }
 
+export interface SpeedDialControllerOptions {
+  /** Skip the controller's own trigger click binding (host delegates instead). */
+  triggerDelegated?: boolean;
+}
+
 /** v1 initSpeedDial parity: menu roles, keyboard, outside close. */
-export function createSpeedDialController(root: HTMLElement): SpeedDialController {
+export function createSpeedDialController(
+  root: HTMLElement,
+  options: SpeedDialControllerOptions = {},
+): SpeedDialController {
   if (typeof document === "undefined") {
-    return { open: () => {}, close: () => {}, destroy: () => {} };
+    return {
+      open: () => {},
+      close: () => {},
+      toggle: () => {},
+      destroy: () => {},
+    };
   }
 
   const doc = root.ownerDocument;
@@ -41,7 +56,7 @@ export function createSpeedDialController(root: HTMLElement): SpeedDialControlle
     "[data-blora-speed-dial-main], .blora-speed-dial__main",
   );
   if (!trigger || !actions) {
-    return { open: () => {}, close: () => {}, destroy: () => {} };
+    return { open: () => {}, close: () => {}, toggle: () => {}, destroy: () => {} };
   }
 
   const actionItems = Array.from(
@@ -160,7 +175,7 @@ export function createSpeedDialController(root: HTMLElement): SpeedDialControlle
     trigger.focus();
   };
 
-  trigger.addEventListener("click", onTriggerClick);
+  if (!options.triggerDelegated) trigger.addEventListener("click", onTriggerClick);
   trigger.addEventListener("keydown", onTriggerKey);
   root.addEventListener("keydown", onDialKey);
   actions.addEventListener("click", onActionsClick);
@@ -171,8 +186,9 @@ export function createSpeedDialController(root: HTMLElement): SpeedDialControlle
   return {
     open: () => setOpen(true),
     close: () => setOpen(false),
+    toggle: () => setOpen(!root.hasAttribute("data-open")),
     destroy() {
-      trigger.removeEventListener("click", onTriggerClick);
+      if (!options.triggerDelegated) trigger.removeEventListener("click", onTriggerClick);
       trigger.removeEventListener("keydown", onTriggerKey);
       root.removeEventListener("keydown", onDialKey);
       actions.removeEventListener("click", onActionsClick);
@@ -196,6 +212,8 @@ export class BloraSpeedDial extends BloraElement {
   private controller: SpeedDialController | null = null;
   private definitions: SpeedDialActionDefinition[] | null = null;
   private reflecting = false;
+  private dialTreeObserver: MutationObserver | null = null;
+  private lastToggleEvent: Event | null = null;
 
   static get observedAttributes(): string[] {
     return [
@@ -318,9 +336,50 @@ export class BloraSpeedDial extends BloraElement {
   }
 
   protected bindEvents(): void {
+    this.controller?.destroy();
+    this.controller = null;
     const root = this.querySelector<HTMLElement>(".blora-speed-dial");
     if (!root) return;
-    this.controller = createSpeedDialController(root);
+    // Trigger activation is delegated on the host: showcase hydration can
+    // rebuild the inner subtree after binding, which orphans node-level
+    // listeners (dead dial on slower engines). Host delegation survives it,
+    // and the observer below rebinds the rest of the controller to the new
+    // subtree as soon as the swap lands. Duplicate listener generations have
+    // been observed on Chromium; the last-event guard makes a doubled
+    // dispatch a no-op instead of an open/close flicker.
+    this.controller = createSpeedDialController(root, { triggerDelegated: true });
+    this.dialTreeObserver?.disconnect();
+    this.dialTreeObserver = new MutationObserver(() => {
+      if (!this.isConnectedInternal) return;
+      this.rebind();
+    });
+    this.dialTreeObserver.observe(this, { childList: true });
+    this.listen(this, "click", (event) => {
+      if (this.lastToggleEvent === event) return;
+      const target = event.target as Element | null;
+      if (!target || !target.closest("[data-blora-speed-dial-trigger], .blora-speed-dial__trigger"))
+        return;
+      if (!this.contains(target)) return;
+      this.lastToggleEvent = event;
+      event.stopPropagation();
+      this.controller?.toggle();
+    });
+    this.listen(this, "keydown", (event) => {
+      const keyEvent = event as KeyboardEvent;
+      if (this.lastToggleEvent === event) return;
+      const target = event.target as Element | null;
+      if (
+        !target ||
+        !target.closest("[data-blora-speed-dial-trigger], .blora-speed-dial__trigger") ||
+        !this.contains(target)
+      )
+        return;
+      if (keyEvent.key !== "Enter" && keyEvent.key !== " ") return;
+      this.lastToggleEvent = event;
+      event.preventDefault();
+      event.stopPropagation();
+      this.controller?.toggle();
+    });
     this.listen(root, "blora-speed-dial-toggle", (event) => {
       const open = (event as CustomEvent<{ open: boolean }>).detail.open;
       this.reflecting = true;
@@ -331,6 +390,8 @@ export class BloraSpeedDial extends BloraElement {
   }
 
   protected onDisconnect(): void {
+    this.dialTreeObserver?.disconnect();
+    this.dialTreeObserver = null;
     this.controller?.destroy();
     this.controller = null;
   }

@@ -7,7 +7,7 @@
   "tagName": "blora-tags-input",
   "since": "2.0.0",
   "requiresJavaScript": true,
-  "formAssociated": false,
+  "formAssociated": true,
   "attributes": {
     "values": {
       "type": "string",

@@ -16,13 +16,20 @@ export interface QRCodeOptions {
   size?: number;
   /** Error correction level (default M). */
   ecLevel?: QrEcLevel;
+  /** ECI assignment number written ahead of the first segment (e.g. 26 = UTF-8). */
+  eci?: number;
 }
 
 /**
- * Build a QR code matrix from text (byte mode, versions 1–40).
+ * Build a QR code matrix from text. Segments pick numeric/alphanumeric/byte/kanji
+ * automatically; versions 1–40.
  */
-export function buildQRMatrix(text: string, ecLevel: QrEcLevel = "M"): boolean[][] {
-  return encodeQRMatrix(String(text ?? ""), ecLevel);
+export function buildQRMatrix(
+  text: string,
+  ecLevel: QrEcLevel = "M",
+  encodeOptions?: { eci?: number; mask?: number },
+): boolean[][] {
+  return encodeQRMatrix(String(text ?? ""), ecLevel, encodeOptions);
 }
 
 /**
@@ -54,6 +61,7 @@ export function renderQRCode(
     modules = buildQRMatrix(
       String(text || ""),
       typeof options === "number" ? "M" : (options?.ecLevel ?? "M"),
+      typeof options === "number" ? undefined : options?.eci === undefined ? undefined : { eci: options.eci },
     );
     container.removeAttribute("data-invalid");
   } catch {

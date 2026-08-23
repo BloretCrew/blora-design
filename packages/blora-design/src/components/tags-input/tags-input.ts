@@ -3,6 +3,7 @@
  * Enter/comma adds tags; close button removes.
  */
 import { BloraElement } from "../../core/blora-element.js";
+import { attachFormInternals, setHostFormValue } from "../../core/form-associated.js";
 import { t } from "../../core/i18n.js";
 
 export const BLORA_TAGS_INPUT_TAG = "blora-tags-input";
@@ -59,8 +60,17 @@ export function createTagsInputController(root: HTMLElement): TagsInputControlle
 
 /** Tags input CE that owns tag and input markup. */
 export class BloraTagsInput extends BloraElement {
+  static formAssociated = true;
+
   private controller: TagsInputController | null = null;
   private reflecting = false;
+  private internals: ElementInternals | null = null;
+
+  /** Submitted as one comma-joined entry matching the `values` attribute format. */
+  private syncFormValue(): void {
+    const joined = this.values.join(",");
+    setHostFormValue(this.internals, joined === "" ? null : joined);
+  }
 
   static get observedAttributes(): string[] {
     return ["values", "placeholder", "disabled", "label"];
@@ -86,6 +96,7 @@ export class BloraTagsInput extends BloraElement {
   }
 
   protected render(): void {
+    this.internals ??= attachFormInternals(this);
     const values = (this.getAttribute("values") ?? "")
       .split(",")
       .map((value) => value.trim())
@@ -114,6 +125,7 @@ export class BloraTagsInput extends BloraElement {
     input.disabled = this.hasAttribute("disabled");
     root.appendChild(input);
     this.replaceChildren(root);
+    this.syncFormValue();
   }
 
   protected override sync(): void {
@@ -129,6 +141,7 @@ export class BloraTagsInput extends BloraElement {
       }
     }
     this.rebind();
+    this.syncFormValue();
   }
 
   protected bindEvents(): void {
@@ -141,6 +154,7 @@ export class BloraTagsInput extends BloraElement {
       this.setAttribute("values", values.join(","));
       this.reflecting = false;
       this.emit("blora-change", { values });
+      this.syncFormValue();
     };
     this.listen(root, "keydown", (event) => {
       const keyboardEvent = event as KeyboardEvent;

@@ -26,10 +26,13 @@ GitHub Actions `Browser Tests` job：
 - 策略：RC 前用 Playwright WebKit 跑 dialog / command / tour / drawer 四条 overlay 规格，再在一台 Safari 上人工点 Showcase 浮层。
 - 记录位置：本文件附录，发 RC 时补日期与结果。
 
-## 附录（待 RC 填写）
+## 附录（实测记录）
 
 | 引擎 | 日期 | 结果 | 备注 |
 |------|------|------|------|
 | Chromium CI | 随 master | 以 Actions 为准 | required |
-| Firefox 本地/RC | _待填_ | | |
-| WebKit / Safari | _待填_ | | overlay 抽测 |
+| Firefox（Playwright，Windows 开发机） | 2026-08-22 | 交互套件 70/70 通过（修复后） | 修了两处引擎差异：① 路由切换保侧栏位置的用例改键盘激活导航（Playwright 点击前的隐式滚动在 FF 滚的是侧栏容器本身，Chrome 滚的是窗口——自动化差异，非产品缺陷）；② dialog 滚动锁从 body `position:fixed` 快照改为 `html{overflow:hidden}`——FF 下 fixed 快照会让 position:sticky 头部失去 scrollport 而跳出视口（真实产品 bug，见 overlay-controller）。 |
+| WebKit（Playwright，Windows 开发机） | 2026-08-22 | 交互套件全量通过（修复后） | ① Speed Dial 八连开用例改 `HTMLElement.click()` 激活：WK 异步滚动合成会让物理点击落点漂移、被 outside-close 吞掉；② 滚动锁同上。五 project 全并行时 WK 有资源性超时抖动，验证需限 workers。 |
+| Safari 真机人工抽测 | _待填_ | | RC 前在真 Safari 上人工过一遍 Showcase 浮层 |
+
+> 说明：Firefox/WebKit 目前是本地实测（Windows），与 CI 的 Linux Chromium 字体/滚动条环境仍有差异；RC 发版前按上文策略在 Linux 上再跑一次 Firefox。CI required 门禁维持 Chromium 三项目不变。

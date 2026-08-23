@@ -22,13 +22,12 @@ describe("OverlayController", () => {
     });
 
     controller.open();
-    expect(foreignDocument.body.style.position).toBe("fixed");
+    expect(foreignDocument.documentElement.style.overflow).toBe("hidden");
     expect(foreignDocument.documentElement.dataset.bloraScrollLocked).toBe("1");
-    expect(document.body.style.position).not.toBe("fixed");
     expect(document.documentElement.dataset.bloraScrollLocked).toBeUndefined();
 
     controller.close();
-    expect(foreignDocument.body.style.position).toBe("");
+    expect(foreignDocument.documentElement.style.overflow).toBe("");
     expect(foreignDocument.documentElement.dataset.bloraScrollLocked).toBeUndefined();
   });
 
@@ -50,9 +49,8 @@ describe("OverlayController", () => {
     local.open();
     foreign.open();
     local.close();
-    expect(document.body.style.position).not.toBe("fixed");
     expect(document.documentElement.dataset.bloraScrollLocked).toBeUndefined();
-    expect(foreignDocument.body.style.position).toBe("fixed");
+    expect(foreignDocument.documentElement.style.overflow).toBe("hidden");
     expect(foreignDocument.documentElement.dataset.bloraScrollLocked).toBe("1");
 
     foreign.close();
@@ -70,16 +68,15 @@ describe("OverlayController", () => {
       closeOnOutsidePointer: false,
     });
 
+    /* The lock freezes the viewport itself (html overflow hidden); the body
+       stays in flow so position:sticky headers keep working in every engine. */
     controller.open();
-    expect(document.body.style.position).toBe("fixed");
-    expect(document.body.style.top).toMatch(/^-?\d+(\.\d+)?px$/);
-    expect(document.body.style.overflow).toBe("visible");
+    expect(document.body.style.position).not.toBe("fixed");
     expect(document.documentElement.style.overflow).toBe("hidden");
     expect(document.documentElement.dataset.bloraScrollLocked).toBe("1");
 
     controller.close();
     expect(document.body.style.position).toBe("");
-    expect(document.body.style.top).toBe("");
     expect(document.body.style.overflow).toBe(previousOverflow);
     expect(document.documentElement.style.overflow).toBe("");
     expect(document.documentElement.dataset.bloraScrollLocked).toBeUndefined();

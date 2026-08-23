@@ -50,5 +50,10 @@ export default defineConfig({
       testIgnore: /a11y\.spec\.ts|visual\.spec\.ts/,
       use: { ...devices["Desktop Firefox"] },
     },
+    {
+      name: "webkit",
+      testIgnore: /a11y\.spec\.ts|visual\.spec\.ts/,
+      use: { ...devices["Desktop Safari"] },
+    },
   ],
 });

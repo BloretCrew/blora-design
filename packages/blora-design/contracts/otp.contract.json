@@ -7,7 +7,7 @@
   "tagName": "blora-otp",
   "since": "2.0.0",
   "requiresJavaScript": true,
-  "formAssociated": false,
+  "formAssociated": true,
   "attributes": {
     "length": {
       "type": "number",

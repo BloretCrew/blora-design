@@ -1,6 +1,7 @@
 /**
- * Byte-mode QR encoder (ISO/IEC 18004). Versions 1–40, levels L/M/Q/H.
- * Default error correction is M.
+ * Multi-segment QR encoder (ISO/IEC 18004). Versions 1–40, levels L/M/Q/H.
+ * Segments pick numeric/alphanumeric/byte/kanji automatically; an optional ECI
+ * header can be written ahead of the first segment. Default error correction is M.
  */
 
 export type QrEcLevel = "L" | "M" | "Q" | "H";
@@ -362,10 +363,192 @@ function utf8Bytes(text: string): number[] {
   return bytes;
 }
 
-function lengthBits(version: number): number {
-  if (version <= 9) return 8;
-  if (version <= 26) return 16;
-  return 16;
+const ALNUM_CHARS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:";
+
+type QrSegmentMode = "numeric" | "alnum" | "byte" | "kanji";
+
+interface QrSegment {
+  mode: QrSegmentMode;
+  text: string;
+}
+
+const MODE_BITS: Record<QrSegmentMode, number> = {
+  numeric: 0b0001,
+  alnum: 0b0010,
+  byte: 0b0100,
+  kanji: 0b1000,
+};
+
+/**
+ * Shift-JIS codes for the ISO 18004 kanji ranges, built lazily from TextDecoder
+ * so no table ships in the bundle. Unavailable decoder → kanji degrades to byte.
+ */
+let kanjiCodes: Map<string, number> | null = null;
+
+function kanjiCode(ch: string): number | null {
+  if (!kanjiCodes) {
+    const map = new Map<string, number>();
+    try {
+      const dec = new TextDecoder("shift-jis");
+      const bytes = new Uint8Array(2);
+      for (let row = 0x81; row <= 0xeb; row++) {
+        if (row > 0x9f && row < 0xe0) continue;
+        const colMax = row === 0xeb ? 0xbf : 0xfc;
+        for (let col = 0x40; col <= colMax; col++) {
+          if (col === 0x7f) continue;
+          bytes[0] = row;
+          bytes[1] = col;
+          const s = dec.decode(bytes);
+          if (s.length === 1 && s.codePointAt(0) !== 0xfffd) map.set(s, (row << 8) | col);
+        }
+      }
+    } catch {
+      // No shift-jis decoder in this runtime.
+    }
+    kanjiCodes = map;
+  }
+  const code = kanjiCodes.get(ch);
+  return code === undefined ? null : code;
+}
+
+/** Kanji-mode 13-bit compact value from a Shift-JIS code (base-shifted JIS X 0208). */
+function kanjiValue(code: number): number {
+  const diff = code >= 0xe040 ? code - 0xc140 : code - 0x8140;
+  return (((diff >>> 8) & 0xff) * 0xc0) + (diff & 0xff);
+}
+
+/** Per-mode maximal run length starting at each codepoint. */
+function classRuns(chars: string[]): { numeric: number[]; alnum: number[]; kanji: number[] } {
+  const n = chars.length;
+  const numeric = new Array<number>(n + 1).fill(0);
+  const alnum = new Array<number>(n + 1).fill(0);
+  const kanji = new Array<number>(n + 1).fill(0);
+  for (let i = n - 1; i >= 0; i--) {
+    const ch = chars[i]!;
+    const cp = ch.codePointAt(0)!;
+    numeric[i] = cp >= 0x30 && cp <= 0x39 ? numeric[i + 1]! + 1 : 0;
+    alnum[i] = ALNUM_CHARS.indexOf(ch) >= 0 ? alnum[i + 1]! + 1 : 0;
+    kanji[i] = kanjiCode(ch) !== null ? kanji[i + 1]! + 1 : 0;
+  }
+  return { numeric, alnum, kanji };
+}
+
+const MODE_ORDER: QrSegmentMode[] = ["numeric", "alnum", "kanji", "byte"];
+
+/**
+ * Optimal segmentation: minimal total bit cost per candidate version via DP over
+ * codepoints, so short mixed runs never pay more header bits than they save.
+ * Returns the smallest version whose optimum fits, or throws QR_TOO_LONG.
+ */
+function planEncoding(
+  text: string,
+  level: QrEcLevel,
+  eciBits: number,
+): { version: number; segments: QrSegment[] } {
+  const chars = Array.from(text);
+  const n = chars.length;
+  const runs = classRuns(chars);
+  const utf8Pref = new Array<number>(n + 1).fill(0);
+  for (let i = 0; i < n; i++) utf8Pref[i + 1] = utf8Pref[i]! + utf8Bytes(chars[i]!).length;
+
+  const li = EC_INDEX[level];
+  // Conservative per-char payload floor used to skip hopeless versions cheaply.
+  let idealBits = eciBits;
+  for (let i = 0; i < n; i++) {
+    idealBits += Math.min(
+      runs.numeric[i]! > 0 ? 10 / 3 : Number.POSITIVE_INFINITY,
+      runs.alnum[i]! > 0 ? 11 / 2 : Number.POSITIVE_INFINITY,
+      runs.kanji[i]! > 0 ? 13 : Number.POSITIVE_INFINITY,
+      (utf8Pref[i + 1]! - utf8Pref[i]!) * 8,
+    );
+  }
+
+  const planVersion = (v: number): QrSegment[] | null => {
+    const dp = new Array<number>(n + 1).fill(Number.POSITIVE_INFINITY);
+    const parentMode = new Array<QrSegmentMode | null>(n + 1).fill(null);
+    const parentPos = new Array<number>(n + 1).fill(-1);
+    dp[0] = eciBits;
+    for (let b = 1; b <= n; b++) {
+      for (let a = b - 1; a >= 0; a--) {
+        const base = dp[a]!;
+        if (base === Number.POSITIVE_INFINITY) continue;
+        for (const mode of MODE_ORDER) {
+          const maxRun =
+            mode === "numeric"
+              ? runs.numeric[a]!
+              : mode === "alnum"
+                ? runs.alnum[a]!
+                : mode === "kanji"
+                  ? runs.kanji[a]!
+                  : n - a;
+          if (b - a > maxRun) continue;
+          const len = b - a;
+          let total: number;
+          switch (mode) {
+            case "numeric":
+              total =
+                4 +
+                segLengthBits(mode, v) +
+                Math.floor(len / 3) * 10 +
+                (len % 3 === 1 ? 4 : len % 3 === 2 ? 7 : 0);
+              break;
+            case "alnum":
+              total = 4 + segLengthBits(mode, v) + Math.floor(len / 2) * 11 + (len % 2) * 6;
+              break;
+            case "kanji":
+              total = 4 + segLengthBits(mode, v) + len * 13;
+              break;
+            case "byte":
+              total = 4 + segLengthBits(mode, v) + (utf8Pref[b]! - utf8Pref[a]!) * 8;
+              break;
+          }
+          total += base;
+          if (total < dp[b]!) {
+            dp[b] = total;
+            parentMode[b] = mode;
+            parentPos[b] = a;
+          }
+        }
+      }
+    }
+    if (dp[n] === Number.POSITIVE_INFINITY || dp[n]! > RS_TABLE[v - 1]![li]![0]! * 8) return null;
+    const segments: QrSegment[] = [];
+    let at = n;
+    while (at > 0) {
+      const mode = parentMode[at]!;
+      const from = parentPos[at]!;
+      segments.unshift({ mode, text: chars.slice(from, at).join("") });
+      at = from;
+    }
+    return segments;
+  };
+
+  for (let v = 1; v <= 40; v++) {
+    if (idealBits + 18 > RS_TABLE[v - 1]![li]![0]! * 8) continue;
+    const segments = planVersion(v);
+    if (segments) return { version: v, segments };
+  }
+  throw new Error("QR_TOO_LONG");
+}
+
+/** Length-field bit counts per mode and version block (ISO 18004). */
+function segLengthBits(mode: QrSegmentMode, version: number): number {
+  const block = version <= 9 ? 0 : version <= 26 ? 1 : 2;
+  switch (mode) {
+    case "numeric":
+      return [10, 12, 14][block]!;
+    case "alnum":
+      return [9, 11, 13][block]!;
+    case "byte":
+      return [8, 16, 16][block]!;
+    case "kanji":
+      return [8, 10, 12][block]!;
+  }
+}
+
+function eciHeaderBits(eci: number): number {
+  if (!Number.isInteger(eci) || eci < 0 || eci > 999999) throw new Error("QR_BAD_ECI");
+  return 4 + (eci < 128 ? 8 : eci < 16384 ? 16 : 24);
 }
 
 function bitWriter() {
@@ -392,15 +575,6 @@ function bitWriter() {
       return out;
     },
   };
-}
-
-function pickVersion(byteLen: number, level: QrEcLevel): number {
-  const li = EC_INDEX[level];
-  for (let v = 1; v <= 40; v++) {
-    const capBits = RS_TABLE[v - 1]![li]![0]! * 8;
-    if (4 + lengthBits(v) + byteLen * 8 <= capBits) return v;
-  }
-  throw new Error("QR_TOO_LONG");
 }
 
 const EC_FORMAT: Record<QrEcLevel, number> = { L: 1, M: 0, Q: 3, H: 2 };
@@ -431,10 +605,6 @@ function placeFinders(m: (number | null)[][], size: number): void {
         const cc = sc + c;
         if (rr < 0 || cc < 0 || rr >= size || cc >= size) continue;
         const on =
-          r === -1 ||
-          c === -1 ||
-          r === 7 ||
-          c === 7 ||
           (r >= 0 && r <= 6 && c >= 0 && c <= 6 && (r === 0 || r === 6 || c === 0 || c === 6)) ||
           (r >= 2 && r <= 4 && c >= 2 && c <= 4);
         m[rr]![cc] = on ? 1 : 0;
@@ -560,8 +730,8 @@ function paintFormat(m: (number | null)[][], bits: number): void {
     const bit = (bits >> (14 - i)) & 1;
     m[seq[i]![0]!]![seq[i]![1]!] = bit;
   }
-  for (let i = 0; i < 8; i++) m[8]![size - 1 - i] = (bits >> (14 - i)) & 1;
-  for (let i = 0; i < 7; i++) m[size - 1 - i]![8] = (bits >> (6 - i)) & 1;
+  for (let i = 0; i < 8; i++) m[8]![size - 1 - i] = (bits >> i) & 1;
+  for (let i = 0; i < 7; i++) m[size - 1 - i]![8] = (bits >> (14 - i)) & 1;
 }
 
 function penalty(m: number[][]): number {
@@ -588,6 +758,17 @@ function penalty(m: number[][]): number {
       if (v === m[r]![c + 1]! && v === m[r + 1]![c]! && v === m[r + 1]![c + 1]!) score += 3;
     }
   }
+  // Rule 3: finder-like runs 10111010000 / 00001011101, rows and columns.
+  const p3 = [0b10111010000, 0b00001011101];
+  const scan = (get: (i: number) => number) => {
+    let win = 0;
+    for (let i = 0; i < size; i++) {
+      win = ((win << 1) | get(i)) & 0x7ff;
+      if (i >= 10 && (win === p3[0] || win === p3[1])) score += 40;
+    }
+  };
+  for (let r = 0; r < size; r++) scan((c) => m[r]![c]!);
+  for (let c = 0; c < size; c++) scan((r) => m[r]![c]!);
   const dark = m.flat().reduce((a, b) => a + b, 0);
   score += Math.abs(Math.floor((dark * 100) / (size * size) / 5) * 5 - 50) / 5;
   return score;
@@ -620,14 +801,58 @@ function interleave(version: number, level: QrEcLevel, data: Uint8Array): Uint8A
   return out;
 }
 
-export function encodeQRMatrix(text: string, level: QrEcLevel = "M"): boolean[][] {
-  const bytes = utf8Bytes(text);
-  const version = pickVersion(bytes.length, level);
+export interface QrEncodeOptions {
+  /** ECI assignment number written ahead of the first segment (e.g. 26 = UTF-8). Omit for no ECI header. */
+  eci?: number;
+  /** Force mask 0–7 instead of choosing the lowest-penalty mask. */
+  mask?: number;
+}
+
+export function encodeQRMatrix(
+  text: string,
+  level: QrEcLevel = "M",
+  options?: QrEncodeOptions,
+): boolean[][] {
+  const eci = options?.eci;
+  const eciBits = eci === undefined ? 0 : eciHeaderBits(eci);
+  const { version, segments } = planEncoding(text, level, eciBits);
   const size = 21 + 4 * (version - 1);
   const writer = bitWriter();
-  writer.write(0b0100, 4);
-  writer.write(bytes.length, lengthBits(version));
-  for (const b of bytes) writer.write(b, 8);
+  if (eci !== undefined) {
+    writer.write(0b0111, 4);
+    writer.write(eci, eciBits - 4);
+  }
+  for (const segment of segments) {
+    writer.write(MODE_BITS[segment.mode]!, 4);
+    writer.write(segment.text.length, segLengthBits(segment.mode, version));
+    switch (segment.mode) {
+      case "numeric": {
+        let i = 0;
+        for (; i + 3 <= segment.text.length; i += 3)
+          writer.write(Number(segment.text.slice(i, i + 3)), 10);
+        const rest = segment.text.slice(i);
+        if (rest.length === 2) writer.write(Number(rest), 7);
+        else if (rest.length === 1) writer.write(Number(rest), 4);
+        break;
+      }
+      case "alnum": {
+        let i = 0;
+        for (; i + 2 <= segment.text.length; i += 2)
+          writer.write(
+            ALNUM_CHARS.indexOf(segment.text[i]!) * 45 + ALNUM_CHARS.indexOf(segment.text[i + 1]!),
+            11,
+          );
+        if (i < segment.text.length) writer.write(ALNUM_CHARS.indexOf(segment.text[i]!), 6);
+        break;
+      }
+      case "kanji":
+        for (const ch of segment.text) writer.write(kanjiValue(kanjiCode(ch)!), 13);
+        break;
+      case "byte":
+        for (const b of utf8Bytes(segment.text)) writer.write(b, 8);
+        break;
+    }
+  }
   const cap = RS_TABLE[version - 1]![EC_INDEX[level]]![0]! * 8;
   const remain = cap - writer.bits.length;
   writer.write(0, Math.min(4, Math.max(0, remain)));
@@ -637,7 +862,16 @@ export function encodeQRMatrix(text: string, level: QrEcLevel = "M"): boolean[][
 
   let best: number[][] | null = null;
   let bestScore = Infinity;
+  const forcedMask =
+    options?.mask === undefined
+      ? null
+      : (Number.isInteger(options.mask) && options.mask >= 0 && options.mask <= 7
+          ? options.mask
+          : (() => {
+              throw new Error("QR_BAD_MASK");
+            })());
   for (let mask = 0; mask < 8; mask++) {
+    if (forcedMask !== null && mask !== forcedMask) continue;
     const grid: (number | null)[][] = Array.from({ length: size }, () =>
       Array<number | null>(size).fill(null),
     );

@@ -3,6 +3,7 @@
  * Value display, track fill, optional tooltip-on-drag (data-tooltip).
  */
 import { BloraElement } from "../../core/blora-element.js";
+import { attachFormInternals, setHostFormValue } from "../../core/form-associated.js";
 
 export const BLORA_SLIDER_TAG = "blora-slider";
 export interface SliderController {
@@ -70,8 +71,17 @@ export function createSliderController(root: HTMLElement): SliderController {
 
 /** Range input CE that owns the official slider structure. */
 export class BloraSlider extends BloraElement {
+  static formAssociated = true;
+
   private controller: SliderController | null = null;
   private reflecting = false;
+  private internals: ElementInternals | null = null;
+
+  /** Submitted under `name` via ElementInternals; inner input stays unnamed. */
+  private syncFormValue(): void {
+    const value = this.querySelector<HTMLInputElement>('input[type="range"]')?.value ?? "";
+    setHostFormValue(this.internals, value === "" ? null : value);
+  }
 
   static get observedAttributes(): string[] {
     return ["min", "max", "step", "value", "name", "disabled", "tooltip", "hide-value"];
@@ -95,6 +105,7 @@ export class BloraSlider extends BloraElement {
   }
 
   protected render(): void {
+    this.internals ??= attachFormInternals(this);
     const root = this.ownerDocument.createElement("div");
     root.className = "blora-slider";
     root.dataset.bloraGenerated = "";
@@ -106,7 +117,7 @@ export class BloraSlider extends BloraElement {
     input.max = this.getAttribute("max") ?? "100";
     input.step = this.getAttribute("step") ?? "1";
     input.value = this.getAttribute("value") ?? input.min;
-    input.name = this.getAttribute("name") ?? "";
+    input.name = this.internals ? "" : (this.getAttribute("name") ?? "");
     input.disabled = this.hasAttribute("disabled");
     root.appendChild(input);
     if (!this.hasAttribute("hide-value")) {
@@ -116,6 +127,7 @@ export class BloraSlider extends BloraElement {
       root.appendChild(output);
     }
     this.replaceChildren(root);
+    this.syncFormValue();
   }
 
   protected override sync(): void {
@@ -135,9 +147,10 @@ export class BloraSlider extends BloraElement {
     input.max = this.getAttribute("max") ?? "100";
     input.step = this.getAttribute("step") ?? "1";
     if (document.activeElement !== input) input.value = this.getAttribute("value") ?? input.value;
-    input.name = this.getAttribute("name") ?? "";
+    input.name = this.internals ? "" : (this.getAttribute("name") ?? "");
     input.disabled = this.hasAttribute("disabled");
     if (output) output.textContent = input.value;
+    this.syncFormValue();
   }
 
   protected bindEvents(): void {
@@ -150,6 +163,7 @@ export class BloraSlider extends BloraElement {
       this.reflecting = true;
       this.setAttribute("value", input.value);
       this.reflecting = false;
+      this.syncFormValue();
     });
   }
 

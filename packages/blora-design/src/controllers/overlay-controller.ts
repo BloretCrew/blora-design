@@ -33,14 +33,7 @@ interface StackEntry {
 }
 
 interface ScrollLockSnapshot {
-  y: number;
-  position: string;
-  top: string;
-  left: string;
-  right: string;
-  width: string;
   paddingRight: string;
-  overflow: string;
   rootOverflow: string;
 }
 
@@ -84,33 +77,20 @@ function lockScroll(document: Document): void {
   if (!body) return;
 
   const win = document.defaultView;
-  const y = win ? win.scrollY || root.scrollTop || 0 : root.scrollTop || 0;
   const sbw = win ? Math.max(0, win.innerWidth - root.clientWidth) : 0;
 
   scrollLockSnapshots.set(document, {
-    y,
-    position: body.style.position,
-    top: body.style.top,
-    left: body.style.left,
-    right: body.style.right,
-    width: body.style.width,
     paddingRight: body.style.paddingRight,
-    overflow: body.style.overflow,
     rootOverflow: root.style.overflow,
   });
 
-  /* Freeze the page in place. `overflow: hidden` on `body` makes it the sticky
-     containing block, so a scrolled navbar jumps out of the viewport.
-     1.x uses the same position:fixed snapshot for that reason.
-     Hide the root scrollbar separately so the mask covers the classic gutter. */
+  /* Freeze scrolling via the viewport itself. A body position:fixed snapshot
+     breaks position:sticky headers in Firefox (they lose the scrollport and
+     jump out of view); html-level overflow keeps scroll offset and sticky
+     geometry intact in every engine. Compensate the classic gutter so the
+     mask covers the scrollbar track. */
   root.dataset.bloraScrollLocked = "1";
   root.style.overflow = "hidden";
-  body.style.position = "fixed";
-  body.style.top = `-${y}px`;
-  body.style.left = "0";
-  body.style.right = "0";
-  body.style.width = "100%";
-  body.style.overflow = "visible";
   if (sbw) body.style.paddingRight = `${sbw}px`;
 }
 
@@ -131,27 +111,18 @@ function unlockScroll(document: Document): void {
 
   if (body && snapshot) {
     root.style.overflow = snapshot.rootOverflow;
-    body.style.position = snapshot.position;
-    body.style.top = snapshot.top;
-    body.style.left = snapshot.left;
-    body.style.right = snapshot.right;
-    body.style.width = snapshot.width;
     body.style.paddingRight = snapshot.paddingRight;
-    body.style.overflow = snapshot.overflow;
   } else if (body) {
     root.style.overflow = "";
-    body.style.position = "";
-    body.style.top = "";
-    body.style.left = "";
-    body.style.right = "";
-    body.style.width = "";
     body.style.paddingRight = "";
-    if (body.style.overflow === "hidden" || body.style.overflow === "visible") {
-      body.style.overflow = "";
-    }
   }
 
-  restoreWindowScroll(document, snapshot?.y ?? 0);
+  /* The html-level lock never moves the scroll offset; restoreWindowScroll only
+     guards the jsdom path where scrollTop bookkeeping is manual. */
+  const win = document.defaultView;
+  if (win && win.navigator.userAgent.includes("jsdom")) {
+    restoreWindowScroll(document, win.scrollY);
+  }
 }
 
 function restoreWindowScroll(document: Document, y: number): void {

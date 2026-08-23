@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+import QRCode from "qrcode";
 import {
   renderQRCode,
   buildQRMatrix,
@@ -6,6 +7,7 @@ import {
   initQRCode,
   BLORA_QRCODE_TAG,
   BloraQRCode,
+  type QrEcLevel,
 } from "../src/index.js";
 
 describe("QRCode add-on", () => {
@@ -142,5 +144,111 @@ describe("QRCode add-on", () => {
     const canvas = el.querySelector("canvas")!;
     el.value = "second";
     expect(el.querySelector("canvas")).toBe(canvas);
+  });
+});
+
+/** Local Shift-JIS code map for the reference lib's kanji mode (mirrors the encoder's lazy TextDecoder build). */
+const sjisByChar = new Map<string, number>();
+{
+  const dec = new TextDecoder("shift-jis");
+  const bytes = new Uint8Array(2);
+  for (let row = 0x81; row <= 0xeb; row++) {
+    if (row > 0x9f && row < 0xe0) continue;
+    const colMax = row === 0xeb ? 0xbf : 0xfc;
+    for (let col = 0x40; col <= colMax; col++) {
+      if (col === 0x7f) continue;
+      bytes[0] = row;
+      bytes[1] = col;
+      const s = dec.decode(bytes);
+      if (s.length === 1 && s.codePointAt(0) !== 0xfffd && !sjisByChar.has(s))
+        sjisByChar.set(s, (row << 8) | col);
+    }
+  }
+}
+
+// node-qrcode passes the CHARACTER (string) at runtime despite its typed declaration.
+const refSjis = ((arg: string | number): number => {
+  const ch = typeof arg === "string" ? arg : String.fromCodePoint(arg);
+  const code = sjisByChar.get(ch);
+  if (code === undefined) throw new Error(`no SJIS mapping for ${JSON.stringify(ch)}`);
+  return code;
+}) as unknown as (codePoint: number) => number;
+
+describe("QRCode encoder parity with reference implementation", () => {
+  function expectSameMatrix(text: string, level: QrEcLevel, kanji = false): void {
+    const ref = QRCode.create(text, {
+      errorCorrectionLevel: level,
+      ...(kanji ? { toSJISFunc: refSjis } : {}),
+    });
+    const size = ref.modules.size;
+    const data = ref.modules.data;
+    const expected = Array.from({ length: size }, (_, r) =>
+      Array.from({ length: size }, (_, c) => Boolean(data[r * size + c])),
+    );
+    expect(buildQRMatrix(text, level)).toEqual(expected);
+  }
+
+  it("numeric payloads match the reference at every level", () => {
+    for (const level of ["L", "M", "Q", "H"] as const) {
+      expectSameMatrix("01234567", level);
+      expectSameMatrix("12345678901234567890", level);
+    }
+  });
+
+  it("alphanumeric payloads match the reference at every level", () => {
+    for (const level of ["L", "M", "Q", "H"] as const) {
+      expectSameMatrix("HELLO WORLD", level);
+      expectSameMatrix("BLORA DESIGN 2.0 / $%*+-.", level);
+    }
+  });
+
+  it("byte payloads match the reference", () => {
+    for (const level of ["L", "M", "Q", "H"] as const)
+      expectSameMatrix("bloradesigncomponents", level, true);
+  });
+
+  it("mixed byte payloads pick the same version as the reference", () => {
+    for (const [text, level] of [
+      ["https://blora.design/components", "L"],
+      ["https://blora.design/components", "M"],
+      ["https://blora.design/components", "Q"],
+      ["https://blora.design/components", "H"],
+      ["Grüße aus München mit ümlauten und scharfem S", "Q"],
+      ["Grüße aus München — ümlauts & 中文 mixed run", "Q"],
+    ] as const) {
+      const ref = QRCode.create(text as string, {
+        errorCorrectionLevel: level as never,
+        toSJISFunc: refSjis,
+      });
+      expect(buildQRMatrix(text as string, level as never).length).toBe(ref.modules.size);
+    }
+  });
+
+  it("kanji payloads match the reference", () => {
+    expectSameMatrix("こんにちは世界", "M", true);
+    expectSameMatrix("名古屋駅まで約4km", "Q", true);
+  });
+
+  it("CJK mixed payloads stay at most as large as the reference", () => {
+    const text = "Grüße aus München — ümlauts & 中文 mixed run";
+    const ours = buildQRMatrix(text, "Q");
+    const ref = QRCode.create(text, { errorCorrectionLevel: "Q", toSJISFunc: refSjis });
+    expect(ours.length).toBeLessThanOrEqual(ref.modules.size);
+  });
+
+  it("mixed content picks compact segments (digits beat byte-mode size)", () => {
+    const digits = buildQRMatrix("12345678901234567890");
+    const letters = buildQRMatrix("abcdefghijklmnopqrst");
+    expect(digits.length).toBe(21);
+    expect(letters.length).toBe(25);
+  });
+
+  it("ECI option changes the matrix and rejects invalid assignments", () => {
+    const plain = buildQRMatrix("test");
+    const withEci = buildQRMatrix("test", "M", { eci: 26 });
+    expect(withEci).not.toEqual(plain);
+    expect(withEci.length).toBe(plain.length);
+    expect(() => buildQRMatrix("test", "M", { eci: -1 })).toThrow(/QR_BAD_ECI/);
+    expect(() => buildQRMatrix("test", "M", { eci: 1.5 })).toThrow(/QR_BAD_ECI/);
   });
 });

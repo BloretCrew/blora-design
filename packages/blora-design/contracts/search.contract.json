@@ -7,7 +7,7 @@
   "tagName": "blora-search",
   "since": "2.0.0",
   "requiresJavaScript": true,
-  "formAssociated": false,
+  "formAssociated": true,
   "attributes": {
     "value": {
       "type": "string",

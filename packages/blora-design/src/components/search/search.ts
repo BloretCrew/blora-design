@@ -3,6 +3,7 @@
  * Wires up the clear button visibility and click-to-clear behavior.
  */
 import { BloraElement } from "../../core/blora-element.js";
+import { attachFormInternals, setHostFormValue } from "../../core/form-associated.js";
 import { t } from "../../core/i18n.js";
 import { createBloraIcon } from "../../core/icons.js";
 
@@ -44,7 +45,16 @@ export function createSearchController(root: HTMLElement): SearchController {
 
 /** Composite CE that owns the search icon, native field and clear affordance. */
 export class BloraSearch extends BloraElement {
+  static formAssociated = true;
+
   private controller: SearchController | null = null;
+  private internals: ElementInternals | null = null;
+
+  /** Submitted under `name` via ElementInternals; inner input stays unnamed. */
+  private syncFormValue(): void {
+    const value = this.querySelector<HTMLInputElement>(".blora-input")?.value ?? "";
+    setHostFormValue(this.internals, value === "" ? null : value);
+  }
 
   static get observedAttributes(): string[] {
     return ["value", "placeholder", "name", "disabled", "required", "label"];
@@ -68,6 +78,7 @@ export class BloraSearch extends BloraElement {
   }
 
   protected render(): void {
+    this.internals ??= attachFormInternals(this);
     const root = document.createElement("div");
     root.className = "blora-search";
     root.dataset.bloraGenerated = "";
@@ -85,7 +96,7 @@ export class BloraSearch extends BloraElement {
     input.placeholder = this.getAttribute("placeholder") ?? t("search.placeholder");
     input.disabled = this.hasAttribute("disabled");
     input.required = this.hasAttribute("required");
-    if (this.hasAttribute("name")) input.name = this.getAttribute("name") ?? "";
+    input.name = this.internals ? "" : (this.getAttribute("name") ?? "");
 
     const clear = document.createElement("button");
     clear.className = "blora-search__clear";
@@ -97,6 +108,7 @@ export class BloraSearch extends BloraElement {
 
     root.append(search, input, clear);
     this.replaceChildren(root);
+    this.syncFormValue();
   }
 
   protected override sync(): void {
@@ -106,7 +118,7 @@ export class BloraSearch extends BloraElement {
     input.placeholder = this.getAttribute("placeholder") ?? t("search.placeholder");
     input.disabled = this.hasAttribute("disabled");
     input.required = this.hasAttribute("required");
-    if (this.hasAttribute("name")) input.name = this.getAttribute("name") ?? "";
+    input.name = this.internals ? "" : (this.getAttribute("name") ?? "");
     const clear = this.querySelector<HTMLButtonElement>(".blora-search__clear");
     if (clear) {
       clear.hidden = input.value.length === 0;
@@ -114,12 +126,15 @@ export class BloraSearch extends BloraElement {
     }
     const search = this.querySelector<HTMLButtonElement>(".blora-search__icon");
     if (search) search.setAttribute("aria-label", this.getAttribute("label") ?? t("search.label"));
+    this.syncFormValue();
   }
 
   protected bindEvents(): void {
     const root = this.querySelector<HTMLElement>(".blora-search");
     this.controller?.destroy();
     this.controller = root ? createSearchController(root) : null;
+    const input = this.querySelector<HTMLInputElement>(".blora-input");
+    if (input) this.listen(input, "input", () => this.syncFormValue());
   }
 
   protected onDisconnect(): void {

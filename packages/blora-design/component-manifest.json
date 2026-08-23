@@ -1,7 +1,7 @@
 {
   "name": "@bloret-crew/blora-design",
   "version": "2.0.0-beta.0",
-  "generatedAt": "2026-08-22T06:53:29.191Z",
+  "generatedAt": "2026-08-23T03:51:28.104Z",
   "components": [
     {
       "name": "accordion",
@@ -561,7 +561,7 @@
       "category": "data-input",
       "tagName": "blora-otp",
       "requiresJavaScript": true,
-      "formAssociated": false,
+      "formAssociated": true,
       "cssExport": "./components/otp.css",
       "contract": "contracts/otp.contract.json"
     },
@@ -627,7 +627,7 @@
       "category": "data-input",
       "tagName": "blora-range",
       "requiresJavaScript": true,
-      "formAssociated": false,
+      "formAssociated": true,
       "cssExport": "./components/range.css",
       "contract": "contracts/range.contract.json"
     },
@@ -660,7 +660,7 @@
       "category": "data-input",
       "tagName": "blora-search",
       "requiresJavaScript": true,
-      "formAssociated": false,
+      "formAssociated": true,
       "cssExport": "./components/search.css",
       "contract": "contracts/search.contract.json"
     },
@@ -832,7 +832,7 @@
       "category": "data-input",
       "tagName": "blora-tags-input",
       "requiresJavaScript": true,
-      "formAssociated": false,
+      "formAssociated": true,
       "cssExport": "./components/tags-input.css",
       "contract": "contracts/tags-input.contract.json"
     },
@@ -930,7 +930,7 @@
       "category": "data-input",
       "tagName": "blora-upload",
       "requiresJavaScript": true,
-      "formAssociated": false,
+      "formAssociated": true,
       "cssExport": "./components/upload.css",
       "contract": "contracts/upload.contract.json"
     }

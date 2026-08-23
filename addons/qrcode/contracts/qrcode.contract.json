@@ -17,7 +17,7 @@
   "properties": {},
   "methods": {
     "buildQRMatrix": {
-      "description": "Pure QR matrix builder (beta simplified encoder)"
+      "description": "Pure QR matrix builder; segments pick numeric/alphanumeric/byte/kanji automatically (ISO 18004, versions 1-40), optional { eci } writes an ECI header"
     },
     "renderQRCode": {
       "description": "Render a QR code into a container element"

@@ -3,6 +3,7 @@
  * Optional tooltip-on-drag via data-tooltip attribute (v1 default behavior).
  */
 import { BloraElement } from "../../core/blora-element.js";
+import { attachFormInternals, setHostFormValue } from "../../core/form-associated.js";
 import { t } from "../../core/i18n.js";
 
 export const BLORA_RANGE_TAG = "blora-range";
@@ -125,7 +126,10 @@ export function createRangeController(root: HTMLElement): RangeController {
 
 /** Composite CE that owns the official dual-thumb light-DOM structure. */
 export class BloraRange extends BloraElement {
+  static formAssociated = true;
+
   private controller: RangeController | null = null;
+  private internals: ElementInternals | null = null;
 
   static get observedAttributes(): string[] {
     return ["min", "max", "values", "tooltip"];
@@ -143,6 +147,12 @@ export class BloraRange extends BloraElement {
 
   set values(value: [number, number]) {
     this.setAttribute("values", value.join(","));
+  }
+
+  /** Submitted as one comma-joined entry matching the `values` attribute format. */
+  private syncFormValue(): void {
+    const [low, high] = this.values;
+    setHostFormValue(this.internals, `${low},${high}`);
   }
 
   protected render(): void {
@@ -187,6 +197,8 @@ export class BloraRange extends BloraElement {
 
     root.append(track, makeThumb(low, t("common.min")), makeThumb(high, t("common.max")), value);
     this.replaceChildren(root);
+    this.internals ??= attachFormInternals(this);
+    this.syncFormValue();
   }
 
   protected override sync(): void {
@@ -199,12 +211,17 @@ export class BloraRange extends BloraElement {
     if (this.getAttribute("tooltip") === "false") root.dataset.tooltip = "false";
     else delete root.dataset.tooltip;
     this.rebind();
+    this.syncFormValue();
   }
 
   protected bindEvents(): void {
     const root = this.querySelector<HTMLElement>(".blora-range");
     this.controller?.destroy();
     this.controller = root ? createRangeController(root) : null;
+    if (root) {
+      // The controller mutates thumb data directly; commit on drag release.
+      this.listen(root, "pointerup", () => this.syncFormValue());
+    }
   }
 
   protected onDisconnect(): void {

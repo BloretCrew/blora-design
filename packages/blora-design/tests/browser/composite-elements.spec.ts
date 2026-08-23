@@ -303,6 +303,60 @@ test("Form composite CEs generate native controls and reuse their controllers", 
   await expect(page.locator('#upload input[type="file"]')).toHaveAttribute("multiple", "");
 });
 
+test("Form-associated CEs submit their values through FormData", async ({ page }) => {
+  await page.setContent(
+    htmlPage(`
+      <form id="fa-form">
+        <blora-slider name="volume" value="42"></blora-slider>
+        <blora-search name="query" value="shoes"></blora-search>
+        <blora-tags-input name="stack" values="React,Vue"></blora-tags-input>
+        <blora-range name="bounds" values="10,80"></blora-range>
+        <blora-otp name="code" length="4" value="1234"></blora-otp>
+        <blora-upload name="docs"></blora-upload>
+        <button type="submit">Go</button>
+      </form>
+      <script>
+        window.__fd = null;
+        document.getElementById("fa-form").addEventListener("submit", (event) => {
+          event.preventDefault();
+          const entries = [...new FormData(event.target).entries()].map(([k, v]) => [
+            k,
+            v instanceof File ? "file:" + v.name : String(v),
+          ]);
+          window.__fd = entries;
+        });
+      </script>
+    `),
+  );
+
+  const submit = () => page.locator('#fa-form button[type="submit"]').click();
+  await submit();
+  await expect
+    .poll(() => page.evaluate(() => window.__fd))
+    .toEqual([
+      ["volume", "42"],
+      ["query", "shoes"],
+      ["stack", "React,Vue"],
+      ["bounds", "10,80"],
+      ["code", "1234"],
+    ]);
+
+  await page
+    .locator('#fa-form input[type="file"]')
+    .setInputFiles([{ name: "a.txt", mimeType: "text/plain", buffer: Buffer.from("hi") }]);
+  await submit();
+  await expect
+    .poll(() => page.evaluate(() => window.__fd))
+    .toEqual([
+      ["volume", "42"],
+      ["query", "shoes"],
+      ["stack", "React,Vue"],
+      ["bounds", "10,80"],
+      ["code", "1234"],
+      ["docs", "file:a.txt"],
+    ]);
+});
+
 test("Overlay composite CEs open, close and emit their public events", async ({ page }) => {
   await page.setContent(
     htmlPage(`
@@ -651,7 +705,8 @@ test("showcase catalog routes one of every official component at a time", async 
     await page
       .locator("#component-navigation .blora-sidebar-nav__link")
       .filter({ hasText: "Accordion" })
-      .click();
+      .evaluate((element) => (element as HTMLElement).focus({ preventScroll: true }));
+    await page.keyboard.press("Enter");
     await expect(page.locator("#panel-accordion")).toBeVisible();
     await expect
       .poll(() => sidebar.evaluate((element) => element.scrollTop))
@@ -1058,7 +1113,12 @@ test("showcase Speed Dial exposes all eight official v1 variants inside independ
 
   const dials = preview.locator("blora-speed-dial");
   for (let index = 0; index < 8; index += 1) {
-    await dials.nth(index).locator("[data-blora-speed-dial-trigger]").click();
+    // HTMLElement.click() keeps the activation event chain while avoiding the
+    // WebKit async-scroll hit-test race on off-screen stage corners.
+    await dials
+      .nth(index)
+      .locator("[data-blora-speed-dial-trigger]")
+      .evaluate((element) => (element as HTMLElement).click());
   }
   await expect(preview.locator("blora-speed-dial[open]")).toHaveCount(8);
 

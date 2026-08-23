@@ -3,6 +3,7 @@
  * Auto-advance, backspace, paste, mode filtering, uppercase.
  */
 import { BloraElement } from "../../core/blora-element.js";
+import { attachFormInternals, setHostFormValue } from "../../core/form-associated.js";
 import { t } from "../../core/i18n.js";
 
 export const BLORA_OTP_TAG = "blora-otp";
@@ -87,8 +88,17 @@ export function createOtpController(root: HTMLElement): OtpController {
 
 /** One-time-password CE with generated native text inputs. */
 export class BloraOtp extends BloraElement {
+  static formAssociated = true;
+
   private controller: OtpController | null = null;
   private reflecting = false;
+  private internals: ElementInternals | null = null;
+
+  /** Submitted as the joined digits via ElementInternals; empty code submits nothing. */
+  private syncFormValue(): void {
+    const joined = this.value;
+    setHostFormValue(this.internals, joined === "" ? null : joined);
+  }
 
   static get observedAttributes(): string[] {
     return ["length", "mode", "uppercase", "value", "disabled", "label"];
@@ -114,6 +124,7 @@ export class BloraOtp extends BloraElement {
   }
 
   protected render(): void {
+    this.internals ??= attachFormInternals(this);
     const length = Math.max(1, Number(this.getAttribute("length") ?? 6));
     const value = Array.from(this.getAttribute("value") ?? "");
     const root = this.ownerDocument.createElement("div");
@@ -136,6 +147,7 @@ export class BloraOtp extends BloraElement {
       root.appendChild(input);
     }
     this.replaceChildren(root);
+    this.syncFormValue();
   }
 
   protected override sync(): void {
@@ -155,6 +167,7 @@ export class BloraOtp extends BloraElement {
       input.disabled = this.hasAttribute("disabled");
       if (this.ownerDocument.activeElement !== input) input.value = chars[index] ?? "";
     });
+    this.syncFormValue();
   }
 
   protected bindEvents(): void {
@@ -169,6 +182,7 @@ export class BloraOtp extends BloraElement {
         value: this.value,
         complete: this.value.length === root.children.length,
       });
+      this.syncFormValue();
     });
   }
 
