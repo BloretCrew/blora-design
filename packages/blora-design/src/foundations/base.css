@@ -269,9 +269,14 @@ html[data-blora-scroll-locked] {
      external offset makes the ring adapt to the target's own shape (circular
      marks, pill chips, rounded cards) with breathing room — matching the
      adaptive tour spotlight instead of a tight inset box. Elements inside an
-     overflow-clipped container opt back into an inset ring via
-     --blora-focus-ring-inset. */
-  outline-offset: var(--blora-focus-ring-inset, var(--blora-focus-ring-offset));
+     overflow-clipped container can opt back into an inset ring by adding the
+     `.blora-focus-ring-inset` class. */
+  outline-offset: var(--blora-focus-ring-offset);
+}
+
+.blora-focus-ring-inset :focus-visible,
+.blora-focus-ring-inset:focus-visible {
+  outline-offset: calc(-1 * var(--blora-focus-ring-width));
 }
 
 /* -- reduced-motion -- §8.6 */
