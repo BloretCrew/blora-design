@@ -75,6 +75,40 @@ blora-command[data-overlay]:popover-open .blora-cmdk {
   }
 }
 
+/* Closed/leave state: the panel keeps its own transition on the base rule so
+   removing [open] animates the card back out (the [open] rule carries the
+   entry transition only, which vanishes with the attribute). */
+blora-command[data-overlay] .blora-command,
+blora-command[data-overlay] .blora-cmdk {
+  opacity: 0;
+  transform: scale(0.96) translateY(8px);
+  transition:
+    opacity var(--blora-duration-base) var(--blora-easing-standard),
+    transform var(--blora-duration-base) var(--blora-easing-standard);
+}
+
+/* While closing the element is still :popover-open (top layer), and those
+   selectors pin opacity to 1 — so the host would never fade until hidePopover
+   snaps it away. An explicit [data-exiting] state (declared after the
+   :popover-open rules to win the cascade) keeps the layout visible while both
+   backdrop and card animate out. Applied by close(), removed on teardown. */
+blora-command[data-overlay][data-exiting] {
+  display: grid;
+  opacity: 0;
+  transition-property: opacity;
+  transition-duration: var(--blora-duration-base);
+  transition-timing-function: var(--blora-easing-standard);
+}
+
+blora-command[data-overlay][data-exiting] .blora-command,
+blora-command[data-overlay][data-exiting] .blora-cmdk {
+  opacity: 0;
+  transform: scale(0.96) translateY(8px);
+  transition:
+    opacity var(--blora-duration-base) var(--blora-easing-standard),
+    transform var(--blora-duration-base) var(--blora-easing-standard);
+}
+
 .blora-command__search,
 .blora-cmdk__search {
   padding: var(--blora-space-3) var(--blora-space-4);

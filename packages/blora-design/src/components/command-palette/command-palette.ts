@@ -150,6 +150,7 @@ export class BloraCommand extends BloraElement {
     this.setAttribute("aria-modal", "true");
     this.cancelCloseMotion?.();
     this.cancelCloseMotion = null;
+    this.removeAttribute("data-exiting");
     this.portalToBody();
     this.setAttribute("open", "");
     this.promoteToTopLayer();
@@ -170,6 +171,7 @@ export class BloraCommand extends BloraElement {
 
   close(): void {
     if (!this.hasAttribute("open")) return;
+    this.setAttribute("data-exiting", "");
     this.removeAttribute("open");
     this.removeAttribute("role");
     this.removeAttribute("aria-modal");
@@ -177,6 +179,7 @@ export class BloraCommand extends BloraElement {
     this.cancelCloseMotion?.();
     this.cancelCloseMotion = whenMotionDone(this, () => {
       this.cancelCloseMotion = null;
+      this.removeAttribute("data-exiting");
       this.overlay?.close();
       this.overlay = null;
       this.dismissTopLayer();
