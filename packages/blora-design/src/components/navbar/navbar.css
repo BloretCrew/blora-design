@@ -111,6 +111,13 @@ blora-navbar > .blora-navbar {
   text-decoration: none;
 }
 
+/* The brand is one focusable unit (circular mark + title). The foundation's
+   inset fallback (-4px) clips the round mark, so give it an external rounded
+   ring that frames the whole composite without adding layout height. */
+.blora-navbar__brand:focus-visible {
+  outline-offset: var(--blora-focus-ring-offset);
+}
+
 .blora-navbar__title {
   white-space: nowrap;
 }
