@@ -73,11 +73,9 @@ import { defineBloraNavbar } from "./components/navbar/index.js";
 import { defineBloraSidebarNav } from "./components/sidebar-nav/index.js";
 import { defineBloraResult } from "./components/result/index.js";
 import { defineBloraTimeline } from "./components/timeline/index.js";
-import { initFocusRing } from "./core/focus-ring.js";
 
 export function defineAllBloraElements(registry: CustomElementRegistry = customElements): void {
   applyDocumentLocale();
-  initFocusRing();
   defineBloraAccordion(registry);
   defineBloraCollapse(registry);
   defineBloraCommand(registry);
