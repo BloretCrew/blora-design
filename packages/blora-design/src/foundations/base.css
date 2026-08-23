@@ -274,6 +274,37 @@ html[data-blora-scroll-locked] {
   outline-offset: var(--blora-focus-ring-inset, var(--blora-focus-ring-offset));
 }
 
+/* When the JS focus ring is live (blora-js-focus-ring), it measures the target
+   and draws a matching overlay — suppress the CSS outline so the two don't
+   stack. The outline above remains the no-JS fallback. */
+body.blora-js-focus-ring :where(body.blora-page, .blora-scope, .blora-portal) :focus-visible,
+body.blora-js-focus-ring [class^="blora-"]:focus-visible,
+body.blora-js-focus-ring [class*=" blora-"]:focus-visible {
+  outline: none;
+}
+
+/* The JS focus ring overlay: one per document, viewport-fixed, matches the
+   target's corner radii / superellipse shape. */
+.blora-focus-ring {
+  position: fixed;
+  box-sizing: border-box;
+  pointer-events: none;
+  border: var(--blora-focus-ring-width) solid var(--blora-color-action-primary-default);
+  z-index: var(--blora-z-top);
+  opacity: 0;
+  transition: opacity var(--blora-duration-fast) var(--blora-easing-standard);
+}
+
+.blora-focus-ring[data-open] {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blora-focus-ring {
+    transition: none;
+  }
+}
+
 /* -- reduced-motion -- §8.6 */
 @media (prefers-reduced-motion: reduce) {
   :where(body.blora-page, .blora-scope, .blora-portal),
