@@ -313,10 +313,8 @@ export class BloraThreadComposer extends BloraElement {
   /** Slide the tab pill to the active option, mirroring the segmented control. */
   private moveTabIndicator(): void {
     const tabs = this.querySelector<HTMLElement>(".blora-thread-composer__tabs");
-    const active = tabs?.querySelector<HTMLElement>('[data-blora-thread-tab][data-active]');
-    const indicator = tabs?.querySelector<HTMLElement>(
-      ".blora-thread-composer__tabs-indicator",
-    );
+    const active = tabs?.querySelector<HTMLElement>("[data-blora-thread-tab][data-active]");
+    const indicator = tabs?.querySelector<HTMLElement>(".blora-thread-composer__tabs-indicator");
     if (!tabs || !active || !indicator) return;
     const tabsRect = tabs.getBoundingClientRect();
     const activeRect = active.getBoundingClientRect();

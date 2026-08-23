@@ -243,8 +243,7 @@ blora-thread-composer:not([data-blora-ready]) {
   cursor: pointer;
   position: relative;
   z-index: var(--blora-z-sticky);
-  transition:
-    color var(--blora-duration-base) var(--blora-easing-standard);
+  transition: color var(--blora-duration-base) var(--blora-easing-standard);
 }
 
 .blora-thread-composer__tabs [data-blora-thread-tab]:hover {

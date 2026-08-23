@@ -61,7 +61,11 @@ export function renderQRCode(
     modules = buildQRMatrix(
       String(text || ""),
       typeof options === "number" ? "M" : (options?.ecLevel ?? "M"),
-      typeof options === "number" ? undefined : options?.eci === undefined ? undefined : { eci: options.eci },
+      typeof options === "number"
+        ? undefined
+        : options?.eci === undefined
+          ? undefined
+          : { eci: options.eci },
     );
     container.removeAttribute("data-invalid");
   } catch {

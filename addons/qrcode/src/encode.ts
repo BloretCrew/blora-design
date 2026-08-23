@@ -414,7 +414,7 @@ function kanjiCode(ch: string): number | null {
 /** Kanji-mode 13-bit compact value from a Shift-JIS code (base-shifted JIS X 0208). */
 function kanjiValue(code: number): number {
   const diff = code >= 0xe040 ? code - 0xc140 : code - 0x8140;
-  return (((diff >>> 8) & 0xff) * 0xc0) + (diff & 0xff);
+  return ((diff >>> 8) & 0xff) * 0xc0 + (diff & 0xff);
 }
 
 /** Per-mode maximal run length starting at each codepoint. */
@@ -865,11 +865,11 @@ export function encodeQRMatrix(
   const forcedMask =
     options?.mask === undefined
       ? null
-      : (Number.isInteger(options.mask) && options.mask >= 0 && options.mask <= 7
-          ? options.mask
-          : (() => {
-              throw new Error("QR_BAD_MASK");
-            })());
+      : Number.isInteger(options.mask) && options.mask >= 0 && options.mask <= 7
+        ? options.mask
+        : (() => {
+            throw new Error("QR_BAD_MASK");
+          })();
   for (let mask = 0; mask < 8; mask++) {
     if (forcedMask !== null && mask !== forcedMask) continue;
     const grid: (number | null)[][] = Array.from({ length: size }, () =>
