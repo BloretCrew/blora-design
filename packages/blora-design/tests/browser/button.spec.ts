@@ -146,9 +146,12 @@ test("button group renders connected buttons", async ({ page }) => {
   const afterHover = await center.boundingBox();
   expect(afterHover?.y).toBe(beforeHover?.y);
   expect(await center.evaluate((element) => getComputedStyle(element).transform)).toBe("none");
-  expect(await center.evaluate((element) => getComputedStyle(element).backgroundColor)).not.toBe(
-    backgroundBeforeHover,
-  );
+  // The hover fill uses a transition; poll so the read is not racing it.
+  await expect
+    .poll(() =>
+      center.evaluate((element) => getComputedStyle(element).backgroundColor),
+    )
+    .not.toBe(backgroundBeforeHover);
 
   await center.focus();
   const focusGeometry = await center.evaluate((element) => {

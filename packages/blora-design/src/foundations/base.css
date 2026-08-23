@@ -263,11 +263,15 @@ html[data-blora-scroll-locked] {
 :where(body.blora-page, .blora-scope, .blora-portal) :focus-visible,
 [class^="blora-"]:focus-visible,
 [class*=" blora-"]:focus-visible {
-  outline: 2px solid var(--blora-color-action-primary-default);
+  outline: var(--blora-focus-ring-width) solid var(--blora-color-action-primary-default);
 
-  /* Keep the ring inside the focus target so scroll, rounded and clipped
-     component containers cannot cut off any side of the indicator. */
-  outline-offset: -4px;
+  /* Outline follows the element's border-radius in modern engines, so an
+     external offset makes the ring adapt to the target's own shape (circular
+     marks, pill chips, rounded cards) with breathing room — matching the
+     adaptive tour spotlight instead of a tight inset box. Elements inside an
+     overflow-clipped container opt back into an inset ring via
+     --blora-focus-ring-inset. */
+  outline-offset: var(--blora-focus-ring-inset, var(--blora-focus-ring-offset));
 }
 
 /* -- reduced-motion -- §8.6 */
