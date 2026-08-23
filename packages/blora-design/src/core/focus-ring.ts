@@ -138,18 +138,12 @@ function onFocusIn(event: FocusEvent): void {
   const target = event.target;
   if (!(target instanceof HTMLElement)) return;
   if (!isInScope(target) || !isFocusable(target)) return;
-  if (!target.matches(":focus-visible")) return;
   show(target);
 }
 
 function onFocusOut(event: FocusEvent): void {
   const related = event.relatedTarget;
-  if (
-    related instanceof HTMLElement &&
-    isInScope(related) &&
-    isFocusable(related) &&
-    related.matches(":focus-visible")
-  ) {
+  if (related instanceof HTMLElement && isInScope(related) && isFocusable(related)) {
     return; // moving within the scope; the next focusin repositions the ring
   }
   hide();

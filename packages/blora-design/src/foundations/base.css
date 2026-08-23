@@ -275,11 +275,12 @@ html[data-blora-scroll-locked] {
 }
 
 /* When the JS focus ring is live (blora-js-focus-ring), it measures the target
-   and draws a matching overlay — suppress the CSS outline so the two don't
-   stack. The outline above remains the no-JS fallback. */
-body.blora-js-focus-ring :where(body.blora-page, .blora-scope, .blora-portal) :focus-visible,
-body.blora-js-focus-ring [class^="blora-"]:focus-visible,
-body.blora-js-focus-ring [class*=" blora-"]:focus-visible {
+   and draws a matching overlay — suppress the browser/native outline for all
+   in-scope focus so the two don't stack. The :focus-visible outline above
+   remains the no-JS fallback. */
+body.blora-js-focus-ring :where(body.blora-page, .blora-scope, .blora-portal) :focus,
+body.blora-js-focus-ring [class^="blora-"]:focus,
+body.blora-js-focus-ring [class*=" blora-"]:focus {
   outline: none;
 }
 
