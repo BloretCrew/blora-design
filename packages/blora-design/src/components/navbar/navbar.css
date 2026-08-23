@@ -107,6 +107,7 @@ blora-navbar > .blora-navbar {
   color: var(--blora-color-text-primary);
   flex: none;
   min-width: 0;
+  border-radius: var(--blora-radius-md);
   text-decoration: none;
 }
 
