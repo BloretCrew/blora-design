@@ -257,6 +257,8 @@ function mountPalettePicker(root: HTMLElement): PalettePickerController {
     menu.style.removeProperty("right");
     menu.style.removeProperty("width");
     menu.style.removeProperty("max-width");
+    menu.style.removeProperty("max-height");
+    menu.style.removeProperty("overflow-y");
   };
 
   const placeMenu = () => {
@@ -269,14 +271,29 @@ function mountPalettePicker(root: HTMLElement): PalettePickerController {
     }
     const triggerRect = trigger.getBoundingClientRect();
     const menuWidth = menu.offsetWidth;
+    const menuHeight = menu.offsetHeight;
     const pad = 16;
-    const top = triggerRect.bottom + 8;
+    const gap = 8;
+    const spaceBelow = Math.max(0, window.innerHeight - triggerRect.bottom - gap - pad);
+    const spaceAbove = Math.max(0, triggerRect.top - gap - pad);
+    const openAbove = menuHeight > spaceBelow && spaceAbove > spaceBelow;
+    const availableHeight = openAbove ? spaceAbove : spaceBelow;
+    const top = openAbove
+      ? Math.max(pad, triggerRect.top - gap - Math.min(menuHeight, availableHeight))
+      : Math.max(pad, triggerRect.bottom + gap);
     const preferEnd = (triggerRect.left + triggerRect.right) / 2 > window.innerWidth / 2;
     const fitsStart = triggerRect.left + menuWidth <= window.innerWidth - pad;
     const fitsEnd = triggerRect.right - menuWidth >= pad;
     const alignEnd = preferEnd ? fitsEnd || !fitsStart : !fitsStart && fitsEnd;
     menu.style.position = "fixed";
-    menu.style.top = `${Math.max(pad, top)}px`;
+    menu.style.top = `${top}px`;
+    if (menuHeight > availableHeight) {
+      menu.style.maxHeight = `${availableHeight}px`;
+      menu.style.overflowY = "auto";
+    } else {
+      menu.style.removeProperty("max-height");
+      menu.style.removeProperty("overflow-y");
+    }
     if (alignEnd) {
       menu.style.left = "auto";
       menu.style.right = `${Math.max(pad, window.innerWidth - triggerRect.right)}px`;

@@ -143,6 +143,35 @@ describe("theming add-on", () => {
     expect(menu.style.right).toBe("16px");
   });
 
+  it("palette menu flips above a trigger near the viewport bottom", () => {
+    document.body.innerHTML = `<blora-palette-picker></blora-palette-picker>`;
+    const trigger = document.querySelector<HTMLButtonElement>(".blora-palette-picker__trigger")!;
+    const menu = document.querySelector<HTMLElement>(".blora-palette-picker__menu")!;
+    const triggerTop = window.innerHeight - 60;
+    trigger.getBoundingClientRect = () =>
+      ({
+        x: 24,
+        y: triggerTop,
+        top: triggerTop,
+        bottom: triggerTop + 40,
+        left: 24,
+        right: 120,
+        width: 96,
+        height: 40,
+        toJSON() {
+          return {};
+        },
+      }) as DOMRect;
+    Object.defineProperty(menu, "offsetWidth", { configurable: true, value: 320 });
+    Object.defineProperty(menu, "offsetHeight", { configurable: true, value: 280 });
+
+    trigger.click();
+
+    expect(menu.style.position).toBe("fixed");
+    expect(Number.parseFloat(menu.style.top)).toBe(triggerTop - 8 - 280);
+    expect(Number.parseFloat(menu.style.top) + 280).toBeLessThan(triggerTop);
+  });
+
   it("keeps a placed menu fixed on the same frame as close", () => {
     document.body.innerHTML = `<blora-palette-picker></blora-palette-picker>`;
     const trigger = document.querySelector<HTMLButtonElement>(".blora-palette-picker__trigger")!;

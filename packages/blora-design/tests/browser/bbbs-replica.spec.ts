@@ -70,6 +70,22 @@ test("BBBS replica search and sidebar remain contained across theme changes", as
   await paletteTrigger.click();
   await expect(paletteRoot).toHaveAttribute("data-open", "");
   await expect(paletteMenu).not.toHaveAttribute("hidden", "");
+  const palettePlacement = await page.evaluate(() => {
+    const trigger = document.querySelector<HTMLElement>("[data-blora-palette-trigger]")!;
+    const menu = document.querySelector<HTMLElement>(".blora-palette-picker__menu")!;
+    const triggerRect = trigger.getBoundingClientRect();
+    const menuRect = menu.getBoundingClientRect();
+    return {
+      insideViewport:
+        menuRect.top >= 0 &&
+        menuRect.left >= 0 &&
+        menuRect.right <= window.innerWidth &&
+        menuRect.bottom <= window.innerHeight,
+      aboveTrigger: menuRect.bottom <= triggerRect.top,
+    };
+  });
+  expect(palettePlacement.insideViewport).toBe(true);
+  expect(palettePlacement.aboveTrigger).toBe(true);
   await paletteTrigger.click();
   await expect(paletteRoot).not.toHaveAttribute("data-open", "");
   await expect(paletteMenu).toHaveAttribute("hidden", "");
