@@ -6,7 +6,7 @@ Beta follows a defect-first cadence. Public stable-core exports are frozen from 
 
 ### Fixed
 
-- Prevented a closed Palette Picker menu from expanding scroll containers, added viewport-aware vertical flipping and height clamping, made sticky Sidebar Layouts reject horizontal overflow, and restored Blora scrollbar styling in the BBBS consumer example.
+- Prevented a closed Palette Picker menu from expanding scroll containers, added viewport-aware vertical flipping and height clamping, stopped its Chinese trigger label from being vertically clipped, made sticky Sidebar Layouts reject horizontal overflow, and restored Blora scrollbar styling in the BBBS consumer example.
 
 ## 2.0.0-beta.1
 

@@ -35,6 +35,10 @@ async function sidebarGeometry(page: import("@playwright/test").Page) {
       clearInsideSearch:
         clear.hidden ||
         (clearRect.left >= searchRect.left && clearRect.right <= searchRect.right + 0.5),
+      paletteLabelFits: (() => {
+        const label = document.querySelector<HTMLElement>(".blora-palette-picker__label")!;
+        return label.scrollHeight <= label.clientHeight + 1;
+      })(),
     };
   });
 }
@@ -61,6 +65,7 @@ test("BBBS replica search and sidebar remain contained across theme changes", as
   expect(initial.inputInsideSearch).toBe(true);
   expect(initial.iconInsideSearch).toBe(true);
   expect(initial.clearInsideSearch).toBe(true);
+  expect(initial.paletteLabelFits).toBe(true);
 
   const palette = page.locator("blora-palette-picker");
   const paletteRoot = palette.locator(".blora-palette-picker");
@@ -99,4 +104,5 @@ test("BBBS replica search and sidebar remain contained across theme changes", as
   expect(after.inputInsideSearch).toBe(true);
   expect(after.iconInsideSearch).toBe(true);
   expect(after.clearInsideSearch).toBe(true);
+  expect(after.paletteLabelFits).toBe(true);
 });

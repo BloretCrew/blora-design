@@ -81,9 +81,10 @@ blora-color-scheme-toggle {
   display: inline-block;
   min-width: 0;
   overflow: hidden;
+  color: inherit;
+  line-height: var(--blora-leading-normal);
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: inherit;
 }
 
 .blora-palette-picker__menu {
