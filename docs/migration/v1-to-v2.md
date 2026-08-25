@@ -17,7 +17,7 @@ pnpm --filter @bloret-crew/blora-design run migrate:check -- ./src
 
 ```bash
 pnpm add @bloret-crew/blora-design@beta
-# 钉死版本：@2.0.0-beta.0
+# 钉死版本：@2.0.0-beta.1
 ```
 
 ### 2.1 2.0 包入口（摘要）

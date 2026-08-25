@@ -1,6 +1,6 @@
-# Push a version tag (e.g. v2.0.0-beta.0) to publish the monorepo packages.
+# Push a version tag (e.g. v2.0.0-beta.1) to publish the monorepo packages.
 #
-# Trigger: git push origin v2.0.0-beta.0
+# Trigger: git push origin v2.0.0-beta.1
 # Secret: NPM_TOKEN (npm Automation token with publish rights for @bloret-crew)
 #
 # Version source of truth: packages/blora-design/package.json

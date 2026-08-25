@@ -11,7 +11,7 @@ GitHub Actions `Browser Tests` job：
 - Playwright **Pixel 7**（mobile-chromium）
 - Playwright **axe** smoke（`a11y` project，无 serious/critical）
 
-视觉回归：`test:visual` 三张审核过的基线（见 `visual-review.md`）。全组件视觉农场仍是 RC 扩容，不作为当前 required job。
+视觉回归：`test:visual` 当前 30 张审核过的基线（见 `visual-review.md`）；仍不作为 CI required job。
 
 ## Firefox
 

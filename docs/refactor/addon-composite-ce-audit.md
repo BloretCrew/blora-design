@@ -36,7 +36,7 @@ Thread 已从根 Headless controller 改为两个开放 Composite CE：
 
 已迁移为 `<blora-qrcode>`：连接时渲染，`value`、`size`、`label` 变化时重绘，`label` 写入 `role="img"` 与 `aria-label`。`buildQRMatrix()` 与 `renderQRCode()` 保留为纯函数/命令式入口，供 SSR 或自定义宿主使用。
 
-编码器为 byte 模式、版本 1–40、L/M/Q/H（默认 M）。超出版本 40 容量时抛 `QR_TOO_LONG`。
+编码器覆盖版本 1–40、L/M/Q/H（默认 M），自动选择 numeric / alphanumeric / byte / kanji 分段并以 DP 做位数最优打包；可选 ECI。超出版本 40 容量时抛 `QR_TOO_LONG`。
 
 ## Effects
 

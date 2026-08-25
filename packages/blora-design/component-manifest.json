@@ -1,7 +1,7 @@
 {
   "name": "@bloret-crew/blora-design",
-  "version": "2.0.0-beta.0",
-  "generatedAt": "2026-08-23T03:51:28.104Z",
+  "version": "2.0.0-beta.1",
+  "generatedAt": "2026-08-25T02:43:58.894Z",
   "components": [
     {
       "name": "accordion",

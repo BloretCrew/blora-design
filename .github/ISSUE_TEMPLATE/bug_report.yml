@@ -12,8 +12,8 @@ body:
     id: version
     attributes:
       label: Package version
-      description: e.g. 2.0.0-beta.0
-      placeholder: 2.0.0-beta.0
+      description: e.g. 2.0.0-beta.1
+      placeholder: 2.0.0-beta.1
     validations:
       required: true
   - type: dropdown

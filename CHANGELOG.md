@@ -4,6 +4,42 @@
 
 Beta follows a defect-first cadence. Public stable-core exports are frozen from `2.0.0-beta.0`; beta contracts and explicitly experimental surfaces may still change with migration notes.
 
+## 2.0.0-beta.1
+
+### Released packages
+
+- `@bloret-crew/blora-design@2.0.0-beta.1`
+- `@bloret-crew/blora-design-markdown@2.0.0-beta.1`
+- `@bloret-crew/blora-design-thread@2.0.0-beta.1`
+- `@bloret-crew/blora-design-qrcode@2.0.0-beta.1`
+- `@bloret-crew/blora-design-effects@2.0.0-beta.1`
+- `@bloret-crew/blora-design-layout@2.0.0-beta.1`
+- `@bloret-crew/blora-design-theming@2.0.0-beta.1`
+
+npm dist-tag: **`beta`**
+
+### Highlights since Beta.0
+
+- Added core i18n with `en` and `zh-CN` locale packs, document-language detection and live locale refresh; framework-generated chrome no longer hardcodes a language.
+- Unified modal overlays under `OverlayController`: slotted focus trapping, scroll locking, Escape/focus return, top-layer behavior and leave-motion teardown across Dialog, Command Palette, Tour, Drawer and image preview.
+- Replaced the QR add-on's simplified byte-only path with an ISO 18004 encoder for versions 1–40, levels L/M/Q/H, numeric/alphanumeric/byte/kanji segmentation, DP-optimal packing and optional ECI; fixed finder separators and both secondary format strips against a reference implementation.
+- Extended form-associated Custom Element support to Range, Slider, Search, Upload, Tags Input and OTP, including browser FormData coverage.
+- Added `<blora-affix>`, `<blora-anchor sync-hash>` and `<blora-markdown>` public hosts while keeping their service APIs.
+- Fixed Showcase routing, short-page scroll reset, sticky-sidebar momentum, panel-switch flashes and the full 30-snapshot visual baseline.
+- Hardened Command Palette and Tour motion, viewport coverage and spotlight geometry; fixed Speed Dial rebinds and the Thread composer segmented-style tab indicator.
+- Fixed BackTop visibility, honest copy failures, reduced-motion text effects, Firefox sticky-header scroll locking, WebKit interaction differences and add-on bundle duplication.
+- Rewrote `docs/framework.md` for 2.0 and synchronized the migration, browser, accessibility and release-tracking documents.
+
+### Install
+
+```bash
+pnpm add @bloret-crew/blora-design@beta
+# or pin
+pnpm add @bloret-crew/blora-design@2.0.0-beta.1
+```
+
+See `docs/guide.md`, `docs/migration/v1-to-v2.md` and `docs/refactor/beta.1-install-notes.md`.
+
 ## 2.0.0-beta.0
 
 ### Released packages

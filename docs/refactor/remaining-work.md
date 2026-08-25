@@ -41,7 +41,7 @@
 - 文档：`guide.md` 2.0 主路径；`addon-core-gaps` / matrix / css-only-resolution；人眼 visual review 已确认
 - **未**纳入 Phase 9 自限：全量 Playwright / axe / 视觉农场 → Phase 10
 
-包版本现状：`@bloret-crew/blora-design` 与六个 add-on 为 **`2.0.0-beta.0`**；stable-core API 冻结，进入 RC 收口。
+包版本现状：`@bloret-crew/blora-design` 与六个 add-on 为 **`2.0.0-beta.1`**；stable-core API 冻结，进入 RC 收口。
 ---
 
 ## 2. Phase 9 尾巴 / 诚实债（P9-1…P9-8）
@@ -192,13 +192,14 @@
 - [x] connect/disconnect / 泄漏抽测：`tests/lifecycle.test.ts`（table/tree/collapse destroy 幂等与卸载）
 - [x] contract 与可宣传名单政策：`contract-stability.md`（升 stable 前须 DoD）
 
-### 3.5 Beta（**发版前四项完成**；打 tag / npm 未做）
+### 3.5 Beta（Beta.1 缺陷收口发布）
 
 - [x] **stable core API 冻结**决议：`docs/refactor/beta-api-freeze.md` + ADR-014
 - [x] 仅修缺陷的节奏与宣传边界：`docs/refactor/beta-cadence.md`
 - [x] 完整迁移文档用户向基线：`guide.md` + `migration/v1-to-v2.md`（含用户向发布检查）
 - [x] 体积预算扩展落地：`check-size.mjs`（子路径 + global + add-on 合计）
 - [x] 打 `2.0.0-beta.0` 与发布演练（2026-08-19；`beta` dist-tag；见 `beta-install-notes.md`）
+- [x] 准备 `2.0.0-beta.1` 缺陷收口版（2026-08-25；CHANGELOG、七包版本、文档与发布记录；见 `beta.1-install-notes.md`）
 
 ### 3.6 RC
 
@@ -221,7 +222,7 @@
 - [x] 2.0 **i18n / locales** 运行时（P9-8）— `t()` + `en` / `zh-CN` 目录；组件 chrome 不再硬编码语言
 - [ ] add-on 独立 Playwright / visual 深矩阵（P9-6）
 - [x] add-on Composite CE：`<blora-affix>` / `<blora-anchor sync-hash>` / `<blora-markdown>` 已交付；Smooth Scroll 仍为 Document service
-- [x] FA WC：Select / Switch / Checkbox / Number Input 使用 ElementInternals；其余 light-DOM 表单控件继续走内部原生 `input` 提交（ADR-015）
+- [x] FA WC：Select / Switch / Checkbox / Number Input / Range / Slider / Search / Upload / Tags Input / OTP 使用 ElementInternals；其余控件按合同使用原生提交或非表单语义（ADR-015）
 - [x] runtime compat 已撤销；仓库外 `legacy/v1` 作为冻结基线继续保留
 - [x] 全量 `pnpm verify` 作为发布硬门 — 2026-08-09 单次完整 exit 0，见 §5
 
@@ -291,3 +292,4 @@
 | 2026-08-22 | 核心 i18n：`t()` + `en` / `zh-CN`；浮层走 OverlayController（含 slot 焦点）；文档入口改为 Showcase |
 | 2026-08-22 | 产品缺口收口：i18n 热更新、Drawer popover、QR 全版本编码器、Affix/Anchor/Markdown CE、部分 FA、framework.md 2.0、浏览器/a11y 记录；add-on 体积预算提至 136KiB（编码器 + 新 CE + locale 目录） |
 | 2026-08-22 | 产品缺口收口：i18n 热更新、Drawer popover、QR 1–40 编码器、Affix/Anchor/Markdown CE、FA 主机、framework.md 2.0、浏览器/a11y 记录 |
+| 2026-08-25 | 准备 `2.0.0-beta.1`：汇总 beta.0 后缺陷修复，统一七个发布包版本，补 CHANGELOG / 安装回滚记录，并同步 QR、FA、视觉矩阵文档真值。 |
