@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="zh-CN" data-blora-color-scheme="light" data-blora-theme="coral">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>把 BBBS 页面迁到 Blora Design 2.0 的一些记录 · 百络谷</title>
+    <script>
+      (() => {
+        try {
+          const scheme = localStorage.getItem("blora-color-scheme");
+          const theme = localStorage.getItem("blora-theme");
+          if (scheme) document.documentElement.dataset.bloraColorScheme = scheme;
+          if (theme) document.documentElement.dataset.bloraTheme = theme;
+        } catch {}
+      })();
+    </script>
+    <link rel="stylesheet" href="../../packages/blora-design/dist/blora.css" />
+    <link rel="stylesheet" href="../../packages/blora-design/dist/tokens.dark.css" />
+    <link rel="stylesheet" href="../../packages/blora-design/dist/tokens.themes.css" />
+    <link rel="stylesheet" href="../../addons/layout/dist/layout.css" />
+    <link rel="stylesheet" href="../../addons/theming/dist/theming.css" />
+    <link rel="stylesheet" href="../../addons/thread/dist/thread.css" />
+    <link rel="stylesheet" href="shared.css" />
+  </head>
+  <body>
+    <blora-sidebar-layout
+      class="bbs-shell"
+      label="百络谷主要导航"
+      toggle-label="打开导航"
+      variant="seamless"
+      sticky
+    >
+      <blora-sidebar-layout-sidebar>
+        <div class="bbs-sidebar">
+          <a class="bbs-brand" href="index.html" aria-label="返回 Today">
+            <span class="bbs-brand__mark" aria-hidden="true"
+              ><img src="assets/bloret.png" alt=""
+            /></span>
+            <span><strong>百络谷</strong><small>Bloret BBS</small></span>
+          </a>
+          <blora-search
+            id="global-search"
+            label="搜索论坛"
+            placeholder="搜索内容、用户、板块..."
+          ></blora-search>
+          <blora-sidebar-nav id="primary-nav" label="社区导航" value="software">
+            <blora-sidebar-nav-group label="发现">
+              <blora-sidebar-nav-link
+                label="Today"
+                href="index.html"
+                value="today"
+              ></blora-sidebar-nav-link>
+              <blora-sidebar-nav-link
+                label="Bloriko"
+                href="#bloriko"
+                value="bloriko"
+              ></blora-sidebar-nav-link>
+              <blora-sidebar-nav-link
+                label="最新发布"
+                href="#latest"
+                value="latest"
+              ></blora-sidebar-nav-link>
+              <blora-sidebar-nav-link
+                label="排行榜"
+                href="#ranking"
+                value="ranking"
+              ></blora-sidebar-nav-link>
+              <blora-sidebar-nav-link
+                label="所有板块"
+                href="#boards"
+                value="boards"
+              ></blora-sidebar-nav-link>
+              <blora-sidebar-nav-link
+                label="Live"
+                href="#live"
+                value="live"
+              ></blora-sidebar-nav-link>
+              <blora-sidebar-nav-link
+                label="络聊 · beta"
+                href="#chat"
+                value="chat"
+              ></blora-sidebar-nav-link>
+            </blora-sidebar-nav-group>
+            <blora-sidebar-nav-group label="常看板块">
+              <blora-sidebar-nav-link
+                label="大厅"
+                href="#hall"
+                value="hall"
+              ></blora-sidebar-nav-link>
+              <blora-sidebar-nav-link
+                label="Bloret Software Community"
+                href="#software"
+                value="software"
+              ></blora-sidebar-nav-link>
+              <blora-sidebar-nav-link
+                label="创作与分享"
+                href="#creative"
+                value="creative"
+              ></blora-sidebar-nav-link>
+            </blora-sidebar-nav-group>
+          </blora-sidebar-nav>
+          <div class="bbs-sidebar__footer">
+            <div class="bbs-profile">
+              <span class="blora-avatar" data-size="sm" data-variant="primary">Lo</span>
+              <span><strong>Loong</strong><small>Coding · 在线</small></span>
+              <span class="bbs-icon" data-icon="bell" aria-hidden="true"></span>
+            </div>
+            <div class="bbs-theme-tools" aria-label="界面外观">
+              <blora-palette-picker button-variant="ghost" size="sm"></blora-palette-picker>
+              <blora-color-scheme-toggle
+                button-variant="ghost"
+                size="sm"
+              ></blora-color-scheme-toggle>
+            </div>
+          </div>
+        </div>
+      </blora-sidebar-layout-sidebar>
+
+      <blora-sidebar-layout-content>
+        <main class="bbs-main thread-page">
+          <nav class="thread-back" aria-label="返回导航">
+            <a class="blora-button" data-variant="ghost" data-size="sm" href="index.html">
+              <span class="bbs-icon" data-icon="arrow-left" aria-hidden="true"></span>
+              返回 Today
+            </a>
+            <span>Bloret Software Community / Bloret BBS</span>
+          </nav>
+
+          <article class="blora-card post-detail">
+            <header class="post-detail__header">
+              <div class="post-detail__labels">
+                <span class="blora-tag" data-variant="primary">Blora Design</span>
+                <span class="blora-tag" data-variant="info">BBBS</span>
+                <span class="blora-badge" data-variant="success" data-shape="pill">已解决</span>
+              </div>
+              <h1>把 BBBS 页面迁到 Blora Design 2.0 的一些记录</h1>
+              <div class="post-author">
+                <span class="blora-avatar" data-size="md" data-variant="primary">Lo</span>
+                <div>
+                  <strong>Loong</strong>
+                  <p>发布于 12 分钟前 · 浙江 · 最后编辑于 5 分钟前</p>
+                </div>
+              </div>
+            </header>
+
+            <div class="post-body">
+              <p>
+                这两天把 BBBS 的 Today 与帖子详情页整理成了一个只依赖 Blora Design 2.0
+                公开发布面的静态版本。目标不是重新设计论坛，而是保留原来那种左侧常驻导航、内容密集的推荐流和直接进入讨论的阅读节奏。
+              </p>
+              <h2>这次实际复用了什么</h2>
+              <p>
+                页面骨架使用 Sidebar Layout，导航使用 Sidebar
+                Navigation，搜索框、主题切换和评论区都由正式 Custom Elements
+                承担。帖子列表继续使用开放的 Card、List、Avatar、Tag、Badge 与 Button
+                样式，因此业务内容和 DOM 仍然由站点自己掌握。
+              </p>
+              <ul>
+                <li>桌面侧栏保持粘性，窄屏时由 Layout 自动切换成抽屉。</li>
+                <li>Today 保留日期、AI 摘要、快速发帖和推荐理由。</li>
+                <li>帖子页保留作者信息、正文、标签、浏览与回复统计。</li>
+                <li>评论使用 Thread add-on，长评论可以展开和收起。</li>
+              </ul>
+              <h2>第三方接入时最需要注意的点</h2>
+              <p>
+                Composite Custom Element
+                不应该由业务手写内部结构；图标也不应直接塞字符，而是通过公开的
+                <code>createBloraIcon()</code> 创建。页面自己的布局尺寸可以正常写
+                CSS，但颜色、阴影、圆角与动效应继续使用 Blora
+                token，这样主题和深色模式才能一起工作。
+              </p>
+              <blockquote>
+                这份页面是消费侧示例，不依赖 packages/blora-design/src，也没有复制任何组件内部实现。
+              </blockquote>
+            </div>
+
+            <footer class="post-detail__footer">
+              <div class="post-stats" aria-label="帖子统计">
+                <span
+                  ><span class="bbs-icon" data-icon="eye" aria-hidden="true"></span> 326
+                  次浏览</span
+                >
+                <span
+                  ><span class="bbs-icon" data-icon="message-circle" aria-hidden="true"></span> 4
+                  条评论</span
+                >
+                <span
+                  ><span class="bbs-icon" data-icon="heart" aria-hidden="true"></span> 27
+                  人喜欢</span
+                >
+              </div>
+              <div class="post-actions">
+                <button class="blora-button" data-variant="outline" data-size="sm" type="button">
+                  <span class="bbs-icon" data-icon="heart" aria-hidden="true"></span> 喜欢
+                </button>
+                <button class="blora-button" data-variant="ghost" data-size="sm" type="button">
+                  <span class="bbs-icon" data-icon="link" aria-hidden="true"></span> 复制链接
+                </button>
+              </div>
+            </footer>
+          </article>
+
+          <section class="comments-section" aria-labelledby="comments-title">
+            <div class="section-heading comments-heading">
+              <div>
+                <p class="section-heading__eyebrow">按时间正序</p>
+                <h2 id="comments-title">评论 4</h2>
+              </div>
+              <button
+                class="blora-button"
+                data-variant="ghost"
+                data-size="sm"
+                type="button"
+                id="collapse-comments"
+              >
+                <span class="bbs-icon" data-icon="panel-top-close" aria-hidden="true"></span>
+                折叠长评论
+              </button>
+            </div>
+
+            <div class="blora-thread" id="comment-stream">
+              <blora-thread-comment>
+                <div slot="head">
+                  <span class="blora-avatar" data-size="sm" data-variant="success">Mo</span>
+                  <div class="blora-thread-comment__meta">
+                    <strong>Momo</strong>
+                    <span>8 分钟前 · 上海</span>
+                  </div>
+                  <div class="blora-thread-comment__actions">
+                    <button class="blora-button" data-variant="ghost" data-size="xs" type="button">
+                      回复
+                    </button>
+                  </div>
+                </div>
+                <p>
+                  这个信息密度很像 BBBS 原来的
+                  Today。移动端侧栏变成抽屉之后也没有把主要内容挤得太窄，方向是对的。
+                </p>
+                <div slot="reactions">
+                  <button type="button" data-blora-thread-react aria-label="赞同">
+                    <span class="bbs-icon" data-icon="thumbs-up" aria-hidden="true"></span> 6
+                  </button>
+                </div>
+              </blora-thread-comment>
+
+              <blora-thread-comment>
+                <div slot="head">
+                  <span class="blora-avatar" data-size="sm" data-variant="info">Rh</span>
+                  <div class="blora-thread-comment__meta">
+                    <strong>Rhedar</strong>
+                    <span>6 分钟前 · 江苏</span>
+                  </div>
+                  <div class="blora-thread-comment__actions">
+                    <button class="blora-button" data-variant="ghost" data-size="xs" type="button">
+                      回复
+                    </button>
+                  </div>
+                </div>
+                <div slot="quote">“颜色、阴影、圆角与动效应继续使用 Blora token。”</div>
+                <p>
+                  这点很重要。业务层只负责页面编排后，切换 graphite 或 dusk
+                  主题仍然能维持同一套视觉层级，不需要再维护一份深色模式覆盖。
+                </p>
+                <div slot="reactions">
+                  <button type="button" data-blora-thread-react aria-label="赞同">
+                    <span class="bbs-icon" data-icon="thumbs-up" aria-hidden="true"></span> 4
+                  </button>
+                </div>
+              </blora-thread-comment>
+
+              <blora-thread-comment collapse-height="112">
+                <div slot="head">
+                  <span class="blora-avatar" data-size="sm" data-variant="neutral">De</span>
+                  <div class="blora-thread-comment__meta">
+                    <strong>Detrital</strong>
+                    <span>4 分钟前 · 广东</span>
+                  </div>
+                  <div class="blora-thread-comment__actions">
+                    <button class="blora-button" data-variant="ghost" data-size="xs" type="button">
+                      回复
+                    </button>
+                  </div>
+                </div>
+                <p>
+                  我试了一下评论折叠。短评论不会出现多余按钮，长评论才会折叠，这一点比业务自己按字符数猜测更可靠。
+                </p>
+                <p>
+                  不过当前 Thread add-on 只负责评论卡片与 composer
+                  外壳，楼中楼的数据组织、评论排序、引用目标和提交请求仍然要由论坛业务实现。
+                </p>
+                <p>
+                  对 BBBS
+                  这种已经有完整评论模型的项目来说，这其实比较合适：可以继续沿用现有接口，只把呈现和基础交互交给公开组件。
+                </p>
+                <p>
+                  如果以后需要更深的楼中楼视觉层级，最好由 add-on 增加正式
+                  contract，而不是消费侧依赖内部 class 做缩进。
+                </p>
+                <div slot="reactions">
+                  <button type="button" data-blora-thread-react aria-label="赞同">
+                    <span class="bbs-icon" data-icon="thumbs-up" aria-hidden="true"></span> 9
+                  </button>
+                </div>
+              </blora-thread-comment>
+
+              <blora-thread-comment>
+                <div slot="head">
+                  <span class="blora-avatar" data-size="sm" data-variant="primary">N</span>
+                  <div class="blora-thread-comment__meta">
+                    <strong>NBF</strong>
+                    <span>刚刚 · 北京</span>
+                  </div>
+                  <div class="blora-thread-comment__actions">
+                    <button class="blora-button" data-variant="ghost" data-size="xs" type="button">
+                      回复
+                    </button>
+                  </div>
+                </div>
+                <p>搜索筛选也能直接操作，静态演示已经足够说明第三方项目怎么接入了。</p>
+                <div slot="reactions">
+                  <button type="button" data-blora-thread-react aria-label="赞同">
+                    <span class="bbs-icon" data-icon="thumbs-up" aria-hidden="true"></span> 2
+                  </button>
+                </div>
+              </blora-thread-comment>
+            </div>
+          </section>
+
+          <section class="composer-section" aria-labelledby="composer-title">
+            <h2 id="composer-title">发表评论</h2>
+            <blora-thread-composer id="comment-composer">
+              <div slot="toolbar" aria-label="评论格式工具">
+                <button type="button" aria-label="粗体" title="粗体" data-insert="**|**">
+                  <span class="bbs-icon" data-icon="bold" aria-hidden="true"></span>
+                </button>
+                <button type="button" aria-label="斜体" title="斜体" data-insert="*|*">
+                  <span class="bbs-icon" data-icon="italic" aria-hidden="true"></span>
+                </button>
+                <button type="button" aria-label="行内代码" title="行内代码" data-insert="`|`">
+                  <span class="bbs-icon" data-icon="code" aria-hidden="true"></span>
+                </button>
+                <button type="button" aria-label="引用" title="引用" data-insert="> |">
+                  <span class="bbs-icon" data-icon="quote" aria-hidden="true"></span>
+                </button>
+                <button type="button" aria-label="链接" title="链接" data-insert="[|](https://)">
+                  <span class="bbs-icon" data-icon="link" aria-hidden="true"></span>
+                </button>
+              </div>
+              <textarea
+                id="comment-input"
+                placeholder="撰写评论... 支持 Markdown，可 @ 提及用户"
+              ></textarea>
+              <div slot="preview" id="comment-preview" class="composer-preview">
+                预览内容会显示在这里。
+              </div>
+              <div slot="actions">
+                <button
+                  class="blora-button"
+                  data-variant="primary"
+                  data-size="sm"
+                  type="button"
+                  id="comment-submit"
+                >
+                  发表评论
+                </button>
+                <span class="composer-status" id="composer-status" role="status"></span>
+              </div>
+            </blora-thread-composer>
+          </section>
+        </main>
+      </blora-sidebar-layout-content>
+    </blora-sidebar-layout>
+
+    <script src="../../packages/blora-design/dist/blora.global.js"></script>
+    <script src="../../packages/blora-design/dist/icons-full.global.js"></script>
+    <script src="../../addons/layout/dist/layout.global.js"></script>
+    <script src="../../addons/theming/dist/theming.global.js"></script>
+    <script src="../../addons/thread/dist/thread.global.js"></script>
+    <script src="shared.js"></script>
+  </body>
+</html>
