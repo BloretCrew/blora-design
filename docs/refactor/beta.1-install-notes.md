@@ -67,4 +67,13 @@ If Beta.1 is defective:
 
 ## Result
 
-_To be completed after the tag workflow and npm consumer verification finish._
+Completed on 2026-08-25:
+
+- release commit `fe27029` passed GitHub Actions CI and Pages;
+- tag `v2.0.0-beta.1` completed Release workflow `32802892788`;
+- all seven packages resolve from npm `@beta` as `2.0.0-beta.1`;
+- a clean npm consumer installed all seven packages with zero vulnerabilities;
+- Node ESM verification returned `VERSION === "2.0.0-beta.1"`, `isBrowser() === false`, 87 manifest components and all six add-on public tags;
+- jsDelivr loaded `dist/blora.css` and `dist/blora.global.js`; the page exposed `globalThis.Blora.VERSION === "2.0.0-beta.1"` with no runtime errors.
+
+Rollback point: `2.0.0-beta.0` on the `beta` dist-tag.
