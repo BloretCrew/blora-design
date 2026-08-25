@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="zh-CN" data-blora-color-scheme="light" data-blora-theme="coral">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Today · 百络谷</title>
+    <script>
+      (() => {
+        try {
+          const scheme = localStorage.getItem("blora-color-scheme");
+          const theme = localStorage.getItem("blora-theme");
+          if (scheme) document.documentElement.dataset.bloraColorScheme = scheme;
+          if (theme) document.documentElement.dataset.bloraTheme = theme;
+        } catch {}
+      })();
+    </script>
+    <link rel="stylesheet" href="../../packages/blora-design/dist/blora.css" />
+    <link rel="stylesheet" href="../../packages/blora-design/dist/tokens.dark.css" />
+    <link rel="stylesheet" href="../../packages/blora-design/dist/tokens.themes.css" />
+    <link rel="stylesheet" href="../../addons/layout/dist/layout.css" />
+    <link rel="stylesheet" href="../../addons/theming/dist/theming.css" />
+    <link rel="stylesheet" href="shared.css" />
+  </head>
+  <body>
+    <blora-sidebar-layout
+      class="bbs-shell"
+      label="百络谷主要导航"
+      toggle-label="打开导航"
+      variant="seamless"
+      sticky
+    >
+      <blora-sidebar-layout-sidebar>
+        <div class="bbs-sidebar">
+          <a class="bbs-brand" href="index.html" aria-label="返回 Today">
+            <span class="bbs-brand__mark" aria-hidden="true"><img src="assets/bloret.png" alt="" /></span>
+            <span>
+              <strong>百络谷</strong>
+              <small>Bloret BBS</small>
+            </span>
+          </a>
+
+          <blora-search
+            id="global-search"
+            label="搜索论坛"
+            placeholder="搜索内容、用户、板块..."
+          ></blora-search>
+
+          <blora-sidebar-nav id="primary-nav" label="社区导航" value="today">
+            <blora-sidebar-nav-group label="发现">
+              <blora-sidebar-nav-link label="Today" href="index.html" value="today"></blora-sidebar-nav-link>
+              <blora-sidebar-nav-link label="Bloriko" href="#bloriko" value="bloriko"></blora-sidebar-nav-link>
+              <blora-sidebar-nav-link label="最新发布" href="#latest" value="latest"></blora-sidebar-nav-link>
+              <blora-sidebar-nav-link label="排行榜" href="#ranking" value="ranking"></blora-sidebar-nav-link>
+              <blora-sidebar-nav-link label="所有板块" href="#boards" value="boards"></blora-sidebar-nav-link>
+              <blora-sidebar-nav-link label="Live" href="#live" value="live"></blora-sidebar-nav-link>
+              <blora-sidebar-nav-link label="络聊 · beta" href="#chat" value="chat"></blora-sidebar-nav-link>
+            </blora-sidebar-nav-group>
+            <blora-sidebar-nav-group label="常看板块">
+              <blora-sidebar-nav-link label="大厅" href="#hall" value="hall"></blora-sidebar-nav-link>
+              <blora-sidebar-nav-link label="Bloret Software Community" href="#software" value="software"></blora-sidebar-nav-link>
+              <blora-sidebar-nav-link label="创作与分享" href="#creative" value="creative"></blora-sidebar-nav-link>
+            </blora-sidebar-nav-group>
+          </blora-sidebar-nav>
+
+          <div class="bbs-sidebar__footer">
+            <div class="bbs-profile">
+              <span class="blora-avatar" data-size="sm" data-variant="primary">Lo</span>
+              <span><strong>Loong</strong><small>Coding · 在线</small></span>
+              <span class="bbs-icon" data-icon="bell" aria-hidden="true"></span>
+            </div>
+            <div class="bbs-theme-tools" aria-label="界面外观">
+              <blora-palette-picker button-variant="ghost" size="sm"></blora-palette-picker>
+              <blora-color-scheme-toggle button-variant="ghost" size="sm"></blora-color-scheme-toggle>
+            </div>
+          </div>
+        </div>
+      </blora-sidebar-layout-sidebar>
+
+      <blora-sidebar-layout-content>
+        <main class="bbs-main">
+          <header class="today-heading">
+            <div>
+              <p class="today-heading__date">8月25日 星期二</p>
+              <h1>Today</h1>
+            </div>
+            <button class="blora-button" data-variant="primary" data-size="sm" type="button" id="compose-focus">
+              <span class="bbs-icon" data-icon="square-pen" aria-hidden="true"></span>
+              发布主题
+            </button>
+          </header>
+
+          <section class="blora-card daily-brief" aria-labelledby="daily-brief-title">
+            <div class="daily-brief__head">
+              <span class="blora-avatar" data-size="sm" data-shape="square" data-variant="info">Bi</span>
+              <div>
+                <h2 id="daily-brief-title">Bloriko 今日摘要</h2>
+                <p>社区里今天正在发生什么</p>
+              </div>
+              <span class="blora-badge" data-variant="info" data-shape="pill">AI 生成</span>
+            </div>
+            <p>
+              大家正在讨论 Blora Design 2.0 的迁移体验、第三方组件接入，以及夏末设备桌面的整理方案。大厅的问答帖更新很快，发布前记得先搜索是否已有相似主题。
+            </p>
+            <footer>生成于 10:30 · AI 也可能犯错，请核实重要信息</footer>
+          </section>
+
+          <section class="blora-card quick-compose" aria-labelledby="quick-compose-title">
+            <h2 id="quick-compose-title">想说点什么？</h2>
+            <textarea
+              id="quick-compose-input"
+              class="blora-textarea"
+              rows="4"
+              placeholder="第一行将作为标题，其余作为正文…"
+            ></textarea>
+            <div class="quick-compose__footer">
+              <div class="quick-compose__target">
+                <span class="bbs-icon" data-icon="map-pin" aria-hidden="true"></span>
+                大厅 / 灌水区
+              </div>
+              <button class="blora-button" data-variant="primary" data-size="sm" type="button" id="quick-send">发送</button>
+            </div>
+            <p class="quick-compose__status" id="quick-status" role="status"></p>
+          </section>
+
+          <section class="feed-section" aria-labelledby="feed-title">
+            <div class="section-heading">
+              <div>
+                <p class="section-heading__eyebrow">根据你的阅读与关注持续更新</p>
+                <h2 id="feed-title">为你推荐</h2>
+              </div>
+              <div class="feed-filters" role="group" aria-label="帖子筛选">
+                <button class="blora-button" data-variant="outline" data-size="xs" type="button" data-filter="all" aria-pressed="true">全部</button>
+                <button class="blora-button" data-variant="ghost" data-size="xs" type="button" data-filter="followed">关注</button>
+                <button class="blora-button" data-variant="ghost" data-size="xs" type="button" data-filter="popular">热议</button>
+              </div>
+            </div>
+
+            <div class="blora-list feed-list" id="feed-list" data-hover>
+              <article class="blora-list__item feed-item" data-feed-item data-filter-tags="followed popular" data-search="Blora Design 2.0 beta 第三方项目 迁移 公开 API">
+                <a class="feed-item__link" href="thread.html" aria-label="查看帖子：把 BBBS 页面迁到 Blora Design 2.0 的一些记录"></a>
+                <div class="feed-item__icon"><span class="bbs-icon" data-icon="layers-3" aria-hidden="true"></span></div>
+                <div class="feed-item__body">
+                  <p class="feed-item__reason">因为你常看「Bloret Software Community」</p>
+                  <h3>把 BBBS 页面迁到 Blora Design 2.0 的一些记录</h3>
+                  <p>只使用公开 CSS、Custom Elements 与 add-on 后，侧栏、主题切换和评论流已经可以保持原有的信息密度。</p>
+                  <div class="feed-item__meta">
+                    <span class="blora-avatar" data-size="xs" data-variant="primary">Lo</span>
+                    <span>Loong · Bloret Software Community / Bloret BBS · 12 分钟前</span>
+                  </div>
+                </div>
+                <div class="feed-item__stats" aria-label="帖子统计">
+                  <span><span class="bbs-icon" data-icon="message-circle" aria-hidden="true"></span> 18</span>
+                  <span><span class="bbs-icon" data-icon="eye" aria-hidden="true"></span> 326</span>
+                </div>
+              </article>
+
+              <article class="blora-list__item feed-item" data-feed-item data-filter-tags="popular" data-search="夏末 桌面 整理 设备 分享">
+                <a class="feed-item__link" href="thread.html" aria-label="查看帖子：夏末桌面整理：你们最近都在用什么设备？"></a>
+                <div class="feed-item__icon"><span class="bbs-icon" data-icon="monitor-smartphone" aria-hidden="true"></span></div>
+                <div class="feed-item__body">
+                  <p class="feed-item__reason">社区正在热议</p>
+                  <h3>夏末桌面整理：你们最近都在用什么设备？</h3>
+                  <p>换掉了旧显示器支架之后，桌面终于能空出一块写字的位置。也想看看大家现在的工作台。</p>
+                  <div class="feed-item__meta">
+                    <span class="blora-avatar" data-size="xs" data-variant="success">Mo</span>
+                    <span>Momo · 大厅 / 日常分享 · 48 分钟前</span>
+                  </div>
+                </div>
+                <div class="feed-item__stats">
+                  <span><span class="bbs-icon" data-icon="message-circle" aria-hidden="true"></span> 31</span>
+                  <span><span class="bbs-icon" data-icon="eye" aria-hidden="true"></span> 681</span>
+                </div>
+              </article>
+
+              <article class="blora-list__item feed-item" data-feed-item data-filter-tags="followed" data-search="Sleepy 状态 同步 API 客户端">
+                <a class="feed-item__link" href="thread.html" aria-label="查看帖子：Sleepy 状态同步客户端更新说明"></a>
+                <div class="feed-item__icon"><span class="bbs-icon" data-icon="radio-tower" aria-hidden="true"></span></div>
+                <div class="feed-item__body">
+                  <p class="feed-item__reason">你关注的板块有更新</p>
+                  <h3>Sleepy 状态同步客户端更新说明</h3>
+                  <p>本次更新增加隐私模式与断线重试，旧版 Endpoint 不需要修改，重新下载脚本即可。</p>
+                  <div class="feed-item__meta">
+                    <span class="blora-avatar" data-size="xs" data-variant="info">Rh</span>
+                    <span>Rhedar · Bloret Software Community / 项目发布 · 2 小时前</span>
+                  </div>
+                </div>
+                <div class="feed-item__stats">
+                  <span><span class="bbs-icon" data-icon="message-circle" aria-hidden="true"></span> 9</span>
+                  <span><span class="bbs-icon" data-icon="eye" aria-hidden="true"></span> 204</span>
+                </div>
+              </article>
+
+              <article class="blora-list__item feed-item" data-feed-item data-filter-tags="popular" data-search="Bloriko AI 摘要 推荐流 反馈">
+                <a class="feed-item__link" href="thread.html" aria-label="查看帖子：Bloriko 推荐流最近有什么变化？"></a>
+                <div class="feed-item__icon"><span class="bbs-icon" data-icon="sparkles" aria-hidden="true"></span></div>
+                <div class="feed-item__body">
+                  <p class="feed-item__reason">最近发布</p>
+                  <h3>Bloriko 推荐流最近有什么变化？</h3>
+                  <p>现在会综合阅读停留、关注板块和内容新鲜度排序；不感兴趣的内容也可以直接减少推荐。</p>
+                  <div class="feed-item__meta">
+                    <span class="blora-avatar" data-size="xs" data-variant="neutral">Bi</span>
+                    <span>Bloriko · 大厅 / 站务 · 3 小时前</span>
+                  </div>
+                </div>
+                <div class="feed-item__stats">
+                  <span><span class="bbs-icon" data-icon="message-circle" aria-hidden="true"></span> 14</span>
+                  <span><span class="bbs-icon" data-icon="eye" aria-hidden="true"></span> 412</span>
+                </div>
+              </article>
+            </div>
+            <p class="feed-empty" id="feed-empty" hidden>没有找到匹配的帖子。</p>
+          </section>
+        </main>
+      </blora-sidebar-layout-content>
+    </blora-sidebar-layout>
+
+    <script src="../../packages/blora-design/dist/blora.global.js"></script>
+    <script src="../../packages/blora-design/dist/icons-full.global.js"></script>
+    <script src="../../addons/layout/dist/layout.global.js"></script>
+    <script src="../../addons/theming/dist/theming.global.js"></script>
+    <script src="shared.js"></script>
+  </body>
+</html>
