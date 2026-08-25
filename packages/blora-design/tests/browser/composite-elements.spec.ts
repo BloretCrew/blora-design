@@ -66,7 +66,7 @@ test("Sidebar Navigation owns grouped links and current-page state", async ({ pa
       height: item.getBoundingClientRect().height,
     })),
   );
-  expect(restingColors[0]?.background).toBe(restingColors[1]?.background);
+  expect(restingColors[0]?.background).not.toBe(restingColors[1]?.background);
   expect(restingColors[0]?.color).not.toBe(restingColors[1]?.color);
   const coarsePointer = await page.evaluate(() => matchMedia("(pointer: coarse)").matches);
   if (coarsePointer) expect(restingColors[0]?.height).toBeGreaterThanOrEqual(44);
@@ -687,7 +687,7 @@ test("showcase catalog routes one of every official component at a time", async 
     };
   });
   expect(sidebarLinkColors.currentColor).not.toBe(sidebarLinkColors.inactiveColor);
-  expect(sidebarLinkColors.currentBackground).toBe(sidebarLinkColors.inactiveBackground);
+  expect(sidebarLinkColors.currentBackground).not.toBe(sidebarLinkColors.inactiveBackground);
   await expect(page.locator("#demo-accordion .blora-accordion__head")).toHaveCount(3);
   if (!(await mobileMenu.isVisible())) {
     const sidebar = page.locator("#component-sidebar");

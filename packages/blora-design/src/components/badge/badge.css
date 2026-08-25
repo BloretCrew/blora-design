@@ -83,7 +83,11 @@
 }
 
 .blora-badge[data-variant="warning"] {
-  background: var(--blora-color-status-warning);
+  background: color-mix(
+    in srgb,
+    var(--blora-color-status-warning) 60%,
+    var(--blora-color-text-primary)
+  );
 }
 
 .blora-badge[data-variant="danger"] {

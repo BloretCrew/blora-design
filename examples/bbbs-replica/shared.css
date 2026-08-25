@@ -84,7 +84,7 @@ a {
 
 .bbs-brand small,
 .bbs-profile small {
-  color: var(--blora-color-text-muted);
+  color: var(--blora-color-text-emphasis);
   font-size: var(--blora-text-xs);
 }
 
@@ -168,7 +168,7 @@ a {
 .today-heading__date,
 .section-heading__eyebrow {
   margin: 0 0 var(--blora-space-1);
-  color: var(--blora-color-text-muted);
+  color: var(--blora-color-text-emphasis);
   font-size: var(--blora-text-sm);
 }
 
@@ -267,9 +267,9 @@ a {
 }
 
 .feed-filters [aria-pressed="true"] {
-  color: var(--blora-color-action-primary-default);
+  color: var(--blora-color-text-primary);
   border-color: var(--blora-color-action-primary-default);
-  background: var(--blora-color-action-primary-soft);
+  background: var(--blora-color-action-primary-tint);
 }
 
 .feed-list {
@@ -348,7 +348,7 @@ a {
 
 .feed-item__meta {
   margin-top: var(--blora-space-3);
-  color: var(--blora-color-text-subtle);
+  color: var(--blora-color-text-emphasis);
   font-size: var(--blora-text-xs);
 }
 
@@ -379,7 +379,7 @@ a {
 .thread-back {
   justify-content: flex-start;
   margin-bottom: var(--blora-space-4);
-  color: var(--blora-color-text-muted);
+  color: var(--blora-color-text-emphasis);
   font-size: var(--blora-text-sm);
 }
 
@@ -436,7 +436,7 @@ a {
   padding: var(--blora-space-3) var(--blora-space-4);
   border-left: 3px solid var(--blora-color-action-primary-default);
   border-radius: var(--blora-radius-sm);
-  background: var(--blora-color-action-primary-soft);
+  background: var(--blora-color-action-primary-tint);
 }
 
 .post-body code {

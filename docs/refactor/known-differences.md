@@ -193,6 +193,14 @@
 - **改变原因**：其他（文字徽标可读性）
 - **审核状态**：approved（用户人工批准 2026-08-19）
 
+### 状态组件 - 小字号文字满足 WCAG AA
+
+- **组件**：tag、badge、alert、sidebar navigation、thread composer
+- **1.x 表现**：部分语义状态直接把较浅的状态色作为小字号文字色；在浅色主题、warning 金色和部分辅助文字场景中会低于 4.5:1。
+- **2.0 表现**：Tag / Alert 的语义色保留在浅底、边框和图标上，文字使用高对比正文 token；Warning Badge 的实底向正文色轻微混合；Sidebar 当前项与 Thread composer 标签使用高对比文字。七套主题的明暗模式均由组件级和真实 BBBS 页面全文本浏览器门禁验证。
+- **改变原因**：WCAG 2.2 AA / 可读性修复
+- **审核状态**：approved（用户反馈并确认需统一修复，2026-08-25）
+
 ### Pagination - 当前页悬浮反馈弱化
 
 - **组件**：pagination

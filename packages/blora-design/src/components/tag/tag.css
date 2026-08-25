@@ -22,31 +22,31 @@
 
 .blora-tag[data-variant="primary"] {
   background: var(--blora-color-action-primary-tint);
-  color: var(--blora-color-action-primary-default);
+  color: var(--blora-color-text-emphasis);
   border-color: color-mix(in srgb, var(--blora-color-action-primary-default) 25%, transparent);
 }
 
 .blora-tag[data-variant="neutral"] {
   background: color-mix(in srgb, var(--blora-color-status-neutral) 8%, transparent);
-  color: var(--blora-color-status-neutral);
+  color: var(--blora-color-text-emphasis);
   border-color: color-mix(in srgb, var(--blora-color-status-neutral) 25%, transparent);
 }
 
 .blora-tag[data-variant="info"] {
   background: color-mix(in srgb, var(--blora-color-status-info) 8%, transparent);
-  color: var(--blora-color-status-info);
+  color: var(--blora-color-text-emphasis);
   border-color: color-mix(in srgb, var(--blora-color-status-info) 25%, transparent);
 }
 
 .blora-tag[data-variant="success"] {
   background: color-mix(in srgb, var(--blora-color-status-success) 8%, transparent);
-  color: var(--blora-color-status-success);
+  color: var(--blora-color-text-emphasis);
   border-color: color-mix(in srgb, var(--blora-color-status-success) 25%, transparent);
 }
 
 .blora-tag[data-variant="warning"] {
   background: color-mix(in srgb, var(--blora-color-status-warning) 10%, transparent);
-  color: var(--blora-color-status-warning);
+  color: var(--blora-color-text-emphasis);
   border-color: color-mix(in srgb, var(--blora-color-status-warning) 30%, transparent);
 }
 

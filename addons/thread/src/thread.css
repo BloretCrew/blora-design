@@ -235,7 +235,7 @@ blora-thread-composer:not([data-blora-ready]) {
   border: 0;
   border-radius: var(--blora-radius-full);
   background: transparent;
-  color: var(--blora-color-text-muted);
+  color: var(--blora-color-text-emphasis);
   font-family: var(--blora-font-sans);
   font-size: var(--blora-text-sm);
   font-weight: 500;
