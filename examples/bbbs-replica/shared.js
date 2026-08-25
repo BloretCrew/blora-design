@@ -112,18 +112,9 @@
   const commentToggle = document.getElementById("collapse-comments");
   const collapsibleComments = () =>
     [...document.querySelectorAll("blora-thread-comment")].filter((comment) => comment.collapsible);
-  const syncCommentToggle = (attempt = 0) => {
+  const syncCommentToggle = () => {
     if (!commentToggle) return;
-    const allComments = [...document.querySelectorAll("blora-thread-comment")];
     const comments = collapsibleComments();
-    const ready =
-      allComments.length > 0 &&
-      allComments.every((comment) => comment.hasAttribute("data-blora-ready"));
-    if (!ready && attempt < 60) {
-      commentToggle.disabled = true;
-      setTimeout(() => syncCommentToggle(attempt + 1), 50);
-      return;
-    }
     const hasCollapsed = comments.some((comment) => comment.collapsed);
     commentToggle.lastChild.textContent = hasCollapsed ? " 展开长评论" : " 折叠长评论";
     commentToggle.disabled = comments.length === 0;
@@ -139,5 +130,15 @@
     syncCommentToggle();
   });
 
-  requestAnimationFrame(syncCommentToggle);
+  if (commentToggle) {
+    commentToggle.disabled = true;
+    const commentObserver = new MutationObserver(syncCommentToggle);
+    document.querySelectorAll("blora-thread-comment").forEach((comment) => {
+      commentObserver.observe(comment, {
+        attributes: true,
+        attributeFilter: ["data-blora-ready", "data-collapsible", "data-collapsed"],
+      });
+    });
+    requestAnimationFrame(syncCommentToggle);
+  }
 })();
