@@ -98,7 +98,7 @@ blora-sidebar-layout[compact] {
   inset-block-start: var(--blora-sidebar-sticky-offset, var(--blora-space-5));
   align-self: start;
   height: var(--blora-sidebar-sticky-height, auto);
-  overflow-y: auto;
+  overflow: hidden auto;
   overscroll-behavior: contain;
 }
 

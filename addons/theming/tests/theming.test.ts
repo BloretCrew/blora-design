@@ -29,9 +29,10 @@ describe("theming add-on", () => {
     expect(getTheme()).toBe("indigo");
   });
 
-  it("palette picker CE builds options", () => {
+  it("palette picker CE builds options and keeps its closed menu out of layout", () => {
     document.body.innerHTML = `<blora-palette-picker></blora-palette-picker>`;
     const picker = document.querySelector("blora-palette-picker")!;
+    const menu = picker.querySelector<HTMLElement>(".blora-palette-picker__menu")!;
     expect(picker.querySelectorAll("[data-blora-palette-option]").length).toBeGreaterThan(3);
     expect(picker.querySelector(".blora-palette-picker__title")?.textContent).toBe(
       t("palette.title"),
@@ -39,6 +40,27 @@ describe("theming add-on", () => {
     expect(picker.querySelector(".blora-palette-picker__hint")?.textContent).toBe(
       t("palette.hint"),
     );
+    expect(menu.hidden).toBe(true);
+  });
+
+  it("removes the palette menu from layout after its leave transition", () => {
+    document.body.innerHTML = `<blora-palette-picker></blora-palette-picker>`;
+    const picker = document.querySelector("blora-palette-picker")!;
+    const root = picker.querySelector<HTMLElement>(".blora-palette-picker")!;
+    const trigger = picker.querySelector<HTMLButtonElement>(".blora-palette-picker__trigger")!;
+    const menu = picker.querySelector<HTMLElement>(".blora-palette-picker__menu")!;
+
+    trigger.click();
+    expect(menu.hidden).toBe(false);
+    expect(root.hasAttribute("data-open")).toBe(true);
+
+    trigger.click();
+    expect(menu.hidden).toBe(false);
+    const transitionEnd = new Event("transitionend") as Event & { propertyName: string };
+    Object.defineProperty(transitionEnd, "propertyName", { value: "transform" });
+    menu.dispatchEvent(transitionEnd);
+    expect(menu.hidden).toBe(true);
+    expect(root.hasAttribute("data-open")).toBe(false);
   });
 
   it("palette menu is fixed and start-aligned when there is room", () => {

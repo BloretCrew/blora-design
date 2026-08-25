@@ -191,6 +191,7 @@ function mountPalettePicker(root: HTMLElement): PalettePickerController {
   trigger.setAttribute("aria-expanded", "false");
   menu.setAttribute("role", "listbox");
   menu.setAttribute("aria-label", t("palette.label"));
+  menu.hidden = !root.hasAttribute("data-open");
 
   if (!menu.querySelector("[data-blora-palette-option]")) {
     const head = doc.createElement("div");
@@ -286,6 +287,11 @@ function mountPalettePicker(root: HTMLElement): PalettePickerController {
   };
 
   const open = (focus = false) => {
+    window.clearTimeout(placeClearTimer);
+    menu.hidden = false;
+    /* Establish the closed opacity/transform before data-open applies the
+       visible state; hidden elements otherwise skip the first transition. */
+    void menu.offsetWidth;
     doc.querySelectorAll<HTMLElement>("[data-blora-palette-picker][data-open]").forEach((other) => {
       if (other === root) return;
       other.removeAttribute("data-open");
@@ -294,6 +300,7 @@ function mountPalettePicker(root: HTMLElement): PalettePickerController {
         ?.setAttribute("aria-expanded", "false");
       const otherMenu = other.querySelector<HTMLElement>(".blora-palette-picker__menu");
       if (!otherMenu) return;
+      otherMenu.hidden = true;
       otherMenu.style.removeProperty("position");
       otherMenu.style.removeProperty("top");
       otherMenu.style.removeProperty("left");
@@ -312,9 +319,17 @@ function mountPalettePicker(root: HTMLElement): PalettePickerController {
 
   let placeClearTimer = 0;
   const finishClosePlace = () => {
+    menu.removeEventListener("transitionend", onCloseTransitionEnd);
     window.clearTimeout(placeClearTimer);
     placeClearTimer = 0;
-    if (!root.hasAttribute("data-open")) clearMenuPlace();
+    if (!root.hasAttribute("data-open")) {
+      menu.hidden = true;
+      clearMenuPlace();
+    }
+  };
+  const onCloseTransitionEnd = (event: TransitionEvent) => {
+    if (event.target !== menu || event.propertyName !== "transform") return;
+    finishClosePlace();
   };
 
   const close = (restore = false) => {
@@ -322,7 +337,8 @@ function mountPalettePicker(root: HTMLElement): PalettePickerController {
     trigger.setAttribute("aria-expanded", "false");
     /* Keep position:fixed through the fade-out. Reverting to absolute while
        the menu is still visible makes clipped parents jump in height. */
-    menu.addEventListener("transitionend", finishClosePlace, { once: true });
+    menu.removeEventListener("transitionend", onCloseTransitionEnd);
+    menu.addEventListener("transitionend", onCloseTransitionEnd);
     window.clearTimeout(placeClearTimer);
     placeClearTimer = window.setTimeout(finishClosePlace, 320);
     if (restore) trigger.focus();

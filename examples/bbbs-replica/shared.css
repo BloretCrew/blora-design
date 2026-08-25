@@ -37,7 +37,8 @@ a {
 
 .bbs-sidebar {
   display: flex;
-  min-height: 100dvh;
+  height: 100dvh;
+  min-height: 0;
   flex-direction: column;
   gap: var(--blora-space-4);
   padding: var(--blora-space-5) var(--blora-space-3) var(--blora-space-3);
@@ -88,13 +89,15 @@ a {
 }
 
 .bbs-sidebar blora-search {
+  min-width: 0;
   width: 100%;
 }
 
 .bbs-sidebar blora-sidebar-nav {
   min-height: 0;
   flex: 1;
-  overflow-y: auto;
+  overflow: hidden auto;
+  scrollbar-gutter: stable;
 }
 
 .bbs-sidebar__footer {
