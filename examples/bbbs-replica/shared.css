@@ -313,9 +313,10 @@ a {
   width: 2.75rem;
   height: 2.75rem;
   place-items: center;
+  color: var(--blora-color-text-primary);
+  background: var(--blora-color-action-primary-tint);
+  border: 1px solid color-mix(in srgb, var(--blora-color-action-primary-default) 25%, transparent);
   border-radius: var(--blora-radius-md);
-  color: var(--blora-color-action-primary-default);
-  background: var(--blora-color-action-primary-soft);
 }
 
 .feed-item__body {

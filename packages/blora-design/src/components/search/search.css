@@ -27,7 +27,7 @@ blora-search {
   place-items: center;
   width: 1.6em;
   height: 1.6em;
-  color: var(--blora-color-text-subtle);
+  color: var(--blora-color-text-emphasis);
   border-radius: var(--blora-radius-sm);
   pointer-events: none;
   transition:

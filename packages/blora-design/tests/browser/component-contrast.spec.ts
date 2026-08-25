@@ -326,3 +326,144 @@ test("BBBS replica visible text keeps WCAG AA contrast across every theme", asyn
 
   expect(failures).toEqual([]);
 });
+
+test("BBBS replica visible icons keep WCAG non-text contrast across every theme", async ({
+  page,
+}) => {
+  const failures: string[] = [];
+
+  for (const replicaPage of replicaPages) {
+    await page.goto(pathToFileURL(replicaPage).href);
+    await page.waitForFunction(() => customElements.get("blora-sidebar-layout"));
+    if (replicaPage.endsWith("thread.html")) {
+      await page.waitForFunction(() => customElements.get("blora-thread-comment"));
+    }
+
+    for (const theme of themes) {
+      for (const scheme of ["light", "dark"] as const) {
+        await page.locator("html").evaluate(
+          (root, state) => {
+            root.setAttribute("data-blora-theme", state.theme);
+            root.setAttribute("data-blora-color-scheme", state.scheme);
+          },
+          { theme, scheme },
+        );
+        await page.waitForTimeout(300);
+
+        const results = await page.evaluate(() => {
+          type Color = [number, number, number, number];
+          const parseColor = (value: string): Color => {
+            const numbers = value.match(/[\d.]+/g)?.map(Number) ?? [];
+            if (value.startsWith("color(srgb")) {
+              return [
+                (numbers[0] ?? 0) * 255,
+                (numbers[1] ?? 0) * 255,
+                (numbers[2] ?? 0) * 255,
+                numbers[3] ?? 1,
+              ];
+            }
+            return [numbers[0] ?? 0, numbers[1] ?? 0, numbers[2] ?? 0, numbers[3] ?? 1];
+          };
+          const composite = (foreground: Color, background: Color): Color => {
+            const alpha = foreground[3] + background[3] * (1 - foreground[3]);
+            if (!alpha) return [0, 0, 0, 0];
+            return [
+              (foreground[0] * foreground[3] +
+                background[0] * background[3] * (1 - foreground[3])) /
+                alpha,
+              (foreground[1] * foreground[3] +
+                background[1] * background[3] * (1 - foreground[3])) /
+                alpha,
+              (foreground[2] * foreground[3] +
+                background[2] * background[3] * (1 - foreground[3])) /
+                alpha,
+              alpha,
+            ];
+          };
+          const backgroundFor = (element: Element): Color => {
+            const chain: Element[] = [];
+            for (let node: Element | null = element; node; node = node.parentElement)
+              chain.push(node);
+            let background: Color = [255, 255, 255, 1];
+            for (const node of chain.reverse()) {
+              background = composite(
+                parseColor(getComputedStyle(node).backgroundColor),
+                background,
+              );
+            }
+            return background;
+          };
+          const luminance = (color: Color): number => {
+            const channels = color.slice(0, 3).map((channel) => {
+              const normalized = channel / 255;
+              return normalized <= 0.04045
+                ? normalized / 12.92
+                : ((normalized + 0.055) / 1.055) ** 2.4;
+            });
+            return 0.2126 * channels[0]! + 0.7152 * channels[1]! + 0.0722 * channels[2]!;
+          };
+          const contrast = (first: Color, second: Color): number => {
+            const a = luminance(first);
+            const b = luminance(second);
+            return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+          };
+          const pathFor = (element: Element): string => {
+            const owner =
+              element.closest<HTMLElement>("[data-icon], button, .feed-item__icon") ??
+              element.parentElement;
+            const icon = owner?.getAttribute("data-icon") ?? "";
+            const classes = owner
+              ? [...owner.classList]
+                  .slice(0, 2)
+                  .map((name) => `.${name}`)
+                  .join("")
+              : "";
+            return `${owner?.localName ?? element.localName}${classes}${icon ? `[${icon}]` : ""}`;
+          };
+          const seen = new Set<string>();
+          return [...document.querySelectorAll<SVGElement>("svg")]
+            .filter((svg) => {
+              if (svg.closest("[hidden]")) return false;
+              const style = getComputedStyle(svg);
+              return (
+                style.display !== "none" &&
+                style.visibility !== "hidden" &&
+                Number.parseFloat(style.opacity) !== 0 &&
+                svg.getClientRects().length > 0
+              );
+            })
+            .map((svg) => {
+              const style = getComputedStyle(svg);
+              const owner =
+                svg.closest<HTMLElement>("[data-icon], button, .feed-item__icon") ?? svg;
+              const color = parseColor(style.color || getComputedStyle(owner).color);
+              const background = backgroundFor(svg);
+              const key = pathFor(svg);
+              return {
+                key,
+                ratio: contrast(composite(color, background), background),
+                foreground: style.color || getComputedStyle(owner).color,
+                background: `rgb(${background.slice(0, 3).map(Math.round).join(", ")})`,
+              };
+            })
+            .filter((result) => {
+              const signature = `${result.key}:${result.foreground}:${result.background}`;
+              if (seen.has(signature)) return false;
+              seen.add(signature);
+              return true;
+            });
+        });
+
+        for (const result of results) {
+          if (result.ratio + 0.01 < 3) {
+            failures.push(
+              `${replicaPage.split(/[\\/]/).pop()} ${theme}/${scheme} ${result.key}: ${result.ratio.toFixed(2)}:1 < 3:1 (${result.foreground} on ${result.background})`,
+            );
+          }
+        }
+      }
+    }
+  }
+
+  expect(failures).toEqual([]);
+});
