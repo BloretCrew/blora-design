@@ -166,12 +166,15 @@ blora-thread-composer:not([data-blora-ready]) {
 }
 
 .blora-thread-comment__react [data-blora-thread-react] {
-  display: inline-grid;
-  place-items: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   box-sizing: border-box;
-  width: 1.9rem;
+  min-width: 1.9rem;
   height: 1.9rem;
-  padding: 0;
+  padding: 0 0.375rem;
+  gap: 0.25rem;
+  white-space: nowrap;
   border: 1px dashed var(--blora-color-border-subtle);
   border-radius: var(--blora-radius-full);
   background: transparent;

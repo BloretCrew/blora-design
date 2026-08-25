@@ -219,110 +219,140 @@
             </div>
 
             <div class="blora-thread" id="comment-stream">
-              <blora-thread-comment>
-                <div slot="head">
-                  <span class="blora-avatar" data-size="sm" data-variant="success">Mo</span>
-                  <div class="blora-thread-comment__meta">
-                    <strong>Momo</strong>
-                    <span>8 分钟前 · 上海</span>
-                  </div>
-                  <div class="blora-thread-comment__actions">
-                    <button class="blora-button" data-variant="ghost" data-size="xs" type="button">
-                      回复
-                    </button>
-                  </div>
-                </div>
-                <p>
-                  这个信息密度很像 BBBS 原来的
-                  Today。移动端侧栏变成抽屉之后也没有把主要内容挤得太窄，方向是对的。
-                </p>
-                <div slot="reactions">
-                  <button type="button" data-blora-thread-react aria-label="赞同">
-                    <span class="bbs-icon" data-icon="thumbs-up" aria-hidden="true"></span> 6
-                  </button>
-                </div>
-              </blora-thread-comment>
+              <blora-timeline>
+                <blora-timeline-item icon="message" content-layout="block">
+                  <blora-thread-comment>
+                    <div slot="head">
+                      <span class="blora-avatar" data-size="sm" data-variant="success">Mo</span>
+                      <div class="blora-thread-comment__meta">
+                        <strong>Momo</strong>
+                        <span>8 分钟前 · 上海</span>
+                      </div>
+                      <div class="blora-thread-comment__actions">
+                        <button
+                          class="blora-button"
+                          data-variant="ghost"
+                          data-size="xs"
+                          type="button"
+                        >
+                          回复
+                        </button>
+                      </div>
+                    </div>
+                    <p>
+                      这个信息密度很像 BBBS 原来的
+                      Today。移动端侧栏变成抽屉之后也没有把主要内容挤得太窄，方向是对的。
+                    </p>
+                    <div slot="reactions">
+                      <button type="button" data-blora-thread-react aria-label="赞同">
+                        <span class="bbs-icon" data-icon="thumbs-up" aria-hidden="true"></span> 6
+                      </button>
+                    </div>
+                  </blora-thread-comment>
+                </blora-timeline-item>
 
-              <blora-thread-comment>
-                <div slot="head">
-                  <span class="blora-avatar" data-size="sm" data-variant="info">Rh</span>
-                  <div class="blora-thread-comment__meta">
-                    <strong>Rhedar</strong>
-                    <span>6 分钟前 · 江苏</span>
-                  </div>
-                  <div class="blora-thread-comment__actions">
-                    <button class="blora-button" data-variant="ghost" data-size="xs" type="button">
-                      回复
-                    </button>
-                  </div>
-                </div>
-                <div slot="quote">“颜色、阴影、圆角与动效应继续使用 Blora token。”</div>
-                <p>
-                  这点很重要。业务层只负责页面编排后，切换 graphite 或 dusk
-                  主题仍然能维持同一套视觉层级，不需要再维护一份深色模式覆盖。
-                </p>
-                <div slot="reactions">
-                  <button type="button" data-blora-thread-react aria-label="赞同">
-                    <span class="bbs-icon" data-icon="thumbs-up" aria-hidden="true"></span> 4
-                  </button>
-                </div>
-              </blora-thread-comment>
+                <blora-timeline-item icon="message" content-layout="block">
+                  <blora-thread-comment>
+                    <div slot="head">
+                      <span class="blora-avatar" data-size="sm" data-variant="info">Rh</span>
+                      <div class="blora-thread-comment__meta">
+                        <strong>Rhedar</strong>
+                        <span>6 分钟前 · 江苏</span>
+                      </div>
+                      <div class="blora-thread-comment__actions">
+                        <button
+                          class="blora-button"
+                          data-variant="ghost"
+                          data-size="xs"
+                          type="button"
+                        >
+                          回复
+                        </button>
+                      </div>
+                    </div>
+                    <div slot="quote">“颜色、阴影、圆角与动效应继续使用 Blora token。”</div>
+                    <p>
+                      这点很重要。业务层只负责页面编排后，切换 graphite 或 dusk
+                      主题仍然能维持同一套视觉层级，不需要再维护一份深色模式覆盖。
+                    </p>
+                    <div slot="reactions">
+                      <button type="button" data-blora-thread-react aria-label="赞同">
+                        <span class="bbs-icon" data-icon="thumbs-up" aria-hidden="true"></span> 4
+                      </button>
+                    </div>
+                  </blora-thread-comment>
+                </blora-timeline-item>
 
-              <blora-thread-comment collapse-height="112">
-                <div slot="head">
-                  <span class="blora-avatar" data-size="sm" data-variant="neutral">De</span>
-                  <div class="blora-thread-comment__meta">
-                    <strong>Detrital</strong>
-                    <span>4 分钟前 · 广东</span>
-                  </div>
-                  <div class="blora-thread-comment__actions">
-                    <button class="blora-button" data-variant="ghost" data-size="xs" type="button">
-                      回复
-                    </button>
-                  </div>
-                </div>
-                <p>
-                  我试了一下评论折叠。短评论不会出现多余按钮，长评论才会折叠，这一点比业务自己按字符数猜测更可靠。
-                </p>
-                <p>
-                  不过当前 Thread add-on 只负责评论卡片与 composer
-                  外壳，楼中楼的数据组织、评论排序、引用目标和提交请求仍然要由论坛业务实现。
-                </p>
-                <p>
-                  对 BBBS
-                  这种已经有完整评论模型的项目来说，这其实比较合适：可以继续沿用现有接口，只把呈现和基础交互交给公开组件。
-                </p>
-                <p>
-                  如果以后需要更深的楼中楼视觉层级，最好由 add-on 增加正式
-                  contract，而不是消费侧依赖内部 class 做缩进。
-                </p>
-                <div slot="reactions">
-                  <button type="button" data-blora-thread-react aria-label="赞同">
-                    <span class="bbs-icon" data-icon="thumbs-up" aria-hidden="true"></span> 9
-                  </button>
-                </div>
-              </blora-thread-comment>
+                <blora-timeline-item icon="message" content-layout="block">
+                  <blora-thread-comment collapse-height="112">
+                    <div slot="head">
+                      <span class="blora-avatar" data-size="sm" data-variant="neutral">De</span>
+                      <div class="blora-thread-comment__meta">
+                        <strong>Detrital</strong>
+                        <span>4 分钟前 · 广东</span>
+                      </div>
+                      <div class="blora-thread-comment__actions">
+                        <button
+                          class="blora-button"
+                          data-variant="ghost"
+                          data-size="xs"
+                          type="button"
+                        >
+                          回复
+                        </button>
+                      </div>
+                    </div>
+                    <p>
+                      我试了一下评论折叠。短评论不会出现多余按钮，长评论才会折叠，这一点比业务自己按字符数猜测更可靠。
+                    </p>
+                    <p>
+                      不过当前 Thread add-on 只负责评论卡片与 composer
+                      外壳，楼中楼的数据组织、评论排序、引用目标和提交请求仍然要由论坛业务实现。
+                    </p>
+                    <p>
+                      对 BBBS
+                      这种已经有完整评论模型的项目来说，这其实比较合适：可以继续沿用现有接口，只把呈现和基础交互交给公开组件。
+                    </p>
+                    <p>
+                      如果以后需要更深的楼中楼视觉层级，最好由 add-on 增加正式
+                      contract，而不是消费侧依赖内部 class 做缩进。
+                    </p>
+                    <div slot="reactions">
+                      <button type="button" data-blora-thread-react aria-label="赞同">
+                        <span class="bbs-icon" data-icon="thumbs-up" aria-hidden="true"></span> 9
+                      </button>
+                    </div>
+                  </blora-thread-comment>
+                </blora-timeline-item>
 
-              <blora-thread-comment>
-                <div slot="head">
-                  <span class="blora-avatar" data-size="sm" data-variant="primary">N</span>
-                  <div class="blora-thread-comment__meta">
-                    <strong>NBF</strong>
-                    <span>刚刚 · 北京</span>
-                  </div>
-                  <div class="blora-thread-comment__actions">
-                    <button class="blora-button" data-variant="ghost" data-size="xs" type="button">
-                      回复
-                    </button>
-                  </div>
-                </div>
-                <p>搜索筛选也能直接操作，静态演示已经足够说明第三方项目怎么接入了。</p>
-                <div slot="reactions">
-                  <button type="button" data-blora-thread-react aria-label="赞同">
-                    <span class="bbs-icon" data-icon="thumbs-up" aria-hidden="true"></span> 2
-                  </button>
-                </div>
-              </blora-thread-comment>
+                <blora-timeline-item icon="message" content-layout="block">
+                  <blora-thread-comment>
+                    <div slot="head">
+                      <span class="blora-avatar" data-size="sm" data-variant="primary">N</span>
+                      <div class="blora-thread-comment__meta">
+                        <strong>NBF</strong>
+                        <span>刚刚 · 北京</span>
+                      </div>
+                      <div class="blora-thread-comment__actions">
+                        <button
+                          class="blora-button"
+                          data-variant="ghost"
+                          data-size="xs"
+                          type="button"
+                        >
+                          回复
+                        </button>
+                      </div>
+                    </div>
+                    <p>搜索筛选也能直接操作，静态演示已经足够说明第三方项目怎么接入了。</p>
+                    <div slot="reactions">
+                      <button type="button" data-blora-thread-react aria-label="赞同">
+                        <span class="bbs-icon" data-icon="thumbs-up" aria-hidden="true"></span> 2
+                      </button>
+                    </div>
+                  </blora-thread-comment>
+                </blora-timeline-item>
+              </blora-timeline>
             </div>
           </section>
 

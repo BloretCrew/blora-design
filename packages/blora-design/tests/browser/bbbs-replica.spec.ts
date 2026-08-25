@@ -3,6 +3,7 @@ import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 const homePath = resolve(import.meta.dirname, "../../../..", "examples/bbbs-replica/index.html");
+const threadPath = resolve(import.meta.dirname, "../../../..", "examples/bbbs-replica/thread.html");
 
 async function sidebarGeometry(page: import("@playwright/test").Page) {
   return page.evaluate(() => {
@@ -105,4 +106,88 @@ test("BBBS replica search and sidebar remain contained across theme changes", as
   expect(after.iconInsideSearch).toBe(true);
   expect(after.clearInsideSearch).toBe(true);
   expect(after.paletteLabelFits).toBe(true);
+});
+
+test("BBBS replica thread renders a comment-stream timeline rail", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 960 });
+  await page.goto(pathToFileURL(threadPath).href);
+  await page.waitForFunction(() => customElements.get("blora-thread-comment"));
+  await page.waitForTimeout(300);
+
+  await expect(page.locator("#comment-stream blora-timeline")).toHaveCount(1);
+  await expect(page.locator("#comment-stream .blora-timeline")).toHaveCount(1);
+  await expect(page.locator("#comment-stream .blora-timeline__item")).toHaveCount(4);
+  await expect(page.locator("#comment-stream .blora-timeline__dot--icon")).toHaveCount(4);
+});
+
+test("BBBS replica thread timeline rail is visible and indents comment cards", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 960 });
+  await page.goto(pathToFileURL(threadPath).href);
+  await page.waitForFunction(() => customElements.get("blora-thread-comment"));
+  await page.waitForTimeout(300);
+
+  const geometry = await page.evaluate(() => {
+    const timeline = document.querySelector<HTMLElement>("#comment-stream .blora-timeline")!;
+    const rail = getComputedStyle(timeline, "::before");
+    const timelineRect = timeline.getBoundingClientRect();
+    const firstCard = document
+      .querySelector<HTMLElement>("#comment-stream .blora-thread-comment__card")!
+      .getBoundingClientRect();
+    return {
+      railWidth: rail.width,
+      railHeight: Number.parseFloat(rail.height),
+      railBackground: rail.backgroundColor,
+      timelineLeft: timelineRect.left,
+      firstCardLeft: firstCard.left,
+    };
+  });
+
+  expect(geometry.railWidth).toBe("1px");
+  expect(geometry.railHeight).toBeGreaterThan(100);
+  expect(geometry.railBackground).not.toBe("rgba(0, 0, 0, 0)");
+  expect(geometry.firstCardLeft).toBeGreaterThan(geometry.timelineLeft);
+});
+
+test("BBBS replica thread comment stream fits mobile viewport", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto(pathToFileURL(threadPath).href);
+  await page.waitForFunction(() => customElements.get("blora-thread-comment"));
+  await page.waitForTimeout(300);
+
+  const fits = await page.evaluate(() => {
+    const timeline = document.querySelector<HTMLElement>("#comment-stream .blora-timeline");
+    const doc = document.documentElement;
+    return {
+      hasTimeline: !!timeline,
+      docScrollWidth: doc.scrollWidth,
+      docClientWidth: doc.clientWidth,
+    };
+  });
+
+  expect(fits.hasTimeline).toBe(true);
+  expect(fits.docScrollWidth).toBeLessThanOrEqual(fits.docClientWidth + 1);
+});
+
+test("BBBS replica reaction chips grow as capsules without overflow", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 960 });
+  await page.goto(pathToFileURL(threadPath).href);
+  await page.waitForFunction(() => customElements.get("blora-thread-comment"));
+  await page.waitForTimeout(300);
+
+  const chips = await page.evaluate(() =>
+    [...document.querySelectorAll<HTMLElement>("[data-blora-thread-react]")].map((chip) => {
+      const style = getComputedStyle(chip);
+      return {
+        clientWidth: chip.clientWidth,
+        scrollWidth: chip.scrollWidth,
+        borderRadius: style.borderRadius,
+      };
+    }),
+  );
+
+  expect(chips.length).toBeGreaterThanOrEqual(4);
+  for (const chip of chips) {
+    expect(chip.scrollWidth).toBeLessThanOrEqual(chip.clientWidth + 1);
+    expect(chip.borderRadius).toBe("9999px");
+  }
 });
