@@ -297,6 +297,13 @@ a {
   border-radius: inherit;
 }
 
+/* The feed list clips its content box (overflow: clip), so an outward focus
+   ring would be cut off on the left/right. Draw the ring inset so it stays
+   visible on every side. */
+.feed-item__link:focus-visible {
+  outline-offset: calc(-1 * var(--blora-focus-ring-width));
+}
+
 .feed-item__icon {
   display: grid;
   width: 2.75rem;

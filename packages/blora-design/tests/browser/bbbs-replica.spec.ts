@@ -188,6 +188,36 @@ test("BBBS replica feed items show no strong ring on pointer focus", async ({ pa
   expect(state.itemBoxShadow).toBe("none");
 });
 
+test("BBBS replica feed item focus ring is inset so it is not clipped", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 960 });
+  await page.goto(pathToFileURL(homePath).href);
+  await page.waitForFunction(() => customElements.get("blora-sidebar-layout"));
+  await page.waitForTimeout(300);
+
+  const sel = ".feed-item .feed-item__link";
+  let reached = false;
+  for (let i = 0; i < 60; i++) {
+    await page.keyboard.press("Tab");
+    reached = await page.evaluate((s) => document.activeElement?.matches(s) ?? false, sel);
+    if (reached) break;
+  }
+  expect(reached).toBe(true);
+
+  const state = await page.evaluate((s) => {
+    const link = document.querySelector<HTMLElement>(s)!;
+    const style = getComputedStyle(link);
+    return {
+      focusVisible: link.matches(":focus-visible"),
+      outlineWidth: style.outlineWidth,
+      outlineOffset: style.outlineOffset,
+    };
+  }, sel);
+
+  expect(state.focusVisible).toBe(true);
+  expect(state.outlineWidth).toBe("2px");
+  expect(state.outlineOffset).toBe("-2px");
+});
+
 test("BBBS replica feed filter is a segmented control that filters the feed", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 960 });
   await page.goto(pathToFileURL(homePath).href);
