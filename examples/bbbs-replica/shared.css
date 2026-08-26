@@ -297,10 +297,6 @@ a {
   border-radius: inherit;
 }
 
-.feed-item:focus-within {
-  box-shadow: var(--blora-focus-ring-strong);
-}
-
 .feed-item__icon {
   display: grid;
   width: 2.75rem;

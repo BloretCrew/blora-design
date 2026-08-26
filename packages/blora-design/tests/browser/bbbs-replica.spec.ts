@@ -168,6 +168,26 @@ test("BBBS replica thread comment stream fits mobile viewport", async ({ page })
   expect(fits.docScrollWidth).toBeLessThanOrEqual(fits.docClientWidth + 1);
 });
 
+test("BBBS replica feed items show no strong ring on pointer focus", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 960 });
+  await page.goto(pathToFileURL(homePath).href);
+  await page.waitForFunction(() => customElements.get("blora-sidebar-layout"));
+  await page.waitForTimeout(300);
+
+  const state = await page.evaluate(() => {
+    const item = document.querySelectorAll<HTMLElement>(".feed-item")[1]!;
+    const link = item.querySelector<HTMLElement>(".feed-item__link")!;
+    link.focus({ preventScroll: true });
+    return {
+      focused: document.activeElement === link,
+      itemBoxShadow: getComputedStyle(item).boxShadow,
+    };
+  });
+
+  expect(state.focused).toBe(true);
+  expect(state.itemBoxShadow).toBe("none");
+});
+
 test("BBBS replica feed filter is a segmented control that filters the feed", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 960 });
   await page.goto(pathToFileURL(homePath).href);
