@@ -45,6 +45,13 @@ blora-sidebar-nav {
   font-weight: 600;
 }
 
+/* Sidebar nav commonly sits in a scrolling/clipped aside (overflow-x hidden),
+   so an outward ring would be cut off on the clipped side. Draw it inset like
+   Tabs so the keyboard ring stays complete on every side. */
+.blora-sidebar-nav__link:focus-visible {
+  outline-offset: calc(-1 * var(--blora-focus-ring-width));
+}
+
 @media (pointer: coarse) {
   .blora-sidebar-nav__link {
     min-height: calc(var(--blora-space-6) + var(--blora-space-3));

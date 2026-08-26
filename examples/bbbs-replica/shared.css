@@ -304,6 +304,18 @@ a {
   outline-offset: calc(-1 * var(--blora-focus-ring-width));
 }
 
+/* First and last cards meet the list's rounded corners; carry that radius on
+   the link so the focus ring follows the curve instead of drawing sharp
+   corners over a rounded card. */
+.feed-list .feed-item:first-child .feed-item__link {
+  border-top-left-radius: var(--blora-radius-lg);
+  border-top-right-radius: var(--blora-radius-lg);
+}
+.feed-list .feed-item:last-child .feed-item__link {
+  border-bottom-left-radius: var(--blora-radius-lg);
+  border-bottom-right-radius: var(--blora-radius-lg);
+}
+
 .feed-item__icon {
   display: grid;
   width: 2.75rem;

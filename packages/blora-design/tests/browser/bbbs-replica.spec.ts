@@ -218,6 +218,58 @@ test("BBBS replica feed item focus ring is inset so it is not clipped", async ({
   expect(state.outlineOffset).toBe("-2px");
 });
 
+test("BBBS replica feed first/last link focus ring follows the list corners", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 960 });
+  await page.goto(pathToFileURL(homePath).href);
+  await page.waitForFunction(() => customElements.get("blora-sidebar-layout"));
+  await page.waitForTimeout(300);
+
+  const radii = await page.evaluate(() => {
+    const items = Array.from(document.querySelectorAll<HTMLElement>(".feed-item"));
+    const radius = (item: HTMLElement) =>
+      getComputedStyle(item.querySelector<HTMLElement>(".feed-item__link")!);
+    return {
+      firstTop: radius(items[0]!).borderTopLeftRadius,
+      firstBottom: radius(items[0]!).borderBottomLeftRadius,
+      lastTop: radius(items[items.length - 1]!).borderTopLeftRadius,
+      lastBottom: radius(items[items.length - 1]!).borderBottomLeftRadius,
+    };
+  });
+
+  expect(radii.firstTop).toBe("18px");
+  expect(radii.firstBottom).toBe("0px");
+  expect(radii.lastTop).toBe("0px");
+  expect(radii.lastBottom).toBe("18px");
+});
+
+test("BBBS replica sidebar nav link focus ring is inset so it is not clipped", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 960 });
+  await page.goto(pathToFileURL(homePath).href);
+  await page.waitForFunction(() => customElements.get("blora-sidebar-layout"));
+  await page.waitForTimeout(300);
+
+  const sel = ".blora-sidebar-nav__link";
+  let reached = false;
+  for (let i = 0; i < 30; i++) {
+    await page.keyboard.press("Tab");
+    reached = await page.evaluate((s) => document.activeElement?.matches(s) ?? false, sel);
+    if (reached) break;
+  }
+  expect(reached).toBe(true);
+
+  const state = await page.evaluate(() => {
+    const link = document.activeElement!;
+    const style = getComputedStyle(link);
+    return {
+      focusVisible: link.matches(":focus-visible"),
+      outlineOffset: style.outlineOffset,
+    };
+  });
+
+  expect(state.focusVisible).toBe(true);
+  expect(state.outlineOffset).toBe("-2px");
+});
+
 test("BBBS replica feed filter is a segmented control that filters the feed", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 960 });
   await page.goto(pathToFileURL(homePath).href);

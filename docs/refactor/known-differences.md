@@ -328,6 +328,14 @@
 - **改变原因**：统一 Storybook、Showcase 与正式组件的状态层级，避免当前态与 hover 态竞争。
 - **审核状态**：approved（用户确认 2026-08-10）
 
+### Sidebar Navigation - 裁切侧栏内焦点环内缩
+
+- **组件**：sidebar-nav
+- **1.x 表现**：导航链接焦点环向外绘制；链接铺满可滚动/裁切侧栏宽度时，被 `overflow-x: hidden` 裁切的一侧会切掉部分焦点环（实测左缘被切约 4px）。
+- **2.0 表现**：导航链接 `:focus-visible` 焦点环内缩，与 Tabs 一致，在 `overflow-x: hidden` 的侧栏里四边完整可见。
+- **改变原因**：WCAG / a11y 可见性修复
+- **审核状态**：approved（键盘聚焦实测发现，2026-08-25）
+
 ### Accordion / Collapse - 完整 disclosure 关联
 
 - **组件**：accordion / collapse
