@@ -263,13 +263,6 @@ a {
 
 .feed-filters {
   display: flex;
-  gap: var(--blora-space-1);
-}
-
-.feed-filters [aria-pressed="true"] {
-  color: var(--blora-color-text-primary);
-  border-color: var(--blora-color-action-primary-default);
-  background: var(--blora-color-action-primary-tint);
 }
 
 .feed-list {
@@ -528,14 +521,8 @@ a {
   }
 
   .today-heading .blora-button,
-  .feed-filters,
-  .feed-filters .blora-button {
-    width: 100%;
-  }
-
   .feed-filters {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
   }
 
   .daily-brief__head {

@@ -168,6 +168,36 @@ test("BBBS replica thread comment stream fits mobile viewport", async ({ page })
   expect(fits.docScrollWidth).toBeLessThanOrEqual(fits.docClientWidth + 1);
 });
 
+test("BBBS replica feed filter is a segmented control that filters the feed", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 960 });
+  await page.goto(pathToFileURL(homePath).href);
+  await page.waitForFunction(() => customElements.get("blora-segmented"));
+  await page.waitForTimeout(300);
+
+  const segmented = page.locator("#feed-filter");
+  await expect(segmented).toHaveCount(1);
+  await expect(page.locator("#feed-filter .blora-segmented__item")).toHaveCount(3);
+  await expect(page.locator("[data-feed-item]")).toHaveCount(4);
+
+  await segmented.locator('[data-value="followed"]').click();
+  await expect(page.locator("#feed-filter .blora-segmented")).toHaveAttribute(
+    "data-value",
+    "followed",
+  );
+  expect(await page.locator("[data-feed-item]:visible").count()).toBe(2);
+
+  await segmented.locator('[data-value="popular"]').click();
+  await expect(page.locator("#feed-filter .blora-segmented")).toHaveAttribute(
+    "data-value",
+    "popular",
+  );
+  expect(await page.locator("[data-feed-item]:visible").count()).toBe(3);
+
+  await segmented.locator('[data-value="all"]').click();
+  await expect(page.locator("#feed-filter .blora-segmented")).toHaveAttribute("data-value", "all");
+  expect(await page.locator("[data-feed-item]:visible").count()).toBe(4);
+});
+
 test("BBBS replica reaction chips grow as capsules without overflow", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 960 });
   await page.goto(pathToFileURL(threadPath).href);

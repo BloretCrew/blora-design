@@ -44,7 +44,7 @@ blora-segmented {
 .blora-segmented__item {
   padding: 0.4em 0.9em;
   font-size: var(--blora-text-sm);
-  color: var(--blora-color-text-muted);
+  color: var(--blora-color-text-secondary);
   border-radius: calc(var(--blora-radius-full) - var(--blora-segmented-padding));
   cursor: pointer;
   transition: color var(--blora-duration-base) var(--blora-easing-standard);

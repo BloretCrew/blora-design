@@ -129,9 +129,11 @@
                 <h2 id="feed-title">为你推荐</h2>
               </div>
               <div class="feed-filters" role="group" aria-label="帖子筛选">
-                <button class="blora-button" data-variant="outline" data-size="xs" type="button" data-filter="all" aria-pressed="true">全部</button>
-                <button class="blora-button" data-variant="ghost" data-size="xs" type="button" data-filter="followed">关注</button>
-                <button class="blora-button" data-variant="ghost" data-size="xs" type="button" data-filter="popular">热议</button>
+                <blora-segmented id="feed-filter" value="all">
+                  <blora-segment value="all">全部</blora-segment>
+                  <blora-segment value="followed">关注</blora-segment>
+                  <blora-segment value="popular">热议</blora-segment>
+                </blora-segmented>
               </div>
             </div>
 

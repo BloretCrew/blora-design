@@ -9,6 +9,7 @@ Beta follows a defect-first cadence. Public stable-core exports are frozen from 
 - Prevented a closed Palette Picker menu from expanding scroll containers, added viewport-aware vertical flipping and height clamping, stopped its Chinese trigger label from being vertically clipped, made sticky Sidebar Layouts reject horizontal overflow, and restored Blora scrollbar styling in the BBBS consumer example.
 - Raised semantic Tag, Warning Badge, Alert, Sidebar Navigation and Thread composer text contrast to WCAG 2.2 AA across all seven themes in light and dark modes; raised Search and BBBS content icon contrast to the WCAG non-text 3:1 threshold; added component-level, real-page text and SVG contrast gates.
 - Turned the Thread comment reaction control into a growing capsule so reaction counts no longer overflow the fixed circle, and wrapped the BBBS replica comment stream in the comment-stream Timeline rail.
+- Switched the BBBS replica feed filter to the Segmented control and raised the Segmented inactive label contrast to WCAG 2.2 AA across all seven themes, driven by the real BBBS page text gate.
 
 ## 2.0.0-beta.1
 

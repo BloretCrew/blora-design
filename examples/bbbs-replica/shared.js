@@ -39,16 +39,9 @@
   };
 
   search?.addEventListener("input", applyFeedState);
-  document.querySelectorAll("[data-filter]").forEach((button) => {
-    button.addEventListener("click", () => {
-      activeFilter = button.dataset.filter || "all";
-      document.querySelectorAll("[data-filter]").forEach((candidate) => {
-        const selected = candidate === button;
-        candidate.dataset.variant = selected ? "outline" : "ghost";
-        candidate.setAttribute("aria-pressed", String(selected));
-      });
-      applyFeedState();
-    });
+  document.getElementById("feed-filter")?.addEventListener("blora-change", (event) => {
+    activeFilter = event.detail?.value || "all";
+    applyFeedState();
   });
 
   const compose = document.getElementById("quick-compose-input");
