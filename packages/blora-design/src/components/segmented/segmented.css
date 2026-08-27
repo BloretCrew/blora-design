@@ -63,6 +63,12 @@ blora-segmented {
   color: var(--blora-color-text-emphasis);
 }
 
+/* The control is an overflow-clipping pill, so an outward focus ring would be
+   cut off at the clipped edges. Draw it inset like Tabs / Sidebar Nav. */
+.blora-segmented__item:focus-visible {
+  outline-offset: calc(-1 * var(--blora-focus-ring-width));
+}
+
 @media (prefers-reduced-motion: reduce) {
   .blora-segmented__indicator {
     transition: none;

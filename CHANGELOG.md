@@ -10,7 +10,7 @@ Beta follows a defect-first cadence. Public stable-core exports are frozen from 
 - Raised semantic Tag, Warning Badge, Alert, Sidebar Navigation and Thread composer text contrast to WCAG 2.2 AA across all seven themes in light and dark modes; raised Search and BBBS content icon contrast to the WCAG non-text 3:1 threshold; added component-level, real-page text and SVG contrast gates.
 - Turned the Thread comment reaction control into a growing capsule so reaction counts no longer overflow the fixed circle, and wrapped the BBBS replica comment stream in the comment-stream Timeline rail.
 - Switched the BBBS replica feed filter to the Segmented control and raised the Segmented inactive label contrast to WCAG 2.2 AA across all seven themes, driven by the real BBBS page text gate.
-- Stopped the BBBS replica feed items from drawing a thick ring on pointer focus, inlined the keyboard focus ring so the feed list's clipped edges no longer cut it off, carried the first/last feed cards' rounded corners onto the link so the focus ring follows the curve, and inlined the Sidebar Navigation focus ring so it is not clipped inside a scrolling sidebar aside.
+- Stopped the BBBS replica feed items from drawing a thick ring on pointer focus, inlined the keyboard focus ring so the feed list's clipped edges no longer cut it off, carried the first/last feed cards' rounded corners onto the link so the focus ring follows the curve, and inlined the Sidebar Navigation and Segmented control focus rings so they are not clipped inside a scrolling sidebar aside or a clipping pill.
 
 ## 2.0.0-beta.1
 

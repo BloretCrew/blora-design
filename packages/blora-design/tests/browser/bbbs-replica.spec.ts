@@ -270,6 +270,34 @@ test("BBBS replica sidebar nav link focus ring is inset so it is not clipped", a
   expect(state.outlineOffset).toBe("-2px");
 });
 
+test("BBBS replica segmented item focus ring is inset so it is not clipped", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 960 });
+  await page.goto(pathToFileURL(homePath).href);
+  await page.waitForFunction(() => customElements.get("blora-segmented"));
+  await page.waitForTimeout(300);
+
+  const sel = ".blora-segmented__item";
+  let reached = false;
+  for (let i = 0; i < 40; i++) {
+    await page.keyboard.press("Tab");
+    reached = await page.evaluate((s) => document.activeElement?.matches(s) ?? false, sel);
+    if (reached) break;
+  }
+  expect(reached).toBe(true);
+
+  const state = await page.evaluate(() => {
+    const el = document.activeElement!;
+    const style = getComputedStyle(el);
+    return {
+      focusVisible: el.matches(":focus-visible"),
+      outlineOffset: style.outlineOffset,
+    };
+  });
+
+  expect(state.focusVisible).toBe(true);
+  expect(state.outlineOffset).toBe("-2px");
+});
+
 test("BBBS replica feed filter is a segmented control that filters the feed", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 960 });
   await page.goto(pathToFileURL(homePath).href);
