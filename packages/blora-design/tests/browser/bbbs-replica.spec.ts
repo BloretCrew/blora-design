@@ -298,6 +298,18 @@ test("BBBS replica segmented item focus ring is inset so it is not clipped", asy
   expect(state.outlineOffset).toBe("-2px");
 });
 
+test("BBBS replica palette picker labels the lotus theme with two characters", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 960 });
+  await page.goto(pathToFileURL(homePath).href);
+  await page.waitForFunction(() => customElements.get("blora-palette-picker"));
+  await page.waitForTimeout(300);
+
+  await page.locator("blora-palette-picker [data-blora-palette-trigger]").click();
+  const menu = page.locator(".blora-palette-picker__menu");
+  await expect(menu).toBeVisible();
+  await expect(menu).toContainText("莲花");
+});
+
 test("BBBS replica feed filter is a segmented control that filters the feed", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 960 });
   await page.goto(pathToFileURL(homePath).href);

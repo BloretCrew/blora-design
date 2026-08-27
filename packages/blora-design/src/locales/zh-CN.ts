@@ -153,7 +153,7 @@ export const zhCN: BloraLocalePack = {
     "layout.menu": "菜单",
     "theme.name.coral": "珊瑚",
     "theme.name.indigo": "靛蓝",
-    "theme.name.lotus": "莲",
+    "theme.name.lotus": "莲花",
     "theme.name.graphite": "石墨",
     "theme.name.mono": "单色",
     "theme.name.circuit": "电路",
