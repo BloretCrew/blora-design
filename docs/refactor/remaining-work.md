@@ -14,7 +14,7 @@
 | **仓库自限** | 阶段目标可交付（功能迁移 + add-on 拆分 + 文档真值 + 单测 + typecheck） | Phase 0–9 ✅；**Phase 10 🔄 进行中** |
 | **规格全书 DoD** | 每组件 §26 全勾 + §31 发布清单 | **未达到**；主体落在 Phase 10 §3 清单 |
 
-**真实位置**（2026-08-02）：Phase 9 自限 + 诚实债已关；**已正式进入 Phase 10**。可标 stable / 可发 `2.0.0` 的工作 = 完成本文件 §3。
+**真实位置**（2026-08-27）：Phase 9 自限 + 诚实债已关；Phase 10 已完成 Stable 发布与最终验收。2.0 的可发布工作已完成；后置项只保留为非阻塞记录。
 
 ---
 
@@ -201,7 +201,7 @@
 - [x] 打 `2.0.0-beta.0` 与发布演练（2026-08-19；`beta` dist-tag；见 `beta-install-notes.md`）
 - [x] 准备 `2.0.0-beta.1` 缺陷收口版（2026-08-25；CHANGELOG、七包版本、文档与发布记录；见 `beta.1-install-notes.md`）
 
-### 3.6 RC
+### 3.6 RC（已完成）
 
 - [x] 冻结新增组件（RC 起只接受缺陷、无障碍、文档和发布阻塞修复；不再新增公共组件/API，2026-08-27）
 - [x] 全浏览器回归策略成文 — [`browser-matrix.md`](./browser-matrix.md)
@@ -212,7 +212,7 @@
 - [x] CSP / SSR import 专项证明 — [`rc-release-rehearsal.md`](./rc-release-rehearsal.md)
 - [x] 真实 Safari 设备人工抽测：当前环境无 Safari 设备，标记为非适用；Playwright WebKit 87/87 已完成，不阻塞 Stable（2026-08-27）
 
-### 3.7 Stable `2.0.0`
+### 3.7 Stable `2.0.0`（已完成）
 
 - [x] 发 `2.0.0`；docs 与 tag 对齐（2026-08-27）
 - [x] `latest` 指向 2.0 Stable；不建立 `legacy` 兼容发布线（2026-08-27）

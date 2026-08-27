@@ -81,6 +81,17 @@ Node 环境导入没有访问浏览器专属对象；`defineBloraTimeline`、`cr
 
 RC.0 发布后的 npm tag 状态已核对：核心包 `latest=1.0.0`、`alpha=2.0.0-alpha.1`、`beta=2.0.0-beta.1`、`rc=2.0.0-rc.0`。本项目没有 1.x 用户或消费者，因此不会为 1.x 提供安全维护、兼容层、legacy 发布线或迁移支持承诺；本记录中的旧 `latest=1.0.0` 只是发布历史状态，不是 2.0 Stable 的目标策略。
 
+## Stable 2.0.0 最终验收（2026-08-27）
+
+- Git tag `v2.0.0` 已推送。
+- GitHub Actions Release run `33082759486` 成功：构建、publint、attw、七包发布和 GitHub Release 均成功。
+- npm `latest` 已指向 `2.0.0`；七个公开包的 `@latest` 均核对为 `2.0.0`。
+- 全新临时 consumer 安装七个 `2.0.0` 包成功；核心版本、SSR-safe import 和六个 add-on import 均通过。
+- Stable CDN IIFE 在限制性 CSP 页面中成功加载：`globalThis.Blora.VERSION === "2.0.0"`，无页面错误。
+- 工作区最终 `pnpm verify` 通过。
+
+真实 Safari 设备当前环境不可用，因此不伪造真机结果；Playwright WebKit 26.5 已完成 87/87，作为可执行的 Safari 近似覆盖。
+
 ## 结论
 
-RC.0 的本地质量门禁、Firefox/WebKit 实测、npm/CDN/CSP/SSR 证据、非变更式 rollback rehearsal 和正式 tag/npm/GitHub Release 已完成。GitHub Actions release run `33078680188` 成功，npm `rc` dist-tag 指向 `2.0.0-rc.0`。当前进入 RC 观察期；本次没有改变 `latest`，也没有建立 1.x 维护或兼容发布线。
+RC.0 的本地质量门禁、Firefox/WebKit 实测、npm/CDN/CSP/SSR 证据、非变更式 rollback rehearsal、Stable tag/npm/GitHub Release 和最终验收已完成。GitHub Actions release run `33082759486` 成功，npm `latest` 指向 `2.0.0`。本项目不建立 1.x 维护或兼容发布线。
