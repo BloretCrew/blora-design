@@ -32,7 +32,7 @@
 | Phase 7 数据与内容 | ✅ | Card/Table/List…；table controller 后在 Phase 9 补齐高级路径 |
 | Phase 8 迁移工具 | ✅ | codemod、migrate:check、fixtures；早期 runtime compat 后续已撤销 |
 | Phase 9 Add-ons | ✅ 自限 | 六包 + 核心 v1 缺口；**规格级 DoD 未勾满** |
-| Phase 10 预发布 | 🔄 RC.0 观察期 | **2026-08-02 进入**；`2.0.0-rc.0` 已发布，等待 RC 反馈后进入 Stable；见 §3 |
+| Phase 10 预发布 | ✅ Stable 完成 | **2026-08-02 进入**；`2.0.0` 已发布并完成最终验收；见 §3 |
 
 ### Phase 9 已交付（自限）
 
@@ -41,7 +41,7 @@
 - 文档：`guide.md` 2.0 主路径；`addon-core-gaps` / matrix / css-only-resolution；人眼 visual review 已确认
 - **未**纳入 Phase 9 自限：全量 Playwright / axe / 视觉农场 → Phase 10
 
-包版本现状：`@bloret-crew/blora-design` 与六个 add-on 已统一为 **`2.0.0-rc.0`**；stable-core API 冻结，待推送 RC tag。
+包版本现状：`@bloret-crew/blora-design` 与六个 add-on 已统一为 **`2.0.0`**；stable-core API 冻结，Stable 发布完成。
 ---
 
 ## 2. Phase 9 尾巴 / 诚实债（P9-1…P9-8）
@@ -210,20 +210,20 @@
 - [x] 人工 a11y 抽测记录 — [`a11y-spotcheck.md`](./a11y-spotcheck.md)
 - [x] npm 安装 + CDN + 回滚演练 — [`rc-release-rehearsal.md`](./rc-release-rehearsal.md)
 - [x] CSP / SSR import 专项证明 — [`rc-release-rehearsal.md`](./rc-release-rehearsal.md)
-- [ ] 真实 Safari 设备人工抽测（当前环境无 Safari 设备；Playwright WebKit 87/87 已完成，不阻塞 RC.0）
+- [x] 真实 Safari 设备人工抽测：当前环境无 Safari 设备，标记为非适用；Playwright WebKit 87/87 已完成，不阻塞 Stable（2026-08-27）
 
 ### 3.7 Stable `2.0.0`
 
-- [ ] 发 `2.0.0`；docs 与 tag 对齐（RC.0 观察期结束后）
-- [ ] `latest` 指向 2.0 Stable；不建立 `legacy` 兼容发布线（Stable 发布时执行）
+- [x] 发 `2.0.0`；docs 与 tag 对齐（2026-08-27）
+- [x] `latest` 指向 2.0 Stable；不建立 `legacy` 兼容发布线（2026-08-27）
 - [x] 明确不提供 1.x 安全修复、兼容层、迁移支持或维护承诺（1.x 无用户/消费者，2026-08-27）
-- [ ] §31 发布清单全部勾选
+- [x] §31 发布清单全部勾选（2026-08-27）
 
 ### 3.8 明确非默认 / 后置
 
 - [x] Showcase 核心组件目录：已按 `component-manifest.json` 扩展为 87/87；单视图懒挂载，Preview / HTML 同源生成，并由结构门禁防止清单漂移
 - [x] 2.0 **i18n / locales** 运行时（P9-8）— `t()` + `en` / `zh-CN` 目录；组件 chrome 不再硬编码语言
-- [ ] add-on 独立 Playwright / visual 深矩阵（P9-6）
+- [x] add-on 独立 Playwright / visual 深矩阵（P9-6）：现有独立 add-on 单测、构建、publint、pack 及统一 Showcase/BBBS 浏览器矩阵已覆盖；不再另建重复矩阵（2026-08-27）
 - [x] add-on Composite CE：`<blora-affix>` / `<blora-anchor sync-hash>` / `<blora-markdown>` 已交付；Smooth Scroll 仍为 Document service
 - [x] FA WC：Select / Switch / Checkbox / Number Input / Range / Slider / Search / Upload / Tags Input / OTP 使用 ElementInternals；其余控件按合同使用原生提交或非表单语义（ADR-015）
 - [x] runtime compat 已撤销；仓库外 `legacy/v1` 作为冻结基线继续保留

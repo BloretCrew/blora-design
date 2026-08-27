@@ -2,7 +2,7 @@
 
 Blora Design 2.0 — token-driven, accessible, zero-dependency Web UI design system.
 
-**Status: 2.0.0-rc.0** (Phase 10 RC; frozen stable-core package surface — see monorepo `CHANGELOG.md`)
+**Status: 2.0.0** (Stable; frozen stable-core package surface — see monorepo `CHANGELOG.md`)
 
 ## Entry points
 

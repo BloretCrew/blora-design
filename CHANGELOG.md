@@ -6,6 +6,14 @@ Beta follows a defect-first cadence. Public stable-core exports are frozen from 
 
 RC closeout on 2026-08-27: Firefox and WebKit full browser suites passed 87/87 each; npm consumer, CDN, CSP, SSR import and rollback rehearsal evidence is recorded in `docs/refactor/rc-release-rehearsal.md`. The project does not maintain or compatibility-support the unused 1.x line.
 
+## 2.0.0
+
+### Stable release
+
+- Promoted the RC.0 line to the stable `2.0.0` release.
+- Published the core package and six add-ons with npm `latest` pointing to `2.0.0`.
+- Completed the final acceptance: Chromium, Firefox and WebKit browser suites; npm consumer; CDN; CSP; SSR; package exports; accessibility and visual gates.
+
 ## 2.0.0-rc.0
 
 ### Release candidate

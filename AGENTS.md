@@ -4,7 +4,7 @@
 
 ## 项目状态
 
-当前处于 **2.0 重构 Phase 10（RC.0）— `2.0.0-rc.0` 已准备，待发布验证**。
+当前处于 **2.0 重构 Phase 10（Stable）— `2.0.0` 已发布，完成最终验收**。
 阶段进度与开放清单见 `docs/refactor/status.md` 与 **`docs/refactor/remaining-work.md`（主跟踪）**。
 
 ## 视觉基线（不可违反）
