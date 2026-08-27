@@ -11,6 +11,7 @@ Beta follows a defect-first cadence. Public stable-core exports are frozen from 
 - Turned the Thread comment reaction control into a growing capsule so reaction counts no longer overflow the fixed circle, and wrapped the BBBS replica comment stream in the comment-stream Timeline rail.
 - Switched the BBBS replica feed filter to the Segmented control and raised the Segmented inactive label contrast to WCAG 2.2 AA across all seven themes, driven by the real BBBS page text gate.
 - Stopped the BBBS replica feed items from drawing a thick ring on pointer focus, inlined the keyboard focus ring so the feed list's clipped edges no longer cut it off, carried the first/last feed cards' rounded corners onto the link so the focus ring follows the curve, inlined the Sidebar Navigation and Segmented control focus rings so they are not clipped inside a scrolling sidebar aside or a clipping pill, and made the Navbar brand focus ring circular when the title is hidden (icon-only).
+- Made the Theme palette picker menu open adjacent to its trigger on every breakpoint (it previously opened as a detached top sheet on narrow screens) and clamp inside the viewport horizontally on narrow/drawer layouts.
 
 ## 2.0.0-beta.1
 

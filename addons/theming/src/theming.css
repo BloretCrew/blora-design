@@ -213,12 +213,4 @@ blora-color-scheme-toggle {
     display: inline-block;
     max-width: 8rem;
   }
-
-  .blora-palette-picker__menu {
-    position: fixed;
-    top: max(4.25rem, env(safe-area-inset-top, 0px) + 3.5rem);
-    inset-inline: var(--blora-space-3);
-    width: auto;
-    max-height: min(70dvh, 28rem);
-  }
 }

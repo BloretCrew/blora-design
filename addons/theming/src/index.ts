@@ -262,13 +262,6 @@ function mountPalettePicker(root: HTMLElement): PalettePickerController {
   };
 
   const placeMenu = () => {
-    if (
-      typeof window.matchMedia === "function" &&
-      window.matchMedia("(max-width: 560px)").matches
-    ) {
-      clearMenuPlace();
-      return;
-    }
     const triggerRect = trigger.getBoundingClientRect();
     const menuWidth = menu.offsetWidth;
     const menuHeight = menu.offsetHeight;
@@ -294,11 +287,17 @@ function mountPalettePicker(root: HTMLElement): PalettePickerController {
       menu.style.removeProperty("max-height");
       menu.style.removeProperty("overflow-y");
     }
+    /* Clamp the cross-axis offset so the menu never overflows the viewport,
+       even when the trigger sits in a narrow column (e.g. a mobile drawer)
+       and no edge alignment actually fits. */
+    const maxCross = Math.max(pad, window.innerWidth - pad - menuWidth);
     if (alignEnd) {
+      const right = Math.min(Math.max(pad, window.innerWidth - triggerRect.right), maxCross);
       menu.style.left = "auto";
-      menu.style.right = `${Math.max(pad, window.innerWidth - triggerRect.right)}px`;
+      menu.style.right = `${right}px`;
     } else {
-      menu.style.left = `${Math.max(pad, triggerRect.left)}px`;
+      const left = Math.min(Math.max(pad, triggerRect.left), maxCross);
+      menu.style.left = `${left}px`;
       menu.style.right = "auto";
     }
   };
