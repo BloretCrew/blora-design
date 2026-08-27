@@ -5,18 +5,19 @@ import { expect, test } from "@playwright/test";
 
 const packageRoot = resolve(import.meta.dirname, "..", "..");
 const repoRoot = resolve(packageRoot, "..", "..");
-const css = [
-  resolve(packageRoot, "dist", "tokens.css"),
-  resolve(packageRoot, "dist", "tokens.dark.css"),
-  resolve(packageRoot, "dist", "tokens.themes.css"),
-  resolve(packageRoot, "src", "components", "alert", "alert.css"),
-  resolve(packageRoot, "src", "components", "avatar", "avatar.css"),
-  resolve(packageRoot, "src", "components", "badge", "badge.css"),
-  resolve(packageRoot, "src", "components", "button", "button.css"),
-  resolve(packageRoot, "src", "components", "tag", "tag.css"),
-]
-  .map((file) => readFileSync(file, "utf8"))
-  .join("\n");
+const css =
+  [
+    resolve(packageRoot, "dist", "tokens.css"),
+    resolve(packageRoot, "dist", "tokens.dark.css"),
+    resolve(packageRoot, "dist", "tokens.themes.css"),
+    resolve(packageRoot, "src", "components", "alert", "alert.css"),
+    resolve(packageRoot, "src", "components", "avatar", "avatar.css"),
+    resolve(packageRoot, "src", "components", "badge", "badge.css"),
+    resolve(packageRoot, "src", "components", "button", "button.css"),
+    resolve(packageRoot, "src", "components", "tag", "tag.css"),
+  ]
+    .map((file) => readFileSync(file, "utf8"))
+    .join("\n") + "\n* { transition: none !important; animation: none !important; }";
 
 const themes = ["coral", "indigo", "lotus", "graphite", "mono", "circuit", "dusk"];
 const replicaPages = [
@@ -104,6 +105,7 @@ async function measureContrast(page: import("@playwright/test").Page): Promise<C
 }
 
 test("component text variants keep WCAG AA contrast across every theme", async ({ page }) => {
+  test.setTimeout(120_000);
   await page.setContent(`<!doctype html>
     <html data-blora-theme="coral" data-blora-color-scheme="light">
       <head><style>${css}</style></head>

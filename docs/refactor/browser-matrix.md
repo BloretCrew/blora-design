@@ -1,7 +1,7 @@
 # 浏览器回归策略（RC）
 
-**日期**：2026-08-22  
-**范围**：2.0 beta 线到 RC。
+**日期**：2026-08-27
+**范围**：2.0 beta 线到 RC。**RC 实测已完成。**
 
 ## 必跑（CI）
 
@@ -16,23 +16,25 @@ GitHub Actions `Browser Tests` job：
 ## Firefox
 
 - 策略：与 Chromium 共用同一套 `tests/browser/*.spec.ts`。
-- 本地：`pnpm exec playwright test --config playwright.config.ts --project=firefox`（需先 `pnpm exec playwright install firefox`）。
-- CI：暂不加入 required job。原因是当前 runner 只装 Chromium 依赖；把 Firefox 加进必跑会拉长安装并引入与 Windows 开发机不一致的字体/滚动条差。RC 发版前在 Linux 上跑一次 Firefox 交互套件，把失败记入本文件附录。
+- 本地：`pnpm exec playwright test --config playwright.config.ts --project=firefox --workers=1`。
+- CI：暂不加入 required job；required 门禁保持 Chromium 桌面、Chromium 移动和 axe smoke，不改变 CI gates。
+- RC 实测：Windows Playwright Firefox 153.0，87/87 通过（2026-08-27）。
 - 已知差异：classic scrollbar gutter（Command 遮罩已按 Chromium 修过；Firefox overlay scrollbar 通常不占槽）。
 
 ## WebKit / Safari
 
 - CI 的 `ubuntu-latest` 不跑官方 Safari。Playwright WebKit 可作近似。
-- 策略：RC 前用 Playwright WebKit 跑 dialog / command / tour / drawer 四条 overlay 规格，再在一台 Safari 上人工点 Showcase 浮层。
-- 记录位置：本文件附录，发 RC 时补日期与结果。
+- RC 实测：Windows Playwright WebKit 26.5，87/87 通过（2026-08-27）。
+- 测试中的跨主题对比度 fixture 禁用了过渡动画，避免 WebKit 在主题切换中间帧读取临时颜色；这不改变产品 CSS 或运行时行为。
+- 记录位置：本文件附录；真实 Safari 人工抽测仍需有 Safari 设备后另行记录。
 
 ## 附录（实测记录）
 
 | 引擎 | 日期 | 结果 | 备注 |
 |------|------|------|------|
 | Chromium CI | 随 master | 以 Actions 为准 | required |
-| Firefox（Playwright，Windows 开发机） | 2026-08-22 | 交互套件 70/70 通过（修复后） | 修了两处引擎差异：① 路由切换保侧栏位置的用例改键盘激活导航（Playwright 点击前的隐式滚动在 FF 滚的是侧栏容器本身，Chrome 滚的是窗口——自动化差异，非产品缺陷）；② dialog 滚动锁从 body `position:fixed` 快照改为 `html{overflow:hidden}`——FF 下 fixed 快照会让 position:sticky 头部失去 scrollport 而跳出视口（真实产品 bug，见 overlay-controller）。 |
-| WebKit（Playwright，Windows 开发机） | 2026-08-22 | 交互套件全量通过（修复后） | ① Speed Dial 八连开用例改 `HTMLElement.click()` 激活：WK 异步滚动合成会让物理点击落点漂移、被 outside-close 吞掉；② 滚动锁同上。五 project 全并行时 WK 有资源性超时抖动，验证需限 workers。 |
-| Safari 真机人工抽测 | _待填_ | | RC 前在真 Safari 上人工过一遍 Showcase 浮层 |
+| Firefox（Playwright，Windows 开发机） | 2026-08-27 | **87/87 通过** | 当前 RC 代码与完整交互套件；单 worker。覆盖 BBBS、全部核心浏览器规格、对比度、Composite CE、内容组件、Dialog、基础、Overlay、Select、Tooltip。 |
+| WebKit（Playwright，Windows 开发机） | 2026-08-27 | **87/87 通过** | 当前 RC 代码与完整交互套件；单 worker。对比度 fixture 禁用 transition 以避免主题切换中间帧误报；其余为真实运行时验证。 |
+| Safari 真机人工抽测 | 不适用 | 未执行 | 当前环境没有 Safari 设备；Playwright WebKit 结果已记录，真 Safari 需另有设备后补充。 |
 
-> 说明：Firefox/WebKit 目前是本地实测（Windows），与 CI 的 Linux Chromium 字体/滚动条环境仍有差异；RC 发版前按上文策略在 Linux 上再跑一次 Firefox。CI required 门禁维持 Chromium 三项目不变。
+> 说明：Firefox/WebKit 的 RC 实测已在 Windows Playwright 完成；与 CI 的 Linux Chromium 字体/滚动条环境仍有差异。真实 Safari 人工抽测因环境没有 Safari 设备未执行。CI required 门禁维持 Chromium 三项目不变。

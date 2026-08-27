@@ -4,7 +4,7 @@
 
 ## 当前阶段
 
-**Phase 10：预发布 / RC 收口** - 🔄 **进行中**（`2.0.0-beta.1` 已发布 · stable-core API 已冻结）
+**Phase 10：预发布 / RC 收口** - 🔄 **RC 门禁已完成，待正式 RC tag**（`2.0.0-beta.1` 已发布 · stable-core API 已冻结）
 
 > **主跟踪文档**：[`remaining-work.md`](./remaining-work.md)  
 > 顺序：**Preflight → Alpha → Beta → RC → Stable**。当前进入 RC 收口。
@@ -25,7 +25,7 @@ Showcase v2 已完成 87/87 核心组件目录：正式 API/CE 示例、单视�
 | Phase 7：数据与内容基础 | ✅ 完成 | Card/Table/List/Accordion/Timeline/Empty/Result/Avatar |
 | Phase 8：迁移工具 | ✅ 完成 | Token/class 映射、codemod、migrate:check、fixtures；早期 runtime compat 后续已撤销 |
 | Phase 9：Add-ons | ✅ 完成 | 六包 API + Showcase 示例 + 单测；核心 v1 缺口补齐（见 addon-core-gaps.md） |
-| Phase 10：预发布 | 🔄 进行中 | `2.0.0-beta.1` 已发布；RC 收口见 remaining-work.md §3.6 |
+| Phase 10：预发布 | 🔄 RC 门禁完成 | `2.0.0-beta.1` 已发布；Firefox/WebKit 87/87，npm/CDN/CSP/SSR/rollback 证据已记录；待正式 RC tag |
 
 ## Phase 9 收口摘要（2026-08-02）
 

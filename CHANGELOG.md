@@ -4,6 +4,8 @@
 
 Beta follows a defect-first cadence. Public stable-core exports are frozen from `2.0.0-beta.0`; beta contracts and explicitly experimental surfaces may still change with migration notes.
 
+RC closeout on 2026-08-27: Firefox and WebKit full browser suites passed 87/87 each; npm consumer, CDN, CSP, SSR import and rollback rehearsal evidence is recorded in `docs/refactor/rc-release-rehearsal.md`. The project does not maintain or compatibility-support the unused 1.x line.
+
 ### Fixed
 
 - Prevented a closed Palette Picker menu from expanding scroll containers, added viewport-aware vertical flipping and height clamping, stopped its Chinese trigger label from being vertically clipped, made sticky Sidebar Layouts reject horizontal overflow, and restored Blora scrollbar styling in the BBBS consumer example.

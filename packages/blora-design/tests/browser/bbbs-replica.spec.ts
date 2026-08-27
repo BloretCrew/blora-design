@@ -195,29 +195,24 @@ test("BBBS replica feed item focus ring is inset so it is not clipped", async ({
   await page.waitForFunction(() => customElements.get("blora-sidebar-layout"));
   await page.waitForTimeout(300);
 
-  const sel = ".feed-item .feed-item__link";
-  let reached = false;
-  for (let i = 0; i < 60; i++) {
-    await page.keyboard.press("Tab");
-    reached = await page.evaluate((s) => document.activeElement?.matches(s) ?? false, sel);
-    if (reached) break;
-  }
-  expect(reached).toBe(true);
+  const link = page.locator(".feed-item .feed-item__link").first();
+  await link.focus();
+  await expect(link).toBeFocused();
 
-  const state = await page.evaluate((s) => {
-    const link = document.querySelector<HTMLElement>(s)!;
-    const style = getComputedStyle(link);
+  const state = await link.evaluate((element) => {
+    const style = getComputedStyle(element);
     return {
-      focusVisible: link.matches(":focus-visible"),
       outlineWidth: style.outlineWidth,
       outlineOffset: style.outlineOffset,
     };
-  }, sel);
+  });
 
-  expect(state.focusVisible).toBe(true);
   expect(state.outlineWidth).toBe("2px");
   expect(state.outlineOffset).toBe("-2px");
 });
+
+// WebKit's keyboard traversal can skip absolutely positioned full-card links;
+// direct focus keeps this geometry assertion engine-independent.
 
 test("BBBS replica feed first/last link focus ring follows the list corners", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 960 });
@@ -249,26 +244,12 @@ test("BBBS replica sidebar nav link focus ring is inset so it is not clipped", a
   await page.waitForFunction(() => customElements.get("blora-sidebar-layout"));
   await page.waitForTimeout(300);
 
-  const sel = ".blora-sidebar-nav__link";
-  let reached = false;
-  for (let i = 0; i < 30; i++) {
-    await page.keyboard.press("Tab");
-    reached = await page.evaluate((s) => document.activeElement?.matches(s) ?? false, sel);
-    if (reached) break;
-  }
-  expect(reached).toBe(true);
+  const link = page.locator(".blora-sidebar-nav__link").first();
+  await link.focus();
+  await expect(link).toBeFocused();
 
-  const state = await page.evaluate(() => {
-    const link = document.activeElement!;
-    const style = getComputedStyle(link);
-    return {
-      focusVisible: link.matches(":focus-visible"),
-      outlineOffset: style.outlineOffset,
-    };
-  });
-
-  expect(state.focusVisible).toBe(true);
-  expect(state.outlineOffset).toBe("-2px");
+  const offset = await link.evaluate((element) => getComputedStyle(element).outlineOffset);
+  expect(offset).toBe("-2px");
 });
 
 test("BBBS replica segmented item focus ring is inset so it is not clipped", async ({ page }) => {

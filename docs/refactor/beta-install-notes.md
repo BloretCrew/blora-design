@@ -15,7 +15,7 @@
 | `@bloret-crew/blora-design-layout` | `2.0.0-beta.0` | `@beta` |
 | `@bloret-crew/blora-design-theming` | `2.0.0-beta.0` | `@beta` |
 
-The core package keeps npm `latest` on the 1.x line until Stable 2.0.0. The Beta release uses the `beta` dist-tag.
+At the time of the Beta.0 rehearsal, the core package's npm `latest` tag still pointed to the historical 1.x package. This is a historical release-state note, not a promise of 1.x maintenance, compatibility, migration support or a future `legacy` channel. The Beta release uses the `beta` dist-tag.
 
 ## Local package rehearsal
 

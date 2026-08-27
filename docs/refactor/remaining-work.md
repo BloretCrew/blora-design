@@ -203,17 +203,20 @@
 
 ### 3.6 RC
 
-- [ ] 冻结新增组件
-- [x] 全浏览器回归策略成文 — [`browser-matrix.md`](./browser-matrix.md)（Chromium CI 必跑；Firefox/WebKit 实测附录待 RC 机器补）
+- [x] 冻结新增组件（RC 起只接受缺陷、无障碍、文档和发布阻塞修复；不再新增公共组件/API，2026-08-27）
+- [x] 全浏览器回归策略成文 — [`browser-matrix.md`](./browser-matrix.md)
+- [x] Firefox Playwright 全量实测：87/87 通过（Windows，2026-08-27）
+- [x] WebKit Playwright 全量实测：87/87 通过（Windows，2026-08-27）
 - [x] 人工 a11y 抽测记录 — [`a11y-spotcheck.md`](./a11y-spotcheck.md)
-- [ ] npm 安装 + CDN + 回滚演练
-- [ ] CSP / SSR import 专项证明
+- [x] npm 安装 + CDN + 回滚演练 — [`rc-release-rehearsal.md`](./rc-release-rehearsal.md)
+- [x] CSP / SSR import 专项证明 — [`rc-release-rehearsal.md`](./rc-release-rehearsal.md)
+- [ ] 真实 Safari 设备人工抽测（当前环境无 Safari 设备；Playwright WebKit 已完成）
 
 ### 3.7 Stable `2.0.0`
 
 - [ ] 发 `2.0.0`；docs 与 tag 对齐
-- [ ] dist-tag：`latest` / `legacy`（1.x）策略成文
-- [ ] 1.x 安全修复策略
+- [ ] `latest` 指向 2.0 Stable；不建立 `legacy` 兼容发布线
+- [x] 明确不提供 1.x 安全修复、兼容层、迁移支持或维护承诺（1.x 无用户/消费者，2026-08-27）
 - [ ] §31 发布清单全部勾选
 
 ### 3.8 明确非默认 / 后置

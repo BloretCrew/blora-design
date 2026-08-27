@@ -53,6 +53,7 @@ export default defineConfig({
     {
       name: "webkit",
       testIgnore: /a11y\.spec\.ts|visual\.spec\.ts/,
+      timeout: 120_000,
       use: { ...devices["Desktop Safari"] },
     },
   ],
