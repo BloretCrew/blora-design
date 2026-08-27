@@ -1,17 +1,17 @@
 # RC 发布链演练记录
 
 **日期**：2026-08-27  
-**当前代码线**：`2.0.0-beta.1`  也适用于即将生成的 `2.0.0-rc.*`
+**当前代码线**：`2.0.0-rc.0`
 
 ## RC 门禁
 
 - [x] `pnpm verify` 全量通过
 - [x] Firefox Playwright 全量通过：87/87
 - [x] WebKit Playwright 全量通过：87/87
-- [x] npm clean consumer 安装七个公开包
+- [x] npm clean consumer 安装七个公开包（演练基于 `2.0.0-beta.1`；RC.0 包发布后需复跑）
 - [x] Node SSR-safe import
-- [x] CDN IIFE 可达
-- [x] CSP 页面允许 CDN IIFE 加载
+- [x] CDN IIFE 可达（演练基于 `2.0.0-beta.1`；RC.0 发布后需复跑）
+- [x] CSP 页面允许 CDN IIFE 加载（演练基于 `2.0.0-beta.1`；RC.0 发布后需复跑）
 - [x] rollback 操作演练（非变更式，未移动公共 dist-tag）
 
 ## 浏览器实测

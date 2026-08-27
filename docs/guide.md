@@ -55,7 +55,7 @@ import {
   openImagePreview,
 } from "@bloret-crew/blora-design";
 
-console.log(VERSION); // 例如 2.0.0-beta.1
+console.log(VERSION); // 例如 2.0.0-rc.0
 ```
 
 ### 1.4 最小页面

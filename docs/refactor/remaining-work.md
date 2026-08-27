@@ -32,7 +32,7 @@
 | Phase 7 数据与内容 | ✅ | Card/Table/List…；table controller 后在 Phase 9 补齐高级路径 |
 | Phase 8 迁移工具 | ✅ | codemod、migrate:check、fixtures；早期 runtime compat 后续已撤销 |
 | Phase 9 Add-ons | ✅ 自限 | 六包 + 核心 v1 缺口；**规格级 DoD 未勾满** |
-| Phase 10 预发布 | 🔄 | **2026-08-02 进入**；见 §3 |
+| Phase 10 预发布 | 🔄 RC.0 待发布 | **2026-08-02 进入**；RC.0 已准备，待推送 `v2.0.0-rc.0`；见 §3 |
 
 ### Phase 9 已交付（自限）
 
@@ -41,7 +41,7 @@
 - 文档：`guide.md` 2.0 主路径；`addon-core-gaps` / matrix / css-only-resolution；人眼 visual review 已确认
 - **未**纳入 Phase 9 自限：全量 Playwright / axe / 视觉农场 → Phase 10
 
-包版本现状：`@bloret-crew/blora-design` 与六个 add-on 为 **`2.0.0-beta.1`**；stable-core API 冻结，进入 RC 收口。
+包版本现状：`@bloret-crew/blora-design` 与六个 add-on 已统一为 **`2.0.0-rc.0`**；stable-core API 冻结，待推送 RC tag。
 ---
 
 ## 2. Phase 9 尾巴 / 诚实债（P9-1…P9-8）

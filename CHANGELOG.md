@@ -6,6 +6,14 @@ Beta follows a defect-first cadence. Public stable-core exports are frozen from 
 
 RC closeout on 2026-08-27: Firefox and WebKit full browser suites passed 87/87 each; npm consumer, CDN, CSP, SSR import and rollback rehearsal evidence is recorded in `docs/refactor/rc-release-rehearsal.md`. The project does not maintain or compatibility-support the unused 1.x line.
 
+## 2.0.0-rc.0
+
+### Release candidate
+
+- Unified the core package, six add-ons and internal token workspace on `2.0.0-rc.0`.
+- Completed the RC browser matrix: Firefox 87/87 and WebKit 87/87 on Windows Playwright.
+- Kept the public npm release path on the `rc` dist-tag; 1.x remains an unsupported historical line with no security, compatibility or migration-support commitment.
+
 ### Fixed
 
 - Prevented a closed Palette Picker menu from expanding scroll containers, added viewport-aware vertical flipping and height clamping, stopped its Chinese trigger label from being vertically clipped, made sticky Sidebar Layouts reject horizontal overflow, and restored Blora scrollbar styling in the BBBS consumer example.
