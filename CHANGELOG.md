@@ -11,7 +11,7 @@ RC closeout on 2026-08-27: Firefox and WebKit full browser suites passed 87/87 e
 ### Release candidate
 
 - Unified the core package, six add-ons and internal token workspace on `2.0.0-rc.0`.
-- Completed the RC browser matrix: Firefox 87/87 and WebKit 87/87 on Windows Playwright.
+- Completed and published the RC browser matrix: Firefox 87/87 and WebKit 87/87 on Windows Playwright; npm `rc` now resolves all seven public packages to `2.0.0-rc.0`.
 - Kept the public npm release path on the `rc` dist-tag; 1.x remains an unsupported historical line with no security, compatibility or migration-support commitment.
 
 ### Fixed

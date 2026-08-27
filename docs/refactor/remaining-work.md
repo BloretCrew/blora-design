@@ -32,7 +32,7 @@
 | Phase 7 数据与内容 | ✅ | Card/Table/List…；table controller 后在 Phase 9 补齐高级路径 |
 | Phase 8 迁移工具 | ✅ | codemod、migrate:check、fixtures；早期 runtime compat 后续已撤销 |
 | Phase 9 Add-ons | ✅ 自限 | 六包 + 核心 v1 缺口；**规格级 DoD 未勾满** |
-| Phase 10 预发布 | 🔄 RC.0 待发布 | **2026-08-02 进入**；RC.0 已准备，待推送 `v2.0.0-rc.0`；见 §3 |
+| Phase 10 预发布 | 🔄 RC.0 观察期 | **2026-08-02 进入**；`2.0.0-rc.0` 已发布，等待 RC 反馈后进入 Stable；见 §3 |
 
 ### Phase 9 已交付（自限）
 
@@ -210,12 +210,12 @@
 - [x] 人工 a11y 抽测记录 — [`a11y-spotcheck.md`](./a11y-spotcheck.md)
 - [x] npm 安装 + CDN + 回滚演练 — [`rc-release-rehearsal.md`](./rc-release-rehearsal.md)
 - [x] CSP / SSR import 专项证明 — [`rc-release-rehearsal.md`](./rc-release-rehearsal.md)
-- [ ] 真实 Safari 设备人工抽测（当前环境无 Safari 设备；Playwright WebKit 已完成）
+- [ ] 真实 Safari 设备人工抽测（当前环境无 Safari 设备；Playwright WebKit 87/87 已完成，不阻塞 RC.0）
 
 ### 3.7 Stable `2.0.0`
 
-- [ ] 发 `2.0.0`；docs 与 tag 对齐
-- [ ] `latest` 指向 2.0 Stable；不建立 `legacy` 兼容发布线
+- [ ] 发 `2.0.0`；docs 与 tag 对齐（RC.0 观察期结束后）
+- [ ] `latest` 指向 2.0 Stable；不建立 `legacy` 兼容发布线（Stable 发布时执行）
 - [x] 明确不提供 1.x 安全修复、兼容层、迁移支持或维护承诺（1.x 无用户/消费者，2026-08-27）
 - [ ] §31 发布清单全部勾选
 
