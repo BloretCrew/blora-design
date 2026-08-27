@@ -25,7 +25,7 @@ Showcase v2 已完成 87/87 核心组件目录：正式 API/CE 示例、单视�
 | Phase 7：数据与内容基础 | ✅ 完成 | Card/Table/List/Accordion/Timeline/Empty/Result/Avatar |
 | Phase 8：迁移工具 | ✅ 完成 | Token/class 映射、codemod、migrate:check、fixtures；早期 runtime compat 后续已撤销 |
 | Phase 9：Add-ons | ✅ 完成 | 六包 API + Showcase 示例 + 单测；核心 v1 缺口补齐（见 addon-core-gaps.md） |
-| Phase 10：预发布 | ✅ Stable 完成 | `2.0.0` 已发布；Firefox/WebKit 87/87，GitHub Actions、npm/CDN/CSP/SSR/rollback、Stable clean consumer/CDN/CSP/SSR 证据已记录；1.x 不维护、不兼容 |
+| Phase 10：预发布 | ✅ Stable 完成 | `2.0.0` 已发布；Firefox/WebKit 87/87、真实 Safari 人工抽测、GitHub Actions、npm/CDN/CSP/SSR/rollback、Stable clean consumer/CDN/CSP/SSR 证据已记录；1.x 不维护、不兼容 |
 
 ## Phase 9 收口摘要（2026-08-02）
 

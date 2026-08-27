@@ -210,7 +210,7 @@
 - [x] 人工 a11y 抽测记录 — [`a11y-spotcheck.md`](./a11y-spotcheck.md)
 - [x] npm 安装 + CDN + 回滚演练 — [`rc-release-rehearsal.md`](./rc-release-rehearsal.md)
 - [x] CSP / SSR import 专项证明 — [`rc-release-rehearsal.md`](./rc-release-rehearsal.md)
-- [x] 真实 Safari 设备人工抽测：当前环境无 Safari 设备，标记为非适用；Playwright WebKit 87/87 已完成，不阻塞 Stable（2026-08-27）
+- [x] 真实 Safari 设备人工抽测：已由项目所有者完成（2026-08-27）；Playwright WebKit 87/87 同步通过
 
 ### 3.7 Stable `2.0.0`（已完成）
 

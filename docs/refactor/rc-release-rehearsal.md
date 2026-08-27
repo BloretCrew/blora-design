@@ -90,7 +90,7 @@ RC.0 发布后的 npm tag 状态已核对：核心包 `latest=1.0.0`、`alpha=2.
 - Stable CDN IIFE 在限制性 CSP 页面中成功加载：`globalThis.Blora.VERSION === "2.0.0"`，无页面错误。
 - 工作区最终 `pnpm verify` 通过。
 
-真实 Safari 设备当前环境不可用，因此不伪造真机结果；Playwright WebKit 26.5 已完成 87/87，作为可执行的 Safari 近似覆盖。
+真实 Safari 设备人工抽测已由项目所有者完成（2026-08-27）；Playwright WebKit 26.5 同步完成 87/87。
 
 ## 结论
 

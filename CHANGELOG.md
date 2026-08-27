@@ -12,7 +12,7 @@ RC closeout on 2026-08-27: Firefox and WebKit full browser suites passed 87/87 e
 
 - Promoted the RC.0 line to the stable `2.0.0` release.
 - Published the core package and six add-ons with npm `latest` pointing to `2.0.0`.
-- Completed the final acceptance: Chromium, Firefox and WebKit browser suites; npm consumer; CDN; CSP; SSR; package exports; accessibility and visual gates. GitHub Actions Release run `33082759486` passed.
+- Completed the final acceptance: Chromium, Firefox, WebKit and owner-performed Safari checks; npm consumer; CDN; CSP; SSR; package exports; accessibility and visual gates. GitHub Actions Release run `33082759486` passed.
 
 ## 2.0.0-rc.0
 

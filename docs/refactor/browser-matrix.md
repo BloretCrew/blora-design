@@ -35,6 +35,6 @@ GitHub Actions `Browser Tests` job：
 | Chromium CI | 随 master | 以 Actions 为准 | required |
 | Firefox（Playwright，Windows 开发机） | 2026-08-27 | **87/87 通过** | 当前 RC 代码与完整交互套件；单 worker。覆盖 BBBS、全部核心浏览器规格、对比度、Composite CE、内容组件、Dialog、基础、Overlay、Select、Tooltip。 |
 | WebKit（Playwright，Windows 开发机） | 2026-08-27 | **87/87 通过** | 当前 RC 代码与完整交互套件；单 worker。对比度 fixture 禁用 transition 以避免主题切换中间帧误报；其余为真实运行时验证。 |
-| Safari 真机人工抽测 | 不适用 | 未执行 | 当前环境没有 Safari 设备；Playwright WebKit 结果已记录，真 Safari 需另有设备后补充。 |
+| Safari 真机人工抽测 | 2026-08-27 | **项目所有者已完成** | 已由项目所有者人工抽测；Playwright WebKit 26.5 同步 87/87 通过。 |
 
-> 说明：Firefox/WebKit 的 RC 实测已在 Windows Playwright 完成；与 CI 的 Linux Chromium 字体/滚动条环境仍有差异。真实 Safari 人工抽测因环境没有 Safari 设备未执行。CI required 门禁维持 Chromium 三项目不变。
+> 说明：Firefox/WebKit 的 RC 实测已在 Windows Playwright 完成，真实 Safari 人工抽测也已由项目所有者完成；与 CI 的 Linux Chromium 字体/滚动条环境仍有差异。CI required 门禁维持 Chromium 三项目不变。
