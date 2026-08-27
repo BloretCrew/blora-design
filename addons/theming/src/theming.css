@@ -107,6 +107,15 @@ blora-color-scheme-toggle {
     opacity var(--blora-duration-fast) var(--blora-easing-standard),
     transform var(--blora-duration-base) var(--blora-easing-standard),
     visibility 0s linear var(--blora-duration-base);
+  transition-behavior: allow-discrete;
+}
+
+/* Top-layer popover: beat the UA defaults (position: fixed; inset: 0;
+   margin: auto) so placeMenu coordinates drive placement, and escape
+   transformed ancestors such as the mobile drawer's aside. */
+.blora-palette-picker__menu[popover] {
+  position: fixed;
+  margin: 0;
 }
 
 .blora-palette-picker[data-open] .blora-palette-picker__menu {
@@ -115,6 +124,13 @@ blora-color-scheme-toggle {
   pointer-events: auto;
   transform: translateY(0);
   transition-delay: 0s;
+}
+
+@starting-style {
+  .blora-palette-picker[data-open] .blora-palette-picker__menu {
+    opacity: 0;
+    transform: translateY(-0.35em);
+  }
 }
 
 .blora-palette-picker__head {

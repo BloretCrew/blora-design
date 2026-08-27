@@ -72,10 +72,11 @@ test("BBBS replica search and sidebar remain contained across theme changes", as
   const paletteRoot = palette.locator(".blora-palette-picker");
   const paletteTrigger = palette.locator("[data-blora-palette-trigger]");
   const paletteMenu = palette.locator(".blora-palette-picker__menu");
-  await expect(paletteMenu).toHaveAttribute("hidden", "");
+  await expect(paletteMenu).toHaveAttribute("popover", "manual");
+  await expect(paletteMenu).toBeHidden();
   await paletteTrigger.click();
   await expect(paletteRoot).toHaveAttribute("data-open", "");
-  await expect(paletteMenu).not.toHaveAttribute("hidden", "");
+  await expect(paletteMenu).toBeVisible();
   const palettePlacement = await page.evaluate(() => {
     const trigger = document.querySelector<HTMLElement>("[data-blora-palette-trigger]")!;
     const menu = document.querySelector<HTMLElement>(".blora-palette-picker__menu")!;
@@ -94,7 +95,7 @@ test("BBBS replica search and sidebar remain contained across theme changes", as
   expect(palettePlacement.aboveTrigger).toBe(true);
   await paletteTrigger.click();
   await expect(paletteRoot).not.toHaveAttribute("data-open", "");
-  await expect(paletteMenu).toHaveAttribute("hidden", "");
+  await expect(paletteMenu).toBeHidden();
 
   await page.locator("blora-color-scheme-toggle button").click();
   await page.locator("blora-search input").fill("BBBS");

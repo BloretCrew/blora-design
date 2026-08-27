@@ -22,12 +22,13 @@ a {
   --blora-sidebar-width: 17.5rem;
   --blora-sidebar-min-height: 100dvh;
   --blora-sidebar-aside-padding: 0;
-  --blora-sidebar-aside-background: var(--blora-color-surface-raised);
+  /* Match the showcase page-shell look: the sidebar sits on the page canvas
+     instead of a raised panel. */
+  --blora-sidebar-aside-background: transparent;
   --blora-sidebar-content-padding: 0;
   --blora-sidebar-sticky-offset: 0;
   --blora-sidebar-sticky-height: 100dvh;
   --blora-sidebar-drawer-aside-padding: 0;
-  --blora-sidebar-drawer-aside-background: var(--blora-color-surface-raised);
   --blora-sidebar-drawer-content-padding: 0;
   --blora-sidebar-toggle-min-height: 2.75rem;
 

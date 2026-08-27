@@ -185,13 +185,21 @@ function mountPalettePicker(root: HTMLElement): PalettePickerController {
     root.appendChild(menu);
   }
 
+  /* jsdom (unit tests) has no Popover API; fall back to the hidden attribute. */
+  const popoverSupported =
+    typeof menu.showPopover === "function" && typeof menu.hidePopover === "function";
+  let menuShown = false;
+
   bootThemeFromStorage(doc.documentElement);
 
   trigger.setAttribute("aria-haspopup", "listbox");
   trigger.setAttribute("aria-expanded", "false");
   menu.setAttribute("role", "listbox");
   menu.setAttribute("aria-label", t("palette.label"));
-  menu.hidden = !root.hasAttribute("data-open");
+  /* Top-layer popover escapes transformed ancestors (the mobile drawer),
+     which would otherwise contain and clip a position:fixed menu. */
+  menu.setAttribute("popover", "manual");
+  menu.hidden = true;
 
   if (!menu.querySelector("[data-blora-palette-option]")) {
     const head = doc.createElement("div");
@@ -304,7 +312,14 @@ function mountPalettePicker(root: HTMLElement): PalettePickerController {
 
   const open = (focus = false) => {
     window.clearTimeout(placeClearTimer);
-    menu.hidden = false;
+    if (popoverSupported) {
+      if (menuShown) menu.hidePopover();
+      menu.hidden = false;
+      menu.showPopover();
+      menuShown = true;
+    } else {
+      menu.hidden = false;
+    }
     /* Establish the closed opacity/transform before data-open applies the
        visible state; hidden elements otherwise skip the first transition. */
     void menu.offsetWidth;
@@ -316,7 +331,11 @@ function mountPalettePicker(root: HTMLElement): PalettePickerController {
         ?.setAttribute("aria-expanded", "false");
       const otherMenu = other.querySelector<HTMLElement>(".blora-palette-picker__menu");
       if (!otherMenu) return;
-      otherMenu.hidden = true;
+      if (popoverSupported) {
+        if (otherMenu.matches(":popover-open")) otherMenu.hidePopover();
+      } else {
+        otherMenu.hidden = true;
+      }
       otherMenu.style.removeProperty("position");
       otherMenu.style.removeProperty("top");
       otherMenu.style.removeProperty("left");
@@ -339,7 +358,15 @@ function mountPalettePicker(root: HTMLElement): PalettePickerController {
     window.clearTimeout(placeClearTimer);
     placeClearTimer = 0;
     if (!root.hasAttribute("data-open")) {
-      menu.hidden = true;
+      if (popoverSupported) {
+        if (menuShown) {
+          menu.hidePopover();
+          menuShown = false;
+        }
+        menu.hidden = true;
+      } else {
+        menu.hidden = true;
+      }
       clearMenuPlace();
     }
   };
