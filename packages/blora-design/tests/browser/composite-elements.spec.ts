@@ -632,6 +632,32 @@ test("Fixed composite CEs generate their official internal trees", async ({ page
   await expect(page.locator("#alert")).toHaveCount(0);
 });
 
+test("navbar brand focus ring rounds to a circle when the title hides", async ({ page }) => {
+  const showcase = resolve(import.meta.dirname, "../../../..", "examples/showcase-v2/index.html");
+  await page.setViewportSize({ width: 640, height: 900 });
+  await page.goto(`${pathToFileURL(showcase).href}#button`);
+  await page.waitForTimeout(400);
+
+  const mobile = await page.evaluate(() => {
+    const brand = document.querySelector<HTMLElement>(".showcase-navbar .blora-navbar__brand")!;
+    const title = brand.querySelector<HTMLElement>(".blora-navbar__title")!;
+    return {
+      titleShown: getComputedStyle(title).display !== "none",
+      radius: getComputedStyle(brand).borderTopLeftRadius,
+    };
+  });
+  expect(mobile.titleShown).toBe(false);
+  expect(mobile.radius).toBe("50%");
+
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.waitForTimeout(200);
+  const desktop = await page.evaluate(() => {
+    const brand = document.querySelector<HTMLElement>(".showcase-navbar .blora-navbar__brand")!;
+    return getComputedStyle(brand).borderTopLeftRadius;
+  });
+  expect(desktop).toBe("14px");
+});
+
 test("showcase catalog routes one of every official component at a time", async ({ page }) => {
   const showcase = resolve(import.meta.dirname, "../../../..", "examples/showcase-v2/index.html");
   await page.goto(`${pathToFileURL(showcase).href}#accordion`);

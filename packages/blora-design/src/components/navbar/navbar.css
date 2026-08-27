@@ -212,6 +212,12 @@ blora-navbar > .blora-navbar {
   .blora-navbar__menu {
     display: none;
   }
+
+  /* Icon-only brand: match the circular logo mark so the focus ring is round
+     rather than the md-radius squircle used to frame the mark + title. */
+  .blora-navbar__brand {
+    border-radius: 50%;
+  }
 }
 
 @media (max-width: 560px) {
