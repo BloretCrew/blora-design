@@ -110,6 +110,7 @@ a {
 
 .bbs-profile-menu {
   display: block;
+  min-width: 0;
 }
 
 .bbs-profile {
@@ -117,7 +118,8 @@ a {
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: var(--blora-space-3);
-  width: 100%;
+  width: max-content;
+  max-width: 100%;
   padding: var(--blora-space-2);
   border: 0;
   border-radius: var(--blora-radius-lg);
@@ -132,12 +134,22 @@ a {
   background: var(--blora-color-surface-raised);
 }
 
-.bbs-theme-tools {
+.bbs-sidebar-tools {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: var(--blora-space-2);
-  padding-inline: var(--blora-space-2);
+  gap: var(--blora-space-1);
+  min-width: 0;
+}
+
+.bbs-theme-tools {
+  display: flex;
+  align-items: center;
+  gap: var(--blora-space-1);
+}
+
+.bbs-notification-button {
+  flex: 0 0 auto;
 }
 
 .bbs-icon {

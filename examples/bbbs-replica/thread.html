@@ -104,22 +104,32 @@
               <div slot="trigger" class="bbs-profile" aria-label="打开 Loong 用户菜单">
                 <span class="blora-avatar" data-size="sm" data-variant="primary">Lo</span>
                 <span><strong>Loong</strong><small>Coding · 在线</small></span>
-                <span class="bbs-icon" data-icon="bell" aria-hidden="true"></span>
               </div>
               <blora-dropdown-item value="profile">个人资料</blora-dropdown-item>
               <blora-dropdown-item value="settings">账户设置</blora-dropdown-item>
               <blora-dropdown-item value="logout" separator>退出登录</blora-dropdown-item>
             </blora-dropdown>
-            <div class="bbs-theme-tools" aria-label="界面外观">
-              <blora-palette-picker
-                button-variant="ghost"
-                size="sm"
-                icon-only
-              ></blora-palette-picker>
-              <blora-color-scheme-toggle
-                button-variant="ghost"
-                size="sm"
-              ></blora-color-scheme-toggle>
+            <div class="bbs-sidebar-tools" aria-label="界面工具">
+              <div class="bbs-theme-tools" aria-label="界面外观">
+                <blora-palette-picker
+                  button-variant="ghost"
+                  size="sm"
+                  icon-only
+                ></blora-palette-picker>
+                <blora-color-scheme-toggle
+                  button-variant="ghost"
+                  size="sm"
+                ></blora-color-scheme-toggle>
+              </div>
+              <button
+                class="bbs-notification-button blora-button"
+                type="button"
+                data-variant="ghost"
+                data-size="icon"
+                aria-label="通知"
+              >
+                <span class="bbs-icon" data-icon="bell" aria-hidden="true"></span>
+              </button>
             </div>
           </div>
         </div>
