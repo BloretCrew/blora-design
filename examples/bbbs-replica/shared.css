@@ -250,6 +250,12 @@ a {
 .quick-compose {
   display: grid;
   gap: var(--blora-space-3);
+  overflow: visible;
+}
+
+.quick-compose__target blora-cascader {
+  position: relative;
+  z-index: var(--blora-z-dropdown);
 }
 
 .quick-compose__footer {
@@ -274,6 +280,20 @@ a {
 .quick-compose__status {
   color: var(--blora-color-text-muted);
   font-size: var(--blora-text-sm);
+}
+
+.quick-compose__target blora-cascader {
+  position: relative;
+  z-index: var(--blora-z-dropdown);
+  min-width: 12rem;
+}
+
+.quick-compose__target .blora-cascader__trigger {
+  min-height: 2rem;
+  border: 0;
+  background: transparent;
+  color: var(--blora-color-text-muted);
+  padding: 0;
 }
 
 .quick-compose__status {

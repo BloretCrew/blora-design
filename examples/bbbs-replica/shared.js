@@ -59,6 +59,13 @@
     compose?.focus();
     compose?.scrollIntoView({ behavior: "smooth", block: "center" });
   });
+  const composeTarget = document.getElementById("compose-target");
+  const composeTargetLabel = () => composeTarget?.getAttribute("value") || "大厅 / 灌水区";
+  composeTarget?.addEventListener("blora-cascader-change", (event) => {
+    const target = event.detail?.value || composeTargetLabel();
+    composeTarget?.setAttribute("value", target);
+  });
+
   document.getElementById("quick-send")?.addEventListener("click", () => {
     const status = document.getElementById("quick-status");
     if (!compose?.value.trim()) {
@@ -67,7 +74,7 @@
       return;
     }
     compose.value = "";
-    if (status) status.textContent = "演示内容已提交到 大厅 / 灌水区。";
+    if (status) status.textContent = `演示内容已提交到 ${composeTargetLabel()}。`;
   });
 
   const composer = document.getElementById("comment-composer");

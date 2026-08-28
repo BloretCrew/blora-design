@@ -124,7 +124,17 @@
             <div class="quick-compose__footer">
               <div class="quick-compose__target">
                 <span class="bbs-icon" data-icon="map-pin" aria-hidden="true"></span>
-                大厅 / 灌水区
+                <blora-cascader id="compose-target" value="大厅 / 灌水区" placeholder="选择发帖板块">
+                  <blora-cascader-option label="大厅">
+                    <blora-cascader-option label="灌水区"></blora-cascader-option>
+                    <blora-cascader-option label="日常分享"></blora-cascader-option>
+                    <blora-cascader-option label="站务"></blora-cascader-option>
+                  </blora-cascader-option>
+                  <blora-cascader-option label="Bloret Software Community">
+                    <blora-cascader-option label="项目发布"></blora-cascader-option>
+                    <blora-cascader-option label="技术讨论"></blora-cascader-option>
+                  </blora-cascader-option>
+                </blora-cascader>
               </div>
               <button class="blora-button" data-variant="primary" data-size="sm" type="button" id="quick-send">发送</button>
             </div>
