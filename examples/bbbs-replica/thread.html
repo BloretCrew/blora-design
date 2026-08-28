@@ -100,11 +100,16 @@
             </blora-sidebar-nav-group>
           </blora-sidebar-nav>
           <div class="bbs-sidebar__footer">
-            <div class="bbs-profile">
-              <span class="blora-avatar" data-size="sm" data-variant="primary">Lo</span>
-              <span><strong>Loong</strong><small>Coding · 在线</small></span>
-              <span class="bbs-icon" data-icon="bell" aria-hidden="true"></span>
-            </div>
+            <blora-dropdown class="bbs-profile-menu" aria-label="Loong 用户菜单" placement="top">
+              <div slot="trigger" class="bbs-profile" aria-label="打开 Loong 用户菜单">
+                <span class="blora-avatar" data-size="sm" data-variant="primary">Lo</span>
+                <span><strong>Loong</strong><small>Coding · 在线</small></span>
+                <span class="bbs-icon" data-icon="bell" aria-hidden="true"></span>
+              </div>
+              <blora-dropdown-item value="profile">个人资料</blora-dropdown-item>
+              <blora-dropdown-item value="settings">账户设置</blora-dropdown-item>
+              <blora-dropdown-item value="logout" separator>退出登录</blora-dropdown-item>
+            </blora-dropdown>
             <div class="bbs-theme-tools" aria-label="界面外观">
               <blora-palette-picker button-variant="ghost" size="sm"></blora-palette-picker>
               <blora-color-scheme-toggle

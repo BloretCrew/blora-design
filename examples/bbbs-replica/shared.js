@@ -10,6 +10,16 @@
     host.replaceChildren(Blora.createBloraIcon(name, 18));
   });
 
+  document.querySelectorAll("blora-dropdown").forEach((dropdown) => {
+    dropdown.addEventListener("blora-select", (event) => {
+      const value = event.detail?.value || "";
+      if (value === "logout") {
+        const profile = dropdown.querySelector("[data-dropdown-trigger]");
+        if (profile) profile.setAttribute("aria-label", "已退出登录");
+      }
+    });
+  });
+
   const search = document.getElementById("global-search");
   const feedItems = [...document.querySelectorAll("[data-feed-item]")];
   const empty = document.getElementById("feed-empty");

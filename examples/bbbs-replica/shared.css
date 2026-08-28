@@ -108,12 +108,28 @@ a {
   border-top: 1px solid var(--blora-color-border-subtle);
 }
 
+.bbs-profile-menu {
+  display: block;
+}
+
 .bbs-profile {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: var(--blora-space-3);
+  width: 100%;
   padding: var(--blora-space-2);
+  border: 0;
+  border-radius: var(--blora-radius-lg);
+  color: var(--blora-color-text-primary);
+  background: transparent;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.bbs-profile:hover {
+  background: var(--blora-color-surface-raised);
 }
 
 .bbs-theme-tools {
