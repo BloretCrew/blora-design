@@ -9,7 +9,7 @@ Blora Design 2.0 prefers native HTML semantics for primitives and Composite Cust
 ## Installation
 
 ```bash
-pnpm add @bloret-crew/blora-design@alpha
+pnpm add @bloret-crew/blora-design@latest
 ```
 
 ```js
@@ -25,7 +25,7 @@ Feedback: `message` / `message.success` (pill) + `notify` (cards). **No toast AP
 
 ## Key entry points
 
-- Package: `@bloret-crew/blora-design` (`2.0.0-alpha.1`+)
+- Package: `@bloret-crew/blora-design` (`2.0.0` Stable)
 - `./auto` — register the default Composite CE surface (range, date/time, search, transfer, accordion/collapse, command, segmented, tabs, select, dialog)
 - `./icons-full` (`icons-full.global.js`) — opt-in: registers **every** Lucide icon into `createBloraIcon`, so any icon name works without a framework rebuild. Default bundle ships a curated set only (size).
 - `./button` `./select` `./dialog` `./table` — JS subpaths (toast **removed**)
@@ -36,12 +36,13 @@ Feedback: `message` / `message.success` (pill) + `notify` (cards). **No toast AP
 - Contract stability policy: `docs/refactor/contract-stability.md`
 - Component matrix: `docs/refactor/component-matrix.md`
 - **Remaining work:** `docs/refactor/remaining-work.md` (stop before Beta until checklist)
-- Migration: `docs/migration/v1-to-v2.md`
+- Migration standard for projects from any UI framework or hand-written UI: `docs/migration/from-any-ui-to-blora-design.md`
+- Historical 1.x → 2.0 mapping: `docs/migration/v1-to-v2.md`
 - Showcase: `examples/showcase-v2/` (requires full package build)
 - Token map CSV: `docs/migration/token-map-v1-v2.csv`
 - Alpha install notes: `docs/refactor/alpha-install-notes.md`
 - 1.x freeze: `legacy/v1/`, `legacy/showcase-v1.html`
-- Add-ons: `@bloret-crew/blora-design-{markdown,thread,qrcode,effects,layout,theming}@alpha`
+- Add-ons: `@bloret-crew/blora-design-{markdown,thread,qrcode,effects,layout,theming}@latest`
 
 ## Architecture
 

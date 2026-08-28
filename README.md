@@ -6,7 +6,8 @@
 **Package** `@bloret-crew/blora-design` · **Version** `2.0.0` · **License** Apache-2.0
 **Repo** [BloretCrew/blora-design](https://github.com/BloretCrew/blora-design)
 
-**Status:** Phase 9 complete. **Phase 10 Beta in progress** — stable-core API frozen; next milestone RC.
+**Status:** Blora Design 2.0 Stable (`2.0.0`) — final acceptance complete.
+**Migration standard:** [`docs/migration/from-any-ui-to-blora-design.md`](./docs/migration/from-any-ui-to-blora-design.md)
 **Master remaining-work checklist:** [`docs/refactor/remaining-work.md`](./docs/refactor/remaining-work.md)
 
 Interactive demos: **[showcase](https://bloretcrew.github.io/blora-design/)**. Frozen 1.x reference is archived at `D:/MyFiles/Documents/projects/blora-design/legacy/` (not the 2.0 recommended entry).
@@ -31,7 +32,7 @@ Not a React/Vue runtime library. Use native HTML + CSS for primitives and Compos
 ## 30-second start (2.0)
 
 ```bash
-pnpm add @bloret-crew/blora-design@beta
+pnpm add @bloret-crew/blora-design@latest
 ```
 
 ```js
@@ -143,8 +144,9 @@ pnpm --filter @bloret-crew/blora-design exec vitest run
 | [**Guide (2.0)**](./docs/guide.md) | Recommended usage & migration mindset |
 | [Standards](./docs/standards.md) | Design tokens & a11y principles |
 | [Framework](./docs/framework.md) | Historical 1.x detail **for migration only**; 2.0 pointer at top |
-| [Migration v1→v2](./docs/migration/v1-to-v2.md) | Migration entry (stub → expands in Phase 10) |
-| [Remaining work](./docs/refactor/remaining-work.md) | **Master checklist until refactor done** |
+| [Migration from any UI](./docs/migration/from-any-ui-to-blora-design.md) | Strict migration standard for frameworks and hand-written UI |
+| [Migration v1→v2](./docs/migration/v1-to-v2.md) | Historical 1.x mapping only |
+| [Remaining work](./docs/refactor/remaining-work.md) | **Historical release checklist and post-release records** |
 | [Status](./docs/refactor/status.md) | Phase summary |
 
 AI-oriented skim: [`llms.txt`](./llms.txt).
@@ -153,8 +155,9 @@ AI-oriented skim: [`llms.txt`](./llms.txt).
 
 ## Versioning
 
-- Current line: **`2.0.0-beta.*`** — stable-core API is frozen; contracts marked `beta` may still change with migration notes.
-- 1.x remains available on npm for existing sites; do not treat 1.x CDN `@1` as the 2.0 guide.
+- Current line: **`2.0.0` Stable** — the stable-core API and published contracts are frozen for the 2.0 line.
+- 1.x is an unsupported historical line; Blora Design does not provide 1.x maintenance, security fixes, compatibility or migration support.
+- The `latest` npm tag points to `2.0.0`; release automation is documented in `.github/workflows/`.
 - Release automation: see `.github/workflows/` (publish still tied to maintainer process).
 
 ---

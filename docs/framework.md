@@ -2,7 +2,7 @@
 
 2.0 是 token + Composite Custom Element 的 ESM 包，不是 1.x 的 `blora.css` + `blora.js` + 全局 `Blora.init()`。
 
-日常用法看 [`guide.md`](./guide.md)，1.x 对照看 [`migration/v1-to-v2.md`](./migration/v1-to-v2.md)。交互真值在 `examples/showcase-v2/`。契约在 `packages/blora-design/contracts/`。进度在 [`refactor/remaining-work.md`](./refactor/remaining-work.md)。
+日常用法看 [`guide.md`](./guide.md)，完整跨框架迁移看 [`migration/from-any-ui-to-blora-design.md`](./migration/from-any-ui-to-blora-design.md)，1.x 对照看 [`migration/v1-to-v2.md`](./migration/v1-to-v2.md)。交互真值在 `examples/showcase-v2/`。契约在 `packages/blora-design/contracts/`。进度在 [`refactor/remaining-work.md`](./refactor/remaining-work.md)。
 
 ---
 

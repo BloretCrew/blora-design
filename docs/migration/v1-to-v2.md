@@ -1,7 +1,8 @@
 # Blora Design 1.x → 2.0 迁移指南
 
-本指南帮助你将项目从 Blora Design 1.x 迁移到 2.0。  
-**2.0 新项目推荐入口**：[`docs/guide.md`](../guide.md)。进度：[`docs/refactor/remaining-work.md`](../refactor/remaining-work.md)。  
+本指南只负责 **Blora Design 1.x → 2.0** 的历史映射。使用 Bootstrap、Tailwind、Ant Design、Element Plus、Naive UI、Vuetify、MUI、PrimeVue、shadcn/ui 或手写 UI 的项目，请先阅读完整的 [`从任意 UI 实现迁移到 Blora Design 2.0`](./from-any-ui-to-blora-design.md)。
+
+**2.0 新项目推荐入口**：[`docs/guide.md`](../guide.md)。进度：[`docs/refactor/remaining-work.md`](../refactor/remaining-work.md)。
 Token 全表：[`token-map-v1-v2.csv`](./token-map-v1-v2.csv)。
 
 ## 1. 升级前检查
@@ -16,7 +17,7 @@ pnpm --filter @bloret-crew/blora-design run migrate:check -- ./src
 ## 2. 安装方式
 
 ```bash
-pnpm add @bloret-crew/blora-design@beta
+pnpm add @bloret-crew/blora-design@latest
 # 钉死版本：@2.0.0
 ```
 

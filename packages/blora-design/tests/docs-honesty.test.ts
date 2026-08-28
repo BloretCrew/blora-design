@@ -29,9 +29,9 @@ describe("Phase-9 honesty artifacts", () => {
     expect(body).toMatch(/createXxxController|createTableController/);
   });
 
-  it("root README recommends 2.0 beta and blora-button, not 1.x global Blora as primary", () => {
+  it("root README recommends Stable 2.0 and blora-button, not 1.x global Blora as primary", () => {
     const body = read("README.md");
-    expect(body).toMatch(/2\.0\.0-beta/);
+    expect(body).toMatch(/2\.0\.0/);
     expect(body).toMatch(/blora-button/);
     expect(body).toMatch(/createTableController/);
     // Must not present 1.x package version as current
@@ -85,9 +85,25 @@ describe("Phase-9 honesty artifacts", () => {
     expect(publishedTags).toEqual(expectedTags);
   });
 
-  it("llms.txt points at existing migration path", () => {
+  it("publishes the complete migration standard and links it from the main entries", () => {
+    const migration = read("docs/migration/from-any-ui-to-blora-design.md");
+    expect(migration).toMatch(/从任意 UI 实现迁移到 Blora Design 2\.0/);
+    expect(migration).toMatch(/完整组件替换矩阵/);
+    expect(migration).toMatch(/严格禁止事项/);
+    expect(migration).toMatch(/不得用|严格禁止事项|不重复实现/);
+    expect(migration).toMatch(/pnpm verify/);
+    expect(read("README.md")).toMatch(/from-any-ui-to-blora-design\.md/);
+    expect(read("docs/guide.md")).toMatch(/from-any-ui-to-blora-design\.md/);
+    expect(read("docs/framework.md")).toMatch(/from-any-ui-to-blora-design\.md/);
+  });
+
+  it("llms.txt points at the current and historical migration paths", () => {
     const body = read("llms.txt");
+    expect(body).toMatch(/docs\/migration\/from-any-ui-to-blora-design\.md/);
     expect(body).toMatch(/docs\/migration\/v1-to-v2\.md/);
+    expect(existsSync(resolve(repoRoot, "docs/migration/from-any-ui-to-blora-design.md"))).toBe(
+      true,
+    );
     expect(existsSync(resolve(repoRoot, "docs/migration/v1-to-v2.md"))).toBe(true);
     expect(body).toMatch(/remaining-work\.md/);
   });

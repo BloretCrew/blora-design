@@ -1,6 +1,6 @@
 # Blora Design 2.0 · 使用与迁移指南
 
-> **面向 2.0（当前 `2.0.0-beta`）**。推荐写法是：简单组件使用原生 HTML + CSS，结构敏感的复合控件只使用 **Composite Custom Element**；`createXxxController` 仅用于尚未迁为 CE 的 Table / Form 等 headless 能力。不是 1.x 的全局 `Blora.init()` / `Blora.toast`（2.0 已改为 `message`）单体 API。
+> **面向 2.0 Stable（当前 `2.0.0`）**。推荐写法是：简单组件使用原生 HTML + CSS，结构敏感的复合控件只使用 **Composite Custom Element**；`createXxxController` 仅用于尚未迁为 CE 的 Table / Form 等 headless 能力。不是 1.x 的全局 `Blora.init()` / `Blora.toast`（2.0 已改为 `message`）单体 API。
 > 设计令牌见 [`standards.md`](./standards.md)。组件契约见 `packages/blora-design/contracts/*.contract.json`。交互示例见 `examples/showcase-v2/`。  
 > 1.x 冻结参考：已归档到仓库外 `D:\MyFiles\Documents\projects\blora-design\legacy\`（`showcase-v1.html`、`v1/`，仅迁移对照，**不是** 2.0 推荐入口）。
 
@@ -13,7 +13,8 @@
 3. [常用组件写法](#3-常用组件写法)
 4. [Add-on 包](#4-add-on-包)
 5. [从 1.x / 其他库迁移](#5-从-1x--其他库迁移)
-6. [验收清单](#6-验收清单)
+6. [完整跨框架迁移规范](./migration/from-any-ui-to-blora-design.md)
+7. [验收清单](#6-验收清单)
 
 ---
 
