@@ -1049,6 +1049,17 @@ import "@bloret-crew/blora-design/auto";
   <blora-dropdown-item value="rename">重命名</blora-dropdown-item>
   <blora-dropdown-item value="delete">删除</blora-dropdown-item>
 </blora-dropdown>
+
+<!-- 也可以把头像和用户信息作为整个触发区域。 -->
+<blora-dropdown aria-label="Loong 用户菜单">
+  <div slot="trigger" aria-label="打开 Loong 用户菜单">
+    <span class="blora-avatar" data-size="md" data-variant="primary">Lo</span>
+    <strong>Loong</strong>
+    <span>Coding · 在线</span>
+  </div>
+  <blora-dropdown-item value="profile">个人资料</blora-dropdown-item>
+  <blora-dropdown-item value="settings">设置</blora-dropdown-item>
+</blora-dropdown>
 ```
 
 ### Empty（empty）

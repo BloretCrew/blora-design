@@ -407,6 +407,18 @@ describe("Composite Custom Elements", () => {
     dropdown.setAttribute("placement", "top");
     expect(dropdown.querySelector<HTMLElement>(".blora-dropdown")?.dataset.placement).toBe("top");
 
+    const custom = document.createElement("blora-dropdown");
+    custom.innerHTML = `
+      <div slot="trigger" aria-label="Loong 用户菜单">
+        <strong>Loong</strong>
+      </div>
+      <blora-dropdown-item value="profile">个人资料</blora-dropdown-item>`;
+    document.body.append(custom);
+    const customTrigger = custom.querySelector<HTMLElement>("[data-dropdown-trigger]")!;
+    expect(customTrigger.dataset.trigger).toBe("custom");
+    customTrigger.click();
+    expect(custom.querySelector(".blora-dropdown")?.hasAttribute("data-open")).toBe(true);
+
     const drawer = appendHost<HTMLElement & { open(): void }>("blora-drawer", {
       title: "Details",
     });

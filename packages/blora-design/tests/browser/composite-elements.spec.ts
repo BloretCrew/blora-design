@@ -374,6 +374,14 @@ test("Overlay composite CEs open, close and emit their public events", async ({ 
         <blora-dropdown id="dropdown-top" label="Actions" placement="top">
           <blora-dropdown-item value="edit">Edit</blora-dropdown-item>
         </blora-dropdown>
+        <blora-dropdown id="dropdown-custom" placement="bottom">
+          <div slot="trigger" aria-label="Loong 用户菜单" style="display:flex;align-items:center;gap:0.75rem;padding:0.5rem;border-radius:1rem;cursor:pointer">
+            <span class="blora-avatar" data-size="md" data-variant="primary">Lo</span>
+            <span><strong>Loong</strong><br /><span> Coding · 在线</span></span>
+          </div>
+          <blora-dropdown-item value="profile">个人资料</blora-dropdown-item>
+          <blora-dropdown-item value="settings">设置</blora-dropdown-item>
+        </blora-dropdown>
       </div>
       <blora-drawer id="drawer" title="Details">Drawer content</blora-drawer>
     `),
@@ -384,6 +392,12 @@ test("Overlay composite CEs open, close and emit their public events", async ({ 
   await expect(page.locator("#dropdown-top .blora-dropdown")).toHaveAttribute(
     "data-placement",
     "top",
+  );
+
+  await page.locator("#dropdown-custom [data-dropdown-trigger]").click();
+  await expect(page.locator("#dropdown-custom .blora-dropdown")).toHaveAttribute("data-open", "");
+  await expect(page.locator("#dropdown-custom .blora-dropdown__item").first()).toContainText(
+    "个人资料",
   );
 
   await page.locator("#tooltip .blora-tooltip").hover();

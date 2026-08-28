@@ -103,10 +103,22 @@ export function createDropdownController(root: HTMLElement): DropdownController 
     }
   }
 
-  // --- Trigger click: toggle ---
+  // --- Trigger activation: toggle ---
   trigger.addEventListener(
     "click",
     (event: Event) => {
+      if (trigger.getAttribute("aria-disabled") === "true") return;
+      event.stopPropagation();
+      toggle();
+    },
+    { signal },
+  );
+  trigger.addEventListener(
+    "keydown",
+    (event: KeyboardEvent) => {
+      if (trigger.getAttribute("aria-disabled") === "true") return;
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
       event.stopPropagation();
       toggle();
     },
@@ -209,6 +221,9 @@ export class BloraDropdown extends BloraElement {
   }
 
   protected render(): void {
+    const triggerNode = Array.from(this.children).find(
+      (item) => item.getAttribute("slot") === "trigger",
+    );
     const items = Array.from(this.children).filter(
       (item) => item.localName === "blora-dropdown-item",
     );
@@ -224,7 +239,8 @@ export class BloraDropdown extends BloraElement {
       } else {
         const kids = Array.from(this.childNodes).filter(
           (node) =>
-            node.nodeType === Node.ELEMENT_NODE || (node.textContent?.trim().length ?? 0) > 0,
+            node !== triggerNode &&
+            (node.nodeType === Node.ELEMENT_NODE || (node.textContent?.trim().length ?? 0) > 0),
         );
         this.contentNodes = kids.length ? kids : [];
       }
@@ -234,25 +250,39 @@ export class BloraDropdown extends BloraElement {
     root.dataset.bloraGenerated = "";
     root.dataset.align = this.alignValue();
     root.dataset.placement = this.placementValue();
+    root.dataset.trigger = triggerNode ? "custom" : "default";
     if (this.isHelper()) root.dataset.variant = "helper";
     if (this.hasAttribute("open")) root.dataset.open = "";
-    const trigger = this.ownerDocument.createElement("button");
-    trigger.type = "button";
-    trigger.className = "blora-button";
+    const trigger = triggerNode
+      ? (triggerNode.cloneNode(true) as HTMLElement)
+      : this.ownerDocument.createElement("button");
     trigger.dataset.dropdownTrigger = "";
-    trigger.disabled = this.hasAttribute("disabled");
-    const labelText = this.getAttribute("label") ?? t("dropdown.label");
-    if (this.isHelper()) {
-      trigger.dataset.variant = "ghost";
-      trigger.dataset.size = "icon";
-      trigger.setAttribute("aria-label", labelText);
-      trigger.append(createBloraIcon("info", 16, this.ownerDocument));
+    trigger.dataset.trigger = triggerNode ? "custom" : "default";
+    if (!triggerNode) {
+      const defaultTrigger = trigger as HTMLButtonElement;
+      defaultTrigger.type = "button";
+      defaultTrigger.className = "blora-button";
+      defaultTrigger.disabled = this.hasAttribute("disabled");
+      const labelText = this.getAttribute("label") ?? t("dropdown.label");
+      if (this.isHelper()) {
+        trigger.dataset.variant = "ghost";
+        trigger.dataset.size = "icon";
+        trigger.setAttribute("aria-label", labelText);
+        trigger.append(createBloraIcon("info", 16, this.ownerDocument));
+      } else {
+        trigger.dataset.variant = "outline";
+        const label = this.ownerDocument.createElement("span");
+        label.className = "blora-dropdown__label";
+        label.textContent = labelText;
+        trigger.append(label, createBloraIcon("chevron-down", 16, this.ownerDocument));
+      }
     } else {
-      trigger.dataset.variant = "outline";
-      const label = this.ownerDocument.createElement("span");
-      label.className = "blora-dropdown__label";
-      label.textContent = labelText;
-      trigger.append(label, createBloraIcon("chevron-down", 16, this.ownerDocument));
+      if (!trigger.hasAttribute("role")) trigger.setAttribute("role", "button");
+      if (!trigger.hasAttribute("tabindex")) trigger.setAttribute("tabindex", "0");
+      if (this.hasAttribute("disabled")) {
+        trigger.setAttribute("aria-disabled", "true");
+        trigger.setAttribute("tabindex", "-1");
+      }
     }
     const menu = this.ownerDocument.createElement("div");
     menu.className = "blora-dropdown__menu";
@@ -290,11 +320,18 @@ export class BloraDropdown extends BloraElement {
     if (!root || !trigger) return;
     root.dataset.align = this.alignValue();
     root.dataset.placement = this.placementValue();
-    trigger.disabled = this.hasAttribute("disabled");
+    if (this.hasAttribute("disabled")) {
+      trigger.setAttribute("aria-disabled", "true");
+      if (trigger instanceof HTMLButtonElement) trigger.disabled = true;
+    } else {
+      trigger.removeAttribute("aria-disabled");
+      if (trigger instanceof HTMLButtonElement) trigger.disabled = false;
+    }
     const labelText = this.getAttribute("label") ?? t("dropdown.label");
     const label = trigger.querySelector<HTMLElement>(".blora-dropdown__label");
     if (label) label.textContent = labelText;
-    if (this.isHelper()) trigger.setAttribute("aria-label", labelText);
+    if (root.dataset.trigger !== "custom" && this.isHelper())
+      trigger.setAttribute("aria-label", labelText);
   }
 
   protected bindEvents(): void {
