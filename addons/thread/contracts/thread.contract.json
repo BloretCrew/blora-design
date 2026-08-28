@@ -61,6 +61,5 @@
     ".blora-thread-composer__preview",
     ".blora-thread-composer__footer"
   ],
-  "accessibilityPattern": "list",
-  "migrationFromV1": "thread.migration.md"
+  "accessibilityPattern": "list"
 }

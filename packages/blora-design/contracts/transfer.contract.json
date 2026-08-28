@@ -35,6 +35,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "dual listbox transfer",
-  "migrationFromV1": "transfer.migration.md"
+  "accessibilityPattern": "dual listbox transfer"
 }

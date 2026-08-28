@@ -28,6 +28,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "navigation",
-  "migrationFromV1": "navbar.migration.md"
+  "accessibilityPattern": "navigation"
 }

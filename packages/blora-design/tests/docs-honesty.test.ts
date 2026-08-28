@@ -1,7 +1,4 @@
-/**
- * Structural honesty checks for Phase-9 closeout artifacts (docs-facing).
- * Reads monorepo paths from this package — fails if recommended-entry docs regress to 1.x-only.
- */
+/** Structural checks for the published 2.0 documentation surface. */
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
@@ -14,29 +11,21 @@ function read(rel: string): string {
   return readFileSync(path, "utf8");
 }
 
-describe("Phase-9 honesty artifacts", () => {
-  it("master remaining-work tracker exists and lists Phase 10 open work", () => {
+describe("published 2.0 documentation", () => {
+  it("release status and component coverage tracker are published", () => {
     const body = read("docs/refactor/remaining-work.md");
-    expect(body).toMatch(/Phase 10/);
-    expect(body).toMatch(/P9-1/);
-    expect(body).toMatch(/主跟踪文档|剩余工作总表/);
-    expect(body).toMatch(/createTableController|ADR-013|pnpm verify/);
+    expect(body).toMatch(/Stable/);
+    expect(body).toMatch(/87 个核心组件/);
+    expect(body).toMatch(/npm-only/);
+    expect(body).toMatch(/createTableController|pnpm verify/);
   });
 
-  it("migration stub exists at docs/migration/v1-to-v2.md", () => {
-    const body = read("docs/migration/v1-to-v2.md");
-    expect(body).toMatch(/2\.0/);
-    expect(body).toMatch(/createXxxController|createTableController/);
-  });
-
-  it("root README recommends Stable 2.0 and blora-button, not 1.x global Blora as primary", () => {
+  it("root README recommends Stable 2.0 and the published npm surface", () => {
     const body = read("README.md");
     expect(body).toMatch(/2\.0\.0/);
     expect(body).toMatch(/blora-button/);
     expect(body).toMatch(/createTableController/);
-    // Must not present 1.x package version as current
-    expect(body).not.toMatch(/\*\*版本\*\* `1\.0\.0`/);
-    expect(body).not.toMatch(/\*\*Version\*\* `1\.0\.0`/);
+    expect(body).toMatch(/npm/);
   });
 
   it("ships side-effect auto entry for stable custom elements", () => {
@@ -48,7 +37,7 @@ describe("Phase-9 honesty artifacts", () => {
     expect(pkg.sideEffects).toEqual(expect.arrayContaining(["./dist/auto.js"]));
   });
 
-  it("declares JS subpaths and manifest exports for pre-beta package surface", () => {
+  it("declares JS subpaths and manifest exports for the Stable package surface", () => {
     const pkg = JSON.parse(read("packages/blora-design/package.json"));
     for (const key of ["./button", "./select", "./dialog", "./table", "./blora.global.js"]) {
       expect(pkg.exports[key], key).toBeTruthy();
@@ -92,20 +81,40 @@ describe("Phase-9 honesty artifacts", () => {
     expect(migration).toMatch(/严格禁止事项/);
     expect(migration).toMatch(/不得用|严格禁止事项|不重复实现/);
     expect(migration).toMatch(/pnpm verify/);
+    expect(migration).toMatch(/npm-only 强制规则/);
+    expect(migration).toMatch(/packages\/\*\*\/src/);
+    const exampleHeadings = [...migration.matchAll(/^### .+（([^）]+)）$/gm)].map(
+      (match) => match[1],
+    );
+    const manifest = JSON.parse(read("packages/blora-design/component-manifest.json"));
+    expect(exampleHeadings).toHaveLength(manifest.components.length);
+    expect(new Set(exampleHeadings).size).toBe(manifest.components.length);
+    const codeBlocks = [...migration.matchAll(/```[^\n]*\n([\s\S]*?)```/g)].map(
+      (match) => match[1],
+    );
+    const imports = codeBlocks.flatMap((block) =>
+      [...block.matchAll(/(?:from|import) ["']([^"']+)["']/g)].map((match) => match[1]),
+    );
+    expect(imports.length).toBeGreaterThan(0);
+    const bloraImports = imports.filter((source) => source.startsWith("@bloret-crew/blora-design"));
+    expect(bloraImports.length).toBeGreaterThan(0);
+    expect(
+      imports.filter((source) => source.includes("/src") || source.startsWith("git+")).length,
+    ).toBe(0);
     expect(read("README.md")).toMatch(/from-any-ui-to-blora-design\.md/);
     expect(read("docs/guide.md")).toMatch(/from-any-ui-to-blora-design\.md/);
     expect(read("docs/framework.md")).toMatch(/from-any-ui-to-blora-design\.md/);
   });
 
-  it("llms.txt points at the current and historical migration paths", () => {
+  it("llms.txt points at the current migration standard and no deleted guides", () => {
     const body = read("llms.txt");
     expect(body).toMatch(/docs\/migration\/from-any-ui-to-blora-design\.md/);
-    expect(body).toMatch(/docs\/migration\/v1-to-v2\.md/);
+    expect(body).not.toMatch(/v1-to-v2|token-map-v1-v2|migration-rules/);
     expect(existsSync(resolve(repoRoot, "docs/migration/from-any-ui-to-blora-design.md"))).toBe(
       true,
     );
-    expect(existsSync(resolve(repoRoot, "docs/migration/v1-to-v2.md"))).toBe(true);
-    expect(body).toMatch(/remaining-work\.md/);
+    expect(existsSync(resolve(repoRoot, "docs/migration/v1-to-v2.md"))).toBe(false);
+    expect(body).toMatch(/complete migration standard/);
   });
 
   it("status.md links remaining-work master tracker", () => {

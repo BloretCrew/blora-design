@@ -38,6 +38,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "section",
-  "migrationFromV1": "chat.migration.md"
+  "accessibilityPattern": "section"
 }

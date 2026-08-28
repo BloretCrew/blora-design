@@ -20,6 +20,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "list",
-  "migrationFromV1": "list.migration.md"
+  "accessibilityPattern": "list"
 }

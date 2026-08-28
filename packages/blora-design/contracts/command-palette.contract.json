@@ -39,6 +39,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "command palette",
-  "migrationFromV1": "command-palette.migration.md"
+  "accessibilityPattern": "command palette"
 }

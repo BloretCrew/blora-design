@@ -48,6 +48,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "combobox",
-  "migrationFromV1": "mentions.migration.md"
+  "accessibilityPattern": "combobox"
 }

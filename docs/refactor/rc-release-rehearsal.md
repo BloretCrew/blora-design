@@ -79,7 +79,7 @@ Node 环境导入没有访问浏览器专属对象；`defineBloraTimeline`、`cr
 3. 通过 `npm view <package> dist-tags version` 验证回退指向。
 4. 保留有缺陷版本，不使用 unpublish；修复后重新运行 `pnpm verify` 并发布下一个 RC。
 
-RC.0 发布后的 npm tag 状态已核对：核心包 `latest=1.0.0`、`alpha=2.0.0-alpha.1`、`beta=2.0.0-beta.1`、`rc=2.0.0-rc.0`。本项目没有 1.x 用户或消费者，因此不会为 1.x 提供安全维护、兼容层、legacy 发布线或迁移支持承诺；本记录中的旧 `latest=1.0.0` 只是发布历史状态，不是 2.0 Stable 的目标策略。
+RC.0 发布后的 npm tag 状态已核对；随后 `latest` 已切换到 Stable `2.0.0`。
 
 ## Stable 2.0.0 最终验收（2026-08-27）
 
@@ -94,4 +94,4 @@ RC.0 发布后的 npm tag 状态已核对：核心包 `latest=1.0.0`、`alpha=2.
 
 ## 结论
 
-RC.0 的本地质量门禁、Firefox/WebKit 实测、npm/CDN/CSP/SSR 证据、非变更式 rollback rehearsal、Stable tag/npm/GitHub Release 和最终验收已完成。GitHub Actions release run `33082759486` 成功，npm `latest` 指向 `2.0.0`。本项目不建立 1.x 维护或兼容发布线。
+RC.0 的本地质量门禁、Firefox/WebKit 实测、npm/CDN/CSP/SSR 证据、非变更式 rollback rehearsal、Stable tag/npm/GitHub Release 和最终验收已完成。GitHub Actions release run `33082759486` 成功，npm `latest` 指向 `2.0.0`。

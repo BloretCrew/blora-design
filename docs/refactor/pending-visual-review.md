@@ -63,7 +63,7 @@
 | Item | Product visual/functional delta? |
 |------|----------------------------------|
 | Root README → 2.0 | **None** (docs only) |
-| `llms.txt` + `docs/migration/v1-to-v2.md` | **None** |
+| `llms.txt` + `docs/migration/from-any-ui-to-blora-design.md` | **None** |
 | `framework.md` demotion wording | **None** |
 | ADR-013 + `remaining-work.md` | **None** |
 

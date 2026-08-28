@@ -66,6 +66,5 @@
     "--blora-pagination-window",
     "--blora-pagination-offset"
   ],
-  "accessibilityPattern": "navigation",
-  "migrationFromV1": "pagination.migration.md"
+  "accessibilityPattern": "navigation"
 }

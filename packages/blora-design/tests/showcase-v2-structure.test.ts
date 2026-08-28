@@ -330,12 +330,13 @@ describe("showcase-v2 full component catalog", () => {
     }
   });
 
-  it("keeps the documented core CE count in sync with contracts", () => {
+  it("keeps the documented core component count in sync with contracts", () => {
     const coreCount = readdirSync(contractsRoot)
       .filter((name) => name.endsWith(".contract.json"))
-      .map((name) => JSON.parse(readFileSync(resolve(contractsRoot, name), "utf8")))
-      .filter((contract) => contract.kind === "custom-element").length;
-    expect(readFileSync(remainingWorkPath, "utf8")).toContain(`当前 ${coreCount} 个`);
+      .map((name) => JSON.parse(readFileSync(resolve(contractsRoot, name), "utf8"))).length;
+    const remaining = readFileSync(remainingWorkPath, "utf8");
+    expect(remaining).toContain(`核心组件：${coreCount} 个`);
+    expect(remaining).toContain("Stable 版本：`2.0.0`");
   });
 
   it("uses official Tabs CE for every Preview/HTML switch", () => {

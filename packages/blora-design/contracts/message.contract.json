@@ -36,6 +36,5 @@
   "parts": [],
   "cssProperties": [],
   "accessibilityPattern": "status",
-  "migrationFromV1": "message.migration.md",
   "notes": "Product pair is Message (pill) + Notification (card). No Toast API."
 }

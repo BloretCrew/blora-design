@@ -38,6 +38,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "multi-thumb slider",
-  "migrationFromV1": "range.migration.md"
+  "accessibilityPattern": "multi-thumb slider"
 }

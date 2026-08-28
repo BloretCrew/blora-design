@@ -19,6 +19,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "table",
-  "migrationFromV1": "descriptions.migration.md"
+  "accessibilityPattern": "table"
 }

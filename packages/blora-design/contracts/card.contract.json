@@ -28,6 +28,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "landmark",
-  "migrationFromV1": "card.migration.md"
+  "accessibilityPattern": "landmark"
 }

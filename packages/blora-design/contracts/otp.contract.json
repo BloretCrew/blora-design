@@ -54,6 +54,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "section",
-  "migrationFromV1": "otp.migration.md"
+  "accessibilityPattern": "section"
 }

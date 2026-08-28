@@ -3,9 +3,9 @@
 > Blora Design 是一套令牌驱动的 Web UI 设计规范。  
 > 本文是 **视觉与令牌** 的信源（色彩 / 字体 / 间距 / 动效 / 无障碍）。  
 > **工程接入、组件用法、迁移** → [`guide.md`](./guide.md)  
-> **1.x 迁移表** → [`migration/v1-to-v2.md`](./migration/v1-to-v2.md)  
-> **1.x 历史 API 罗列（仅对照）** → [`framework.md`](./framework.md)  
-> **重构进度** → [`refactor/remaining-work.md`](./refactor/remaining-work.md)  
+> **完整迁移规范** → [`migration/from-any-ui-to-blora-design.md`](./migration/from-any-ui-to-blora-design.md)
+> **框架接入说明** → [`framework.md`](./framework.md)
+> **发布状态** → [`refactor/status.md`](./refactor/status.md)
 > 默认配色 `coral` 的色值与当前 token CSS 对齐；换肤后以运行时令牌为准。
 
 ---
@@ -223,7 +223,7 @@ Blora Design 采用 12 级非线性间距，组件与布局必须优先使用对
 | `--blora-easing-soft` | `cubic-bezier(.4,0,.2,1)` | 柔和 |
 | `--blora-easing-overshoot` | `cubic-bezier(.34,1.56,.64,1)` | 微弹 — 仅 FAB/Message 等 |
 
-`--blora-ease`、`--blora-ease-soft`、`--blora-ease-overshoot` 是以上令牌的 1.x 别名。
+`--blora-ease`、`--blora-ease-soft`、`--blora-ease-overshoot` 是历史别名；新代码使用 `--blora-easing-*`。
 
 ### 7.2 时长 · Duration
 
@@ -234,7 +234,7 @@ Blora Design 采用 12 级非线性间距，组件与布局必须优先使用对
 | `--blora-duration-slow` | 420ms | 抽屉/折叠 |
 | `--blora-duration-emphasis` | 700ms | 需要额外关注的强调动画 |
 
-`--blora-dur-fast` / `--blora-dur-base` / `--blora-dur-slow` / `--blora-dur-emphasis` 是以上令牌的 1.x 别名。组件 CSS 一律写 `--blora-duration-*`，禁止 `transition: all`。
+`--blora-dur-fast` / `--blora-dur-base` / `--blora-dur-slow` / `--blora-dur-emphasis` 是历史别名。组件 CSS 一律写 `--blora-duration-*`，禁止 `transition: all`。
 
 ### 7.3 组件动效
 

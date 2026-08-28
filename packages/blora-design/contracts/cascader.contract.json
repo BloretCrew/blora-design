@@ -55,6 +55,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "combobox",
-  "migrationFromV1": "cascader.migration.md"
+  "accessibilityPattern": "combobox"
 }

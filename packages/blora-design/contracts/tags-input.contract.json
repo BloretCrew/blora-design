@@ -46,6 +46,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "section",
-  "migrationFromV1": "tags-input.migration.md"
+  "accessibilityPattern": "section"
 }

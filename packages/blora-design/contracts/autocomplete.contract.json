@@ -46,6 +46,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "combobox",
-  "migrationFromV1": "autocomplete.migration.md"
+  "accessibilityPattern": "combobox"
 }

@@ -36,6 +36,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "list",
-  "migrationFromV1": "timeline.migration.md"
+  "accessibilityPattern": "list"
 }

@@ -16,6 +16,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "radiogroup",
-  "migrationFromV1": "filter.migration.md"
+  "accessibilityPattern": "radiogroup"
 }

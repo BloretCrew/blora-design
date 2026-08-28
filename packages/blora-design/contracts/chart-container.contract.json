@@ -31,6 +31,5 @@
   },
   "parts": [],
   "cssProperties": ["--blora-chart-min-h"],
-  "accessibilityPattern": "section",
-  "migrationFromV1": "chart-container.migration.md"
+  "accessibilityPattern": "section"
 }

@@ -84,7 +84,7 @@ Blora 的 `Button` 是 `button.blora-button`，它仍然是原生 `button`；`Se
 ### 2.3 迁移前命令
 
 ```bash
-# 扫描旧 Blora 1.x 模式；其他框架需要用自己的 grep / lint 规则补充
+# 扫描项目中的旧组件 class、内部结构和不符合迁移规范的实现
 pnpm --filter @bloret-crew/blora-design run migrate:check -- ./src
 
 # 查看完整组件清单和契约
@@ -97,95 +97,95 @@ node -e "const p=require('./packages/blora-design/component-manifest.json'); for
 
 ### 3.1 核心组件
 
-| 能力               | Blora 2.0 实现                  | 类型          | 迁移要求                                       |
-| ------------------ | ------------------------------- | ------------- | ---------------------------------------------- |
-| Accordion          | `<blora-accordion>`             | Composite CE  | 不手写展开、收起、ARIA 和高度动画              |
-| Alert              | `<blora-alert>`                 | Composite CE  | 使用官方变体和状态语义                         |
-| Autocomplete       | `<blora-autocomplete>`          | Composite CE  | 不手写建议列表和键盘导航                       |
-| Avatar             | `.blora-avatar`                 | CSS-only      | 使用 `data-size`、`data-variant`、`data-shape` |
-| BackTop            | `<blora-backtop>`               | Composite CE  | 不手写滚动监听和显示状态                       |
-| Badge              | `.blora-badge`                  | CSS-only      | 数量、状态和角标使用 Badge                     |
-| Banner             | `<blora-banner>`                | Composite CE  | 使用官方内容和关闭行为                         |
-| Breadcrumb         | `<blora-breadcrumb>`            | Composite CE  | 不手写分隔符和可访问名称                       |
-| Button             | `<button class="blora-button">` | Native + CSS  | 必须有 `type`，变体使用 `data-*`               |
-| Calendar           | `<blora-calendar>`              | Composite CE  | 不手写日期网格和选中状态                       |
-| Card               | `.blora-card`                   | CSS-only      | 使用官方 surface、variant 和 token             |
-| Carousel           | `<blora-carousel>`              | Composite CE  | 不手写轮播控制和索引状态                       |
-| Cascader           | `<blora-cascader>`              | Composite CE  | 不手写级联面板和键盘逻辑                       |
-| Chart Container    | `<blora-chart-container>`       | Composite CE  | 图表库只负责内容，不负责外壳                   |
-| Chat               | `<blora-chat>`                  | Composite CE  | 使用官方消息布局和状态结构                     |
-| Checkbox           | `<blora-checkbox>`              | Composite CE  | 不使用裸 checkbox 皮肤                         |
-| Collapse           | `<blora-collapse>`              | Composite CE  | 不手写高度折叠逻辑                             |
-| Color Picker       | `<blora-color-picker>`          | Composite CE  | 不使用裸 color input                           |
-| Command Palette    | `<blora-command>`               | Composite CE  | 使用 OverlayController 管理的官方浮层          |
-| Comment            | `<blora-comment>`               | Composite CE  | 头像、正文、操作通过 slot 提供                 |
-| Copy               | `<blora-copy>`                  | Composite CE  | 不手写复制按钮、状态文本和图标                 |
-| Datepicker         | `<blora-datepicker>`            | Composite CE  | 不使用裸 date input                            |
-| Deck               | `<blora-deck>`                  | Composite CE  | 不复制卡片叠放结构                             |
-| Descriptions       | `.blora-descriptions`           | CSS-only      | 使用官方描述列表 class                         |
-| Dialog             | `<blora-dialog>`                | Composite CE  | 不手写遮罩、焦点陷阱和 Escape                  |
-| Divider            | `.blora-divider`                | CSS-only      | 使用 `data-orientation` / `data-variant`       |
-| Dock               | `<blora-dock>`                  | Composite CE  | 不手写固定导航和展开状态                       |
-| Drawer             | `<blora-drawer>`                | Composite CE  | 不手写抽屉、滚动锁和焦点返回                   |
-| Dropdown           | `<blora-dropdown>`              | Composite CE  | 不手写菜单定位和 outside close                 |
-| Empty              | `<blora-empty>`                 | Composite CE  | 所有可为空的列表和表格提供 Empty               |
-| FAB                | `.blora-fab`                    | CSS-only      | 使用官方尺寸、变体和图标规则                   |
-| Field              | `<blora-field>`                 | Composite CE  | 标签、提示、错误和计数统一由 Field 组织        |
-| Fieldset           | `.blora-fieldset`               | CSS-only      | 使用真实 `fieldset` / `legend`                 |
-| Filter             | `.blora-filter`                 | CSS-only      | 使用官方 radio 筛选模式                        |
-| Footer             | `.blora-footer`                 | CSS-only      | 使用官方布局 class                             |
-| Form               | `createFormController`          | Headless      | 业务保留表单 DOM，挂载后创建并销毁 controller  |
-| Hero               | `.blora-hero`                   | CSS-only      | 使用官方对齐和 surface 变体                    |
-| Image              | `<blora-image>`                 | Composite CE  | 预览使用 `openImagePreview`，不手写预览层      |
-| Indicator          | `.blora-indicator`              | CSS-only      | 使用官方位置和状态属性                         |
-| Input              | `<input class="blora-input">`   | Native + CSS  | 不使用未样式化文本输入框                       |
-| Join               | `.blora-join`                   | CSS-only      | 输入和按钮组合使用官方焊接规则                 |
-| List               | `.blora-list`                   | CSS-only      | 使用官方列表和 hover 规则                      |
-| Masonry            | `.blora-masonry`                | CSS-only      | 不复制网格布局组件                             |
-| Media              | `.blora-media`                  | CSS-only      | 使用官方比例和 object-fit 规则                 |
-| Megamenu           | `<blora-megamenu>`              | Composite CE  | 不手写多级导航浮层                             |
-| Mentions           | `<blora-mentions>`              | Composite CE  | 不手写提及建议列表                             |
-| Menu               | `.blora-menu`                   | CSS-only      | 原生链接列表使用官方结构和样式                 |
-| Message            | `message` service               | CSS + service | 不实现 toast；使用 `message.success()` 等      |
-| Mockup             | `<blora-mockup>`                | Composite CE  | 展示代码或设备外壳使用官方组件                 |
-| Navbar             | `<blora-navbar>`                | Composite CE  | 品牌、导航、工具和行动区使用官方 slot/子项     |
-| Notification       | `notify` service                | CSS + service | 使用官方 notification 容器和 placement         |
-| Number Input       | `<blora-number-input>`          | Composite CE  | 不手写增减按钮和输入同步                       |
-| OTP                | `<blora-otp>`                   | Composite CE  | 不手写多格输入和粘贴行为                       |
-| Pagination         | `<blora-pagination>`            | Composite CE  | 不手写页码窗口和省略号规则                     |
-| Popconfirm         | `<blora-popconfirm>`            | Composite CE  | 不手写确认浮层和焦点行为                       |
-| Popover            | `<blora-popover>`               | Composite CE  | 不手写定位、outside close 和层级               |
-| Progress           | `<blora-progress>`              | Composite CE  | 使用官方进度语义和状态                         |
-| Radio              | `<blora-radio>`                 | Composite CE  | 不使用裸 radio 皮肤                            |
-| Range              | `<blora-range>`                 | Composite CE  | 不使用裸 range input                           |
-| Rate               | `<blora-rate>`                  | Composite CE  | 不手写星级输入和键盘状态                       |
-| Result             | `<blora-result>`                | Composite CE  | 错误、成功和空结果使用官方结构                 |
-| Search             | `<blora-search>`                | Composite CE  | 不手写搜索清除按钮和表单关联                   |
-| Segmented          | `<blora-segmented>`             | Composite CE  | 互斥筛选和视图切换使用官方滑动指示器           |
-| Select             | `<blora-select>`                | Composite CE  | 不使用裸 select 或第三方 select                |
-| Sidebar Navigation | `<blora-sidebar-nav>`           | Composite CE  | 不手写导航组、当前项和键盘状态                 |
-| Skeleton           | `.blora-skeleton`               | CSS-only      | loading 使用官方骨架                           |
-| Slider             | `<blora-slider>`                | Composite CE  | 不手写滑块轨道、键盘和 tooltip                 |
-| Speed Dial         | `<blora-speed-dial>`            | Composite CE  | 不手写展开方向和 outside close                 |
-| Spinner            | `.blora-spinner`                | CSS-only      | loading 使用官方 spinner                       |
-| Splitter           | `<blora-splitter>`              | Composite CE  | 不手写拖拽分栏和方向逻辑                       |
-| Statistic          | `<blora-statistic>`             | Composite CE  | 数字、标题和趋势使用官方结构                   |
-| Steps              | `<blora-steps>`                 | Composite CE  | 不手写步骤状态和导航语义                       |
-| Swap               | `<blora-swap>`                  | Composite CE  | 不手写交换动画和状态                           |
-| Switch             | `<blora-switch>`                | Composite CE  | 不使用裸 checkbox 模拟开关                     |
-| Table              | `createTableController`         | Headless      | 业务保留表格 DOM，行选由 controller 注入       |
-| Tabs               | `<blora-tabs>`                  | Composite CE  | 不手写选中状态、指示器和键盘导航               |
-| Tag                | `.blora-tag`                    | CSS-only      | 分类和可关闭标签使用官方样式                   |
-| Tags Input         | `<blora-tags-input>`            | Composite CE  | 不手写 token 输入、删除和表单关联              |
-| Textarea           | `<blora-textarea>`              | Composite CE  | 不使用未样式化 textarea                        |
-| Timeline           | `<blora-timeline>`              | Composite CE  | 时间顺序、连线和节点使用官方组件               |
-| Time Picker        | `<blora-timepicker>`            | Composite CE  | 不手写时间面板和键盘逻辑                       |
-| Tooltip            | `<blora-tooltip>`               | Composite CE  | 不手写 hover/focus 浮层                        |
-| Tour               | `<blora-tour>`                  | Composite CE  | 不手写遮罩、聚焦和步骤导航                     |
-| Transfer           | `<blora-transfer>`              | Composite CE  | 不手写双栏选择和移动逻辑                       |
-| Tree               | `<blora-tree>`                  | Composite CE  | 不手写树节点展开和键盘逻辑                     |
-| Tree Select        | `<blora-tree-select>`           | Composite CE  | 不手写树形下拉选择器                           |
-| Upload             | `<blora-upload>`                | Composite CE  | 不手写文件输入表面和上传状态                   |
+| 能力               | Blora 2.0 实现                      | 类型          | 迁移要求                                       |
+| ------------------ | ----------------------------------- | ------------- | ---------------------------------------------- |
+| Accordion          | `<blora-accordion>`                 | Composite CE  | 不手写展开、收起、ARIA 和高度动画              |
+| Alert              | `<blora-alert>`                     | Composite CE  | 使用官方变体和状态语义                         |
+| Autocomplete       | `<blora-autocomplete>`              | Composite CE  | 不手写建议列表和键盘导航                       |
+| Avatar             | `.blora-avatar`                     | CSS-only      | 使用 `data-size`、`data-variant`、`data-shape` |
+| BackTop            | `<blora-backtop>`                   | Composite CE  | 不手写滚动监听和显示状态                       |
+| Badge              | `.blora-badge`                      | CSS-only      | 数量、状态和角标使用 Badge                     |
+| Banner             | `<blora-banner>`                    | Composite CE  | 使用官方内容和关闭行为                         |
+| Breadcrumb         | `<blora-breadcrumb>`                | Composite CE  | 不手写分隔符和可访问名称                       |
+| Button             | `<button class="blora-button">`     | Native + CSS  | 必须有 `type`，变体使用 `data-*`               |
+| Calendar           | `<blora-calendar>`                  | Composite CE  | 不手写日期网格和选中状态                       |
+| Card               | `.blora-card`                       | CSS-only      | 使用官方 surface、variant 和 token             |
+| Carousel           | `<blora-carousel>`                  | Composite CE  | 不手写轮播控制和索引状态                       |
+| Cascader           | `<blora-cascader>`                  | Composite CE  | 不手写级联面板和键盘逻辑                       |
+| Chart Container    | `<blora-chart-container>`           | Composite CE  | 图表库只负责内容，不负责外壳                   |
+| Chat               | `<blora-chat>`                      | Composite CE  | 使用官方消息布局和状态结构                     |
+| Checkbox           | `<blora-checkbox>`                  | Composite CE  | 不使用裸 checkbox 皮肤                         |
+| Collapse           | `<blora-collapse>`                  | Composite CE  | 不手写高度折叠逻辑                             |
+| Color Picker       | `<blora-color-picker>`              | Composite CE  | 不使用裸 color input                           |
+| Command Palette    | `<blora-command>`                   | Composite CE  | 使用 OverlayController 管理的官方浮层          |
+| Comment            | `<blora-comment>`                   | Composite CE  | 头像、正文、操作通过 slot 提供                 |
+| Copy               | `<blora-copy>`                      | Composite CE  | 不手写复制按钮、状态文本和图标                 |
+| Datepicker         | `<blora-datepicker>`                | Composite CE  | 不使用裸 date input                            |
+| Deck               | `<blora-deck>`                      | Composite CE  | 不复制卡片叠放结构                             |
+| Descriptions       | `.blora-descriptions`               | CSS-only      | 使用官方描述列表 class                         |
+| Dialog             | `<blora-dialog>`                    | Composite CE  | 不手写遮罩、焦点陷阱和 Escape                  |
+| Divider            | `.blora-divider`                    | CSS-only      | 使用 `data-orientation` / `data-variant`       |
+| Dock               | `<blora-dock>`                      | Composite CE  | 不手写固定导航和展开状态                       |
+| Drawer             | `<blora-drawer>`                    | Composite CE  | 不手写抽屉、滚动锁和焦点返回                   |
+| Dropdown           | `<blora-dropdown>`                  | Composite CE  | 不手写菜单定位和 outside close                 |
+| Empty              | `<blora-empty>`                     | Composite CE  | 所有可为空的列表和表格提供 Empty               |
+| FAB                | `.blora-fab`                        | CSS-only      | 使用官方尺寸、变体和图标规则                   |
+| Field              | `<blora-field>`                     | Composite CE  | 标签、提示、错误和计数统一由 Field 组织        |
+| Fieldset           | `.blora-fieldset`                   | CSS-only      | 使用真实 `fieldset` / `legend`                 |
+| Filter             | `.blora-filter`                     | CSS-only      | 使用官方 radio 筛选模式                        |
+| Footer             | `.blora-footer`                     | CSS-only      | 使用官方布局 class                             |
+| Form               | `createFormController`              | Headless      | 业务保留表单 DOM，挂载后创建并销毁 controller  |
+| Hero               | `.blora-hero`                       | CSS-only      | 使用官方对齐和 surface 变体                    |
+| Image              | `<blora-image>`                     | Composite CE  | 预览使用 `openImagePreview`，不手写预览层      |
+| Indicator          | `.blora-indicator`                  | CSS-only      | 使用官方位置和状态属性                         |
+| Input              | `<input class="blora-input">`       | Native + CSS  | 不使用未样式化文本输入框                       |
+| Join               | `.blora-join`                       | CSS-only      | 输入和按钮组合使用官方焊接规则                 |
+| List               | `.blora-list`                       | CSS-only      | 使用官方列表和 hover 规则                      |
+| Masonry            | `.blora-masonry`                    | CSS-only      | 不复制网格布局组件                             |
+| Media              | `.blora-media`                      | CSS-only      | 使用官方比例和 object-fit 规则                 |
+| Megamenu           | `<blora-megamenu>`                  | Composite CE  | 不手写多级导航浮层                             |
+| Mentions           | `<blora-mentions>`                  | Composite CE  | 不手写提及建议列表                             |
+| Menu               | `.blora-menu`                       | CSS-only      | 原生链接列表使用官方结构和样式                 |
+| Message            | `message` service                   | CSS + service | 不实现 toast；使用 `message.success()` 等      |
+| Mockup             | `<blora-mockup>`                    | Composite CE  | 展示代码或设备外壳使用官方组件                 |
+| Navbar             | `<blora-navbar>`                    | Composite CE  | 品牌、导航、工具和行动区使用官方 slot/子项     |
+| Notification       | `notify` service                    | CSS + service | 使用官方 notification 容器和 placement         |
+| Number Input       | `<blora-number-input>`              | Composite CE  | 不手写增减按钮和输入同步                       |
+| OTP                | `<blora-otp>`                       | Composite CE  | 不手写多格输入和粘贴行为                       |
+| Pagination         | `<blora-pagination>`                | Composite CE  | 不手写页码窗口和省略号规则                     |
+| Popconfirm         | `<blora-popconfirm>`                | Composite CE  | 不手写确认浮层和焦点行为                       |
+| Popover            | `<blora-popover>`                   | Composite CE  | 不手写定位、outside close 和层级               |
+| Progress           | `<blora-progress>`                  | Composite CE  | 使用官方进度语义和状态                         |
+| Radio              | `<blora-radio>`                     | Composite CE  | 不使用裸 radio 皮肤                            |
+| Range              | `<blora-range>`                     | Composite CE  | 不使用裸 range input                           |
+| Rate               | `<blora-rate>`                      | Composite CE  | 不手写星级输入和键盘状态                       |
+| Result             | `<blora-result>`                    | Composite CE  | 错误、成功和空结果使用官方结构                 |
+| Search             | `<blora-search>`                    | Composite CE  | 不手写搜索清除按钮和表单关联                   |
+| Segmented          | `<blora-segmented>`                 | Composite CE  | 互斥筛选和视图切换使用官方滑动指示器           |
+| Select             | `<blora-select>`                    | Composite CE  | 不使用裸 select 或第三方 select                |
+| Sidebar Navigation | `<blora-sidebar-nav>`               | Composite CE  | 不手写导航组、当前项和键盘状态                 |
+| Skeleton           | `.blora-skeleton`                   | CSS-only      | loading 使用官方骨架                           |
+| Slider             | `<blora-slider>`                    | Composite CE  | 不手写滑块轨道、键盘和 tooltip                 |
+| Speed Dial         | `<blora-speed-dial>`                | Composite CE  | 不手写展开方向和 outside close                 |
+| Spinner            | `.blora-spinner`                    | CSS-only      | loading 使用官方 spinner                       |
+| Splitter           | `<blora-splitter>`                  | Composite CE  | 不手写拖拽分栏和方向逻辑                       |
+| Statistic          | `<blora-statistic>`                 | Composite CE  | 数字、标题和趋势使用官方结构                   |
+| Steps              | `<blora-steps>`                     | Composite CE  | 不手写步骤状态和导航语义                       |
+| Swap               | `<blora-swap>`                      | Composite CE  | 不手写交换动画和状态                           |
+| Switch             | `<blora-switch>`                    | Composite CE  | 不使用裸 checkbox 模拟开关                     |
+| Table              | `createTableController`             | Headless      | 业务保留表格 DOM，行选由 controller 注入       |
+| Tabs               | `<blora-tabs>`                      | Composite CE  | 不手写选中状态、指示器和键盘导航               |
+| Tag                | `.blora-tag`                        | CSS-only      | 分类和可关闭标签使用官方样式                   |
+| Tags Input         | `<blora-tags-input>`                | Composite CE  | 不手写 token 输入、删除和表单关联              |
+| Textarea           | `<textarea class="blora-textarea">` | Native + CSS  | 使用官方输入表面和 Field 组织                  |
+| Timeline           | `<blora-timeline>`                  | Composite CE  | 时间顺序、连线和节点使用官方组件               |
+| Time Picker        | `<blora-timepicker>`                | Composite CE  | 不手写时间面板和键盘逻辑                       |
+| Tooltip            | `<blora-tooltip>`                   | Composite CE  | 不手写 hover/focus 浮层                        |
+| Tour               | `<blora-tour>`                      | Composite CE  | 不手写遮罩、聚焦和步骤导航                     |
+| Transfer           | `<blora-transfer>`                  | Composite CE  | 不手写双栏选择和移动逻辑                       |
+| Tree               | `<blora-tree>`                      | Composite CE  | 不手写树节点展开和键盘逻辑                     |
+| Tree Select        | `<blora-tree-select>`               | Composite CE  | 不手写树形下拉选择器                           |
+| Upload             | `<blora-upload>`                    | Composite CE  | 不手写文件输入表面和上传状态                   |
 
 ### 3.2 Add-on 组件和服务
 
@@ -790,10 +790,978 @@ pnpm verify
 ## 13. 相关文档
 
 - [Blora Design 2.0 使用指南](../guide.md)
-- [Blora 1.x → 2.0 历史映射](./v1-to-v2.md)
 - [组件 contract](../../packages/blora-design/contracts/)
 - [组件 manifest](../../packages/blora-design/component-manifest.json)
 - [Showcase v2](../../examples/showcase-v2/)
 - [发布与最终验收记录](../refactor/rc-release-rehearsal.md)
 - [浏览器矩阵](../refactor/browser-matrix.md)
-- [迁移检查规则](../ai/migration-rules.md)
+
+## 14. 每个核心组件的最小示例
+
+所有示例都从已发布 npm 包导入。示例中的标签、属性、事件和 slot 以对应 contract 与 Showcase v2 为准；不要把示例改写成项目内复制的组件。
+
+**npm-only 强制规则**：消费项目必须从 npm 安装 `@bloret-crew/blora-design` 和官方 add-on 包，并使用包的 `exports`；禁止引用本仓库或 git 仓库中的 `packages/**/src`、`addons/**/src`，禁止复制组件源码、内部 CSS 或生成文件。下面所有 `import` 都是 npm 包导入，示例中的 `/images/*` 仅代表消费项目自己的业务资源。
+
+安装并导入：
+
+```bash
+pnpm add @bloret-crew/blora-design
+```
+
+```ts
+import "@bloret-crew/blora-design/blora.css";
+import "@bloret-crew/blora-design/auto";
+```
+
+### Accordion（accordion）
+
+```html
+<blora-accordion>
+  <blora-accordion-item heading="设计令牌" open
+    >颜色、间距和圆角来自统一 token。</blora-accordion-item
+  >
+  <blora-accordion-item heading="组件结构">结构由官方 CE 生成。</blora-accordion-item>
+</blora-accordion>
+```
+
+### Alert（alert）
+
+```html
+<blora-alert variant="info" title="提示" description="这是一条信息。"></blora-alert>
+```
+
+### Autocomplete（autocomplete）
+
+```html
+<blora-autocomplete label="搜索成员" placeholder="输入成员名称"></blora-autocomplete>
+```
+
+### Avatar（avatar）
+
+```html
+<span class="blora-avatar" data-size="md" data-variant="primary">Lo</span>
+```
+
+### Backtop（backtop）
+
+```html
+<blora-backtop target="body" label="返回顶部"></blora-backtop>
+```
+
+### Badge（badge）
+
+```html
+<span class="blora-badge" data-variant="success" data-shape="pill">已完成</span>
+```
+
+### Banner（banner）
+
+```html
+<blora-banner title="Blora Design 2.0" description="当前使用统一的设计语言。"
+  ><blora-banner-action label="查看指南" value="guide" variant="primary"></blora-banner-action
+></blora-banner>
+```
+
+### Breadcrumb（breadcrumb）
+
+```html
+<blora-breadcrumb label="当前位置">
+  <a href="/">首页</a>
+  <a href="/settings">设置</a>
+  <span aria-current="page">主题</span>
+</blora-breadcrumb>
+```
+
+### Button（button）
+
+```html
+<button type="button" class="blora-button" data-variant="primary">保存</button>
+```
+
+### Calendar（calendar）
+
+```html
+<blora-calendar label="选择日期" value="2026-08-28"></blora-calendar>
+```
+
+### Card（card）
+
+```html
+<article class="blora-card">
+  <h2>项目概览</h2>
+  <p>卡片内容使用 Blora surface 和 token。</p>
+</article>
+```
+
+### Carousel（carousel）
+
+```html
+<blora-carousel label="项目图片">
+  <img src="/images/one.jpg" alt="第一张图片" />
+  <img src="/images/two.jpg" alt="第二张图片" />
+</blora-carousel>
+```
+
+### Cascader（cascader）
+
+```html
+<blora-cascader label="选择地区" placeholder="请选择"></blora-cascader>
+```
+
+### ChartContainer（chart-container）
+
+```html
+<blora-chart-container label="销售趋势">
+  <canvas aria-label="销售趋势图"></canvas>
+</blora-chart-container>
+```
+
+### Chat（chat）
+
+```html
+<blora-chat label="团队消息"></blora-chat>
+```
+
+### Checkbox（checkbox）
+
+```html
+<blora-checkbox name="terms" value="accepted">同意服务条款</blora-checkbox>
+```
+
+### Collapse（collapse）
+
+```html
+<blora-collapse>
+  <blora-collapse-item heading="详情">可折叠内容。</blora-collapse-item>
+</blora-collapse>
+```
+
+### ColorPicker（color-picker）
+
+```html
+<blora-color-picker label="品牌颜色" value="#7fadad"></blora-color-picker>
+```
+
+### CommandPalette（command-palette）
+
+```html
+<blora-command label="打开命令面板"></blora-command>
+```
+
+### Comment（comment）
+
+```html
+<blora-comment>
+  <span slot="author">Loong</span>
+  <time slot="time" datetime="2026-08-28">刚刚</time>
+  <p>这是一条评论。</p>
+</blora-comment>
+```
+
+### Copy（copy）
+
+```html
+<blora-copy value="npm install @bloret-crew/blora-design" label="复制安装命令"></blora-copy>
+```
+
+### Datepicker（datepicker）
+
+```html
+<blora-datepicker label="开始日期" value="2026-08-28"></blora-datepicker>
+```
+
+### Deck（deck）
+
+```html
+<blora-deck>
+  <article class="blora-card">第一张卡片</article>
+  <article class="blora-card">第二张卡片</article>
+</blora-deck>
+```
+
+### Descriptions（descriptions）
+
+```html
+<dl class="blora-descriptions">
+  <div>
+    <dt>状态</dt>
+    <dd>在线</dd>
+  </div>
+  <div>
+    <dt>版本</dt>
+    <dd>2.0.0</dd>
+  </div>
+</dl>
+```
+
+### Dialog（dialog）
+
+```html
+<button
+  type="button"
+  class="blora-button"
+  data-variant="primary"
+  onclick="this.nextElementSibling.show()"
+>
+  打开对话框
+</button>
+<blora-dialog aria-label="删除成员">
+  <p>确定要删除这个成员吗？</p>
+</blora-dialog>
+```
+
+### Divider（divider）
+
+```html
+<div class="blora-divider" data-orientation="horizontal" role="separator"></div>
+```
+
+### Dock（dock）
+
+```html
+<blora-dock label="主导航">
+  <a href="/">首页</a>
+  <a href="/projects">项目</a>
+</blora-dock>
+```
+
+### Drawer（drawer）
+
+```html
+<button type="button" class="blora-button" onclick="drawer.open()">打开菜单</button>
+<blora-drawer id="drawer" aria-label="导航菜单">菜单内容</blora-drawer>
+```
+
+### Dropdown（dropdown）
+
+```html
+<blora-dropdown label="更多操作">
+  <button type="button" data-value="rename">重命名</button>
+  <button type="button" data-value="delete">删除</button>
+</blora-dropdown>
+```
+
+### Empty（empty）
+
+```html
+<blora-empty title="暂无项目" description="创建项目后，它们会显示在这里。">
+  <button slot="action" type="button" class="blora-button" data-variant="primary">创建项目</button>
+</blora-empty>
+```
+
+### Fab（fab）
+
+```html
+<button type="button" class="blora-fab" data-variant="primary" aria-label="新建项目">
+  <span data-icon="plus"></span>
+</button>
+```
+
+### Field（field）
+
+```html
+<blora-field label="项目名称" name="project" required hint="最多 40 个字符">
+  <input class="blora-input" maxlength="40" />
+</blora-field>
+```
+
+### Fieldset（fieldset）
+
+```html
+<fieldset class="blora-fieldset">
+  <legend>通知设置</legend>
+  <blora-checkbox>接收邮件通知</blora-checkbox>
+</fieldset>
+```
+
+### Filter（filter）
+
+```html
+<form class="blora-filter" aria-label="状态筛选">
+  <label class="blora-filter__item"
+    ><input type="radio" name="status" value="all" checked /><span class="blora-filter__label"
+      >全部</span
+    ></label
+  >
+  <label class="blora-filter__item"
+    ><input type="radio" name="status" value="open" /><span class="blora-filter__label"
+      >进行中</span
+    ></label
+  >
+</form>
+```
+
+### Footer（footer）
+
+```html
+<footer class="blora-footer">
+  <span>© 2026 Blora Design</span>
+  <nav><a href="/docs">文档</a></nav>
+</footer>
+```
+
+### Form（form）
+
+```html
+<form class="blora-form" id="profile-form">
+  <blora-field label="昵称" name="nickname"><input class="blora-input" /></blora-field>
+  <button type="submit" class="blora-button" data-variant="primary">保存</button>
+</form>
+<script type="module">
+  import { createFormController } from "@bloret-crew/blora-design";
+  const controller = createFormController(document.querySelector("#profile-form"));
+  window.addEventListener("pagehide", () => controller.destroy(), { once: true });
+</script>
+```
+
+### Hero（hero）
+
+```html
+<section class="blora-hero" data-align="center">
+  <h1>管理你的项目</h1>
+  <p>用统一的设计语言构建界面。</p>
+</section>
+```
+
+### Image（image）
+
+```html
+<blora-image src="/images/project.png" alt="项目预览" preview></blora-image>
+```
+
+### Indicator（indicator）
+
+```html
+<span class="blora-indicator" data-placement="top-end" data-variant="danger">3</span>
+```
+
+### Input（input）
+
+```html
+<label class="blora-field">
+  <span class="blora-field__label">项目名称</span>
+  <input class="blora-input" type="text" name="project" />
+</label>
+```
+
+### Join（join）
+
+```html
+<div class="blora-join">
+  <input class="blora-input" placeholder="搜索项目" />
+  <button type="button" class="blora-button" data-variant="primary">搜索</button>
+</div>
+```
+
+### List（list）
+
+```html
+<ul class="blora-list" data-hover>
+  <li class="blora-list__item">项目一</li>
+  <li class="blora-list__item">项目二</li>
+</ul>
+```
+
+### Masonry（masonry）
+
+```html
+<div class="blora-masonry">
+  <article class="blora-card">内容 A</article>
+  <article class="blora-card">内容 B</article>
+</div>
+```
+
+### Media（media）
+
+```html
+<figure class="blora-media" data-ratio="16:9">
+  <img src="/images/cover.jpg" alt="封面" />
+</figure>
+```
+
+### Megamenu（megamenu）
+
+```html
+<blora-megamenu label="产品">
+  <a href="/design">设计系统</a>
+  <a href="/components">组件</a>
+</blora-megamenu>
+```
+
+### Mentions（mentions）
+
+```html
+<blora-mentions label="评论" placeholder="输入 @ 提及用户"></blora-mentions>
+```
+
+### Menu（menu）
+
+```html
+<nav class="blora-menu" aria-label="项目菜单">
+  <a href="/overview" aria-current="page">概览</a>
+  <a href="/settings">设置</a>
+</nav>
+```
+
+### Message（message）
+
+```html
+<script type="module">
+  import { message } from "@bloret-crew/blora-design";
+  message.success("保存成功");
+</script>
+```
+
+### Mockup（mockup）
+
+```html
+<blora-mockup title="安装命令">
+  <code>npm install @bloret-crew/blora-design</code>
+</blora-mockup>
+```
+
+### Navbar（navbar）
+
+```html
+<blora-navbar title="Blora Design" brand-href="/">
+  <blora-navbar-link label="文档" href="/docs"></blora-navbar-link>
+  <blora-navbar-action label="开始使用" href="/start" variant="primary"></blora-navbar-action>
+</blora-navbar>
+```
+
+### Notification（notification）
+
+```html
+<script type="module">
+  import { notify } from "@bloret-crew/blora-design";
+  notify({ title: "构建完成", content: "部署已经完成。", placement: "top-end" });
+</script>
+```
+
+### NumberInput（number-input）
+
+```html
+<blora-number-input label="数量" min="0" max="10" value="2"></blora-number-input>
+```
+
+### Otp（otp）
+
+```html
+<blora-otp label="验证码" length="6"></blora-otp>
+```
+
+### Pagination（pagination）
+
+```html
+<blora-pagination label="项目分页" page="2" total="50" page-size="10"></blora-pagination>
+```
+
+### Popconfirm（popconfirm）
+
+```html
+<blora-popconfirm title="确认删除？">
+  <button slot="trigger" type="button" class="blora-button" data-variant="danger">删除</button>
+</blora-popconfirm>
+```
+
+### Popover（popover）
+
+```html
+<blora-popover label="查看说明">
+  <button slot="trigger" type="button" class="blora-button" data-variant="ghost">说明</button>
+  <p>这里是补充信息。</p>
+</blora-popover>
+```
+
+### Progress（progress）
+
+```html
+<blora-progress value="72" max="100" label="上传进度"></blora-progress>
+```
+
+### Radio（radio）
+
+```html
+<div class="blora-stack" role="radiogroup" aria-label="方案">
+  <blora-radio name="plan" value="pro">专业版</blora-radio>
+  <blora-radio name="plan" value="team">团队版</blora-radio>
+</div>
+```
+
+### Range（range）
+
+```html
+<blora-range label="价格范围" min="0" max="100" values="20,80"></blora-range>
+```
+
+### Rate（rate）
+
+```html
+<blora-rate label="评分" value="4"></blora-rate>
+```
+
+### Result（result）
+
+```html
+<blora-result variant="success" title="操作完成" description="项目已经创建。">
+  <a slot="action" class="blora-button" data-variant="primary" href="/projects">查看项目</a>
+</blora-result>
+```
+
+### Search（search）
+
+```html
+<blora-search label="搜索项目" placeholder="输入关键词"></blora-search>
+```
+
+### Segmented（segmented）
+
+```html
+<blora-segmented value="week">
+  <blora-segment value="day">日</blora-segment>
+  <blora-segment value="week">周</blora-segment>
+  <blora-segment value="month">月</blora-segment>
+</blora-segmented>
+```
+
+### Select（select）
+
+```html
+<blora-select label="状态" name="status" value="active">
+  <blora-option value="active">进行中</blora-option>
+  <blora-option value="done">已完成</blora-option>
+</blora-select>
+```
+
+### SidebarNav（sidebar-nav）
+
+```html
+<blora-sidebar-nav label="项目导航" value="overview">
+  <blora-sidebar-nav-group label="项目">
+    <blora-sidebar-nav-link label="概览" href="/overview" value="overview"></blora-sidebar-nav-link>
+    <blora-sidebar-nav-link label="设置" href="/settings" value="settings"></blora-sidebar-nav-link>
+  </blora-sidebar-nav-group>
+</blora-sidebar-nav>
+```
+
+### Skeleton（skeleton）
+
+```html
+<div class="blora-skeleton" data-variant="text" aria-label="加载中"></div>
+```
+
+### Slider（slider）
+
+```html
+<blora-slider label="音量" min="0" max="100" value="60"></blora-slider>
+```
+
+### SpeedDial（speed-dial）
+
+```html
+<blora-speed-dial label="快速操作">
+  <blora-speed-dial-action value="new" label="新建" icon="document-add"></blora-speed-dial-action>
+  <blora-speed-dial-action value="upload" label="上传" icon="upload"></blora-speed-dial-action>
+</blora-speed-dial>
+```
+
+### Spinner（spinner）
+
+```html
+<span class="blora-spinner" role="status" aria-label="加载中"></span>
+```
+
+### Splitter（splitter）
+
+```html
+<blora-splitter>
+  <section slot="start">导航</section>
+  <section slot="end">内容</section>
+</blora-splitter>
+```
+
+### Statistic（statistic）
+
+```html
+<blora-statistic label="本月访问" value="12,480" trend="up"></blora-statistic>
+```
+
+### Steps（steps）
+
+```html
+<blora-steps current="1" label="创建流程">
+  <blora-step title="准备"></blora-step>
+  <blora-step title="配置"></blora-step>
+  <blora-step title="完成"></blora-step>
+</blora-steps>
+```
+
+### Swap（swap）
+
+```html
+<button type="button" class="blora-swap" aria-label="切换视图">
+  <span data-icon="sun"></span><span data-icon="moon"></span>
+</button>
+```
+
+### Switch（switch）
+
+```html
+<blora-switch name="notifications" checked>接收通知</blora-switch>
+```
+
+### Table（table）
+
+```html
+<div class="blora-table-wrap" data-blora-selectable>
+  <table class="blora-table">
+    <thead>
+      <tr>
+        <th data-sort data-col-key="name">成员</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-row-key="u1">
+        <td>张三</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<script type="module">
+  import { createTableController } from "@bloret-crew/blora-design";
+  const controller = createTableController(document.querySelector(".blora-table-wrap"));
+  window.addEventListener("pagehide", () => controller.destroy(), { once: true });
+</script>
+```
+
+### Tabs（tabs）
+
+```html
+<blora-tabs>
+  <blora-tab label="概览" value="overview" selected>概览内容</blora-tab>
+  <blora-tab label="设置" value="settings">设置内容</blora-tab>
+</blora-tabs>
+```
+
+### Tag（tag）
+
+```html
+<span class="blora-tag" data-variant="primary">设计系统</span>
+```
+
+### TagsInput（tags-input）
+
+```html
+<blora-tags-input label="技术栈" value="TypeScript,Web Components"></blora-tags-input>
+```
+
+### Textarea（textarea）
+
+```html
+<label class="blora-field">
+  <span class="blora-field__label">备注</span>
+  <textarea class="blora-textarea" name="note" rows="4" placeholder="补充说明"></textarea>
+</label>
+```
+
+### Timeline（timeline）
+
+```html
+<blora-timeline>
+  <blora-timeline-item time="09:00" title="开始" variant="primary"></blora-timeline-item>
+  <blora-timeline-item time="12:00" title="完成" variant="success"></blora-timeline-item>
+</blora-timeline>
+```
+
+### Timepicker（timepicker）
+
+```html
+<blora-timepicker label="开始时间" value="09:30"></blora-timepicker>
+```
+
+### Tooltip（tooltip）
+
+```html
+<blora-tooltip content="保存当前项目"
+  ><button type="button" class="blora-button" data-variant="ghost">保存</button></blora-tooltip
+>
+```
+
+### Tour（tour）
+
+```html
+<blora-tour label="新手引导"></blora-tour>
+```
+
+### Transfer（transfer）
+
+```html
+<blora-transfer label="选择成员"></blora-transfer>
+```
+
+### Tree（tree）
+
+```html
+<blora-tree label="文件树"></blora-tree>
+```
+
+### TreeSelect（tree-select）
+
+```html
+<blora-tree-select label="选择部门"></blora-tree-select>
+```
+
+### Upload（upload）
+
+```html
+<blora-upload label="上传附件"></blora-upload>
+```
+
+## 15. Add-on 的最小示例
+
+每个 add-on 示例都必须先从 npm 安装对应包，再从包根入口或已声明 CSS 子路径导入；不能从仓库源码目录导入。
+
+### effects
+
+安装并导入：
+
+```bash
+pnpm add @bloret-crew/blora-design-effects
+```
+
+```ts
+import "@bloret-crew/blora-design-effects/effects.css";
+import "@bloret-crew/blora-design-effects";
+```
+
+#### Text FX
+
+```html
+<blora-text-fx effect="fade">欢迎使用 Blora</blora-text-fx>
+```
+
+#### Rotate
+
+```html
+<blora-rotate>旋转内容</blora-rotate>
+```
+
+#### Countdown
+
+```html
+<blora-countdown until="2026-12-31T00:00:00Z"></blora-countdown>
+```
+
+#### Count Up
+
+```html
+<blora-count-up value="1280"></blora-count-up>
+```
+
+#### Diff
+
+```html
+<blora-diff from="12" to="18"></blora-diff>
+```
+
+#### Hover Gallery
+
+```html
+<blora-hover-gallery><img src="/images/a.jpg" alt="图一" /></blora-hover-gallery>
+```
+
+#### Watermark
+
+```html
+<blora-watermark text="内部资料"><article class="blora-card">内容</article></blora-watermark>
+```
+
+#### Shortcut
+
+```html
+<script type="module">
+  import { initShortcutHints } from "@bloret-crew/blora-design-effects";
+  initShortcutHints(document);
+</script>
+```
+
+### layout
+
+安装并导入：
+
+```bash
+pnpm add @bloret-crew/blora-design-layout
+```
+
+```ts
+import "@bloret-crew/blora-design-layout/layout.css";
+import "@bloret-crew/blora-design-layout";
+```
+
+#### Sidebar Layout
+
+```html
+<blora-sidebar-layout variant="seamless" sticky label="页面导航" toggle-label="打开导航">
+  <blora-sidebar-layout-sidebar>导航</blora-sidebar-layout-sidebar>
+  <blora-sidebar-layout-content>内容</blora-sidebar-layout-content>
+</blora-sidebar-layout>
+```
+
+#### Affix
+
+```html
+<blora-affix top="16">固定工具栏</blora-affix>
+```
+
+#### Anchor
+
+```html
+<blora-anchor sync-hash>章节导航</blora-anchor>
+```
+
+#### Smooth Scroll
+
+```html
+<script type="module">
+  import { initSmoothScroll } from "@bloret-crew/blora-design-layout";
+  const cleanup = initSmoothScroll();
+  window.addEventListener("pagehide", cleanup, { once: true });
+</script>
+```
+
+### markdown
+
+安装并导入：
+
+```bash
+pnpm add @bloret-crew/blora-design-markdown
+```
+
+```ts
+import "@bloret-crew/blora-design-markdown/markdown.css";
+import "@bloret-crew/blora-design-markdown";
+```
+
+#### Markdown CE
+
+```html
+<blora-markdown source="# 标题\n\n正文内容"></blora-markdown>
+```
+
+#### SSR Renderer
+
+```html
+<script type="module">
+  import { renderMarkdown } from "@bloret-crew/blora-design-markdown";
+  const html = renderMarkdown("# 标题\n\n正文内容", { sanitize: true });
+</script>
+```
+
+### qrcode
+
+安装并导入：
+
+```bash
+pnpm add @bloret-crew/blora-design-qrcode
+```
+
+```ts
+import "@bloret-crew/blora-design-qrcode/qrcode.css";
+import "@bloret-crew/blora-design-qrcode";
+```
+
+#### QRCode CE
+
+```html
+<blora-qrcode value="https://blora.design" label="Blora Design 官网"></blora-qrcode>
+```
+
+#### Matrix Service
+
+```html
+<script type="module">
+  import { buildQRMatrix } from "@bloret-crew/blora-design-qrcode";
+  const matrix = buildQRMatrix("https://blora.design");
+</script>
+```
+
+### theming
+
+安装并导入：
+
+```bash
+pnpm add @bloret-crew/blora-design-theming
+```
+
+```ts
+import "@bloret-crew/blora-design-theming/theming.css";
+import "@bloret-crew/blora-design-theming";
+```
+
+#### Palette Picker
+
+```html
+<blora-palette-picker></blora-palette-picker>
+```
+
+#### Color Scheme Toggle
+
+```html
+<blora-color-scheme-toggle></blora-color-scheme-toggle>
+```
+
+#### Theme Service
+
+```html
+<script type="module">
+  import { applyTheme, applyColorScheme } from "@bloret-crew/blora-design-theming";
+  applyTheme("coral");
+  applyColorScheme("dark");
+</script>
+```
+
+### thread
+
+安装并导入：
+
+```bash
+pnpm add @bloret-crew/blora-design-thread
+```
+
+```ts
+import "@bloret-crew/blora-design-thread/thread.css";
+import "@bloret-crew/blora-design-thread";
+```
+
+#### Comment Stream
+
+```html
+<blora-timeline
+  ><blora-timeline-item icon="message" content-layout="block"
+    ><blora-thread-comment
+      ><div slot="head">作者 · 刚刚</div>
+      <p>评论内容</p></blora-thread-comment
+    ></blora-timeline-item
+  ></blora-timeline
+>
+```
+
+#### Composer
+
+```html
+<blora-thread-composer>
+  <textarea class="blora-textarea" rows="4" placeholder="发表评论"></textarea>
+  <div slot="actions">
+    <button type="button" class="blora-button" data-variant="primary">提交</button>
+  </div></blora-thread-composer
+>
+```
+
+## 16. 迁移文档索引
+
+- [Blora Design 2.0 使用指南](../guide.md)
+- [组件 contract](../../packages/blora-design/contracts/)
+- [组件 manifest](../../packages/blora-design/component-manifest.json)
+- [Showcase v2](../../examples/showcase-v2/)
+- [发布与最终验收记录](../refactor/rc-release-rehearsal.md)
+- [浏览器矩阵](../refactor/browser-matrix.md)

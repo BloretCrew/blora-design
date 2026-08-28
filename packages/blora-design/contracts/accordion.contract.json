@@ -17,6 +17,5 @@
   },
   "parts": [],
   "cssProperties": ["--blora-collapse-h"],
-  "accessibilityPattern": "accordion",
-  "migrationFromV1": "accordion.migration.md"
+  "accessibilityPattern": "accordion"
 }

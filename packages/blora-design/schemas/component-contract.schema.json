@@ -116,10 +116,6 @@
     "accessibilityPattern": {
       "type": "string",
       "description": "WAI-ARIA APG pattern name"
-    },
-    "migrationFromV1": {
-      "type": "string",
-      "description": "Path to migration doc"
     }
   }
 }

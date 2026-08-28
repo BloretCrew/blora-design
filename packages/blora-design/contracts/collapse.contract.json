@@ -17,6 +17,5 @@
   },
   "parts": [],
   "cssProperties": ["--blora-collapse-h"],
-  "accessibilityPattern": "disclosure",
-  "migrationFromV1": "collapse.migration.md"
+  "accessibilityPattern": "disclosure"
 }

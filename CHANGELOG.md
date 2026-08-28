@@ -4,7 +4,7 @@
 
 Beta follows a defect-first cadence. Public stable-core exports are frozen from `2.0.0-beta.0`; beta contracts and explicitly experimental surfaces may still change with migration notes.
 
-RC closeout on 2026-08-27: Firefox and WebKit full browser suites passed 87/87 each; npm consumer, CDN, CSP, SSR import and rollback rehearsal evidence is recorded in `docs/refactor/rc-release-rehearsal.md`. The project does not maintain or compatibility-support the unused 1.x line.
+RC closeout on 2026-08-27: Firefox and WebKit full browser suites passed 87/87 each; npm consumer, CDN, CSP, SSR import and rollback rehearsal evidence is recorded in `docs/refactor/rc-release-rehearsal.md`.
 
 ## 2.0.0
 
@@ -20,7 +20,7 @@ RC closeout on 2026-08-27: Firefox and WebKit full browser suites passed 87/87 e
 
 - Unified the core package, six add-ons and internal token workspace on `2.0.0-rc.0`.
 - Completed and published the RC browser matrix: Firefox 87/87 and WebKit 87/87 on Windows Playwright; npm `rc` now resolves all seven public packages to `2.0.0-rc.0`.
-- Kept the public npm release path on the `rc` dist-tag; 1.x remains an unsupported historical line with no security, compatibility or migration-support commitment.
+- Kept the public npm release path on the `rc` dist-tag during the release-candidate rehearsal.
 
 ### Fixed
 
@@ -65,7 +65,7 @@ pnpm add @bloret-crew/blora-design@beta
 pnpm add @bloret-crew/blora-design@2.0.0-beta.1
 ```
 
-See `docs/guide.md`, `docs/migration/v1-to-v2.md` and `docs/refactor/beta.1-install-notes.md`.
+See `docs/guide.md` and `docs/migration/from-any-ui-to-blora-design.md`.
 
 ## 2.0.0-beta.0
 
@@ -96,7 +96,7 @@ npm dist-tag: **`beta`**
 - Unified Button Group and Join horizontal button welding while retaining Join-only vertical and mixed-input behavior.
 - Removed the Cinnabar and Ocean themes; retained Coral, Indigo, Lotus, Graphite, Mono, Circuit and Dusk.
 - Replaced Avenir-first typography with the platform system font stack.
-- Removed the 1.x runtime compatibility entry; migrate markup, tokens and services directly to 2.0.
+- Removed the unused runtime compatibility entry; application code uses the 2.0 markup, tokens and services directly.
 - Expanded browser, axe, visual, lifecycle, icon-policy, package and CI gates. All known visual and behavioral differences were approved by the project owner on 2026-08-19.
 
 ### Install
@@ -107,7 +107,7 @@ pnpm add @bloret-crew/blora-design@beta
 pnpm add @bloret-crew/blora-design@2.0.0-beta.0
 ```
 
-See `docs/guide.md`, `docs/migration/v1-to-v2.md` and `docs/refactor/beta-install-notes.md`.
+See `docs/guide.md` and `docs/migration/from-any-ui-to-blora-design.md`.
 
 ## 2.0.0-alpha.1
 
@@ -126,7 +126,7 @@ npm dist-tag: **`alpha`**
 ### Highlights
 
 - Phase 9 complete (add-ons + core gap paths); Phase 10 **Preflight** gates green on CI.
-- ESM-first usage: tokens/foundations CSS + `createXxxController` / `defineBloraSelect` (not 1.x global `Blora`).
+- ESM-first usage: tokens/foundations CSS plus `createXxxController` and `defineBloraSelect`.
 - Table: sort, pagination, column settings, virtual scroll, **built-in row selection**.
 - Form validate, TreeSelect, BackTop, image preview, multi-placement `notify`.
 - CI: corepack pnpm, publint/attw, pack fixtures (core + add-ons), Playwright + axe smoke.

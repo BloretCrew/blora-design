@@ -40,6 +40,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "separator",
-  "migrationFromV1": "splitter.migration.md"
+  "accessibilityPattern": "separator"
 }

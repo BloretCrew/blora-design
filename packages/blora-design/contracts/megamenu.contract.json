@@ -39,6 +39,5 @@
   },
   "parts": [],
   "cssProperties": ["--blora-megamenu-offset"],
-  "accessibilityPattern": "menu",
-  "migrationFromV1": "megamenu.migration.md"
+  "accessibilityPattern": "menu"
 }

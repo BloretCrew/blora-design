@@ -16,6 +16,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "navigation",
-  "migrationFromV1": "breadcrumb.migration.md"
+  "accessibilityPattern": "navigation"
 }

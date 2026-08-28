@@ -59,6 +59,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "input",
-  "migrationFromV1": "swap.migration.md"
+  "accessibilityPattern": "input"
 }

@@ -13,7 +13,7 @@
 import { readFileSync, readdirSync, existsSync, statSync } from "node:fs";
 import { resolve, join, extname, relative } from "node:path";
 
-const DOC_BASE = "/docs/migration/v1-to-v2";
+const DOC_BASE = "/docs/migration/from-any-ui-to-blora-design";
 const CONTRACTS_DIR = resolve(import.meta.dirname, "../contracts");
 
 const CE_NAMES = readdirSync(CONTRACTS_DIR)

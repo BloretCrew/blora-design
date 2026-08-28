@@ -60,6 +60,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "date picker",
-  "migrationFromV1": "datepicker.migration.md"
+  "accessibilityPattern": "date picker"
 }

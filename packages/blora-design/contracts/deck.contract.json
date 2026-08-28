@@ -46,6 +46,5 @@
   },
   "parts": [],
   "cssProperties": ["--blora-deck-y", "--blora-deck-scale", "--blora-deck-opacity"],
-  "accessibilityPattern": "listbox",
-  "migrationFromV1": "deck.migration.md"
+  "accessibilityPattern": "listbox"
 }

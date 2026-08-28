@@ -31,6 +31,5 @@
     "createAnchorController": {},
     "createScrollSpyController": {},
     "initSmoothScroll": {}
-  },
-  "migrationFromV1": "layout.migration.md"
+  }
 }

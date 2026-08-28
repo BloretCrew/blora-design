@@ -110,6 +110,5 @@
     "--blora-button-fg",
     "--blora-button-bd"
   ],
-  "accessibilityPattern": "combobox",
-  "migrationFromV1": "select.migration.md"
+  "accessibilityPattern": "combobox"
 }

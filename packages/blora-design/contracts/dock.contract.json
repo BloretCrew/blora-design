@@ -44,6 +44,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "navigation",
-  "migrationFromV1": "dock.migration.md"
+  "accessibilityPattern": "navigation"
 }

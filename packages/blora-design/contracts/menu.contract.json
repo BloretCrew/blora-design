@@ -21,6 +21,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "navigation",
-  "migrationFromV1": "menu.migration.md"
+  "accessibilityPattern": "navigation"
 }

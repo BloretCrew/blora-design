@@ -1,96 +1,74 @@
 # Blora Design 2.0 · 框架说明
 
-2.0 是 token + Composite Custom Element 的 ESM 包，不是 1.x 的 `blora.css` + `blora.js` + 全局 `Blora.init()`。
+Blora Design 2.0 是基于 Design Token、Composite Custom Element 和公开 headless controller 的 ESM 设计系统。它不要求 React、Vue 或其他特定框架运行时。
 
-日常用法看 [`guide.md`](./guide.md)，完整跨框架迁移看 [`migration/from-any-ui-to-blora-design.md`](./migration/from-any-ui-to-blora-design.md)，1.x 对照看 [`migration/v1-to-v2.md`](./migration/v1-to-v2.md)。交互真值在 `examples/showcase-v2/`。契约在 `packages/blora-design/contracts/`。进度在 [`refactor/remaining-work.md`](./refactor/remaining-work.md)。
+日常用法看 [`guide.md`](./guide.md)，完整迁移规范看 [`migration/from-any-ui-to-blora-design.md`](./migration/from-any-ui-to-blora-design.md)。交互真值在 `examples/showcase-v2/`，组件契约在 `packages/blora-design/contracts/`，发布状态在 [`refactor/status.md`](./refactor/status.md)。
 
----
-
-## 包
+## 安装和入口
 
 ```bash
-pnpm add @bloret-crew/blora-design
+npm install @bloret-crew/blora-design
+```
+
+```ts
+import "@bloret-crew/blora-design/blora.css";
+import "@bloret-crew/blora-design/auto";
+import { createTableController, message } from "@bloret-crew/blora-design";
 ```
 
 | 入口 | 作用 |
 |------|------|
-| `@bloret-crew/blora-design` | 无副作用 API：`t`、`setLocale`、CE 定义函数、table/form 等 headless |
-| `@bloret-crew/blora-design/auto` | 注册默认 Composite CE 面 |
-| `@bloret-crew/blora-design/blora.css` | token + foundations + 组件 CSS 的 `@import` 壳 |
-| `@bloret-crew/blora-design/blora.global.js` | CDN / IIFE，`globalThis.Blora` |
+| `@bloret-crew/blora-design` | ESM API、组件定义函数、表格/表单 controller、`message` / `notify` |
+| `@bloret-crew/blora-design/auto` | 注册完整默认 Composite Custom Element 面 |
+| `@bloret-crew/blora-design/blora.css` | Token、基础样式和核心组件 CSS 聚合入口 |
+| `@bloret-crew/blora-design/blora.global.js` | CDN / IIFE 的 `globalThis.Blora` |
+| `@bloret-crew/blora-design/custom-elements.json` | Custom Elements Manifest |
+| `@bloret-crew/blora-design/component-manifest.json` | 组件清单 |
+| `@bloret-crew/blora-design/api-snapshot.json` | API snapshot |
 
-Add-on（按需）：`markdown`、`thread`、`qrcode`、`effects`、`layout`、`theming`。包名一律 `@bloret-crew/blora-design-*`。
+Add-on 使用独立 npm 包：
 
----
-
-## 结构约定
-
-1. **展示型**用原生 HTML + `blora-*` class（Button、Tag、Card）。
-2. **结构敏感**用 Composite CE（Select、Dialog、Drawer、Tabs、Datepicker…）。CE 在 light DOM 里生成官方 BEM 树，再绑内部 controller。
-3. **开放数据**仍走 headless：`createTableController`、`createFormController`。业务拥有表格/表单 DOM。
-4. 不要手写已迁 CE 的内部节点树。不要用 `innerHTML` 灌用户内容。
-
-形态决策见 ADR-015（`docs/refactor/decisions.md`）。表单关联（`ElementInternals`）已在 Select、Switch、Checkbox、Number Input 上启用；其它 light-DOM 表单控件仍通过内部原生 `input` 参与提交。
-
----
-
-## 浮层
-
-Dialog、Command、Tour、Drawer、图片预览走 `OverlayController`：模态栈、Escape、焦点陷阱（含 shadow 与 slot）、滚动锁。
-
-Dialog / Command / Tour / Drawer 打开时进入 **popover 顶层**，离开动画结束后再 `hidePopover`。Drawer 的 popover 挂在内部 `.blora-drawer` 上（主机是 `display: contents`）。
-
----
-
-## 语言
-
-组件自己生成的 chrome 走 `t(key)`，目录在 `src/locales/`（`en`、`zh-CN`）。
-
-- `import "@bloret-crew/blora-design/auto"` 会读 `html lang`（`zh*` → `zh-CN`，否则 `en`）。
-- `setLocale("en")` 会派发 `blora-locale-change`；已挂载的 CE 会 `sync()` 刷新文案，不必卸掉重挂。
-- 页面正文、业务 placeholder 仍由站点自己翻。
-
-```js
-import { setLocale, t, registerLocale } from "@bloret-crew/blora-design";
-setLocale("en");
-t("common.close"); // "Close"
+```bash
+npm install \
+  @bloret-crew/blora-design-markdown \
+  @bloret-crew/blora-design-thread \
+  @bloret-crew/blora-design-qrcode \
+  @bloret-crew/blora-design-effects \
+  @bloret-crew/blora-design-layout \
+  @bloret-crew/blora-design-theming
 ```
 
----
+## 结构选择
 
-## 主题
+1. **展示型内容**使用官方 class 和语义 HTML，例如 `.blora-card`、`.blora-list`、`.blora-quote`、`.blora-tag`、`.blora-badge`、`.blora-divider`。
+2. **结构敏感交互**使用官方 Composite Custom Element，例如 `<blora-select>`、`<blora-dialog>`、`<blora-tabs>`、`<blora-datepicker>`。
+3. **开放数据 DOM**使用官方 headless controller，例如 `createTableController()` 和 `createFormController()`。
+4. 业务代码负责数据、路由和业务流程；Blora 负责组件结构、状态、键盘行为、焦点管理和视觉状态。
+5. 不复制 Composite Custom Element 的内部结构，不访问 `shadowRoot`，不依赖未在 contract 中声明的 class 或属性。
 
-`@bloret-crew/blora-design-theming`：`<blora-palette-picker>`、`<blora-color-scheme-toggle>`，以及 `applyTheme` / `applyColorScheme`。七套主题：coral、indigo、lotus、graphite、mono、circuit、dusk。令牌规范见 [`standards.md`](./standards.md)。
+## 浮层和生命周期
 
----
+Dialog、Command、Tour、Drawer、图片预览以及 Theming Palette Picker 统一使用官方顶层浮层机制。不要在业务层重新实现遮罩、焦点陷阱、滚动锁、Escape 或 outside close。
 
-## 图标
+Table/Form controller 必须在挂载后初始化，在宿主卸载时调用 `destroy()`：
 
-UI 操作/状态/导航图标一律 `createBloraIcon()`。缺图标先扩图标表，不用 Emoji 或 `×` `›` 冒充。完整 Lucide 集：`@bloret-crew/blora-design/icons-full`。
+```ts
+const root = document.querySelector(".blora-table-wrap");
+const controller = createTableController(root);
+window.addEventListener("pagehide", () => controller.destroy(), { once: true });
+```
 
----
+## 语言、主题和图标
 
-## Add-on
+- 组件自动生成的 chrome 由 locale pack 提供；页面设置正确的 `<html lang>`。
+- 业务文案由业务应用管理，不要修改组件内部生成文本来绕过 locale。
+- 颜色、间距、圆角、阴影、动效和层级使用 `--blora-*` token。
+- 操作、状态和导航图标使用 `createBloraIcon()` 或官方组件生成的 Lucide SVG。
+- 不使用 Emoji、图标字体或文本字符冒充图标。
+- 所有七套主题、明暗模式、RTL、reduced-motion 和移动视口都要验证。
 
-| 包 | 公共面 |
-|----|--------|
-| layout | `<blora-sidebar-layout>`、`<blora-affix>`、`<blora-anchor>`；`initSmoothScroll` |
-| markdown | `<blora-markdown>` + `renderMarkdown()`（默认转义 HTML） |
-| qrcode | `<blora-qrcode>` + `buildQRMatrix()` / `renderQRCode()`（byte 模式，版本 1–40） |
-| effects | 7 个动效 CE + `textFx` / 快捷键 service |
-| thread | `<blora-thread-comment>`、`<blora-thread-composer>` |
-| theming | 色板 CE + 主题 service |
+## 框架接入原则
 
----
+React、Vue、Svelte、Angular 或其他框架只负责宿主应用的状态和生命周期。Composite CE 直接作为模板标签使用；Table、Form 等开放 DOM controller 按框架生命周期创建和销毁。
 
-## 1.x 对照（不要当 2.0 复制）
-
-| 1.x | 2.0 |
-|-----|-----|
-| `blora.css` + `blora.js` | ESM 包 + 按组件 CSS |
-| `Blora.init()` | `auto` 或按需 `defineBlora*` |
-| `Blora.toast` | `message` |
-| `blora-btn--primary` | `.blora-button[data-variant=primary]` |
-| 运行时 compat | **没有**。对照源在仓库外 `legacy/v1/` |
-
-完整映射表：[`migration/v1-to-v2.md`](./migration/v1-to-v2.md)。
+不要让其他 UI 组件库继续提供同类 Button、Select、Dialog、Tabs、Table 或主题样式；迁移项目统一使用已发布 npm 包中的 Blora 能力。完整的替换矩阵、npm-only 规则、示例和验收清单见 [`migration/from-any-ui-to-blora-design.md`](./migration/from-any-ui-to-blora-design.md)。

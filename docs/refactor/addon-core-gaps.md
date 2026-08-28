@@ -22,7 +22,7 @@
 | `@bloret-crew/blora-design-layout` | ✅ | sidebar/affix/anchor/smooth-scroll + Stories + 单测 |
 | `@bloret-crew/blora-design-theming` | ✅ | palette + applyColorScheme + Story + 单测 |
 
-## 二、曾列「偏薄 / 缺 v1 对等」— 已补
+## 二、已补齐的核心能力
 
 | 项 | API | 测试 |
 |----|-----|------|

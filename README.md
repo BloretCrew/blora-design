@@ -1,167 +1,101 @@
-# Blora Design
+# Blora Design 2.0
 
-> **Blora Design 2.0** — token-driven, dark-friendly, **zero runtime dependency** Web UI design system.
-> Brand prefix **Blora**; product name **Blora Design** (`blora-*` classes / package scope).
+> Token-driven, dark-friendly, zero-runtime-dependency Web UI design system.
 
 **Package** `@bloret-crew/blora-design` · **Version** `2.0.0` · **License** Apache-2.0
-**Repo** [BloretCrew/blora-design](https://github.com/BloretCrew/blora-design)
+**Status** Stable · **npm** `latest`
 
-**Status:** Blora Design 2.0 Stable (`2.0.0`) — final acceptance complete.
-**Migration standard:** [`docs/migration/from-any-ui-to-blora-design.md`](./docs/migration/from-any-ui-to-blora-design.md)
-**Master remaining-work checklist:** [`docs/refactor/remaining-work.md`](./docs/refactor/remaining-work.md)
+## 入口
 
-Interactive demos: **[showcase](https://bloretcrew.github.io/blora-design/)**. Frozen 1.x reference is archived at `D:/MyFiles/Documents/projects/blora-design/legacy/` (not the 2.0 recommended entry).
+- [使用指南](./docs/guide.md)
+- [完整迁移规范](./docs/migration/from-any-ui-to-blora-design.md)
+- [设计规范](./docs/standards.md)
+- [框架接入说明](./docs/framework.md)
+- [组件 Showcase](https://bloretcrew.github.io/blora-design/)
+- [组件 contract](./packages/blora-design/contracts/)
+- [组件 manifest](./packages/blora-design/component-manifest.json)
+- [发布与验收记录](./docs/refactor/rc-release-rehearsal.md)
 
----
+## 安装
 
-## What it is (2.0)
-
-| Piece | Role |
-|-------|------|
-| **Design tokens + foundations CSS** | DTCG → generated CSS; themes / dark |
-| **Per-component CSS** | Import only what you need (or `blora.css` aggregate) |
-| **ESM API** | Composite Custom Elements, explicit Table/Form headless APIs, services (`message`, `notify`) |
-| **Contracts** | `packages/blora-design/contracts/*.contract.json` |
-
-Not a React/Vue runtime library. Use native HTML + CSS for primitives and Composite Custom Elements for structure-sensitive controls.
-
-**Does not include:** business APIs, WebSockets, full WYSIWYG, mandatory React runtime.
-
----
-
-## 30-second start (2.0)
+所有消费项目必须从 npm 安装，只使用 published npm exports，不得引用本仓库源码、git 路径或复制组件实现。
 
 ```bash
-pnpm add @bloret-crew/blora-design@latest
+npm install @bloret-crew/blora-design
 ```
 
-```js
+```ts
 import "@bloret-crew/blora-design/blora.css";
 import "@bloret-crew/blora-design/auto";
-import {
-  VERSION,
-  setButtonLoading,
-  createTableController,
-  message,
-} from "@bloret-crew/blora-design";
-
-console.log(VERSION); // e.g. 2.0.0
+import { createTableController, message } from "@bloret-crew/blora-design";
 ```
 
+可选 add-on：
+
+```bash
+npm install \
+  @bloret-crew/blora-design-markdown \
+  @bloret-crew/blora-design-thread \
+  @bloret-crew/blora-design-qrcode \
+  @bloret-crew/blora-design-effects \
+  @bloret-crew/blora-design-layout \
+  @bloret-crew/blora-design-theming
+```
+
+## 30 秒示例
+
 ```html
-<button type="button" class="blora-button" data-variant="primary">主操作</button>
-<button type="button" class="blora-button" data-variant="outline">次操作</button>
-<blora-range min="0" max="100" values="25,70"></blora-range>
-<blora-search placeholder="搜索项目…"></blora-search>
+<button type="button" class="blora-button" data-variant="primary">保存</button>
+<blora-search label="搜索项目" placeholder="输入关键词"></blora-search>
+<blora-range label="价格范围" min="0" max="100" values="20,80"></blora-range>
 
 <div class="blora-table-wrap" data-blora-selectable>
-  <table class="blora-table" id="demo">
-    <!-- business columns only; selection column is injected by createTableController -->
+  <table class="blora-table">
+    <thead><tr><th data-sort data-col-key="name">成员</th></tr></thead>
+    <tbody><tr data-row-key="u1"><td>张三</td></tr></tbody>
   </table>
 </div>
 ```
 
-```js
-createTableController(document.querySelector(".blora-table-wrap"));
-message.success("已保存");
+```ts
+const table = document.querySelector<HTMLElement>(".blora-table-wrap");
+const controller = createTableController(table);
+message.success("保存成功");
+window.addEventListener("pagehide", () => controller.destroy(), { once: true });
 ```
 
-> **Not recommended for new 2.0 apps:** global `Blora.init()`, `blora.js` UMD, or `blora-btn blora-btn--primary`.
-> Those belong to frozen **1.x** (archived at `D:/MyFiles/Documents/projects/blora-design/legacy/`). 2.0 has no runtime compatibility layer. See [migration](./docs/migration/v1-to-v2.md).
+## 组件选择规则
 
-Optional add-ons:
+| 场景 | 规则 |
+|---|---|
+| 展示型内容 | 使用官方 class 和语义 HTML，例如 `.blora-card`、`.blora-quote`、`.blora-tag`、`.blora-badge` |
+| 结构敏感交互 | 使用官方 Composite Custom Element，例如 `<blora-select>`、`<blora-dialog>`、`<blora-tabs>` |
+| 开放数据 DOM | 使用官方 headless controller，例如 `createTableController()`、`createFormController()` |
+| 图标 | 使用 `createBloraIcon()` 或官方组件生成的 Lucide SVG |
+| 样式 | 使用注册的 `--blora-*` token 和官方 CSS |
+
+业务项目不得复制组件源码、内部 CSS、内部 DOM 或第二套组件视觉。完整规则和每个组件示例见[完整迁移规范](./docs/migration/from-any-ui-to-blora-design.md)。
+
+## 设计系统能力
+
+- 87 个核心组件；
+- 7 套主题和明暗模式；
+- Composite Custom Element 默认结构；
+- Table / Form 等开放 DOM controller；
+- i18n locale pack；
+- RTL、reduced-motion 和 WCAG 2.2 AA 门禁；
+- Markdown、Thread、QRCode、Effects、Layout、Theming 六个 add-on；
+- ESM、CSS 子路径和 CDN IIFE；
+- Chromium、移动 Chromium、Firefox、WebKit 和 Safari 人工验收。
+
+## 验证
 
 ```bash
-pnpm add @bloret-crew/blora-design-markdown @bloret-crew/blora-design-theming
-# also: thread, qrcode, effects, layout
+pnpm verify
 ```
 
----
+发布包使用已生成的 `dist/` 文件。消费项目只使用 npm `exports`，不导入 `packages/**/src` 或 `addons/**/src`。
 
-## Architecture defaults
+## 许可证
 
-| Pattern | When |
-|---------|------|
-| Native HTML + CSS | Presentational (Alert, Tag, List, …) |
-| Composite Custom Element | Structure-sensitive controls (Range, Pickers, Search, Transfer, Tabs, …) |
-| Headless controller (advanced) | Open data DOM (Table, Tree, Form, Drawer, …) |
-
-Composite CE is the default for complex structure (ADR-015, superseding ADR-013). Full FA-WC-for-everything is still staged per form contract.
-
----
-
-## Visual baseline
-
-2.0 visuals must remain traceable to the locked 1.x showcase baseline (archived at `D:/MyFiles/Documents/projects/blora-design/legacy/`, metadata in `docs/refactor/visual-baseline.json`).
-Use tokens (`--blora-*`); do not invent a second design system.
-
-Human usage guide: [`docs/guide.md`](./docs/guide.md). Tokens: [`docs/standards.md`](./docs/standards.md).
-
----
-
-## Capability map (high level)
-
-| Area | 2.0 notes |
-|------|-----------|
-| Primitives | Button (`.blora-button` + `data-variant`), Field, Input, Checkbox, … |
-| Overlays | Dialog CE, Drawer controller, Popover, Tooltip, Message / Notify |
-| Data | Table controller: sort, page, columns, virtual Y/X, **built-in row select** |
-| Forms | Range/Datepicker/Timepicker/Search/Transfer CE; advanced Form, Tree Select, Mentions controllers |
-| Add-ons | Markdown, Thread, QRCode, Effects, Layout, Theming |
-
-Component migration status: [`docs/refactor/component-matrix.md`](./docs/refactor/component-matrix.md).
-
----
-
-## Repo layout (2.0 monorepo)
-
-```
-blora-design-2/
-├── packages/blora-design/   # core ESM + CSS + contracts
-├── packages/tokens/        # token sources / generators
-├── addons/                 # markdown, thread, qrcode, effects, layout, theming
-├── examples/showcase-v2/   # 2.0 component showcase (+ assets/)
-├── docs/                   # guide, standards, refactor trackers, migration
-└── pnpm-workspace.yaml
-
-# Frozen 1.x sources + visual baselines were archived outside this repository:
-# D:/MyFiles/Documents/projects/blora-design/legacy/
-```
-
-```bash
-pnpm install
-pnpm build:tokens
-pnpm --filter @bloret-crew/blora-design run typecheck
-pnpm --filter @bloret-crew/blora-design exec vitest run
-```
-
----
-
-## Docs
-
-| Doc | Role |
-|-----|------|
-| [**Guide (2.0)**](./docs/guide.md) | Recommended usage & migration mindset |
-| [Standards](./docs/standards.md) | Design tokens & a11y principles |
-| [Framework](./docs/framework.md) | Historical 1.x detail **for migration only**; 2.0 pointer at top |
-| [Migration from any UI](./docs/migration/from-any-ui-to-blora-design.md) | Strict migration standard for frameworks and hand-written UI |
-| [Migration v1→v2](./docs/migration/v1-to-v2.md) | Historical 1.x mapping only |
-| [Remaining work](./docs/refactor/remaining-work.md) | **Historical release checklist and post-release records** |
-| [Status](./docs/refactor/status.md) | Phase summary |
-
-AI-oriented skim: [`llms.txt`](./llms.txt).
-
----
-
-## Versioning
-
-- Current line: **`2.0.0` Stable** — the stable-core API and published contracts are frozen for the 2.0 line.
-- 1.x is an unsupported historical line; Blora Design does not provide 1.x maintenance, security fixes, compatibility or migration support.
-- The `latest` npm tag points to `2.0.0`; release automation is documented in `.github/workflows/`.
-- Release automation: see `.github/workflows/` (publish still tied to maintainer process).
-
----
-
-## License
-
-Apache-2.0 · see `LICENSE` and `NOTICE`.
+Apache-2.0 · 详见 `LICENSE` 和 `NOTICE`。

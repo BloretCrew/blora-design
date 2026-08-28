@@ -41,6 +41,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "dialog",
-  "migrationFromV1": "popover.migration.md"
+  "accessibilityPattern": "dialog"
 }

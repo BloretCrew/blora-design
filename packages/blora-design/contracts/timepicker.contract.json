@@ -55,6 +55,5 @@
   },
   "parts": [],
   "cssProperties": ["--blora-tp-item", "--blora-tp-visible"],
-  "accessibilityPattern": "time picker",
-  "migrationFromV1": "timepicker.migration.md"
+  "accessibilityPattern": "time picker"
 }

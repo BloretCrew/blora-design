@@ -38,6 +38,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "dialog",
-  "migrationFromV1": "drawer.migration.md"
+  "accessibilityPattern": "dialog"
 }

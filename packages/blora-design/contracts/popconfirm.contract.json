@@ -57,6 +57,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "alertdialog",
-  "migrationFromV1": "popconfirm.migration.md"
+  "accessibilityPattern": "alertdialog"
 }

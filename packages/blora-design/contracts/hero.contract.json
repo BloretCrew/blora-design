@@ -29,6 +29,5 @@
   },
   "parts": [],
   "cssProperties": ["--blora-hero-min-height"],
-  "accessibilityPattern": "section",
-  "migrationFromV1": "hero.migration.md"
+  "accessibilityPattern": "section"
 }

@@ -17,6 +17,5 @@
   "slots": {},
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "content",
-  "migrationFromV1": "markdown.migration.md"
+  "accessibilityPattern": "content"
 }

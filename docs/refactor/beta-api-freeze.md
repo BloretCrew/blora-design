@@ -31,11 +31,11 @@ From the Beta tag onward, master follows this freeze and the defect-first cadenc
 Primary user docs for beta:
 
 - `docs/guide.md` — recommended 2.0 usage
-- `docs/migration/v1-to-v2.md` — 1.x → 2.0
-- `docs/refactor/beta-install-notes.md` — Beta package rehearsal, channel and rollback notes
+- `docs/migration/from-any-ui-to-blora-design.md` — complete migration standard
+- `docs/refactor/rc-release-rehearsal.md` — 发布演练、渠道和回滚记录
 - `CHANGELOG.md`
 
-There is no `@bloret-crew/blora-design/compat/v1` entry.
+The published package exposes only the documented 2.0 API surface; consumers must use npm exports rather than repository source paths.
 
 ## 4. Size budgets
 
@@ -45,4 +45,4 @@ Enforced by `packages/blora-design/scripts/check-size.mjs` (shell CSS, flattened
 
 - Full visual matrix for every component (expand in RC)
 - FA-WC for all controls (ADR-013)
-- Deleting `legacy/v1`
+- Adding undocumented public APIs or bypassing the published contract

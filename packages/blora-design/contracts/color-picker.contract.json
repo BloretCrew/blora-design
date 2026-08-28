@@ -46,6 +46,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "section",
-  "migrationFromV1": "color-picker.migration.md"
+  "accessibilityPattern": "section"
 }

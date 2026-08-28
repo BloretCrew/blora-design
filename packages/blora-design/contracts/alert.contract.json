@@ -41,6 +41,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "alert",
-  "migrationFromV1": "alert.migration.md"
+  "accessibilityPattern": "alert"
 }

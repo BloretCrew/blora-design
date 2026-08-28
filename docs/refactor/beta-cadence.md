@@ -16,10 +16,10 @@
 |--------|--------|
 | 2.0 beta；API 趋向稳定 | 「生产 stable / 全部组件 DoD」 |
 | 安装 `@bloret-crew/blora-design@beta` | 把 contract 里仍为 beta 的组件当冻结 |
-| Showcase + guide 为主文档 | 1.x `Blora.init` 为推荐 |
+| Showcase + guide 为主文档 | Repository source imports or copied component implementations |
 
 ## 用户向迁移文档
 
-- 主：`docs/guide.md` + `docs/migration/v1-to-v2.md`
-- 渠道：`docs/refactor/beta-install-notes.md`（安装演练、dist-tag 与回滚）
+- 主：`docs/guide.md` + `docs/migration/from-any-ui-to-blora-design.md`
+- 渠道：`docs/refactor/rc-release-rehearsal.md`（安装演练、dist-tag 与回滚）
 - 变更：`CHANGELOG.md`

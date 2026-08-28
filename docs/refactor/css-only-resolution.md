@@ -1,8 +1,8 @@
 # CSS-only component resolution
 
-> Maps former “CSS-only / almost no behavior” core components to either a controller/API or intentional CSS-only (v1 had no JS).
+> Maps presentational core capabilities to either a public controller/API or an intentional CSS-only pattern.
 
-## Intentional CSS-only (v1 pure presentation)
+## Intentional CSS-only presentation
 
 | Component | Rationale |
 |-----------|-----------|
@@ -21,7 +21,7 @@
 | Media Container | Presentational frame |
 | Indicator / Hero / Footer / Join / Divider / Menu | Page chrome; no required JS |
 
-## Composite CE / Controller API present (v1 had JS or interactive path)
+## Composite CE / Controller API present
 
 | Component | API | Notes |
 |-----------|-----|--------|
@@ -49,8 +49,8 @@
 | BackTop | `<blora-backtop>` + `initBackTop` | **New** |
 | Tree Select | `<blora-tree-select>` | **New** |
 | FAB | CSS + optional BackTop class | BackTop owns scroll show |
-| Masonry | CSS-only columns | v1 had no dedicated JS controller |
+| Masonry | CSS-only columns | The capability is presentational and has no public behavior controller |
 
 ## Spot-check (automated)
 
-See `packages/blora-design/tests/v1-gaps.test.ts` and addon package tests.
+See the core package unit tests and add-on package tests.

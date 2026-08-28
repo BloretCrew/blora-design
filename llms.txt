@@ -1,65 +1,67 @@
-# Blora Design
+# Blora Design 2.0
 
-> Token-driven, accessible, zero-dependency Web UI design system (2.0 alpha).
-
-## System
-
-Blora Design 2.0 prefers native HTML semantics for primitives and Composite Custom Elements for structure-sensitive controls. Design Tokens (DTCG JSON → CSS) drive visuals. Light/dark, RTL, and WCAG 2.2 AA are project goals. Core package has zero runtime third-party dependencies.
+> Token-driven, accessible, zero-dependency Web UI design system. Stable package: `2.0.0`.
 
 ## Installation
 
 ```bash
-pnpm add @bloret-crew/blora-design@latest
+npm install @bloret-crew/blora-design
 ```
 
-```js
+```ts
 import "@bloret-crew/blora-design/blora.css";
 import "@bloret-crew/blora-design/auto";
 import { createTableController, message, notify } from "@bloret-crew/blora-design";
-// tree-shake friendly subpaths:
-// import { createTableController } from "@bloret-crew/blora-design/table";
 ```
 
-Use `.blora-button[data-variant="primary"]` — not 1.x `.blora-btn--primary` / global `Blora.init()`.
-Feedback: `message` / `message.success` (pill) + `notify` (cards). **No toast API.**
+Consumers must use published npm package exports only. Do not import repository source paths, git source paths, generated files from the repository, or copied component implementations.
 
-## Key entry points
+## Package surface
 
-- Package: `@bloret-crew/blora-design` (`2.0.0` Stable)
-- `./auto` — register the default Composite CE surface (range, date/time, search, transfer, accordion/collapse, command, segmented, tabs, select, dialog)
-- `./icons-full` (`icons-full.global.js`) — opt-in: registers **every** Lucide icon into `createBloraIcon`, so any icon name works without a framework rebuild. Default bundle ships a curated set only (size).
-- `./button` `./select` `./dialog` `./table` — JS subpaths (toast **removed**)
-- `./blora.global.js` — IIFE CDN global `Blora`
-- `./custom-elements.json` / `./component-manifest.json` / `./api-snapshot.json`
-- Human guide: `docs/guide.md`
-- Contracts: `packages/blora-design/contracts/*.contract.json`
-- Contract stability policy: `docs/refactor/contract-stability.md`
-- Component matrix: `docs/refactor/component-matrix.md`
-- **Remaining work:** `docs/refactor/remaining-work.md` (stop before Beta until checklist)
-- Migration standard for projects from any UI framework or hand-written UI: `docs/migration/from-any-ui-to-blora-design.md`
-- Historical 1.x → 2.0 mapping: `docs/migration/v1-to-v2.md`
-- Showcase: `examples/showcase-v2/` (requires full package build)
-- Token map CSV: `docs/migration/token-map-v1-v2.csv`
-- Alpha install notes: `docs/refactor/alpha-install-notes.md`
-- 1.x freeze: `legacy/v1/`, `legacy/showcase-v1.html`
-- Add-ons: `@bloret-crew/blora-design-{markdown,thread,qrcode,effects,layout,theming}@latest`
+- Main package: `@bloret-crew/blora-design`
+- `./auto`: registers the default Composite Custom Element surface
+- `./icons-full`: optional complete Lucide icon registry
+- `./button`, `./select`, `./dialog`, `./table`: JavaScript subpaths
+- `./blora.global.js`: CDN/IIFE global `Blora`
+- `./custom-elements.json`: Custom Elements Manifest
+- `./component-manifest.json`: component manifest
+- `./api-snapshot.json`: public API snapshot
+- `./tokens.css`, `./tokens.dark.css`, `./tokens.themes.css`: token styles
+- `./blora.css`: aggregate core stylesheet
+
+## Add-ons
+
+```bash
+npm install \
+  @bloret-crew/blora-design-markdown \
+  @bloret-crew/blora-design-thread \
+  @bloret-crew/blora-design-qrcode \
+  @bloret-crew/blora-design-effects \
+  @bloret-crew/blora-design-layout \
+  @bloret-crew/blora-design-theming
+```
+
+Each add-on exposes its public ESM entry, CSS entry, and global entry through npm `exports`.
 
 ## Architecture
 
-- Prefer native HTML for primitives; use Composite CE for structure-sensitive widgets.
-- `createXxxController(root)` remains available for advanced markup and must be destroyed on teardown.
-- Table row selection: `data-blora-selectable` (built-in).
-- Composite CE is the default structure contract (ADR-015, superseding ADR-013); FA-WC remains staged per form component.
-- `sideEffects`: CSS files + `dist/auto.js` only (main entry is tree-shake friendly).
-
-## Prohibitions
-
-- Do not extract visual styles from historical commits or other UI frameworks.
-- Do not use `innerHTML` with untrusted strings.
-- Do not hardcode colors/spacing/radii/shadows/z-index in component CSS — use tokens.
-- Do not add public APIs without updating the contract and regenerating manifests.
-- Do not delete `legacy/v1` during 2.0.
+- Use official CSS-only patterns for presentational content.
+- Use official Composite Custom Elements for structure-sensitive controls.
+- Use official headless controllers only when business code must own open data DOM, such as Table or Form.
+- Controller instances must be destroyed when their host lifecycle ends.
+- Use `data-blora-selectable` for built-in Table row selection.
+- Use `createBloraIcon()` or official component-generated Lucide SVG for UI icons.
+- Use registered `--blora-*` tokens for color, spacing, radius, shadow, motion, and layering.
+- Component-generated chrome follows the page locale through the locale pack.
 
 ## Migration
 
-1.x → 2.0: `docs/migration/v1-to-v2.md`. No runtime 1.x compatibility layer.
+Read `docs/migration/from-any-ui-to-blora-design.md`. It contains the complete migration standard, the 87-component replacement matrix, 87 core component examples, 21 add-on capability examples, framework integration rules, npm-only policy, prohibited patterns, and final acceptance checklist.
+
+## Verification
+
+```bash
+pnpm verify
+```
+
+The published package is the only supported consumer surface. `packages/**/src` and `addons/**/src` are not consumer imports.

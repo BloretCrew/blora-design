@@ -54,6 +54,5 @@
   },
   "parts": [],
   "cssProperties": ["--blora-image-ratio"],
-  "accessibilityPattern": "figure",
-  "migrationFromV1": "image.migration.md"
+  "accessibilityPattern": "figure"
 }

@@ -67,6 +67,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "section",
-  "migrationFromV1": "upload.migration.md"
+  "accessibilityPattern": "section"
 }

@@ -67,6 +67,5 @@
     "--blora-button-fg",
     "--blora-button-bd"
   ],
-  "accessibilityPattern": "input",
-  "migrationFromV1": "switch.migration.md"
+  "accessibilityPattern": "input"
 }

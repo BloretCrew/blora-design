@@ -19,6 +19,5 @@
     "applyTheme": {},
     "getTheme": {},
     "bootThemeFromStorage": {}
-  },
-  "migrationFromV1": "theming.migration.md"
+  }
 }

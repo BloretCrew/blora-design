@@ -27,6 +27,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "status",
-  "migrationFromV1": "result.migration.md"
+  "accessibilityPattern": "status"
 }

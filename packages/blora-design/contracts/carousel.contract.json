@@ -50,6 +50,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "carousel",
-  "migrationFromV1": "carousel.migration.md"
+  "accessibilityPattern": "carousel"
 }

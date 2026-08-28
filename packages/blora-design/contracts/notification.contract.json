@@ -32,6 +32,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "alertdialog",
-  "migrationFromV1": "notification.migration.md"
+  "accessibilityPattern": "alertdialog"
 }

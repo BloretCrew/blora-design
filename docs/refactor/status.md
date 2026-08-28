@@ -15,17 +15,17 @@ Showcase v2 已完成 87/87 核心组件目录：正式 API/CE 示例、单视�
 
 | 阶段 | 状态 | 说明 |
 |---|---|---|
-| Phase 0：冻结与基线 | ✅ 完成 | 冻结 1.x 行为事实、捕获公共 API、生成视觉基线 |
+| Phase 0：视觉基线 | ✅ 完成 | 捕获公共 API、生成视觉基线 |
 | Phase 1：Workspace 与门禁 | ✅ 完成 | pnpm workspace、TS strict、lint、test、CI、Showcase、publint |
-| Phase 2：Token | ✅ 完成 | DTCG 三层 token、确定性生成器、7 套主题、v1 映射、对比度门禁 |
+| Phase 2：Token | ✅ 完成 | DTCG 三层 token、确定性生成器、7 套主题、对比度门禁 |
 | Phase 3：Foundations | ✅ 完成 | reset、base、layout、utilities、@layer、RTL、reduced-motion |
 | Phase 4：三个试点组件 | ✅ 完成 | Button -> Dialog -> Select |
 | Phase 5：核心表单和反馈 | ✅ 完成 | Field/Input/Checkbox/Radio/Switch/Tag/Alert/Badge/Progress/Spinner/Skeleton/Message |
 | Phase 6：导航与浮层 | ✅ 完成 | Tabs/Breadcrumb/Pagination/Dropdown/Tooltip/Popover/Drawer/Navbar/Sidebar Navigation |
 | Phase 7：数据与内容基础 | ✅ 完成 | Card/Table/List/Accordion/Timeline/Empty/Result/Avatar |
-| Phase 8：迁移工具 | ✅ 完成 | Token/class 映射、codemod、migrate:check、fixtures；早期 runtime compat 后续已撤销 |
-| Phase 9：Add-ons | ✅ 完成 | 六包 API + Showcase 示例 + 单测；核心 v1 缺口补齐（见 addon-core-gaps.md） |
-| Phase 10：预发布 | ✅ Stable 完成 | `2.0.0` 已发布；Firefox/WebKit 87/87、真实 Safari 人工抽测、GitHub Actions、npm/CDN/CSP/SSR/rollback、Stable clean consumer/CDN/CSP/SSR 证据已记录；1.x 不维护、不兼容 |
+| Phase 8：工程工具 | ✅ 完成 | codemod、migrate:check 和 fixtures |
+| Phase 9：Add-ons | ✅ 完成 | 六包 API、Showcase 示例和单测 |
+| Phase 10：Stable 发布 | ✅ 完成 | `2.0.0` 已发布；Firefox/WebKit 87/87、真实 Safari 人工抽测、GitHub Actions、npm/CDN/CSP/SSR/rollback 和 Stable clean consumer 证据已记录 |
 
 ## Phase 9 收口摘要（2026-08-02）
 
@@ -53,8 +53,8 @@ Showcase v2 已完成 87/87 核心组件目录：正式 API/CE 示例、单视�
 
 - `addon-core-gaps.md` / `component-matrix.md` / `css-only-resolution.md` — 与代码对齐
 - `pending-visual-review.md` — 本轮 CSS 变更清单；**人眼已确认（2026-08-02）**
-- `docs/guide.md` — 已改为 **2.0 主路径**（去掉 1.x `Blora.*` 推荐口吻）
-- `docs/framework.md` — 顶部标明 2.0 入口；正文历史 1.x 仅迁移对照
+- `docs/guide.md` — 当前安装和使用入口
+- `docs/framework.md` — 框架接入边界和 npm 包入口
 
 ### DoD 本阶段范围
 
@@ -65,7 +65,7 @@ Showcase v2 已完成 87/87 核心组件目录：正式 API/CE 示例、单视�
 
 - 浏览器交互 / a11y / 视觉全矩阵
 - Alpha → Beta 版本与 contract 稳定性政策
-- 逐组件 1.x 迁移说明（compat 底座已在 Phase 8）
+- 逐组件 npm 示例已纳入完整迁移规范
 
 ## 历史阶段详情
 

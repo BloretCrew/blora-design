@@ -69,6 +69,5 @@
     "--blora-sd-r",
     "--blora-sd-trigger-size"
   ],
-  "accessibilityPattern": "menu",
-  "migrationFromV1": "speed-dial.migration.md"
+  "accessibilityPattern": "menu"
 }

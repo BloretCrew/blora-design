@@ -33,6 +33,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "status",
-  "migrationFromV1": "empty.migration.md"
+  "accessibilityPattern": "status"
 }

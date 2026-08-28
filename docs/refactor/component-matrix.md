@@ -38,7 +38,7 @@
 | Deck / Speed Dial / Megamenu / Dock | Composite CE + advanced controller | ✅ | 决策留核 |
 | FAB | CSS | ✅ | intentional CSS-only |
 | Media Container | CSS | ✅ | 正式比例与 object-fit 契约 |
-| Indicator / Hero / Footer / Join / Divider | CSS | ✅ | 1.x 页面骨架与角标定位收成正式契约 |
+| Indicator / Hero / Footer / Join / Divider | CSS | ✅ | 页面骨架与角标定位收成正式契约 |
 | Menu | CSS | ✅ | 原生链接列表；侧栏仍用 Sidebar Nav |
 
 ## Add-ons（Phase 9 ✅）
@@ -68,4 +68,4 @@
 - [ ] axe a11y
 - [ ] 视觉回归基线
 - [ ] RTL / 320px / reduced-motion 专项
-- [ ] 1.x 迁移说明逐组件
+- [x] 逐组件 npm 迁移示例：`docs/migration/from-any-ui-to-blora-design.md`

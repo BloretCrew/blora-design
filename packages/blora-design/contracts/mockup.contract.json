@@ -39,6 +39,5 @@
     "--blora-phone-screen-radius-se",
     "--blora-phone-island-radius"
   ],
-  "accessibilityPattern": "section",
-  "migrationFromV1": "mockup.migration.md"
+  "accessibilityPattern": "section"
 }

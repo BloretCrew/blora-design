@@ -20,7 +20,7 @@ Blora Design 2.0 — token-driven, accessible, zero-dependency Web UI design sys
 ## Installation
 
 ```sh
-pnpm add @bloret-crew/blora-design@beta
+pnpm add @bloret-crew/blora-design
 ```
 
 ## Usage (2.0)
@@ -40,7 +40,7 @@ import { setButtonLoading, createTableController, message } from "@bloret-crew/b
 ```
 
 - Prefer **native HTML + CSS** for primitives and **Composite Custom Elements** for structure-sensitive controls. Headless controllers remain advanced APIs.
-- Do **not** treat 1.x global `Blora.*` as the 2.0 API. There is no runtime 1.x compatibility layer — write 2.0 markup and tokens. Visual baseline is archived outside this repo (`D:/MyFiles/Documents/projects/blora-design/legacy/`).
+- Use the published package exports for all application code. Do not import repository source paths, generated files, or copied component implementations. Write 2.0 markup and tokens.
 - Human guide (Chinese): [`docs/guide.md`](../../docs/guide.md)
 
 ## License

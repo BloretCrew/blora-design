@@ -22,6 +22,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "section",
-  "migrationFromV1": "comment.migration.md"
+  "accessibilityPattern": "section"
 }

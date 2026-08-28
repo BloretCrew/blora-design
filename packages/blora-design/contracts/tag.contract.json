@@ -20,6 +20,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "input",
-  "migrationFromV1": "tag.migration.md"
+  "accessibilityPattern": "input"
 }

@@ -16,6 +16,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "contentinfo",
-  "migrationFromV1": "footer.migration.md"
+  "accessibilityPattern": "contentinfo"
 }

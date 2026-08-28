@@ -15,6 +15,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "input",
-  "migrationFromV1": "skeleton.migration.md"
+  "accessibilityPattern": "input"
 }

@@ -61,6 +61,5 @@
     "--blora-tabs-indicator-size",
     "--blora-tabs-focus-inset"
   ],
-  "accessibilityPattern": "tabs",
-  "migrationFromV1": "tabs.migration.md"
+  "accessibilityPattern": "tabs"
 }

@@ -96,6 +96,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "input",
-  "migrationFromV1": "field.migration.md"
+  "accessibilityPattern": "input"
 }

@@ -47,6 +47,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "navigation",
-  "migrationFromV1": "sidebar-nav.migration.md"
+  "accessibilityPattern": "navigation"
 }

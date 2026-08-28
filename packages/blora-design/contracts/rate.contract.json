@@ -43,6 +43,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "section",
-  "migrationFromV1": "rate.migration.md"
+  "accessibilityPattern": "section"
 }

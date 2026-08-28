@@ -56,6 +56,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "input",
-  "migrationFromV1": "checkbox.migration.md"
+  "accessibilityPattern": "input"
 }

@@ -35,6 +35,5 @@
   },
   "parts": [],
   "cssProperties": ["--blora-segmented-padding"],
-  "accessibilityPattern": "radiogroup",
-  "migrationFromV1": "segmented.migration.md"
+  "accessibilityPattern": "radiogroup"
 }

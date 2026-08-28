@@ -78,6 +78,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "navigation",
-  "migrationFromV1": "dropdown.migration.md"
+  "accessibilityPattern": "navigation"
 }

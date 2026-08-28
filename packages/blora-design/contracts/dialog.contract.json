@@ -80,6 +80,5 @@
     "--blora-button-fg",
     "--blora-button-bd"
   ],
-  "accessibilityPattern": "dialog",
-  "migrationFromV1": "dialog.migration.md"
+  "accessibilityPattern": "dialog"
 }

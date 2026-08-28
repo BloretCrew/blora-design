@@ -15,6 +15,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "input",
-  "migrationFromV1": "textarea.migration.md"
+  "accessibilityPattern": "input"
 }

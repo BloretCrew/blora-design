@@ -50,6 +50,5 @@
   },
   "parts": [],
   "cssProperties": ["--blora-tour-pad"],
-  "accessibilityPattern": "dialog",
-  "migrationFromV1": "tour.migration.md"
+  "accessibilityPattern": "dialog"
 }

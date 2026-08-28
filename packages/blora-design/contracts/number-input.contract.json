@@ -56,6 +56,5 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "input",
-  "migrationFromV1": "number-input.migration.md"
+  "accessibilityPattern": "input"
 }
