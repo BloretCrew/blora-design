@@ -32,6 +32,11 @@ blora-dropdown {
   z-index: var(--blora-z-dropdown);
 }
 
+.blora-dropdown[data-placement="top"] .blora-dropdown__menu {
+  inset-block: auto calc(100% + 6px);
+  transform: translateY(4px);
+}
+
 .blora-dropdown[data-align="end"] .blora-dropdown__menu {
   inset-inline: auto 0;
 }
@@ -41,9 +46,17 @@ blora-dropdown {
   transform: translate(-50%, -4px);
 }
 
+.blora-dropdown[data-placement="top"][data-align="center"] .blora-dropdown__menu {
+  transform: translate(-50%, 4px);
+}
+
 .blora-dropdown[data-open] .blora-dropdown__menu {
   opacity: 1;
   pointer-events: auto;
+  transform: translateY(0);
+}
+
+.blora-dropdown[data-placement="top"][data-open] .blora-dropdown__menu {
   transform: translateY(0);
 }
 

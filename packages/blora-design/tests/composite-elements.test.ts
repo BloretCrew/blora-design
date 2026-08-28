@@ -404,6 +404,9 @@ describe("Composite Custom Elements", () => {
     expect(dropdown.querySelector(".blora-dropdown")?.hasAttribute("data-open")).toBe(true);
     expect(dropdown.querySelectorAll(".blora-dropdown__item")).toHaveLength(2);
 
+    dropdown.setAttribute("placement", "top");
+    expect(dropdown.querySelector<HTMLElement>(".blora-dropdown")?.dataset.placement).toBe("top");
+
     const drawer = appendHost<HTMLElement & { open(): void }>("blora-drawer", {
       title: "Details",
     });

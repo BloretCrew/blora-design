@@ -371,9 +371,19 @@ test("Overlay composite CEs open, close and emit their public events", async ({ 
           <blora-dropdown-item value="edit">Edit</blora-dropdown-item>
           <blora-dropdown-item value="delete" separator>Delete</blora-dropdown-item>
         </blora-dropdown>
+        <blora-dropdown id="dropdown-top" label="Actions" placement="top">
+          <blora-dropdown-item value="edit">Edit</blora-dropdown-item>
+        </blora-dropdown>
       </div>
       <blora-drawer id="drawer" title="Details">Drawer content</blora-drawer>
     `),
+  );
+
+  await page.locator("#dropdown-top [data-dropdown-trigger]").click();
+  await expect(page.locator("#dropdown-top .blora-dropdown")).toHaveAttribute("data-open", "");
+  await expect(page.locator("#dropdown-top .blora-dropdown")).toHaveAttribute(
+    "data-placement",
+    "top",
   );
 
   await page.locator("#tooltip .blora-tooltip").hover();

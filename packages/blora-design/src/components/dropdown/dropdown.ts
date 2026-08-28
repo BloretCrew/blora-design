@@ -170,7 +170,7 @@ export class BloraDropdown extends BloraElement {
   private contentNodes: Node[] | null = null;
 
   static get observedAttributes(): string[] {
-    return ["label", "open", "disabled", "align", "variant"];
+    return ["label", "open", "disabled", "align", "placement", "variant"];
   }
 
   attributeChangedCallback(name: string): void {
@@ -198,6 +198,10 @@ export class BloraDropdown extends BloraElement {
   private alignValue(): "start" | "center" | "end" {
     const align = this.getAttribute("align");
     return align === "center" || align === "end" ? align : "start";
+  }
+
+  private placementValue(): "bottom" | "top" {
+    return this.getAttribute("placement") === "top" ? "top" : "bottom";
   }
 
   private isHelper(): boolean {
@@ -229,6 +233,7 @@ export class BloraDropdown extends BloraElement {
     root.className = "blora-dropdown";
     root.dataset.bloraGenerated = "";
     root.dataset.align = this.alignValue();
+    root.dataset.placement = this.placementValue();
     if (this.isHelper()) root.dataset.variant = "helper";
     if (this.hasAttribute("open")) root.dataset.open = "";
     const trigger = this.ownerDocument.createElement("button");
@@ -284,6 +289,7 @@ export class BloraDropdown extends BloraElement {
     const trigger = this.querySelector<HTMLButtonElement>("[data-dropdown-trigger]");
     if (!root || !trigger) return;
     root.dataset.align = this.alignValue();
+    root.dataset.placement = this.placementValue();
     trigger.disabled = this.hasAttribute("disabled");
     const labelText = this.getAttribute("label") ?? t("dropdown.label");
     const label = trigger.querySelector<HTMLElement>(".blora-dropdown__label");

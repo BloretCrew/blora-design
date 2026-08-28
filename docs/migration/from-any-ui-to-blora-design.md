@@ -97,95 +97,95 @@ node -e "const p=require('./packages/blora-design/component-manifest.json'); for
 
 ### 3.1 核心组件
 
-| 能力               | Blora 2.0 实现                      | 类型               | 迁移要求                                               |
-| ------------------ | ----------------------------------- | ------------------ | ------------------------------------------------------ |
-| Accordion          | `<blora-accordion>`                 | Composite CE       | 不手写展开、收起、ARIA 和高度动画                      |
-| Alert              | `<blora-alert>`                     | Composite CE       | 使用官方变体和状态语义                                 |
-| Autocomplete       | `<blora-autocomplete>`              | Composite CE       | 不手写建议列表和键盘导航                               |
-| Avatar             | `.blora-avatar`                     | CSS-only           | 使用 `data-size`、`data-variant`、`data-shape`         |
-| BackTop            | `<blora-backtop>`                   | Composite CE       | 不手写滚动监听和显示状态                               |
-| Badge              | `.blora-badge`                      | CSS-only           | 数量、状态和角标使用 Badge                             |
-| Banner             | `<blora-banner>`                    | Composite CE       | 使用官方内容和关闭行为                                 |
-| Breadcrumb         | `<blora-breadcrumb>`                | Composite CE       | 不手写分隔符和可访问名称                               |
-| Button             | `<button class="blora-button">`     | Native + CSS       | 必须有 `type`，变体使用 `data-*`                       |
-| Calendar           | `<blora-calendar>`                  | Composite CE       | 不手写日期网格和选中状态                               |
-| Card               | `.blora-card`                       | CSS-only           | 使用官方 surface、variant 和 token                     |
-| Carousel           | `<blora-carousel>`                  | Composite CE       | 不手写轮播控制和索引状态                               |
-| Cascader           | `<blora-cascader>`                  | Composite CE       | 不手写级联面板和键盘逻辑                               |
-| Chart Container    | `<blora-chart-container>`           | Composite CE       | 图表库只负责内容，不负责外壳                           |
-| Chat               | `<blora-chat>`                      | Composite CE       | 使用官方消息布局和状态结构                             |
-| Checkbox           | `<blora-checkbox>`                  | Form-associated CE | 使用 `name` / `value` / `checked`，由组件参与 FormData |
-| Collapse           | `<blora-collapse>`                  | Composite CE       | 不手写高度折叠逻辑                                     |
-| Color Picker       | `<blora-color-picker>`              | Composite CE       | 不使用裸 color input                                   |
-| Command Palette    | `<blora-command>`                   | Composite CE       | 使用 OverlayController 管理的官方浮层                  |
-| Comment            | `<blora-comment>`                   | Composite CE       | 头像、正文、操作通过 slot 提供                         |
-| Copy               | `<blora-copy>`                      | Composite CE       | 不手写复制按钮、状态文本和图标                         |
-| Datepicker         | `<blora-datepicker>`                | Composite CE       | 不使用裸 date input                                    |
-| Deck               | `<blora-deck>`                      | Composite CE       | 不复制卡片叠放结构                                     |
-| Descriptions       | `.blora-descriptions`               | CSS-only           | 使用官方描述列表 class                                 |
-| Dialog             | `<blora-dialog>`                    | Composite CE       | 不手写遮罩、焦点陷阱和 Escape                          |
-| Divider            | `.blora-divider`                    | CSS-only           | 使用 `data-orientation` / `data-variant`               |
-| Dock               | `<blora-dock>`                      | Composite CE       | 不手写固定导航和展开状态                               |
-| Drawer             | `<blora-drawer>`                    | Composite CE       | 不手写抽屉、滚动锁和焦点返回                           |
-| Dropdown           | `<blora-dropdown>`                  | Composite CE       | 不手写菜单定位和 outside close                         |
-| Empty              | `<blora-empty>`                     | Composite CE       | 所有可为空的列表和表格提供 Empty                       |
-| FAB                | `.blora-fab`                        | CSS-only           | 使用官方尺寸、变体和图标规则                           |
-| Field              | `<blora-field>`                     | Composite CE       | 标签、提示、错误和计数统一由 Field 组织                |
-| Fieldset           | `.blora-fieldset`                   | CSS-only           | 使用真实 `fieldset` / `legend`                         |
-| Filter             | `.blora-filter`                     | CSS-only           | 使用官方 radio 筛选模式                                |
-| Footer             | `.blora-footer`                     | CSS-only           | 使用官方布局 class                                     |
-| Form               | `createFormController`              | Headless           | 业务保留表单 DOM，挂载后创建并销毁 controller          |
-| Hero               | `.blora-hero`                       | CSS-only           | 使用官方对齐和 surface 变体                            |
-| Image              | `<blora-image>`                     | Composite CE       | 预览使用 `openImagePreview`，不手写预览层              |
-| Indicator          | `.blora-indicator`                  | CSS-only           | 使用官方位置和状态属性                                 |
-| Input              | `<input class="blora-input">`       | Native + CSS       | 不使用未样式化文本输入框                               |
-| Join               | `.blora-join`                       | CSS-only           | 输入和按钮组合使用官方焊接规则                         |
-| List               | `.blora-list`                       | CSS-only           | 使用官方列表和 hover 规则                              |
-| Masonry            | `.blora-masonry`                    | CSS-only           | 不复制网格布局组件                                     |
-| Media              | `.blora-media`                      | CSS-only           | 使用官方比例和 object-fit 规则                         |
-| Megamenu           | `<blora-megamenu>`                  | Composite CE       | 不手写多级导航浮层                                     |
-| Mentions           | `<blora-mentions>`                  | Composite CE       | 不手写提及建议列表                                     |
-| Menu               | `.blora-menu`                       | CSS-only           | 原生链接列表使用官方结构和样式                         |
-| Message            | `message` service                   | CSS + service      | 不实现 toast；使用 `message.success()` 等              |
-| Mockup             | `<blora-mockup>`                    | Composite CE       | 展示代码或设备外壳使用官方组件                         |
-| Navbar             | `<blora-navbar>`                    | Composite CE       | 品牌、导航、工具和行动区使用官方 slot/子项             |
-| Notification       | `notify` service                    | CSS + service      | 使用官方 notification 容器和 placement                 |
-| Number Input       | `<blora-number-input>`              | Composite CE       | 不手写增减按钮和输入同步                               |
-| OTP                | `<blora-otp>`                       | Composite CE       | 不手写多格输入和粘贴行为                               |
-| Pagination         | `<blora-pagination>`                | Composite CE       | 不手写页码窗口和省略号规则                             |
-| Popconfirm         | `<blora-popconfirm>`                | Composite CE       | 不手写确认浮层和焦点行为                               |
-| Popover            | `<blora-popover>`                   | Composite CE       | 不手写定位、outside close 和层级                       |
-| Progress           | `<blora-progress>`                  | Composite CE       | 使用官方进度语义和状态                                 |
-| Radio              | `<blora-radio>`                     | Composite CE       | 不使用裸 radio 皮肤                                    |
-| Range              | `<blora-range>`                     | Composite CE       | 不使用裸 range input                                   |
-| Rate               | `<blora-rate>`                      | Composite CE       | 不手写星级输入和键盘状态                               |
-| Result             | `<blora-result>`                    | Composite CE       | 错误、成功和空结果使用官方结构                         |
-| Search             | `<blora-search>`                    | Composite CE       | 不手写搜索清除按钮和表单关联                           |
-| Segmented          | `<blora-segmented>`                 | Composite CE       | 互斥筛选和视图切换使用官方滑动指示器                   |
-| Select             | `<blora-select>`                    | Composite CE       | 不使用裸 select 或第三方 select                        |
-| Sidebar Navigation | `<blora-sidebar-nav>`               | Composite CE       | 不手写导航组、当前项和键盘状态                         |
-| Skeleton           | `.blora-skeleton`                   | CSS-only           | loading 使用官方骨架                                   |
-| Slider             | `<blora-slider>`                    | Composite CE       | 不手写滑块轨道、键盘和 tooltip                         |
-| Speed Dial         | `<blora-speed-dial>`                | Composite CE       | 不手写展开方向和 outside close                         |
-| Spinner            | `.blora-spinner`                    | CSS-only           | loading 使用官方 spinner                               |
-| Splitter           | `<blora-splitter>`                  | Composite CE       | 不手写拖拽分栏和方向逻辑                               |
-| Statistic          | `<blora-statistic>`                 | Composite CE       | 数字、标题和趋势使用官方结构                           |
-| Steps              | `<blora-steps>`                     | Composite CE       | 不手写步骤状态和导航语义                               |
-| Swap               | `<blora-swap>`                      | Composite CE       | 不手写交换动画和状态                                   |
-| Switch             | `<blora-switch>`                    | Composite CE       | 不使用裸 checkbox 模拟开关                             |
-| Table              | `createTableController`             | Headless           | 业务保留表格 DOM，行选由 controller 注入               |
-| Tabs               | `<blora-tabs>`                      | Composite CE       | 不手写选中状态、指示器和键盘导航                       |
-| Tag                | `.blora-tag`                        | CSS-only           | 分类和可关闭标签使用官方样式                           |
-| Tags Input         | `<blora-tags-input>`                | Composite CE       | 不手写 token 输入、删除和表单关联                      |
-| Textarea           | `<textarea class="blora-textarea">` | Native + CSS       | 使用官方输入表面和 Field 组织                          |
-| Timeline           | `<blora-timeline>`                  | Composite CE       | 时间顺序、连线和节点使用官方组件                       |
-| Time Picker        | `<blora-timepicker>`                | Composite CE       | 不手写时间面板和键盘逻辑                               |
-| Tooltip            | `<blora-tooltip>`                   | Composite CE       | 不手写 hover/focus 浮层                                |
-| Tour               | `<blora-tour>`                      | Composite CE       | 不手写遮罩、聚焦和步骤导航                             |
-| Transfer           | `<blora-transfer>`                  | Composite CE       | 不手写双栏选择和移动逻辑                               |
-| Tree               | `<blora-tree>`                      | Composite CE       | 不手写树节点展开和键盘逻辑                             |
-| Tree Select        | `<blora-tree-select>`               | Composite CE       | 不手写树形下拉选择器                                   |
-| Upload             | `<blora-upload>`                    | Composite CE       | 不手写文件输入表面和上传状态                           |
+| 能力               | Blora 2.0 实现                      | 类型               | 迁移要求                                                    |
+| ------------------ | ----------------------------------- | ------------------ | ----------------------------------------------------------- |
+| Accordion          | `<blora-accordion>`                 | Composite CE       | 不手写展开、收起、ARIA 和高度动画                           |
+| Alert              | `<blora-alert>`                     | Composite CE       | 使用官方变体和状态语义                                      |
+| Autocomplete       | `<blora-autocomplete>`              | Composite CE       | 不手写建议列表和键盘导航                                    |
+| Avatar             | `.blora-avatar`                     | CSS-only           | 使用 `data-size`、`data-variant`、`data-shape`              |
+| BackTop            | `<blora-backtop>`                   | Composite CE       | 不手写滚动监听和显示状态                                    |
+| Badge              | `.blora-badge`                      | CSS-only           | 数量、状态和角标使用 Badge                                  |
+| Banner             | `<blora-banner>`                    | Composite CE       | 使用官方内容和关闭行为                                      |
+| Breadcrumb         | `<blora-breadcrumb>`                | Composite CE       | 不手写分隔符和可访问名称                                    |
+| Button             | `<button class="blora-button">`     | Native + CSS       | 必须有 `type`，变体使用 `data-*`                            |
+| Calendar           | `<blora-calendar>`                  | Composite CE       | 不手写日期网格和选中状态                                    |
+| Card               | `.blora-card`                       | CSS-only           | 使用官方 surface、variant 和 token                          |
+| Carousel           | `<blora-carousel>`                  | Composite CE       | 不手写轮播控制和索引状态                                    |
+| Cascader           | `<blora-cascader>`                  | Composite CE       | 不手写级联面板和键盘逻辑                                    |
+| Chart Container    | `<blora-chart-container>`           | Composite CE       | 图表库只负责内容，不负责外壳                                |
+| Chat               | `<blora-chat>`                      | Composite CE       | 使用官方消息布局和状态结构                                  |
+| Checkbox           | `<blora-checkbox>`                  | Form-associated CE | 使用 `name` / `value` / `checked`，由组件参与 FormData      |
+| Collapse           | `<blora-collapse>`                  | Composite CE       | 不手写高度折叠逻辑                                          |
+| Color Picker       | `<blora-color-picker>`              | Composite CE       | 不使用裸 color input                                        |
+| Command Palette    | `<blora-command>`                   | Composite CE       | 使用 OverlayController 管理的官方浮层                       |
+| Comment            | `<blora-comment>`                   | Composite CE       | 头像、正文、操作通过 slot 提供                              |
+| Copy               | `<blora-copy>`                      | Composite CE       | 不手写复制按钮、状态文本和图标                              |
+| Datepicker         | `<blora-datepicker>`                | Composite CE       | 不使用裸 date input                                         |
+| Deck               | `<blora-deck>`                      | Composite CE       | 不复制卡片叠放结构                                          |
+| Descriptions       | `.blora-descriptions`               | CSS-only           | 使用官方描述列表 class                                      |
+| Dialog             | `<blora-dialog>`                    | Composite CE       | 不手写遮罩、焦点陷阱和 Escape                               |
+| Divider            | `.blora-divider`                    | CSS-only           | 使用 `data-orientation` / `data-variant`                    |
+| Dock               | `<blora-dock>`                      | Composite CE       | 不手写固定导航和展开状态                                    |
+| Drawer             | `<blora-drawer>`                    | Composite CE       | 不手写抽屉、滚动锁和焦点返回                                |
+| Dropdown           | `<blora-dropdown>`                  | Composite CE       | 使用 `placement="top"` 或 `placement="bottom"` 控制垂直方向 |
+| Empty              | `<blora-empty>`                     | Composite CE       | 所有可为空的列表和表格提供 Empty                            |
+| FAB                | `.blora-fab`                        | CSS-only           | 使用官方尺寸、变体和图标规则                                |
+| Field              | `<blora-field>`                     | Composite CE       | 标签、提示、错误和计数统一由 Field 组织                     |
+| Fieldset           | `.blora-fieldset`                   | CSS-only           | 使用真实 `fieldset` / `legend`                              |
+| Filter             | `.blora-filter`                     | CSS-only           | 使用官方 radio 筛选模式                                     |
+| Footer             | `.blora-footer`                     | CSS-only           | 使用官方布局 class                                          |
+| Form               | `createFormController`              | Headless           | 业务保留表单 DOM，挂载后创建并销毁 controller               |
+| Hero               | `.blora-hero`                       | CSS-only           | 使用官方对齐和 surface 变体                                 |
+| Image              | `<blora-image>`                     | Composite CE       | 预览使用 `openImagePreview`，不手写预览层                   |
+| Indicator          | `.blora-indicator`                  | CSS-only           | 使用官方位置和状态属性                                      |
+| Input              | `<input class="blora-input">`       | Native + CSS       | 不使用未样式化文本输入框                                    |
+| Join               | `.blora-join`                       | CSS-only           | 输入和按钮组合使用官方焊接规则                              |
+| List               | `.blora-list`                       | CSS-only           | 使用官方列表和 hover 规则                                   |
+| Masonry            | `.blora-masonry`                    | CSS-only           | 不复制网格布局组件                                          |
+| Media              | `.blora-media`                      | CSS-only           | 使用官方比例和 object-fit 规则                              |
+| Megamenu           | `<blora-megamenu>`                  | Composite CE       | 不手写多级导航浮层                                          |
+| Mentions           | `<blora-mentions>`                  | Composite CE       | 不手写提及建议列表                                          |
+| Menu               | `.blora-menu`                       | CSS-only           | 原生链接列表使用官方结构和样式                              |
+| Message            | `message` service                   | CSS + service      | 不实现 toast；使用 `message.success()` 等                   |
+| Mockup             | `<blora-mockup>`                    | Composite CE       | 展示代码或设备外壳使用官方组件                              |
+| Navbar             | `<blora-navbar>`                    | Composite CE       | 品牌、导航、工具和行动区使用官方 slot/子项                  |
+| Notification       | `notify` service                    | CSS + service      | 使用官方 notification 容器和 placement                      |
+| Number Input       | `<blora-number-input>`              | Composite CE       | 不手写增减按钮和输入同步                                    |
+| OTP                | `<blora-otp>`                       | Composite CE       | 不手写多格输入和粘贴行为                                    |
+| Pagination         | `<blora-pagination>`                | Composite CE       | 不手写页码窗口和省略号规则                                  |
+| Popconfirm         | `<blora-popconfirm>`                | Composite CE       | 不手写确认浮层和焦点行为                                    |
+| Popover            | `<blora-popover>`                   | Composite CE       | 不手写定位、outside close 和层级                            |
+| Progress           | `<blora-progress>`                  | Composite CE       | 使用官方进度语义和状态                                      |
+| Radio              | `<blora-radio>`                     | Composite CE       | 不使用裸 radio 皮肤                                         |
+| Range              | `<blora-range>`                     | Composite CE       | 不使用裸 range input                                        |
+| Rate               | `<blora-rate>`                      | Composite CE       | 不手写星级输入和键盘状态                                    |
+| Result             | `<blora-result>`                    | Composite CE       | 错误、成功和空结果使用官方结构                              |
+| Search             | `<blora-search>`                    | Composite CE       | 不手写搜索清除按钮和表单关联                                |
+| Segmented          | `<blora-segmented>`                 | Composite CE       | 互斥筛选和视图切换使用官方滑动指示器                        |
+| Select             | `<blora-select>`                    | Composite CE       | 不使用裸 select 或第三方 select                             |
+| Sidebar Navigation | `<blora-sidebar-nav>`               | Composite CE       | 不手写导航组、当前项和键盘状态                              |
+| Skeleton           | `.blora-skeleton`                   | CSS-only           | loading 使用官方骨架                                        |
+| Slider             | `<blora-slider>`                    | Composite CE       | 不手写滑块轨道、键盘和 tooltip                              |
+| Speed Dial         | `<blora-speed-dial>`                | Composite CE       | 不手写展开方向和 outside close                              |
+| Spinner            | `.blora-spinner`                    | CSS-only           | loading 使用官方 spinner                                    |
+| Splitter           | `<blora-splitter>`                  | Composite CE       | 不手写拖拽分栏和方向逻辑                                    |
+| Statistic          | `<blora-statistic>`                 | Composite CE       | 数字、标题和趋势使用官方结构                                |
+| Steps              | `<blora-steps>`                     | Composite CE       | 不手写步骤状态和导航语义                                    |
+| Swap               | `<blora-swap>`                      | Composite CE       | 不手写交换动画和状态                                        |
+| Switch             | `<blora-switch>`                    | Composite CE       | 不使用裸 checkbox 模拟开关                                  |
+| Table              | `createTableController`             | Headless           | 业务保留表格 DOM，行选由 controller 注入                    |
+| Tabs               | `<blora-tabs>`                      | Composite CE       | 不手写选中状态、指示器和键盘导航                            |
+| Tag                | `.blora-tag`                        | CSS-only           | 分类和可关闭标签使用官方样式                                |
+| Tags Input         | `<blora-tags-input>`                | Composite CE       | 不手写 token 输入、删除和表单关联                           |
+| Textarea           | `<textarea class="blora-textarea">` | Native + CSS       | 使用官方输入表面和 Field 组织                               |
+| Timeline           | `<blora-timeline>`                  | Composite CE       | 时间顺序、连线和节点使用官方组件                            |
+| Time Picker        | `<blora-timepicker>`                | Composite CE       | 不手写时间面板和键盘逻辑                                    |
+| Tooltip            | `<blora-tooltip>`                   | Composite CE       | 不手写 hover/focus 浮层                                     |
+| Tour               | `<blora-tour>`                      | Composite CE       | 不手写遮罩、聚焦和步骤导航                                  |
+| Transfer           | `<blora-transfer>`                  | Composite CE       | 不手写双栏选择和移动逻辑                                    |
+| Tree               | `<blora-tree>`                      | Composite CE       | 不手写树节点展开和键盘逻辑                                  |
+| Tree Select        | `<blora-tree-select>`               | Composite CE       | 不手写树形下拉选择器                                        |
+| Upload             | `<blora-upload>`                    | Composite CE       | 不手写文件输入表面和上传状态                                |
 
 ### 3.2 Add-on 组件和服务
 
@@ -1045,9 +1045,9 @@ import "@bloret-crew/blora-design/auto";
 ### Dropdown（dropdown）
 
 ```html
-<blora-dropdown label="更多操作">
-  <button type="button" data-value="rename">重命名</button>
-  <button type="button" data-value="delete">删除</button>
+<blora-dropdown label="更多操作" placement="top">
+  <blora-dropdown-item value="rename">重命名</blora-dropdown-item>
+  <blora-dropdown-item value="delete">删除</blora-dropdown-item>
 </blora-dropdown>
 ```
 

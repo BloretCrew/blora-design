@@ -24,6 +24,10 @@
       "type": "\"start\" | \"center\" | \"end\"",
       "default": "start"
     },
+    "placement": {
+      "type": "\"bottom\" | \"top\"",
+      "default": "bottom"
+    },
     "variant": {
       "type": "\"menu\" | \"helper\"",
       "default": "menu"
