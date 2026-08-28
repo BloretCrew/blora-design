@@ -70,6 +70,27 @@ blora-color-scheme-toggle {
   --blora-button-icon-size: 1.125rem;
 }
 
+.blora-palette-picker__trigger[data-icon-only] {
+  --blora-button-icon-size: 1.125rem;
+  --blora-button-radius: 50%;
+  --blora-button-corner: round;
+
+  box-sizing: border-box;
+  width: var(--blora-button-height);
+  min-inline-size: var(--blora-button-height);
+  height: var(--blora-button-height);
+  max-height: none;
+  padding: 0;
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+
+.blora-navbar .blora-palette-picker__trigger[data-icon-only][data-size="sm"] {
+  width: var(--blora-space-6);
+  min-inline-size: var(--blora-space-6);
+  height: var(--blora-space-6);
+}
+
 .blora-palette-picker__trigger svg,
 .blora-color-scheme-toggle__button svg {
   flex: none;

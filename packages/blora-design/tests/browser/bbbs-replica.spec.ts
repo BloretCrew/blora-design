@@ -37,8 +37,8 @@ async function sidebarGeometry(page: import("@playwright/test").Page) {
         clear.hidden ||
         (clearRect.left >= searchRect.left && clearRect.right <= searchRect.right + 0.5),
       paletteLabelFits: (() => {
-        const label = document.querySelector<HTMLElement>(".blora-palette-picker__label")!;
-        return label.scrollHeight <= label.clientHeight + 1;
+        const label = document.querySelector<HTMLElement>(".blora-palette-picker__label");
+        return !label || label.scrollHeight <= label.clientHeight + 1;
       })(),
     };
   });

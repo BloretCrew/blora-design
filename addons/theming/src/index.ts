@@ -487,7 +487,7 @@ export class BloraPalettePicker extends ThemingBase {
   private controller: PalettePickerController | null = null;
 
   static get observedAttributes(): string[] {
-    return ["button-variant", "size"];
+    return ["button-variant", "size", "icon-only"];
   }
 
   connectedCallback(): void {
@@ -523,10 +523,16 @@ export class BloraPalettePicker extends ThemingBase {
     trigger.dataset.size = this.getAttribute("size") ?? "sm";
     trigger.dataset.bloraPaletteTrigger = "";
     trigger.appendChild(createBloraIcon("palette", 18, this.ownerDocument));
-    const label = this.ownerDocument.createElement("span");
-    label.className = "blora-palette-picker__label";
-    label.textContent = t(`theme.name.${getTheme(this.ownerDocument.documentElement)}`);
-    trigger.appendChild(label);
+    const iconOnly = this.hasAttribute("icon-only");
+    if (iconOnly) {
+      trigger.dataset.iconOnly = "";
+      trigger.setAttribute("aria-label", t("palette.title"));
+    } else {
+      const label = this.ownerDocument.createElement("span");
+      label.className = "blora-palette-picker__label";
+      label.textContent = t(`theme.name.${getTheme(this.ownerDocument.documentElement)}`);
+      trigger.appendChild(label);
+    }
     const menu = this.ownerDocument.createElement("div");
     menu.className = "blora-palette-picker__menu";
     root.append(trigger, menu);

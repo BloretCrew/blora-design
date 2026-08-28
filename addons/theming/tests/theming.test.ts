@@ -29,6 +29,17 @@ describe("theming add-on", () => {
     expect(getTheme()).toBe("indigo");
   });
 
+  it("palette picker supports an icon-only trigger without removing the menu", () => {
+    document.body.innerHTML = `<blora-palette-picker icon-only></blora-palette-picker>`;
+    const picker = document.querySelector("blora-palette-picker")!;
+    const trigger = picker.querySelector<HTMLButtonElement>(".blora-palette-picker__trigger")!;
+    expect(trigger.dataset.iconOnly).toBe("");
+    expect(trigger.querySelector(".blora-palette-picker__label")).toBeNull();
+    expect(trigger.getAttribute("aria-label")).toBe(t("palette.title"));
+    trigger.click();
+    expect(picker.querySelector<HTMLElement>(".blora-palette-picker")?.dataset.open).toBe("");
+  });
+
   it("palette picker CE builds options and keeps its closed menu out of layout", () => {
     document.body.innerHTML = `<blora-palette-picker></blora-palette-picker>`;
     const picker = document.querySelector("blora-palette-picker")!;
