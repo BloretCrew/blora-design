@@ -1722,7 +1722,7 @@ import "@bloret-crew/blora-design-theming";
 #### Palette Picker
 
 ```html
-<blora-palette-picker></blora-palette-picker>
+<blora-palette-picker icon-only></blora-palette-picker>
 ```
 
 #### Color Scheme Toggle

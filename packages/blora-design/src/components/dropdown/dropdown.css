@@ -4,6 +4,19 @@ blora-dropdown {
   display: inline-block;
 }
 
+.blora-dropdown[data-trigger="custom"] {
+  display: block;
+}
+
+.blora-dropdown[data-trigger="custom"] [data-dropdown-trigger] {
+  cursor: pointer;
+}
+
+.blora-dropdown[data-trigger="custom"] [data-dropdown-trigger][aria-disabled="true"] {
+  cursor: default;
+  pointer-events: none;
+}
+
 .blora-dropdown {
   position: relative;
   display: inline-block;
