@@ -66,11 +66,17 @@ test("Sidebar Navigation owns grouped links and current-page state", async ({ pa
       height: item.getBoundingClientRect().height,
     })),
   );
-  expect(restingColors[0]?.background).not.toBe(restingColors[1]?.background);
+  expect(restingColors[0]?.background).toBe("rgba(0, 0, 0, 0)");
+  expect(restingColors[1]?.background).toBe("rgba(0, 0, 0, 0)");
   expect(restingColors[0]?.color).not.toBe(restingColors[1]?.color);
   const coarsePointer = await page.evaluate(() => matchMedia("(pointer: coarse)").matches);
   if (coarsePointer) expect(restingColors[0]?.height).toBeGreaterThanOrEqual(44);
 
+  await links.nth(0).hover();
+  await page.waitForTimeout(120);
+  expect(await links.nth(0).evaluate((item) => getComputedStyle(item).backgroundColor)).not.toBe(
+    "rgba(0, 0, 0, 0)",
+  );
   await links.nth(1).click();
   await expect(root).toHaveAttribute("value", "collapse");
   await expect(links.nth(1)).toHaveAttribute("aria-current", "page");
@@ -740,7 +746,7 @@ test("showcase catalog routes one of every official component at a time", async 
     };
   });
   expect(sidebarLinkColors.currentColor).not.toBe(sidebarLinkColors.inactiveColor);
-  expect(sidebarLinkColors.currentBackground).not.toBe(sidebarLinkColors.inactiveBackground);
+  expect(sidebarLinkColors.currentBackground).toBe(sidebarLinkColors.inactiveBackground);
   await expect(page.locator("#demo-accordion .blora-accordion__head")).toHaveCount(3);
   if (!(await mobileMenu.isVisible())) {
     const sidebar = page.locator("#component-sidebar");

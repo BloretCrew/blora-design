@@ -34,15 +34,16 @@ blora-sidebar-nav {
     background-color var(--blora-duration-fast) var(--blora-easing-standard);
 }
 
-.blora-sidebar-nav__link:hover {
-  color: var(--blora-color-text-primary);
-  background-color: var(--blora-color-surface-raised);
+.blora-sidebar-nav__link[aria-current="page"] {
+  color: var(--blora-color-action-primary-default);
+  background-color: transparent;
+  font-weight: 600;
 }
 
-.blora-sidebar-nav__link[aria-current="page"] {
+.blora-sidebar-nav__link:hover,
+.blora-sidebar-nav__link[aria-current="page"]:hover {
   color: var(--blora-color-text-primary);
-  background-color: var(--blora-color-action-primary-tint);
-  font-weight: 600;
+  background-color: var(--blora-color-surface-raised);
 }
 
 /* Sidebar nav commonly sits in a scrolling/clipped aside (overflow-x hidden),
