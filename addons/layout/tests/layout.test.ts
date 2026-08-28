@@ -191,6 +191,13 @@ describe("layout add-on", () => {
     );
   });
 
+  it("hides the drawer toggle while the drawer is open", () => {
+    const css = readFileSync(resolve(srcDir, "../src/layout.css"), "utf8");
+    expect(css).toMatch(
+      /\.blora-sidebar-layout\[data-drawer\]\[data-open\][\s\S]*?\.blora-sidebar-layout__toggle[\s\S]*?\{[^}]*display:\s*none/s,
+    );
+  });
+
   it("anchors sticky edge fades to the aside viewport instead of content flow", () => {
     const css = readFileSync(resolve(srcDir, "../src/layout.css"), "utf8");
     const before =

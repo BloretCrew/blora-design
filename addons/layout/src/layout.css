@@ -261,6 +261,13 @@ blora-sidebar-layout[compact] {
   z-index: calc(var(--blora-z-drawer) + 1);
 }
 
+.blora-sidebar-layout--drawer[data-open] .blora-sidebar-layout__toggle,
+.blora-sidebar-layout[data-drawer][data-open] .blora-sidebar-layout__toggle,
+.blora-sidebar-layout[data-variant="seamless"][data-drawer][data-open]
+  .blora-sidebar-layout__toggle {
+  display: none;
+}
+
 [dir="rtl"]
   .blora-sidebar-layout[data-variant="seamless"][data-drawer]
   .blora-sidebar-layout__toggle.blora-fab,
