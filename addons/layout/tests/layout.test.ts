@@ -190,4 +190,21 @@ describe("layout add-on", () => {
       /blora-sidebar-layout\[compact\]\s*\{[^}]*--blora-sidebar-min-height:\s*20rem/s,
     );
   });
+
+  it("anchors sticky edge fades to the aside viewport instead of content flow", () => {
+    const css = readFileSync(resolve(srcDir, "../src/layout.css"), "utf8");
+    const before =
+      [...css.matchAll(/\.blora-sidebar-layout__aside::before\s*\{([^}]+)\}/g)]
+        .map((match) => match[1])
+        .find((block) => block.includes("position: absolute")) ?? "";
+    const after =
+      [...css.matchAll(/\.blora-sidebar-layout__aside::after\s*\{([^}]+)\}/g)]
+        .map((match) => match[1])
+        .find((block) => block.includes("position: absolute")) ?? "";
+    expect(before).toContain("position: absolute");
+    expect(before).toContain("inset-inline: 0");
+    expect(after).toContain("position: absolute");
+    expect(after).toContain("inset-block-end: 0");
+    expect(after).toContain("inset-inline: 0");
+  });
 });

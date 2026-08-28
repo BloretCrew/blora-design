@@ -156,6 +156,7 @@ blora-sidebar-layout[compact] {
   display: block;
   height: var(--blora-sidebar-edge-size);
   pointer-events: none;
+  box-sizing: border-box;
   opacity: 0;
   z-index: var(--blora-z-sticky);
   content: "";
@@ -165,9 +166,10 @@ blora-sidebar-layout[compact] {
 
 .blora-sidebar-layout[data-sticky]:not([data-drawer], .blora-sidebar-layout--drawer)
   .blora-sidebar-layout__aside::before {
-  position: sticky;
+  position: absolute;
   inset-block-start: 0;
-  margin-block-end: calc(-1 * var(--blora-sidebar-edge-size));
+  inset-inline: 0;
+  margin-block-end: 0;
   background: linear-gradient(
     to bottom,
     color-mix(in srgb, var(--blora-sidebar-fade-from) 42%, transparent) 0%,
@@ -179,9 +181,10 @@ blora-sidebar-layout[compact] {
 
 .blora-sidebar-layout[data-sticky]:not([data-drawer], .blora-sidebar-layout--drawer)
   .blora-sidebar-layout__aside::after {
-  position: sticky;
+  position: absolute;
   inset-block-end: 0;
-  margin-block-start: calc(-1 * var(--blora-sidebar-edge-size));
+  inset-inline: 0;
+  margin-block-start: 0;
   background: linear-gradient(
     to top,
     color-mix(in srgb, var(--blora-sidebar-fade-from) 42%, transparent) 0%,
