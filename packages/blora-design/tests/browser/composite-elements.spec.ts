@@ -312,6 +312,7 @@ test("Form-associated CEs submit their values through FormData", async ({ page }
         <blora-tags-input name="stack" values="React,Vue"></blora-tags-input>
         <blora-range name="bounds" values="10,80"></blora-range>
         <blora-otp name="code" length="4" value="1234"></blora-otp>
+        <blora-checkbox name="terms" value="accepted" checked>Accept terms</blora-checkbox>
         <blora-upload name="docs"></blora-upload>
         <button type="submit">Go</button>
       </form>
@@ -339,6 +340,7 @@ test("Form-associated CEs submit their values through FormData", async ({ page }
       ["stack", "React,Vue"],
       ["bounds", "10,80"],
       ["code", "1234"],
+      ["terms", "accepted"],
     ]);
 
   await page
@@ -353,6 +355,7 @@ test("Form-associated CEs submit their values through FormData", async ({ page }
       ["stack", "React,Vue"],
       ["bounds", "10,80"],
       ["code", "1234"],
+      ["terms", "accepted"],
       ["docs", "file:a.txt"],
     ]);
 });

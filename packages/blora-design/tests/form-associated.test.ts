@@ -34,9 +34,17 @@ describe("form-associated CEs", () => {
     expect(BloraOtp.formAssociated).toBe(true);
   });
 
+  it("declares checkbox as a form-associated custom element", () => {
+    expect(
+      (document.defaultView?.customElements.get(BLORA_CHECKBOX_TAG) as typeof HTMLElement)
+        .formAssociated,
+    ).toBe(true);
+  });
+
   it("single checkbox keeps an internals-backed host", () => {
     const el = document.createElement(BLORA_CHECKBOX_TAG);
     el.setAttribute("name", "agree");
+    el.setAttribute("value", "yes");
     el.setAttribute("checked", "");
     document.body.append(el);
     const input = el.querySelector("input")!;

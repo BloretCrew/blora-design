@@ -6,7 +6,7 @@
   "tagName": "blora-checkbox",
   "since": "2.0.0",
   "requiresJavaScript": true,
-  "formAssociated": false,
+  "formAssociated": true,
   "attributes": {
     "name": {
       "type": "string"

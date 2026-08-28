@@ -21,6 +21,6 @@
 | Drawer | 打开后锁滚动；关闭按钮有名 | 通过（drawer 测）；现已进 popover 顶层 |
 | Pagination | 上一页/下一页走 `t()`，不靠写死中文 | 通过 |
 | Palette | 触发器文案跟 `html lang` | 通过（靛蓝 / Indigo） |
-| Switch / Checkbox | `formAssociated`；单控件由 ElementInternals 提交 | 单测覆盖 Switch/Checkbox 主机 |
+| Switch / Checkbox | `formAssociated: true`；单控件由 ElementInternals 提交 | 单测覆盖 Switch/Checkbox 主机 |
 
 未抽：每个 beta contract 的读屏全文、Windows 高对比主题、完整触摸目标 44px 清单。RC 发版前再补一页 Dialog / Datepicker / Table 读屏笔记。

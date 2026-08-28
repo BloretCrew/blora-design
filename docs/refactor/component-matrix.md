@@ -10,7 +10,7 @@
 |---|---|---|---|
 | Button | CSS + loading helper | ✅ | `.blora-button` + `data-variant` |
 | Input / Textarea / Field | CSS + field limit | ✅ | Form validate 见 Form |
-| Checkbox / Radio / Switch | CSS + checkbox controller | ✅ | |
+| Checkbox / Radio / Switch | CSS + checkbox controller | ✅ | Checkbox and Switch are form-associated CEs; Checkbox supports check-all groups |
 | Select | WC | ✅ | `<blora-select>` |
 | Tag / Badge / Avatar | CSS | ✅ | intentional CSS-only |
 | Alert / Progress | Composite CE + advanced controller | ✅ | 官方结构由 CE 持有 |
