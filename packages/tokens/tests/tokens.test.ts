@@ -81,9 +81,9 @@ describe("generated outputs", () => {
     expect(darkCss).toContain("@media (prefers-color-scheme: dark)");
   });
 
-  it("generates the seven shipping palette selectors", () => {
+  it("generates the six shipping palette selectors", () => {
     const themesCss = readFileSync(join(outDir, "tokens.themes.css"), "utf8");
-    for (const palette of ["indigo", "lotus", "graphite", "mono", "circuit", "coral", "dusk"]) {
+    for (const palette of ["indigo", "graphite", "mono", "circuit", "coral", "dusk"]) {
       expect(themesCss).toContain(`:root[data-blora-theme="${palette}"]`);
     }
     expect(themesCss).not.toContain('data-blora-theme="cinnabar"');

@@ -869,7 +869,7 @@ test("showcase catalog routes one of every official component at a time", async 
   const paletteTrigger = page.locator("[data-blora-palette-trigger]");
   await paletteTrigger.click();
   await expect(page.locator(".blora-palette-picker")).toHaveAttribute("data-open", "");
-  await expect(page.locator("[data-blora-palette-option]")).toHaveCount(7);
+  await expect(page.locator("[data-blora-palette-option]")).toHaveCount(6);
   const paletteTextGeometry = await page.evaluate(() => {
     const title = document.querySelector<HTMLElement>(".blora-palette-picker__title")!;
     const hint = document.querySelector<HTMLElement>(".blora-palette-picker__hint")!;

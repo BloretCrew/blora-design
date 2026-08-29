@@ -73,14 +73,6 @@
 - **改变原因**：其他（统一平台原生字体观感）
 - **审核状态**：approved（用户人工批准 2026-08-19）
 
-### Theming - 2.0 不再提供 Cinnabar / Ocean
-
-- **组件**：theming
-- **1.x 表现**：配色列表含 Cinnabar、Ocean。
-- **2.0 表现**：主题选择器只保留 Coral、Indigo、Lotus、Graphite、Mono、Circuit、Dusk。本地若仍存着已删主题名，会回落到 Coral。
-- **改变原因**：其他
-- **审核状态**：approved（用户人工批准 2026-08-19）
-
 ### Theming - 深浅色切换后主题仍跟着走
 
 - **组件**：theming
@@ -197,7 +189,7 @@
 
 - **组件**：tag、badge、alert、sidebar navigation、thread composer
 - **1.x 表现**：部分语义状态直接把较浅的状态色作为小字号文字色；在浅色主题、warning 金色和部分辅助文字场景中会低于 4.5:1。
-- **2.0 表现**：Tag / Alert 的语义色保留在浅底、边框和图标上，文字使用高对比正文 token；Warning Badge 的实底向正文色轻微混合；Sidebar 当前项与 Thread composer 标签使用高对比文字。七套主题的明暗模式均由组件级和真实 BBBS 页面全文本浏览器门禁验证。
+- **2.0 表现**：Tag / Alert 的语义色保留在浅底、边框和图标上，文字使用高对比正文 token；Warning Badge 的实底向正文色轻微混合；Sidebar 当前项与 Thread composer 标签使用高对比文字。六套主题的明暗模式均由组件级和真实 BBBS 页面全文本浏览器门禁验证。
 - **改变原因**：WCAG 2.2 AA / 可读性修复
 - **审核状态**：approved（用户反馈并确认需统一修复，2026-08-25）
 
@@ -205,7 +197,7 @@
 
 - **组件**：segmented
 - **1.x 表现**：未选中项使用浅色 muted 文字，在 sunken 底色上部分主题只有约 3.6:1 – 4.3:1。
-- **2.0 表现**：未选中项改用正文级 secondary 文字色，七套主题明暗模式均达 4.5:1；选中项保持 emphasis 色以维持层级。
+- **2.0 表现**：未选中项改用正文级 secondary 文字色，六套主题明暗模式均达 4.5:1；选中项保持 emphasis 色以维持层级。
 - **改变原因**：WCAG 2.2 AA / 可读性修复
 - **审核状态**：approved（真实 BBBS 页面全文本门禁发现，2026-08-25）
 

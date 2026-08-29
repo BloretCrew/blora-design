@@ -18,9 +18,9 @@ describe("theming add-on", () => {
     document.documentElement.style.colorScheme = "";
   });
 
-  it("has the seven shipping presets", () => {
+  it("has the six shipping presets", () => {
     expect(Object.keys(THEME_PRESETS).sort()).toEqual(
-      ["circuit", "coral", "dusk", "graphite", "indigo", "lotus", "mono"].sort(),
+      ["circuit", "coral", "dusk", "graphite", "indigo", "mono"].sort(),
     );
   });
 
@@ -234,10 +234,10 @@ describe("theming add-on", () => {
     expect(getTheme()).toBe("indigo");
     expect(document.documentElement.getAttribute("data-blora-theme")).toBe("indigo");
     expect(document.body.hasAttribute("data-blora-color-scheme")).toBe(false);
-    applyTheme("lotus", document.documentElement, { persist: false, emit: false });
-    expect(getTheme()).toBe("lotus");
+    applyTheme("graphite", document.documentElement, { persist: false, emit: false });
+    expect(getTheme()).toBe("graphite");
     applyColorScheme("light", document.documentElement, { persist: false, emit: false });
-    expect(getTheme()).toBe("lotus");
+    expect(getTheme()).toBe("graphite");
     expect(document.body.hasAttribute("data-blora-color-scheme")).toBe(false);
   });
 });

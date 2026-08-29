@@ -19,7 +19,7 @@ const css =
     .map((file) => readFileSync(file, "utf8"))
     .join("\n") + "\n* { transition: none !important; animation: none !important; }";
 
-const themes = ["coral", "indigo", "lotus", "graphite", "mono", "circuit", "dusk"];
+const themes = ["coral", "indigo", "graphite", "mono", "circuit", "dusk"];
 const replicaPages = [
   resolve(repoRoot, "examples", "bbbs-replica", "index.html"),
   resolve(repoRoot, "examples", "bbbs-replica", "thread.html"),

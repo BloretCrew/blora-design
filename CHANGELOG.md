@@ -1,6 +1,18 @@
 # Changelog
 
-## Unreleased`r`n`r`n## 2.0.2`r`n`r`n### Fixed`r`n`r`n- Fixed dark-mode theme switching so selected palettes are not overridden by the generic dark token set.`r`n
+## Unreleased
+
+## 2.0.3
+
+### Changed
+
+- Removed the unused Lotus theme; the theming add-on now ships six focused presets.
+
+## 2.0.2
+
+### Fixed
+
+- Fixed dark-mode theme switching so selected palettes are not overridden by the generic dark token set.
 
 ## 2.0.1
 
@@ -35,9 +47,9 @@ RC closeout on 2026-08-27: Firefox and WebKit full browser suites passed 87/87 e
 ### Fixed
 
 - Prevented a closed Palette Picker menu from expanding scroll containers, added viewport-aware vertical flipping and height clamping, stopped its Chinese trigger label from being vertically clipped, made sticky Sidebar Layouts reject horizontal overflow, and restored Blora scrollbar styling in the BBBS consumer example.
-- Raised semantic Tag, Warning Badge, Alert, Sidebar Navigation and Thread composer text contrast to WCAG 2.2 AA across all seven themes in light and dark modes; raised Search and BBBS content icon contrast to the WCAG non-text 3:1 threshold; added component-level, real-page text and SVG contrast gates.
+- Raised semantic Tag, Warning Badge, Alert, Sidebar Navigation and Thread composer text contrast to WCAG 2.2 AA across all six themes in light and dark modes; raised Search and BBBS content icon contrast to the WCAG non-text 3:1 threshold; added component-level, real-page text and SVG contrast gates.
 - Turned the Thread comment reaction control into a growing capsule so reaction counts no longer overflow the fixed circle, and wrapped the BBBS replica comment stream in the comment-stream Timeline rail.
-- Switched the BBBS replica feed filter to the Segmented control and raised the Segmented inactive label contrast to WCAG 2.2 AA across all seven themes, driven by the real BBBS page text gate.
+- Switched the BBBS replica feed filter to the Segmented control and raised the Segmented inactive label contrast to WCAG 2.2 AA across all six themes, driven by the real BBBS page text gate.
 - Stopped the BBBS replica feed items from drawing a thick ring on pointer focus, inlined the keyboard focus ring so the feed list's clipped edges no longer cut it off, carried the first/last feed cards' rounded corners onto the link so the focus ring follows the curve, inlined the Sidebar Navigation and Segmented control focus rings so they are not clipped inside a scrolling sidebar aside or a clipping pill, and made the Navbar brand focus ring circular when the title is hidden (icon-only).
 - Made the Theme palette picker menu a top-layer popover that opens adjacent to its trigger on every breakpoint and is not clipped by a transformed ancestor such as the mobile drawer; clamped it inside the viewport horizontally on narrow layouts, and aligned the BBBS replica sidebar background with the showcase page-shell look.
 
@@ -104,7 +116,7 @@ npm dist-tag: **`beta`**
 - Added Composite Custom Element coverage and hardened package manifests, API snapshots, JavaScript subpaths, global IIFE and add-on packaging.
 - Fixed Dialog top-layer and scroll-lock behavior, Drawer host visibility, sticky Sidebar Layout position retention, Preview auto-height, Transfer alignment and Indicator anchoring.
 - Unified Button Group and Join horizontal button welding while retaining Join-only vertical and mixed-input behavior.
-- Removed the Cinnabar and Ocean themes; retained Coral, Indigo, Lotus, Graphite, Mono, Circuit and Dusk.
+- Removed the unused Lotus theme; the theming add-on now ships six focused presets: Coral, Indigo, Graphite, Mono, Circuit and Dusk.
 - Replaced Avenir-first typography with the platform system font stack.
 - Removed the unused runtime compatibility entry; application code uses the 2.0 markup, tokens and services directly.
 - Expanded browser, axe, visual, lifecycle, icon-policy, package and CI gates. All known visual and behavioral differences were approved by the project owner on 2026-08-19.

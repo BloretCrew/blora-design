@@ -292,17 +292,17 @@ test("dark mode keeps a non-default palette after theme changes", async ({ page 
   await page.locator("blora-color-scheme-toggle button").click();
   await expect(page.locator("html")).toHaveAttribute("data-blora-color-scheme", "dark");
   await paletteTrigger.click();
-  await page.locator('[data-blora-palette-option="lotus"]').click();
-  await expect(page.locator("html")).toHaveAttribute("data-blora-theme", "lotus");
+  await page.locator('[data-blora-palette-option="graphite"]').click();
+  await expect(page.locator("html")).toHaveAttribute("data-blora-theme", "graphite");
   const primary = await page.evaluate(() =>
     getComputedStyle(document.documentElement)
       .getPropertyValue("--blora-color-action-primary-default")
       .trim(),
   );
-  expect(primary).toBe("#D18AAA");
+  expect(primary).toBe("#91A5B7");
 });
 
-test("BBBS replica palette picker labels the lotus theme with two characters", async ({ page }) => {
+test("BBBS replica palette picker lists the shipping themes", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 960 });
   await page.goto(pathToFileURL(homePath).href);
   await page.waitForFunction(() => customElements.get("blora-palette-picker"));
@@ -311,7 +311,8 @@ test("BBBS replica palette picker labels the lotus theme with two characters", a
   await page.locator("blora-palette-picker [data-blora-palette-trigger]").click();
   const menu = page.locator(".blora-palette-picker__menu");
   await expect(menu).toBeVisible();
-  await expect(menu).toContainText("莲花");
+  await expect(menu.locator('[data-blora-palette-option="lotus"]')).toHaveCount(0);
+  await expect(menu.locator("[data-blora-palette-option]")).toHaveCount(6);
 });
 
 test("BBBS replica palette menu opens adjacent to its trigger on mobile", async ({ page }) => {

@@ -24,11 +24,6 @@ export const THEME_PRESETS: Record<string, ThemePreset> = {
     description: "",
     colors: ["#F4F5F8", "#405D87", "#55756F", "#A74B52", "#AF8A55"],
   },
-  lotus: {
-    name: "Lotus",
-    description: "",
-    colors: ["#F8F4F6", "#9A466A", "#55786B", "#526078", "#B28A59"],
-  },
   graphite: {
     name: "Graphite",
     description: "",

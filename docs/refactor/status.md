@@ -4,7 +4,7 @@
 
 ## 当前阶段
 
-**Phase 10：Stable 发布** - ✅ **`2.0.0` 已发布，完成最终验收**（stable-core API 已冻结）
+**Phase 10：Stable 发布** - ✅ **`2.0.3` 已发布，完成最终验收**（stable-core API 已冻结）
 
 > **主跟踪文档**：[`remaining-work.md`](./remaining-work.md)  
 > 顺序：**Preflight → Alpha → Beta → RC → Stable**。当前已完成 Stable 发布。
@@ -17,7 +17,7 @@ Showcase v2 已完成 87/87 核心组件目录：正式 API/CE 示例、单视�
 |---|---|---|
 | Phase 0：视觉基线 | ✅ 完成 | 捕获公共 API、生成视觉基线 |
 | Phase 1：Workspace 与门禁 | ✅ 完成 | pnpm workspace、TS strict、lint、test、CI、Showcase、publint |
-| Phase 2：Token | ✅ 完成 | DTCG 三层 token、确定性生成器、7 套主题、对比度门禁 |
+| Phase 2：Token | ✅ 完成 | DTCG 三层 token、确定性生成器、6 套主题、对比度门禁 |
 | Phase 3：Foundations | ✅ 完成 | reset、base、layout、utilities、@layer、RTL、reduced-motion |
 | Phase 4：三个试点组件 | ✅ 完成 | Button -> Dialog -> Select |
 | Phase 5：核心表单和反馈 | ✅ 完成 | Field/Input/Checkbox/Radio/Switch/Tag/Alert/Badge/Progress/Spinner/Skeleton/Message |

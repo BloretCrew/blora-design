@@ -250,7 +250,7 @@ import "@bloret-crew/blora-design-theming";
 - [ ] 表格行选使用内置 `data-blora-selectable`。
 - [ ] 颜色、间距、圆角、阴影、动效和层级使用 Blora token。
 - [ ] 图标使用 `createBloraIcon()` 或官方 Lucide SVG。
-- [ ] 七套主题、明暗模式、RTL、reduced-motion 和移动视口通过验证。
+- [ ] 六套主题、明暗模式、RTL、reduced-motion 和移动视口通过验证。
 - [ ] 键盘、焦点、Escape、outside close、表单错误和 loading/empty/error 状态通过验证。
 - [ ] Chromium、移动 Chromium、Firefox、WebKit 和已约定的 Safari 人工路径通过验证。
 - [ ] `pnpm verify`、axe 和视觉回归通过。

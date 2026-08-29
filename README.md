@@ -79,7 +79,7 @@ window.addEventListener("pagehide", () => controller.destroy(), { once: true });
 ## 设计系统能力
 
 - 87 个核心组件；
-- 7 套主题和明暗模式；
+- 6 套主题和明暗模式；
 - Composite Custom Element 默认结构；
 - Table / Form 等开放 DOM controller；
 - i18n locale pack；

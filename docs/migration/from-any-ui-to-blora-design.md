@@ -614,10 +614,10 @@ applyTheme("coral");
 applyColorScheme("dark");
 ```
 
-所有七套主题都必须检查：
+所有六套主题都必须检查：
 
 ```text
-coral / indigo / lotus / graphite / mono / circuit / dusk
+coral / indigo / graphite / mono / circuit / dusk
 ```
 
 ### 8.2 语言
@@ -733,7 +733,7 @@ coral / indigo / lotus / graphite / mono / circuit / dusk
 - [ ] 页面使用 `blora.css` 或官方组件 CSS；
 - [ ] 颜色、间距、圆角、阴影、动效和层级使用 token；
 - [ ] 没有旧框架组件主题覆盖；
-- [ ] 组件状态和页面布局在七套主题中一致；
+- [ ] 组件状态和页面布局在六套主题中一致；
 - [ ] 首尾圆角、裁切容器、浮层边界和焦点环均完整；
 - [ ] 移动端没有横向溢出；
 - [ ] 视觉结果与 Showcase v2 和冻结基线一致，允许的差异已记录。

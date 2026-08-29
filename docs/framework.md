@@ -65,7 +65,7 @@ window.addEventListener("pagehide", () => controller.destroy(), { once: true });
 - 颜色、间距、圆角、阴影、动效和层级使用 `--blora-*` token。
 - 操作、状态和导航图标使用 `createBloraIcon()` 或官方组件生成的 Lucide SVG。
 - 不使用 Emoji、图标字体或文本字符冒充图标。
-- 所有七套主题、明暗模式、RTL、reduced-motion 和移动视口都要验证。
+- 所有六套主题、明暗模式、RTL、reduced-motion 和移动视口都要验证。
 
 ## 框架接入原则
 
