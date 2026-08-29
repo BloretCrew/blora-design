@@ -4,8 +4,8 @@
 
 ## 当前状态
 
-- Stable 版本：`2.0.0`
-- npm `latest`：`2.0.0`
+- Stable 版本：`2.0.1`
+- npm `latest`：`2.0.1`
 - 核心组件：87 个
 - 官方 add-on：Markdown、Thread、QRCode、Effects、Layout、Theming
 - 稳定核心 API：已冻结

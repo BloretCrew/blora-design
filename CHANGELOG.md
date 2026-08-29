@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+## 2.0.1
+
+### Fixed
+
+- Added top placement and custom trigger support to Dropdown.
+- Added icon-only Palette Picker triggers.
+- Aligned BBBS profile, theme, color-scheme and notification controls.
+- Changed active Sidebar Navigation links to use theme-colored text without a resting background; hover still shows the surface background.
+- Added Cascader-based post target selection to the BBBS replica.
+
 Beta follows a defect-first cadence. Public stable-core exports are frozen from `2.0.0-beta.0`; beta contracts and explicitly experimental surfaces may still change with migration notes.
 
 RC closeout on 2026-08-27: Firefox and WebKit full browser suites passed 87/87 each; npm consumer, CDN, CSP, SSR import and rollback rehearsal evidence is recorded in `docs/refactor/rc-release-rehearsal.md`.

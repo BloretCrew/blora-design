@@ -336,7 +336,7 @@ describe("showcase-v2 full component catalog", () => {
       .map((name) => JSON.parse(readFileSync(resolve(contractsRoot, name), "utf8"))).length;
     const remaining = readFileSync(remainingWorkPath, "utf8");
     expect(remaining).toContain(`核心组件：${coreCount} 个`);
-    expect(remaining).toContain("Stable 版本：`2.0.0`");
+    expect(remaining).toMatch(/Stable 版本：`2\.0\.\d+`/);
   });
 
   it("uses official Tabs CE for every Preview/HTML switch", () => {
