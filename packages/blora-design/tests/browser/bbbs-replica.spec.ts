@@ -280,6 +280,28 @@ test("BBBS replica segmented item focus ring is inset so it is not clipped", asy
   expect(state.outlineOffset).toBe("-2px");
 });
 
+test("dark mode keeps a non-default palette after theme changes", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 960 });
+  await page.goto(pathToFileURL(homePath).href);
+  await page.waitForFunction(() => customElements.get("blora-palette-picker"));
+  await page.waitForTimeout(300);
+
+  const paletteTrigger = page.locator("blora-palette-picker [data-blora-palette-trigger]");
+  await paletteTrigger.click();
+  await page.locator('[data-blora-palette-option="indigo"]').click();
+  await page.locator("blora-color-scheme-toggle button").click();
+  await expect(page.locator("html")).toHaveAttribute("data-blora-color-scheme", "dark");
+  await paletteTrigger.click();
+  await page.locator('[data-blora-palette-option="lotus"]').click();
+  await expect(page.locator("html")).toHaveAttribute("data-blora-theme", "lotus");
+  const primary = await page.evaluate(() =>
+    getComputedStyle(document.documentElement)
+      .getPropertyValue("--blora-color-action-primary-default")
+      .trim(),
+  );
+  expect(primary).toBe("#D18AAA");
+});
+
 test("BBBS replica palette picker labels the lotus theme with two characters", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 960 });
   await page.goto(pathToFileURL(homePath).href);

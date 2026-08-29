@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## Unreleased`r`n`r`n## 2.0.2`r`n`r`n### Fixed`r`n`r`n- Fixed dark-mode theme switching so selected palettes are not overridden by the generic dark token set.`r`n
 
 ## 2.0.1
 

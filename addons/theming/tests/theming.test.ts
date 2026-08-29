@@ -29,6 +29,13 @@ describe("theming add-on", () => {
     expect(getTheme()).toBe("indigo");
   });
 
+  it("keeps the selected theme when switching to dark mode", () => {
+    applyTheme("indigo", document.documentElement, { persist: false, emit: false });
+    applyColorScheme("dark", document.documentElement, { persist: false, emit: false });
+    expect(getTheme()).toBe("indigo");
+    expect(document.documentElement.getAttribute("data-blora-theme")).toBe("indigo");
+  });
+
   it("palette picker supports an icon-only trigger without removing the menu", () => {
     document.body.innerHTML = `<blora-palette-picker icon-only></blora-palette-picker>`;
     const picker = document.querySelector("blora-palette-picker")!;
