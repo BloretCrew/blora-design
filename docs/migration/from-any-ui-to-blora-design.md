@@ -971,7 +971,10 @@ import "@bloret-crew/blora-design/auto";
 ### Copy（copy）
 
 ```html
-<blora-copy value="npm install @bloret-crew/blora-design" label="复制安装命令"></blora-copy>
+<blora-copy text="npm install @bloret-crew/blora-design" label="复制安装命令"></blora-copy>
+
+<!-- Sensitive values stay copyable while their display is masked by default. -->
+<blora-copy text="sk_live_7f3a9c2d" masked label="复制 API Key"></blora-copy>
 ```
 
 ### Datepicker（datepicker）

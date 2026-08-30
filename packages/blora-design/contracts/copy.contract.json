@@ -14,6 +14,10 @@
     },
     "label": {
       "type": "string"
+    },
+    "masked": {
+      "type": "boolean",
+      "default": false
     }
   },
   "properties": {},
@@ -23,6 +27,11 @@
     }
   },
   "events": {},
+  "classes": {
+    "blora-copy": "Copy value and action group.",
+    "blora-copy__btn": "Copy action button.",
+    "blora-copy__reveal-btn": "Toggle masked value visibility."
+  },
   "slots": {
     "default": "Content"
   },

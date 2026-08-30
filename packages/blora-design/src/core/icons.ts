@@ -37,6 +37,7 @@ export type BloraIconName =
   | "document-add"
   | "ellipsis"
   | "eye"
+  | "eye-off"
   | "flame"
   | "folder"
   | "grip"

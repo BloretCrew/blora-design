@@ -1,11 +1,11 @@
 # Blora Design 2.0 发布与维护状态
 
-> 这是 2.0 Stable 的发布记录和后续维护边界。当前版本为 `2.0.4`，所有计划内发布工作已经完成。
+> 这是 2.0 Stable 的发布记录和后续维护边界。当前版本为 `2.0.5`，所有计划内发布工作已经完成。
 
 ## 当前状态
 
-- Stable 版本：`2.0.4`
-- npm `latest`：`2.0.4`
+- Stable 版本：`2.0.5`
+- npm `latest`：`2.0.5`
 - 核心组件：87 个
 - 官方 add-on：Markdown、Thread、QRCode、Effects、Layout、Theming
 - 稳定核心 API：已冻结

@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.5
+
+### Added
+
+- Added native masked Copy support with a reveal button; masked values remain fully copyable while hidden.
+
 ## 2.0.4
 
 ### Fixed

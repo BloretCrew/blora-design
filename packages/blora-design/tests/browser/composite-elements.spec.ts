@@ -512,6 +512,7 @@ test("Action and status composite CEs own structure and update state", async ({ 
     htmlPage(`
       <blora-backtop id="backtop" show-after="80"></blora-backtop>
       <blora-copy id="copy" text="npm i blora"></blora-copy>
+      <blora-copy id="masked-copy" text="sk_live_7f3a9c2d" masked label="Copy API key"></blora-copy>
       <blora-progress id="progress" label="Upload" value="30"></blora-progress>
       <blora-pagination id="pagination" page="1" total="5"></blora-pagination>
       <blora-color-picker id="picker" value="#3B82F6"></blora-color-picker>
@@ -520,7 +521,25 @@ test("Action and status composite CEs own structure and update state", async ({ 
 
   await expect(page.locator("#backtop .blora-backtop svg")).toHaveCount(1);
   await expect(page.locator("#copy .blora-code")).toHaveText("npm i blora");
+  await expect(page.locator("#masked-copy .blora-code")).not.toHaveText("sk_live_7f3a9c2d");
+  await expect(page.locator("#masked-copy .blora-copy__reveal-btn")).toHaveAttribute(
+    "aria-label",
+    "Show value",
+  );
+  await expect(page.locator("#masked-copy .blora-copy")).toHaveAttribute(
+    "data-blora-copy",
+    "sk_live_7f3a9c2d",
+  );
+  await page.locator("#masked-copy .blora-copy__btn").click();
+  await expect(page.locator("#masked-copy .blora-copy")).toHaveAttribute("data-copied", "");
+  await page.locator("#masked-copy .blora-copy__reveal-btn").click();
+  await expect(page.locator("#masked-copy .blora-code")).toHaveText("sk_live_7f3a9c2d");
+  await expect(page.locator("#masked-copy .blora-copy__reveal-btn")).toHaveAttribute(
+    "aria-label",
+    "Hide value",
+  );
   await page
+
     .locator("#progress")
     .evaluate((host) => (host as HTMLElement & { setValue(value: number): void }).setValue(65));
   await expect(page.locator("#progress .blora-progress__fill")).toHaveCSS("width", /.+/);

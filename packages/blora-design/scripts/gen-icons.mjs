@@ -39,6 +39,7 @@ const ICON_MAP = {
   "document-add": "file-plus",
   ellipsis: "ellipsis",
   eye: "eye",
+  "eye-off": "eye-off",
   flame: "flame",
   folder: "folder",
   grip: "grip",

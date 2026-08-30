@@ -99,6 +99,8 @@ export const zhCN: BloraLocalePack = {
     "command.placeholder": "输入命令或搜索...",
     "command.clear": "清除",
     "copy.label": "复制",
+    "copy.show": "显示内容",
+    "copy.hide": "隐藏内容",
     "datepicker.pick": "选择日期",
     "timepicker.pick": "选择时间",
     "timepicker.hour": "时",

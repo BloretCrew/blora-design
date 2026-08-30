@@ -112,6 +112,8 @@ export const en: BloraLocalePack = {
     "command.placeholder": "Type a command or search…",
     "command.clear": "Clear",
     "copy.label": "Copy",
+    "copy.show": "Show value",
+    "copy.hide": "Hide value",
     "datepicker.pick": "Choose date",
     "timepicker.pick": "Choose time",
     "timepicker.hour": "Hour",

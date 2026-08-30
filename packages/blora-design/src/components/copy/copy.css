@@ -20,7 +20,8 @@ blora-copy {
 }
 
 .blora-copy__btn,
-.blora-typo-copy__btn {
+.blora-typo-copy__btn,
+.blora-copy__reveal-btn {
   flex: none;
   border: 0;
   background: transparent;
@@ -37,13 +38,15 @@ blora-copy {
 }
 
 .blora-copy__btn:hover,
-.blora-typo-copy__btn:hover {
+.blora-typo-copy__btn:hover,
+.blora-copy__reveal-btn:hover {
   color: var(--blora-color-action-primary-default);
   background: color-mix(in srgb, var(--blora-color-action-primary-default) 12%, transparent);
 }
 
 .blora-copy__btn svg,
-.blora-typo-copy__btn svg {
+.blora-typo-copy__btn svg,
+.blora-copy__reveal-btn svg {
   width: 14px;
   height: 14px;
   display: block;
