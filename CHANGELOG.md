@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Fixed
+
+- Fixed Steps layout with long copy: equal flex columns no longer collapse under `white-space: nowrap`, step spacing uses margins so every column keeps the same width, and the narrow-container vertical layout actually applies (the container query previously could not restyle its own container).
+
 ## 2.0.3
 
 ### Changed

@@ -14,6 +14,7 @@ const globalCss = [
   "components/accordion/accordion.css",
   "components/collapse/collapse.css",
   "components/sidebar-nav/sidebar-nav.css",
+  "components/steps/steps.css",
 ]
   .map((file) => readFileSync(resolve(import.meta.dirname, "..", "..", "dist", file), "utf8"))
   .join("\n");
@@ -85,6 +86,78 @@ test("Sidebar Navigation owns grouped links and current-page state", async ({ pa
       () => (globalThis as typeof globalThis & { sidebarNavChange?: unknown }).sidebarNavChange,
     ),
   ).toEqual({ href: "#collapse", value: "collapse" });
+});
+
+test("Steps keeps equal column widths and wraps long descriptions", async ({ page }) => {
+  await page.setContent(
+    styledHtmlPage(`
+      <div style="max-width: 40rem">
+        <blora-steps id="steps" current="1">
+          <blora-step title="选择方案" description="免费版每位用户每天最多 200 次 AI 请求，超出后需要等待次日重置。"></blora-step>
+          <blora-step title="创建应用" description="填写应用名称、描述与回调地址。"></blora-step>
+          <blora-step title="接入完成" description="使用客户端密钥开始调用。"></blora-step>
+        </blora-steps>
+      </div>
+    `),
+  );
+
+  const steps = page.locator("#steps .blora-step");
+  await expect(steps).toHaveCount(3);
+
+  const widths = await steps.evaluateAll((items) =>
+    items.map((item) => item.getBoundingClientRect().width),
+  );
+  expect(widths[0]).toBeGreaterThan(0);
+  expect(Math.abs(widths[0] - widths[1])).toBeLessThan(1);
+  expect(Math.abs(widths[1] - widths[2])).toBeLessThan(1);
+
+  const desc = steps.nth(0).locator(".blora-step__desc");
+  expect(await desc.evaluate((node) => getComputedStyle(node).whiteSpace)).toBe("normal");
+  const lineCount = await desc.evaluate((node) => {
+    const range = document.createRange();
+    range.selectNodeContents(node);
+    return range.getClientRects().length;
+  });
+  expect(lineCount).toBeGreaterThan(1);
+
+  const overflow = await page
+    .locator("#steps")
+    .evaluate((root) => root.scrollWidth - root.clientWidth);
+  expect(overflow).toBeLessThanOrEqual(1);
+});
+
+test("Steps switches to stacked vertical layout in narrow containers", async ({ page }) => {
+  await page.setContent(
+    styledHtmlPage(`
+      <div style="max-width: 380px">
+        <blora-steps id="steps-narrow" current="1">
+          <blora-step title="选择方案" description="免费版每位用户每天最多 200 次 AI 请求，超出后需要等待次日重置。"></blora-step>
+          <blora-step title="创建应用" description="填写应用名称、描述与回调地址。"></blora-step>
+          <blora-step title="接入完成" description="使用客户端密钥开始调用。"></blora-step>
+        </blora-steps>
+      </div>
+    `),
+  );
+
+  const steps = page.locator("#steps-narrow .blora-step");
+  await expect(steps).toHaveCount(3);
+
+  const boxes = await steps.evaluateAll((items) =>
+    items.map((item) => {
+      const rect = item.getBoundingClientRect();
+      return { top: rect.top, width: rect.width };
+    }),
+  );
+  expect(boxes[1].top).toBeGreaterThan(boxes[0].top);
+  expect(boxes[2].top).toBeGreaterThan(boxes[1].top);
+  for (const box of boxes) {
+    expect(Math.abs(box.width - 380)).toBeLessThan(1);
+  }
+
+  const overflow = await page
+    .locator("#steps-narrow")
+    .evaluate((root) => root.scrollWidth - root.clientWidth);
+  expect(overflow).toBeLessThanOrEqual(1);
 });
 
 test("Composite CE mounts official light DOM and search clear works", async ({ page }) => {
