@@ -15,6 +15,7 @@ const globalCss = [
   "components/collapse/collapse.css",
   "components/sidebar-nav/sidebar-nav.css",
   "components/steps/steps.css",
+  "components/input/input.css",
 ]
   .map((file) => readFileSync(resolve(import.meta.dirname, "..", "..", "dist", file), "utf8"))
   .join("\n");
@@ -505,6 +506,35 @@ test("Overlay composite CEs open, close and emit their public events", async ({ 
   await expect(page.locator("#drawer .blora-drawer")).not.toHaveAttribute("data-open", "", {
     timeout: 1_000,
   });
+});
+
+test("Input supports a compact small size without changing the default size", async ({ page }) => {
+  await page.setContent(
+    styledHtmlPage(`
+      <input id="default-input" class="blora-input" value="默认尺寸" />
+      <input id="small-input" class="blora-input" data-size="sm" value="小号尺寸" />
+    `),
+  );
+
+  const sizes = await page.evaluate(() =>
+    ["default-input", "small-input"].map((id) => {
+      const input = document.getElementById(id) as HTMLInputElement;
+      const style = getComputedStyle(input);
+      return {
+        id,
+        width: input.getBoundingClientRect().width,
+        height: input.getBoundingClientRect().height,
+        fontSize: style.fontSize,
+        paddingBlock: style.paddingBlock,
+        borderRadius: style.borderRadius,
+      };
+    }),
+  );
+  expect(sizes[1].height).toBeLessThan(sizes[0].height);
+  expect(sizes[1].fontSize).toBe("12px");
+  expect(sizes[1].paddingBlock).toBe("4.8px");
+  expect(sizes[1].borderRadius).not.toBe(sizes[0].borderRadius);
+  await expect(page.locator("#small-input")).toHaveValue("小号尺寸");
 });
 
 test("Action and status composite CEs own structure and update state", async ({ page }) => {

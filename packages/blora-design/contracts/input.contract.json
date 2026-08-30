@@ -6,7 +6,12 @@
   "since": "2.0.0",
   "requiresJavaScript": false,
   "formAssociated": true,
-  "attributes": {},
+  "attributes": {
+    "data-size": {
+      "type": "\"sm\"",
+      "reflects": true
+    }
+  },
   "properties": {},
   "methods": {},
   "events": {},

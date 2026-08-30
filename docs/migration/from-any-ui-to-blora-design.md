@@ -1166,6 +1166,9 @@ import "@bloret-crew/blora-design/auto";
   <span class="blora-field__label">项目名称</span>
   <input class="blora-input" type="text" name="project" />
 </label>
+
+<!-- Use the compact size for dense inline editing, such as a key name. -->
+<input class="blora-input" data-size="sm" type="text" name="keyName" />
 ```
 
 ### Join（join）

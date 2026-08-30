@@ -24,6 +24,12 @@
   color: var(--blora-color-text-disabled);
 }
 
+.blora-input[data-size="sm"] {
+  padding: 0.4em 0.7em;
+  font-size: var(--blora-text-xs);
+  border-radius: var(--blora-radius-md);
+}
+
 .blora-input:hover {
   border-color: var(--blora-color-text-subtle);
 }

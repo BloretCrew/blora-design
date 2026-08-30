@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.6
+
+### Added
+
+- Added `data-size="sm"` for compact `.blora-input` fields.
+
 ## 2.0.5
 
 ### Added
