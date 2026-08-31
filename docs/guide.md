@@ -1,6 +1,6 @@
 # Blora Design 2.0 · 使用与迁移指南
 
-> **面向 Blora Design 2.0 Stable（当前 `2.0.0`）**。展示型内容使用官方 class 和语义 HTML，结构敏感交互使用 Composite Custom Element，开放数据 DOM 使用公开 headless controller。
+> **面向 Blora Design 2.0 Stable（当前 `2.0.6`）**。展示型内容使用官方 class 和语义 HTML，结构敏感交互使用 Composite Custom Element，开放数据 DOM 使用公开 headless controller。
 > 设计令牌见 [`standards.md`](./standards.md)。完整迁移规范见 [`migration/from-any-ui-to-blora-design.md`](./migration/from-any-ui-to-blora-design.md)。组件契约见 `packages/blora-design/contracts/*.contract.json`。交互示例见 `examples/showcase-v2/`。
 
 ---
@@ -11,8 +11,9 @@
 2. [全局约定](#2-全局约定)
 3. [常用组件写法](#3-常用组件写法)
 4. [Add-on 包](#4-add-on-包)
-5. [完整跨框架迁移规范](./migration/from-any-ui-to-blora-design.md)
-6. [验收清单](#6-验收清单)
+5. [主题首屏与表单可访问性](#5-主题首屏与表单可访问性)
+6. [完整跨框架迁移规范](./migration/from-any-ui-to-blora-design.md)
+7. [验收清单](#7-验收清单)
 
 ---
 
@@ -234,13 +235,36 @@ import "@bloret-crew/blora-design-theming";
 
 ---
 
-## 5. 完整跨框架迁移规范
+## 5. 主题首屏与表单可访问性
+
+如果页面从本地存储恢复主题，必须在所有 Blora CSS 之前执行 Theming add-on 的阻塞式启动脚本，避免首屏先按系统主题绘制：
+
+在服务端模板或构建阶段生成 `<head>` 内容：
+
+```ts
+import { getThemeBootScript } from "@bloret-crew/blora-design-theming";
+
+const themeBootScript = getThemeBootScript();
+// 将 themeBootScript 作为普通同步 <script> 的内容输出到所有 Blora CSS 之前。
+```
+
+生成的 HTML 顺序必须是：
+
+```html
+<script>/* themeBootScript */</script>
+<link rel="stylesheet" href="/node_modules/@bloret-crew/blora-design-theming/theming.css">
+<link rel="stylesheet" href="/node_modules/@bloret-crew/blora-design/blora.css">
+```
+
+脚本应作为普通同步脚本输出在 `<head>` 中，不能等 `type="module"` 或自定义元素升级后再执行。表单字段优先使用 `<blora-field>`；它会自动关联 label、hint、error，并在错误状态下同步 `aria-invalid`。
+
+## 6. 完整跨框架迁移规范
 
 请按 [`migration/from-any-ui-to-blora-design.md`](./migration/from-any-ui-to-blora-design.md) 执行。文档覆盖 Bootstrap、Tailwind、Ant Design、Element Plus、Naive UI、Vuetify、MUI、PrimeVue、shadcn/ui、React、Vue、Svelte、Angular 和手写 UI，并包含 87 个核心组件示例、21 个 add-on 能力示例、npm-only 规则和最终验收清单。
 
 ---
 
-## 6. 验收清单
+## 7. 验收清单
 
 - [ ] 所有依赖来自已发布 npm 包，不引用仓库 `src/`，不复制组件源码。
 - [ ] 组件清单中已有能力全部改用对应 Blora 组件或官方基础模式。

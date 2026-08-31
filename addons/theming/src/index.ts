@@ -48,6 +48,17 @@ export const THEME_PRESETS: Record<string, ThemePreset> = {
 
 const STORAGE_KEY = "blora-theme";
 
+/**
+ * Return a blocking inline script for the document head. It restores the
+ * persisted theme before the first stylesheet can paint.
+ */
+export function getThemeBootScript(): string {
+  const themes = JSON.stringify(Object.keys(THEME_PRESETS));
+  const themeKey = JSON.stringify(STORAGE_KEY);
+  const schemeKey = JSON.stringify(SCHEME_KEY);
+  return `(function(){var r=document.documentElement,t=${themes},s="coral",c="light";try{var saved=localStorage.getItem(${themeKey});if(saved&&t.indexOf(saved)!==-1)s=saved;var storedScheme=localStorage.getItem(${schemeKey});if(storedScheme==="dark"||storedScheme==="light")c=storedScheme;}catch(e){}r.setAttribute("data-blora-theme",s);r.setAttribute("data-blora-color-scheme",c);r.style.colorScheme=c;}());`;
+}
+
 export function getTheme(el: HTMLElement = document.documentElement): string {
   return el.getAttribute("data-blora-theme") || "coral";
 }

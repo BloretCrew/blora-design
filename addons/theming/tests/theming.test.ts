@@ -6,6 +6,7 @@ import {
   THEME_PRESETS,
   applyColorScheme,
   getColorScheme,
+  getThemeBootScript,
 } from "../src/index.js";
 
 describe("theming add-on", () => {
@@ -22,6 +23,14 @@ describe("theming add-on", () => {
     expect(Object.keys(THEME_PRESETS).sort()).toEqual(
       ["circuit", "coral", "dusk", "graphite", "indigo", "mono"].sort(),
     );
+  });
+
+  it("generates a blocking theme boot script", () => {
+    const script = getThemeBootScript();
+    expect(script).toContain("localStorage");
+    expect(script).toContain("data-blora-theme");
+    expect(script).toContain("data-blora-color-scheme");
+    expect(script).toContain("style.colorScheme");
   });
 
   it("applyTheme sets data-blora-theme", () => {

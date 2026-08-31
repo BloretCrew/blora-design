@@ -96,5 +96,6 @@
   },
   "parts": [],
   "cssProperties": [],
-  "accessibilityPattern": "input"
+  "accessibilityPattern": "input",
+  "accessibilityNotes": "The generated control receives aria-invalid when invalid and aria-describedby references for generated hint and error content."
 }

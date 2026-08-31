@@ -537,6 +537,31 @@ test("Input supports a compact small size without changing the default size", as
   await expect(page.locator("#small-input")).toHaveValue("小号尺寸");
 });
 
+test("Field associates hint and error feedback with its control", async ({ page }) => {
+  await page.setContent(
+    htmlPage(`
+      <blora-field
+        id="profile-name"
+        label="Name"
+        hint="Use your display name."
+        error="Name is required."
+      ></blora-field>
+    `),
+  );
+
+  const control = page.locator("#profile-name input");
+  const hint = page.locator("#profile-name .blora-field__help");
+  const error = page.locator("#profile-name .blora-field__error");
+  await expect(control).toHaveAttribute("aria-invalid", "true");
+  const describedBy = await control.getAttribute("aria-describedby");
+  expect(describedBy).toContain(await hint.getAttribute("id"));
+  expect(describedBy).toContain(await error.getAttribute("id"));
+
+  await page.locator("#profile-name").evaluate((host) => host.removeAttribute("error"));
+  await expect(control).not.toHaveAttribute("aria-invalid");
+  await expect(control).toHaveAttribute("aria-describedby", /profile-name-control-hint/);
+});
+
 test("Action and status composite CEs own structure and update state", async ({ page }) => {
   await page.setContent(
     htmlPage(`

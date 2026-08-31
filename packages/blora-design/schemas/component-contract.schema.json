@@ -44,6 +44,9 @@
     "formAssociated": {
       "type": "boolean"
     },
+    "accessibilityNotes": {
+      "type": "string"
+    },
     "attributes": {
       "type": "object",
       "additionalProperties": {

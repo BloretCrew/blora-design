@@ -18,6 +18,7 @@
   "methods": {
     "applyTheme": {},
     "getTheme": {},
-    "bootThemeFromStorage": {}
+    "bootThemeFromStorage": {},
+    "getThemeBootScript": {}
   }
 }

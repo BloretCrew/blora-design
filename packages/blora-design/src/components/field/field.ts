@@ -168,12 +168,16 @@ export class BloraField extends BloraElement {
     root.dataset.bloraGenerated = "";
     const state = this.getAttribute("state") ?? (this.hasAttribute("error") ? "invalid" : null);
     if (state === "invalid" || state === "valid") root.dataset.state = state;
+    const hintText = this.getAttribute("hint") ?? "";
+    const errorText = this.getAttribute("error") ?? "";
+    const id = this.id ? `${this.id}-control` : this.controlId;
+    const hintId = `${id}-hint`;
+    const errorId = `${id}-error`;
     const layout = this.getAttribute("layout");
     if (layout === "horizontal") root.dataset.layout = layout;
     const validate = this.getAttribute("validate");
     if (validate) root.dataset.bloraValidate = validate;
 
-    const id = this.id ? `${this.id}-control` : this.controlId;
     const labelText = this.getAttribute("label");
     if (labelText) {
       const label = this.ownerDocument.createElement("label");
@@ -196,6 +200,11 @@ export class BloraField extends BloraElement {
     control.required = this.hasAttribute("required");
     control.disabled = this.hasAttribute("disabled");
     control.readOnly = this.hasAttribute("readonly");
+    if (state === "invalid" || errorText) control.setAttribute("aria-invalid", "true");
+    const describedBy: string[] = [];
+    if (hintText) describedBy.push(hintId);
+    if (errorText) describedBy.push(errorId);
+    if (describedBy.length) control.setAttribute("aria-describedby", describedBy.join(" "));
     const limit = this.getAttribute("limit");
     if (limit) control.dataset.limit = limit;
     const minlength = this.getAttribute("minlength");
@@ -206,15 +215,15 @@ export class BloraField extends BloraElement {
     if (pattern && control instanceof HTMLInputElement) control.pattern = pattern;
     root.appendChild(control);
 
-    const hintText = this.getAttribute("hint");
     if (hintText) {
       const hint = this.ownerDocument.createElement("span");
+      hint.id = hintId;
       hint.className = "blora-field__help";
       hint.textContent = hintText;
       root.appendChild(hint);
     }
-    const errorText = this.getAttribute("error") ?? "";
     const error = this.ownerDocument.createElement("span");
+    error.id = errorId;
     error.className = "blora-field__error";
     if (errorText) {
       error.textContent = errorText;
@@ -230,6 +239,11 @@ export class BloraField extends BloraElement {
     const control = root?.querySelector<HTMLInputElement | HTMLTextAreaElement>("input, textarea");
     if (!root || !control) return;
     const state = this.getAttribute("state") ?? (this.hasAttribute("error") ? "invalid" : null);
+    const hintText = this.getAttribute("hint") ?? "";
+    const errorText = this.getAttribute("error") ?? "";
+    const id = this.id ? `${this.id}-control` : this.controlId;
+    const hintId = `${id}-hint`;
+    const errorId = `${id}-error`;
     if (state === "invalid" || state === "valid") root.dataset.state = state;
     else delete root.dataset.state;
     const layout = this.getAttribute("layout");
@@ -251,6 +265,13 @@ export class BloraField extends BloraElement {
     control.required = this.hasAttribute("required");
     control.disabled = this.hasAttribute("disabled");
     control.readOnly = this.hasAttribute("readonly");
+    if (state === "invalid" || errorText) control.setAttribute("aria-invalid", "true");
+    else control.removeAttribute("aria-invalid");
+    const describedBy: string[] = [];
+    if (hintText) describedBy.push(hintId);
+    if (errorText) describedBy.push(errorId);
+    if (describedBy.length) control.setAttribute("aria-describedby", describedBy.join(" "));
+    else control.removeAttribute("aria-describedby");
     const limit = this.getAttribute("limit");
     if (limit) control.dataset.limit = limit;
     else delete control.dataset.limit;
@@ -263,23 +284,24 @@ export class BloraField extends BloraElement {
     const pattern = this.getAttribute("pattern");
     if (pattern && control instanceof HTMLInputElement) control.pattern = pattern;
     else if (control instanceof HTMLInputElement) control.removeAttribute("pattern");
-    const hintText = this.getAttribute("hint") ?? "";
     let hint = root.querySelector<HTMLElement>(".blora-field__help");
     if (hintText) {
       if (!hint) {
         hint = this.ownerDocument.createElement("span");
+        hint.id = hintId;
         hint.className = "blora-field__help";
         const errorNode = root.querySelector(".blora-field__error");
         if (errorNode) root.insertBefore(hint, errorNode);
         else root.appendChild(hint);
       }
       hint.textContent = hintText;
+      hint.id = hintId;
     } else {
       hint?.remove();
     }
     const error = root.querySelector<HTMLElement>(".blora-field__error");
     if (error) {
-      const errorText = this.getAttribute("error") ?? "";
+      error.id = errorId;
       error.textContent = errorText;
       error.hidden = !errorText;
     }
