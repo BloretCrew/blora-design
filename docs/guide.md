@@ -1,6 +1,6 @@
 # Blora Design 2.0 · 使用与迁移指南
 
-> **面向 Blora Design 2.0 Stable（当前 `2.0.6`）**。展示型内容使用官方 class 和语义 HTML，结构敏感交互使用 Composite Custom Element，开放数据 DOM 使用公开 headless controller。
+> **面向 Blora Design 2.0 Stable（当前 `2.0.7`）**。展示型内容使用官方 class 和语义 HTML，结构敏感交互使用 Composite Custom Element，开放数据 DOM 使用公开 headless controller。
 > 设计令牌见 [`standards.md`](./standards.md)。完整迁移规范见 [`migration/from-any-ui-to-blora-design.md`](./migration/from-any-ui-to-blora-design.md)。组件契约见 `packages/blora-design/contracts/*.contract.json`。交互示例见 `examples/showcase-v2/`。
 
 ---

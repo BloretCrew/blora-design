@@ -4,7 +4,7 @@
 >
 > 本规范的目标是：迁移后，所有 Blora Design 已经覆盖的界面能力都使用 Blora 官方组件、基础模式或公开服务；业务代码不重复实现同一组件，不引入第二套组件视觉，不使用未经过 Blora 统一的裸原生交互控件。
 >
-> **当前稳定版本**：`2.0.6`
+> **当前稳定版本**：`2.0.7`
 > **推荐入口**：[`docs/guide.md`](../guide.md)
 > **交互真值**：[`examples/showcase-v2/`](../../examples/showcase-v2/)
 > **组件清单**：[`component-manifest.json`](../../packages/blora-design/component-manifest.json)
@@ -1004,7 +1004,7 @@ import "@bloret-crew/blora-design/auto";
   </div>
   <div>
     <dt>版本</dt>
-    <dd>2.0.6</dd>
+    <dd>2.0.7</dd>
   </div>
 </dl>
 ```

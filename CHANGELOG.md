@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.7
+
+### Fixed
+
+- Included the migration feedback improvements: Field accessibility associations and the blocking theme boot helper.
+
 ## 2.0.6
 
 ### Added
