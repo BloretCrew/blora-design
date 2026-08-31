@@ -1004,7 +1004,7 @@ import "@bloret-crew/blora-design/auto";
   </div>
   <div>
     <dt>版本</dt>
-    <dd>2.0.7</dd>
+    <dd>2.0.8</dd>
   </div>
 </dl>
 ```
@@ -1086,7 +1086,7 @@ import "@bloret-crew/blora-design/auto";
 ### Field（field）
 
 ```html
-<blora-field label="项目名称" name="project" required hint="最多 40 个字符">
+<blora-field label="项目名称" name="project" required hint="最多 40 个字符" autocomplete="off">
   <input class="blora-input" maxlength="40" />
 </blora-field>
 ```

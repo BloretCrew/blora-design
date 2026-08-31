@@ -4,7 +4,7 @@
 
 ## 当前阶段
 
-**Phase 10：Stable 发布** - ✅ **`2.0.7` 已发布，完成最终验收**（stable-core API 已冻结）
+**Phase 10：Stable 发布** - ✅ **`2.0.8` 已发布，完成最终验收**（stable-core API 已冻结）
 
 > **主跟踪文档**：[`remaining-work.md`](./remaining-work.md)  
 > 顺序：**Preflight → Alpha → Beta → RC → Stable**。当前已完成 Stable 发布。

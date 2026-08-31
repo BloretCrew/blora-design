@@ -925,6 +925,7 @@ copy.textContent = "****************";
 ### 已纳入本轮框架改进
 
 - `blora-field` 自动生成稳定的 hint/error ID，并同步 `aria-describedby` 与 `aria-invalid`；
+- `blora-field` 透传 `autocomplete`、`inputmode`、`aria-label`、`autocapitalize`、`spellcheck` 和 `enterkeyhint` 等原生输入语义属性；
 - Theming add-on 提供 `getThemeBootScript()`，用于在 CSS 首次绘制前恢复主题和明暗模式；
 - 使用指南和迁移规范补充首屏主题启动方式，并更新当前 npm 稳定版本；
 - 保留并继续覆盖 Copy 掩码、Input 小号和 Steps 长文本/窄容器回归测试。

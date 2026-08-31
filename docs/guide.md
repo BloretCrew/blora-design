@@ -1,6 +1,6 @@
 # Blora Design 2.0 · 使用与迁移指南
 
-> **面向 Blora Design 2.0 Stable（当前 `2.0.7`）**。展示型内容使用官方 class 和语义 HTML，结构敏感交互使用 Composite Custom Element，开放数据 DOM 使用公开 headless controller。
+> **面向 Blora Design 2.0 Stable（当前 `2.0.8`）**。展示型内容使用官方 class 和语义 HTML，结构敏感交互使用 Composite Custom Element，开放数据 DOM 使用公开 headless controller。
 > 设计令牌见 [`standards.md`](./standards.md)。完整迁移规范见 [`migration/from-any-ui-to-blora-design.md`](./migration/from-any-ui-to-blora-design.md)。组件契约见 `packages/blora-design/contracts/*.contract.json`。交互示例见 `examples/showcase-v2/`。
 
 ---
@@ -256,7 +256,7 @@ const themeBootScript = getThemeBootScript();
 <link rel="stylesheet" href="/node_modules/@bloret-crew/blora-design/blora.css">
 ```
 
-脚本应作为普通同步脚本输出在 `<head>` 中，不能等 `type="module"` 或自定义元素升级后再执行。表单字段优先使用 `<blora-field>`；它会自动关联 label、hint、error，并在错误状态下同步 `aria-invalid`。
+脚本应作为普通同步脚本输出在 `<head>` 中，不能等 `type="module"` 或自定义元素升级后再执行。表单字段优先使用 `<blora-field>`；它会自动关联 label、hint、error，并在错误状态下同步 `aria-invalid`。登录、注册和密码表单所需的 `autocomplete`、`inputmode`、`aria-label`、`autocapitalize`、`spellcheck`、`enterkeyhint` 也会透传给内部原生控件。
 
 ## 6. 完整跨框架迁移规范
 

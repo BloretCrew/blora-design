@@ -537,6 +537,36 @@ test("Input supports a compact small size without changing the default size", as
   await expect(page.locator("#small-input")).toHaveValue("小号尺寸");
 });
 
+test("Field forwards native autocomplete and input semantics", async ({ page }) => {
+  await page.setContent(
+    htmlPage(`
+      <blora-field
+        id="login-name"
+        label="Username"
+        name="username"
+        autocomplete="username"
+        inputmode="text"
+        aria-label="Username"
+        autocapitalize="none"
+        spellcheck="false"
+        enterkeyhint="next"
+      ></blora-field>
+    `),
+  );
+
+  const control = page.locator("#login-name input");
+  await expect(control).toHaveAttribute("name", "username");
+  await expect(control).toHaveAttribute("autocomplete", "username");
+  await expect(control).toHaveAttribute("inputmode", "text");
+  await expect(control).toHaveAttribute("aria-label", "Username");
+  await expect(control).toHaveAttribute("autocapitalize", "none");
+  await expect(control).toHaveAttribute("spellcheck", "false");
+  await expect(control).toHaveAttribute("enterkeyhint", "next");
+
+  await page.locator("#login-name").evaluate((host) => host.setAttribute("autocomplete", "email"));
+  await expect(control).toHaveAttribute("autocomplete", "email");
+});
+
 test("Field associates hint and error feedback with its control", async ({ page }) => {
   await page.setContent(
     htmlPage(`

@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.8
+
+### Added
+
+- Added native input attribute forwarding to `blora-field` for autocomplete, input mode, accessible labels and mobile keyboard semantics.
+
 ## 2.0.7
 
 ### Fixed

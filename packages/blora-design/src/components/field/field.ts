@@ -5,6 +5,26 @@
 import { BloraElement } from "../../core/blora-element.js";
 
 export const BLORA_FIELD_TAG = "blora-field";
+
+const FORWARDED_NATIVE_ATTRIBUTES = [
+  "autocomplete",
+  "inputmode",
+  "aria-label",
+  "autocapitalize",
+  "spellcheck",
+  "enterkeyhint",
+] as const;
+
+function forwardNativeAttributes(
+  source: HTMLElement,
+  control: HTMLInputElement | HTMLTextAreaElement,
+) {
+  FORWARDED_NATIVE_ATTRIBUTES.forEach((name) => {
+    const value = source.getAttribute(name);
+    if (value === null) control.removeAttribute(name);
+    else control.setAttribute(name, value);
+  });
+}
 let fieldId = 0;
 export interface FieldController {
   destroy(): void;
@@ -128,6 +148,7 @@ export class BloraField extends BloraElement {
       "disabled",
       "readonly",
       "layout",
+      ...FORWARDED_NATIVE_ATTRIBUTES,
     ];
   }
 
@@ -200,6 +221,7 @@ export class BloraField extends BloraElement {
     control.required = this.hasAttribute("required");
     control.disabled = this.hasAttribute("disabled");
     control.readOnly = this.hasAttribute("readonly");
+    forwardNativeAttributes(this, control);
     if (state === "invalid" || errorText) control.setAttribute("aria-invalid", "true");
     const describedBy: string[] = [];
     if (hintText) describedBy.push(hintId);
@@ -265,6 +287,7 @@ export class BloraField extends BloraElement {
     control.required = this.hasAttribute("required");
     control.disabled = this.hasAttribute("disabled");
     control.readOnly = this.hasAttribute("readonly");
+    forwardNativeAttributes(this, control);
     if (state === "invalid" || errorText) control.setAttribute("aria-invalid", "true");
     else control.removeAttribute("aria-invalid");
     const describedBy: string[] = [];

@@ -67,6 +67,30 @@
     },
     "layout": {
       "type": "\"horizontal\""
+    },
+    "autocomplete": {
+      "type": "string",
+      "description": "Forwarded to the generated native input or textarea."
+    },
+    "inputmode": {
+      "type": "string",
+      "description": "Forwarded to the generated native input or textarea."
+    },
+    "aria-label": {
+      "type": "string",
+      "description": "Forwarded to the generated native input or textarea."
+    },
+    "autocapitalize": {
+      "type": "string",
+      "description": "Forwarded to the generated native input or textarea."
+    },
+    "spellcheck": {
+      "type": "string",
+      "description": "Forwarded to the generated native input or textarea."
+    },
+    "enterkeyhint": {
+      "type": "string",
+      "description": "Forwarded to the generated native input or textarea."
     }
   },
   "properties": {
